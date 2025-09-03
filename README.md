@@ -1,2 +1,9 @@
 # AMBER-AI-Support-System
-AMBER LLM Based support system
+Amber is one of the most widely used software suites for molecular dynamics simulations in computational chemistry and biology. Over the decades, it has been refined and extended—but finding reliable solutions to errors, workflow issues, or best practices is still challenging. Knowledge is scattered across mailing list archives (1999–2025), manuals, and fragmented user discussions.
+
+This project builds an Agentic Retrieval-Augmented Generation (RAG) System to provide clear, AI-powered support for Amber users. Instead of relying solely on model memory, our system searches historical archives and manuals, then uses an AI Agent to generate step-by-step solutions with citations.
+
+## Privacy & Access
+This is a private repository.
+No code, data, or internal information may be shared externally without explicit permission from the Lab Director.
+Please consult with the Lab Director before sharing results, documentation, or demonstrations outside the lab.
