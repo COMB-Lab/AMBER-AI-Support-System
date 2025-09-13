@@ -1,0 +1,399 @@
+import time
+import json
+import os
+import re
+from urllib.parse import urljoin, urlparse
+import requests
+from bs4 import BeautifulSoup, Comment
+from email.utils import parsedate_to_datetime
+from datetime import timezone
+from zoneinfo import ZoneInfo
+
+
+class AmberData:
+    def __init__(self, year):
+        self.year = year
+        self.months = {}   # month -> month URL (or yyyymm)
+        self.messages = {}  # month -> [ "0000.html", "0001.html", ... ]
+        self.cleanData = {}  # month -> [ {parsed message dict}, ... ]
+
+    def addMonths(self, month, value):
+        self.months[month] = value
+
+    def addMonthMessages(self, month, value):
+        self.messages.setdefault(month, []).append(value)
+
+    def addCleanData(self, month, record: dict):
+        self.cleanData.setdefault(month, []).append(record)
+
+    def getMonthValue(self, month):
+        return self.months.get(month)
+
+    def getMessageValue(self, month):
+        return self.messages.get(month, [])
+
+    def getCleanDataValue(self,key):
+        return self.cleanData.get(key)
+
+    def __str__(self):
+        return f"AmberData(Year={self.year}, Months={list(self.months.keys())})"
+
+
+dataUrl = "http://archive.ambermd.org/"
+response = requests.get(dataUrl)
+soup = BeautifulSoup(response.text, "html.parser")
+dataDictionary = {}
+'''
+Year: AmberObject(Year)
+        self.year = year
+        self.months = {
+                Mar: 202203
+                }   # month -> link
+        self.messages = {
+                Mar: [0000.html,0001.html,...]
+                }  # month -> [msg]
+        self.cleanData = {
+            "MessageID": None, 
+            "Subject": None, 
+            "URL": None, 
+            "Author_Name": None, 
+            "Author_Email_Raw": None, 
+            "Author_Email_Deobfuscated": None, 
+            "Date_Raw": None, 
+            "Date_ISO": None, 
+            "Date_UTC": None, 
+            "Received_Raw": None, 
+            "Thread_ID": None,
+            "Body_Text": None,
+            "Attachments": None,
+            "Nav_Links": None,
+            "This_Message": None,
+            "Next_Message_Title": None,
+            "Next_In_Thread_Title": None,
+            "Replies_Titles": None           
+'''
+
+
+def getData():
+    allHeader3 = soup.find_all("h3")
+    year = None
+    ad = None
+
+    for h3 in allHeader3:
+        text = h3.get_text(strip=True)
+
+        if text.isdigit():
+            # Save the previous year object if it exists
+            if ad is not None:
+                dataDictionary[f"{year}"] = ad
+            year = text
+            ad = AmberData(year)
+
+        else:
+            # Find the <a> tag for this month in the siblings
+            a = h3.find_next("a")
+            if a and a.get("href", "").startswith("./"):
+                link = urljoin(dataUrl, a["href"])
+                ad.addMonths(text, link)
+
+    # Add the last year
+    if ad is not None:
+        dataDictionary[f"{year}"] = ad
+
+    print("Populating Messages...")
+    populateMessages()
+    print("Success!")
+
+    print("Populating Clean Data...")
+
+    for year, amberObj in dataDictionary.items():
+        for month in amberObj.months.keys():
+            print(f"Working on {year} {month} ...")
+            populateCleanData(year, month)
+            time.sleep(0.5)
+
+    print("Success!")
+
+
+def getReviews(ad, month):
+    urlLink = ad.getMonthValue(month)
+    reviewResponse = requests.get(urlLink)
+    ReviewSoup = BeautifulSoup(reviewResponse.text, "html.parser")
+
+    allMessages = ReviewSoup.find_all("a", href=True)
+
+    for msg in allMessages:
+        if msg["href"].startswith("0"):
+            link = urljoin(urlLink, msg["href"])
+            ad.addMonthMessages(month, link)
+
+
+def populateMessages():
+    for yearKey, amberObj in dataDictionary.items():
+        for month in amberObj.months.keys():
+            # populate links for this month
+            getReviews(amberObj, month)
+
+
+def populateCleanData(year_key, month_key):
+    amberObj = dataDictionary[year_key]
+    if amberObj.cleanData is None:
+        amberObj.cleanData = {}
+
+    # ensure messages for this month
+    if not amberObj.getMessageValue(month_key):
+        getReviews(amberObj, month_key)
+
+    month_url = amberObj.getMonthValue(month_key)
+
+    for msg_link in amberObj.getMessageValue(month_key):
+        full_url = msg_link if msg_link.startswith("http") else urljoin(month_url, msg_link)
+        record = newRecord(full_url)
+
+        try:
+            resp = requests.get(full_url, timeout=30)
+            resp.raise_for_status()
+            soup = BeautifulSoup(resp.text, "html.parser")
+
+            # message_id = amber-YYYYMM-####
+            msg_id = os.path.splitext(os.path.basename(urlparse(full_url).path))[0]
+            mm = month_num(month_key)
+            record["message_id"] = f"amber-{year_key}{mm}-{msg_id}"
+
+            # --- HTML comments → metadata
+            metadata = {}
+            for c in soup.find_all(string=lambda t: isinstance(t, Comment)):
+                txt = c.strip()
+                if "=" in txt:
+                    k, v = txt.split("=", 1)
+                    metadata[k.strip()] = v.strip().strip('"')
+
+            # Subject / Author
+            record["subject"] = record["subject"] or metadata.get("subject")
+            record["author_name"] = metadata.get("name")
+            record["author_email_raw"] = metadata.get("email")
+            record["author_email_deobfuscated"] = deob_email(record["author_email_raw"])
+
+            # Dates from `sent`
+            sent_raw = metadata.get("sent")
+            if sent_raw:
+                try:
+                    dt = parsedate_to_datetime(sent_raw)
+                    if dt.tzinfo is None:
+                        dt = dt.replace(tzinfo=timezone.utc)
+                    record["date_raw"] = sent_raw
+                    record["date_iso"] = dt.isoformat()
+                    record["date_utc"] = dt.astimezone(timezone.utc).isoformat().replace("+00:00","Z")
+                except Exception:
+                    pass
+
+            # Received → pretty local format
+            recv_raw = metadata.get("received")
+            if recv_raw:
+                try:
+                    dt_r = parsedate_to_datetime(recv_raw)
+                    if dt_r.tzinfo is None:
+                        # assume the archive timestamp is already in PDT
+                        dt_r = dt_r.replace(tzinfo=ZoneInfo("America/Los_Angeles"))
+                    record["received_raw"] = "Received on " + dt_r.strftime("%a %b %d %Y - %H:%M:%S %Z")
+                except Exception:
+                    record["received_raw"] = f"Received on {recv_raw}"
+
+            # Thread id (normalized subject)
+            record["thread_id"] = clean_thread_id(record["subject"])
+
+            # Body text (cut before footer if present)
+            record["body_text"] = extract_body_text(soup, sent_raw)
+
+            # Attachments
+            record["attachments"] = extract_attachments(soup)
+
+            # Nav links/titles
+            record["nav_links"] = extract_nav_links(soup)
+
+        except Exception as e:
+            # Capture error in nav_links for debugging; keep the record
+            record.setdefault("nav_links", {})
+            record["nav_links"]["error"] = str(e)
+
+        amberObj.cleanData.setdefault(month_key, []).append(record)
+        print(f"Added {record['message_id']}")
+
+
+def month_num(month_key: str) -> str:
+    import calendar
+    # supports "Apr" or "April"
+    try:
+        i = list(calendar.month_abbr).index(month_key)
+    except ValueError:
+        i = list(calendar.month_name).index(month_key)
+    return str(i).zfill(2)
+
+
+def deob_email(raw: str | None) -> str | None:
+    if not raw: return None
+    # simplest transformation you asked for:
+    # keep raw with dot form; deobfuscated swaps the FIRST dot to @
+    return raw.replace(".", "@", 1) if "." in raw else raw
+
+
+def clean_thread_id(subject: str | None) -> str | None:
+    if not subject: return None
+    # remove leading [AMBER] and quote marks, lower
+    s = re.sub(r"^\s*\[AMBER\]\s*", "", subject, flags=re.I)
+    s = s.strip().strip('"').strip()
+    # normalize inner quotes to lower-case version of subject
+    return s.lower()
+
+
+def extract_body_text(soup: BeautifulSoup, sent_raw: str | None) -> str | None:
+    mail_div = soup.select_one("div.mail")
+    if not mail_div:
+        return None
+
+    # full text with line breaks
+    text = mail_div.get_text("\n", strip=True)
+
+    # start at the sent_raw date line
+    if sent_raw and sent_raw in text:
+        _, after = text.split(sent_raw, 1)
+        body = after.strip()
+    else:
+        body = text
+
+    # cut at footer markers
+    for marker in ["_______________________________________________", "Received on"]:
+        if marker in body:
+            body = body.split(marker, 1)[0].strip()
+
+    return body
+
+
+def extract_attachments(soup: BeautifulSoup) -> list:
+    out = []
+    # common pattern: <img src="att-0000/image.png"> and link to the same
+    for a in soup.select('div.mail a[href]'):
+        href = a.get('href', '')
+        if 'att-' in href:
+            filename = href.split('/')[-1]
+            mime = None
+            # try to infer mime from <img> alt/src or extension
+            ext = filename.lower().rsplit('.', 1)[-1] if '.' in filename else ''
+            if ext == 'png': mime = 'image/png'
+            elif ext == 'jpg' or ext == 'jpeg': mime = 'image/jpeg'
+            elif ext == 'gif': mime = 'image/gif'
+            out.append({"filename": filename, "mime": mime})
+    return out
+
+
+def extract_nav_links(soup):
+    def norm(s):
+        return " ".join((s or "").split())
+
+    this_message = None
+    next_message_title = None
+    next_in_thread_title = None
+    replies_titles = []
+
+    # 1) "This message"
+    a = soup.select_one("a#options1")
+    if a:
+        this_message = norm(a.get_text(" ", strip=True)) or "Message body"
+
+    # 2) Next message / next in thread (prefer title attr that has author+subject)
+    for a in soup.select("div.head a, div.foot a"):
+        txt = (a.get_text(" ", strip=True) or "").lower()
+        title_attr = norm(a.get("title"))
+        if "next message" in txt and (title_attr or txt):
+            next_message_title = title_attr or norm(a.get_text(" ", strip=True))
+        elif "next in thread" in txt and (title_attr or txt):
+            next_in_thread_title = title_attr or norm(a.get_text(" ", strip=True))
+
+    # 3) Replies: each <li><dfn>Reply</dfn>: <a title="...">...</a></li>
+    #   Look in both head & foot nav blocks.
+    for section in soup.select("div.head, div.foot"):
+        for li in section.find_all("li"):
+            dfn = li.find("dfn")
+            if not dfn:
+                continue
+            if dfn.get_text(strip=True).lower() in ("reply", "replies"):
+                for a in li.find_all("a", href=True):
+                    t = norm(a.get("title"))  # <--- author + subject lives here
+                    if t:
+                        replies_titles.append(t)
+
+    seen = set()
+    replies_titles = [t for t in replies_titles if not (t in seen or seen.add(t))]
+
+    return {
+        "this_message": this_message,
+        "next_message_title": next_message_title,
+        "next_in_thread_title": next_in_thread_title,
+        "replies_titles": replies_titles,
+    }
+
+
+def newRecord(url: str) -> dict:
+    return {
+        "message_id": None,
+        "url": url,
+        "subject": None,
+        "author_name": None,
+        "author_email_raw": None,
+        "author_email_deobfuscated": None,
+        "date_raw": None,
+        "date_iso": None,
+        "date_utc": None,
+        "received_raw": None,
+        "thread_id": None,
+        "body_text": None,
+        "attachments": [],      # list[{filename,mime}]
+        "nav_links": {          # {this_message, next_message_title, next_in_thread_title, replies_titles}
+            "this_message": None,
+            "next_message_title": None,
+            "next_in_thread_title": None,
+            "replies_titles": []
+        }
+    }
+
+
+def export_month_to_json(year_key: str, month_key: str, out_path: str):
+    amberObj = dataDictionary[year_key]
+    data = amberObj.getCleanDataValue(month_key) or []
+
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
+    print(f"Wrote {len(data)} messages to {out_path}")
+
+
+def export_all_to_json(out_path: str):
+    export_data = {}
+    for year, amberObj in dataDictionary.items():
+        export_data[year] = amberObj.cleanData
+
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(export_data, f, indent=2, ensure_ascii=False)
+
+    print(f"Wrote archive to {out_path}")
+
+
+def printData():
+    for yearKey, amberObj in dataDictionary.items():
+        print(f"Year {yearKey}:")
+        for month in amberObj.months.keys():
+            print(f"  {month}:")
+            for link in amberObj.getMessageValue(month):
+                print(f"    {link}")
+
+
+getData()
+
+# export_month_to_json("2022", "Apr", "amber_2022_Apr.json")
+# export_all_to_json("AmberCleanData.json")
+'''
+for i, msg in enumerate(msgs, start=1):
+    print(f"\nMessage {i}:")
+    for k, v in msg.items():
+        print(f"  {k}: {v}")
+        '''
