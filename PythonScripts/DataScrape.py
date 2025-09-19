@@ -1,4 +1,5 @@
 import time
+import calendar
 import json
 import os
 import re
@@ -53,24 +54,28 @@ Year: AmberObject(Year)
                 Mar: [0000.html,0001.html,...]
                 }  # month -> [msg]
         self.cleanData = {
-            "MessageID": None, 
-            "Subject": None, 
-            "URL": None, 
-            "Author_Name": None, 
-            "Author_Email_Raw": None, 
-            "Author_Email_Deobfuscated": None, 
-            "Date_Raw": None, 
-            "Date_ISO": None, 
-            "Date_UTC": None, 
-            "Received_Raw": None, 
-            "Thread_ID": None,
-            "Body_Text": None,
-            "Attachments": None,
-            "Nav_Links": None,
-            "This_Message": None,
-            "Next_Message_Title": None,
-            "Next_In_Thread_Title": None,
-            "Replies_Titles": None           
+             "message_id": None,
+             "url": url,
+             "subject": None,
+             "author_name": None,
+             "author_email_raw": None,
+             "author_email_deobfuscated": None,
+             "date_raw": None,
+             "date_iso": None,
+            "date_utc": None,
+            "received_raw": None,
+            "thread_id": None,
+            "body_text": None,
+            "attachments": [],
+            "nav_links": {
+                 "this_message": None,
+                 "next_message_title": None,
+                 "next_in_thread_title": None,
+                 "replies_titles": [],
+                 "in_reply_to_title": None,
+                 "in_reply_to_link": None
+            }
+        }     
 '''
 
 
@@ -106,11 +111,26 @@ def getData():
 
     print("Populating Clean Data...")
 
+    # Populates a single data
+    # populateCleanData("2022","Apr")
+
+    '''
+    # Populates ALL data
     for year, amberObj in dataDictionary.items():
         for month in amberObj.months.keys():
             print(f"Working on {year} {month} ...")
             populateCleanData(year, month)
             time.sleep(0.5)
+    '''
+    # Populates ONLY 2022–2025
+    for year_str in sorted(dataDictionary.keys(), key=int):
+        y = int(year_str)
+        if 2022 <= y <= 2025:
+            amberObj = dataDictionary[year_str]
+            for month in sorted(amberObj.months.keys(), key=lambda m: int(month_num(m))):
+                print(f"Working on {year_str} {month} ...")
+                populateCleanData(year_str, month)
+                time.sleep(0.5)
 
     print("Success!")
 
@@ -209,7 +229,7 @@ def populateCleanData(year_key, month_key):
             record["attachments"] = extract_attachments(soup)
 
             # Nav links/titles
-            record["nav_links"] = extract_nav_links(soup)
+            record["nav_links"] = extract_nav_links(soup, base_url=resp.url)
 
         except Exception as e:
             # Capture error in nav_links for debugging; keep the record
@@ -221,18 +241,21 @@ def populateCleanData(year_key, month_key):
 
 
 def month_num(month_key: str) -> str:
-    import calendar
-    # supports "Apr" or "April"
+    month_key = month_key.strip()
     try:
         i = list(calendar.month_abbr).index(month_key)
     except ValueError:
-        i = list(calendar.month_name).index(month_key)
+        try:
+            i = list(calendar.month_name).index(month_key)
+        except ValueError:
+            # fallback if month_key is invalid
+            return "99"
     return str(i).zfill(2)
+
 
 
 def deob_email(raw: str | None) -> str | None:
     if not raw: return None
-    # simplest transformation you asked for:
     # keep raw with dot form; deobfuscated swaps the FIRST dot to @
     return raw.replace(".", "@", 1) if "." in raw else raw
 
@@ -286,14 +309,21 @@ def extract_attachments(soup: BeautifulSoup) -> list:
     return out
 
 
-def extract_nav_links(soup):
-    def norm(s):
-        return " ".join((s or "").split())
+def norm(s):
+    return " ".join((s or "").split())
+
+
+def extract_nav_links(soup, base_url: str | None = None):
 
     this_message = None
     next_message_title = None
     next_in_thread_title = None
     replies_titles = []
+    inReplyToTitle = None
+    inReplyToLink = None
+
+    base_tag = soup.find("base", href=True)
+    effective_base = base_tag["href"] if base_tag else (base_url or "")
 
     # 1) "This message"
     a = soup.select_one("a#options1")
@@ -304,12 +334,19 @@ def extract_nav_links(soup):
     for a in soup.select("div.head a, div.foot a"):
         txt = (a.get_text(" ", strip=True) or "").lower()
         title_attr = norm(a.get("title"))
+        # print(f"a: {a}")
+        # print(f"txt: {txt}")
+        # print(f"title_attr: {title_attr}")
         if "next message" in txt and (title_attr or txt):
             next_message_title = title_attr or norm(a.get_text(" ", strip=True))
         elif "next in thread" in txt and (title_attr or txt):
             next_in_thread_title = title_attr or norm(a.get_text(" ", strip=True))
+        elif "in reply to" in txt and (title_attr or txt):
+            inReplyToTitle = title_attr or norm(a.get_text(" ", strip=True))
+            href = a.get("href")
+            inReplyToLink = urljoin(effective_base, href) if href else None
 
-    # 3) Replies: each <li><dfn>Reply</dfn>: <a title="...">...</a></li>
+    # 3) Replies
     #   Look in both head & foot nav blocks.
     for section in soup.select("div.head, div.foot"):
         for li in section.find_all("li"):
@@ -318,7 +355,7 @@ def extract_nav_links(soup):
                 continue
             if dfn.get_text(strip=True).lower() in ("reply", "replies"):
                 for a in li.find_all("a", href=True):
-                    t = norm(a.get("title"))  # <--- author + subject lives here
+                    t = norm(a.getText())
                     if t:
                         replies_titles.append(t)
 
@@ -330,6 +367,8 @@ def extract_nav_links(soup):
         "next_message_title": next_message_title,
         "next_in_thread_title": next_in_thread_title,
         "replies_titles": replies_titles,
+        "in_reply_to_title": inReplyToTitle,
+        "in_reply_to_link": inReplyToLink
     }
 
 
@@ -347,12 +386,14 @@ def newRecord(url: str) -> dict:
         "received_raw": None,
         "thread_id": None,
         "body_text": None,
-        "attachments": [],      # list[{filename,mime}]
-        "nav_links": {          # {this_message, next_message_title, next_in_thread_title, replies_titles}
+        "attachments": [],
+        "nav_links": {
             "this_message": None,
             "next_message_title": None,
             "next_in_thread_title": None,
-            "replies_titles": []
+            "replies_titles": [],
+            "in_reply_to_title": None,
+            "in_reply_to_link": None
         }
     }
 
@@ -365,6 +406,21 @@ def export_month_to_json(year_key: str, month_key: str, out_path: str):
         json.dump(data, f, indent=2, ensure_ascii=False)
 
     print(f"Wrote {len(data)} messages to {out_path}")
+
+
+def export_range_to_json(start_year: int, end_year: int, out_path: str):
+    export_data = {}
+    for year in range(start_year, end_year + 1):
+        year_str = str(year)
+        if year_str in dataDictionary:
+            export_data[year_str] = dataDictionary[year_str].cleanData
+        else:
+            print(f"No data for {year_str}")
+
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(export_data, f, indent=2, ensure_ascii=False)
+
+    print(f"Wrote years {start_year}-{end_year} to {out_path}")
 
 
 def export_all_to_json(out_path: str):
@@ -390,6 +446,9 @@ def printData():
 getData()
 
 # export_month_to_json("2022", "Apr", "amber_2022_Apr.json")
+
+export_range_to_json(2022, 2025, "amber_2022_2025.json")
+
 # export_all_to_json("AmberCleanData.json")
 '''
 for i, msg in enumerate(msgs, start=1):
