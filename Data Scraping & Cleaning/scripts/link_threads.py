@@ -1,199 +1,188 @@
 #!/usr/bin/env python3
-import argparse, json, re
+"""
+Build one JSON per thread into data/json/<YYYYMM>_thread_<epoch>.json
+Optionally --cleanup removes data/json/YYYYMM/*.json (per-message) after success.
+"""
+
+import argparse, json, re, sys
 from pathlib import Path
-from urllib.parse import urlparse
-from bs4 import BeautifulSoup
-from datetime import datetime
+from email.utils import parsedate_to_datetime
+from datetime import timezone
 
-HTML_ROOT = Path("data/html")
-OUT_ROOT = Path("data/json/threads")
-OUT_ROOT.mkdir(parents=True, exist_ok=True)
+DATA_ROOT = Path(__file__).resolve().parents[1] / "data"
+JSON_IN_DEFAULT = DATA_ROOT / "json"           # per-message input
+JSON_OUT_DEFAULT = DATA_ROOT / "json"          # flat thread files here
 
-A_MSG_ID = re.compile(r"/(\d{6})/(\d{4})\.html$")  # /YYYYMM/NNNN.html
+A_MSG_DIR  = re.compile(r"^\d{6}$")            # YYYYMM
+A_MSG_FILE = re.compile(r"^\d{4}\.json$")      # 0000.json
 
-def msg_id_from_url(u: str) -> tuple[str, str] | None:
-    m = A_MSG_ID.search(urlparse(u).path)
-    if not m: return None
-    return m.group(1), m.group(2)  # yyyymm, nnnn
+def ym_to_int(ym: str | None) -> int | None:
+    if not ym: return None
+    m = re.fullmatch(r"(\d{4})-(\d{2})", ym)
+    return int(m.group(1))*100 + int(m.group(2)) if m else None
 
-def normalize_subject(s: str) -> str:
-    s = s.strip()
-    # remove common prefixes repeatedly: Re:, Fwd:
+def iter_months(in_dir: Path, since: str | None, until: str | None):
+    s = ym_to_int(since) or 0
+    u = ym_to_int(until) or 999999
+    for d in sorted(in_dir.glob("*")):
+        if d.is_dir() and A_MSG_DIR.match(d.name):
+            ym = int(d.name)
+            if s <= ym <= u:
+                yield d.name
+
+def epoch_from_record(rec: dict) -> int | None:
+    dr = rec.get("date_raw"); dt = None
+    if dr:
+        try: dt = parsedate_to_datetime(dr)
+        except Exception: dt = None
+    if not dt:
+        for k in ("date_iso","date_utc"):
+            v = rec.get(k)
+            if not v: continue
+            try:
+                dt = parsedate_to_datetime(v); break
+            except Exception: pass
+    if not dt: return None
+    if dt.tzinfo is None: dt = dt.replace(tzinfo=timezone.utc)
+    else: dt = dt.astimezone(timezone.utc)
+    return int(dt.timestamp())
+
+def id_from_url(u: str | None):
+    if not u: return None
+    m = re.search(r"/(\d{6})/(\d{4})\.html$", u)
+    return (m.group(1), m.group(2)) if m else None
+
+def norm_subject(s: str | None) -> str:
+    if not s: return ""
+    s = re.sub(r"^\s*\[AMBER\]\s*", "", s, flags=re.I)
     while True:
-        t = re.sub(r"^(re|fwd|fw)\s*:\s*", "", s, flags=re.I)
+        t = re.sub(r"^(re|fwd?|fw)\s*:\s*", "", s, flags=re.I)
         if t == s: break
         s = t
-    return re.sub(r"\s+", " ", s)
+    return re.sub(r"\s+", " ", s).strip()
 
-def extract_nav_and_meta(html: str, fallback_url: str) -> dict:
-    """
-    Returns:
-      {
-        'id': 'NNNN', 'yyyymm': 'YYYYMM', 'url': '...',
-        'subject': str, 'subject_clean': str,
-        'date_iso': 'YYYY-MM-DDTHH:MM:SSZ' (best-effort),
-        'in_reply_to': 'NNNN'|None, 'replies': [NNNN...], 'next_in_thread': 'NNNN'|None
-      }
-    """
-    soup = BeautifulSoup(html, "html.parser")
+def build_threads_for_month(in_dir: Path, out_dir: Path, yyyymm: str) -> int:
+    src = in_dir / yyyymm
 
-    # URL + ids (from footer nav or fallback_url)
-    url = fallback_url
-    mm = msg_id_from_url(url)
-    if not mm:
-        # Try to find a canonical link if present
-        link = soup.find("link", rel=lambda v: v and "canonical" in v.lower())
-        if link and link.get("href"): 
-            url = link["href"]
-            mm = msg_id_from_url(url)
-    if not mm:
-        raise ValueError("Cannot determine YYYYMM/NNNN from URL or page.")
-    yyyymm, nnnn = mm
-
-    # Subject
-    subj_el = soup.find(string=re.compile(r"\[AMBER\]|\S"))
-    # More robust: header “This message: [ Message body ] …” is near top; but
-    # most pages also include a <title> with subject.
-    subject = soup.title.get_text(strip=True) if soup.title else (subj_el or "").strip()
-    subject_clean = normalize_subject(subject)
-
-    # Date (header often has 'Date: Tue, 2 May 2023 19:05:35 +0000')
-    date_iso = None
-    date_label = soup.find(string=re.compile(r"^\s*Date:\s*", re.I))
-    if date_label and date_label.parent:
-        raw = re.sub(r"^\s*Date:\s*", "", date_label, flags=re.I).strip()
-        # best-effort parse; the archive uses RFC822-ish strings
-        try:
-            # remove parenthetical timezone names if any
-            raw2 = re.sub(r"\(.*?\)$", "", raw).strip()
-            dt = datetime.strptime(raw2[:25], "%a, %d %b %Y %H:%M:%S")
-            date_iso = dt.isoformat() + "Z"
-        except Exception:
-            date_iso = None
-
-    # Collect all nav anchors & map by exact text
-    anchors = soup.find_all("a", href=True)
-    by_text = {}
-    for a in anchors:
-        label = a.get_text(strip=True)
-        href = a["href"].strip()
-        by_text.setdefault(label, []).append(href)
-
-    def first_id_for(label: str) -> str | None:
-        for href in by_text.get(label, []):
-            mmid = msg_id_from_url(href)
-            if mmid and mmid[0] == yyyymm:
-                return mmid[1]
-        return None
-
-    def all_ids_for(label: str) -> list[str]:
-        ids = []
-        for href in by_text.get(label, []):
-            mmid = msg_id_from_url(href)
-            if mmid and mmid[0] == yyyymm:
-                ids.append(mmid[1])
-        # de-dup preserve order
-        seen, out = set(), []
-        for i in ids:
-            if i not in seen:
-                seen.add(i); out.append(i)
-        return out
-
-    # Primary signals
-    in_reply_to = first_id_for("In reply to")
-    next_in_thread = first_id_for("Next in thread")
-    replies = all_ids_for("Replies")
-
-    # Fallback heuristic: if nothing, infer from subject prefix (last resort)
-    if not in_reply_to and subject.lower().startswith(("re:", "fw:", "fwd:")):
-        # Guess parent as the nearest previous id (NNNN-1) if it exists in month
-        try:
-            prev_num = f"{int(nnnn)-1:04d}"
-            in_reply_to = prev_num
-        except Exception:
-            pass
-
-    return {
-        "id": nnnn,
-        "yyyymm": yyyymm,
-        "url": url,
-        "subject": subject,
-        "subject_clean": subject_clean,
-        "date_iso": date_iso,
-        "in_reply_to": in_reply_to,
-        "replies": replies,
-        "next_in_thread": next_in_thread,
-    }
-
-def build_threads_for_month(yyyymm: str):
-    month_dir = HTML_ROOT / yyyymm
-    assert month_dir.is_dir(), f"Missing folder: {month_dir}"
-
-    # 1) parse all messages
+    # 1) load records
     records = {}
-    for p in sorted(month_dir.glob("*.html")):
-        url_guess = f"http://archive.ambermd.org/{yyyymm}/{p.stem}.html"
-        rec = extract_nav_and_meta(p.read_text(encoding="utf-8", errors="ignore"), url_guess)
-        records[rec["id"]] = rec
+    for p in sorted(src.glob("*.json")):
+        if not A_MSG_FILE.match(p.name): continue
+        rec = json.loads(p.read_text(encoding="utf-8"))
+        mid = rec.get("id_in_month") or p.stem
+        records[mid] = rec
+    if not records: return 0
 
-    # 2) build parent/children maps
+    # 2) parent/children (same-month only)
     children = {rid: [] for rid in records}
-    parent = {rid: None for rid in records}
-    for rid, r in records.items():
-        if r["in_reply_to"] in records:
-            parent[rid] = r["in_reply_to"]
-            children[r["in_reply_to"]].append(rid)
-        # also honor explicit Replies list
-        for kid in r["replies"]:
-            if kid in records and kid not in children[rid]:
-                children[rid].append(kid)
-                parent[kid] = parent.get(kid) or rid
+    parent   = {rid: None for rid in records}
+    for rid, rec in records.items():
+        nav = rec.get("nav_links") or {}
+        ymid = id_from_url(nav.get("in_reply_to_link"))
+        if ymid and ymid[0] == yyyymm and ymid[1] in records:
+            parent[rid] = ymid[1]
+            if rid not in children[ymid[1]]: children[ymid[1]].append(rid)
+        for link in nav.get("replies_links", []):
+            ymid = id_from_url(link)
+            if not ymid or ymid[0] != yyyymm: continue
+            kid = ymid[1]
+            if kid in records and rid not in children or kid not in children[rid]:
+                children[rid].append(kid); parent[kid] = parent.get(kid) or rid
+        if not parent[rid]:
+            subj = (rec.get("subject") or "").lower()
+            if subj.startswith(("re:","fwd:","fw:")):
+                try:
+                    prev = f"{int(rid)-1:04d}"
+                    if prev in records and not parent[prev]:
+                        parent[rid] = prev
+                        if rid not in children[prev]: children[prev].append(rid)
+                except Exception: pass
 
-    # 3) sort children of each node by date
-    def sort_key(msg_id: str):
-        di = records[msg_id].get("date_iso") or ""
-        return di, msg_id
+    # 3) sort children by time
+    def sort_key(mid: str):
+        return (epoch_from_record(records[mid]) or 0, mid)
     for rid in children:
         children[rid].sort(key=sort_key)
 
-    # 4) find roots
+    # 4) roots
     roots = [rid for rid, par in parent.items() if not par]
+    roots.sort(key=sort_key)
 
-    # 5) assemble threads (DFS)
-    threads = []
-    seen = set()
-    for root in sorted(roots, key=sort_key):
-        order = []
-        stack = [root]
-        while stack:
-            cur = stack.pop(0)
-            if cur in seen: 
-                continue
-            seen.add(cur)
-            order.append(cur)
-            stack[0:0] = children[cur]  # queue children (BFS-ish)
+    # 5) write one file per thread into flat json dir
+    written = 0
+    for root in roots:
+        order, q, seen = [], [root], set()
+        while q:
+            cur = q.pop(0)
+            if cur in seen: continue
+            seen.add(cur); order.append(cur)
+            q[0:0] = children[cur]
 
-        threads.append({
-            "month": yyyymm,
-            "thread_id": f"{yyyymm}-{root}",
-            "root_id": root,
-            "subject": records[root]["subject_clean"],
-            "size": len(order),
-            "messages": order
-        })
+        root_rec = records[root]
+        root_epoch = epoch_from_record(root_rec)
+        if root_epoch is None: continue
 
-    # 6) write out
-    out_path = OUT_ROOT / f"{yyyymm}.threads.json"
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(threads, indent=2), encoding="utf-8")
-    return out_path, len(threads)
+        thread_id = root_epoch
+        subj = norm_subject(root_rec.get("subject"))
+
+        msgs = []
+        for mid in order:
+            r = records[mid]
+            me = epoch_from_record(r)
+            if me is None: continue
+            m = {
+                "message_id": me,
+                "author": r.get("author_name"),
+                "date_raw": r.get("date_raw") or r.get("date_iso") or r.get("date_utc"),
+                "body": r.get("body_text"),
+                "url": r.get("url"),
+            }
+            if mid != root: m["in_reply_to"] = thread_id
+            msgs.append(m)
+        msgs.sort(key=lambda m: m["message_id"])
+
+        outp = out_dir / f"{yyyymm}_thread_{thread_id}.json"
+        outp.write_text(json.dumps({
+            "thread_id": thread_id,
+            "subject": subj or (root_rec.get("subject") or ""),
+            "messages": msgs,
+        }, indent=2, ensure_ascii=False), encoding="utf-8")
+        written += 1
+    return written
+
+def cleanup_month(in_dir: Path, yyyymm: str) -> int:
+    month_dir = in_dir / yyyymm
+    removed = 0
+    for p in month_dir.glob("*.json"):
+        try: p.unlink(); removed += 1
+        except Exception: pass
+    try:
+        if not any(month_dir.iterdir()): month_dir.rmdir()
+    except Exception: pass
+    return removed
 
 def main():
-    ap = argparse.ArgumentParser(description="Link Amber replies into threads for a given month")
-    ap.add_argument("--month", required=True, help="YYYYMM (e.g., 202305)")
+    ap = argparse.ArgumentParser(description="Write flat thread JSONs into data/json/*.json")
+    ap.add_argument("--json-in",  default=str(JSON_IN_DEFAULT))
+    ap.add_argument("--json-out", default=str(JSON_OUT_DEFAULT))
+    ap.add_argument("--since"); ap.add_argument("--until")
+    ap.add_argument("--cleanup", action="store_true")
     args = ap.parse_args()
-    out_path, n = build_threads_for_month(args.month)
-    print(f"Wrote {n} threads → {out_path}")
+
+    in_dir  = Path(args.json_in)
+    out_dir = Path(args.json_out); out_dir.mkdir(parents=True, exist_ok=True)
+
+    months = list(iter_months(in_dir, args.since, args.until))
+    if not months:
+        print("No per-message JSON months found. Run parse stage first.", file=sys.stderr)
+        sys.exit(1)
+
+    for yyyymm in months:
+        n = build_threads_for_month(in_dir, out_dir, yyyymm)
+        print(f"==> {yyyymm} wrote {n} thread files into {out_dir}")
+        if args.cleanup and n > 0:
+            removed = cleanup_month(in_dir, yyyymm)
+            print(f"==> {yyyymm} cleanup removed {removed} per-message JSONs")
 
 if __name__ == "__main__":
     main()

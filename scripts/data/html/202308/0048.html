@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Problems with post-processing MD simulation with non-standard residues from Daniel Roe via AMBER on 2023-08-12 (Amber Archive Aug 2023)</title>
+<meta name="Author" content="Daniel Roe via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Problems with post-processing MD simulation with non-standard residues" />
+<meta name="Date" content="2023-08-12" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Problems with post-processing MD simulation with non-standard residues</h1>
+<!-- received="Sat Aug 12 06:00:02 2023" -->
+<!-- isoreceived="20230812130002" -->
+<!-- sent="Sat, 12 Aug 2023 08:29:33 -0400" -->
+<!-- isosent="20230812122933" -->
+<!-- name="Daniel Roe via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Problems with post-processing MD simulation with non-standard residues" -->
+<!-- id="CAAC0qOa34p7vMK0kaM0tMr08DK+W+e=Dx6P_-H9MnUbSGSUQ6w.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="1102829619.406824.1691829709688.ox2.poczta.az.pl" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0049.html" accesskey="d" title="Emilie Gerard via AMBER: &quot;[AMBER] the charges and atom numbers are mismatch for the standard model!&quot;">Next message</a> ]
+[ <a href="0047.html" title="m.bzowka m.bzowka via AMBER: &quot;[AMBER] Problems with post-processing MD simulation with non-standard residues&quot;">Previous message</a> ]
+[ <a href="0047.html" title="m.bzowka m.bzowka via AMBER: &quot;[AMBER] Problems with post-processing MD simulation with non-standard residues&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0050.html" accesskey="t" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Problems with post-processing MD simulation with non-standard residues&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg48" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg48" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg48" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg48" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Problems%20with%20post-processing%20MD%20simulation%20with%20non-standard%20residues">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 12 Aug 2023 08:29:33 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />On Sat, Aug 12, 2023 at 4:42 AM m.bzowka m.bzowka via AMBER &lt;
+<br />
+amber.ambermd.org&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; My problem is that when I process the trajectory file with cpptraj and
+</em><br />
+<em class="quotelev1">&gt; when I open the .nc file in vmd, I can't see the three non-standard
+</em><br />
+<em class="quotelev1">&gt; residues in the sequence and I observe the gaps in the structure. Also,
+</em><br />
+<em class="quotelev1">&gt; when I performed the rmsf analysis of the trajectory, in the output file
+</em><br />
+<em class="quotelev1">&gt; there is no rmsf value for these three residues.
+</em><br />
+<br /><br />Cpptraj will never modify a topology without explicitly being told to. I’m
+<br />
+not sure what’s going on with VMD (I assume you are using the stripped
+<br />
+topology when you visit the stripped trajectory right?) but as far as the
+<br />
+RMSF not selecting your 3 nonstandard residues, are you certain of your
+<br />
+residue numbering after the ‘strip’ command? The ‘:’ selector goes by
+<br />
+absolute residue numbering, which can change after ‘strip’.
+<br />
+<br />I noticed in the output file from the cpptraj the following warnings:
+<br />
+<em class="quotelev1">&gt; Warning: 1 molecules have non-contiguous segments of atoms.
+</em><br />
+<em class="quotelev1">&gt; 1 2 segments: 1-6865 (6865) 12658-19658 (7001)
+</em><br />
+<em class="quotelev1">&gt; Warning: The 'fixatomorder' command can be used to reorder the topology
+</em><br />
+<em class="quotelev1">&gt; and any
+</em><br />
+<em class="quotelev1">&gt; Warning: associated coordinates.
+</em><br />
+<br /><br />This warning in older versions of cpptraj would just mean there would be no
+<br />
+molecule information available. In more recent versions its more of an FYI.
+<br />
+It shouldn’t be impacting the analysis your are doing. What cpptraj version
+<br />
+are you using? You should use AmberTools23 or GitHub if you can.
+<br />
+<br />#autoimage
+<br />
+<em class="quotelev1">&gt; center :1-1255 mass origin
+</em><br />
+<em class="quotelev1">&gt; image origin center familiar
+</em><br />
+<br /><br />Did autoimage not work for you here?
+<br />
+<br /><br /><em class="quotelev1">&gt; strip :WAT,Cl-,Na+ outprefix nowat
+</em><br />
+<br /><br />This can potentially change ‘:’ mask numbering. ‘:;’ numbering should
+<br />
+remain unchanged.
+<br />
+<br /><br /><em class="quotelev1">&gt; trajout *_nowat.nc NetCDF
+</em><br />
+<br /><br />The asterisk in trajout is worrisome. You should be providing a filename
+<br />
+here. The behavior here is undefined - at best I think it will overwrite
+<br />
+the first matching file.
+<br />
+<br /><br /><em class="quotelev1">&gt; go
+</em><br />
+<em class="quotelev1">&gt; Attached, please find the .out file from cpptraj.
+</em><br />
+<br /><br />There was no attachment. Maybe you can send it to me directly off-list.
+<br />
+<br />-Dan
+<br />
+<br /><br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thank you in advance for your help.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best
+</em><br />
+<em class="quotelev1">&gt; Maria Bzówka
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sat Aug 12 2023 - 06:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0049.html" title="Next message in the list">Emilie Gerard via AMBER: "[AMBER] the charges and atom numbers are mismatch for the standard model!"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0047.html" title="Previous message in the list">m.bzowka m.bzowka via AMBER: "[AMBER] Problems with post-processing MD simulation with non-standard residues"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0047.html" title="Message to which this message replies">m.bzowka m.bzowka via AMBER: "[AMBER] Problems with post-processing MD simulation with non-standard residues"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0050.html" title="Next message in this discussion thread">Daniel Roe via AMBER: "Re: [AMBER] Problems with post-processing MD simulation with non-standard residues"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg48" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg48" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg48" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg48" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

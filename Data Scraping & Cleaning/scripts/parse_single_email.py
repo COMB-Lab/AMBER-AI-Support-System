@@ -1,301 +1,166 @@
 #!/usr/bin/env python3
 """
-Parse a single Amber archive HTML email into structured JSON.
+Batch-parse AMBER HTML emails into normalized JSON files.
 
-Usage:
-  python scripts/parse_single_email.py \
-    --in data/html/202204/0000.html \
-    --url http://archive.ambermd.org/202204/0000.html \
-    --out data/json/202204/0000.json
+Inputs (by month):
+  data/html/YYYYMM/NNNN.html
 
-If --out is omitted, the JSON is only printed to stdout.
+Outputs:
+  data/json/YYYYMM/NNNN.json
 """
 
-import argparse
-import json
-import mimetypes
-import os
-import re
+import argparse, json, re, sys
 from pathlib import Path
-from urllib.parse import urljoin, urlparse
-
 from bs4 import BeautifulSoup, Comment
 from email.utils import parsedate_to_datetime
+from datetime import timezone
+from urllib.parse import urljoin
 
+DATA_ROOT = Path(__file__).resolve().parents[1] / "data"
+HTML_DIR_DEFAULT = DATA_ROOT / "html"
+JSON_DIR_DEFAULT = DATA_ROOT / "json"
 
-def deobfuscate_email(raw: str) -> str:
-    """
-    Very common obfuscation in this archive:
-      'user.gmail.com'  -> 'user@gmail.com'
-      'user.yahoo.com'  -> 'user@yahoo.com'
-    General heuristic:
-      - if there's no '@' and it ends with '.<domain>.<tld>',
-        replace the FIRST '.' with '@'.
-    """
-    if "@" in raw:
-        return raw
-    # common providers first (safer)
-    for provider in ("gmail.com", "yahoo.com", "outlook.com", "hotmail.com"):
-        if raw.endswith("." + provider):
-            return raw.replace("." + provider, "@" + provider, 1)
-    # generic fallback: split on first dot
-    parts = raw.split(".", 1)
-    if len(parts) == 2:
-        return parts[0] + "@" + parts[1]
-    return raw
+A_MSG_ID = re.compile(r"^(\d{4})(\d{2})$")
+A_HTML = re.compile(r"^\d{4}\.html$")  # 0000.html
 
+def ym_to_int(ym: str | None) -> int | None:
+    if not ym: return None
+    m = re.fullmatch(r"(\d{4})-(\d{2})", ym)
+    return int(m.group(1))*100 + int(m.group(2)) if m else None
 
-def comment_kv_index(soup: BeautifulSoup) -> dict:
-    """
-    Build a small index of key="value" pairs embedded in HTML comments like:
-      <!-- isosent="20220401091704" -->
-      <!-- name="Erdem Yeler" -->
-      <!-- email="erdemyeler.gmail.com" -->
-      <!-- id="..."> (Message-Id)
-    We keep the last occurrence of each key.
-    """
-    kv = {}
-    for c in soup.find_all(string=lambda x: isinstance(x, Comment)):
-        # extract key="value" pairs
-        for m in re.finditer(r'([a-zA-Z_]+)\s*=\s*"([^"]*)"', c):
-            kv[m.group(1)] = m.group(2)
-    return kv
+def iter_months(in_dir: Path, since: str | None, until: str | None):
+    s = ym_to_int(since) or 0
+    u = ym_to_int(until) or 999999
+    for d in sorted(in_dir.glob("*")):
+        if not d.is_dir(): continue
+        if not A_MSG_ID.match(d.name): continue
+        ym = int(d.name)
+        if ym < s or ym > u: continue
+        yield d.name
 
+def deob_email(raw: str | None) -> str | None:
+    if not raw: return None
+    return raw if "@" in raw else raw.replace(".", "@", 1)
 
-def text_between_start_and_received(mail_div: BeautifulSoup) -> str:
-    """
-    The message body starts after the anchor with id="start" and typically ends
-    before the <span id="received"> stamp. Convert <br> to newlines.
-    """
-    start = mail_div.select_one("#start")
-    if not start:
-        # Fallback: just take the whole mail div text
-        return mail_div.get_text("\n", strip=True)
+def normalize_subject(s: str | None) -> str | None:
+    if not s: return None
+    s = re.sub(r"^\s*\[AMBER\]\s*", "", s, flags=re.I)
+    # repeatedly strip Re/Fwd prefixes
+    while True:
+        t = re.sub(r"^(re|fwd?|fw)\s*:\s*", "", s, flags=re.I)
+        if t == s: break
+        s = t
+    return re.sub(r"\s+", " ", s).strip().strip('"')
 
-    # Work on a small copy to safely mutate
-    sub = BeautifulSoup(str(mail_div), "html.parser")
-
-    # Remove headers block to avoid 'From'/'Date' duplicating into body
-    addr = sub.select_one("address.headers")
-    if addr:
-        addr.decompose()
-
-    # Remove 'received' stamp so it doesn't pollute the body
-    rec = sub.select_one("span#received")
-    if rec:
-        rec.decompose()
-
-    # Convert <br> to newline explicitly (BeautifulSoup's get_text can use a separator,
-    # but converting <br> tags helps keep intended line structure)
-    for br in sub.find_all("br"):
-        br.replace_with("\n")
-
-    # After cleanup, locate the 'start' anchor again and take the following content
-    start2 = sub.select_one("#start")
-    if not start2:
-        return sub.get_text("\n", strip=True)
-
-    # Collect text from siblings after the anchor until the end of the mail block
-    lines = []
-    for sib in start2.next_siblings:
-        # only gather visible text
-        if getattr(sib, "get_text", None):
-            lines.append(sib.get_text())
-        else:
-            s = str(sib)
-            if s.strip():
-                lines.append(s)
-    body = "".join(lines)
-
-    # Normalize whitespace: collapse Windows newlines, trim trailing spaces
-    body = re.sub(r"\r\n?", "\n", body)
-    body = re.sub(r"\n{3,}", "\n\n", body).strip()
-    return body
-
-
-def guess_attachments(mail_div: BeautifulSoup, base_url: str) -> list:
-    """
-    Find attachment links under att-XXXX paths, infer filename and MIME type.
-    """
-    atts = []
-    seen = set()
-    for a in mail_div.find_all("a", href=True):
-        href = a["href"]
-        if href.startswith("att-"):
-            full = urljoin(base_url, href)
-            filename = os.path.basename(urlparse(full).path)
-            mime, _ = mimetypes.guess_type(full)
-            at = {"filename": filename}
-            if mime:
-                at["mime"] = mime
-            key = (filename, at.get("mime"))
-            if key not in seen:
-                seen.add(key)
-                atts.append(at)
-    return atts
-
-
-def nav_info(soup: BeautifulSoup) -> dict:
-    """
-    Extract navigation titles:
-      - 'this_message' (label text for the anchor to body)
-      - 'next_message_title' (from link title w/ accesskey="d")
-      - 'next_in_thread_title' (from link title w/ accesskey="t")
-      - 'replies_titles' (titles of reply links)
-    We look in both the top (#navbar) and footer (#navbarfoot) maps.
-    """
-    def first_map():
-        for mid in ("#navbar", "#navbarfoot"):
-            m = soup.select_one(mid)
-            if m:
-                yield m
-
-    out = {"this_message": None,
-           "next_message_title": None,
-           "next_in_thread_title": None,
-           "replies_titles": []}
-
-    for m in first_map():
-        # "This message" anchor label
-        if out["this_message"] is None:
-            this_link = m.find("a", attrs={"id": "options1"}) or m.find("a", string=re.compile("Message body", re.I))
-            if this_link:
-                out["this_message"] = (this_link.get_text(strip=True) or "Message body")
-
-        # Next message / next in thread (access keys are common in this archive)
-        if out["next_message_title"] is None:
-            nxt = m.find("a", attrs={"accesskey": "d"})
-            if nxt and nxt.has_attr("title"):
-                out["next_message_title"] = nxt["title"]
-
-        if out["next_in_thread_title"] is None:
-            nxtt = m.find("a", attrs={"accesskey": "t"})
-            if nxtt and nxtt.has_attr("title"):
-                out["next_in_thread_title"] = nxtt["title"]
-
-        # Replies: list items where <dfn>Reply</dfn> is present
-        for li in m.find_all("li"):
-            d = li.find("dfn")
-            if d and "reply" in d.get_text(strip=True).lower():
-                for a in li.find_all("a"):
-                    title = a.get("title")
-                    if title:
-                        out["replies_titles"].append(title)
-
-    # Final tidy defaults
-    if out["this_message"] is None:
-        out["this_message"] = "Message body"
-    return out
-
-
-def make_thread_id(subject: str) -> str:
-    """
-    Normalize to a lowercase thread key, strip leading [AMBER] or similar tags.
-    """
-    s = re.sub(r"^\[[^\]]+\]\s*", "", subject).strip()
-    s = re.sub(r"\s+", " ", s)
-    return s.lower()
-
-
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--in", dest="in_path", default="data/html/202204/0000.html")
-    ap.add_argument("--url", dest="url", default="http://archive.ambermd.org/202204/0000.html")
-    ap.add_argument("--out", dest="out_path", default=None)
-    args = ap.parse_args()
-
-    html_path = Path(args.in_path)
-    if not html_path.exists():
-        raise SystemExit(f"Input HTML not found: {html_path}")
-
-    html_bytes = html_path.read_bytes()
-    soup = BeautifulSoup(html_bytes, "html.parser")
-
-    # Common fields
-    subject = (soup.select_one("div.head h1") or soup.title)
-    subject = subject.get_text(strip=True) if subject else None
-
+def extract_body_text(soup: BeautifulSoup, sent_raw: str | None) -> str | None:
     mail_div = soup.select_one("div.mail")
     if not mail_div:
-        raise SystemExit("Could not find <div class='mail'> in HTML.")
+        return None
+    text = mail_div.get_text("\n", strip=True)
+    body = text
+    if sent_raw and sent_raw in text:
+        # if the date header appears in the visible text, split after it
+        _, after = text.split(sent_raw, 1)
+        body = after.strip()
+    for marker in ["_______________________________________________", "Received on"]:
+        if marker in body:
+            body = body.split(marker, 1)[0].strip()
+    return body
 
-    # Comment-derived fields
-    kv = comment_kv_index(soup)
-    # Example keys we often find: name, email, subject, isosent, isoreceived, id
-    author_name = kv.get("name")
-    author_email_raw = kv.get("email")
-    message_id_comment = kv.get("id")  # this is like an email Message-Id
+def extract_attachments(soup: BeautifulSoup) -> list:
+    out = []
+    for a in soup.select('div.mail a[href]'):
+        href = a.get('href', '')
+        if 'att-' in href:
+            filename = href.split('/')[-1]
+            mime = None
+            ext = filename.lower().rsplit('.', 1)[-1] if '.' in filename else ''
+            if ext == 'png': mime = 'image/png'
+            elif ext in ('jpg','jpeg'): mime = 'image/jpeg'
+            elif ext == 'gif': mime = 'image/gif'
+            out.append({"filename": filename, "mime": mime})
+    return out
 
-    # Fallbacks if comments are missing
-    if not author_email_raw:
-        a = mail_div.select_one("address.headers #from a[href^='mailto:']")
-        if a:
-            author_email_raw = a.get_text(strip=True)
+def extract_nav_links(soup: BeautifulSoup, base_url: str) -> dict:
+    from urllib.parse import urljoin as _join
+    by_text = {}
+    for a in soup.find_all("a", href=True):
+        label = a.get_text(" ", strip=True)
+        href = a["href"].strip()
+        by_text.setdefault(label, []).append(_join(base_url, href))
 
-    author_email_deobf = deobfuscate_email(author_email_raw) if author_email_raw else None
+    def first_for(label: str) -> str | None:
+        for u in by_text.get(label, []):
+            return u
+        return None
 
-    # Dates
-    # date_raw: the human-readable Date span
-    date_span = mail_div.select_one("address.headers #date")
-    date_raw = date_span.get_text(strip=True) if date_span else None
+    def list_for(label: str) -> list[str]:
+        return list(dict.fromkeys(by_text.get(label, [])))
 
-    # date_iso: from date_raw parsed via stdlib (keeps original timezone)
+    return {
+        "this_message": first_for("This message"),
+        "next_message_title": None,   # titles vary; not needed for linking from JSON
+        "next_in_thread_title": None,
+        "replies_titles": [],
+        "in_reply_to_title": None,
+        "in_reply_to_link": first_for("In reply to"),
+        "replies_links": list_for("Replies"),
+        "next_in_thread_link": first_for("Next in thread"),
+    }
+
+def parse_html_to_record(yyyymm: str, html_path: Path, archive_root="http://archive.ambermd.org/") -> dict:
+    html = html_path.read_text(encoding="utf-8", errors="ignore")
+    soup = BeautifulSoup(html, "html.parser")
+    url = urljoin(archive_root, f"{yyyymm}/{html_path.stem}.html")
+
+    # metadata often present in HTML comments: subject, name, email, sent, received
+    meta = {}
+    for c in soup.find_all(string=lambda t: isinstance(t, Comment)):
+        txt = (c or "").strip()
+        if "=" in txt:
+            k, v = txt.split("=", 1)
+            meta[k.strip().lower()] = v.strip().strip('"')
+
+    subject = meta.get("subject") or (soup.title.get_text(strip=True) if soup.title else None)
+    author_name = meta.get("name")
+    author_email_raw = meta.get("email")
+    author_email_deobfuscated = deob_email(author_email_raw)
+
+    date_raw = meta.get("sent")
     date_iso = None
     date_utc = None
     if date_raw:
         try:
-            dt = parsedate_to_datetime(date_raw)  # timezone-aware if present
+            dt = parsedate_to_datetime(date_raw)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
             date_iso = dt.isoformat()
-            date_utc = dt.astimezone(tz=None).astimezone(tz=dt.tzinfo).isoformat()  # no-op, just explicit
-            # Proper UTC:
-            date_utc = dt.astimezone(tz=None).astimezone(tz=__import__("datetime").timezone.utc).isoformat().replace("+00:00", "Z")
+            date_utc = dt.astimezone(timezone.utc).isoformat().replace("+00:00","Z")
         except Exception:
             pass
 
-    # If we have 'isosent' (e.g., 20220401091704), it's UTC without timezone info.
-    if kv.get("isosent"):
-        iso = kv["isosent"]
-        # Format to 'YYYY-MM-DDTHH:MM:SSZ'
-        if re.match(r"^\d{14}$", iso):
-            date_utc = f"{iso[0:4]}-{iso[4:6]}-{iso[6:8]}T{iso[8:10]}:{iso[10:12]}:{iso[12:14]}Z"
+    received_raw = None
+    if meta.get("received"):
+        try:
+            dt_r = parsedate_to_datetime(meta["received"])
+            if dt_r.tzinfo is None:
+                dt_r = dt_r.replace(tzinfo=timezone.utc)
+            received_raw = "Received on " + dt_r.strftime("%a %b %d %Y - %H:%M:%S %Z")
+        except Exception:
+            received_raw = f"Received on {meta['received']}"
 
-    # received_raw (the little stamp at the end of the mail block)
-    received_span = mail_div.select_one("span#received")
-    received_raw = received_span.get_text(" ", strip=True) if received_span else None
+    thread_id = normalize_subject(subject)
+    body_text = extract_body_text(soup, date_raw)
+    attachments = extract_attachments(soup)
+    nav_links = extract_nav_links(soup, url)
 
-    # Body text
-    body_text = text_between_start_and_received(mail_div)
-
-    # Attachments
-    attachments = guess_attachments(mail_div, base_url=args.url)
-
-    # Navigation info
-    nav = nav_info(soup)
-
-    # Message id string you want in output (your example uses a stable pattern)
-    # We'll base it on the URL path: 'amber-YYYYMM-####'
-    msg_id = None
-    try:
-        # http://archive.ambermd.org/202204/0000.html -> amber-202204-0000
-        path = urlparse(args.url).path.strip("/")
-        parts = path.split("/")
-        if len(parts) >= 2 and parts[-1].endswith(".html"):
-            yyyymm = parts[-2]
-            num = parts[-1].split(".")[0]
-            msg_id = f"amber-{yyyymm}-{num}"
-    except Exception:
-        pass
-
-    # Thread id
-    thread_id = make_thread_id(subject or "")
-
-    data = {
-        "message_id": msg_id,
-        "url": args.url,
+    return {
+        "message_id": f"amber-{yyyymm}-{html_path.stem}",
+        "url": url,
         "subject": subject,
         "author_name": author_name,
         "author_email_raw": author_email_raw,
-        "author_email_deobfuscated": author_email_deobf,
+        "author_email_deobfuscated": author_email_deobfuscated,
         "date_raw": date_raw,
         "date_iso": date_iso,
         "date_utc": date_utc,
@@ -303,26 +168,47 @@ def main():
         "thread_id": thread_id,
         "body_text": body_text,
         "attachments": attachments,
-        "nav_links": {
-            "this_message": nav.get("this_message"),
-            "next_message_title": nav.get("next_message_title"),
-            "next_in_thread_title": nav.get("next_in_thread_title"),
-            "replies_titles": nav.get("replies_titles") or [],
-        },
-        # Optional: carry original HTML comment Message-Id if you want it for debugging
-        "message_id_raw": message_id_comment,
+        "nav_links": nav_links,
+        "yyyymm": yyyymm,
+        "id_in_month": html_path.stem,
     }
 
-    # Print to stdout
-    print(json.dumps(data, ensure_ascii=False, indent=2))
+def main():
+    ap = argparse.ArgumentParser(description="Parse AMBER HTML files to per-message JSON.")
+    ap.add_argument("--in-dir", default=str(HTML_DIR_DEFAULT))
+    ap.add_argument("--out-dir", default=str(JSON_DIR_DEFAULT))
+    ap.add_argument("--since", help="YYYY-MM inclusive start")
+    ap.add_argument("--until", help="YYYY-MM inclusive end")
+    ap.add_argument("--limit", type=int, help="Max messages per month")
+    ap.add_argument("--force", action="store_true", help="Overwrite existing JSON")
+    args = ap.parse_args()
 
-    # Optionally write to disk
-    if args.out_path:
-        outp = Path(args.out_path)
-        outp.parent.mkdir(parents=True, exist_ok=True)
-        outp.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-        # You can also print a small success notice if you like.
+    in_dir = Path(args.in_dir)
+    out_dir = Path(args.out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
 
+    months = list(iter_months(in_dir, args.since, args.until))
+    if not months:
+        print("No input months found. Check --in-dir and run crawler/fetch first.", file=sys.stderr)
+        sys.exit(1)
+
+    for yyyymm in months:
+        src = in_dir / yyyymm
+        dst = out_dir / yyyymm
+        dst.mkdir(parents=True, exist_ok=True)
+        html_files = sorted([p for p in src.glob("*.html") if A_HTML.match(p.name)])
+        if args.limit is not None:
+            html_files = html_files[: max(0, args.limit)]
+
+        wrote = skipped = 0
+        for p in html_files:
+            outp = dst / (p.stem + ".json")
+            if outp.exists() and not args.force:
+                skipped += 1; continue
+            rec = parse_html_to_record(yyyymm, p)
+            outp.write_text(json.dumps(rec, indent=2, ensure_ascii=False), encoding="utf-8")
+            wrote += 1
+        print(f"==> {yyyymm} parsed={wrote} skipped={skipped} -> {dst}")
 
 if __name__ == "__main__":
     main()

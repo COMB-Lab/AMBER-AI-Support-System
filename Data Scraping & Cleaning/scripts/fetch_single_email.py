@@ -1,70 +1,93 @@
-import sys
-import time
+#!/usr/bin/env python3
+import argparse, re, sys, time
 from pathlib import Path
+from urllib.parse import urljoin
 
 import requests
-from requests.exceptions import RequestException, Timeout
+from bs4 import BeautifulSoup
 
-URL = "http://archive.ambermd.org/202204/0000.html"
-OUT_PATH = Path("data/html/202204/0000.html")
+ARCHIVE_ROOT = "http://archive.ambermd.org/"
+DATA_ROOT = Path(__file__).resolve().parents[1] / "data"
+HTML_DIR_DEFAULT = DATA_ROOT / "html"
 
-# 1) Keep a single place to define headers/timeout
-HEADERS = {"User-Agent": "MyScraper/0.1"}
-TIMEOUT_SECONDS = 10
+A_MSG = re.compile(r"^0\d{3}\.html$")  # 0000.html
 
+def ym_to_int(ym: str | None) -> int | None:
+    if not ym: return None
+    m = re.fullmatch(r"(\d{4})-(\d{2})", ym)
+    return int(m.group(1))*100 + int(m.group(2)) if m else None
 
-def fetch_once(url: str, headers: dict, timeout: int) -> requests.Response:
-    """
-    Perform exactly one HTTP GET and return the Response.
-    Intentionally lets RequestException/Timeout bubble to caller
-    so the retry loop can decide what to do.
-    """
-    return requests.get(url, headers=headers, timeout=timeout)
+def iter_months(start_year: int, end_year: int, since: str | None, until: str | None):
+    import datetime
+    now = datetime.datetime.now()
+    cur_ym = now.year * 100 + now.month  # cap at current month
+    s = ym_to_int(since) or (start_year * 100 + 1)
+    u = min(ym_to_int(until) or (end_year * 100 + 12), cur_ym)
+    for y in range(start_year, end_year + 1):
+        for m in range(1, 13):
+            ym = y * 100 + m
+            if s <= ym <= u:
+                yield f"{y}{m:02d}"
 
+def discover_month(yyyymm: str) -> list[dict]:
+    """Return list of {'id': '0000', 'url': '...', 'yyyymm': 'YYYYMM'} for the month."""
+    url = urljoin(ARCHIVE_ROOT, f"{yyyymm}/")
+    r = requests.get(url, timeout=20)
+    r.raise_for_status()
+    soup = BeautifulSoup(r.text, "html.parser")
+    out = []
+    for a in soup.find_all("a", href=True):
+        href = a["href"].strip()
+        if A_MSG.match(href):
+            out.append({"id": href[:-5], "url": urljoin(url, href), "yyyymm": yyyymm})
+    # de-dup preserve order
+    seen, uniq = set(), []
+    for it in out:
+        if it["id"] in seen: continue
+        seen.add(it["id"]); uniq.append(it)
+    return uniq
 
 def main():
-    max_attempts = 3
-    backoff_base_seconds = 1
+    ap = argparse.ArgumentParser(description="Fetch AMBER HTML directly from monthly indexes (no manifests).")
+    ap.add_argument("--start-year", type=int, required=True)
+    ap.add_argument("--end-year", type=int, required=True)
+    ap.add_argument("--since", help="YYYY-MM inclusive start")
+    ap.add_argument("--until", help="YYYY-MM inclusive end")
+    ap.add_argument("--limit", type=int, help="Max messages per month")
+    ap.add_argument("--out-dir", default=str(HTML_DIR_DEFAULT))
+    ap.add_argument("--force", action="store_true")
+    args = ap.parse_args()
 
-    for attempt_num in range(1, max_attempts + 1):
+    out_dir = Path(args.out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    s = requests.Session()
+    s.headers.update({"User-Agent": "AmberFetcher/2.0"})
+
+    for yyyymm in iter_months(args.start_year, args.end_year, args.since, args.until):
+        month = out_dir / yyyymm
+        month.mkdir(parents=True, exist_ok=True)
         try:
-            # 2) Call the single-attempt helper so exceptions are centralized
-            response = fetch_once(URL, headers=HEADERS, timeout=TIMEOUT_SECONDS)
+            items = discover_month(yyyymm)
+        except requests.HTTPError as e:
+            print(f"==> {yyyymm} ERROR: {e}", file=sys.stderr)
+            continue
 
-            # 3) Handle 200 success: write EXACT bytes for “exact HTML”
-            if response.status_code == 200:
-                OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-                OUT_PATH.write_bytes(response.content)  # exact raw bytes
-                print(f"Saved to {OUT_PATH}")
-                return  # stop cleanly
+        if args.limit is not None:
+            items = items[: max(0, args.limit)]
 
-            # 4) Handle 4xx: don’t retry (usually a client error like 404)
-            if 400 <= response.status_code < 500:
-                print(f"Client error {response.status_code}; not retrying.")
-                sys.exit(1)
-
-            # 5) Handle 5xx or other unusual statuses: retry with backoff
-            print(
-                f"Server/temporary error {response.status_code} on attempt "
-                f"{attempt_num}/{max_attempts}"
-            )
-
-        except (Timeout, RequestException) as e:
-            # 6) Network-level exceptions: retry with backoff
-            print(
-                f"Network error on attempt {attempt_num}/{max_attempts}: {e.__class__.__name__} — {e}"
-            )
-
-        # 7) Exponential backoff only if there’s another attempt left
-        if attempt_num < max_attempts:
-            sleep_seconds = backoff_base_seconds * (2 ** (attempt_num - 1))
-            print(f"Retrying after {sleep_seconds}s...")
-            time.sleep(sleep_seconds)
-
-    # 8) If we’re here, all attempts failed
-    print(f"Request failed after {max_attempts} attempts.")
-    sys.exit(1)
-
+        saved = skipped = 0
+        for it in items:
+            fn = month / f"{it['id']}.html"
+            if fn.exists() and not args.force:
+                skipped += 1
+                continue
+            r = s.get(it["url"], timeout=30)
+            r.raise_for_status()
+            fn.write_text(r.text, encoding="utf-8")
+            saved += 1
+            time.sleep(0.1)  # be polite
+        print(f"==> {yyyymm} saved={saved} skipped={skipped} -> {month}")
 
 if __name__ == "__main__":
     main()

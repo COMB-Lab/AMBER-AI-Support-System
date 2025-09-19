@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Chirality flipped for 2 identical molecules from Todd Minehardt via AMBER on 2023-09-25 (Amber Archive Sep 2023)</title>
+<meta name="Author" content="Todd Minehardt via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Chirality flipped for 2 identical molecules" />
+<meta name="Date" content="2023-09-25" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Chirality flipped for 2 identical molecules</h1>
+<!-- received="Mon Sep 25 07:30:02 2023" -->
+<!-- isoreceived="20230925143002" -->
+<!-- sent="Mon, 25 Sep 2023 09:23:45 -0500" -->
+<!-- isosent="20230925142345" -->
+<!-- name="Todd Minehardt via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Chirality flipped for 2 identical molecules" -->
+<!-- id="CALwGKwJmDQ&ndash;&ndash;f9747jEejvQ72qt1POVgEaVZz8ZSyk6bWvfEiQ.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAGk3s-Szx_NE35xv8r0ZaF=oO++RZOpvs9K7=m4yOpQrJMBz5Q.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0119.html" accesskey="d" title="Hantz, Eric via AMBER: &quot;[AMBER] Amber22 DDBoost Install Error&quot;">Next message</a> ]
+[ <a href="0117.html" title="Daniel Roe via AMBER: &quot;Re: [AMBER] amber unit&quot;">Previous message</a> ]
+[ <a href="0015.html" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] Chirality flipped for 2 identical molecules&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg118" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg118" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg118" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg118" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Todd Minehardt via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Chirality%20flipped%20for%202%20identical%20molecules">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 25 Sep 2023 09:23:45 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+All,
+<br />
+<br />Thank you for the input.
+<br />
+<br />This was operator error on my part and has been fixed.
+<br />
+<br />What I should have done was to create the desired ligand parameters from
+<br />
+the atoms and coordinates in the PDB file of the complex + ligands and then
+<br />
+generate the .prepi and .frcmod files in the usual way; what I had done was
+<br />
+to create the .prepi and .frcmod files from atoms and coordinates from a
+<br />
+SDF file for said ligand.
+<br />
+<br />This resulted in a mismatch of atom numbers and connectivity when parsing
+<br />
+the PDB file, although at the end of the day it gave me an unintended but
+<br />
+desired simulation where I have the receptor of interest with one S in one
+<br />
+binding pocket and one R in the other.
+<br />
+<br />How exactly do you get it right?
+<br />
+<br />(1) grep LIG PDB.pdb &gt; LIG_from_PDB.pdb, where the string &quot;LIG&quot; will
+<br />
+certainly be something different but is the ligand of interest
+<br />
+(2) use pymol (or your favorite) to add a hydrogen in the right place,
+<br />
+creating the +1 S enantiomer; export as LIG_S_charged.pdb
+<br />
+(3) split your terminal window and - using only vi, of course - open
+<br />
+PDB.pdb on the left and LIG_S_charged.pdb on the right
+<br />
+(4) make sure the atom names and numbers from the left pane (e.g., C1 and
+<br />
+N2) coordinates match (or very closely) to those in the right panel
+<br />
+(5) having confirmed this, number the atoms on the right (in
+<br />
+LIG_S_charged.pdb) accordingly - if done correctly, you will only have to
+<br />
+add numbers on the hydrogens
+<br />
+(6) antechamber -fi pdb -i LIG_S_charged.pdb -fo prepi
+<br />
+-o LIG_S_charged.prepi -seq yes -nc 1 -c bcc -rn LIG -j 5
+<br />
+(7) parmchk2 -f prepi -i LIG_S_charged.prepi -o LIG_S_charged.frcmod
+<br />
+(8) in tleap:
+<br />
+source leaprc.protein.ff19SB
+<br />
+source leaprc.gaff
+<br />
+source leaprc.water.opc
+<br />
+loadamberprep LIG_S_charged.prepi # Load the prepi file for the ligand
+<br />
+loadamberparams LIG_S_charged.frcmod # Load the frcmod file for ligand
+<br />
+mol = loadpdb PDB.pdb # Load PDB file for protein-ligand complex
+<br />
+solvatebox mol TIP3PBOX 8 # Solvate the complex with a cubic water box
+<br />
+addions mol Cl- 0 # Add Cl- ions to neutralize the system
+<br />
+addions mol Na+ 0 # Add Na+ ions to neutralize the system
+<br />
+saveamberparm mol complex_initial.prmtop complex_initial.crd
+<br />
+(9) for me, I'm using OpenMM for the MD simulation engine and AmberTools
+<br />
+for everything else - run minimization/MD and analyze using any number of
+<br />
+tools including cpptraj/pytraj/mdtraj/etc.
+<br />
+(10) write all this down and make sure you don't mess it up the next time.
+<br />
+<br />This is a bit of a rookie mistake, and I'm chalking this up to my having
+<br />
+been away from AMBER-world for 17 years - but now I'm back.
+<br />
+<br />Thanks again y'all,
+<br />
+<br />Todd Minehardt
+<br />
+<br />On Tue, Sep 5, 2023 at 6:30 PM Carlos Simmerling via AMBER &lt;
+<br />
+amber.ambermd.org&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; I'm still not quite clear - what comes out of leap before anything else?
+</em><br />
+<em class="quotelev1">&gt; The atoms should match the input pdb, except for missing atoms (and then
+</em><br />
+<em class="quotelev1">&gt; you should get a warning in the leap log).
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Tue, Sep 5, 2023 at 6:43 PM Todd Minehardt &lt;tminehardt.nobiastx&#46;<!--nospam-->com&gt;
+</em><br />
+<em class="quotelev1">&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Carlos,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I've got a case where the neutrally-charged ligand heavy atoms are
+</em><br />
+<em class="quotelev1">&gt; present
+</em><br />
+<em class="quotelev2">&gt; &gt; in the PDB and are from the neutral S-enantiomer that was crystalized
+</em><br />
+<em class="quotelev2">&gt; &gt; during experiment.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I'm generating the +1 charged S enantiomer as prepi and frcmod files as
+</em><br />
+<em class="quotelev2">&gt; &gt; described, and then assuming (perhaps incorrectly) that for each of the 2
+</em><br />
+<em class="quotelev2">&gt; &gt; occurrences of LIG in the PDB that the requisite number of hydrogens -
+</em><br />
+<em class="quotelev2">&gt; &gt; including the one that adds the +1 and the one that makes it the S
+</em><br />
+<em class="quotelev2">&gt; &gt; enantiomer - get added.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; The initial structure (after solvation, neutralization, etc.) shows that
+</em><br />
+<em class="quotelev2">&gt; &gt; the geometry of each of the LIGs is not quite right, but shakes out to
+</em><br />
+<em class="quotelev1">&gt; one
+</em><br />
+<em class="quotelev2">&gt; &gt; S and one R after minimization.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Keep in mind that the LIG atoms are numbered in the PDB, and I'm going
+</em><br />
+<em class="quotelev2">&gt; &gt; into this after removing CONECTs and inserting a TER card between the 2
+</em><br />
+<em class="quotelev2">&gt; &gt; LIGs.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I've already had issues with the GAFF atom types - which is expected -
+</em><br />
+<em class="quotelev1">&gt; but
+</em><br />
+<em class="quotelev2">&gt; &gt; am baffled to why, given one S enantiomer prepi/frcmod combo generated
+</em><br />
+<em class="quotelev1">&gt; from
+</em><br />
+<em class="quotelev2">&gt; &gt; the all-atom SDF from PubChem, the two LIGs shake out, as it were, to
+</em><br />
+<em class="quotelev1">&gt; one S
+</em><br />
+<em class="quotelev2">&gt; &gt; and one R.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Note: the same system except with neutrally-charged S LIGs worked just
+</em><br />
+<em class="quotelev2">&gt; &gt; fine - 2 starting S, 2 ending S after 100 ns.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Help is much appreciated,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Cheers,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Todd
+</em><br />
+<em class="quotelev2">&gt; &gt; ------------------------------
+</em><br />
+<em class="quotelev2">&gt; &gt; *From:* Carlos Simmerling &lt;<a href="mailto:carlos.simmerling.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Chirality%20flipped%20for%202%20identical%20molecules">carlos.simmerling.gmail.com</a>&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; *Sent:* Tuesday, September 5, 2023 4:23 PM
+</em><br />
+<em class="quotelev2">&gt; &gt; *To:* Todd Minehardt &lt;<a href="mailto:tminehardt.nobiastx.com?Subject=Re%3A%20%5BAMBER%5D%20Chirality%20flipped%20for%202%20identical%20molecules">tminehardt.nobiastx.com</a>&gt;; AMBER Mailing List &lt;
+</em><br />
+<em class="quotelev2">&gt; &gt; amber.ambermd&#46;<!--nospam-->org&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; *Subject:* Re: [AMBER] Chirality flipped for 2 identical molecules
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I don't think leap should change this, what enantiomers are in the input
+</em><br />
+<em class="quotelev2">&gt; &gt; pdb? Did leap change them? If so, which atoms got moved?
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; On Tue, Sep 5, 2023, 4:41 PM Todd Minehardt via AMBER &lt;amber.ambermd&#46;<!--nospam-->org
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I am constructing prepi and frcmod files from a PubChem 3D sdf file for a
+</em><br />
+<em class="quotelev2">&gt; &gt; positively-charged (+1) S enantiomer. I do this by running antechamber
+</em><br />
+<em class="quotelev1">&gt; and
+</em><br />
+<em class="quotelev2">&gt; &gt; parmchk2:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; antechamber -fi sdf -i compound.sdf -fo prepi -o compound.prepi -nc 1
+</em><br />
+<em class="quotelev1">&gt; -seq
+</em><br />
+<em class="quotelev2">&gt; &gt; y -j 5 -rn LIG -c bcc
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; parmchk2 -f prepi -i compound.prepi -o compound.frcmod
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I have a nice clean PDB structure in which there are two occurences of
+</em><br />
+<em class="quotelev1">&gt; the
+</em><br />
+<em class="quotelev2">&gt; &gt; heavy atoms of LIG.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; When I run this through tLEaP, one LIG is S and the other is R (after
+</em><br />
+<em class="quotelev2">&gt; &gt; using ambpdb for generating PDB from saved .prmtop and .crd files).
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Is there an explanation for this behavior, as it is repeatable; and I'm
+</em><br />
+<em class="quotelev2">&gt; &gt; not doing anything at all to the compound.sdf file and only removed
+</em><br />
+<em class="quotelev2">&gt; &gt; unwanted waters and the like from the PDB file from RCSB.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Thank you,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Todd Minehardt
+</em><br />
+<em class="quotelev2">&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd&#46;<!--nospam-->org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Sep 25 2023 - 07:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0119.html" title="Next message in the list">Hantz, Eric via AMBER: "[AMBER] Amber22 DDBoost Install Error"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0117.html" title="Previous message in the list">Daniel Roe via AMBER: "Re: [AMBER] amber unit"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0015.html" title="Message to which this message replies">Carlos Simmerling via AMBER: "Re: [AMBER] Chirality flipped for 2 identical molecules"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg118" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg118" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg118" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg118" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Compiling AMBER23 from accuratefreeenergy--- via AMBER on 2023-08-29 (Amber Archive Aug 2023)</title>
+<meta name="Author" content="accuratefreeenergy--- via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Compiling AMBER23" />
+<meta name="Date" content="2023-08-29" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Compiling AMBER23</h1>
+<!-- received="Tue Aug 29 04:00:02 2023" -->
+<!-- isoreceived="20230829110002" -->
+<!-- sent="Tue, 29 Aug 2023 06:50:12 -0400" -->
+<!-- isosent="20230829105012" -->
+<!-- name="accuratefreeenergy&ndash;&ndash;&ndash; via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Compiling AMBER23" -->
+<!-- id="000e01d9da66$96748bc0$c35da340$.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="SJ0PR04MB745615F5FC0FBE495B701CE1CEE0A.SJ0PR04MB7456.namprd04.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0107.html" accesskey="d" title="Jason Swails via AMBER: &quot;Re: [AMBER] CpHMD run in explicit solvent in cuda&quot;">Next message</a> ]
+[ <a href="0105.html" title="Dulal Mondal via AMBER: &quot;Re: [AMBER] CpHMD run in explicit solvent in cuda&quot;">Previous message</a> ]
+[ <a href="0101.html" title="Javier O Sanlley-hernandez via AMBER: &quot;[AMBER] Compiling AMBER23&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg106" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg106" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg106" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg106" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: accuratefreeenergy--- via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Compiling%20AMBER23">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 29 Aug 2023 06:50:12 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Javier,
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It is likely due to a bug in Miniconda-Python3.11.  (I posted a similar message on 7/30/23):
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You can try to modify the file $AMBERHOME/cmake/PythonInterpreterConfig.cmake, around line 60.  Comment out the default &quot;latest&quot; version and change to 3.10.
+<br />
+<br />=================================
+<br />
+#       set(MINICONDA_VERSION latest)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set(MINICONDA_VERSION py310_23.5.2-0) 
+<br />
+================================= 
+<br />
+<br />(or go to <a href="https://repo.anaconda.com/miniconda/">https://repo.anaconda.com/miniconda/</a> and pick up the one you need)
+<br />
+<br />Taisung
+<br />
+<br /><br /><br /><br />-----Original Message-----
+<br />
+From: Javier O Sanlley-hernandez via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt; 
+<br />
+Sent: Monday, August 28, 2023 7:22 PM
+<br />
+To: amber.ambermd.org
+<br />
+Subject: [AMBER] Compiling AMBER23
+<br />
+<br />Hello,
+<br />
+<br />I am writing because I am trying to compile pmemd.cuda to run molecular dynamics simulations through the cmake approach as described in the manual. However, when I run the make install command after building I get the following error message.
+<br />
+<br />This is the error message I am getting:
+<br />
+src/mpi4py.MPI.c:198:12: fatal error: longintrepr.h: No such file or directory
+<br />
+&nbsp;198 |  #include &quot;longintrepr.h&quot;
+<br />
+&nbsp;&nbsp;&nbsp;|      ^~~~~~~~~~~~~~~
+<br />
+compilation terminated.
+<br />
+error: command '/sw/spack/delta-2022-03/apps/openmpi/4.1.2-gcc-11.2.0-37px7gc/bin/mpicc' failed with exit code 1
+<br />
+make[2]: *** [AmberTools/src/mpi4py-3.1.3/CMakeFiles/mpi4py.dir/build.make:203: AmberTools/src/mpi4py-3.1.3/CMakeFiles/mpi4py-build/mpi4py-build.stamp] Error 1
+<br />
+make[1]: *** [CMakeFiles/Makefile2:4628: AmberTools/src/mpi4py-3.1.3/CMakeFiles/mpi4py.dir/all] Error 2
+<br />
+make: *** [Makefile:156: all] Error 2
+<br />
+exit
+<br />
+<br />These are the options in my cmake_file to compile with gnu and use mpi:
+<br />
+<br />cmake $AMBER_PREFIX/amber22_src \
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;-DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber22 \
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;-DCOMPILER=GNU  \
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;-DMPI=TRUE -DCUDA=TRUE -DINSTALL_TESTS=TRUE \
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;-DDOWNLOAD_MINICONDA=TRUE \
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;2&gt;&amp;1 | tee  cmake.log
+<br />
+<br />These are the loaded modules I am working with:
+<br />
+<br />&nbsp;&nbsp;1) cue-login-env/1.0   3) ucx/1.11.2      5) cuda/11.6.1   7) default
+<br />
+<br />&nbsp;&nbsp;2) gcc/11.2.0          4) openmpi/4.1.2   6) modtree/gpu
+<br />
+<br />I also tried the options listed on an earlier post&lt;<a href="http://archive.ambermd.org/202307/0083.html">http://archive.ambermd.org/202307/0083.html</a>&gt; but that didn’t work either, still got the same error.
+<br />
+<br />Let me know how to best proceed or if you need anything else.
+<br />
+<br />Best,
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Aug 29 2023 - 04:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0107.html" title="Next message in the list">Jason Swails via AMBER: "Re: [AMBER] CpHMD run in explicit solvent in cuda"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0105.html" title="Previous message in the list">Dulal Mondal via AMBER: "Re: [AMBER] CpHMD run in explicit solvent in cuda"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0101.html" title="Message to which this message replies">Javier O Sanlley-hernandez via AMBER: "[AMBER] Compiling AMBER23"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg106" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg106" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg106" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg106" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] ASH (protonated Asp) at N terminus missing NH3+ from Carlos Simmerling via AMBER on 2025-09-08 (Amber Archive Sep 2025)</title>
+<meta name="Author" content="Carlos Simmerling via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] ASH (protonated Asp) at N terminus missing NH3+" />
+<meta name="Date" content="2025-09-08" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] ASH (protonated Asp) at N terminus missing NH3+</h1>
+<!-- received="Mon Sep  8 09:00:03 2025" -->
+<!-- isoreceived="20250908160003" -->
+<!-- sent="Mon, 8 Sep 2025 11:44:48 -0400" -->
+<!-- isosent="20250908154448" -->
+<!-- name="Carlos Simmerling via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] ASH (protonated Asp) at N terminus missing NH3+" -->
+<!-- id="CAGk3s-RodHRqOXyPprJ6khGL=LPwXs_k3w5B6HOekdOCndZGpA.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="PH0PR03MB5781742EC98AC6B08CCAF6349F0CA.PH0PR03MB5781.namprd03.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0022.html" accesskey="d" title="YASHIKA . via AMBER: &quot;[AMBER] Segmentation fault in pmemd.MPI:&quot;">Next message</a> ]
+[ <a href="0020.html" title="Cherry, Kendall via AMBER: &quot;[AMBER] ASH (protonated Asp) at N terminus missing NH3+&quot;">Previous message</a> ]
+[ <a href="0020.html" title="Cherry, Kendall via AMBER: &quot;[AMBER] ASH (protonated Asp) at N terminus missing NH3+&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0026.html" accesskey="t" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] ASH (protonated Asp) at N terminus missing NH3+&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg21" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg21" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg21" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg21" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Carlos Simmerling via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20ASH%20(protonated%20Asp)%20at%20N%20terminus%20missing%20NH3%2B">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 8 Sep 2025 11:44:48 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+it might depend on which force field and libraries you are loading. In
+<br />
+Amber, you normally convert an N-terminal (or C-) residue name to start
+<br />
+with &quot;N&quot; (ALA changes to NALA). Then, you need to have library files
+<br />
+describing that version. It's entirely possible that whoever developed the
+<br />
+ASH library that you are using did not make the N- and C- terminal
+<br />
+versions, and also that Leap does not automatically map ASH to a terminal
+<br />
+residue name. This would lead to you seeing it as just the &quot;internal&quot; ASH
+<br />
+that was in the library file.
+<br />
+So - you need an NASH library, and then may need to rename it in the input
+<br />
+PDB rather than counting on Leap to do that for you.
+<br />
+<br /><br />On Mon, Sep 8, 2025 at 11:37 AM Cherry, Kendall via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hello Amber community,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Has anyone used ASH residues at terminal positions before? My protein has
+</em><br />
+<em class="quotelev1">&gt; an N-terminal Asp and I am trying to simulate it at low pH, so I want that
+</em><br />
+<em class="quotelev1">&gt; Asp to be protonated. When I switch ASP to ASH before passing it into
+</em><br />
+<em class="quotelev1">&gt; tleap, I noticed that the N-terminal amine only has a single proton on it,
+</em><br />
+<em class="quotelev1">&gt; as if it were part of a backbone amide. It has a negative charge when I
+</em><br />
+<em class="quotelev1">&gt; look at it using desc within tleap. I am curious if there are parameters
+</em><br />
+<em class="quotelev1">&gt; for this residue somewhere, or if I should create it as a nonstandard
+</em><br />
+<em class="quotelev1">&gt; residue.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thank you,
+</em><br />
+<em class="quotelev1">&gt; Kendall Cherry
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Sep 08 2025 - 09:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0022.html" title="Next message in the list">YASHIKA . via AMBER: "[AMBER] Segmentation fault in pmemd.MPI:"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0020.html" title="Previous message in the list">Cherry, Kendall via AMBER: "[AMBER] ASH (protonated Asp) at N terminus missing NH3+"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0020.html" title="Message to which this message replies">Cherry, Kendall via AMBER: "[AMBER] ASH (protonated Asp) at N terminus missing NH3+"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0026.html" title="Next message in this discussion thread">Carlos Simmerling via AMBER: "Re: [AMBER] ASH (protonated Asp) at N terminus missing NH3+"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg21" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg21" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg21" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg21" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

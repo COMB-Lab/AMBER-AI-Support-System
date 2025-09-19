@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Difference in cpptraj output structures between NVT equilibration and NPT production runs from YASHIKA . via AMBER on 2025-09-03 (Amber Archive Sep 2025)</title>
+<meta name="Author" content="YASHIKA . via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Difference in cpptraj output structures between NVT equilibration and NPT production runs" />
+<meta name="Date" content="2025-09-03" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Difference in cpptraj output structures between NVT equilibration and NPT production runs</h1>
+<!-- received="Wed Sep  3 23:00:03 2025" -->
+<!-- isoreceived="20250904060003" -->
+<!-- sent="Thu, 4 Sep 2025 10:55:42 +0530" -->
+<!-- isosent="20250904052542" -->
+<!-- name="YASHIKA . via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Difference in cpptraj output structures between NVT equilibration and NPT production runs" -->
+<!-- id="CAJCGvTA2kN1NtBLU-DYbdGAvWUsbYgyfWN3eczOBC5vJN7ZEsA.mail.gmail.com" -->
+<!-- charset="UTF-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0007.html" accesskey="d" title="Elvis Martis via AMBER: &quot;Re: [AMBER] Difference in cpptraj output structures between NVT equilibration and NPT production runs&quot;">Next message</a> ]
+[ <a href="0005.html" title="Cherry, Kendall via AMBER: &quot;Re: [AMBER] Choice of protein/water force fields with ZAFF	zinc parameters?&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0007.html" accesskey="t" title="Elvis Martis via AMBER: &quot;Re: [AMBER] Difference in cpptraj output structures between NVT equilibration and NPT production runs&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg6" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg6" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg6" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg6" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: YASHIKA . via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Difference%20in%20cpptraj%20output%20structures%20between%20NVT%20equilibration%20and%20NPT%20production%20runs">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 4 Sep 2025 10:55:42 +0530</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Respected Team,
+<br />
+<br />I am facing an issue while analyzing my trajectories. After running
+<br />
+equilibration under NVT (pmemd.cuda), I used cpptraj to convert the final
+<br />
+.rst7 file to .pdb. The structure looks abnormal (screenshot attached).
+<br />
+However, when I performed the production run under NPT (pmemd.cuda) and
+<br />
+analyzed the .rst7 file with cpptraj in the same way, the output structure
+<br />
+looks normal (screenshot attached).
+<br />
+<br />I am not sure why there is such a difference in visualization between the
+<br />
+equilibration and production structures. Could this be related to imaging,
+<br />
+wrapping, or my input parameters?
+<br />
+<br />Below are my input files:
+<br />
+<br />Equilibrate the system for 10ns
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;nstlim=5000000, dt=0.002, ntx=5, irest=1, ntpr=1500, ntwr=1500,
+<br />
+&nbsp;&nbsp;ntwx=50000, ntxo=2, ioutfm=1,
+<br />
+&nbsp;&nbsp;tempi=300.0, temp0=300.0, ntt=3, gamma_ln=1.0,
+<br />
+&nbsp;&nbsp;ntb=1, ntp=0, ig=-1,
+<br />
+&nbsp;&nbsp;cut=18,
+<br />
+&nbsp;&nbsp;ntc=2, ntf=2,
+<br />
+&nbsp;&nbsp;nrespa=1,
+<br />
+&nbsp;&nbsp;ntr=0
+<br />
+/
+<br />
+<br />Constant pressure constant temperature production run for 10ns
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;nstlim=5000000, dt=0.002, ntx=5, irest=1, ntpr=1000, ntwr=1000,
+<br />
+&nbsp;&nbsp;ntwx=25000, gamma_ln=1.0,
+<br />
+&nbsp;&nbsp;temp0=300.0, ntt=3, tautp=2.0,
+<br />
+&nbsp;&nbsp;ntb=2, ntp=1,
+<br />
+&nbsp;&nbsp;cut=18,
+<br />
+&nbsp;&nbsp;ntc=2, ntf=2,
+<br />
+&nbsp;&nbsp;nrespa=1,
+<br />
+&amp;end
+<br />
+<br />Both equilibration and production were run using *pmemd.cuda.*
+<br />
+<br />Could anyone please explain why the structures appear so different between
+<br />
+equilibration and production? Is this expected behavior due to
+<br />
+imaging/periodic boundary conditions, or am I missing something? If anyone
+<br />
+has encountered this before, I would really appreciate your advice.
+<br />
+<br />Thank you in advance for your help.
+<br />
+<br />With regards,
+<br />
+<br />Yashika
+<br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<p><img src="att-0006/production.jpeg" alt="production.jpeg" />
+<br />
+(image/jpeg attachment: <a href="att-0006/production.jpeg">production.jpeg</a>)</p>
+<!-- attachment="production.jpeg" -->
+<p><img src="att-0006/equilibration.jpeg" alt="equilibration.jpeg" />
+<br />
+(image/jpeg attachment: <a href="att-0006/equilibration.jpeg">equilibration.jpeg</a>)</p>
+<!-- attachment="equilibration.jpeg" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Wed Sep 03 2025 - 23:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0007.html" title="Next message in the list">Elvis Martis via AMBER: "Re: [AMBER] Difference in cpptraj output structures between NVT equilibration and NPT production runs"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0005.html" title="Previous message in the list">Cherry, Kendall via AMBER: "Re: [AMBER] Choice of protein/water force fields with ZAFF	zinc parameters?"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0007.html" title="Next message in this discussion thread">Elvis Martis via AMBER: "Re: [AMBER] Difference in cpptraj output structures between NVT equilibration and NPT production runs"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0007.html" title="Message sent in reply to this message">Elvis Martis via AMBER: "Re: [AMBER] Difference in cpptraj output structures between NVT equilibration and NPT production runs"</a></li>
+<li><dfn>Reply</dfn>: <a href="0008.html" title="Message sent in reply to this message">Thomas Cheatham via AMBER: "Re: [AMBER] Difference in cpptraj output structures between NVT equilibration and NPT production runs"</a></li>
+<li><dfn>Reply</dfn>: <a href="0009.html" title="Message sent in reply to this message">Carlos Simmerling via AMBER: "Re: [AMBER] Difference in cpptraj output structures between NVT equilibration and NPT production runs"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg6" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg6" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg6" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg6" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

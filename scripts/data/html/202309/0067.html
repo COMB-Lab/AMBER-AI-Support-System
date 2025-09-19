@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] AMBER error slurmstepd from SATYAJIT KHATUA via AMBER on 2023-09-18 (Amber Archive Sep 2023)</title>
+<meta name="Author" content="SATYAJIT KHATUA via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] AMBER error slurmstepd" />
+<meta name="Date" content="2023-09-18" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] AMBER error slurmstepd</h1>
+<!-- received="Mon Sep 18 01:30:02 2023" -->
+<!-- isoreceived="20230918083002" -->
+<!-- sent="Mon, 18 Sep 2023 08:29:04 +0000" -->
+<!-- isosent="20230918082904" -->
+<!-- name="SATYAJIT KHATUA via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] AMBER error slurmstepd" -->
+<!-- id="DM4PR12MB5278529E2DB8EDA8BEB97F37ADFBA.DM4PR12MB5278.namprd12.prod.outlook.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="GV2PR08MB8100A608987CB17AD1EA7CC6C3FBA.GV2PR08MB8100.eurprd08.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0068.html" accesskey="d" title="Markowska: &quot;[AMBER] How to get the Z component of ions from the trajectory file?&quot;">Next message</a> ]
+[ <a href="0066.html" title="VERONICA MARTIN HERNANDEZ via AMBER: &quot;[AMBER] AMBER error slurmstepd&quot;">Previous message</a> ]
+[ <a href="0066.html" title="VERONICA MARTIN HERNANDEZ via AMBER: &quot;[AMBER] AMBER error slurmstepd&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0069.html" accesskey="t" title="SATYAJIT KHATUA via AMBER: &quot;Re: [AMBER] AMBER error slurmstepd&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg67" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg67" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg67" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg67" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: SATYAJIT KHATUA via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20AMBER%20error%20slurmstepd">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 18 Sep 2023 08:29:04 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />So, you are using SLURM script. In you script try to increase the time limit (given in -t option). It is because of the time constraints.
+<br />
+If -t option is not there try to add something like
+<br />
+<br />#SBATCH -t 72:00:00 (if max limit is 72 hrs)
+<br />
+<br />Best,
+<br />
+Satyajit
+<br />
+________________________________
+<br />
+From: VERONICA MARTIN HERNANDEZ via AMBER &lt;amber.ambermd.org&gt;
+<br />
+Sent: 18 September 2023 13:15
+<br />
+To: AMBER Mailing List &lt;amber.ambermd.org&gt;
+<br />
+Subject: [AMBER] AMBER error slurmstepd
+<br />
+<br />I have recently installed AMBER in a new cluster and I'm trying this tutorial: https://ambermd.org/tutorials/advanced/tutorial3/section1.php and in the equilibration step I use this command: srun pmemd.cuda -O -i equil.in -o ras-raf-equil.out -p ras-raf-solv.prmtop -c ras-raf-density.rst -r ras-raf-equil.rst -x ras-raf-equil.mdcrd -ref ras-raf-density.rst
+<br />
+The program does not finish because it doesn't print the  and I get the following error:
+<br />
+slurmstepd: error: *** JOB 1871970 ON cn6015 CANCELLED AT 2023-09-15T23:08:05 DUE TO TIME LIMIT ***
+<br />
+In other clusters I don't have this error, It's the first time that I see it
+<br />
+How can I fix it?
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Sep 18 2023 - 01:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0068.html" title="Next message in the list">Markowska: "[AMBER] How to get the Z component of ions from the trajectory file?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0066.html" title="Previous message in the list">VERONICA MARTIN HERNANDEZ via AMBER: "[AMBER] AMBER error slurmstepd"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0066.html" title="Message to which this message replies">VERONICA MARTIN HERNANDEZ via AMBER: "[AMBER] AMBER error slurmstepd"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0069.html" title="Next message in this discussion thread">SATYAJIT KHATUA via AMBER: "Re: [AMBER] AMBER error slurmstepd"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg67" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg67" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg67" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg67" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

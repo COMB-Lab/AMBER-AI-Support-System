@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] ATTN, need revision from He, Amy via AMBER on 2023-08-31 (Amber Archive Aug 2023)</title>
+<meta name="Author" content="He, Amy via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] ATTN, need revision" />
+<meta name="Date" content="2023-08-31" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] ATTN, need revision</h1>
+<!-- received="Thu Aug 31 08:00:02 2023" -->
+<!-- isoreceived="20230831150002" -->
+<!-- sent="Thu, 31 Aug 2023 14:50:52 +0000" -->
+<!-- isosent="20230831145052" -->
+<!-- name="He, Amy via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] ATTN, need revision" -->
+<!-- id="CH0PR01MB7020214110B672D41E9FC823A3E5A.CH0PR01MB7020.prod.exchangelabs.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="93ae3248432c0794173254f2fb1a9d56.iitb.ac.in" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0121.html" accesskey="d" title="Shah, Tejas V. via AMBER: &quot;[AMBER] Cross Correlation Analysis&quot;">Next message</a> ]
+[ <a href="0119.html" title="Enrico Martinez via AMBER: &quot;[AMBER] Membrane protein tutorial: dimensions of the system&quot;">Previous message</a> ]
+[ <a href="0118.html" title="Priyasha Majee via AMBER: &quot;Re: [AMBER] ATTN, need revision&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg120" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg120" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg120" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg120" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: He, Amy via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20ATTN%2C%20need%20revision">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 31 Aug 2023 14:50:52 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Priyasha,
+<br />
+<br />I’m interested in force field development but not very confident with DNA/RNA simulations. I’m sure there are many other experts on this list, please help us if you have any comments/suggestions..
+<br />
+<br />Here are a few things I feel you might want to try:
+<br />
+<br />1. Run parmchk2 with -p $AMBERHOME/dat/leap/parm/gaff2.dat option
+<br />
+<br />Same as the last command in Section 3 from the tutorial: https://ambermd.org/tutorials/basic/tutorial5/
+<br />
+This allows parmchk2 to type your modified nucleotide with GAFF2 atom types, and find the equivalents in the GAFF2 force field to the parameters you need.
+<br />
+For example, CM-CM-F could be c -cc-f in GAFF2. (You don’t have to look it up yourself, parmchk2 will find the synonym for you!) The GAFF2-derived frcmod hopefully will have lower penalty score and fewer ATTN remarks.
+<br />
+<br /><br />2. Check out this frcmod file: $AMBERHOME/dat/leap/parm/all_modrna08.frcmod
+<br />
+<br />This is a premade frcmod file for modified RNAs. You may or may not find what you need from this frcmod, but it might give you some idea on how you can fill in the missing parameters in different ways.
+<br />
+<br /><br />3. Parameter derivation using calculations with higher level of theory
+<br />
+<br />Please consider the following tools that are native to Amber parameter refinement:
+<br />
+mdgx
+<br />
+<a href="https://ambermd.org/tutorials/advanced/tutorial32/index.php">https://ambermd.org/tutorials/advanced/tutorial32/index.php</a>
+<br />
+parafit
+<br />
+<a href="http://ambermd.org/tutorials/advanced/tutorial23/">http://ambermd.org/tutorials/advanced/tutorial23/</a>
+<br />
+The common way to fine-tune the selected parameters is fitting to single-point energies of multiple conformers. I’m not very sure if it’s still worth doing if you’re aiming at angles.
+<br />
+<br /><br />Hope this is mildly helpful..
+<br />
+<br /><br />Bests,
+<br />
+From: Priyasha Majee &lt;22d0186.iitb.ac.in&gt;
+<br />
+Date: Thursday, August 31, 2023 at 4:16 AM
+<br />
+To: He, Amy &lt;he.1768.buckeyemail&#46;<!--nospam-->osu.edu&gt;, Amber &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+Subject: Re: [AMBER] ATTN, need revision
+<br />
+Thank you Amy. Yes, I am trying to parameterize a modified nucleotide with Fluorine in an aromatic ring. I looked up all the possible parameter library files like parm10. dat, gaff. dat, and gaff2. dat. But did not get the parameters I needed. 
+<br />
+<br /><br />Thank you Amy.
+<br />
+<br />Yes, I am trying to parameterize a modified nucleotide with Fluorine in an aromatic ring. I looked up all the possible parameter library files like parm10.dat, gaff.dat, and gaff2.dat. But did not get the parameters I needed. Is there any way I can find or calculate these parameters? I came across one method of doing it by using ab initio calculations. But I am not sure how to go about this. It will be highly appreciated if you could provide suggestions and resources.
+<br />
+<br />thank you in advance
+<br />
+<br />regards,
+<br />
+<br />Priyasha
+<br />
+<br /><br /><br /><br /><br />On 2023-08-30 20:45, He, Amy wrote:
+<br />
+<br />Hi,
+<br />
+<br /><br /><br />This official tutorial provides instructions on dealing with &quot;ATTN&quot; remarks in parameter modification files generated from the main parameter database:
+<br />
+<br /><a href="https://ambermd.org/tutorials/basic/tutorial5/">https://ambermd.org/tutorials/basic/tutorial5/</a>&lt;<a href="https://urldefense.com/v3/__https:/ambermd.org/tutorials/basic/tutorial5/__;!!KGKeukY!y2k5832soIBHE3L52rpE8e4geSYL7dx4BaulXtdHB3fx6DgtPjaiBdemTazi0gyg8Kj2O5jUU6R4b-4DII3Zw1jMJ-s8YPA">https://urldefense.com/v3/__https:/ambermd.org/tutorials/basic/tutorial5/__;!!KGKeukY!y2k5832soIBHE3L52rpE8e4geSYL7dx4BaulXtdHB3fx6DgtPjaiBdemTazi0gyg8Kj2O5jUU6R4b-4DII3Zw1jMJ-s8YPA</a>$&gt;
+<br />
+<br />As described in the tutorial, the common solution is to find these parameters from an alternate parameter database of a more generalized force field, such as GAFF.
+<br />
+<br /><br /><br />Just one comment on the parameter file you showed:
+<br />
+<br />Were you possibly trying to parameterize some 5-fluoro / 5-hydroxy nucleotides? Most tutorials I know for nonstandard residue parameterization were intended for modified amino acids. But there might be more specialized force fields for modified nucleotides. I believe many experts on this server can help you.
+<br />
+<br /><br /><br /><br /><br />Bests,
+<br />
+<br /><br /><br /><pre>
+--
+Amy He
+Chemistry Graduate Teaching Assistant
+Hadad Research Group
+Ohio State University
+he.1768.osu.edu&lt;mailto:he.1768.osu.edu&gt;
+From: Priyasha Majee via AMBER &lt;amber.ambermd.org&gt;
+Date: Wednesday, August 30, 2023 at 7:09 AM
+To: Amber &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+Subject: [AMBER] ATTN, need revision
+Dear All,
+I am working with a non-standard residue. After RESP ESP charge
+derivation using RED server, i get frcmod.unkown with missing
+parameters. I used parmchk2 to find the missing parameters but some of
+these are showing ATTN, need revision. I know I have to manually add the
+missing parameters. But how do i do that? i went through previous
+messages on mailing list. Wolf2pack has been used. but i cant seem to
+find the website. Can someone please give inputs and suggestions ?
+remark goes like this
+ANGLE
+CM-CM-F    70.000     121.000   same as F -CA-CA, penalty score= 11.1
+C -CM-F     0.000       0.000   ATTN, need revision
+For another molecule too:
+remark line goes like this
+ANGLE
+CM-CM-CW   63.000     117.000   same as CA-CM-CM, penalty score=  0.9
+C -CM-CW   63.000     120.700   same as C -CM-CM, penalty score=  9.5
+CW-C*-HA    0.000       0.000   ATTN, need revision
+CB-OS-CW    0.000       0.000   ATTN, need revision
+C*-CW-CM   66.546     120.000   Calculated using CA-CA-CA, penalty
+score=160.6
+C*-CW-OS    0.000       0.000   ATTN, need revision
+C*-CB-CB   63.000     108.800   same as C*-CB-CN, penalty score=  0.2
+CB-C*-HA    0.000       0.000   ATTN, need revision
+CB-CB-OS    0.000       0.000   ATTN, need revision
+CA-CB-OS    0.000       0.000   ATTN, need revision
+CM-CW-OS    0.000       0.000   ATTN, need revision
+Thank you in advance
+Regards,
+Priyasha
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!KGKeukY!wNhiPtcZXEsMJdKV3N7YijZoa1QP4LUeIobIxpzSywlJQ2opOfq1eQ8-IrQQnxNUvf5cMwybpu5slhnnxwqj2Z7YNBA">https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!KGKeukY!wNhiPtcZXEsMJdKV3N7YijZoa1QP4LUeIobIxpzSywlJQ2opOfq1eQ8-IrQQnxNUvf5cMwybpu5slhnnxwqj2Z7YNBA</a>$&lt;<a href="https://urldefense.com/v3/__http:/lists.ambermd.org/mailman/listinfo/amber__;!!KGKeukY!wNhiPtcZXEsMJdKV3N7YijZoa1QP4LUeIobIxpzSywlJQ2opOfq1eQ8-IrQQnxNUvf5cMwybpu5slhnnxwqj2Z7YNBA">https://urldefense.com/v3/__http:/lists.ambermd.org/mailman/listinfo/amber__;!!KGKeukY!wNhiPtcZXEsMJdKV3N7YijZoa1QP4LUeIobIxpzSywlJQ2opOfq1eQ8-IrQQnxNUvf5cMwybpu5slhnnxwqj2Z7YNBA</a>$&gt;
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Thu Aug 31 2023 - 08:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0121.html" title="Next message in the list">Shah, Tejas V. via AMBER: "[AMBER] Cross Correlation Analysis"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0119.html" title="Previous message in the list">Enrico Martinez via AMBER: "[AMBER] Membrane protein tutorial: dimensions of the system"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0118.html" title="Message to which this message replies">Priyasha Majee via AMBER: "Re: [AMBER] ATTN, need revision"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg120" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg120" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg120" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg120" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>
