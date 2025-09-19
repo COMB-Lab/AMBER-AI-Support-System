@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Poor Performance of Thermodynamic Integration using pmemd.cuda from David A Case via AMBER on 2023-05-11 (Amber Archive May 2023)</title>
+<meta name="Author" content="David A Case via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Poor Performance of Thermodynamic Integration using pmemd.cuda" />
+<meta name="Date" content="2023-05-11" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Poor Performance of Thermodynamic Integration using pmemd.cuda</h1>
+<!-- received="Thu May 11 09:30:02 2023" -->
+<!-- isoreceived="20230511163002" -->
+<!-- sent="Thu, 11 May 2023 12:10:40 -0400" -->
+<!-- isosent="20230511161040" -->
+<!-- name="David A Case via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Poor Performance of Thermodynamic Integration using pmemd.cuda" -->
+<!-- id="20230511161040.7qzvubkbgmfprjpr.pop-os.localdomain" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="TYCP286MB268692B46A9A6C502827B761C8749.TYCP286MB2686.JPNP286.PROD.OUTLOOK.COM" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0059.html" accesskey="d" title="David A Case via AMBER: &quot;Re: [AMBER] Amber cannot find blas from cray-libsci&quot;">Next message</a> ]
+[ <a href="0057.html" title="Charo del Genio via AMBER: &quot;Re: [AMBER] Problem with aMD tutorial&quot;">Previous message</a> ]
+[ <a href="0054.html" title="Kevin Mei via AMBER: &quot;[AMBER] Poor Performance of Thermodynamic Integration using pmemd.cuda&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0060.html" accesskey="t" title="Kevin Mei via AMBER: &quot;Re: [AMBER] Poor Performance of Thermodynamic Integration using pmemd.cuda&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg58" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg58" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg58" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg58" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Poor%20Performance%20of%20Thermodynamic%20Integration%20using%20pmemd.cuda">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 11 May 2023 12:10:40 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Thu, May 11, 2023, Kevin Mei via AMBER wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;I'm now using Amber 20 and RTX 2080Ti to simulate a membrane
+</em><br />
+<em class="quotelev1">&gt;protein system. This system contains ~80,000 atoms in total. In
+</em><br />
+<em class="quotelev1">&gt;regular simulations, the speed is about 110 ns/d, which is quite
+</em><br />
+<em class="quotelev1">&gt;acceptable. However, once I turned on the Thermodynamic Integration
+</em><br />
+<em class="quotelev1">&gt;module, the speed drops sharply to only 24 ns/d. This is quite strange,
+</em><br />
+<em class="quotelev1">&gt;since the manual says &quot;Performance of the PME TI pmemd implementation is
+</em><br />
+<em class="quotelev1">&gt;approximately 75% that of a regular PME MD simulation&quot;, and this also makes
+</em><br />
+<em class="quotelev1">&gt;sufficient sampling difficult.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Does anyone have a clue to this? Any help is appreciated.
+</em><br />
+<br />Try this, just to make sure there is not something special about your
+<br />
+particular system: go to $AMBERHOME/test/cuda/gti/complex, and run the
+<br />
+Run.SC_NVT script (perhaps with a somewhat larger value for nstlim).  Then
+<br />
+re-run setting icfe=ifsc=0, and compare timings.
+<br />
+<br />If you do see a big slowdown, this will provide those who really understand
+<br />
+the code a test case to profile.  If you don't see that slowdown, we can
+<br />
+start looking for differences between your example and the one in the test
+<br />
+suite.  (The next thing I would check is whether setting nmropt=0 makes a
+<br />
+difference.)
+<br />
+<br />....good luck....dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu May 11 2023 - 09:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0059.html" title="Next message in the list">David A Case via AMBER: "Re: [AMBER] Amber cannot find blas from cray-libsci"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0057.html" title="Previous message in the list">Charo del Genio via AMBER: "Re: [AMBER] Problem with aMD tutorial"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0054.html" title="Message to which this message replies">Kevin Mei via AMBER: "[AMBER] Poor Performance of Thermodynamic Integration using pmemd.cuda"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0060.html" title="Next message in this discussion thread">Kevin Mei via AMBER: "Re: [AMBER] Poor Performance of Thermodynamic Integration using pmemd.cuda"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0060.html" title="Message sent in reply to this message">Kevin Mei via AMBER: "Re: [AMBER] Poor Performance of Thermodynamic Integration using pmemd.cuda"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg58" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg58" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg58" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg58" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

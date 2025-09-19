@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] 1-4 scaling in GLYCAM from Richard Kullmann via AMBER on 2023-05-24 (Amber Archive May 2023)</title>
+<meta name="Author" content="Richard Kullmann via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] 1-4 scaling in GLYCAM" />
+<meta name="Date" content="2023-05-24" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] 1-4 scaling in GLYCAM</h1>
+<!-- received="Wed May 24 02:30:02 2023" -->
+<!-- isoreceived="20230524093002" -->
+<!-- sent="Wed, 24 May 2023 11:25:06 +0200" -->
+<!-- isosent="20230524092506" -->
+<!-- name="Richard Kullmann via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] 1-4 scaling in GLYCAM" -->
+<!-- id="35d7776f-1ab6-c34f-acf2-18ccef80649d.mpikg.mpg.de" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="c0c0341a-95fa-a5bc-0107-ab1405cec497.mpikg.mpg.de" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0104.html" accesskey="d" title="Hoang, Oanh Tu via AMBER: &quot;[AMBER] inf pKa values constant pH&quot;">Next message</a> ]
+[ <a href="0102.html" title="&#40060;&#32724; via AMBER: &quot;[AMBER] where to download AmberTools21.tar.gz2&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0107.html" accesskey="t" title="David A Case via AMBER: &quot;Re: [AMBER] 1-4 scaling in GLYCAM&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg103" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg103" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg103" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg103" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Richard Kullmann via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%201-4%20scaling%20in%20GLYCAM">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 24 May 2023 11:25:06 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber users,
+<br />
+<br />I am currently trying to change 1-4 Lennard-Jones parameters of the 
+<br />
+GLYCAM06 ff. My first approach was identifying 1-4 pairs and changing 
+<br />
+the LJ interaction between each of these pairs separately using the 
+<br />
+changeLJPair command in ParmEd. This gives correct results but only 
+<br />
+works well up to certain numbers of glucose units in my system: Using 
+<br />
+this procedure, the parameter file size seems to increase quadratically 
+<br />
+with the number of glucose units. Therefore, I tried to just scale the 
+<br />
+scnb parameters in the force field files. This works in that I can see 
+<br />
+the changes in ParmEd, but, looking at the dihedrals, it seems that the 
+<br />
+alpha-(1-4) linkages of my polymer are less flexible now. I only retain 
+<br />
+the major maximum and lose the second peak. The same goes for the 
+<br />
+glucose pucker conformations. Here the number of unlikely conformations 
+<br />
+is reduced by a factor of 3. Now, in order to double check the correct 
+<br />
+implementation of scnb scaling factors, I just tried to use inverse 
+<br />
+values. Surprisingly, the results now look very similar to what I got 
+<br />
+with my first choice of scnb values.
+<br />
+So, I would like to know how 1-4 scaling is implemented in GLYCAM, and 
+<br />
+am looking for reasons for this strange behavior I'm seeing.
+<br />
+<br />Thank you very much in advance and best regards,
+<br />
+<br />Richard
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed May 24 2023 - 02:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0104.html" title="Next message in the list">Hoang, Oanh Tu via AMBER: "[AMBER] inf pKa values constant pH"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0102.html" title="Previous message in the list">&#40060;&#32724; via AMBER: "[AMBER] where to download AmberTools21.tar.gz2"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0107.html" title="Next message in this discussion thread">David A Case via AMBER: "Re: [AMBER] 1-4 scaling in GLYCAM"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0107.html" title="Message sent in reply to this message">David A Case via AMBER: "Re: [AMBER] 1-4 scaling in GLYCAM"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg103" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg103" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg103" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg103" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

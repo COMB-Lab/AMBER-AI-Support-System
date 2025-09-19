@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Amber22 Could not import mpi4py package. from Martin Juhás via AMBER on 2023-05-15 (Amber Archive May 2023)</title>
+<meta name="Author" content="Martin Juhás via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Amber22 Could not import mpi4py package." />
+<meta name="Date" content="2023-05-15" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Amber22 Could not import mpi4py package.</h1>
+<!-- received="Mon May 15 07:00:03 2023" -->
+<!-- isoreceived="20230515140003" -->
+<!-- sent="Mon, 15 May 2023 13:31:04 +0000" -->
+<!-- isosent="20230515133104" -->
+<!-- name="Martin Juhás via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Amber22 Could not import mpi4py package." -->
+<!-- id="AM7PR04MB6888E49FF13512E9151B0E7F9B789.AM7PR04MB6888.eurprd04.prod.outlook.com" -->
+<!-- charset="windows-1252" -->
+<!-- inreplyto="f3535378bd3b4d6684f32b1ba9343dc6.ncr.nstda.or.th" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0070.html" accesskey="d" title="Steinbrecher, Thomas via AMBER: &quot;Re: [AMBER] pmemd simulation exits abnormally&quot;">Next message</a> ]
+[ <a href="0068.html" title="David A Case via AMBER: &quot;Re: [AMBER] pmemd simulation exits abnormally&quot;">Previous message</a> ]
+[ <a href="0064.html" title="Siwakorn Sukharom via AMBER: &quot;[AMBER] Amber22 Could not import mpi4py package.&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0076.html" accesskey="t" title="Siwakorn Sukharom via AMBER: &quot;Re: [AMBER] Amber22 Could not import mpi4py package.&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg69" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg69" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg69" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg69" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Martin Juhás via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Amber22%20Could%20not%20import%20mpi4py%20package.">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 15 May 2023 13:31:04 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi, I had the same problem in Amber22.
+<br />
+<br />I was able to install mpi4py followingly (for me the problem was with the ld):
+<br />
+cd &lt;path to amber22_src&gt;/build/CMakeFiles/miniconda/install/compiler_compat
+<br />
+rm -f ld
+<br />
+ln -s /usr/bin/ld ld
+<br />
+<br />build mpi4py from source:
+<br />
+cd &lt;path to amber22_src&gt;/AmberTools/src/mpi4py-3.1.3
+<br />
+&lt;path to amber22&gt;/miniconda/bin/python setup.py install
+<br />
+<br />after that, revoke that change:
+<br />
+cd &lt;path to amber22_src&gt;/build/CMakeFiles/miniconda/install/compiler_compat
+<br />
+rm -f ld
+<br />
+ln -s ../bin/x86_64-conda-linux-gnu-ld ld
+<br />
+<br />Hope this helps.
+<br />
+<br />Martin
+<br />
+________________________________
+<br />
+Od: Siwakorn Sukharom via AMBER &lt;amber.ambermd.org&gt;
+<br />
+Odoslané: pondelok 15. mája 2023 8:20
+<br />
+Komu: amber.ambermd.org &lt;amber.ambermd.org&gt;
+<br />
+Predmet: [AMBER] Amber22 Could not import mpi4py package.
+<br />
+<br />[EXTERNAL EMAIL]
+<br />
+<br /><br />I can successfully install amber22 on the system with cray programming environment, but i has a problem with mpi4py when I want to run MMPBSA.py.MPI
+<br />
+My system is AMD EPYC™ 7713 with Nvidia A100, and the network is HPE Slingshot Interconnect. For the compiler, I used gcc/11.2.0, cray-mpich and CUDA 11.7
+<br />
+<br />This the error when i ran MMPBSA.py.MPI:
+<br />
+Traceback (most recent call last):
+<br />
+Traceback (most recent call last):
+<br />
+&nbsp;&nbsp;File &quot;/lustrefs/disk/modules/easybuild/software/Amber/amber22/bin/MMPBSA.py.MPI&quot;, line 53, in &lt;module&gt;
+<br />
+Traceback (most recent call last):
+<br />
+&nbsp;&nbsp;File &quot;/lustrefs/disk/modules/easybuild/software/Amber/amber22/bin/MMPBSA.py.MPI&quot;, line 53, in &lt;module&gt;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;from mpi4py import MPI
+<br />
+ImportError: /usr/lib64/libssh.so.4: undefined symbol: EVP_KDF_CTX_new_id, version OPENSSL_1_1_1d
+<br />
+<br />During handling of the above exception, another exception occurred:
+<br />
+<br />Traceback (most recent call last):
+<br />
+&nbsp;&nbsp;File &quot;/lustrefs/disk/modules/easybuild/software/Amber/amber22/bin/MMPBSA.py.MPI&quot;, line 55, in &lt;module&gt;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;from mpi4py import MPI
+<br />
+ImportError: /usr/lib64/libssh.so.4: undefined symbol: EVP_KDF_CTX_new_id, version OPENSSL_1_1_1d
+<br />
+<br />During handling of the above exception, another exception occurred:
+<br />
+<br />Traceback (most recent call last):
+<br />
+&nbsp;&nbsp;File &quot;/lustrefs/disk/modules/easybuild/software/Amber/amber22/bin/MMPBSA.py.MPI&quot;, line 55, in &lt;module&gt;
+<br />
+Traceback (most recent call last):
+<br />
+&nbsp;&nbsp;File &quot;/lustrefs/disk/modules/easybuild/software/Amber/amber22/bin/MMPBSA.py.MPI&quot;, line 53, in &lt;module&gt;
+<br />
+Traceback (most recent call last):
+<br />
+&nbsp;&nbsp;File &quot;/lustrefs/disk/modules/easybuild/software/Amber/amber22/bin/MMPBSA.py.MPI&quot;, line 53, in &lt;module&gt;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;raise MMPBSA_Error('Could not import mpi4py package! Use serial version '
+<br />
+MMPBSA_mods.exceptions.MMPBSA_Error: Could not import mpi4py package! Use serial version or install mpi4py.
+<br />
+Traceback (most recent call last):
+<br />
+<br />Normally, I can use these approach to install mpi4py on cray system before
+<br />
+<br />source &lt;path_to_amber.sh&gt;
+<br />
+export CC=cc
+<br />
+export MPICC=cc
+<br />
+amber.python setup.py install
+<br />
+<br />but this time i get the error message:
+<br />
+<br />siwakorn.x3002c0s11b0n0: amber.python setup.py install
+<br />
+running install
+<br />
+/home/siwakorn/AMBER/amber22/miniconda/lib/python3.10/site-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+<br />
+&nbsp;&nbsp;warnings.warn(
+<br />
+running build
+<br />
+running build_src
+<br />
+running build_py
+<br />
+running build_clib
+<br />
+error: section/s 'mpi-linux-x86_64,mpi-linux-64bit,mpi-linux,mpi-posix-x86_64,mpi-posix-64bit,mpi-posix,mpi-x86_64,mpi-64bit,mpi' not found in file/s 'mpi.cfg'
+<br />
+running build_ext
+<br />
+error: section/s 'mpi-linux-x86_64,mpi-linux-64bit,mpi-linux,mpi-posix-x86_64,mpi-posix-64bit,mpi-posix,mpi-x86_64,mpi-64bit,mpi' not found in file/s 'mpi.cfg'
+<br />
+running install_lib
+<br />
+running install_egg_info
+<br />
+running egg_info
+<br />
+writing src/mpi4py.egg-info/PKG-INFO
+<br />
+writing dependency_links to src/mpi4py.egg-info/dependency_links.txt
+<br />
+writing top-level names to src/mpi4py.egg-info/top_level.txt
+<br />
+reading manifest file 'src/mpi4py.egg-info/SOURCES.txt'
+<br />
+reading manifest template 'MANIFEST.in'
+<br />
+adding license file 'LICENSE.rst'
+<br />
+writing manifest file 'src/mpi4py.egg-info/SOURCES.txt'
+<br />
+removing '/home/siwakorn/AMBER/amber22/miniconda/lib/python3.10/site-packages/mpi4py-3.1.3-py3.10.egg-info' (and everything under it)
+<br />
+Copying src/mpi4py.egg-info to /home/siwakorn/AMBER/amber22/miniconda/lib/python3.10/site-packages/mpi4py-3.1.3-py3.10.egg-info
+<br />
+running install_scripts
+<br />
+siwakorn.x3002c0s11b0n0: ls
+<br />
+<br />Any suggestion?
+<br />
+<br /><br /><br /><br /><br />________________________________
+<br />
+<br />Disclaimer:
+<br />
+<br />This e-mail and any files transmitted with it may contain confidential and proprietary information of the National Science and Technology Development Agency (NSTDA), Thailand. They are intended solely for the use of the addressed individuals or entities. If you are not the intended recipient, you are required to immediately delete this e-mail and its contents from your system. Any disclosure, distribution, or action based upon the contents of this e-mail is strictly prohibited. Any views or opinions presented in this e-mail are solely those of the sender and do not necessarily represent those of NSTDA. NSTDA does not accept any responsibility for the content of this message or the consequences of any actions taken on the basis of the information provided. NSTDA accepts no liability for any damage caused by any virus or malware which may be inserted in this e-mail during transmission.
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br />Upozornení: Není-li v této zpráve výslovne uvedeno jinak, má tato e-mailová zpráva nebo její prílohy pouze informativní charakter. Tato zpráva ani její prílohy v žádném ohledu Univerzitu Karlovu k nicemu nezavazují. Text této zprávy nebo jejích príloh není návrhem na uzavrení smlouvy, ani prijetím prípadného návrhu na uzavrení smlouvy, ani jiným právním jednáním smerujícím k uzavrení jakékoliv smlouvy a nezakládá predsmluvní odpovednost Univerzity Karlovy. Obsahuje-li tento e-mail nebo nekterá z jeho príloh osobní údaje, dbejte pri jeho dalším zpracování (zejména pri archivaci) souladu s pravidly evropského narízení GDPR.
+<br />
+<br />Disclaimer: If not expressly stated otherwise, this e-mail message (including any attached files) is intended purely for informational purposes and does not represent a binding agreement on the part of Charles University. The text of this message and its attachments cannot be considered as a proposal to conclude a contract, nor the acceptance of a proposal to conclude a contract, nor any other legal act leading to concluding any contract; nor does it create any pre-contractual liability on the part of Charles University. If this e-mail or any of its attachments contains personal data, please be aware of data processing (particularly document management and archival policy) in accordance with Regulation (EU) 2016/679 of the European Parliament and of the Council on GDPR.
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon May 15 2023 - 07:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0070.html" title="Next message in the list">Steinbrecher, Thomas via AMBER: "Re: [AMBER] pmemd simulation exits abnormally"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0068.html" title="Previous message in the list">David A Case via AMBER: "Re: [AMBER] pmemd simulation exits abnormally"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0064.html" title="Message to which this message replies">Siwakorn Sukharom via AMBER: "[AMBER] Amber22 Could not import mpi4py package."</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0076.html" title="Next message in this discussion thread">Siwakorn Sukharom via AMBER: "Re: [AMBER] Amber22 Could not import mpi4py package."</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0076.html" title="Message sent in reply to this message">Siwakorn Sukharom via AMBER: "Re: [AMBER] Amber22 Could not import mpi4py package."</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg69" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg69" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg69" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg69" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

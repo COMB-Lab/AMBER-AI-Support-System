@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] pressure control question from Adrian Roitberg via AMBER on 2023-07-18 (Amber Archive Jul 2023)</title>
+<meta name="Author" content="Adrian Roitberg via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] pressure control question" />
+<meta name="Date" content="2023-07-18" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] pressure control question</h1>
+<!-- received="Tue Jul 18 06:00:02 2023" -->
+<!-- isoreceived="20230718130002" -->
+<!-- sent="Tue, 18 Jul 2023 14:36:40 +0200" -->
+<!-- isosent="20230718123640" -->
+<!-- name="Adrian Roitberg via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] pressure control question" -->
+<!-- id="d421cef8-1014-e21a-3013-575629d7b850.ufl.edu" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="DM6PR07MB4170D309148D4551B86360DEDC3BA.DM6PR07MB4170.namprd07.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0094.html" accesskey="d" title="Sneha Kandapal via AMBER: &quot;[AMBER] DNA topology file error&quot;">Next message</a> ]
+[ <a href="0092.html" title="Dr. Anselm Horn via AMBER: &quot;Re: [AMBER] Compare trajectories&quot;">Previous message</a> ]
+[ <a href="0088.html" title="Yang, Li-Yen via AMBER: &quot;Re: [AMBER] pressure control question&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0095.html" accesskey="t" title="David A Case via AMBER: &quot;Re: [AMBER] pressure control question&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg93" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg93" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg93" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg93" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Adrian Roitberg via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20pressure%20control%20question">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 18 Jul 2023 14:36:40 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi
+<br />
+<br />You should always run an NPT simulation first before you run NVT. The 
+<br />
+NPT simulation will report the density. The NVT run will then have a 
+<br />
+fixed density equal to the last frame from the NPT sim.
+<br />
+<br />In your case, you should run the NPT simulation at constant protonation 
+<br />
+(not constant pH), and switch to constant pH at the start of the NVT run.
+<br />
+<br />Adrian
+<br />
+<br /><br />On 7/17/23 8:52 PM, Yang, Li-Yen via AMBER wrote:
+<br />
+<em class="quotelev1">&gt; [External Email]
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Hi Vinícius,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thank you so much for your response! This is really helpful!
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Do you by any chance know how to make a NVT ensemble simulation run to output the density value in the output file?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; It seems like simulations with NPT ensemble will include density in the output file, but not the ones with NVT ensemble.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thank you!
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt; Zoey
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; From: Vinicius Wilian Cruzeiro &lt;vwcruz.stanford&#46;<!--nospam-->edu&gt;
+</em><br />
+<em class="quotelev1">&gt; Date: Friday, July 14, 2023 at 4:30 PM
+</em><br />
+<em class="quotelev1">&gt; To: AMBER Mailing List &lt;amber.ambermd&#46;<!--nospam-->org&gt;, Yang, Li-Yen &lt;zoeyxyang.gatech&#46;<!--nospam-->edu&gt;
+</em><br />
+<em class="quotelev1">&gt; Subject: Re: [AMBER] pressure control question
+</em><br />
+<em class="quotelev1">&gt; Hello Zoey,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The constant pH equations have been derived within a canonical ensemble. One would need to think if/how the equations would be affected in an NPT ensemble. This is why the error trap is in there.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Now to your questions: There would be no pressure control. All you would ensure is that the system is at one density compatible with the thermodynamic condition that you want, which for most purposes is all that you need.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I hope this helps,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Vinícius Wilian D. Cruzeiro, PhD
+</em><br />
+<em class="quotelev1">&gt; Postdoctoral Researcher
+</em><br />
+<em class="quotelev1">&gt; Department of Chemistry
+</em><br />
+<em class="quotelev1">&gt; Stanford University
+</em><br />
+<em class="quotelev1">&gt; Twitter: &#64;vwcruzeiro
+</em><br />
+<em class="quotelev1">&gt; ________________________________
+</em><br />
+<em class="quotelev1">&gt; From: Yang, Li-Yen via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+</em><br />
+<em class="quotelev1">&gt; Sent: Friday, July 14, 2023 12:33 PM
+</em><br />
+<em class="quotelev1">&gt; To: AMBER Mailing List &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+</em><br />
+<em class="quotelev1">&gt; Subject: [AMBER] pressure control question
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Dear Amber community,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I am trying to run a constant pH simulation on a protein complex.
+</em><br />
+<em class="quotelev1">&gt; I would like it to be run under the condition similar with my experiment which is 300K and 1atm.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; At first, I tried to set my mdin file for my production run with both temperature control and pressure control so it can be NPT.
+</em><br />
+<em class="quotelev1">&gt; However, I got an error saying that Amber doesn’t support pressure control in ph constant explicit solvent simulation.
+</em><br />
+<em class="quotelev1">&gt; So now I am running my production run with NVT (by setting ntp=0 and ntb=1).
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; My question is:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    1.  If I run relaxation with constant pressure (1 atm) before my production run, will the production run (NVT) remain the pressure at around 1 atm?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    1.  If so, how do I check what the pressure is during the production run? (From my understanding, the PRESS from the output file is not the actual pressure from the system)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thank you!
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt; Zoey
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br /><pre>
+-- 
+Dr. Adrian E. Roitberg
+V.T. and Louise Jackson Professor in Chemistry
+Department of Chemistry
+University of Florida
+roitberg.ufl.edu
+352-392-6972
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Jul 18 2023 - 06:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0094.html" title="Next message in the list">Sneha Kandapal via AMBER: "[AMBER] DNA topology file error"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0092.html" title="Previous message in the list">Dr. Anselm Horn via AMBER: "Re: [AMBER] Compare trajectories"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0088.html" title="Message to which this message replies">Yang, Li-Yen via AMBER: "Re: [AMBER] pressure control question"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0095.html" title="Next message in this discussion thread">David A Case via AMBER: "Re: [AMBER] pressure control question"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg93" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg93" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg93" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg93" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

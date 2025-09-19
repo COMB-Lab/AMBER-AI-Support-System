@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] A script to build Amber on a Cray EX supercomputer with AMD GPU support from Cristian Di Pietrantonio via AMBER on 2023-06-28 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="Cristian Di Pietrantonio via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] A script to build Amber on a Cray EX supercomputer with AMD GPU support" />
+<meta name="Date" content="2023-06-28" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] A script to build Amber on a Cray EX supercomputer with AMD GPU support</h1>
+<!-- received="Wed Jun 28 02:30:02 2023" -->
+<!-- isoreceived="20230628093002" -->
+<!-- sent="Wed, 28 Jun 2023 17:05:56 +0800" -->
+<!-- isosent="20230628090556" -->
+<!-- name="Cristian Di Pietrantonio via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] A script to build Amber on a Cray EX supercomputer with AMD GPU support" -->
+<!-- id="369698d4-d7d7-ae49-e194-3fcbd31e6d0c.pawsey.org.au" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0134.html" accesskey="d" title="Jason Swails via AMBER: &quot;Re: [AMBER] Constant pH remd in amber&quot;">Next message</a> ]
+[ <a href="0132.html" title="SATYAJIT KHATUA via AMBER: &quot;Re: [AMBER] Keyerror about mmpbsa&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0135.html" accesskey="t" title="David A Case via AMBER: &quot;Re: [AMBER] A script to build Amber on a Cray EX supercomputer with AMD GPU support&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg133" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg133" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg133" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg133" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Cristian Di Pietrantonio via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20A%20script%20to%20build%20Amber%20on%20a%20Cray%20EX%20supercomputer%20with%20AMD%20GPU%20support">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 28 Jun 2023 17:05:56 +0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear all,
+<br />
+<br />My name is Cristian Di Pietrantonio and I work for the Pawsey 
+<br />
+Supercomputing Research Centre located in Perth, Western Australia.
+<br />
+<br />I spent a couple of days trying to build Amber with AMD GPU support for 
+<br />
+our Cray supercomputer. I have followed the instructions present on the 
+<br />
+page <a href="https://ambermd.org/GPUSupport.php">https://ambermd.org/GPUSupport.php</a> , but those were not enough. I 
+<br />
+encountered several issues. Some of them are Cray specific, others are 
+<br />
+more general. In particular, I have found that the HIP patch corrupts 
+<br />
+some parts of the source code or the CMakeLists.txt files. I tried 
+<br />
+reversed these changes by restoring the original files (the version 
+<br />
+previous to applying the patch) and seems to work (in that the code 
+<br />
+compiles).  I noticed these issues because of compilation errors, but 
+<br />
+there might be changes that went unnoticed. For this reason I ask you to 
+<br />
+double check the HIP patch, or please to point out if I am doing 
+<br />
+anything wrong.
+<br />
+<br />I put together a BASH script that implements the process I followed to 
+<br />
+compile Amber with HIP support. Here is the link to a GitHub Gist:
+<br />
+<br /><a href="https://gist.github.com/dipietrantonio/1f2755ae46c4b6119d2b1c540843c159">https://gist.github.com/dipietrantonio/1f2755ae46c4b6119d2b1c540843c159</a>
+<br />
+<br />Near the top there are a few comments describing the issues in more detail.
+<br />
+<br />Best Regards,
+<br />
+<br /><pre>
+-- 
+Cristian Di Pietrantonio
+&gt; Supercomputing Applications Specialist
+. Pawsey Supercomputing Research Centre
+EMAIL: cdipietrantonio[at]pawsey.org.au
+ADDRESS: 26 Dick Perry Avenue, Technology Park, Kensington, WA, 6151
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Wed Jun 28 2023 - 02:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0134.html" title="Next message in the list">Jason Swails via AMBER: "Re: [AMBER] Constant pH remd in amber"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0132.html" title="Previous message in the list">SATYAJIT KHATUA via AMBER: "Re: [AMBER] Keyerror about mmpbsa"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0135.html" title="Next message in this discussion thread">David A Case via AMBER: "Re: [AMBER] A script to build Amber on a Cray EX supercomputer with AMD GPU support"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0135.html" title="Message sent in reply to this message">David A Case via AMBER: "Re: [AMBER] A script to build Amber on a Cray EX supercomputer with AMD GPU support"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg133" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg133" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg133" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg133" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

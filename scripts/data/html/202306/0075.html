@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Error while running mmpbsa from SATYAJIT KHATUA via AMBER on 2023-06-18 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="SATYAJIT KHATUA via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Error while running mmpbsa" />
+<meta name="Date" content="2023-06-18" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Error while running mmpbsa</h1>
+<!-- received="Sun Jun 18 23:30:03 2023" -->
+<!-- isoreceived="20230619063003" -->
+<!-- sent="Mon, 19 Jun 2023 11:59:00 +0530" -->
+<!-- isosent="20230619062900" -->
+<!-- name="SATYAJIT KHATUA via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Error while running mmpbsa" -->
+<!-- id="CAOoM83ueFivMF=OTiksVmV73R_FTaBQ12uQ1pHS-5nf12T9jLA.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAOoM83uTihWFUZ0jcKu4Jq=bb8WBePu4MrVMu5MBZpx7f+zTdw.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0076.html" accesskey="d" title="AMANPREET KAUR via AMBER: &quot;[AMBER] Error in running mmpbsa and mmgbsa&quot;">Next message</a> ]
+[ <a href="0074.html" title="SATYAJIT KHATUA via AMBER: &quot;Re: [AMBER] Error while running mmpbsa&quot;">Previous message</a> ]
+[ <a href="0073.html" title="AMANPREET KAUR via AMBER: &quot;[AMBER] Error while running mmpbsa&quot;">Maybe in reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0077.html" accesskey="t" title="SATYAJIT KHATUA via AMBER: &quot;Re: [AMBER] Error while running mmpbsa&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg75" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg75" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg75" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg75" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: SATYAJIT KHATUA via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Error%20while%20running%20mmpbsa">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 19 Jun 2023 11:59:00 +0530</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Amanpreet,
+<br />
+<br />I am attaching a sample prmtop and pointing you to the residue number.
+<br />
+Please check that number in your prmtops.
+<br />
+<br />*CHUNK of SAMPLE PRMTOP:*
+<br />
+%FORMAT(10I8)
+<br />
+&nbsp;&nbsp;&nbsp;55347      21   53284    2126    4612    2892    9307    8907       0
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;0
+<br />
+&nbsp;&nbsp;&nbsp;91037   *17352*    2126    2892    8907      93     209     198      51
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0       0       0       0       0       0       0       1      24
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;0
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0
+<br />
+%FLAG ATOM_NAME
+<br />
+---------------------------------------------------------------------------------------------------------
+<br />
+The bold one in the prmtop file is the residue number. Please make sure
+<br />
+your complex nres = receptor nres + ligand nres
+<br />
+<br />The other way around is that you can use ante-MMPBSA.py to generate the
+<br />
+initial prmtop files from the solvated complex prmtop. You can type the
+<br />
+command line inputs as follows:
+<br />
+<br />ante-MMPBSA.py -p solv_complex.prmtop -c dry_complex.prmtop -s :ions, water
+<br />
+(not the important metal ion(s), if any)
+<br />
+ante-MMPBSA.py -p solv_complex.prmtop -c receptor_dry.prmtop -s
+<br />
+:ions,water,ligand
+<br />
+ante-MMPBSA.py -p solv_complex.prmtop -c ligand_dry.prmtop -s &quot;!(:ligand)&quot;
+<br />
+<br />Hope, this may help you to resolve your problem.
+<br />
+<br />Best,
+<br />
+Satyajit
+<br />
+<br />------------------------------
+<br />
+*From:* AMANPREET KAUR &lt;akaur_phd21.thapar.edu&gt;
+<br />
+*Sent:* Monday, June 19, 2023 11:04:14 AM
+<br />
+*To:* SATYAJIT KHATUA &lt;<a href="mailto:satyajitkhatua09.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Error%20while%20running%20mmpbsa">satyajitkhatua09.gmail.com</a>&gt;
+<br />
+*Subject:* Re: [AMBER] Error while running mmpbsa
+<br />
+<br />Thank you sir for your response.
+<br />
+I have not used ante-MMPBSA.py to strip off any atoms or residues.
+<br />
+I have given the topology files which were generated using tleap and
+<br />
+antechamber commands for receptor and ligand respectively and mentioned in
+<br />
+the script of mmpbsa. But still the error persists.
+<br />
+Can what are the commands to check the no. of residues in a file.
+<br />
+Also plz share the steps or script before running mmpbsa and what to keep
+<br />
+in mind to obtain free energy calculations..
+<br />
+<br /><br />On Mon, Jun 19, 2023 at 10:44 AM SATYAJIT KHATUA &lt;satyajitkhatua09.gmail&#46;<!--nospam-->com&gt;
+<br />
+wrote:
+<br />
+<br />Hi Amannpreet,
+<br />
+<br />Your log reads &quot;PrmtopError: Complex nres !=
+<br />
+receptor nres + ligand nres&quot;.
+<br />
+<br />Check carefully if your complex residue number equal to receptor residue
+<br />
+number + ligand residue number from the respective prmtop file.
+<br />
+<br />If you used ante-MMPBSA.py to extract those check carefully the stripping
+<br />
+phase of the complex, receptor and ligand prmtop generation.
+<br />
+<br />Best,
+<br />
+Satyajit
+<br />
+<br />Get Outlook for Android &lt;<a href="https://aka.ms/AAb9ysg">https://aka.ms/AAb9ysg</a>&gt;
+<br />
+------------------------------
+<br />
+*From:* AMANPREET KAUR via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Error%20while%20running%20mmpbsa">amber.ambermd.org</a>&gt;
+<br />
+*Sent:* Monday, June 19, 2023 10:31:16 AM
+<br />
+*To:* amber.ambermd.org &lt;amber.ambermd.org&gt;
+<br />
+*Subject:* [AMBER] Error while running mmpbsa
+<br />
+<br />Hlo
+<br />
+&nbsp;I am running mmpbsa in amber 20  using the following command
+<br />
+*MMPBSA.py -O -i mmpbsa.in &lt;<a href="http://mmpbsa.in/">http://mmpbsa.in/</a>&gt; -o mmpbsa.out
+<br />
+-cp solv_8e1x_noh.com &lt;<a href="http://solv_8e1x_noh.com/">http://solv_8e1x_noh.com/</a>&gt;.prmtop
+<br />
+-rp 8e1x_noh.prmtop -lp 8480_10.3_opt_chim.prmtop -y *nc*
+<br />
+<br />&nbsp;But I am encountering an error which says &quot;PrmtopError: Complex nres !=
+<br />
+receptor nres + ligand nres.
+<br />
+How to rectify this kindly help as I am badly stuck in this.
+<br />
+Thank you.
+<br />
+Regards
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd&#46;<!--nospam-->org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Jun 18 2023 - 23:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0076.html" title="Next message in the list">AMANPREET KAUR via AMBER: "[AMBER] Error in running mmpbsa and mmgbsa"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0074.html" title="Previous message in the list">SATYAJIT KHATUA via AMBER: "Re: [AMBER] Error while running mmpbsa"</a></li>
+<li><dfn>Maybe in reply to</dfn>: <a href="0073.html" title="Message to which this message replies">AMANPREET KAUR via AMBER: "[AMBER] Error while running mmpbsa"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0077.html" title="Next message in this discussion thread">SATYAJIT KHATUA via AMBER: "Re: [AMBER] Error while running mmpbsa"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg75" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg75" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg75" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg75" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

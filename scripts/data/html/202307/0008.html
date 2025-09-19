@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] QM+Link final coordinates from Hector A. Baldoni via AMBER on 2023-07-03 (Amber Archive Jul 2023)</title>
+<meta name="Author" content="Hector A. Baldoni via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] QM+Link final coordinates" />
+<meta name="Date" content="2023-07-03" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] QM+Link final coordinates</h1>
+<!-- received="Mon Jul  3 06:30:02 2023" -->
+<!-- isoreceived="20230703133002" -->
+<!-- sent="Mon, 03 Jul 2023 10:24:00 -0300" -->
+<!-- isosent="20230703132400" -->
+<!-- name="Hector A. Baldoni via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] QM+Link final coordinates" -->
+<!-- id="0059e3daec564ae9c9a2a10d9a742786.unsl.edu.ar" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="613F6371-4373-411B-9833-9C3D6DACE1C1.rosswalker.co.uk" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0009.html" accesskey="d" title="Sara Mahmoud via AMBER: &quot;Re: [AMBER] unsuscribe&quot;">Next message</a> ]
+[ <a href="0007.html" title="SATYAJIT KHATUA via AMBER: &quot;Re: [AMBER] &#22238;&#22797;:  Kerror about MMPBSA&quot;">Previous message</a> ]
+[ <a href="0004.html" title="Ross Walker via AMBER: &quot;Re: [AMBER] QM+Link final coordinates&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg8" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg8" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg8" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg8" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Hector A. Baldoni via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20QM%2BLink%20final%20coordinates">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 03 Jul 2023 10:24:00 -0300</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Professor Walker,
+<br />
+<br />I am pleased to write to you to express my most sincere gratitude for 
+<br />
+your prompt response to my request and the time you dedicated to attend 
+<br />
+to it. I will test the proposed patch shortly.
+<br />
+<br />With my sincerest thanks,
+<br />
+Hector.
+<br />
+<br /><br /><br />El 2023-07-02 18:08, Ross Walker escribió:
+<br />
+<em class="quotelev1">&gt; Hi Hector,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Under the explicit caveat that it's been almost 20 years since I
+</em><br />
+<em class="quotelev1">&gt; looked at this code and am taking a quick 30 second look now:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Line 246 of AmberTools/src/sander/qm_mm.F90
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;   if(qmmm_struct%qm_mm_first_call) then
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;     if (qmmm_mpi%commqmmm_master) then
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;       call qm_print_coords(nstep,.true.)
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;       if (abfqmmm_param%abfqmmm /= 1) then
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;          write(6,'(/80(&quot;-&quot;)/&quot;  3.1 QM CALCULATION INFO&quot;,/80(&quot;-&quot;))')
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;       end if
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;     end if
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;   end if
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; It looks like you could probably just comment out the qm_mm_first_call
+</em><br />
+<em class="quotelev1">&gt; if / end if - that would then get you a file called
+</em><br />
+<em class="quotelev1">&gt; qmmm_region.pdb._nstep_ printed on every step. That would be a LOT of
+</em><br />
+<em class="quotelev1">&gt; I/O so you could also add a modulus test for nstep so it prints say
+</em><br />
+<em class="quotelev1">&gt; only every 1000 steps. Something like:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;     if (qmmm_mpi%commqmmm_master) then
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;       if (mod(nstep,1000)==0) then
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;         call qm_print_coords(nstep,.true.)
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;         if (abfqmmm_param%abfqmmm /= 1) then
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;            write(6,'(/80(&quot;-&quot;)/&quot;  3.1 QM CALCULATION INFO&quot;,/80(&quot;-&quot;))')
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;         end if
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;       end if
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;     end if
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Recompile and see if that works. - You could also add and if nstep =
+</em><br />
+<em class="quotelev1">&gt; whatever you set nstlim to (you might have to manually add it since I
+</em><br />
+<em class="quotelev1">&gt; don't know if nstlim is in scope within that routine or not) call
+</em><br />
+<em class="quotelev1">&gt; qm_print_coords... to get the final coordinates written out.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; All the best
+</em><br />
+<em class="quotelev1">&gt; Ross
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; On Jul 2, 2023, at 17:16, Hector A. Baldoni via AMBER
+</em><br />
+<em class="quotelev2">&gt;&gt; &lt;amber.ambermd.org&gt; wrote:
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Dear Amber developers,
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; I would like to bring the following matter to your attention. During
+</em><br />
+<em class="quotelev2">&gt;&gt; QM/MM simulations using Sander and the independent quantum program
+</em><br />
+<em class="quotelev2">&gt;&gt; (SQM), the qm_print_coords subroutine (developed by Ross Walker)
+</em><br />
+<em class="quotelev2">&gt;&gt; prints the initial coordinates of the QM region, including link
+</em><br />
+<em class="quotelev2">&gt;&gt; atoms. However, there is no option or keyword to print the
+</em><br />
+<em class="quotelev2">&gt;&gt; intermediate or final coordinates of the QM region and its link
+</em><br />
+<em class="quotelev2">&gt;&gt; atoms during or at the end of the simulation.
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Therefore, I kindly request your assistance. As I am not proficient
+</em><br />
+<em class="quotelev2">&gt;&gt; in Fortran programming, I need guidance or patch to call the
+</em><br />
+<em class="quotelev2">&gt;&gt; qm_print_coords subroutine at each ntwr step for any QM method, and
+</em><br />
+<em class="quotelev2">&gt;&gt; dump them to file.
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; This functionality would be useful for other users, and is crucial
+</em><br />
+<em class="quotelev2">&gt;&gt; for my application, as I use the final coordinates of the QM region
+</em><br />
+<em class="quotelev2">&gt;&gt; and link atoms for post-processing with qtaim. It would be greatly
+</em><br />
+<em class="quotelev2">&gt;&gt; appreciated if you could provide a patch to dump these final
+</em><br />
+<em class="quotelev2">&gt;&gt; coordinates to a file.
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Thank you for any suggestions or recommendations you can provide.
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Sincerely,
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; --
+</em><br />
+<em class="quotelev2">&gt;&gt; --------------------------------------
+</em><br />
+<em class="quotelev2">&gt;&gt; Dr. Hector A. Baldoni
+</em><br />
+<em class="quotelev2">&gt;&gt; Profesor Titular (FQByF-UNSL)
+</em><br />
+<em class="quotelev2">&gt;&gt; Investigador Adjunto (IMASL-CONICET)
+</em><br />
+<em class="quotelev2">&gt;&gt; Area de Quimica General e Inorganica
+</em><br />
+<em class="quotelev2">&gt;&gt; Universidad Nacional de San Luis
+</em><br />
+<em class="quotelev2">&gt;&gt; Chacabuco 917 (D5700BWS)
+</em><br />
+<em class="quotelev2">&gt;&gt; San Luis - Argentina
+</em><br />
+<em class="quotelev2">&gt;&gt; hbaldoni at unsl dot edu dot ar
+</em><br />
+<em class="quotelev2">&gt;&gt; Tel.:+54-(0)266-4520300 ext. 6157
+</em><br />
+<em class="quotelev2">&gt;&gt; --------------------------------------
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev1">&gt; <a href="https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!Mih3wA!D2Hl9PrDuk7Y-n5PXPzGWrDbsbN6l_P-GxL85zqgtnO7Erc1jZQkUu9nMPdefez0U7sHaQhWGdk">https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!Mih3wA!D2Hl9PrDuk7Y-n5PXPzGWrDbsbN6l_P-GxL85zqgtnO7Erc1jZQkUu9nMPdefez0U7sHaQhWGdk</a>$
+</em><br />
+<br /><pre>
+-- 
+--------------------------------------
+  Dr. Hector A. Baldoni
+  Profesor Titular (FQByF-UNSL)
+  Investigador Adjunto (IMASL-CONICET)
+  Area de Quimica General e Inorganica
+  Universidad Nacional de San Luis
+  Chacabuco 917 (D5700BWS)
+  San Luis - Argentina
+  hbaldoni at unsl dot edu dot ar
+  Tel.:+54-(0)266-4520300 ext. 6157
+--------------------------------------
+I do not define time, space, place, and motion, as being well known to 
+all.
+-- Newton (1642-1726), Principia
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Mon Jul 03 2023 - 06:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0009.html" title="Next message in the list">Sara Mahmoud via AMBER: "Re: [AMBER] unsuscribe"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0007.html" title="Previous message in the list">SATYAJIT KHATUA via AMBER: "Re: [AMBER] &#22238;&#22797;:  Kerror about MMPBSA"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0004.html" title="Message to which this message replies">Ross Walker via AMBER: "Re: [AMBER] QM+Link final coordinates"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg8" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg8" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg8" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg8" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

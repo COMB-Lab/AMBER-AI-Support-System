@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] CPPTRAJ, FixAtomOrder peculiarity from Daniel Roe via AMBER on 2023-05-30 (Amber Archive May 2023)</title>
+<meta name="Author" content="Daniel Roe via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] CPPTRAJ, FixAtomOrder peculiarity" />
+<meta name="Date" content="2023-05-30" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] CPPTRAJ, FixAtomOrder peculiarity</h1>
+<!-- received="Tue May 30 11:30:02 2023" -->
+<!-- isoreceived="20230530183002" -->
+<!-- sent="Tue, 30 May 2023 14:08:35 -0400" -->
+<!-- isosent="20230530180835" -->
+<!-- name="Daniel Roe via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] CPPTRAJ, FixAtomOrder peculiarity" -->
+<!-- id="CAAC0qObUhcH4JoWsnwmqVBOkQWKdnyjPerxGSpuJpDszWby-JA.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="2230259E-9BE8-4CBB-BDC8-A2E8A71DFA57.uconn.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0130.html" accesskey="d" title="Pertschy, Florian via AMBER: &quot;Re: [AMBER] Amber22 CUDA compilation problem&quot;">Next message</a> ]
+[ <a href="0128.html" title="Irek Porebski via AMBER: &quot;[AMBER] Amber22 CUDA compilation problem&quot;">Previous message</a> ]
+[ <a href="0120.html" title="Matthew Guberman-Pfeffer via AMBER: &quot;[AMBER] CPPTRAJ, FixAtomOrder peculiarity&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg129" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg129" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg129" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg129" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20CPPTRAJ%2C%20FixAtomOrder%20peculiarity">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 30 May 2023 14:08:35 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />Try adding 'topresnum' to your 'trajout' command (e.g. 'trajout
+<br />
+MyStruc_Reordered.pdb topresnum') to use topology residue numbering
+<br />
+instead of the PDB residue numbering (which is intentionally not
+<br />
+reordered).
+<br />
+<br />-Dan
+<br />
+<br />On Fri, May 26, 2023 at 12:31 PM Matthew Guberman-Pfeffer via AMBER
+<br />
+&lt;amber.ambermd.org&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Dear AMBER community,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I noticed that the fixatomorder keyword in CPPTRAJ doesn’t renumber the residue IDs. For example, the below CPPTRAJ input fixes the atom ordering so residue 775 in my structure comes immediately after residue 258 to which it is bonded. However, the residue ID remains 775.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; parm MyStruc.prmtop
+</em><br />
+<em class="quotelev1">&gt; trajin min.rst7
+</em><br />
+<em class="quotelev1">&gt; fixatomorder parmout MyStruc_Reordered.prmtop
+</em><br />
+<em class="quotelev1">&gt; trajout MyStruc_Reordered.pdb
+</em><br />
+<em class="quotelev1">&gt; run
+</em><br />
+<em class="quotelev1">&gt; quit
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; If I pass the re-ordered prmtop and rst7 to ambpdb, the residue IDs get corrected.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; It would be nice if CPPTRAJ could update the residue IDs after correcting the atom ordering.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt; Matthew
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue May 30 2023 - 11:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0130.html" title="Next message in the list">Pertschy, Florian via AMBER: "Re: [AMBER] Amber22 CUDA compilation problem"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0128.html" title="Previous message in the list">Irek Porebski via AMBER: "[AMBER] Amber22 CUDA compilation problem"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0120.html" title="Message to which this message replies">Matthew Guberman-Pfeffer via AMBER: "[AMBER] CPPTRAJ, FixAtomOrder peculiarity"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg129" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg129" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg129" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg129" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

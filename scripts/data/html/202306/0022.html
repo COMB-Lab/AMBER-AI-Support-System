@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Self Inconsistency within antechamber for NAD and NAP cofactors (expects different bond orders in different routines) from Christopher Corbo via AMBER on 2023-06-05 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="Christopher Corbo via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Self Inconsistency within antechamber for NAD and NAP cofactors (expects different bond orders in different routines)" />
+<meta name="Date" content="2023-06-05" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Self Inconsistency within antechamber for NAD and NAP cofactors (expects different bond orders in different routines)</h1>
+<!-- received="Mon Jun  5 14:00:02 2023" -->
+<!-- isoreceived="20230605210002" -->
+<!-- sent="Mon, 5 Jun 2023 16:36:17 -0400" -->
+<!-- isosent="20230605203617" -->
+<!-- name="Christopher Corbo via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Self Inconsistency within antechamber for NAD and NAP cofactors (expects different bond orders in different routines)" -->
+<!-- id="CAMZGJEKPnofmyc96D9LFgCwoqvwz_Cmm1OCwKk8ULyJb-Xc3YQ.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0023.html" accesskey="d" title="David A Case via AMBER: &quot;Re: [AMBER] Self Inconsistency within antechamber for NAD and NAP cofactors (expects different bond orders in different routines)&quot;">Next message</a> ]
+[ <a href="0021.html" title="Michael Bruist via AMBER: &quot;[AMBER] RNA with 5&#0039; phosphates&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0023.html" accesskey="t" title="David A Case via AMBER: &quot;Re: [AMBER] Self Inconsistency within antechamber for NAD and NAP cofactors (expects different bond orders in different routines)&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg22" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg22" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg22" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg22" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Christopher Corbo via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Self%20Inconsistency%20within%20antechamber%20for%20NAD%20and%20NAP%20cofactors%20(expects%20different%20bond%20orders%20in%20different%20routines)">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 5 Jun 2023 16:36:17 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello Amber Users,
+<br />
+<br />I have noticed a potential issue in amber16 &amp; 20 for systems which contain
+<br />
+NAD and NAP (3 letter pdb codes) cofactors.
+<br />
+<br />The issue arises because when I pass the mol2 into antechamber for bcc
+<br />
+charges, it overrides the bond orders for the Nicotinamide ring. Initially
+<br />
+the ring is passed in as fully aromatic, but the message is given:
+<br />
+<br />Number of bonds (3) does not match connectivity (2) for N.ar N6
+<br />
+<br />The bond from N.ar to C2N becomes “1” bond order and to C6N becomes “2”
+<br />
+bond order, while the remaining 4 bonds are still “ar”
+<br />
+<br />Bcc charges are successfully calculated with overridden bond orders.
+<br />
+<br />However when I take the processed mol2 (with overridden bond orders) and
+<br />
+pass it back into antechamber with -fo prepi to create a prep file, there
+<br />
+is a FATAL ERROR thrown for C2N because of an open valence (3). C2N has “1”
+<br />
+bond to N6, “1” bond to a H and “ar” bond to C3N.
+<br />
+<br />When I manually adjust the bond orders back to all “ar” in the mol2 the
+<br />
+prep file is then handled and created successfully.
+<br />
+<br />I have not tried this with amber22 yet.
+<br />
+<br />Is there any auxiliary files which have been validated that I should be
+<br />
+using for NAD and NAP instead? Or is there a way to address this issue
+<br />
+within the software?
+<br />
+<br />While I can manually fix this problem, I have been working on developing a
+<br />
+fully automated protocol for our lab to successfully rebuild our testset of
+<br />
+1000+ protein ligand systems.
+<br />
+<br />Kind Regards,
+<br />
+<br />Christopher Corbo
+<br />
+<pre>
+-- 
+Christopher Corbo
+Ph.D. Student
+Department of Biochemistry and Structural Biology
+Member of the Rizzo Lab
+Stony Brook University
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Mon Jun 05 2023 - 14:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0023.html" title="Next message in the list">David A Case via AMBER: "Re: [AMBER] Self Inconsistency within antechamber for NAD and NAP cofactors (expects different bond orders in different routines)"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0021.html" title="Previous message in the list">Michael Bruist via AMBER: "[AMBER] RNA with 5&#0039; phosphates"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0023.html" title="Next message in this discussion thread">David A Case via AMBER: "Re: [AMBER] Self Inconsistency within antechamber for NAD and NAP cofactors (expects different bond orders in different routines)"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0023.html" title="Message sent in reply to this message">David A Case via AMBER: "Re: [AMBER] Self Inconsistency within antechamber for NAD and NAP cofactors (expects different bond orders in different routines)"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg22" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg22" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg22" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg22" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

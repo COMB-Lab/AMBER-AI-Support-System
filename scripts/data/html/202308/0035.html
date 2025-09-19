@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] questions about AmberTools installation from source from Damas Joao CHST via AMBER on 2023-08-09 (Amber Archive Aug 2023)</title>
+<meta name="Author" content="Damas Joao CHST via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] questions about AmberTools installation from source" />
+<meta name="Date" content="2023-08-09" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] questions about AmberTools installation from source</h1>
+<!-- received="Wed Aug  9 02:00:02 2023" -->
+<!-- isoreceived="20230809090002" -->
+<!-- sent="Wed, 9 Aug 2023 08:37:51 +0000" -->
+<!-- isosent="20230809083751" -->
+<!-- name="Damas Joao CHST via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] questions about AmberTools installation from source" -->
+<!-- id="DU0PR05MB93333A88334764D02FC2E473F712A.DU0PR05MB9333.eurprd05.prod.outlook.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0036.html" accesskey="d" title="Stephan Schott via AMBER: &quot;Re: [AMBER] questions about AmberTools installation from source&quot;">Next message</a> ]
+[ <a href="0034.html" title="Priyasha Majee via AMBER: &quot;[AMBER] Regarding dU Force Field&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0036.html" accesskey="t" title="Stephan Schott via AMBER: &quot;Re: [AMBER] questions about AmberTools installation from source&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg35" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg35" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg35" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg35" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Damas Joao CHST via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20questions%20about%20AmberTools%20installation%20from%20source">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 9 Aug 2023 08:37:51 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear all,
+<br />
+<br />Triggered by a patching on my installation due to a bug found, I was looking a bit deeper in some details, and I have a few questions.
+<br />
+<br />I am installing AmberTools from source (option 3). This is mainly because I'm doing a cluster-wide installation for multiple users and since we use environment modules, we found that this is the best approach. Up to here, all good.
+<br />
+<br />My first question is: I got the current source through the website, compared the md5sum, all checks out. I was expecting to have version 23, but when I look at the source, several places (e.g., CMakeLists.txt) mention that it is version 22. I wonder if this is just a bug (i.e., it's version 23 but the version strings were not updated) or if it's a source of AmberTools 22.
+<br />
+<br />My second question: when patching, I like to do an installation from scratch, applying the suggested patch after. When I was recompiling, the process errored, while it did not in the past. I paste here a few of the lines of the output, even if there are many more similar errors:
+<br />
+<br />pytraj/topology/topology.cpp: In function '__pyx_CoroutineObject* __Pyx__Coroutine_NewInit(__pyx_CoroutineObject*, __pyx_coroutine_body_t, PyObject*, PyObject*, PyObject*, PyObject*, PyObject*)':
+<br />
+pytraj/topology/topology.cpp:47943:23: error: '_PyErr_StackItem' {aka 'struct _err_stackitem'} has no member named 'exc_type'
+<br />
+47943 |     gen-&gt;gi_exc_state.exc_type = NULL;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|                       ^~~~~~~~
+<br />
+pytraj/topology/topology.cpp:47945:23: error: '_PyErr_StackItem' {aka 'struct _err_stackitem'} has no member named 'exc_traceback'
+<br />
+47945 |     gen-&gt;gi_exc_state.exc_traceback = NULL;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|                       ^~~~~~~~~~~~~
+<br />
+pytraj/topology/topology.cpp: At global scope:
+<br />
+pytraj/topology/topology.cpp:48152:1: error: too many initializers for 'PyTypeObject' {aka '_typeobject'}
+<br />
+48152 | };
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| ^
+<br />
+error: command '/progs/all/opensource/gcc/11.3.0/bin/gcc' failed with exit code 1
+<br />
+make[2]: *** [AmberTools/src/pytraj/CMakeFiles/python-build/pytraj-build.stamp] Error 1
+<br />
+make[1]: *** [AmberTools/src/pytraj/CMakeFiles/pytraj.dir/all] Error 2
+<br />
+make: *** [all] Error 2
+<br />
+<br />My first guess was python version incompatibility, since I think before the miniconda being installed was with python 3.10, and now it was installing 3.11 (since the default in cmake is &quot;latest&quot; and I guess the latest has changed since the last time I installed). I added &quot;-DMINICONDA_VERSION=py310_23.5.2-0&quot; to my cmake flags, and all compiled fine. Do you have cross-compilation matrix for several version of python? It would be good to know which versions AmberTools is compatible with since the only reference in the manual is that it needs to be Python 3.4 or greater.
+<br />
+<br />On the same note, looking at the cmake scripts, I noticed AmberTools is getting the installer from Anaconda/Continuum. Due to Anaconda's ToS, I'll need to change that (follow point 3 of section 2.2.5 of the manual) and it would be good to know which versions of python are possible to use. Additionally, are the python packages references in the manual (numpy, scipy, matplotlib, cython, setuptools, and tkinter) the only ones needed? Any specific versions or the latest should work?
+<br />
+<br />Thank you for your time,
+<br />
+João
+<br />
+<br />This message may contain confidential information. If you are not the designated recipient, please notify the sender immediately, and delete the original and any copies. Any use of the message by you is prohibited.
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Aug 09 2023 - 02:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0036.html" title="Next message in the list">Stephan Schott via AMBER: "Re: [AMBER] questions about AmberTools installation from source"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0034.html" title="Previous message in the list">Priyasha Majee via AMBER: "[AMBER] Regarding dU Force Field"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0036.html" title="Next message in this discussion thread">Stephan Schott via AMBER: "Re: [AMBER] questions about AmberTools installation from source"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Maybe reply</dfn>: <a href="0036.html" title="Message sent in reply to this message">Stephan Schott via AMBER: "Re: [AMBER] questions about AmberTools installation from source"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0067.html" title="Message sent in reply to this message">Stephan Schott via AMBER: "Re: [AMBER] questions about AmberTools installation from source"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg35" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg35" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg35" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg35" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

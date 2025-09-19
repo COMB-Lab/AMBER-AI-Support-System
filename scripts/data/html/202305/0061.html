@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Calculating diffusion constant for NPT trajectories with CPPTRAJ from Daniel Roe via AMBER on 2023-05-12 (Amber Archive May 2023)</title>
+<meta name="Author" content="Daniel Roe via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Calculating diffusion constant for NPT trajectories with CPPTRAJ" />
+<meta name="Date" content="2023-05-12" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Calculating diffusion constant for NPT trajectories with CPPTRAJ</h1>
+<!-- received="Fri May 12 13:00:02 2023" -->
+<!-- isoreceived="20230512200002" -->
+<!-- sent="Fri, 12 May 2023 15:38:35 -0400" -->
+<!-- isosent="20230512193835" -->
+<!-- name="Daniel Roe via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Calculating diffusion constant for NPT trajectories with CPPTRAJ" -->
+<!-- id="CAAC0qObTa3Lk0CssEs93zwr5hjJA=kV7w2bOdb2qLctHrAnNuA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0062.html" accesskey="d" title="Prithviraj Nandigrami via AMBER: &quot;Re: [AMBER] native contacts nucleic acid&quot;">Next message</a> ]
+[ <a href="0060.html" title="Kevin Mei via AMBER: &quot;Re: [AMBER] Poor Performance of Thermodynamic Integration using pmemd.cuda&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg61" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg61" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg61" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg61" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Calculating%20diffusion%20constant%20for%20NPT%20trajectories%20with%20CPPTRAJ">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 12 May 2023 15:38:35 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi All,
+<br />
+<br />Previously, there have been issues reported when attempting to
+<br />
+&quot;unwrap&quot; NPT trajectories (i.e. trajectories where the box size is
+<br />
+allowed to fluctuate) with CPPTRAJ, illustrated by an accumulation of
+<br />
+error in calculated diffusion constants that increases with increasing
+<br />
+trajectory length. This has recently been addressed in the GitHub
+<br />
+version of cpptraj (see <a href="https://github.com/Amber-MD/cpptraj/pull/1027">https://github.com/Amber-MD/cpptraj/pull/1027</a>
+<br />
+and <a href="https://github.com/Amber-MD/cpptraj/pull/1028">https://github.com/Amber-MD/cpptraj/pull/1028</a>) by forcing all
+<br />
+unwrapping to occur in fractional space, and adding the optional
+<br />
+'avgucell' keyword to unwrap to remove the effect of box fluctuations
+<br />
+by projecting coordinates back into Cartesian space via averaged unit
+<br />
+cell vectors. An example of this is:
+<br />
+<br />parm tz2.ortho.parm7
+<br />
+trajin tz2.ortho.nc
+<br />
+# Calculate avg. box
+<br />
+avgbox MyBox
+<br />
+run
+<br />
+# Use avg box to remove fluctuations with unwrap
+<br />
+unwrap bymol avgucell MyBox[avg]
+<br />
+# Calculate diffusion; use noimage since coordinates are unwrapped
+<br />
+diffusion Water :WAT.O out tz2.ortho.wato.dat noimage
+<br />
+run
+<br />
+<br />Note that this has not yet been ported to AmberTools 23 via a patch,
+<br />
+but I plan to do so as soon as I can. Let me know if there are any
+<br />
+questions.
+<br />
+<br />-Dan
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri May 12 2023 - 13:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0062.html" title="Next message in the list">Prithviraj Nandigrami via AMBER: "Re: [AMBER] native contacts nucleic acid"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0060.html" title="Previous message in the list">Kevin Mei via AMBER: "Re: [AMBER] Poor Performance of Thermodynamic Integration using pmemd.cuda"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg61" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg61" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg61" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg61" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

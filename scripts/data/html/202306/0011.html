@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Running gas phase TI with pmemd.CUDA. from Fanyu Zhao via AMBER on 2023-06-04 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="Fanyu Zhao via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Running gas phase TI with pmemd.CUDA." />
+<meta name="Date" content="2023-06-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Running gas phase TI with pmemd.CUDA.</h1>
+<!-- received="Sun Jun  4 19:30:02 2023" -->
+<!-- isoreceived="20230605023002" -->
+<!-- sent="Mon, 5 Jun 2023 10:25:29 +0800" -->
+<!-- isosent="20230605022529" -->
+<!-- name="Fanyu Zhao via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Running gas phase TI with pmemd.CUDA." -->
+<!-- id="CACeQDqzVtWKoU+VoNv4hUuVw4grDydfdJtjSZzVu-MDQb=FkeA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0012.html" accesskey="d" title="Vlad Cojocaru via AMBER: &quot;[AMBER] Compiling Amber 22 (+ AT 23) with Intel compiler&quot;">Next message</a> ]
+[ <a href="0010.html" title="angad sharma via AMBER: &quot;[AMBER] umbrella sampling&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg11" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg11" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg11" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg11" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Fanyu Zhao via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Running%20gas%20phase%20TI%20with%20pmemd.CUDA.">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 5 Jun 2023 10:25:29 +0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear amber users,
+<br />
+<br />I'm trying to run TI in the gas phase. But it always gives me an error
+<br />
+message of &quot;The CUDA code currently cannot handle TI with implicit solvent
+<br />
+models! Please use the serial code instead&quot;.
+<br />
+<br />I was wondering if gas phase TI can only be performed with CPU and if I'm
+<br />
+correct with the process of creating a pdb file in gas phase.
+<br />
+<br />Here's my input for a minimization.
+<br />
+<br />Minimization with position restraint
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;imin = 1, ntmin = 2, maxcyc = 10000,
+<br />
+&nbsp;&nbsp;ntpr = 1000, ntwe = 1000,
+<br />
+&nbsp;&nbsp;ntr = 1, restraint_wt = 100.0,
+<br />
+&nbsp;&nbsp;restraintmask = '!.H=  ',
+<br />
+&nbsp;&nbsp;ntb=0,igb=6, cut = 9999.0, ioutfm = 1,
+<br />
+&nbsp;&nbsp;icfe = 1, ifsc = 1, logdvdl = 0,
+<br />
+&nbsp;&nbsp;timask1=':10',
+<br />
+&nbsp;&nbsp;timask2=':3',
+<br />
+&nbsp;&nbsp;scmask1=':10 &amp; !.CA,C,N,O',
+<br />
+&nbsp;&nbsp;scmask2=':3 &amp; !.CA,C,N,O',
+<br />
+&nbsp;&nbsp;clambda=0.5,
+<br />
+&amp;end
+<br />
+&nbsp;/
+<br />
+<br /><br />And here's the tleap file I used to generate a gas phase pdb file.
+<br />
+<br />source leaprc.protein.ff14SB
+<br />
+<br />com=loadpdb 1tvb_aftermd.pdb
+<br />
+unbound=loadpdb peptide.pdb
+<br />
+<br />savepdb com wild_md_bound.pdb
+<br />
+saveamberparm com wild_md_bound.prmtop wild_md_bound.inpcrd
+<br />
+<br />savepdb unbound wild_md_unbound.pdb
+<br />
+saveamberparm unbound wild_md_unbound.prmtop wild_md_unbound.inpcrd
+<br />
+quit
+<br />
+<br /><br />Thank you so much!
+<br />
+<br />Best,
+<br />
+Fanyu
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Jun 04 2023 - 19:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0012.html" title="Next message in the list">Vlad Cojocaru via AMBER: "[AMBER] Compiling Amber 22 (+ AT 23) with Intel compiler"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0010.html" title="Previous message in the list">angad sharma via AMBER: "[AMBER] umbrella sampling"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg11" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg11" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg11" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg11" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Trouble Installing OpenMPI on Amazon Linux 2 (CentOS) from Evan Biedermann via AMBER on 2023-06-07 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="Evan Biedermann via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Trouble Installing OpenMPI on Amazon Linux 2 (CentOS)" />
+<meta name="Date" content="2023-06-07" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Trouble Installing OpenMPI on Amazon Linux 2 (CentOS)</h1>
+<!-- received="Wed Jun  7 10:30:02 2023" -->
+<!-- isoreceived="20230607173002" -->
+<!-- sent="Wed, 7 Jun 2023 13:12:40 -0400" -->
+<!-- isosent="20230607171240" -->
+<!-- name="Evan Biedermann via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Trouble Installing OpenMPI on Amazon Linux 2 (CentOS)" -->
+<!-- id="CALu0Rodscp94Db0UYgO4ELw5_pJTMVpj6O7c8CxemBnuoqhmeA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0036.html" accesskey="d" title="Prithviraj Nandigrami via AMBER: &quot;[AMBER] H-bond analysis in cpptraj&quot;">Next message</a> ]
+[ <a href="0034.html" title="Bhattacharjee, Sinjini via AMBER: &quot;Re: [AMBER] Problems with minimization energy NaN&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg35" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg35" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg35" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg35" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Evan Biedermann via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Trouble%20Installing%20OpenMPI%20on%20Amazon%20Linux%202%20(CentOS)">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 7 Jun 2023 13:12:40 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+<br />*Problem Summary:*
+<br />
+I am having an issue installing Amber22 with CUDA and MPI. I have followed
+<br />
+the directions for installing in centos using cmake following both
+<br />
+<a href="http://ambermd.org/InstCentOS.php">http://ambermd.org/InstCentOS.php</a> and <a href="https://ambermd.org/doc12/Amber22.pdf">https://ambermd.org/doc12/Amber22.pdf</a>.
+<br />
+I ran the initial install following the step 3 of page 23 on the pdf
+<br />
+instructions. Then I installed the MPI compilers in the
+<br />
+$AMBERHOME/AmberTools/src path as specified in step 8 of page 24. After
+<br />
+that, I went back to the run_cmake file, set DMPI=TRUE, and ran sudo
+<br />
+./run_cmake.
+<br />
+<br />The mpifort and mpif90 compilers are in the same path as the MPI C and MPI
+<br />
+CXX Compilers, but for some reason cmake is unable to find them. I have
+<br />
+tried adding the path to .bashrc, adding set(MPI_Fortran_COMPILER
+<br />
+/opt/amber22/AmberTools/src/bin), set(MPI_Fortran_INCLUDE_PATH
+<br />
+/opt/amber22/AmberTools/src/bin), set(MPI_Fortran_LIBRARIES
+<br />
+/opt/amber22/AmberTools/src/bin) to the MPIConfig.cmake and CMakeList.txt
+<br />
+files and nothing has worked. I have also tried setting the INCLUDE_PATH
+<br />
+and LIBRARIES to  /opt/amber22/AmberTools/src/lib/openmpi.
+<br />
+<br />To add more specifics, I originally installed the version of OpenMPI by
+<br />
+using wget to download openmpi-4.1.5.tar.bz2 to $AMBERHOME/AmberTools/src,
+<br />
+unpacking and installing following these commands:
+<br />
+<br />&nbsp;&nbsp;&nbsp;1. *tar -xzf openmpi-4.0.1.tar.gz*
+<br />
+&nbsp;&nbsp;&nbsp;2. *cd openmpi-4.1.5*
+<br />
+&nbsp;&nbsp;&nbsp;3.
+<br />
+*./configure --prefix=/opt/amber22/AmberTools/src *
+<br />
+&nbsp;&nbsp;&nbsp;4. *make*
+<br />
+&nbsp;&nbsp;&nbsp;5. *sudo make all install*
+<br />
+<br />This ended up with the following bin folder in this
+<br />
+path: /opt/amber22/AmberTools/src/bin
+<br />
+[image: image.png]
+<br />
+(if the picture does load, the bin contains mpicc, mpicxx, mpif77, mpirun,
+<br />
+mpiCC, mpiexec, mpifort, mpif90, mpic++....)
+<br />
+<br /><br />Here are the full details on the system I'm using:
+<br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br />*NAME=&quot;Amazon Linux&quot;VERSION=&quot;2&quot;ID=&quot;amzn&quot;ID_LIKE=&quot;centos rhel
+<br />
+fedora&quot;VERSION_ID=&quot;2&quot;PRETTY_NAME=&quot;Amazon Linux
+<br />
+2&quot;ANSI_COLOR=&quot;0;33&quot;CPE_NAME=&quot;cpe:2.3:o:amazon:amazon_linux:2&quot;HOME_URL=&quot;<a href="https://amazonlinux.com/">https://amazonlinux.com/</a>
+<br />
+&lt;<a href="https://amazonlinux.com/">https://amazonlinux.com/</a>&gt;&quot;*
+<br />
+*Description:    Amazon Linux release 2 (Karoo)*
+<br />
+<br />I do believe that the issue is coming from a base version of mpi
+<br />
+interfering with the one I tried to install, because originally when I used
+<br />
+the command *which mpif90* it would show a path to */efs/anaconda3/bin*. I
+<br />
+then tried *sudo yum install openmpi-devel* and *module load mpi* and
+<br />
+now *which
+<br />
+mpif90* gives */opt/amazon/openmpi/bin/mpif90* and *mpif90 --version*
+<br />
+&nbsp;gives:
+<br />
+<br />*GNU Fortran (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15)*
+<br />
+<br /><br />*Copyright (C) 2017 Free Software Foundation, Inc.This is free software;
+<br />
+see the source for copying conditions.  There is NOwarranty; not even for
+<br />
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.*
+<br />
+<br />However, the Amber build is still failing giving the same output as the
+<br />
+original error:
+<br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />*--
+<br />
+**************************************************************************--
+<br />
+Starting configuration of Amber version 22.0.0...-- CMake Version: 3.26.4--
+<br />
+For how to use this build system, please read this wiki:--
+<br />
+&nbsp;&nbsp;<a href="http://ambermd.org/pmwiki/pmwiki.php/Main/CMake">http://ambermd.org/pmwiki/pmwiki.php/Main/CMake</a>
+<br />
+&lt;<a href="http://ambermd.org/pmwiki/pmwiki.php/Main/CMake">http://ambermd.org/pmwiki/pmwiki.php/Main/CMake</a>&gt;-- For a list of important
+<br />
+CMake variables, check here:--
+<br />
+&nbsp;&nbsp;<a href="http://ambermd.org/pmwiki/pmwiki.php/Main/CMake-Common-Options">http://ambermd.org/pmwiki/pmwiki.php/Main/CMake-Common-Options</a>
+<br />
+&lt;<a href="http://ambermd.org/pmwiki/pmwiki.php/Main/CMake-Common-Options">http://ambermd.org/pmwiki/pmwiki.php/Main/CMake-Common-Options</a>&gt;--
+<br />
+**************************************************************************--
+<br />
+Amber source found, building AmberTools and Amber-- Could NOT find
+<br />
+MPI_Fortran (missing: MPI_Fortran_WORKS)-- Could NOT find MPI (missing:
+<br />
+MPI_Fortran_FOUND) (found version &quot;4.0&quot;)-- MPI C Compiler:
+<br />
+/opt/amber22/AmberTools/src/bin/-- MPI CXX Compiler:
+<br />
+/opt/amber22/AmberTools/src/bin/CMake Error at cmake/MPIConfig.cmake:16
+<br />
+(message):  You requested MPI, but the MPI Fortran library was not found.
+<br />
+Please  install one and try again, or set MPI_Fortran_INCLUDE_PATH and
+<br />
+MPI_Fortran_LIBRARIES to point to your MPI.Call Stack (most recent call
+<br />
+first):  CMakeLists.txt:120 (include)-- Configuring incomplete, errors
+<br />
+occurred!If errors are reported, search for 'CMake Error' in the cmake.log
+<br />
+file.If the cmake build report looks OK, you should now do the following:
+<br />
+&nbsp;&nbsp;make install    source /opt/amber22/amber.shConsider adding the last line
+<br />
+to your login startup script, e.g. ~/.bashrc*
+<br />
+<br />It looks like the MPI C and MPI CC compilers are still being sourced from
+<br />
+/opt/amber22/AmberTools/src/bin/ but it can't find the fortran compiler.
+<br />
+I've tried removing /opt/amber22/AmberTools/src/bin/ from the PATH to use
+<br />
+the yum install, but the build is still
+<br />
+sourcing /opt/amber22/AmberTools/src/bin/ for MPI C and MPI CC.
+<br />
+<br />Please let me know how I can resolve this issue.
+<br />
+<br />Best,
+<br />
+Evan
+<br />
+<br /><pre>
+-- 
+Evan Biedermann
+Associate Solutions Architect
+Engineering | Cloud303
+ebiedermann.cloud303.io
+cloud303.io
+12081 W Alameda Pkwy, Suite 150, Lakewood, CO 80228
+&lt;<a href="https://www.hubspot.com/email-signature-generator?utm_source=create-signature">https://www.hubspot.com/email-signature-generator?utm_source=create-signature</a>&gt;
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Wed Jun 07 2023 - 10:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0036.html" title="Next message in the list">Prithviraj Nandigrami via AMBER: "[AMBER] H-bond analysis in cpptraj"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0034.html" title="Previous message in the list">Bhattacharjee, Sinjini via AMBER: "Re: [AMBER] Problems with minimization energy NaN"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg35" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg35" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg35" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg35" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

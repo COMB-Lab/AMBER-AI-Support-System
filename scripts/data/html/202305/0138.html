@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] mdp parameters when using the AMBER force field with GROMACS from Arun Srikanth via AMBER on 2023-05-31 (Amber Archive May 2023)</title>
+<meta name="Author" content="Arun Srikanth via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] mdp parameters when using the AMBER force field with GROMACS" />
+<meta name="Date" content="2023-05-31" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] mdp parameters when using the AMBER force field with GROMACS</h1>
+<!-- received="Wed May 31 10:30:03 2023" -->
+<!-- isoreceived="20230531173003" -->
+<!-- sent="Wed, 31 May 2023 19:00:30 +0200" -->
+<!-- isosent="20230531170030" -->
+<!-- name="Arun Srikanth via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] mdp parameters when using the AMBER force field with GROMACS" -->
+<!-- id="CAGWKGW4o0iPTiaM9WivWT9zLLVMCOTOtL10Vd+QYLMie-p9FCw.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="f52f409e-294a-d0f2-3972-b24178a9a5fc.fau.de" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0139.html" accesskey="d" title="DE-SANTANA-PONTES, FREDERICO J. via AMBER: &quot;[AMBER] MCPB.py RESP charge The number of the residue names given is mismatch the database&quot;">Next message</a> ]
+[ <a href="0137.html" title="Maciej Spiegel via AMBER: &quot;[AMBER] Parametrizing Pt(II) complex with MCPB.py&quot;">Previous message</a> ]
+[ <a href="0121.html" title="Eduard Neu via AMBER: &quot;[AMBER] mdp parameters when using the AMBER force field with GROMACS&quot;">Maybe in reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg138" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg138" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg138" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg138" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Arun Srikanth via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20mdp%20parameters%20when%20using%20the%20AMBER%20force%20field%20with%20GROMACS">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 31 May 2023 19:00:30 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi eddie
+<br />
+<br />Recently I used charmm forcefield to simulate surface tension of liquids. I
+<br />
+generated inputs based on charmm gui (I did my simulations with gromacs).
+<br />
+Although charmm forcefield stipulates that dispersion corrections should
+<br />
+not be used I noticed that when I exclude dispersion corrections the
+<br />
+surface tensions were significantly lower compared to experimental data. I
+<br />
+came to the conclusion that dispersion corrections are indeed needed and
+<br />
+that dispersion correction to the pressure tensor is not negligible.
+<br />
+Whether to use dispersion correction or not then becomes a choice depending
+<br />
+on what property you want to use
+<br />
+Will excluding dispersion correction adversely affect your simulation
+<br />
+results ? (self assembly, surface tension)
+<br />
+Then I believe you have to include dispersion correction and state that in
+<br />
+the manuscript/article/report that you write.
+<br />
+MD engines typically provide two options to account for this, force shit
+<br />
+and energy shift.
+<br />
+I beleive force shift has not yet been implemented in gromacs but LAMMPS
+<br />
+has this option.
+<br />
+Since accounting for tail corrections is force field specific it would not
+<br />
+be mentioned in an MD engine manual. As a courtesy gromacs developers have
+<br />
+mentioned on how to acount for vdw corrections for the charmm force field.
+<br />
+<br />Hope this helps
+<br />
+<br />Cheers
+<br />
+Arun
+<br />
+<br /><br />On Wed, May 31, 2023 at 5:40 PM Eduard Neu &lt;eduard.neu.fau&#46;<!--nospam-->de&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hi Arun,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; thanks for your answer!
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I was wondering why one needs to apply dispersion corrections specifically
+</em><br />
+<em class="quotelev1">&gt; when using the AMBER force field.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; For example, using the CHARMM force field the dispersion correction is not
+</em><br />
+<em class="quotelev1">&gt; needed. See here:
+</em><br />
+<em class="quotelev1">&gt; <a href="https://manual.gromacs.org/current/user-guide/force-fields.html">https://manual.gromacs.org/current/user-guide/force-fields.html</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Also, it was brought to my attention that AMBER by default sets vdwmeth=1
+</em><br />
+<em class="quotelev1">&gt; (p.408 AMBER22 manual). This means that by default a continuum model
+</em><br />
+<em class="quotelev1">&gt; correction for energy and pressure is used. I assume this is also the
+</em><br />
+<em class="quotelev1">&gt; default setting for the AMBER force field.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Additionally, this is explicitly stated in the ff14SB publication:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; &quot;A continuum model correction for energy and pressure was applied to
+</em><br />
+<em class="quotelev1">&gt; long-range van der Waals interactions.&quot;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; However, I couldn’t find any information on using
+</em><br />
+<em class="quotelev1">&gt; vdw-modifier=Potential-shift. I guess this is GROAMCS specific:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://manual.gromacs.org/current/reference-manual/functions/nonbonded-interactions.html">https://manual.gromacs.org/current/reference-manual/functions/nonbonded-interactions.html</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best
+</em><br />
+<em class="quotelev1">&gt; Eddie
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On 5/26/2023 7:47 PM, Arun Srikanth wrote:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Hi Eddie
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; You need to apply dispersion corrections for energy and pressure. For
+</em><br />
+<em class="quotelev1">&gt; pressure the correction cannot be neglected
+</em><br />
+<em class="quotelev1">&gt; More on this you can find here
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://manual.gromacs.org/current/reference-manual/functions/long-range-vdw.html">https://manual.gromacs.org/current/reference-manual/functions/long-range-vdw.html</a>
+</em><br />
+<em class="quotelev1">&gt; Arun
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Fri, May 26, 2023 at 7:05 PM Eduard Neu via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+</em><br />
+<em class="quotelev1">&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; Hi everyone,
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; I also posted this question in the GROAMCS forum, but haven’t received a
+</em><br />
+<em class="quotelev2">&gt;&gt; satisfying answer yet:
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; <a href="https://gromacs.bioexcel.eu/t/mdp-parameters-for-non-bonded-interaction-using-the-amber-force-field/6458">https://gromacs.bioexcel.eu/t/mdp-parameters-for-non-bonded-interaction-using-the-amber-force-field/6458</a>
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; In the GROMACS manual there are no clear recommendation regarding the
+</em><br />
+<em class="quotelev2">&gt;&gt; non-bonded parameters when using the AMBER force field:
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; <a href="https://gromacs.bioexcel.eu/t/mdp-parameters-for-non-bonded-interaction-using-the-amber-force-field/6458">https://gromacs.bioexcel.eu/t/mdp-parameters-for-non-bonded-interaction-using-the-amber-force-field/6458</a>
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; I came across this post:
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; <a href="https://gromacs.bioexcel.eu/t/protein-ligand-complex-amber-production-question/1247/9">https://gromacs.bioexcel.eu/t/protein-ligand-complex-amber-production-question/1247/9</a>
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; in which following parameters are recommended:
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; constraints = h-bonds
+</em><br />
+<em class="quotelev2">&gt;&gt; rcoulomb = 1.0
+</em><br />
+<em class="quotelev2">&gt;&gt; rvdw = 1.0
+</em><br />
+<em class="quotelev2">&gt;&gt; vdw-modifier = Potential-shift-Verlet
+</em><br />
+<em class="quotelev2">&gt;&gt; DispCorr = EnerPres
+</em><br />
+<em class="quotelev2">&gt;&gt; coulombtype = PME
+</em><br />
+<em class="quotelev2">&gt;&gt; fourierspacing = 0.125
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; Based on how ff19SB and lipid21 were tested a cutoff of 10 Åis reasonable.
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; However, I don’t understand why vdw-modifier = Potential-shift-Verlet
+</em><br />
+<em class="quotelev2">&gt;&gt; and DisCorr = EnerPress is used.
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; Is there any literature on this available or am I missing something out
+</em><br />
+<em class="quotelev2">&gt;&gt; in the original publications of the force fields?
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; Additionally, CHARMM-GUI generated outputs that use vdw-modifier = None.
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; Regard
+</em><br />
+<em class="quotelev2">&gt;&gt; Eddie
+</em><br />
+<em class="quotelev2">&gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt;&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed May 31 2023 - 10:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0139.html" title="Next message in the list">DE-SANTANA-PONTES, FREDERICO J. via AMBER: "[AMBER] MCPB.py RESP charge The number of the residue names given is mismatch the database"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0137.html" title="Previous message in the list">Maciej Spiegel via AMBER: "[AMBER] Parametrizing Pt(II) complex with MCPB.py"</a></li>
+<li><dfn>Maybe in reply to</dfn>: <a href="0121.html" title="Message to which this message replies">Eduard Neu via AMBER: "[AMBER] mdp parameters when using the AMBER force field with GROMACS"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg138" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg138" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg138" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg138" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

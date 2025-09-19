@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] ff19SB on Gromacs from Carlos Simmerling via AMBER on 2023-06-21 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="Carlos Simmerling via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] ff19SB on Gromacs" />
+<meta name="Date" content="2023-06-21" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] ff19SB on Gromacs</h1>
+<!-- received="Wed Jun 21 09:30:02 2023" -->
+<!-- isoreceived="20230621163002" -->
+<!-- sent="Wed, 21 Jun 2023 12:07:59 -0400" -->
+<!-- isosent="20230621160759" -->
+<!-- name="Carlos Simmerling via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] ff19SB on Gromacs" -->
+<!-- id="CAGk3s-RNYWn0P6Pb-4JNcqEyH2gMmsW-EcRh=kmmJMJ5DxzDmQ.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="28c569bb-3479-c780-2c19-6316409b6df6.ethz.ch" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0093.html" accesskey="d" title="Eduard Neu via AMBER: &quot;[AMBER] Determine whether water molecules are with 1 &#0197; of crystal waters from the PDB structure during the MD simulation&quot;">Next message</a> ]
+[ <a href="0091.html" title="Franz Waibl via AMBER: &quot;Re: [AMBER] ff19SB on Gromacs&quot;">Previous message</a> ]
+[ <a href="0091.html" title="Franz Waibl via AMBER: &quot;Re: [AMBER] ff19SB on Gromacs&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0095.html" accesskey="t" title="Franz Waibl via AMBER: &quot;Re: [AMBER] ff19SB on Gromacs&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg92" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg92" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg92" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg92" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Carlos Simmerling via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20ff19SB%20on%20Gromacs">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 21 Jun 2023 12:07:59 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+I think it's helpful to consider separately the way the cmaps and other
+<br />
+parameters are stored in the library files used as input for building
+<br />
+the topology with leap, vs the way they are stored in the final topology.
+<br />
+The library files are more general, and mostly based on atom types (except
+<br />
+the cmaps). inside the topology file, however, things are mostly atom
+<br />
+number based, with pointers into lists of parameter sets for bonds, angles
+<br />
+and so on, including the cmaps. the way the cmaps are stored in the
+<br />
+topology is very similar to the way the bonds are stored - a set of atom
+<br />
+numbers, followed by a pointer into the list of cmap parameters.
+<br />
+<br />%FLAG CMAP_INDEX
+<br />
+%FORMAT(6I8)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5       7       9      22      24       9
+<br />
+<br /><br />the way I see it, the different options for adding multiple cmaps would
+<br />
+have been to (1) use residue names, or (2) as Jason suggested, creating
+<br />
+different atom types for each amino acid. the reason that we didn't use
+<br />
+atom types is that it would have involved duplicating (in the parameter
+<br />
+library files) all of the bond/angle/dihedral terms involving the Calpha
+<br />
+atoms for each of the different amino acids, as well as their vdw info. If
+<br />
+any changes to these parameters are needed in the future, each copy would
+<br />
+need to be updated, which can be error-prone.
+<br />
+<br />Once the topology file is built, I am not sure if the atom types are used
+<br />
+other than for user selection of atoms by their atom type. All of the
+<br />
+parameters are based on atom numbers at that point. (see
+<br />
+<a href="https://ambermd.org/FileFormats.php#topology">https://ambermd.org/FileFormats.php#topology</a>). At this point, one can
+<br />
+change the atom types at will and it should not (I think) affect any of the
+<br />
+Amber energy calculations - since the force field parameters are already
+<br />
+encoded by atom numbers, there is no need to make duplicates of any of the
+<br />
+force field terms. So it worked for you to change atom types after the
+<br />
+topology is built, but it would be far more cumbersome to split the Calpha
+<br />
+atom types before the topology is built. However, I believe that current
+<br />
+Amber allows only 2 characters for each atom type, so your example can't be
+<br />
+done inside the Amber topology file.
+<br />
+<br />It seems to me that the cmap conversion into a gromacs topology  should
+<br />
+proceed similarly to how all of the other terms are handled. But I don't
+<br />
+know how the parmed conversion works - for example, does it convert it so
+<br />
+gromacs can select bond parameters based on atom type as well, or does it
+<br />
+use the atom numbers that are used in the Amber topology? Are cmaps the
+<br />
+only thing that uses atom types instead of numbers?  If gromacs can only
+<br />
+used cmaps that are selected by atom types, then a script or parmed
+<br />
+modification to change the atom types is definitely the easiest approach,
+<br />
+though I honestly don't see why cmaps need atom types defined but the other
+<br />
+force field terms do not. In any case, one can easily (probably with a
+<br />
+script) look at the atom numbers in the cmap list, and for each cmap type,
+<br />
+alter the atom type for a specific atom number before converting to the
+<br />
+gromacs format. Then gromacs should be able to know which cmap to use for
+<br />
+each residue. This is essentially what you did by hand, but should not be
+<br />
+difficult inside parmed since the info is all there. This is far easier
+<br />
+than starting out with major duplication of the non-cmap parameters in the
+<br />
+Amber force field library files.
+<br />
+<br />It could also help to involve Jason in these discussions since I may have
+<br />
+missed something important here.
+<br />
+<br />carlos
+<br />
+<br />On Wed, Jun 21, 2023 at 11:25 AM Franz Waibl via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hi,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I am also no expert on Gromacs topologies, but it seems like the [ cmap
+</em><br />
+<em class="quotelev1">&gt; ] entry only defines which atoms should have CMAP terms at all, while
+</em><br />
+<em class="quotelev1">&gt; the [ cmaptypes ] entry defines a mapping from atom types to CMAP type.
+</em><br />
+<em class="quotelev1">&gt; For example, one definition in my .top file looks like this:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; [ cmaptypes ]
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; C N XC C N 1 24 24\
+</em><br />
+<em class="quotelev1">&gt; (followed by 576 numbers)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; To adapt my example topology, I copied the XC atom type to generate XC1
+</em><br />
+<em class="quotelev1">&gt; and XC2, and added the corresponding entries. I did not need any further
+</em><br />
+<em class="quotelev1">&gt; changes.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt; Franz
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On 21.06.23 16:52, Carlos Simmerling wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt; Hi Franz,
+</em><br />
+<em class="quotelev2">&gt; &gt; thanks that's very helpful. Amber uses the residue name inside Leap
+</em><br />
+<em class="quotelev2">&gt; &gt; while it is building the topology, but inside the final topology file
+</em><br />
+<em class="quotelev2">&gt; &gt; itself the cmaps are specified using atom number and cmap id (pointing
+</em><br />
+<em class="quotelev2">&gt; &gt; to a table of cmaps that are stored in the topology file itself), so
+</em><br />
+<em class="quotelev2">&gt; &gt; no residue name is needed. I'm not sure why Jason suggested that the
+</em><br />
+<em class="quotelev2">&gt; &gt; prmtop uses the residue name (unless I misunderstood his comment on
+</em><br />
+<em class="quotelev2">&gt; &gt; the github issue). It sounds like converting what is in the Amber
+</em><br />
+<em class="quotelev2">&gt; &gt; prmtop to something needed for gromacs should be straightforward. As I
+</em><br />
+<em class="quotelev2">&gt; &gt; said I'm not familiar myself with how gromacs implements cmaps or how
+</em><br />
+<em class="quotelev2">&gt; &gt; they are stored. Does it assign cmaps based on atom type?
+</em><br />
+<em class="quotelev2">&gt; &gt; carlos
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; On Wed, Jun 21, 2023 at 10:29 AM Franz Waibl via AMBER
+</em><br />
+<em class="quotelev2">&gt; &gt; &lt;amber.ambermd.org&gt; wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     Dear Carlos, dear Amber users,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     thanks for the reply. I am aware that Amber is free for academic use
+</em><br />
+<em class="quotelev2">&gt; &gt;     (thanks for that, by the way!), but it would still be useful to be
+</em><br />
+<em class="quotelev2">&gt; &gt;     able
+</em><br />
+<em class="quotelev2">&gt; &gt;     to run ff19SB simulations on Gromacs, e.g., to use algorithms that
+</em><br />
+<em class="quotelev2">&gt; &gt;     are
+</em><br />
+<em class="quotelev2">&gt; &gt;     not implemented in Amber.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     Gromacs does support multiple CMAPs. If I understand correctly, the
+</em><br />
+<em class="quotelev2">&gt; &gt;     problem is that ff19SB CMAP terms depend on the residue name in
+</em><br />
+<em class="quotelev2">&gt; &gt;     addition
+</em><br />
+<em class="quotelev2">&gt; &gt;     to the atom type. To convert the topology correctly, one would
+</em><br />
+<em class="quotelev2">&gt; &gt;     have to
+</em><br />
+<em class="quotelev2">&gt; &gt;     define separate atom types for the CA atom of each amino acid
+</em><br />
+<em class="quotelev2">&gt; &gt;     (XC1, XC2,
+</em><br />
+<em class="quotelev2">&gt; &gt;     ...). This also seems to be what CHARMM-GUI is doing (see the Github
+</em><br />
+<em class="quotelev2">&gt; &gt;     issue mentioned before).
+</em><br />
+<em class="quotelev2">&gt; &gt;     In fact, I ran a very short test simulation in Amber and compared the
+</em><br />
+<em class="quotelev2">&gt; &gt;     results to energy values from gmx mdrun -rerun. After manually
+</em><br />
+<em class="quotelev2">&gt; &gt;     tweaking
+</em><br />
+<em class="quotelev2">&gt; &gt;     the topology as described above, I was able to obtain consistent CMAP
+</em><br />
+<em class="quotelev2">&gt; &gt;     energies between Amber and Gromacs.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     However, it is very tedious to do this manually for a larger
+</em><br />
+<em class="quotelev2">&gt; &gt;     system, so
+</em><br />
+<em class="quotelev2">&gt; &gt;     a ParmEd-based solution would be highly appreciated.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     Best regards,
+</em><br />
+<em class="quotelev2">&gt; &gt;     Franz
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     On 21.06.23 15:14, Carlos Simmerling wrote:
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; My understanding is that the issue is on the gromacs end, not
+</em><br />
+<em class="quotelev2">&gt; &gt;     parmed.
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; I'm not a gromacs user but you could ask them if multiple cmaps are
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; supported. If yes, then we can work to update the conversion
+</em><br />
+<em class="quotelev2">&gt; &gt;     process.
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; Alternatively, Amber is free and has a good library of tutorials.
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; Carlos
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; On Wed, Jun 21, 2023, 8:59 AM Franz Waibl via AMBER
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; &lt;amber.ambermd.org&gt; wrote:
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     Dear Amber users,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     I would like to run simulations with the Amber-ff19SB
+</em><br />
+<em class="quotelev2">&gt; &gt;     forcefield on
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     Gromacs. I have seen an Issue on Github
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     (<a href="https://github.com/ParmEd/ParmEd/issues/1292">https://github.com/ParmEd/ParmEd/issues/1292</a>) stating that
+</em><br />
+<em class="quotelev2">&gt; &gt;     ParmEd
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     does
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     not handle the CMAP term conversion correctly. I also ran
+</em><br />
+<em class="quotelev2">&gt; &gt;     some tests
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     with the ParmEd version in Ambertools23 installed via conda,
+</em><br />
+<em class="quotelev2">&gt; &gt;     and it
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     seems that the same problem occurs: Only one set of CMAP
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     parameters is
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     written to the Gromacs topology, rather than different
+</em><br />
+<em class="quotelev2">&gt; &gt;     parameters for
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     each amino acid.
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     Do you know if this problem can be avoided somehow in
+</em><br />
+<em class="quotelev2">&gt; &gt;     ParmEd? If no,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     what is the recommended way to obtain ff19SB topologies for
+</em><br />
+<em class="quotelev2">&gt; &gt;     Gromacs?
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     Thanks for your help.
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     Best regards,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     Franz
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     --
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     ETH Zürich
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     Franz Waibl
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     Lab. für Physikalische Chemie
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     HCI G 227
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     Vladimir-​Prelog-Weg 1-5/10
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     8093 Zürich
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     Telefon +41 44 632 55 04
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; franz.waibl.phys.chem.ethz.ch
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     _______________________________________________
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;     AMBER mailing list
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     --
+</em><br />
+<em class="quotelev2">&gt; &gt;     ETH Zürich
+</em><br />
+<em class="quotelev2">&gt; &gt;     Franz Waibl
+</em><br />
+<em class="quotelev2">&gt; &gt;     Lab. für Physikalische Chemie
+</em><br />
+<em class="quotelev2">&gt; &gt;     HCI G 227
+</em><br />
+<em class="quotelev2">&gt; &gt;     Vladimir-​Prelog-Weg 1-5/10
+</em><br />
+<em class="quotelev2">&gt; &gt;     8093 Zürich
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     Telefon +41 44 632 55 04
+</em><br />
+<em class="quotelev2">&gt; &gt;     franz.waibl.phys.chem.ethz.ch
+</em><br />
+<em class="quotelev2">&gt; &gt;     _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt;     AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt;     AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt; &gt;     <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; --
+</em><br />
+<em class="quotelev1">&gt; ETH Zürich
+</em><br />
+<em class="quotelev1">&gt; Franz Waibl
+</em><br />
+<em class="quotelev1">&gt; Lab. für Physikalische Chemie
+</em><br />
+<em class="quotelev1">&gt; HCI G 227
+</em><br />
+<em class="quotelev1">&gt; Vladimir-​Prelog-Weg 1-5/10
+</em><br />
+<em class="quotelev1">&gt; 8093 Zürich
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Telefon +41 44 632 55 04
+</em><br />
+<em class="quotelev1">&gt; franz.waibl.phys.chem.ethz.ch
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Jun 21 2023 - 09:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0093.html" title="Next message in the list">Eduard Neu via AMBER: "[AMBER] Determine whether water molecules are with 1 &#0197; of crystal waters from the PDB structure during the MD simulation"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0091.html" title="Previous message in the list">Franz Waibl via AMBER: "Re: [AMBER] ff19SB on Gromacs"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0091.html" title="Message to which this message replies">Franz Waibl via AMBER: "Re: [AMBER] ff19SB on Gromacs"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0095.html" title="Next message in this discussion thread">Franz Waibl via AMBER: "Re: [AMBER] ff19SB on Gromacs"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0095.html" title="Message sent in reply to this message">Franz Waibl via AMBER: "Re: [AMBER] ff19SB on Gromacs"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg92" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg92" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg92" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg92" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

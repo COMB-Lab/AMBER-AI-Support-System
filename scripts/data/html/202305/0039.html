@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] trajin and outtraj command from Dulal Mondal via AMBER on 2023-05-09 (Amber Archive May 2023)</title>
+<meta name="Author" content="Dulal Mondal via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] trajin and outtraj command" />
+<meta name="Date" content="2023-05-09" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] trajin and outtraj command</h1>
+<!-- received="Tue May  9 23:30:02 2023" -->
+<!-- isoreceived="20230510063002" -->
+<!-- sent="Wed, 10 May 2023 11:50:58 +0530" -->
+<!-- isosent="20230510062058" -->
+<!-- name="Dulal Mondal via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] trajin and outtraj command" -->
+<!-- id="CAM+tB7ixAhJKaa8oRKEpwL9v8m3Ajr+QaM1q=pj8R_Yffk7+yA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0040.html" accesskey="d" title="Steinbrecher, Thomas via AMBER: &quot;Re: [AMBER] [Sender Not Verified]  trajin and outtraj command&quot;">Next message</a> ]
+[ <a href="0038.html" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Convertion of .mdvel to .veldcd&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0040.html" accesskey="t" title="Steinbrecher, Thomas via AMBER: &quot;Re: [AMBER] [Sender Not Verified]  trajin and outtraj command&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg39" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg39" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg39" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg39" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Dulal Mondal via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20trajin%20and%20outtraj%20command">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 10 May 2023 11:50:58 +0530</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Users,
+<br />
+<br />I am facing a problem with the difference between trajout and outtraj
+<br />
+commands.
+<br />
+I am trying to strip and align my trajectory. For this purpose, I do the
+<br />
+following steps.
+<br />
+<br />parm *.prmtop
+<br />
+<br />trajin *.nc
+<br />
+<br />#strip command
+<br />
+<br />strip :WAT,Na+,Cl- outprefix strip
+<br />
+<br />trajout strip.nc netcdf
+<br />
+<br />Then I do the following :
+<br />
+<br />parm strip*.promtop
+<br />
+<br />trajin strip.nc
+<br />
+<br /># align
+<br />
+<br />rms first
+<br />
+<br />trajout/outtraj strip_align.nc netcdf
+<br />
+<br />go
+<br />
+When using the strip command, I use trajin to save strip trajectory.
+<br />
+<br />For saving trajectory after alignment, outtraj command are recommended.
+<br />
+<br />There is a tutorial. <a href="https://amberhub.chpc.utah.edu/outtraj/">https://amberhub.chpc.utah.edu/outtraj/</a>
+<br />
+<br />In this tutorial, It is said that.
+<br />
+<br />trajin mdcrd.crd
+<br />
+trajout output.crd
+<br />
+outtraj BeforeRmsd.crd
+<br />
+rms R1 first :1-20.CA out rmsd.dat
+<br />
+outtraj AfterRmsd.crd
+<br />
+<br />The output.crd and After-Rmsd.crd trajectories will be identical, but the
+<br />
+BeforeRmsd.crd trajectory will contain the coordinates of mdcrd.crd before
+<br />
+they are RMS-fit.
+<br />
+<br />My query is How output.crd and After-Rmsd.crd trajectories are identical?
+<br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><pre>
+-- 
+*With regards,*
+*Dulal Mondal,*
+*Research Scholar,*
+*Department of Chemistry,*
+*IIT Kharagpur, Kharagpur 721302.*
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue May 09 2023 - 23:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0040.html" title="Next message in the list">Steinbrecher, Thomas via AMBER: "Re: [AMBER] [Sender Not Verified]  trajin and outtraj command"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0038.html" title="Previous message in the list">Daniel Roe via AMBER: "Re: [AMBER] Convertion of .mdvel to .veldcd"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0040.html" title="Next message in this discussion thread">Steinbrecher, Thomas via AMBER: "Re: [AMBER] [Sender Not Verified]  trajin and outtraj command"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0040.html" title="Message sent in reply to this message">Steinbrecher, Thomas via AMBER: "Re: [AMBER] [Sender Not Verified]  trajin and outtraj command"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg39" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg39" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg39" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg39" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

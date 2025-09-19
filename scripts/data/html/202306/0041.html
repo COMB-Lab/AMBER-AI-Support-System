@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Diffusion in pmemd.cuda from David Poole via AMBER on 2023-06-08 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="David Poole via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Diffusion in pmemd.cuda" />
+<meta name="Date" content="2023-06-08" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Diffusion in pmemd.cuda</h1>
+<!-- received="Thu Jun  8 11:30:02 2023" -->
+<!-- isoreceived="20230608183002" -->
+<!-- sent="Thu, 8 Jun 2023 20:20:51 +0200" -->
+<!-- isosent="20230608182051" -->
+<!-- name="David Poole via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Diffusion in pmemd.cuda" -->
+<!-- id="CAOzhyyDiVPEV+-vwOyV9tB9N_7-c_Ltr6TVtJDtk-s3KPy500Q.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0042.html" accesskey="d" title="Derek M Shore via AMBER: &quot;Re: [AMBER] AMD GPU install problems (David A Case)&quot;">Next message</a> ]
+[ <a href="0040.html" title="David A Case via AMBER: &quot;Re: [AMBER] error in  amber22 installation&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0045.html" accesskey="t" title="David A Case via AMBER: &quot;Re: [AMBER] Diffusion in pmemd.cuda&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg41" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg41" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg41" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg41" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David Poole via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Diffusion%20in%20pmemd.cuda">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 8 Jun 2023 20:20:51 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello Amberites,
+<br />
+<br /><br /><br />I’ve been working with students to use MD simulations produced by
+<br />
+pmemd.CUDA to estimate diffusion constants of small molecules (from to
+<br />
+simple sugars) as an class exercise to compare water and solvent models
+<br />
+available by default. These simulations feature multiple solutes in a large
+<br />
+water box and are propagated for 10 ns. I note that the solutes are
+<br />
+separated by 2 A more than the cutoff distance to minimize their
+<br />
+interactions, and we observe no aggregation over the short simulation
+<br />
+timescale.
+<br />
+<br /><br /><br />Interestingly, despite this being in line with literature procedures, the
+<br />
+resulting diffusion constants calculated with the velocity autocorrelation
+<br />
+function or diffusion analysis in cpptraj did not match literature nor was
+<br />
+there an expected correlation between the molecule size and diffusion
+<br />
+constant. This was alarming, so we have now varied the simulations using
+<br />
+NVE, NPT, or NVT setups, turning off shake, decreasing or increasing the
+<br />
+time step or sampling rate, turning off jfastw, etc. in a seemingly endless
+<br />
+variation of molecular dynamics simulations. All this and no correlation
+<br />
+observed.
+<br />
+<br />While the student learned nicely how to automate the execution, analysis,
+<br />
+and reporting of molecular dynamics results, the overall problem remains so
+<br />
+I thought to pick the community’s collective brain as to why these
+<br />
+simulations fail to reproduce diffusion constants where it has easily been
+<br />
+done in the past. Is there some obvious approximation made for water (also
+<br />
+chloroform and methanol) models in amber or pmemd.cuda that I am missing?
+<br />
+<br /><br /><br />Kindly,
+<br />
+<br />David Poole
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Jun 08 2023 - 11:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0042.html" title="Next message in the list">Derek M Shore via AMBER: "Re: [AMBER] AMD GPU install problems (David A Case)"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0040.html" title="Previous message in the list">David A Case via AMBER: "Re: [AMBER] error in  amber22 installation"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0045.html" title="Next message in this discussion thread">David A Case via AMBER: "Re: [AMBER] Diffusion in pmemd.cuda"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0045.html" title="Message sent in reply to this message">David A Case via AMBER: "Re: [AMBER] Diffusion in pmemd.cuda"</a></li>
+<li><dfn>Reply</dfn>: <a href="0047.html" title="Message sent in reply to this message">Daniel Roe via AMBER: "Re: [AMBER] Diffusion in pmemd.cuda"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg41" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg41" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg41" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg41" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

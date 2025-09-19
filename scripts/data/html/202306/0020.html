@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] AMD GPU install problems from Derek M Shore via AMBER on 2023-06-05 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="Derek M Shore via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] AMD GPU install problems" />
+<meta name="Date" content="2023-06-05" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] AMD GPU install problems</h1>
+<!-- received="Mon Jun  5 09:30:02 2023" -->
+<!-- isoreceived="20230605163002" -->
+<!-- sent="Mon, 5 Jun 2023 16:22:21 +0000" -->
+<!-- isosent="20230605162221" -->
+<!-- name="Derek M Shore via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] AMD GPU install problems" -->
+<!-- id="PH0PR06MB7838FFABE92D4318B877444CE34DA.PH0PR06MB7838.namprd06.prod.outlook.com" -->
+<!-- charset="windows-1252" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0021.html" accesskey="d" title="Michael Bruist via AMBER: &quot;[AMBER] RNA with 5&#0039; phosphates&quot;">Next message</a> ]
+[ <a href="0019.html" title="Vlad Cojocaru via AMBER: &quot;Re: [AMBER] Compiling Amber 22 (+ AT 23) with Intel compiler&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0028.html" accesskey="t" title="Charo del Genio via AMBER: &quot;Re: [AMBER] AMD GPU install problems&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg20" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg20" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg20" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg20" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Derek M Shore via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20AMD%20GPU%20install%20problems">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 5 Jun 2023 16:22:21 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi everyone,
+<br />
+<br />I am trying to install Amber22 on the Frontier supercomputer at Oak Ridge National Lab. The compute nodes are composed of AMD Optimized 3rd Gen EPYC CPUs and AMD MI250X GPUs. I can install AmberTools 23/Amber22 without GPU support without any problems (and the install passes the test suite). However, I run into problems when trying to install with GPU support.
+<br />
+<br />I’m following the AMD recipe found here: https://ambermd.org/GPUSupport.php
+<br />
+<br /><br />When I try to install, I first get an error message related to nab2c, mpinab2c, and rule_parse (they aren’t being built). It is our understanding nab2c is no longer part of AmberTools, so I tried dropping it from the install. I did this by editing line #6 of amber22_src/cmake/RunnablePrograms.cmake:
+<br />
+<br /># original
+<br />
+<br />#set(EXECUTABLES_TO_IMPORT ucpp utilMakeHelp nab2c mpinab2c rule_parse)
+<br />
+<br /><br /><br /># dropping references to nab2c, mpiab2c rule_parse
+<br />
+<br />set(EXECUTABLES_TO_IMPORT ucpp utilMakeHelp)
+<br />
+<br />(if this is a bad idea, please let me know)
+<br />
+<br />When I do this, the install makes more progress, but then I run into library errors. Here’s the first error (which consequently cascades into additional library error until the install fails):
+<br />
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+<br />
+Change Dir: /my_dir/amber22_src/build/amber/CMakeFiles/CMakeTmp
+<br />
+<br />Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_c11a7/fast &amp;&amp; /usr/bin/gmake  -f CMakeFiles/cmTC_c11a7.dir/build.make CMakeFiles/cmTC_c11a7.dir/build
+<br />
+gmake[1]: Entering directory '/my_dir/amber22_src/build/amber/CMakeFiles/CMakeTmp'
+<br />
+Building C object CMakeFiles/cmTC_c11a7.dir/src.c.o
+<br />
+/opt/cray/pe/gcc/12.2.0/bin/gcc -DCMAKE_HAVE_LIBC_PTHREAD  -O3  -std=gnu99 -o CMakeFiles/cmTC_c11a7.dir/src.c.o -c /my_dir /amber22_src/build/amber/CMakeFiles/CMakeTmp/src.c
+<br />
+Linking C executable cmTC_c11a7
+<br />
+/autofs/nccs-svm1_sw/frontier/spack-envs/base/opt/linux-sles15-x86_64/gcc-7.5.0/cmake-3.23.2-4r4mpiba7cwdw2hlakh5i7tchi64s3qd/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c11a7.dir/link.txt --verbose=1
+<br />
+/opt/cray/pe/gcc/12.2.0/bin/gcc -O3  CMakeFiles/cmTC_c11a7.dir/src.c.o -o cmTC_c11a7
+<br />
+/usr/bin/ld: CMakeFiles/cmTC_c11a7.dir/src.c.o: in function `main':
+<br />
+src.c:(.text.startup+0x13): undefined reference to `pthread_create'
+<br />
+/usr/bin/ld: src.c:(.text.startup+0x1d): undefined reference to `pthread_detach'
+<br />
+/usr/bin/ld: src.c:(.text.startup+0x27): undefined reference to `pthread_cancel'
+<br />
+/usr/bin/ld: src.c:(.text.startup+0x33): undefined reference to `pthread_join'
+<br />
+collect2: error: ld returned 1 exit status
+<br />
+<br />Here’s my module load (providing some info on the environment):
+<br />
+craype-x86-trento
+<br />
+libfabric/1.15.2.0
+<br />
+craype-network-ofi
+<br />
+perftools-base/22.12.0
+<br />
+xpmem/2.5.2-2.4_3.45__gd0f7936.shasta
+<br />
+cray-pmi/6.1.8
+<br />
+gcc/12.2.0
+<br />
+craype/2.7.19
+<br />
+cray-dsmml/0.2.2
+<br />
+cray-mpich/8.1.23
+<br />
+cray-libsci/22.12.1.1
+<br />
+PrgEnv-gnu/8.3.3
+<br />
+darshan-runtime/3.4.0
+<br />
+hsi/default
+<br />
+DefApps/default
+<br />
+rocm/5.3.0
+<br />
+cmake/3.23.2
+<br />
+boost/1.79.0
+<br />
+zlib/1.2.11
+<br />
+bzip2/1.0.8
+<br />
+<br />Has anyone else run into these problems installing Amber22 on systems with AMD GPUs? (or, has anyone recently had success with an AMD GPU installation)?
+<br />
+<br />Please let me know whatever additional information I can provide that would be useful.
+<br />
+<br />Thanks very much for any assistance!
+<br />
+Derek
+<br />
+<br />Derek M. Shore, Ph.D.
+<br />
+Lecturer of Physiology and Biophysics
+<br />
+Scientific Computing Technology Engineer
+<br />
+Institute for Computational Biomedicine
+<br />
+<br />Weill Cornell Medicine
+<br />
+Department of Physiology and Biophysics
+<br />
+1300 York Avenue, Room LC501A
+<br />
+New York, NY 10065
+<br />
+T: 212-746-6386
+<br />
+des2037.med.cornell.edu&lt;mailto:des2037.med.cornell.edu&gt;
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jun 05 2023 - 09:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0021.html" title="Next message in the list">Michael Bruist via AMBER: "[AMBER] RNA with 5&#0039; phosphates"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0019.html" title="Previous message in the list">Vlad Cojocaru via AMBER: "Re: [AMBER] Compiling Amber 22 (+ AT 23) with Intel compiler"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0028.html" title="Next message in this discussion thread">Charo del Genio via AMBER: "Re: [AMBER] AMD GPU install problems"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0028.html" title="Message sent in reply to this message">Charo del Genio via AMBER: "Re: [AMBER] AMD GPU install problems"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg20" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg20" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg20" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg20" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>
