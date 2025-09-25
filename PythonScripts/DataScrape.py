@@ -106,13 +106,14 @@ def getData():
         dataDictionary[f"{year}"] = ad
 
     print("Populating Messages...")
-    populateMessages()
+    # populateMessages()
+    getReviews(dataDictionary["2024"], "Mar")
     print("Success!")
 
     print("Populating Clean Data...")
 
     # Populates a single data
-    # populateCleanData("2022","Apr")
+    populateCleanData("2022","Apr")
 
     '''
     # Populates ALL data
@@ -121,6 +122,8 @@ def getData():
             print(f"Working on {year} {month} ...")
             populateCleanData(year, month)
             time.sleep(0.5)
+    '''
+
     '''
     # Populates ONLY 2022–2025
     for year_str in sorted(dataDictionary.keys(), key=int):
@@ -131,6 +134,7 @@ def getData():
                 print(f"Working on {year_str} {month} ...")
                 populateCleanData(year_str, month)
                 time.sleep(0.5)
+    '''
 
     print("Success!")
 
@@ -146,6 +150,7 @@ def getReviews(ad, month):
         if msg["href"].startswith("0"):
             link = urljoin(urlLink, msg["href"])
             ad.addMonthMessages(month, link)
+    print(f"Added {ad.year}: {month}")
 
 
 def populateMessages():
@@ -190,7 +195,8 @@ def populateCleanData(year_key, month_key):
 
             # Subject / Author
             record["subject"] = record["subject"] or metadata.get("subject")
-            record["author_name"] = metadata.get("name")
+            raw_name = metadata.get("name", "")
+            record["author_name"] = re.sub(r"\s+via\s+amber$", "", raw_name, flags=re.IGNORECASE).strip()
             record["author_email_raw"] = metadata.get("email")
             record["author_email_deobfuscated"] = deob_email(record["author_email_raw"])
 
@@ -225,15 +231,19 @@ def populateCleanData(year_key, month_key):
             # Body text (cut before footer if present)
             record["body_text"] = extract_body_text(soup, sent_raw)
 
-            # Attachments
-            record["attachments"] = extract_attachments(soup)
-
-            # Nav links/titles
+            # Nav links first (so errors later won't wipe them)
             record["nav_links"] = extract_nav_links(soup, base_url=resp.url)
 
+            # Attachments (now returns full URLs); protect so a hiccup doesn't kill nav links
+            try:
+                record["attachments"] = extract_attachments(soup, base_url=resp.url)
+            except Exception as att_err:
+                record["attachments"] = []
+                record["nav_links"] = record.get("nav_links", {}) or {}
+                record["nav_links"]["attachments_error"] = str(att_err)
         except Exception as e:
             # Capture error in nav_links for debugging; keep the record
-            record.setdefault("nav_links", {})
+            record["nav_links"] = record.get("nav_links", {}) or {}
             record["nav_links"]["error"] = str(e)
 
         amberObj.cleanData.setdefault(month_key, []).append(record)
@@ -251,7 +261,6 @@ def month_num(month_key: str) -> str:
             # fallback if month_key is invalid
             return "99"
     return str(i).zfill(2)
-
 
 
 def deob_email(raw: str | None) -> str | None:
@@ -292,21 +301,55 @@ def extract_body_text(soup: BeautifulSoup, sent_raw: str | None) -> str | None:
     return body
 
 
-def extract_attachments(soup: BeautifulSoup) -> list:
+def extract_attachments(soup: BeautifulSoup, base_url: str) -> list:
     out = []
-    # common pattern: <img src="att-0000/image.png"> and link to the same
+
+    # honor <base href> if present
+    base_tag = soup.find("base", href=True)
+    effective_base = base_tag["href"] if base_tag else base_url
+
+    def infer_mime(filename: str) -> str | None:
+        ext = filename.lower().rsplit('.', 1)[-1] if '.' in filename else ''
+        if ext == 'png': return 'image/png'
+        if ext in ('jpg', 'jpeg'): return 'image/jpeg'
+        if ext == 'gif': return 'image/gif'
+        if ext == 'pdf': return 'application/pdf'
+        return None
+
+    # 1) <a href="att-0000/...">
     for a in soup.select('div.mail a[href]'):
         href = a.get('href', '')
         if 'att-' in href:
+            full_url = urljoin(effective_base, href)
             filename = href.split('/')[-1]
-            mime = None
-            # try to infer mime from <img> alt/src or extension
-            ext = filename.lower().rsplit('.', 1)[-1] if '.' in filename else ''
-            if ext == 'png': mime = 'image/png'
-            elif ext == 'jpg' or ext == 'jpeg': mime = 'image/jpeg'
-            elif ext == 'gif': mime = 'image/gif'
-            out.append({"filename": filename, "mime": mime})
-    return out
+            out.append({
+                "filename": filename,
+                "mime": infer_mime(filename),
+                "url": full_url
+            })
+
+    # 2) <img src="att-0000/...">
+    for img in soup.select('div.mail img[src]'):
+        src = img.get('src', '')
+        if 'att-' in src:
+            full_url = urljoin(effective_base, src)
+            filename = src.split('/')[-1]
+            out.append({
+                "filename": filename,
+                "mime": infer_mime(filename),
+                "url": full_url
+            })
+
+    # Deduplicate by URL
+    seen = set()
+    unique = []
+    for item in out:
+        u = item.get("url")
+        if u and u not in seen:
+            seen.add(u)
+            unique.append(item)
+
+    return unique
 
 
 def norm(s):
@@ -445,9 +488,9 @@ def printData():
 
 getData()
 
-# export_month_to_json("2022", "Apr", "amber_2022_Apr.json")
+export_month_to_json("2022", "Apr", "amber_2022_Apr.json")
 
-export_range_to_json(2022, 2025, "amber_2022_2025.json")
+# export_range_to_json(2022, 2025, "amber_2022_2025.json")
 
 # export_all_to_json("AmberCleanData.json")
 '''
@@ -455,4 +498,4 @@ for i, msg in enumerate(msgs, start=1):
     print(f"\nMessage {i}:")
     for k, v in msg.items():
         print(f"  {k}: {v}")
-        '''
+'''
