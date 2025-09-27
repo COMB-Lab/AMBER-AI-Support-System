@@ -6,9 +6,7 @@ from bs4 import BeautifulSoup
 from email.utils import parsedate_to_datetime
 from collections import defaultdict
 
-# ===============================
-# Configuration
-# ===============================
+
 BASE_URL = "http://archive.ambermd.org"
 START_YEAR = 2020
 END_YEAR = 2025
