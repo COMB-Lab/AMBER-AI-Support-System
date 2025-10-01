@@ -15,6 +15,7 @@ from bs4 import BeautifulSoup, Comment
 from email.utils import parsedate_to_datetime
 from datetime import timezone
 from urllib.parse import urljoin
+import html
 
 DATA_ROOT = Path(__file__).resolve().parents[1] / "data"
 HTML_DIR_DEFAULT = DATA_ROOT / "html"
@@ -121,8 +122,8 @@ def parse_html_to_record(yyyymm: str, html_path: Path, archive_root="http://arch
             k, v = txt.split("=", 1)
             meta[k.strip().lower()] = v.strip().strip('"')
 
-    subject = meta.get("subject") or (soup.title.get_text(strip=True) if soup.title else None)
-    author_name = meta.get("name")
+    subject = clean_text(meta.get("subject") or (soup.title.get_text(strip=True) if soup.title else None))
+    author_name = clean_author(meta.get("name"))
     author_email_raw = meta.get("email")
     author_email_deobfuscated = deob_email(author_email_raw)
 
@@ -150,7 +151,7 @@ def parse_html_to_record(yyyymm: str, html_path: Path, archive_root="http://arch
             received_raw = f"Received on {meta['received']}"
 
     thread_id = normalize_subject(subject)
-    body_text = extract_body_text(soup, date_raw)
+    body_text = clean_text(extract_body_text(soup, date_raw))
     attachments = extract_attachments(soup)
     nav_links = extract_nav_links(soup, url)
 
@@ -172,6 +173,31 @@ def parse_html_to_record(yyyymm: str, html_path: Path, archive_root="http://arch
         "yyyymm": yyyymm,
         "id_in_month": html_path.stem,
     }
+
+def clean_author(name: str | None) -> str | None:
+    if not name: return None
+    return re.sub(r"\s+via\s+AMBER$", "", name.strip(), flags=re.I)
+
+def clean_text(val: str | None) -> str | None:
+    """Decode HTML entities and normalize whitespace/newlines."""
+    if not val:
+        return None
+    # decode HTML entities (&apos;, &ndash;, &mdash;, etc.)
+    s = html.unescape(val)
+    # collapse multiple spaces/tabs
+    s = re.sub(r"[ \t]+", " ", s)
+    # normalize multiple blank lines to max two
+    s = re.sub(r"\n\s*\n\s*\n+", "\n\n", s)
+    # strip leading/trailing whitespace
+    return s.strip()
+
+def clean_author(name: str | None) -> str | None:
+    """Decode entities, strip 'via AMBER' suffix, normalize spaces."""
+    if not name:
+        return None
+    s = html.unescape(name)
+    s = re.sub(r"\s+via\s+AMBER$", "", s, flags=re.I)
+    return s.strip()
 
 def main():
     ap = argparse.ArgumentParser(description="Parse AMBER HTML files to per-message JSON.")
