@@ -1,0 +1,21 @@
+{
+  "thread_id": 1615205523,
+  "subject": "The issue regarding to list index out of range",
+  "messages": [
+    {
+      "message_id": 1615205523,
+      "author": "辛志宏",
+      "date_raw": "Mon, 8 Mar 2021 20:12:03 +0800 (GMT+08:00)",
+      "body": "Dear Amber,\nI came across an error when I calcultate free energy by MMPBSA,\n.....\nIndexError: list index out of range\nExiting. All files have been retained.\nThe followsing is the configuration of mmpbsa-2.in file\n&general\nstartframe=1001, endframe=2000, interval=1,\nverbose = 1\nligand_mask = \":1\"\nreceptor_mask = \":2-299\"\n/\n&gb\nigb=8, saltcon=0.100,\n/\n&pb\ninp=0, radiopt=0,\nistrng=0.100,\n/\n&decomp\nidecomp=2, print_res=\"1,14,20,35,38-39,77-80,83,84-86,88-89,146-148,177,187,196-197,201-202,205,243,271-272,275,2291,4798,5231,7029,7892,10373\",\ndec_verbose=3,\n/\nIf I remove the following parameters, the mmpbsa is goes well, I wonder how to fix the issue.\n&decomp\nidecomp=2, dec_verbose=3,\nprint_res=\"1,14,20,35,38-39,77-80,83,84-86,88-89,146-148,177,187,196-197,201-202,205,243,271-272,275,2291,4798,5231,7029,7892,10373\",\n/\nAny suggestion will be much appreciate.\nligand：1\nprotein：2-299\nprint_res:\"the amino acid residue within 5 angstrom around ligand\"\nMMPBSA.py -O -i mmpbsa-2.in -o FINAL_RESULTS_MMPBSA-2.dat -do FINAL_DECOMP_MMPBSA-2.dat -sp complex_solv.prmtop -cp EstJ6-DBP-now.prmtop -rp EstJ6-now.prmtop -lp DBPH-now.prmtop -y eq_density-2.nc > qjr_mmgbsa-2.log\ncomplex_solv.prmtop：protein-ligand-water\nEstJ6-DBP-now.prmtop ：protein-ligand complex\nEstJ6-now.prmtop：protein\nDBPH-now.prmtop：ligand\nZhihong Xin",
+      "url": "http://archive.ambermd.org/202103/0052.html"
+    },
+    {
+      "message_id": 1615206097,
+      "author": "Mariano Curti",
+      "date_raw": "Mon, 8 Mar 2021 13:21:37 +0100",
+      "body": "Dear Zhihong Xin,\nIt looks like your protein + ligand system has 299 residues. However,\nyou are referencing residue numers 2291, 4798 and so forth in your input\nfiles. I presume they are water molecules; those are stripped from your\ntrajectory for MMPBSA analysis. Maybe you can give it a try modifying\nthis line:\nidecomp=2,\nprint_res=\"1,14,20,35,38-39,77-80,83,84-86,88-89,146-148,177,187,196-197,201-202,205,243,271-272,275,2291,4798,5231,7029,7892,10373\",\nto:\nidecomp=2,\nprint_res=\"1,14,20,35,38-39,77-80,83,84-86,88-89,146-148,177,187,196-197,201-202,205,243,271-272,275\",\nI hope it helps.\nBest,\nMariano\nOn 08/03/2021 13:12, 辛志宏 wrote:\n> Dear Amber,\n>\n>\n> I came across an error when I calcultate free energy by MMPBSA,\n> .....\n>\n>\n> IndexError: list index out of range\n> Exiting. All files have been retained.\n>\n>\n> The followsing is the configuration of mmpbsa-2.in file\n> &general\n> startframe=1001, endframe=2000, interval=1,\n> verbose = 1\n> ligand_mask = \":1\"\n> receptor_mask = \":2-299\"\n> /\n> &gb\n> igb=8, saltcon=0.100,\n> /\n> &pb\n> inp=0, radiopt=0,\n> istrng=0.100,\n> /\n> &decomp\n> idecomp=2, print_res=\"1,14,20,35,38-39,77-80,83,84-86,88-89,146-148,177,187,196-197,201-202,205,243,271-272,275,2291,4798,5231,7029,7892,10373\",\n> dec_verbose=3,\n> /\n>\n>\n> If I remove the following parameters, the mmpbsa is goes well, I wonder how to fix the issue.\n>\n>\n> &decomp\n> idecomp=2, dec_verbose=3,\n> print_res=\"1,14,20,35,38-39,77-80,83,84-86,88-89,146-148,177,187,196-197,201-202,205,243,271-272,275,2291,4798,5231,7029,7892,10373\",\n> /\n>\n>\n> Any suggestion will be much appreciate.\n>\n>\n> ligand：1\n> protein：2-299\n> print_res:\"the amino acid residue within 5 angstrom around ligand\"\n> MMPBSA.py -O -i mmpbsa-2.in -o FINAL_RESULTS_MMPBSA-2.dat -do FINAL_DECOMP_MMPBSA-2.dat -sp complex_solv.prmtop -cp EstJ6-DBP-now.prmtop -rp EstJ6-now.prmtop -lp DBPH-now.prmtop -y eq_density-2.nc > qjr_mmgbsa-2.log\n> complex_solv.prmtop：protein-ligand-water\n> EstJ6-DBP-now.prmtop ：protein-ligand complex\n> EstJ6-now.prmtop：protein\n> DBPH-now.prmtop：ligand\n>\n>\n>\n>\n> Zhihong Xin\n>\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202103/0053.html",
+      "in_reply_to": 1615205523
+    }
+  ]
+}

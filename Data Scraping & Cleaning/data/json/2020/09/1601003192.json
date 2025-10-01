@@ -1,0 +1,69 @@
+{
+  "thread_id": 1601003192,
+  "subject": "RESTARTED DUE TO LINMIN FAILURE",
+  "messages": [
+    {
+      "message_id": 1601003192,
+      "author": "Xinye Wang",
+      "date_raw": "Fri, 25 Sep 2020 11:06:32 +0800 (GMT+08:00)",
+      "body": "Dear Amber community,\nI am running minimization for protein-ligand system, its showing the following error after step 2000\nNSTEP ENERGY RMS GMAX NAME NUMBER\n2000 1.6209E+06 3.1751E+02 3.7073E+04 C24 5380\nBOND = 892134.9355 ANGLE = 6431.5058 DIHED = 4461.1631\nVDWAALS = 480066.2046 EEL = -170572.5894 HBOND = 0.0000\n1-4 VDW = 394876.4985 1-4 EEL = 12361.8778 RESTRAINT = 1173.5231\nEAMBER = 1619759.5959\n.... RESTARTED DUE TO LINMIN FAILURE ...\n.... RESTARTED DUE TO LINMIN FAILURE ...\nWhat parameters should I change in the input file? The parameters that I used are listed as below:\nMinimize1\n&cntrl\nimin=1,\nmaxcyc=4000,\nncyc=2000,\nntb=1,cut=12.0,ntr=1,ntxo=1,\nrestraint_wt=3000.0,\nrestraintmask=':1-345’,\n/\nMinimize2\n&cntrl\nimin=1,\nmaxcyc=4000,\nncyc=2000,\nntb=1,cut=12.0,ntr=1,ntxo=1,\nrestraint_wt=500.0,\nrestraintmask=':\n1-341.CA\n,N,C|:342-344|:345&!.H=',\n/\nMinimize3\n&cntrl\nimin=1,\nmaxcyc=4000,\nncyc=2000,\nntb=1,cut=12.0,ntxo=1,\n/\nThank you in advance\nXinye Wang",
+      "url": "http://archive.ambermd.org/202009/0335.html"
+    },
+    {
+      "message_id": 1601004013,
+      "author": "Elvis Martis",
+      "date_raw": "Fri, 25 Sep 2020 08:50:13 +0530",
+      "body": "HI\nyour GMAX and energy terms are too high. You might want to visualise\nthe coordinate file before minimisation and after, and look at atom names\nC24.\nThere is perhaps an overlap of atoms.\nBest Regards\nElvis\nOn Fri, 25 Sep 2020 at 08:39, Xinye Wang <xywung.163.\ncom> wrote:\n> Dear Amber community,\n> I am running minimization for protein-ligand system, its showing the\n> following error after step 2000\n>\n>\n>\n> NSTEP ENERGY RMS GMAX NAME NUMBER\n>\n> 2000 1.6209E+06 3.1751E+02 3.7073E+04 C24 5380\n>\n>\n>\n>\n> BOND = 892134.9355 ANGLE = 6431.5058 DIHED =\n> 4461.1631\n>\n> VDWAALS = 480066.2046 EEL = -170572.5894 HBOND =\n> 0.0000\n>\n> 1-4 VDW = 394876.4985 1-4 EEL = 12361.8778 RESTRAINT =\n> 1173.5231\n>\n> EAMBER = 1619759.5959\n>\n>\n>\n>\n> .... RESTARTED DUE TO LINMIN FAILURE ...\n>\n>\n>\n>\n> .... RESTARTED DUE TO LINMIN FAILURE ...\n>\n>\n>\n>\n> What parameters should I change in the input file? The parameters that I\n> used are listed as below:\n>\n> Minimize1\n>\n> &cntrl\n>\n> imin=1,\n>\n> maxcyc=4000,\n>\n> ncyc=2000,\n>\n> ntb=1,cut=12.0,ntr=1,ntxo=1,\n>\n> restraint_wt=3000.0,\n>\n> restraintmask=':1-345’,\n>\n> /\n>\n> Minimize2\n>\n> &cntrl\n>\n> imin=1,\n>\n> maxcyc=4000,\n>\n> ncyc=2000,\n>\n> ntb=1,cut=12.0,ntr=1,ntxo=1,\n>\n> restraint_wt=500.0,\n>\n> restraintmask=':1-341.CA,N,C|:342-344|:345&!.H=',\n>\n> /\n>\n> Minimize3\n>\n> &cntrl\n>\n> imin=1,\n>\n> maxcyc=4000,\n>\n> ncyc=2000,\n>\n> ntb=1,cut=12.0,ntxo=1,\n>\n> /\n>\n>\n>\n> Thank you in advance\n>\n>\n> Xinye Wang\n>",
+      "url": "http://archive.ambermd.org/202009/0336.html",
+      "in_reply_to": 1601003192
+    },
+    {
+      "message_id": 1601005121,
+      "author": "Xinye Wang",
+      "date_raw": "Fri, 25 Sep 2020 11:38:41 +0800 (GMT+08:00)",
+      "body": "Thank you, Elvis.\nThere is a carbocation in the ligand, but not C24. Does it have important effect on the minimization step?\nBest,\nXinye\nOn 09/25/2020 11:20，Elvis Martis<elvis_bcp.elvismartis.\nin> wrote：\nHI\nyour GMAX and energy terms are too high. You might want to visualise\nthe coordinate file before minimisation and after, and look at atom names\nC24.\nThere is perhaps an overlap of atoms.\nBest Regards\nElvis\nOn Fri, 25 Sep 2020 at 08:39, Xinye Wang <xywung.163.\ncom> wrote:\nDear Amber community,\nI am running minimization for protein-ligand system, its showing the\nfollowing error after step 2000\nNSTEP ENERGY RMS GMAX NAME NUMBER\n2000 1.6209E+06 3.1751E+02 3.7073E+04 C24 5380\nBOND = 892134.9355 ANGLE = 6431.5058 DIHED =\n4461.1631\nVDWAALS = 480066.2046 EEL = -170572.5894 HBOND =\n0.0000\n1-4 VDW = 394876.4985 1-4 EEL = 12361.8778 RESTRAINT =\n1173.5231\nEAMBER = 1619759.5959\n.... RESTARTED DUE TO LINMIN FAILURE ...\n.... RESTARTED DUE TO LINMIN FAILURE ...\nWhat parameters should I change in the input file? The parameters that I\nused are listed as below:\nMinimize1\n&cntrl\nimin=1,\nmaxcyc=4000,\nncyc=2000,\nntb=1,cut=12.0,ntr=1,ntxo=1,\nrestraint_wt=3000.0,\nrestraintmask=':1-345’,\n/\nMinimize2\n&cntrl\nimin=1,\nmaxcyc=4000,\nncyc=2000,\nntb=1,cut=12.0,ntr=1,ntxo=1,\nrestraint_wt=500.0,\nrestraintmask=':1-341.CA,N,C|:342-344|:345&!.H=',\n/\nMinimize3\n&cntrl\nimin=1,\nmaxcyc=4000,\nncyc=2000,\nntb=1,cut=12.0,ntxo=1,\n/\nThank you in advance\nXinye Wang",
+      "url": "http://archive.ambermd.org/202009/0338.html",
+      "in_reply_to": 1601003192
+    },
+    {
+      "message_id": 1601006877,
+      "author": "Elvis Martis",
+      "date_raw": "Fri, 25 Sep 2020 09:37:57 +0530",
+      "body": "Hi\nI am not sure if the carbocation has anything to do with this.\nHowever,\nNSTEP ENERGY RMS GMAX NAME NUMBER\n2000 1.6209E+06 3.1751E+02 3.7073E+04 C24 5380\nThis indicates that atom numbered 5380 which is C24 has the\nlargest gradient which you must visualise and find out why.\nVDWAALS = 480066.2046 is also a very large positive value indicative of\nsome overlap in the system.\nAlso, I see that you apply a very large restraining force (3000\nkcal/mol/A), and therefore, your system is practically fixed.\nBest Regards\nElvis\nOn Fri, 25 Sep 2020 at 09:09, Xinye Wang <xywung.163.\ncom> wrote:\n> Thank you, Elvis.\n>\n>\n> There is a carbocation in the ligand, but not C24. Does it have important\n> effect on the minimization step?\n>\n>\n> Best,\n>\n>\n> Xinye\n> On 09/25/2020 11:20，Elvis Martis<elvis_bcp.elvismartis.\nin> wrote：\n> HI\n> your GMAX and energy terms are too high. You might want to visualise\n> the coordinate file before minimisation and after, and look at atom names\n> C24.\n> There is perhaps an overlap of atoms.\n> Best Regards\n> Elvis\n>\n>\n>\n> On Fri, 25 Sep 2020 at 08:39, Xinye Wang <xywung.163.\ncom> wrote:\n>\n> Dear Amber community,\n> I am running minimization for protein-ligand system, its showing the\n> following error after step 2000\n>\n>\n>\n> NSTEP ENERGY RMS GMAX NAME NUMBER\n>\n> 2000 1.6209E+06 3.1751E+02 3.7073E+04 C24 5380\n>\n>\n>\n>\n> BOND = 892134.9355 ANGLE = 6431.5058 DIHED =\n> 4461.1631\n>\n> VDWAALS = 480066.2046 EEL = -170572.5894 HBOND =\n> 0.0000\n>\n> 1-4 VDW = 394876.4985 1-4 EEL = 12361.8778 RESTRAINT =\n> 1173.5231\n>\n> EAMBER = 1619759.5959\n>\n>\n>\n>\n> .... RESTARTED DUE TO LINMIN FAILURE ...\n>\n>\n>\n>\n> .... RESTARTED DUE TO LINMIN FAILURE ...\n>\n>\n>\n>\n> What parameters should I change in the input file? The parameters that I\n> used are listed as below:\n>\n> Minimize1\n>\n> &cntrl\n>\n> imin=1,\n>\n> maxcyc=4000,\n>\n> ncyc=2000,\n>\n> ntb=1,cut=12.0,ntr=1,ntxo=1,\n>\n> restraint_wt=3000.0,\n>\n> restraintmask=':1-345’,\n>\n> /\n>\n> Minimize2\n>\n> &cntrl\n>\n> imin=1,\n>\n> maxcyc=4000,\n>\n> ncyc=2000,\n>\n> ntb=1,cut=12.0,ntr=1,ntxo=1,\n>\n> restraint_wt=500.0,\n>\n> restraintmask=':1-341.CA,N,C|:342-344|:345&!.H=',\n>\n> /\n>\n> Minimize3\n>\n> &cntrl\n>\n> imin=1,\n>\n> maxcyc=4000,\n>\n> ncyc=2000,\n>\n> ntb=1,cut=12.0,ntxo=1,\n>\n> /\n>\n>\n>\n> Thank you in advance\n>\n>\n> Xinye Wang\n>",
+      "url": "http://archive.ambermd.org/202009/0339.html",
+      "in_reply_to": 1601003192
+    },
+    {
+      "message_id": 1601034680,
+      "author": "David A Case",
+      "date_raw": "Fri, 25 Sep 2020 07:51:20 -0400",
+      "body": "On Fri, Sep 25, 2020, Xinye Wang wrote:\n>I am running minimization for protein-ligand system, its showing the following error after step 2000\n>\n> BOND = 892134.9355 ANGLE = 6431.5058 DIHED = 4461.1631\n> VDWAALS = 480066.2046 EEL = -170572.5894 HBOND = 0.0000\nYour bond and vdW energies are very high. Use the check action in\ncpptraj to look for bad bonds and close contacts. You will probably\nneed to fix at least some of those problems.\nAs Elvis indicated, try a much smaller value for your restraint weight,\nreducing it by about two orders of magnitude.\n...dac",
+      "url": "http://archive.ambermd.org/202009/0341.html",
+      "in_reply_to": 1601003192
+    },
+    {
+      "message_id": 1601077970,
+      "author": "Maschietto, Federica",
+      "date_raw": "Fri, 25 Sep 2020 23:52:50 +0000",
+      "body": "Dear AmberUsers,\nI would like to run a MD simulation constraining backbone dihedrals such that my complex is able to relax but does not deviate too much from the original structure.\nDoes someone know how I may achieve this?\nThank you,\nFederica Maschietto",
+      "url": "http://archive.ambermd.org/202009/0345.html",
+      "in_reply_to": 1601003192
+    },
+    {
+      "message_id": 1601078509,
+      "author": "Hector A. Baldoni",
+      "date_raw": "Fri, 25 Sep 2020 21:01:49 -0300 (ARGSL-ST)",
+      "body": "Hi,\nenergy minimization\n&cntrl\niwrap=1, ntxo=2, ioutfm=1,\nimin=1, maxcyc=20000, ntmin=1, ncyc=90000,\nntwr = 50, ntpr = 50,\nntr=1, restraint_wt=2.0, restraintmask=':1-791.CA,C,O,N',\n&end\nEND\nEND\nGreeting,\nHector\n>\n> Dear AmberUsers,\n> I would like to run a MD simulation constraining backbone dihedrals such\n> that my complex is able to relax but does not deviate too much from the\n> original structure.\n> Does someone know how I may achieve this?\n>\n> Thank you,\n> Federica Maschietto\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202009/0346.html",
+      "in_reply_to": 1601003192
+    },
+    {
+      "message_id": 1601122898,
+      "author": "David A Case",
+      "date_raw": "Sat, 26 Sep 2020 08:21:38 -0400",
+      "body": "On Fri, Sep 25, 2020, Maschietto, Federica wrote:\n>\n>I would like to run a MD simulation constraining backbone dihedrals such\n>that my complex is able to relax but does not deviate too much from the\n>original structure.\nDihedral restraints are called \"NMR\" restraints in Amber. See Section\n27.1 (\"Distance, angle and torsional restraints\") in the Reference Manual.\n....dac",
+      "url": "http://archive.ambermd.org/202009/0347.html",
+      "in_reply_to": 1601003192
+    }
+  ]
+}

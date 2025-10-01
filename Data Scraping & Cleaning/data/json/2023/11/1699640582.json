@@ -1,0 +1,29 @@
+{
+  "thread_id": 1699640582,
+  "subject": "Command 'combine' in 'tleap' Introducing 'TER' Between Residues",
+  "messages": [
+    {
+      "message_id": 1699640582,
+      "author": "Yu Chen",
+      "date_raw": "Fri, 10 Nov 2023 19:23:02 +0100",
+      "body": "Dear Amber Community,\nI hope this message finds you well. I am currently using Ambertools 22.0, installed via conda, and am encountering an issue while attempting to combine a protein (or RNA) and ligand PDB file using the `combine` method in tleap. My ultimate goal is to generate `prmtop` and `inpcrd` files for subsequent simulations.\nUpon inspecting the combined PDB file in a text editor, I observed that each residue, whether belonging to the protein or RNA, is separated by 'TER', resulting in the entire system being fragmented.\nHere's a snippet of the code from my bash script:\n`\ncat > tleap.combine.in <<EOF\nrcp = loadpdb ${rcp_nm}amber_f.pdb\nnmLig = loadpdb rename${nmLigFile}.pdb\ncomp = combine{rcp nmLig}\nsavepdb comp comp.pdb\nquit\nEOF\ntleap -s -f tleap.combine.in > tleap.combine.out\n`\nI would greatly appreciate any insights or guidance on how to address this issue and successfully combine the protein and ligand structures without introducing 'TER' between each residue.\nBest regards,\nYu Chen\n---------------------------------------------------------\nYu Chen (M.Sc., Frau/Ms)\nPh.D Student\nFreie Universität Berlin\nDepartment of Biology, Chemisty, and Pharmacy\nInstitute of Pharmacy\nResearch Group Prof. Dr. Gerhard Wolber\nKönigin-Luise-Str. 2+4 , 14195\nRoom 180, Front Building\nBerlin / Germany\nyu.chen.fu-berlin.de",
+      "url": "http://archive.ambermd.org/202311/0060.html"
+    },
+    {
+      "message_id": 1699725127,
+      "author": "David A Case",
+      "date_raw": "Sat, 11 Nov 2023 10:52:07 -0700",
+      "body": "On Fri, Nov 10, 2023, Yu Chen via AMBER wrote:\n>\n>I hope this message finds you well. I am currently using Ambertools 22.0,\n>installed via conda, and am encountering an issue while attempting to\n>combine a protein (or RNA) and ligand PDB file using the `combine` method\n>in tleap. My ultimate goal is to generate `prmtop` and `inpcrd` files for\n>subsequent simulations.\n>\n>Upon inspecting the combined PDB file in a text editor, I observed that\n>each residue, whether belonging to the protein or RNA, is separated by\n>'TER', resulting in the entire system being fragmented.\n>\n>Here's a snippet of the code from my bash script:\n>\n> `\n> cat > tleap.combine.in <<EOF\n> rcp = loadpdb ${rcp_nm}amber_f.pdb\n> nmLig = loadpdb rename${nmLigFile}.pdb\n> comp = combine{rcp nmLig}\n> savepdb comp comp.pdb\n> quit\n> EOF\n> tleap -s -f tleap.combine.in > tleap.combine.out\n> `\nIt's hard to say what went wrong, without seeing the input pdb files you\nused. But I'd recommend using a text editor (not the tleap \"combine\"\ncommand) to create the \"comp.pdb\" file.\n[Are you sure the problem is related to the combine command? It seems more\nlikely that something is amiss with the ${rcp_nm}amber_f.pdb file.]\n...dac",
+      "url": "http://archive.ambermd.org/202311/0065.html",
+      "in_reply_to": 1699640582
+    },
+    {
+      "message_id": 1699743944,
+      "author": "David Case",
+      "date_raw": "Sat, 11 Nov 2023 16:05:44 -0700",
+      "body": "On Sat, Nov 11, 2023 at 11:24 AM Yu Chen <yuc94.zedat.fu-berlin.de> wrote:\n> `\n> cat > tleap.combine.in <<EOF\n> rcp = loadpdb ${rcp_nm}amber_f.pdb\n> nmLig = loadpdb rename${nmLigFile}.pdb\n> comp = combine{rcp nmLig}\n> savepdb comp comp.pdb\n> quit\n> EOF\n> tleap -s -f tleap.combine.in > tleap.combine.out\n>\n>\nIt looks like you are not loading any leaprc files (for proteins and water,\nsay). Are you not seeing tons of messages like this one:\nCreating new UNIT for residue: GLY sequence: 303 ?\nThis means that tleap doesn't know about connectivity between residues\n(since that information is stored in the libraries you failed to load.)\nSince there is no bonding information available, tleap inserts TER cards\nbetween residues.\nYou need to study carefully what happens at each \"loadpdb\" step, and fix\nthe problems.\nFWIW: this has nothing to do with the combine command: you would get\nsimilar behavior just typing \"savepdb rcp rcp.pdf\" above.\nFinally, if you have components from a few separated PDB files that all\nneed to be included in your final system, I still recommend using a text\neditor to create the \"comp.pdb\" file. Then use a single loadpdb command in\ntleap. At this stage, look at any warnings and errors that tleap produces.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202311/0066.html",
+      "in_reply_to": 1699640582
+    }
+  ]
+}

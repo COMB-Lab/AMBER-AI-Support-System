@@ -1,0 +1,21 @@
+{
+  "thread_id": 1614773978,
+  "subject": "Simulation of optimized ligand without docking",
+  "messages": [
+    {
+      "message_id": 1614773978,
+      "author": "Ramanathan Rajesh",
+      "date_raw": "Wed, 3 Mar 2021 17:49:38 +0530",
+      "body": "Dear all\nI am working with G-quadruplex. I wanted to know if it is possible to\ndirectly place the optimized structure of the ligand above a desired\nguanine and run a MD simulation without docking(although there are some\noverlap of ligand with the quadruplex).\nI had tried this but the heating stage is not getting completed due to the\nfollowing error\n.\n.\n.\n.\n*vlimit exceeded for step 38683; vmax = 34.0245vlimit exceeded for\nstep 38684; vmax = 38.2067vlimit exceeded for step 38685; vmax =\n24.133vlimit exceeded for step 38686; vmax = 4184.6232\nCoordinate resetting (SHAKE) cannot be accomplished, deviation is too\nlarge NITER, NIT, LL, I and J are : 0 4 281 882 891\nNote: This is usually a symptom of some deeper problem with the\nenergetics of the system*\nI want to know if such procedure can be followed that is without a docked\nstructure performing a simulation using a gaussian optimized structure of\nligand by manually placing it over a guanine residue in the G-quadruplex.\nThanking you in advance\nRamanathan R",
+      "url": "http://archive.ambermd.org/202103/0017.html"
+    },
+    {
+      "message_id": 1614778629,
+      "author": "David A Case",
+      "date_raw": "Wed, 3 Mar 2021 08:37:09 -0500",
+      "body": "On Wed, Mar 03, 2021, Ramanathan Rajesh wrote:\n>*vlimit exceeded for step 38683;\nIs this the first time you saw a vlimit error? You should visualize the\ntrajectory up to that point, and see if there are any bad contacts between\nthe ligand and the quadruplex. Is the temperature stable?\nIt would help to know how you created the force field for the ligand.\n>large NITER, NIT, LL, I and J are : 0 4 281 882 891\nLook in particular at atoms 882 and 891, and their immdiate surroundings.\nYou may want to run a shorter simulation that stops shortly before the\nerror, and look at the final structure from the restart file.\n>I want to know if such procedure can be followed that is without a docked\n>structure performing a simulation using a gaussian optimized structure of\n>ligand by manually placing it over a guanine residue in the G-quadruplex.\nIt's possible that the problem arose from a poor initial placement, but\nsince you have run 38,000 steps before encountering a problem, it seems more\nlikely that the system is allowing a bad contact somewhere.\n....dac",
+      "url": "http://archive.ambermd.org/202103/0019.html",
+      "in_reply_to": 1614773978
+    }
+  ]
+}

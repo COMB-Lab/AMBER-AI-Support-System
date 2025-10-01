@@ -1,0 +1,21 @@
+{
+  "thread_id": 1628892941,
+  "subject": "Error open-mai",
+  "messages": [
+    {
+      "message_id": 1628892941,
+      "author": "Rodrigo da Silva Bitzer",
+      "date_raw": "Fri, 13 Aug 2021 22:15:41 +0000",
+      "body": "I had the following error while trying to install a open-mpi version:\nld: warning: ignoring file /opt/homebrew/Cellar/open-mpi/4.1.1_2/lib/libmpi.dylib, building for macOS-x86_64 but attempting to link with file built for macOS-arm64\nUndefined symbols for architecture x86_64:\n\"_MPI_Finalize\", referenced from:\n_main in _configtest.o\n\"_MPI_Init\", referenced from:\n_main in _configtest.o\nld: symbol(s) not found for architecture x86_64\nclang: error: linker command failed with exit code 1 (use -v to see invocation)\nfailure.\nremoving: _configtest.c _configtest.o\nerror: Cannot link MPI programs. Check your configuration!!!\nmake[2]: *** [AmberTools/src/mpi4py-3.0.3/CMakeFiles/mpi4py-build/mpi4py-build.stamp] Error 1\nmake[1]: *** [AmberTools/src/mpi4py-3.0.3/CMakeFiles/mpi4py.dir/all] Error 2\nmake: *** [all] Error 2\nI am using macOS (M1) BigSur.\nThank you in advance for any help,\nRodrigo",
+      "url": "http://archive.ambermd.org/202108/0095.html"
+    },
+    {
+      "message_id": 1628941045,
+      "author": "David A Case",
+      "date_raw": "Sat, 14 Aug 2021 07:37:25 -0400",
+      "body": "On Fri, Aug 13, 2021, Rodrigo da Silva Bitzer wrote:\n>\n>ld: warning: ignoring file\n>/opt/homebrew/Cellar/open-mpi/4.1.1_2/lib/libmpi.dylib, building for\n>macOS-x86_64 but attempting to link with file built for macOS-arm64\nIt looks like your homebrew open-mpi installation is built for M1, but other\ntools in your toolchain are using Intel.\n>\n>Undefined symbols for architecture x86_64:\n>\n> \"_MPI_Finalize\", referenced from:\nThe system can't get these routines from your libmpi.dylib, since that\nlibrary has the wrong architecture.\nMaybe I'm telling you what you already know. This sounds like something you\nmay have to investigate with the homebrew folks. See if you can install an\nIntel version of openmpi.\n....dac",
+      "url": "http://archive.ambermd.org/202108/0097.html",
+      "in_reply_to": 1628892941
+    }
+  ]
+}

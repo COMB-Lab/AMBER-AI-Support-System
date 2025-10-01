@@ -1,0 +1,45 @@
+{
+  "thread_id": 1641610861,
+  "subject": "Amber20 minimization, the rendered .rst file is corrupted and unreadable",
+  "messages": [
+    {
+      "message_id": 1641610861,
+      "author": "Yi Ren",
+      "date_raw": "Sat, 8 Jan 2022 03:01:01 +0000",
+      "body": "Hi All\nI encountered a rare problem while using the minimization function,\nI was trying to perform the minimization by using pmemd.cuda\nBut the rendered .rst file is corrupted and unreadable, which stopped me from the subsequent works.\nMay anyone help me to have a look at the attached file and identify the problem?\nMuch appreciated !\n[cid:image001.png.01D80498.2A313E40]\nYi Ren\n0420248895\nPhD candidate UNSW",
+      "url": "http://archive.ambermd.org/202201/0039.html"
+    },
+    {
+      "message_id": 1641649380,
+      "author": "David A Case",
+      "date_raw": "Sat, 8 Jan 2022 08:43:00 -0500",
+      "body": "On Sat, Jan 08, 2022, Yi Ren wrote:\n>\n>I encountered a rare problem while using the minimization function,\n>I was trying to perform the minimization by using pmemd.cuda\n>But the rendered .rst file is corrupted and unreadable, which stopped me\n>from the subsequent works.\n>\n>May anyone help me to have a look at the attached file and identify the problem?\nWhat you attached is clearly not a restart file. Some questions:\n1. Did the mdout file offer any hints? Did the minimization conclude\ncorrectly?\n2. I'd double-check all your filenames: is it possible you are using the\nsame name twice?\n3. Run a (shortish) minimization with a CPU version. If you have large\ninitial gradients, the GPU version can fail. (But maybe this is not the\nproblem, depending on the answer to question 1 above.)\n....dac",
+      "url": "http://archive.ambermd.org/202201/0041.html",
+      "in_reply_to": 1641610861
+    },
+    {
+      "message_id": 1641650847,
+      "author": "Carlos Simmerling",
+      "date_raw": "Sat, 8 Jan 2022 09:07:27 -0500",
+      "body": "Looks like it might be a netcdf binary format. Try using ncdump to see if\nit reads it. If yes, then you can covert using cpptraj if needed, buy amber\nshould read it in without problems. Did you get an error in Amber reading\nit?\nOn Fri, Jan 7, 2022, 10:01 PM Yi Ren <yi.ren6.unsw.edu.au> wrote:\n> Hi All\n>\n> I encountered a rare problem while using the minimization function,\n> I was trying to perform the minimization by using pmemd.cuda\n> But the rendered .rst file is corrupted and unreadable, which stopped me\n> from the subsequent works.\n>\n> May anyone help me to have a look at the attached file and identify the\n> problem?\n> Much appreciated !\n>\n> [cid:image001.png.01D80498.2A313E40]\n> Yi Ren\n> 0420248895\n> PhD candidate UNSW\n>\n>",
+      "url": "http://archive.ambermd.org/202201/0043.html",
+      "in_reply_to": 1641610861
+    },
+    {
+      "message_id": 1641652934,
+      "author": "Daniel Roe",
+      "date_raw": "Sat, 8 Jan 2022 09:42:14 -0500",
+      "body": "Hi,\nOn Fri, Jan 7, 2022 at 10:01 PM Yi Ren <yi.ren6.unsw.edu.au> wrote:\n> But the rendered .rst file is corrupted and unreadable, which stopped me from the subsequent works.\nThe file is not corrupted. It is almost certainly a NetCDF restart\nfile (the 'CDF' at the beginning gives it away), which has been the\ndefault format for restart files for a while now. You can check this\nyourself by using the linux 'file' command, by using 'ncdump -h', by\nreading it into cpptraj etc.. Adjust the ntxo parameter if for some\nreason you want to use ASCII-formatted restarts instead. Hope this\nhelps,\n-Dan\n>\n> May anyone help me to have a look at the attached file and identify the problem?\n> Much appreciated !\n>\n> [cid:image001.png.01D80498.2A313E40]\n> Yi Ren\n> 0420248895\n> PhD candidate UNSW\n>\n>",
+      "url": "http://archive.ambermd.org/202201/0044.html",
+      "in_reply_to": 1641610861
+    },
+    {
+      "message_id": 1641689964,
+      "author": "Yi Ren",
+      "date_raw": "Sun, 9 Jan 2022 00:59:24 +0000",
+      "body": "Hi David\nThank you for your response.\n>>1. Did the mdout file offer any hints? Did the minimization conclude correctly?\nYes, the mdout file indeed showed some results, as shown in the attached file, the minimization \"RESTARTED DUE TO LINMIN FAILURE\"\nAs I searched from the forum, the discussion indicates that that this message is not a fatal error and would be expected.\n>>2. I'd double-check all your filenames: is it possible you are using the same name twice?\nI've attached the submission file, may you help me to check whether it is legit?\n>>3. Running it on the CPU mode\nI'm not sure how to identify whether the gradient is large or not, may you please give me more information on it?\nMuch appreciated.\nKind regards\nYi Ren\n-----Original Message-----\nFrom: David A Case <david.case.rutgers.edu>\nSent: Sunday, January 9, 2022 12:43 AM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] Amber20 minimization, the rendered .rst file is corrupted and unreadable\nOn Sat, Jan 08, 2022, Yi Ren wrote:\n>\n>I encountered a rare problem while using the minimization function, I\n>was trying to perform the minimization by using pmemd.cuda But the\n>rendered .rst file is corrupted and unreadable, which stopped me from\n>the subsequent works.\n>\n>May anyone help me to have a look at the attached file and identify the problem?\nWhat you attached is clearly not a restart file. Some questions:\n1. Did the mdout file offer any hints? Did the minimization conclude correctly?\n2. I'd double-check all your filenames: is it possible you are using the same name twice?\n3. Run a (shortish) minimization with a CPU version. If you have large initial gradients, the GPU version can fail. (But maybe this is not the problem, depending on the answer to question 1 above.)\n....dac",
+      "url": "http://archive.ambermd.org/202201/0046.html",
+      "in_reply_to": 1641610861
+    }
+  ]
+}

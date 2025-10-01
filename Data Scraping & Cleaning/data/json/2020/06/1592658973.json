@@ -1,0 +1,37 @@
+{
+  "thread_id": 1592658973,
+  "subject": "Incompatibility of coordinate file with topology after minimization",
+  "messages": [
+    {
+      "message_id": 1592658973,
+      "author": "Houcemeddine Othman",
+      "date_raw": "Sat, 20 Jun 2020 15:16:13 +0200",
+      "body": "Dear all,\nI am running a restrained minimization step of a\nprotein+solvent+counterions system using the following input\nminimization parameters\n&cntrl\nimin = 1, maxcyc = 7000, ncyc = 1000, cut = 12, ntb = 1, ntr = 0, igb = 0,\ndrms = 0.01\n/\nsander -O -i energy_min1.in -o energy_min1.out -c sructure_start.rst7 -p\nstructure.prmtop -r structure_min1.rst7 -ref sructure_start.rst7\nEverything runs successfully. However, the resulting minimized structure\n(structure_min1.rst7) contains lesser information (2 Mb) than the starting\nstructure (sructure_start.rst7, 3Mb). It is also not compatible with the\ntopology file (structure.prmtop).\nDo you have any idea about what might be happening here?\nThank you\n-- \nHoucemeddine Othman\nwww.bioinfo-on-dunes.net\nSydney Brenner Institute of molecular bioscience\nUniversity of the Witwatersrand\n The Mount, 9 Jubilee Road,\nParktown 2193, Johannesburg,\n Gauteng, South Africa.",
+      "url": "http://archive.ambermd.org/202006/0180.html"
+    },
+    {
+      "message_id": 1592702526,
+      "author": "David A Case",
+      "date_raw": "Sat, 20 Jun 2020 21:22:06 -0400",
+      "body": "On Sat, Jun 20, 2020, Houcemeddine Othman wrote:\n>I am running a restrained minimization step of a\n>protein+solvent+counterions system using the following input\n>\n>minimization parameters\n>&cntrl\n>imin = 1, maxcyc = 7000, ncyc = 1000, cut = 12, ntb = 1, ntr = 0, igb = 0,\n>drms = 0.01\n>/\n>sander -O -i energy_min1.in -o energy_min1.out -c sructure_start.rst7 -p\n>structure.prmtop -r structure_min1.rst7 -ref sructure_start.rst7\n>\n>Everything runs successfully. However, the resulting minimized structure\n>(structure_min1.rst7) contains lesser information (2 Mb) than the starting\n>structure (sructure_start.rst7, 3Mb). It is also not compatible with the\n>topology file (structure.prmtop).\nThe default format for restart files is netcdf, which will often by\nsmaller than a formatted form. Use the \"file\" command to see which\nfiles are formatted (\"ASCII\") and which are not (\"data\").\n[The ntxo variable controls the format of restart files; but we\nrecommend sticking with the default unless you know you have a good\nreason not to.]\nHow did you conclude that the min1 restart file is not compatible with\nthe prmtop file?\n....dac",
+      "url": "http://archive.ambermd.org/202006/0186.html",
+      "in_reply_to": 1592658973
+    },
+    {
+      "message_id": 1592744644,
+      "author": "Houcemeddine Othman",
+      "date_raw": "Sun, 21 Jun 2020 15:04:04 +0200",
+      "body": "Thank for the reply,\nI did not know that as I used to work with version 12 of Amber. It is\nindeed a netcdf file.\nThe reason why I said they are incompatible, is that I failed to load the\nfiles in vmd and ambpdb and I though that by specifying the extension will\nbe sufficient to write an rst file.\nRegards\nOn Sun, Jun 21, 2020 at 3:22 AM David A Case <david.case.rutgers.edu> wrote:\n> On Sat, Jun 20, 2020, Houcemeddine Othman wrote:\n>\n> >I am running a restrained minimization step of a\n> >protein+solvent+counterions system using the following input\n> >\n> >minimization parameters\n> >&cntrl\n> >imin = 1, maxcyc = 7000, ncyc = 1000, cut = 12, ntb = 1, ntr = 0, igb = 0,\n> >drms = 0.01\n> >/\n> >sander -O -i energy_min1.in -o energy_min1.out -c sructure_start.rst7 -p\n> >structure.prmtop -r structure_min1.rst7 -ref sructure_start.rst7\n> >\n> >Everything runs successfully. However, the resulting minimized structure\n> >(structure_min1.rst7) contains lesser information (2 Mb) than the starting\n> >structure (sructure_start.rst7, 3Mb). It is also not compatible with the\n> >topology file (structure.prmtop).\n>\n> The default format for restart files is netcdf, which will often by\n> smaller than a formatted form. Use the \"file\" command to see which\n> files are formatted (\"ASCII\") and which are not (\"data\").\n>\n> [The ntxo variable controls the format of restart files; but we\n> recommend sticking with the default unless you know you have a good\n> reason not to.]\n>\n> How did you conclude that the min1 restart file is not compatible with\n> the prmtop file?\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202006/0190.html",
+      "in_reply_to": 1592658973
+    },
+    {
+      "message_id": 1593001562,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 24 Jun 2020 08:26:02 -0400",
+      "body": "Hi,\nFYI you can convert the netcdf restart to the old ASCII format (for\ne.g. vmd on windows) using cpptraj:\ncpptraj -p <topology file> -y <netdf restart> -x myfile.rst7\nHope this helps,\n-Dan\nOn Sun, Jun 21, 2020 at 9:05 AM Houcemeddine Othman <houcemoo.gmail.com> wrote:\n>\n> Thank for the reply,\n> I did not know that as I used to work with version 12 of Amber. It is\n> indeed a netcdf file.\n> The reason why I said they are incompatible, is that I failed to load the\n> files in vmd and ambpdb and I though that by specifying the extension will\n> be sufficient to write an rst file.\n>\n> Regards\n>\n>\n> On Sun, Jun 21, 2020 at 3:22 AM David A Case <david.case.rutgers.edu> wrote:\n>\n> > On Sat, Jun 20, 2020, Houcemeddine Othman wrote:\n> >\n> > >I am running a restrained minimization step of a\n> > >protein+solvent+counterions system using the following input\n> > >\n> > >minimization parameters\n> > >&cntrl\n> > >imin = 1, maxcyc = 7000, ncyc = 1000, cut = 12, ntb = 1, ntr = 0, igb = 0,\n> > >drms = 0.01\n> > >/\n> > >sander -O -i energy_min1.in -o energy_min1.out -c sructure_start.rst7 -p\n> > >structure.prmtop -r structure_min1.rst7 -ref sructure_start.rst7\n> > >\n> > >Everything runs successfully. However, the resulting minimized structure\n> > >(structure_min1.rst7) contains lesser information (2 Mb) than the starting\n> > >structure (sructure_start.rst7, 3Mb). It is also not compatible with the\n> > >topology file (structure.prmtop).\n> >\n> > The default format for restart files is netcdf, which will often by\n> > smaller than a formatted form. Use the \"file\" command to see which\n> > files are formatted (\"ASCII\") and which are not (\"data\").\n> >\n> > [The ntxo variable controls the format of restart files; but we\n> > recommend sticking with the default unless you know you have a good\n> > reason not to.]\n> >\n> > How did you conclude that the min1 restart file is not compatible with\n> > the prmtop file?\n> >\n> > ....dac\n> >\n> >\n> >",
+      "url": "http://archive.ambermd.org/202006/0220.html",
+      "in_reply_to": 1592658973
+    }
+  ]
+}

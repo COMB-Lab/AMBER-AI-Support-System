@@ -1,0 +1,29 @@
+{
+  "thread_id": 1646982437,
+  "subject": "Convergence issue in rism1d",
+  "messages": [
+    {
+      "message_id": 1646982437,
+      "author": "angad sharma",
+      "date_raw": "Fri, 11 Mar 2022 12:37:17 +0530",
+      "body": "I am trying to to rism1d with the following inputs:\n#!/bin/csh -f\ncat > TP3_cu-mg.inp <<EOF\n&PARAMETERS\nOUTLST='x''g', THEORY='DRISM', CLOSUR='KH',\n!grid\nNR=16384, DR=0.025, routup=384, toutup=0,\n!MDIIS\nNIS=20, DELVV=0.3, TOLVV=1.e-12,\n!iter\nKSAVE=-1, KSHOW=1, maxstep=10000,\n!ElStat\nSMEAR=1, ADBCOR=0.5,\n!bulk solvent properties\nTEMPER=300, DIEps=78.497,\nNSP=3\n/\n&SPECIES\nDENSITY=55.400d0,\nMODEL=\"$AMBERHOME/dat/rism1d/model/TP3.mdl\"\n/\n&SPECIES\nDENSITY=0.1d0,\nMODEL=\"$AMBERHOME/dat/rism1d/model/Na+.mdl\"\n/\n&SPECIES\nDENSITY=0.1d0,\nMODEL=\"$AMBERHOME/dat/rism1d/model/MG2.mdl\"\n/\n&SPECIES\nDENSITY=0.1d0,\nMODEL=\"/home/angad/test-rism1d-cr/CU.mdl\"\n/\n&SPECIES\nDENSITY=0.5d0,\nMODEL=\"$AMBERHOME/dat/rism1d/model/Cl-.mdl\"\n/\nEOF\nrism1d TP3_cu-mg > TP3_cu-mg.out || goto error\nBut it is not converging and giving error like this:\nERROR> RXRISM: reached steps limit Maxstep=10000\nSTOP 1\nAny idea what can be done? to converge it.",
+      "url": "http://archive.ambermd.org/202203/0050.html"
+    },
+    {
+      "message_id": 1647003397,
+      "author": "David A Case",
+      "date_raw": "Fri, 11 Mar 2022 07:56:37 -0500",
+      "body": "On Fri, Mar 11, 2022, angad sharma wrote:\n>I am trying to to rism1d with the following inputs:\n>\n>&SPECIES\n>DENSITY=0.1d0,\n>MODEL=\"$AMBERHOME/dat/rism1d/model/MG2.mdl\"\n>But it is not converging and giving error like this:\n>ERROR> RXRISM: reached steps limit Maxstep=10000\nI'll let Tyler make specific suggestions, but will make this comment:\n100 mM Mg (or any divalent ion) is a very high concentration for RISM to\nhandle. Would a smaller value (say 10 mM) satisfy your needs?\n....dac",
+      "url": "http://archive.ambermd.org/202203/0052.html",
+      "in_reply_to": 1646982437
+    },
+    {
+      "message_id": 1647280201,
+      "author": "tluchko",
+      "date_raw": "Mon, 14 Mar 2022 17:50:01 +0000",
+      "body": "Sent with ProtonMail Secure Email.\n------- Original Message -------\nOn Friday, March 11th, 2022 at 4:56 AM, David A Case <david.case.rutgers.edu> wrote:\n> On Fri, Mar 11, 2022, angad sharma wrote:\n>\n> > I am trying to to rism1d with the following inputs:\n> >\n> > &SPECIES\n> >\n> > DENSITY=0.1d0,\n> >\n> > MODEL=\"$AMBERHOME/dat/rism1d/model/MG2.mdl\"\n>\n> > But it is not converging and giving error like this:\n> >\n> > ERROR> RXRISM: reached steps limit Maxstep=10000\n>\n> I'll let Tyler make specific suggestions, but will make this comment:\n>\n> 100 mM Mg (or any divalent ion) is a very high concentration for RISM to\n>\n> handle. Would a smaller value (say 10 mM) satisfy your needs?\n>\nYou can try solving for a lower concentration of ions first and then use the restart file as a starting point for a higher concentration of ions. Even then, 100 mM Mg may not converge.\nUsing restart file with different parameters is one of the strategies described in section 7.3.1 of the Amber 21 manual (page 118).\nTyler",
+      "url": "http://archive.ambermd.org/202203/0075.html",
+      "in_reply_to": 1646982437
+    }
+  ]
+}

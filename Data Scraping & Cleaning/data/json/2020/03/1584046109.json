@@ -1,0 +1,29 @@
+{
+  "thread_id": 1584046109,
+  "subject": "TI runs on GPU",
+  "messages": [
+    {
+      "message_id": 1584046109,
+      "author": "Debarati DasGupta",
+      "date_raw": "Thu, 12 Mar 2020 20:48:29 +0000",
+      "body": "I don�t know why but doing NVT productions on GPU gives me this error.. I have tried 5 times and each time I get the same error.\ngpuNum=\nError: an illegal memory access was encountered launching kernel kNLSkinTest",
+      "url": "http://archive.ambermd.org/202003/0147.html"
+    },
+    {
+      "message_id": 1584098679,
+      "author": "David A Case",
+      "date_raw": "Fri, 13 Mar 2020 07:24:39 -0400",
+      "body": "On Thu, Mar 12, 2020, Debarati DasGupta wrote:\n>I don’t know why but doing NVT productions on GPU gives me this error.. I\n>have tried 5 times and each time I get the same error.\n>\n>gpuNum=\n>Error: an illegal memory access was encountered launching kernel kNLSkinTest\nWhat happens when you run a short simulation with the same inputs\n(probably just reducing nstlim and ntpr) on the CPU?\nWhat happens when you set ntpr=1 on the GPU? Does the error occur\nbefore the first energy is printed?\nWe are certainly going to need a lot more information before anyone on\nthe list can offer real help. What version of Amber is involved? How\nmany atoms in the system? Posting your mdin file sometimes helps. You\nmention \"NVT\": was there some reason for that? Did earlier runs on the\nsame system proceed without error?\n....dac",
+      "url": "http://archive.ambermd.org/202003/0150.html",
+      "in_reply_to": 1584046109
+    },
+    {
+      "message_id": 1584280566,
+      "author": "Debarati DasGupta",
+      "date_raw": "Sun, 15 Mar 2020 13:56:06 +0000",
+      "body": "Dear Prof Case,\n1. What happens when you set ntpr=1 on the GPU? Does the error occur\nbefore the first energy is printed?\nWhen I set ntpr=1, the error still appears on the first step.\n1. We are certainly going to need a lot more information before anyone on\nthe list can offer real help. What version of Amber is involved? How\nmany atoms in the system? Posting your mdin file sometimes helps. You\nmention \"NVT\": was there some reason for that? Did earlier runs on the\nsame system proceed without error?\nAns: I am using AMBER18 for my TI project.\nNumber of atoms in system= 48037 ( consists of my abl-kinase protein+ small molecule+water TIP3P+ions for neutralization)\nMy input file is\n&cntrl\nimin = 0, nstlim = 500, dt = 0.001,\nirest = 1, ntx = 5, ig = -1,\ntempi = 300.0, temp0 = 300.0,\nntc = 2, ntf = 1, tol = 0.00001,\nntwx = 10, ntwe = 10, ntwr = 10, ntpr = 10,\ncut = 12.0,\nntt =3, ntb = 1, ntp = 0, gamma_ln=2.5,\nnscm = 0,\nntr=1, restraintmask=':1', restraint_wt = 20.00,\nicfe = 1, clambda = 0.31608, ifsc=1,\ntimask1=':C3N',timask2='',\nscmask1=':C3N', scmask2=''\n/\nI am trying a NVT production (1ns) on all lambda windows printed here: But I get errors for 0.0080, 0.04794 ( Not other!?? Cant understand why)\n0.0080\n0.00922\n0.04794\n0.11505\n0.20634\n0.31608\n0.43738\n0.56262\n0.68392\n0.79366\n0.88495\n0.95206\n0.99078\n0.997\n0.998\nNo specific reason why I did NVT but I was trying to simply replicate the publication based on AMBER-TI on gpus and they have done the production in NVT ensemble.\nPublication is �\nhttps://pubs.acs.org/doi/abs/10.1021/acs.jcim.9b00105�\nAny help/suggestions/advice will be very very useful.\nI am stuck on this last 3-4 months.\nThanks\nRegards\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFrom: David A Case<mailto:david.case.rutgers.edu>\nSent: 13 March 2020 16:54\nTo: AMBER Mailing List<mailto:amber.ambermd.org>\nSubject: Re: [AMBER] TI runs on GPU\nOn Thu, Mar 12, 2020, Debarati DasGupta wrote:\n>I don�t know why but doing NVT productions on GPU gives me this error.. I\n>have tried 5 times and each time I get the same error.\n>\n>gpuNum=\n>Error: an illegal memory access was encountered launching kernel kNLSkinTest\nWhat happens when you run a short simulation with the same inputs\n(probably just reducing nstlim and ntpr) on the CPU?\nWhat happens when you set ntpr=1 on the GPU? Does the error occur\nbefore the first energy is printed?\nWe are certainly going to need a lot more information before anyone on\nthe list can offer real help. What version of Amber is involved? How\nmany atoms in the system? Posting your mdin file sometimes helps. You\nmention \"NVT\": was there some reason for that? Did earlier runs on the\nsame system proceed without error?\n....dac",
+      "url": "http://archive.ambermd.org/202003/0172.html",
+      "in_reply_to": 1584046109
+    }
+  ]
+}

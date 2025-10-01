@@ -1,0 +1,21 @@
+{
+  "thread_id": 1679497622,
+  "subject": "Re: [AMBER] [Sender Not Verified] Re: Issues with simulating 5'-phosphorylated RNA strands",
+  "messages": [
+    {
+      "message_id": 1679497622,
+      "author": "David A Case",
+      "date_raw": "Wed, 22 Mar 2023 11:07:02 -0400",
+      "body": "On Wed, Mar 22, 2023, Steinbrecher, Thomas via AMBER wrote:\n>\n>my experience here may be outdated, but the stability issues you mention\n>are (or were some years ago) typical for MD simulations of protonated\n>phosphates. As you describe, the imbalance between electrostatics and vdW\n>repulsion is the issue here. A normal hydroxyl H does not need a LJ center,\n>because it is sufficiently protected by both the O-LJ volume plus, and this\n>is key, the relatively stiff angle bending in e.g. C-C-O groups, so the H\n>is kept away from the heavy atoms three bonds away. In contrast, a\n>phosphate has O-P-O angle terms which are softer plus relatively high\n>charges on both H and O, so the collapse you describe between atoms 1 and 4\n>in a O-P-O-H substructure can occur. The ad hoc solution of giving the H\n>non-zero vdW parameters will make the simulation stable (most likely) but\n>in principle you'd be on the hook to show that this still describes the\n>phosphate group well in the environment you simulate it in. The cowardly\n>solution would be to claim that the phosphate has pK around 7 anyway and in\n>the presence of all those nucleic acid associated metal cations, you may as\n>well simulate it deprotonated.\nThomas' post seems spot-on to me. One other thing that I remember doing is\nto increase the force constant for the P-O-H angle in the monophosphate:\nthis will help keep the proton from finding a neighboring hydrogen. I'd\ndouble the force constant -- having a slightly-too-stiff angle is not really\ngoing to do anything bad to your sampling.\nLet us know if either of both of these ideas (non-zero LJ [try the value for\nhydrogens bonded to nitrogen] or stiffer angle) help. We should update the\nparameters so that others don't see the problems you are having.\n...thanks for the detailed reports....dac",
+      "url": "http://archive.ambermd.org/202303/0121.html"
+    },
+    {
+      "message_id": 1679583432,
+      "author": "Harvey Dale",
+      "date_raw": "Thu, 23 Mar 2023 14:57:12 +0000",
+      "body": "Dear David and Thomas,\nThanks very much for the advice. As both of you have described, setting a small vdW radius (0.3) and epsilon (0.05) for the phosphate hydrogen appears to have resolved the problems with the instabilities I was observing; I must confess I have not yet tried stiffening the P-O-H angle, but suspect this too will yield the same result.\nWill certainly look to validate this approach as I run more simulations down the line.\nThanks again,\nHarvey",
+      "url": "http://archive.ambermd.org/202303/0130.html",
+      "in_reply_to": 1679497622
+    }
+  ]
+}

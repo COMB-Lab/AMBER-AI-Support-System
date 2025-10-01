@@ -1,0 +1,29 @@
+{
+  "thread_id": 1583444301,
+  "subject": "TI production error in nstep =1",
+  "messages": [
+    {
+      "message_id": 1583444301,
+      "author": "Debarati DasGupta",
+      "date_raw": "Thu, 5 Mar 2020 21:38:21 +0000",
+      "body": "Working Directory =/C3N/SITE4/EQUIL/PRODUCTION_NVT/0.43738\nHostname = mega1\nDate = Thu Mar 5 16:35:12 EST 2020\nSLURM_GPUFILE ...\ngpuNum=\nError: an illegal memory access was encountered launching kernel kNLSkinTest\nAny ideas on how to tackle this error?\nThanks\nMy input file is as follows:\n&cntrl\nimin = 0, nstlim = 500, dt = 0.001,\nirest = 1, ntx = 5, ig = -1,\ntempi = 300.0, temp0 = 300.0,\nntc = 2, ntf = 1, tol = 0.00001,\nntwx = 1, ntwe = 1, ntwr = 1, ntpr = 1,\ncut = 12.0,\nntt =3, ntb = 1, ntp = 0, gamma_ln=2.5,\nnscm = 0,\nntr=1, restraintmask=':1', restraint_wt = 20.00,\nicfe = 1, clambda = 0.43738, ifsc=1,\ntimask1=':C3N',timask2='',\nscmask1=':C3N', scmask2=''",
+      "url": "http://archive.ambermd.org/202003/0049.html"
+    },
+    {
+      "message_id": 1583498897,
+      "author": "David A Case",
+      "date_raw": "Fri, 6 Mar 2020 07:48:17 -0500",
+      "body": "On Thu, Mar 05, 2020, Debarati DasGupta wrote:\n>Error: an illegal memory access was encountered launching kernel kNLSkinTest\n>Any ideas on how to tackle this error?\nWhat happens if you run the same short job on a CPU? Do you see rapid\nenergy changes on the first few steps?\nAre you able to share the input files so that someone (not me!) could\ntry to reproduce the problem?\n..thx...dac",
+      "url": "http://archive.ambermd.org/202003/0058.html",
+      "in_reply_to": 1583444301
+    },
+    {
+      "message_id": 1583506000,
+      "author": "Debarati DasGupta",
+      "date_raw": "Fri, 6 Mar 2020 14:46:40 +0000",
+      "body": "Hi Prof Case\nI shared my input file in amber mailing list .\nIs it not showing up?\nIt works when I do the same thing on cpus using pmemd.MPI, but I need to get the process calibrated for GPUs else I have like 80 such calculations to do and it would be nit so viable using 12 processors versus using pmemd.cuda\nThanks\nMy input file is as follows:\n&cntrl\nimin = 0, nstlim = 500, dt = 0.001,\nirest = 1, ntx = 5, ig = -1,\ntempi = 300.0, temp0 = 300.0,\nntc = 2, ntf = 1, tol = 0.00001,\nntwx = 1, ntwe = 1, ntwr = 1, ntpr = 1,\ncut = 12.0,\nntt =3, ntb = 1, ntp = 0, gamma_ln=2.5,\nnscm = 0,\nntr=1, restraintmask=':1', restraint_wt = 20.00,\nicfe = 1, clambda = 0.43738, ifsc=1,\ntimask1=':C3N',timask2='',\nscmask1=':C3N', scmask2=''\nFrom: David A Case<mailto:david.case.rutgers.edu>\nSent: Friday, March 6, 2020 7:48 AM\nTo: AMBER Mailing List<mailto:amber.ambermd.org>\nSubject: Re: [AMBER] TI production error in nstep =1\nOn Thu, Mar 05, 2020, Debarati DasGupta wrote:\n>Error: an illegal memory access was encountered launching kernel kNLSkinTest\n>Any ideas on how to tackle this error?\nWhat happens if you run the same short job on a CPU? Do you see rapid\nenergy changes on the first few steps?\nAre you able to share the input files so that someone (not me!) could\ntry to reproduce the problem?\n..thx...dac",
+      "url": "http://archive.ambermd.org/202003/0062.html",
+      "in_reply_to": 1583444301
+    }
+  ]
+}

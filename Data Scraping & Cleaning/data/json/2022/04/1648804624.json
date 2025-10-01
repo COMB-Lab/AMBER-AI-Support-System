@@ -1,0 +1,37 @@
+{
+  "thread_id": 1648804624,
+  "subject": "Pd (palladium not \"pd\" for p) lost bonds after minimization and seem as \"P\" atom",
+  "messages": [
+    {
+      "message_id": 1648804624,
+      "author": "Erdem Yeler",
+      "date_raw": "Fri, 1 Apr 2022 12:17:04 +0300",
+      "body": "Hello amberers,\nI parameterized Pd atoms with almost all known bonds. For this, I wrote a\nscript to combine gaff and a novel metal force-field (the script can be\nadapted with Pt, Au, Se, exc...) Everything works perfectly, but there is a\nmini problem: Sander minimized the structure with very high accuracy, but Pd\nlost its bonds and seemed like a \"P\" atom when I visualized it (I changed\nthe \"Pd\" sign to \"Pm\" (because in gaff there is pd even if it it is not\nexactly Pd with capital P) but I couldn't solve the problem.) Why is this\nhappening? Actually, I don't see it as a serious problem because the\nminimized geometry is correct, but if there is a way to get rid of this, I\nam ready to apply.\nHere is the picture of my molecule: P must be Pd and must have bonds with\nCl and N atoms. I checked the prmtop file with parmed. PArmed seed Pd atom\nand related bonds but after ambpdb commands it seems bond-less P atom...\n[image: image.png]",
+      "url": "http://archive.ambermd.org/202204/0000.html"
+    },
+    {
+      "message_id": 1648804696,
+      "author": "Erdem Yeler",
+      "date_raw": "Fri, 1 Apr 2022 12:18:16 +0300",
+      "body": "*sorry not \"parmed seed\" it is \"parmed sees\".\nErdem Yeler <erdemyeler.gmail.com>, 1 Nis 2022 Cum, 12:17 tarihinde şunu\nyazdı:\n> Hello amberers,\n> I parameterized Pd atoms with almost all known bonds. For this, I wrote a\n> script to combine gaff and a novel metal force-field (the script can be\n> adapted with Pt, Au, Se, exc...) Everything works perfectly, but there is a\n> mini problem: Sander minimized the structure with very high accuracy, but\n> Pd lost its bonds and seemed like a \"P\" atom when I visualized it (I\n> changed the \"Pd\" sign to \"Pm\" (because in gaff there is pd even if it it is\n> not exactly Pd with capital P) but I couldn't solve the problem.) Why is\n> this happening? Actually, I don't see it as a serious problem because the\n> minimized geometry is correct, but if there is a way to get rid of this, I\n> am ready to apply.\n> Here is the picture of my molecule: P must be Pd and must have bonds with\n> Cl and N atoms. I checked the prmtop file with parmed. PArmed seed Pd atom\n> and related bonds but after ambpdb commands it seems bond-less P atom...\n> [image: image.png]\n>",
+      "url": "http://archive.ambermd.org/202204/0001.html",
+      "in_reply_to": 1648804624
+    },
+    {
+      "message_id": 1648815489,
+      "author": "David A Case",
+      "date_raw": "Fri, 1 Apr 2022 08:18:09 -0400",
+      "body": "On Fri, Apr 01, 2022, Erdem Yeler wrote:\n>I parameterized Pd atoms with almost all known bonds. For this, I wrote a\n>script to combine gaff and a novel metal force-field (the script can be\n>adapted with Pt, Au, Se, exc...) Everything works perfectly, but there is a\n>mini problem: Sander minimized the structure with very high accuracy, but Pd\n>lost its bonds and seemed like a \"P\" atom when I visualized it (I changed\n>the \"Pd\" sign to \"Pm\" (because in gaff there is pd even if it it is not\n>exactly Pd with capital P) but I couldn't solve the problem.) Why is this\n>happening? Actually, I don't see it as a serious problem because the\n>minimized geometry is correct, but if there is a way to get rid of this, I\n>am ready to apply.\n>Here is the picture of my molecule: P must be Pd and must have bonds with\n>Cl and N atoms. I checked the prmtop file with parmed. PArmed seed Pd atom\n>and related bonds but after ambpdb commands it seems bond-less P atom...\nThis looks like a visualization issue; ambpdb does not output CONECT records\nunless you use the '-conect' flag. So, the whatever program you are using\nhas to guess about what bonds to draw based on interatomic distances.\nIf parmed says the bonds are there, then the bonds are there. And you would\nnot get a good geometry if they were absent. Try adding the -conect flag,\nor save your output to mol2 format (which as bond information), assuming\nthat your visualization program supports the mol2 format.\n....dac",
+      "url": "http://archive.ambermd.org/202204/0003.html",
+      "in_reply_to": 1648804624
+    },
+    {
+      "message_id": 1648819710,
+      "author": "Erdem Yeler",
+      "date_raw": "Fri, 1 Apr 2022 16:28:30 +0300",
+      "body": "Dear Prof.\nThanks for your answer. I will try with the mol2 file as you said.\nDavid A Case <david.case.rutgers.edu>, 1 Nis 2022 Cum, 15:18 tarihinde şunu\nyazdı:\n> On Fri, Apr 01, 2022, Erdem Yeler wrote:\n>\n> >I parameterized Pd atoms with almost all known bonds. For this, I wrote a\n> >script to combine gaff and a novel metal force-field (the script can be\n> >adapted with Pt, Au, Se, exc...) Everything works perfectly, but there is\n> a\n> >mini problem: Sander minimized the structure with very high accuracy,\n> but Pd\n> >lost its bonds and seemed like a \"P\" atom when I visualized it (I changed\n> >the \"Pd\" sign to \"Pm\" (because in gaff there is pd even if it it is not\n> >exactly Pd with capital P) but I couldn't solve the problem.) Why is this\n> >happening? Actually, I don't see it as a serious problem because the\n> >minimized geometry is correct, but if there is a way to get rid of this, I\n> >am ready to apply.\n> >Here is the picture of my molecule: P must be Pd and must have bonds with\n> >Cl and N atoms. I checked the prmtop file with parmed. PArmed seed Pd atom\n> >and related bonds but after ambpdb commands it seems bond-less P atom...\n>\n> This looks like a visualization issue; ambpdb does not output CONECT\n> records\n> unless you use the '-conect' flag. So, the whatever program you are using\n> has to guess about what bonds to draw based on interatomic distances.\n>\n> If parmed says the bonds are there, then the bonds are there. And you\n> would\n> not get a good geometry if they were absent. Try adding the -conect flag,\n> or save your output to mol2 format (which as bond information), assuming\n> that your visualization program supports the mol2 format.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202204/0004.html",
+      "in_reply_to": 1648804624
+    }
+  ]
+}

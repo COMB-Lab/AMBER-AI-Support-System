@@ -1,0 +1,45 @@
+{
+  "thread_id": 1585168113,
+  "subject": "FATAL Error: Atom does not have a type (Cation)",
+  "messages": [
+    {
+      "message_id": 1585168113,
+      "author": "Yoanes Vianney",
+      "date_raw": "Wed, 25 Mar 2020 20:28:33 +0000 (UTC)",
+      "body": "Dear all Amber users,I planned to do simulation of DNA in water. The DNA length is 36 bp. However after addition of 2 potassium ion, the input file (.inpcrd) was not generated.I get error message from the log\n> saveamberparm wat1 ../input_wat/wat01.prmtop ../input_wat/wat01.inpcrd\nChecking Unit.\nFATAL:  Atom .R<K 37>.A<K+ 2> does not have a type.\nFATAL:  Atom .R<K 38>.A<K+ 2> does not have a type.\n/home/yoanes/programs/amber18/bin/teLeap: Fatal Error!\nFailed to generate parameters\nExiting LEaP: Errors = 1; Warnings = 2; Notes = 0\nI have added the definition for all the DNA atom in map.dg-AMBER but not for cation.What should I change to correct this problem?\nYoanesUniversity of Greifswald",
+      "url": "http://archive.ambermd.org/202003/0243.html"
+    },
+    {
+      "message_id": 1585170594,
+      "author": "Thomas Cheatham",
+      "date_raw": "Wed, 25 Mar 2020 15:09:54 -0600 (MDT)",
+      "body": "> Dear all Amber users,I planned to do simulation of DNA in water. The DNA\n> length is 36 bp. However after addition of 2 potassium ion, the input\n> file (.inpcrd) was not generated.I get error message from the log\n> > saveamberparm wat1 ../input_wat/wat01.prmtop ../input_wat/wat01.inpcrd\n>\n> Checking Unit.\n> FATAL:  Atom .R<K 37>.A<K+ 2> does not have a type.\n> FATAL:  Atom .R<K 38>.A<K+ 2> does not have a type.\nThe residue name is K which is not consistent with the libraries (assuming\nyou did load up some ion parameters) so if ion is in the PDB file, change\nthe residue name to K+.\n--tec3",
+      "url": "http://archive.ambermd.org/202003/0244.html",
+      "in_reply_to": 1585168113
+    },
+    {
+      "message_id": 1585173403,
+      "author": "Yoanes Vianney",
+      "date_raw": "Wed, 25 Mar 2020 21:56:43 +0000 (UTC)",
+      "body": "Hi, thanks for the response. Initially there is no potassium ion in the pdb.I tried the script as not to add 2 potassium atom specifically and it works well to later neutralize the system.However, if I try back to add initially 2 potassium atom at certain place, first, it added potassium ion as a residue but rename the atom to KFor example here is the pdb map\nATOM 1164 K+ K+ 37 -0.900 4.645 -12.032 1.00 0.00 K\nATOM 1165 K+ K+ 38 -2.581 2.404 -10.169 1.00 0.00 K\nENDCreated a new atom named: K+ within residue: .R<K 37>\nAdded missing heavy atom: .R<K 37>.A<K 1>\nCreated a new atom named: K+ within residue: .R<K 38>\nAdded missing heavy atom: .R<K 38>.A<K 1>\nHowever in the subsequent process, it add the + sign automatically.\nFATAL:  Atom .R<K 37>.A<K+ 2> does not have a type.FATAL:  Atom .R<K 38>.A<K+ 2> does not have a type.\nI tried to manually change the pdbatom map to K+ but still the same problem occured.\nYoanes\nPada Rabu, 25 Maret 2020 22.11.09 GMT+1, Thomas Cheatham <tec3.utah.\nedu> menulis:\n> Dear all Amber users,I planned to do simulation of DNA in water. The DNA\n> length is 36 bp. However after addition of 2 potassium ion, the input\n> file (.inpcrd) was not generated.I get error message from the log\n> > saveamberparm wat1 ../input_wat/wat01.prmtop ../input_wat/wat01.inpcrd\n>\n> Checking Unit.\n> FATAL:  Atom .R<K 37>.A<K+ 2> does not have a type.\n> FATAL:  Atom .R<K 38>.A<K+ 2> does not have a type.\nThe residue name is K which is not consistent with the libraries (assuming\nyou did load up some ion parameters) so if ion is in the PDB file, change\nthe residue name to K+.\n--tec3",
+      "url": "http://archive.ambermd.org/202003/0246.html",
+      "in_reply_to": 1585168113
+    },
+    {
+      "message_id": 1585187485,
+      "author": "David A Case",
+      "date_raw": "Wed, 25 Mar 2020 21:51:25 -0400",
+      "body": "On Wed, Mar 25, 2020, Thomas Cheatham III wrote:\n>\n>>\n>> Checking Unit.\n>> FATAL:� Atom .R<K 37>.A<K+ 2> does not have a type.\n>> FATAL:� Atom .R<K 38>.A<K+ 2> does not have a type.\n>\n>The residue name is K which is not consistent with the libraries (assuming\n>you did load up some ion parameters) so if ion is in the PDB file, change\n>the residue name to K+.\nNo,no,no....sorry to disagree with our nucleic acid expert here, but you\nare better off following the wwPDB standard: both the residue name and\nthe atom name should be \"K\". This is the way it is in actual files you\nwould get from www.rcsb.org.\nWay back in the twentieth century, force field developers (which\nincludes me) didn't so care much about standards, and just decided on our\nown what names we should give to things like ions. So \"K+\" became\ningrained in people's files.\nIn an attempt to follow standard nomenclature, and yet still not break\ntoo many existing scripts, Amber has made K, NA and CL special cases,\nallowing users to also use the old names of K+, Na+ and Cl- (for both residue\nand atom). So, Tom's suggestion *will* work: set both the residue and\natom name to \"K+\". But that's only for Amber: other programs are likely\nto be more strict about nomenclature. The better solution is to make\nboth atom and residue name \"K\".\n....dac",
+      "url": "http://archive.ambermd.org/202003/0251.html",
+      "in_reply_to": 1585168113
+    },
+    {
+      "message_id": 1585188071,
+      "author": "David A Case",
+      "date_raw": "Wed, 25 Mar 2020 22:01:11 -0400",
+      "body": "On Wed, Mar 25, 2020, Yoanes Vianney wrote:\n>ATOM 1164 K+ K+ 37 -0.900 4.645 -12.032 1.00 0.00 K\n>ATOM 1165 K+ K+ 38 -2.581 2.404 -10.169 1.00 0.00 K\nCreated a new atom named: K+ within residue: .R<K 37>\n>� Added missing heavy atom: .R<K 37>.A<K 1>\n>Created a new atom named: K+ within residue: .R<K 38>\n>� Added missing heavy atom: .R<K 38>.A<K 1>\nPDB files are column specific. The residue name *must* be in columns\n18-20. You lines above have \"K+\" in columns 20 and 21, so tleap\n(correctly) thinks that the residue name is \" K\" and that there is a\n\"+\" sign in the (otherwise unused) column 21.\nHence, tleap tells you that it thinks residue 37 is named \"K\": then it\nsees a \"K+\" atom in that residue (which should not be there), and issues\nthe \"created a new atom\" message. Then, it notes that there is no \"K\"\natom in residue 37 (which there should be), and issues the \"added\nmissing heavy atom\" message. Same thing for residue 38.\n(I recognize that this may be overkill in terms of getting things to work\nfor your particular problem, but learning to grok the messages\nthat tleap issues will really aid in understanding why things are going\nwrong.)\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202003/0252.html",
+      "in_reply_to": 1585168113
+    }
+  ]
+}

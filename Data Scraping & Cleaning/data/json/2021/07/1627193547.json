@@ -1,0 +1,29 @@
+{
+  "thread_id": 1627193547,
+  "subject": "Include specific solvent in constant pH MD simulation by CPHFIRST_SOL",
+  "messages": [
+    {
+      "message_id": 1627193547,
+      "author": "He, Amy",
+      "date_raw": "Sun, 25 Jul 2021 06:12:27 +0000",
+      "body": "Dear Amber Community,\nI�m using Amber20 and I�m doing input file preparation for constant pH MD simulation. I have a question about the CPHFIRST_SOL atom number in the .cpin file. This input can be used to define the first solvent atom to exclude from the GB calculation in the protonation state evaluation.\nFor the protonation state evaluation, I want to include a few water molecules in the calculation, but I don�t want any of the ions (because many of the ions might exchange with ions in the bulk solution). However, after I set up the system with the leap program, I found that the ions are always written before the waters. If my understanding is correct, when the CPHFIRST_FIRST atom corresponds to a water molecule to be included in the calculation, the ions will become �included� as well because they appear before the water molecules.\nI wonder if there�s a way to customize the solvent selection or to �deselect� the ions. Thank you for your kind advice in advance!\nThanks,\nAmy\n--\nAmy He\nChemistry Graduate Teaching Assistant\nHadad Research Group\nOhio State University\nhe.1768.osu.edu",
+      "url": "http://archive.ambermd.org/202107/0207.html"
+    },
+    {
+      "message_id": 1627215843,
+      "author": "David A Case",
+      "date_raw": "Sun, 25 Jul 2021 08:24:03 -0400",
+      "body": "On Sun, Jul 25, 2021, He, Amy wrote:\n>after I set up the system with the leap program, I found that the ions are\n>always written before the waters.\nYou can use \"set default reorder_residues off\" in your leap file to prevent\nthe re-ordering of residues. Don't worry about the warnings in the manual:\nI use this option all the time, and have never seen any problems.\nThen, in your input PDB file, put the ions and waters in the order that you\nwant.\n....dac",
+      "url": "http://archive.ambermd.org/202107/0208.html",
+      "in_reply_to": 1627193547
+    },
+    {
+      "message_id": 1627218316,
+      "author": "He, Amy",
+      "date_raw": "Sun, 25 Jul 2021 13:05:16 +0000",
+      "body": "Hi David,\nThat is a great solution! Thank you very much for your kind help.\nThanks,\nAmy\n--\nAmy He\nChemistry Graduate Teaching Assistant\nHadad Research Group\nOhio State University\nhe.1768.osu.edu\nFrom: David A Case <dacase.chem.rutgers.edu>\nDate: Sunday, July 25, 2021 at 8:24 AM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] Include specific solvent in constant pH MD simulation by CPHFIRST_SOL\nOn Sun, Jul 25, 2021, He, Amy wrote:\n>after I set up the system with the leap program, I found that the ions are\n>always written before the waters.\nYou can use \"set default reorder_residues off\" in your leap file to prevent\nthe re-ordering of residues. Don't worry about the warnings in the manual:\nI use this option all the time, and have never seen any problems.\nThen, in your input PDB file, put the ions and waters in the order that you\nwant.\n....dac",
+      "url": "http://archive.ambermd.org/202107/0209.html",
+      "in_reply_to": 1627193547
+    }
+  ]
+}

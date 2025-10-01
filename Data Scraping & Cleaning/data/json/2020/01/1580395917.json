@@ -1,0 +1,21 @@
+{
+  "thread_id": 1580395917,
+  "subject": "Error in installing parallel version of AMBER18",
+  "messages": [
+    {
+      "message_id": 1580395917,
+      "author": "dilrajl.bii.a-star.edu.sg",
+      "date_raw": "Thu, 30 Jan 2020 14:51:57 +0000",
+      "body": "Dear Amber users,\nI am trying to install AMBER18 in a Redhat enterprise\nserver release 6.9.\nI successfully installed the serial and cuda version of the program\nusing the standard commands as written below.\nSERIAL\n./configure gnu\nmake install\nCUDA\n./configure -cuda gnu\nmake install\nHowever, there is an issue to install the parallel version.I used the\nsame configuration and installation command as shown below\n./configure -mpi gnu\nmake install\nA part of the error message is attached here:\n--------------------^\n../lib/AmberNetcdf.F90(161): error #6404: This name does not have a\ntype, and must have an explicit type. [NF90_GLOBAL]\nif (NC_error( nf90_get_att(ncid, NF90_GLOBAL, 'Conventions', attribute),&\n-----------------------------------^\n../lib/AmberNetcdf.F90(161): error #6404: This name does not have a\ntype, and must have an explicit type. [NF90_GET_ATT]\nif (NC_error( nf90_get_att(ncid, NF90_GLOBAL, 'Conventions', attribute),&\n----------------^\n../lib/AmberNetcdf.F90(192): error #6404: This name does not have a\ntype, and must have an explicit type. [NF90_GET_ATT]\nif (NC_error( nf90_get_att(ncid, NF90_GLOBAL, 'title', title),&\n----------------^\n/tmp/ifortiNtttv.i90(1119): catastrophic error: Too many errors, exiting\ncompilation aborted for ../lib/AmberNetcdf.F90 (code 1)\nmake[2]: *** [AmberNetcdf.o] Error 1\nmake[2]: Leaving directory `/home/md/dilrajl/amber18/AmberTools/src/sander'\nmake[1]: *** [parallel] Error 2\nmake[1]: Leaving directory `/home/md/dilrajl/amber18/AmberTools/src'\nmake: *** [install] Error 2\nI will be glad if someone can give me some clue to fix the issue.\nPlease let me know if you need any more information.\nThank you,Dilraj",
+      "url": "http://archive.ambermd.org/202001/0329.html"
+    },
+    {
+      "message_id": 1580414153,
+      "author": "Scott Brozell",
+      "date_raw": "Thu, 30 Jan 2020 19:55:53 +0000",
+      "body": "Hi,\nOn Thu, Jan 30, 2020 at 02:51:57PM +0000, dilrajl.bii.a-star.edu.sg wrote:\n> ?? ?? ?? ?? ?? ?? ?? ?? I am trying to install AMBER18 in a Redhat enterprise\n> server release 6.9.\n>\n> I successfully installed the serial and cuda version of the program\n> using the standard commands as written below.\n>\n> SERIAL\n> ./configure gnu\n> make install\n>\n> CUDA\n> ./configure -cuda gnu\n> make install\n>\n> However, there is an issue to install the parallel version.I used the\n> same configuration and installation command as shown below\n> ./configure -mpi gnu??\n> make install\n>\n> A part of the error message is attached here:\n>\n> --------------------^\n> ../lib/AmberNetcdf.F90(161): error #6404: This name does not have a\n> type, and must have an explicit type. [NF90_GLOBAL]\n> if (NC_error( nf90_get_att(ncid, NF90_GLOBAL, 'Conventions', attribute),&\n> -----------------------------------^\n> ../lib/AmberNetcdf.F90(161): error #6404: This name does not have a\n> type, and must have an explicit type. [NF90_GET_ATT]\n> if (NC_error( nf90_get_att(ncid, NF90_GLOBAL, 'Conventions', attribute),&\n> ----------------^\n> ../lib/AmberNetcdf.F90(192): error #6404: This name does not have a\n> type, and must have an explicit type. [NF90_GET_ATT]\n> if (NC_error( nf90_get_att(ncid, NF90_GLOBAL, 'title', title),&\n> ----------------^\n> /tmp/ifortiNtttv.i90(1119): catastrophic error: Too many errors, exiting\n> compilation aborted for ../lib/AmberNetcdf.F90 (code 1)\n> make[2]: *** [AmberNetcdf.o] Error 1\n> make[2]: Leaving directory `/home/md/dilrajl/amber18/AmberTools/src/sander'\n> make[1]: *** [parallel] Error 2\nThere are many possible sources for this problem.\nA likely one is a compiler mismatch between serial and parallel\nbuilds. Compare the outputs of gfortran -v and mpif90 -v\nIf you need more help then send verbose and verbatim details\nincluding compiler versions, build logs,\n./update_amber --show-applied-patches\netc.\nscott",
+      "url": "http://archive.ambermd.org/202001/0332.html",
+      "in_reply_to": 1580395917
+    }
+  ]
+}

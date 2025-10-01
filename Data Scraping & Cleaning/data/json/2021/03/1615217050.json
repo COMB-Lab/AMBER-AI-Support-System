@@ -1,0 +1,21 @@
+{
+  "thread_id": 1615217050,
+  "subject": "Generating library from cif file.",
+  "messages": [
+    {
+      "message_id": 1615217050,
+      "author": "sriram raghavan",
+      "date_raw": "Mon, 8 Mar 2021 20:54:10 +0530",
+      "body": "Dear Amber users\nI am trying to generate a residue library for a molecule called tomatine\n(mol2 file attached), I tried creating a \"cif\" restraint file using\ncrystallographic tools (Jligand and phenix.elbow).\nI could generate a cif file but I am not able to process it with\nantechamber program, it is unable to read the generated cif file.\nInitially, I am getting the error \"Target data block (TM3) is not in\nfile.\", even if i modify the data_block, modify and reprocess I am getting\nthe following error \"Target category (atom_site) is not in data block (0).\"\nKingly please help me identify if it can be resolved, Thank you\nWith Regards\nS.Sriram",
+      "url": "http://archive.ambermd.org/202103/0056.html"
+    },
+    {
+      "message_id": 1615221100,
+      "author": "David A Case",
+      "date_raw": "Mon, 8 Mar 2021 11:31:40 -0500",
+      "body": "On Mon, Mar 08, 2021, sriram raghavan wrote:\n>I am trying to generate a residue library for a molecule called tomatine\n>(mol2 file attached), I tried creating a \"cif\" restraint file using\n>crystallographic tools (Jligand and phenix.elbow).\n>I could generate a cif file but I am not able to process it with\n>antechamber program\nLots of files have a .cif extension, but they may have different contents:\n1. Files from the PDB website called xxxx.cif contain the atomic model,\nand are roughly equivalent in content to the older xxxx.pdb files\n2. Files from the PDB website called xxxx-sf.cif containt structure\nfactors.\n3. The PDB site also has a file called \"components.cif\", which has\ninformation on all the non-protein, non-nucleic acid elments (aka\nresidues) in the entire PDB.\n4. Crystallography programs make \"restraint cif\" files, that are only\nuseful inside those programs.\nBottom line: you can't just look at the \".cif\" extension and know what is\nin the file. Antechamber can only read cif files of type 3, above. (Even\nthat is of limited usefulness: every entry in the components.cif file is\nneutral, but many interesting ligands/residues are not. Antechamber doesn't\nhave the smarts to figure out the proper protonation state or tautomer.)\nTo create a residue library, you don't need or want a cif file. Just use\nthe mol2 file as input; better yet is to convert the mol2 to a PDB format,\nand use that as input to antechamber.\n...hope this helps...dac",
+      "url": "http://archive.ambermd.org/202103/0058.html",
+      "in_reply_to": 1615217050
+    }
+  ]
+}

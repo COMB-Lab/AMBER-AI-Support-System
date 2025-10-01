@@ -1,0 +1,21 @@
+{
+  "thread_id": 1620493226,
+  "subject": "Digest of issues installing AMBER21 in Centos 7",
+  "messages": [
+    {
+      "message_id": 1620493226,
+      "author": "Azurmendi, Hugo",
+      "date_raw": "Sat, 8 May 2021 17:00:26 +0000",
+      "body": "I just installed AMBER in a few Centos 7 workstations and thought it would be helpful to share a few comments on my experience. I’m also going to reiterate a few things from a message from a couple of weeks ago (adventures …) for completeness sake.\n1. It is worthy in the end, but AMBER is by a good margin the most painful program I have had to deal with in regard to installation. I’m assuming there are good reasons for that, and part of it must be my fault since my background may not be adequate, but still, even when all goes well it is very time consuming.\n2. Best practices I’ll adopt in the future to avoid problems (most can be found in the manual and comments, but some differ):\n* Download and extract latest cmake.\n* I’ll stick to bash for installation (most do, but we default to csh for convenience) and start by defining PATH as follows: “export PATH=”/usr/bin/:/usr/localbin/:'path-to-cmake/bin” (I wasted a LOT of time due to some interference in one of our machines causing a problem with libSM that would abort installation at 95%!). Once installation is completed I’ll allow general PATH definitions in .bashrc/.cshrc files.\n* For parallel I won’t have openmpi installed with yum (I’ll erase it if it is). I mentioned previously that the tests for dhfr and ris3d stalled and was due to that. I tried mpich as recommended, however it failed on configuration for me. I succeeded with the latest openmpi (extracted to AmberTools/src) and ./configure_openmpi.\n3. As mentioned previously, amber.csh doesn’t work properly to detect the shell (csh/tcsh) nor to set AMBERHOME. I fixed by setting AMBERHOME manually and changing the conditional for shell to “if $0 !~ (‘*csh’)”.\nBest,\nHugo",
+      "url": "http://archive.ambermd.org/202105/0066.html"
+    },
+    {
+      "message_id": 1620564411,
+      "author": "David A Case",
+      "date_raw": "Sun, 9 May 2021 08:46:51 -0400",
+      "body": "On Sat, May 08, 2021, Azurmendi, Hugo wrote:\n>I just installed AMBER in a few Centos 7 workstations...\nThanks for your comments! Some notes and questions below.\n> * Download and extract latest cmake.\nThis point is made on our installation page,\nhttps://ambermd.org/InstCentOS.php\n. Can you say what version of cmake is\navailable from yum on CentOS7? I would be of interest to know if there is a\nversion problem, or if there is some other root cause.\n> * For parallel I won’t have openmpi installed with yum (I’ll erase it\n> if it is). I mentioned previously that the tests for dhfr and ris3d\n> stalled and was due to that. I tried mpich as recommended, however it\n> failed on configuration for me. I succeeded with the latest openmpi\n> (extracted to AmberTools/src) and ./configure_openmpi.\nThe parallel issue is also mentioned on the web page. Do you remember why\nmpich configure failed? I have updated the recommendation there to mention\nreports of problems with from mpich, and to add a pointer to openmpi.\n> 3. As mentioned previously, amber.csh doesn’t work properly to detect\n> the shell (csh/tcsh) nor to set AMBERHOME. I fixed by setting AMBERHOME\n> manually and changing the conditional for shell to “if $0 !~ (‘*csh’)”.\nI will get a bugfix posted about this problem.\n...thx...dac",
+      "url": "http://archive.ambermd.org/202105/0068.html",
+      "in_reply_to": 1620493226
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "thread_id": 1602613763,
+  "subject": "vlimit=10 compromise for Amber 20 error: \"an illegal memory access was encountered launching kernel kClearForces\"?",
+  "messages": [
+    {
+      "message_id": 1602613763,
+      "author": "Liao",
+      "date_raw": "Wed, 14 Oct 2020 02:29:23 +0800",
+      "body": "﻿Dear Amber Users,\nI’ve most recently started to use Amber 20 and the ff19sb force field along with opc water.\nWith pmemd.cuda, I’ve ran into this problem, that it almost randomly gives this error message and crashes. \"Error: an illegal memory access was encountered launching kernel kClearForces\"\nAfter extensive debugging and performing various control runs, reading from the forum, here’s what I discovered:\n1.If I set nptr=1, only at such a small number could I see that the system simply blows up all of a sudden with no hint, in terms of kinetic energy and temperature. Please see below the sudden blowup:\nNSTEP = 15979 TIME(PS) = 3781.958 TEMP(K) = 321.98 PRESS = 0.0\nEtot = -166339.6957 EKtot = 34967.1914 EPtot = -201306.8871\nBOND = 1332.6273 ANGLE = 3654.6213 DIHED = 2344.1866\nUB = 0.0000 IMP = 0.0000 CMAP = 300.2194\n1-4 NB = 1602.3619 1-4 EEL = 15665.8723 VDWAALS = 23153.0389\nEELEC = -249359.8148 EHBOND = 0.0000 RESTRAINT = 0.0000\nEKCMT = 0.0000 VIRIAL = 0.0000 VOLUME = 523407.2851 Density = 1.0341\n------------------------------------------------------------------------------\nNSTEP = 15980 TIME(PS) = 3781.960 TEMP(K) = 12807.45 PRESS = 0.0\nEtot = 1200379.6146 EKtot = 1390876.8750 EPtot = -190497.2604\nBOND = 1331.5817 ANGLE = 3724.0317 DIHED = 2343.1848\nUB = 0.0000 IMP = 0.0000 CMAP = 300.3352\n1-4 NB = 4362.7163 1-4 EEL = 15659.0224 VDWAALS = 31195.5756\nEELEC = -249413.7082 EHBOND = 0.0000 RESTRAINT = 0.0000\nEKCMT = 0.0000 VIRIAL = 0.0000 VOLUME = 523407.2851 Density = 1.0341\n------------------------------------------------------------------------------\nNSTEP = 15981 TIME(PS) = 3781.962 TEMP(K) = NaN PRESS = 0.0\nEtot = NaN EKtot = NaN EPtot = **************\nBOND = 78051.6147 ANGLE = 5028.6654 DIHED = 2347.0270\nUB = 0.0000 IMP = 0.0000 CMAP = 298.6265\n1-4 NB = 1615.2760 1-4 EEL = 15623.6489 VDWAALS = **************\nEELEC = -249473.1008 EHBOND = 0.0000 RESTRAINT = 0.0000\nEKCMT = 0.0000 VIRIAL = 0.0000 VOLUME = 523407.2851 Density = 1.0341\n2. Using the Langevin theromostat (gamma=2), a random start seed will make it blow up randomly, a fixed seed will make it crash at the exact same place (though with ntpr smaller than 10 or so, the same seed is giving a slightly different temperature, though crashing at similar times). This is what made debugging so hard at first, that it may crash after 2 minutes, or after 1 hour, until I used a fixed seed.\n3. At 310K, a timestep of 0.001 seems less likely to crash than 0.002, but still does. Reducing the temperature to 273K doesn’t help.\nI eventually found 2 resolutions to the problem.\nThe 1st way is when I switch back to ff14SB (with nothing else changed but the random seed), by regenerating the prmtop file, it runs and completes normally. But since I’ve got Amber 20, I still want to try use the ff19sb. Running the MD in the Amber18 pmemd gives a similar error (Error: an illegal memory access was encountered launching kernel kNLSkinTest), so it doesn’t seem to be the software.\nThe 2nd way is to set vlimit=10. Even at vlimit=12, it gives an energy value blowup (but the simulation kept going until finish though). The output file didn’t give any warning messages, though when i compare the results of vlimit=10 from the crashed one, the energy value gets to be slightly different starting from near the crash point.\nMy concern here is, is vlimit=10 a good enough long-term solution? Since the default is 20. And why is this happening? It’s a typical ligand-protein system, and tried several ligands the same problem.\nThanks for reading!",
+      "url": "http://archive.ambermd.org/202010/0162.html"
+    },
+    {
+      "message_id": 1602764008,
+      "author": "David A Case",
+      "date_raw": "Thu, 15 Oct 2020 08:13:28 -0400",
+      "body": "On Wed, Oct 14, 2020, Liao wrote:\n>\n>The 1st way is when I switch back to ff14SB (with nothing else changed\n>but the random seed), by regenerating the prmtop file, it runs and\n>completes normally. But since I’ve got Amber 20, I still want to try\n>use the ff19sb.\nCan you create a (small?) example that illustrates the problem with\nff19sb? We would need a prmtop, inpcrd and mdin files, plus the actual\ncommand line you used to run the program.\n...thanks...dac",
+      "url": "http://archive.ambermd.org/202010/0172.html",
+      "in_reply_to": 1602613763
+    },
+    {
+      "message_id": 1602773671,
+      "author": "Liao",
+      "date_raw": "Thu, 15 Oct 2020 09:54:31 -0500",
+      "body": "Thanks there, I could try preparing that, though for using vlimit=10, does this seem like an appropriate solution? What’s the unit of this parameter, the manual doesn’t say it. The trajectory as viewed and post MD-MMGbsa energy from it looks normal to me.\n> On Oct 15, 2020, at 7:17 AM, David A Case <david.case.rutgers.\nedu> wrote:\n>\n> ﻿On Wed, Oct 14, 2020, Liao wrote:\n>>\n>> The 1st way is when I switch back to ff14SB (with nothing else changed\n>> but the random seed), by regenerating the prmtop file, it runs and\n>> completes normally. But since I’ve got Amber 20, I still want to try\n>> use the ff19sb.\n>\n> Can you create a (small?) example that illustrates the problem with\n> ff19sb? We would need a prmtop, inpcrd and mdin files, plus the actual\n> command line you used to run the program.\n>\n> ...thanks...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202010/0177.html",
+      "in_reply_to": 1602613763
+    },
+    {
+      "message_id": 1602786761,
+      "author": "David A Case",
+      "date_raw": "Thu, 15 Oct 2020 14:32:41 -0400",
+      "body": "On Thu, Oct 15, 2020, Liao wrote:\n>Thanks there, I could try preparing that, though for using vlimit=10,\n>does this seem like an appropriate solution? What’s the unit of this\n>parameter, the manual doesn’t say it. The trajectory as viewed and post\n>MD-MMGbsa energy from it looks normal to me.\nUnits of vlimit are internal velocity usits: Å/(20 fs). vlimit=10 is\nOK, especially if it only get's triggered occasionally. But it does\nlook like something in your ligand allows large forces: do you have any\nhydrogens with zero vdW radii? (This could happen on a ligand if you\nwere, for example, using gaff rather than gaff2.) Hydrogens are a\ncommon source of headaches for non-standard residues.\n....dac",
+      "url": "http://archive.ambermd.org/202010/0180.html",
+      "in_reply_to": 1602613763
+    },
+    {
+      "message_id": 1602883845,
+      "author": "Liao",
+      "date_raw": "Fri, 16 Oct 2020 16:30:45 -0500",
+      "body": "Thanks for the answer Dr Case,\nI just now realized a subtlety regarding gaff and gaff2 in my preparations.\nIn tleap, I sourced leaprc.gaff2, but in parmchk2 for generating the frcmod file, I never specified the -s 2 option for gaff2. It ran by default which is gaff. My input mol2 atom types are also gaff, not gaff2 as saved by Chinera. Never knew of the -s 2 option until you brought up differences between gaff and gaff2.\nI wonder whether the whole time I was using gaff or gaff2, with the above mentioned procedure? Was sourcing leaprc.gaff2 compatible with gaff atom types, since it never reported an error?\nThank you.\n> On Oct 15, 2020, at 1:32 PM, David A Case <david.case.rutgers.\nedu> wrote:\n>\n> ﻿On Thu, Oct 15, 2020, Liao wrote:\n>\n>> Thanks there, I could try preparing that, though for using vlimit=10,\n>> does this seem like an appropriate solution? What’s the unit of this\n>> parameter, the manual doesn’t say it. The trajectory as viewed and post\n>> MD-MMGbsa energy from it looks normal to me.\n>\n> Units of vlimit are internal velocity usits: Å/(20 fs). vlimit=10 is\n> OK, especially if it only get's triggered occasionally. But it does\n> look like something in your ligand allows large forces: do you have any\n> hydrogens with zero vdW radii? (This could happen on a ligand if you\n> were, for example, using gaff rather than gaff2.) Hydrogens are a\n> common source of headaches for non-standard residues.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202010/0210.html",
+      "in_reply_to": 1602613763
+    },
+    {
+      "message_id": 1602901440,
+      "author": "Elvis Martis",
+      "date_raw": "Sat, 17 Oct 2020 07:54:00 +0530",
+      "body": "Hi\n-s 2 in antechamber just defines level of verbosity and has nothing to do\nwith gaff or gaff2. The atom types are defined by the -at flag where you\nmust choose gaff2 because the default for -at is gaff.\nHowever, I landed in the same situation as yours with the following\ncombination of force fields for my system\nff19SB + DNA.OL15 + gaff2 + FB3 waters.\nWhen I changed this combination to\nff14SB + DNA.OL15 + gaff2 + TIP3P waters, the simulations do not crash.\nOn Saturday, October 17, 2020, Liao <liaojunzhuo.aliyun.\ncom> wrote:\n> Thanks for the answer Dr Case,\n>\n> I just now realized a subtlety regarding gaff and gaff2 in my\n> preparations.\n> In tleap, I sourced leaprc.gaff2, but in parmchk2 for generating the\n> frcmod file, I never specified the -s 2 option for gaff2. It ran by default\n> which is gaff. My input mol2 atom types are also gaff, not gaff2 as saved\n> by Chinera. Never knew of the -s 2 option until you brought up differences\n> between gaff and gaff2.\n>\n> I wonder whether the whole time I was using gaff or gaff2, with the above\n> mentioned procedure? Was sourcing leaprc.gaff2 compatible with gaff atom\n> types, since it never reported an error?\n>\n> Thank you.\n>\n> > On Oct 15, 2020, at 1:32 PM, David A Case <david.case.rutgers.\nedu>\n> wrote:\n> >\n> > ﻿On Thu, Oct 15, 2020, Liao wrote:\n> >\n> >> Thanks there, I could try preparing that, though for using vlimit=10,\n> >> does this seem like an appropriate solution? What’s the unit of this\n> >> parameter, the manual doesn’t say it. The trajectory as viewed and post\n> >> MD-MMGbsa energy from it looks normal to me.\n> >\n> > Units of vlimit are internal velocity usits: Å/(20 fs). vlimit=10 is\n> > OK, especially if it only get's triggered occasionally. But it does\n> > look like something in your ligand allows large forces: do you have any\n> > hydrogens with zero vdW radii? (This could happen on a ligand if you\n> > were, for example, using gaff rather than gaff2.) Hydrogens are a\n> > common source of headaches for non-standard residues.\n> >\n> > ....dac\n> >\n> >\n> >",
+      "url": "http://archive.ambermd.org/202010/0212.html",
+      "in_reply_to": 1602613763
+    }
+  ]
+}

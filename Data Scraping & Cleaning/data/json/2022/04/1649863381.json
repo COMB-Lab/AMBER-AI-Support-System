@@ -1,0 +1,21 @@
+{
+  "thread_id": 1649863381,
+  "subject": "Fitting RESP charges to carbocations, Antechamber warns \"bond-type\" wrong.",
+  "messages": [
+    {
+      "message_id": 1649863381,
+      "author": "Kov�cs Rich�rd Dezs�",
+      "date_raw": "Wed, 13 Apr 2022 15:23:01 +0000",
+      "body": "Hello!\nI'm trying to fit RESP charges using Antechamber to the carbocation intermediate of estrone <-> estradiol (C17 carbon positively charged, missing 1 hydrogen)\n1. I've optimized the system using Gaussian16 at B3LYP/6-31G* and ran a frequency analysis to confirm local minima.\n1. I've then done a HF/6-31G* calculation in Gaussian16 with Pop=MK IOp(6/33=2,6/41=10,6/42=17) to obtain electrostatic potentials.\n2. Finally, I've requested GAFF atom types and RESP fitting using\n>antechamber -fi gout -fo mol2 -c resp -i cat.log -o CAT.mol2 -rn CAT -a amber -pf y\nRunning antechamber, I received:\nWarning: The assigned bond types may be wrong, please :\n(1) double check the structure (the connectivity) and/or\n(2) adjust atom valence penalty parameters in APS.DAT, and/or\n(3) increase PSCUTOFF in define.h and recompile bondtype.c\n(be cautious, using a large value of PSCUTOFF (>100) will\nsignificantly increase the computation time).\nI've done the same for the other forms of estrone/estradiol without any complaints from antechamber.\nCan I ignore this warning and go ahead with using the obtained RESP charge, or should I do as the warning recommends (adjust parameters, increase PSCUTOFF).\nI'm fitting RESP charges for an ONIOM calculation.\nThank you for your assistance!",
+      "url": "http://archive.ambermd.org/202204/0099.html"
+    },
+    {
+      "message_id": 1649975275,
+      "author": "Erdem Yeler",
+      "date_raw": "Fri, 15 Apr 2022 01:27:55 +0300",
+      "body": "Check your CAT.mol2 file, if it has resp-charges and there are no missing\natoms (they will seem as \"DU\" atoms in mol2 file ) you can ignore the error\nmessage.\nErdem",
+      "url": "http://archive.ambermd.org/202204/0100.html",
+      "in_reply_to": 1649863381
+    }
+  ]
+}

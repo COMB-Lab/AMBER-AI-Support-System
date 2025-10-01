@@ -1,0 +1,29 @@
+{
+  "thread_id": 1735727658,
+  "subject": "Dimension problem for a huge rod-like system",
+  "messages": [
+    {
+      "message_id": 1735727658,
+      "author": "PD Dr. Anselm Horn",
+      "date_raw": "Wed, 1 Jan 2025 10:34:18 +0000",
+      "body": "Happy new year to all of your!\nDear Amber experts,\nI have a very large system with a cuboic solvent box that largely extends in z direction (> 1500 A) in a rod-like manner.\nWhen trying to run a first minimization with positional restraints via pmemd.cuda, I obtain the following error:\n| ERROR: c must be in the range of 0.10000E+01 to 0.10000E+04!\nFollowing a previous recommendation on the list, I have already increased the parameter gridhi in mdin_ewald_dat.F90 to overcome a first error (\"nfft3 must be in the range ...\").\nIs there an input parameter or another constant in the source code that could easily be changed to allow for running such a large rod-like system?\nMany thanks in advance.\nBest,\nAnselm\nBioinformatik | NHR.FAU\nFriedrich-Alexander-Universit�t Erlangen-N�rnberg (FAU)\nGermany",
+      "url": "http://archive.ambermd.org/202501/0000.html"
+    },
+    {
+      "message_id": 1736054598,
+      "author": "David A Case",
+      "date_raw": "Sat, 4 Jan 2025 22:23:18 -0700",
+      "body": "On Wed, Jan 01, 2025, PD Dr. Anselm Horn via AMBER wrote:\n>\n>I have a very large system with a cuboic solvent box that largely extends\n>in z direction (> 1500 A) in a rod-like manner.\n>When trying to run a first minimization with positional restraints via\n>pmemd.cuda, I obtain the following error:\n>\n>| ERROR: c must be in the range of 0.10000E+01 to 0.10000E+04!\nThis is just saying that the box length along the z-direction (called \"c\")\nmust be less than 1000 Ang. You can try changing this with the \"boxhi\"\nparameter, which is set at about line 142 in\n$AMBERHOME/src/pmemd/src/mdin_ewald_dat.F90. This change may also affect\nthe needed value of gridhi.\nI'd recommend trying short initial calculations in the CPU version. If things\nlook OK there, make sure the GPU version is giving results that are the same\nas on the CPU. There may be changes needed in the GPU code as well to\naccommodate such a large box size, but I don't think so (see below).\nFWIW, I've run rod-like simulations with a box length in the long direction\nof 710 Ang. without any problems (at least that I noticed!). So twice that\nlength is probably going to be OK. The upper limits in pmemd were\nestablished 20 years ago or so, and probably assumed that a box length more\nthan 1000 Ang. was likely to be an input error.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202501/0023.html",
+      "in_reply_to": 1735727658
+    },
+    {
+      "message_id": 1736266290,
+      "author": "Dr. Anselm Horn",
+      "date_raw": "Tue, 7 Jan 2025 17:11:30 +0100",
+      "body": "Dear David,\nthanks for pointing me to the respective code line!\nI'll try that.\nBest,\nAnselm\n> On Wed, Jan 01, 2025, PD Dr. Anselm Horn via AMBER wrote:\n>>\n>> I have a very large system with a cuboic solvent box that largely extends\n>> in z direction (> 1500 A) in a rod-like manner.\n>> When trying to run a first minimization with positional restraints via\n>> pmemd.cuda, I obtain the following error:\n>>\n>> | ERROR:   c must be in the range of  0.10000E+01 to  0.10000E+04!\n>\n> This is just saying that the box length along the z-direction (called \"c\")\n> must be less than 1000 Ang.  You can try changing this with the \"boxhi\"\n> parameter, which is set at about line 142 in\n> $AMBERHOME/src/pmemd/src/mdin_ewald_dat.F90.  This change may also affect\n> the needed value of gridhi.\n>\n> I'd recommend trying short initial calculations in the CPU version.  If\n> things\n> look OK there, make sure the GPU version is giving results that are the\n> same\n> as on the CPU.  There may be changes needed in the GPU code as well to\n> accommodate such a large box size, but I don't think so (see below).\n>\n> FWIW, I've run rod-like simulations with a box length in the long direction\n> of 710 Ang. without any problems (at least that I noticed!).  So twice that\n> length is probably going to be OK.  The upper limits in pmemd were\n> established 20 years ago or so, and probably assumed that a box length more\n> than 1000 Ang. was likely to be an input error.\n>\n> ...good luck...dac\n>\n>",
+      "url": "http://archive.ambermd.org/202501/0043.html",
+      "in_reply_to": 1735727658
+    }
+  ]
+}

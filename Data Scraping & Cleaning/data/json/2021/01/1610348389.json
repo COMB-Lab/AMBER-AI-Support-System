@@ -1,0 +1,37 @@
+{
+  "thread_id": 1610348389,
+  "subject": "backbone rmsd between mutant trajectories, comparing conformational space sampled",
+  "messages": [
+    {
+      "message_id": 1610348389,
+      "author": "Vaibhav Dixit",
+      "date_raw": "Mon, 11 Jan 2021 15:59:49 +0900",
+      "body": "Dear All,\nI have simulated two protein structures in which only one residue was\nmutated and thus backbone sequence is the same.\nI'm guessing it must be possible to use cpptraj to align the backbone\ncoordinates frame-by-frame, and estimate rmsd to check if the mutants\nsample the same conformational space.\nCan you please suggest to me what is the best combination of cpptraj action\ncommands to achieve this?\nUsing the following I will load the trajectories, but then I'm not sure\nwhich commands can help me analyse if the trajectories are similar or not\nand in which regions of the protein they are the largest variation in\nmotion.\nLooking forward to getting valuable suggestions from the list.\nparm prot-top\ntrajin prot.nc\nreference prot.inpcrd\nparm prot1-top [top1]\ntrajin prot1.nc parm [top1]\nalign :1-141 ???\nthank you and best regards\n-- \nRegards,\nDr. Vaibhav A. Dixit,\nVisiting Scientist at the Manchester Institute of Biotechnology (MIB), The\nUniversity of Manchester, 131 Princess Street, Manchester M1 7DN, UK.\nAND\nAssistant Professor,\nDepartment of Pharmacy,\n▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄\nBirla Institute of Technology and Sciences Pilani (BITS-Pilani),\nVidyaVihar Campus, street number 41, Pilani, Rajasthan 333031.\nIndia.\nPhone No. +91 1596 255652, Mob. No. +91-7709129400,\nEmail: vaibhav.dixit.pilani.bits-pilani.ac.in, vaibhavadixit.gmail.\ncom\nhttp://www.bits-pilani.ac.in/pilani/vaibhavdixit/profile\nhttps://www.linkedin.com/in/vaibhav-dixit-b1a07a39/\nORCID ID: https://orcid.org/0000-0003-4015-2941\nhttp://scholar.google.co.in/citations?user=X876BKcAAAAJ&hl=en&oi=sra\nP Please consider the environment before printing this e-mail",
+      "url": "http://archive.ambermd.org/202101/0150.html"
+    },
+    {
+      "message_id": 1610371120,
+      "author": "David A Case",
+      "date_raw": "Mon, 11 Jan 2021 08:18:40 -0500",
+      "body": "On Mon, Jan 11, 2021, Vaibhav Dixit wrote:\n>I have simulated two protein structures in which only one residue was\n>mutated and thus backbone sequence is the same.\n>I'm guessing it must be possible to use cpptraj to align the backbone\n>coordinates frame-by-frame, and estimate rmsd to check if the mutants\n>sample the same conformational space.\n>\n>parm prot-top\n>trajin prot.nc\n>reference prot.inpcrd\n>trajin prot1.nc parm\nThe command you want is \"rms\", something like this:\nrms reference :1-141.C,CA,N out rms.dat\nThe manual shows lots of keywords that can be added to the rms command, but\nthis should get you going.\n....dac",
+      "url": "http://archive.ambermd.org/202101/0158.html",
+      "in_reply_to": 1610348389
+    },
+    {
+      "message_id": 1610434345,
+      "author": "Vaibhav Dixit",
+      "date_raw": "Tue, 12 Jan 2021 15:52:25 +0900",
+      "body": "Dear David and All,\nI'm getting the analysis that I wanted, but xmgrace is not working on my\nsystem and the error message looks too much out of my expertise to fix.\nIf I choose gnu format for rms out command that I get a display that\ndoesn't look like a usual rmsd plot (I think it displays 3d plot/map?)\nCan you please suggest to me if there is a quick fix to the xmgrace error\nor better options to display a line plot in gnuplot?\nI understand this is not amber specific but useful suggestions are\nhighly appreciated.\nthank you and best regards\n(base) [exx.c107739 test]$ head rms.gnu\nset pm3d map corners2color c1\nset ytics 1.000, 1.000\nset ytics(\"RMSD_00002\" 1.000)\nset xlabel \"Frame\"\nset ylabel \"\"\nset yrange [ 0.000: 3.000]\nset xrange [ 0.000:2002.000]\nsplot \"-\" with pm3d title \"H87Y-Fe3-rms.gnu\"\n1.000 1.000 0.6856\n1.000 2.000 0\n[image: image.png]\nOn Mon, Jan 11, 2021 at 10:18 PM David A Case <david.case.rutgers.edu>\nwrote:\n> On Mon, Jan 11, 2021, Vaibhav Dixit wrote:\n>\n> >I have simulated two protein structures in which only one residue was\n> >mutated and thus backbone sequence is the same.\n> >I'm guessing it must be possible to use cpptraj to align the backbone\n> >coordinates frame-by-frame, and estimate rmsd to check if the mutants\n> >sample the same conformational space.\n> >\n> >parm prot-top\n> >trajin prot.nc\n> >reference prot.inpcrd\n> >trajin prot1.nc parm\n>\n> The command you want is \"rms\", something like this:\n>\n> rms reference :1-141.C,CA,N out rms.dat\n>\n> The manual shows lots of keywords that can be added to the rms command, but\n> this should get you going.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202101/0185.html",
+      "in_reply_to": 1610348389
+    },
+    {
+      "message_id": 1610469845,
+      "author": "Hector A. Baldoni",
+      "date_raw": "Tue, 12 Jan 2021 13:44:05 -0300 (ARGSL-ST)",
+      "body": "Dear Dixit,\nPlease try something similar to the following commands, where files\n\"rmsd_cplx_P1.txt\"\nare the regular cpptraj outputs.\n#===================\nset terminal pngcairo truecolor nocrop enhanced size 1600,800 font \"arial\nbold,22\"\nset yrange [0.0 : 6.0]\nset xlabel \"Time (ns)\"\nset ylabel \"RMSD (angstroms)\"\nset output \"CPLX.png\"\nplot 'rmsd_cplx_P1.txt' w l dt 1 title 'P1', 'rmsd_cplx_P2.txt' w l dt 1\ntitle 'P2', 'rmsd_cplx_P3.txt' w l dt 1 title 'P3', 'rmsd_cplx_P4.txt' w l\ndt 1 title 'P4'\n#====================\nGreeting,\nHector.\n> Dear David and All,\n> I'm getting the analysis that I wanted, but xmgrace is not working on my\n> system and the error message looks too much out of my expertise to fix.\n> If I choose gnu format for rms out command that I get a display that\n> doesn't look like a usual rmsd plot (I think it displays 3d plot/map?)\n> Can you please suggest to me if there is a quick fix to the xmgrace error\n> or better options to display a line plot in gnuplot?\n>\n> I understand this is not amber specific but useful suggestions are\n> highly appreciated.\n> thank you and best regards\n>\n> (base) [exx.c107739 test]$ head rms.gnu\n> set pm3d map corners2color c1\n> set ytics 1.000, 1.000\n> set ytics(\"RMSD_00002\" 1.000)\n> set xlabel \"Frame\"\n> set ylabel \"\"\n> set yrange [ 0.000: 3.000]\n> set xrange [ 0.000:2002.000]\n> splot \"-\" with pm3d title \"H87Y-Fe3-rms.gnu\"\n> 1.000 1.000 0.6856\n> 1.000 2.000 0\n>\n> [image: image.png]\n>\n>\n> On Mon, Jan 11, 2021 at 10:18 PM David A Case <david.case.rutgers.edu>\n> wrote:\n>\n>> On Mon, Jan 11, 2021, Vaibhav Dixit wrote:\n>>\n>> >I have simulated two protein structures in which only one residue was\n>> >mutated and thus backbone sequence is the same.\n>> >I'm guessing it must be possible to use cpptraj to align the backbone\n>> >coordinates frame-by-frame, and estimate rmsd to check if the mutants\n>> >sample the same conformational space.\n>> >\n>> >parm prot-top\n>> >trajin prot.nc\n>> >reference prot.inpcrd\n>> >trajin prot1.nc parm\n>>\n>> The command you want is \"rms\", something like this:\n>>\n>> rms reference :1-141.C,CA,N out rms.dat\n>>\n>> The manual shows lots of keywords that can be added to the rms command,\n>> but\n>> this should get you going.\n>>\n>> ....dac\n>>\n>>\n>>",
+      "url": "http://archive.ambermd.org/202101/0203.html",
+      "in_reply_to": 1610348389
+    }
+  ]
+}

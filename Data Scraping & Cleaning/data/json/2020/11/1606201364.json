@@ -1,0 +1,21 @@
+{
+  "thread_id": 1606201364,
+  "subject": "MMPBSA.py: \"fork()\" system call to create a child process",
+  "messages": [
+    {
+      "message_id": 1606201364,
+      "author": "Lennart Gundelach",
+      "date_raw": "Tue, 24 Nov 2020 07:02:44 +0000",
+      "body": "Hi,\nI am trying to run MMPBSA.py.MPI in Amber16 and whenever I submit my job, SLURM freaks out with the following (I have asked the HPC system sysadmins and they have no idea:\nA process has executed an operation involving a call to the\n\"fork()\" system call to create a child process. Open MPI is currently\noperating in a condition that could result in memory corruption or\nother system errors; your job may hang, crash, or produce silent\ndata corruption. The use of fork() (or system() or other calls that\ncreate child processes) is strongly discouraged.\nThe process that invoked fork was:\nLocal host: [[16072,1],0] (PID 207509)\nIf you are *absolutely sure* that your application will successfully\nand correctly survive a call to fork(), you may disable this warning\nby setting the mpi_warn_on_fork MCA parameter to 0.\nAfter this warning the calculation crashes with the following error:\nFile \"/local/software/amber/amber16/bin/MMPBSA.py.MPI\", line 99, in <module>\napp.file_setup()\nFile \"/local/software/amber/amber16/lib/python2.7/site-packages/MMPBSA_mods/main.py\", line 156, in file_setup\nself.mpi_size, str(external_progs['cpptraj']), self.pre)\nFile \"/local/software/amber/amber16/lib/python2.7/site-packages/MMPBSA_mods/make_trajs.py\", line 76, in make_trajectories\nraise MMPBSA_Error('Must have at least as many frames as processors!')\nMMPBSA_Error: Must have at least as many frames as processors!\nError occured on rank 0.\nWhich to me makes no sense, given my mmpbas.in file:\nSample input file for GB and PB calculation\n&general\nstartframe=1, endframe=1000000, interval=1000,\nverbose=2, keep_files=0,\n/\n&gb\nigb=5, saltcon=0.0,\n/\n&pb\nfillratio=4.0\n/\n&nmode\nnmstartframe=1, nmendframe=1000000, nminterval=1000\nmaxcyc=1000, drms=0.0001\n/\nBut maybe I am just missing something obvious here.\nThanks,\nLennart",
+      "url": "http://archive.ambermd.org/202011/0223.html"
+    },
+    {
+      "message_id": 1606233122,
+      "author": "David A Case",
+      "date_raw": "Tue, 24 Nov 2020 10:52:02 -0500",
+      "body": "On Tue, Nov 24, 2020, Lennart Gundelach wrote:\n>\n>MMPBSA_Error: Must have at least as many frames as processors!\n>Error occured on rank 0.\n>\n>Which to me makes no sense, given my mmpbas.in file:\nSeveral things to try for debugging:\n1. Do the mmpbsa_py test cases work in parallel? That will help see if the\nproblem might be with your inputs.\n2. Can you do a short (many fewer frames) analysis with the serial\nversion? This also can help to narrow down the problem.\n3. Have you examined all the output files to look for error messages?\nWhen problems happen with mmpbsa, the actual error messages are often\ninside the individual output files.\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202011/0231.html",
+      "in_reply_to": 1606201364
+    }
+  ]
+}

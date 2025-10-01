@@ -1,0 +1,21 @@
+{
+  "thread_id": 1727319491,
+  "subject": "Failed minimization for membrane system using pmemd.MPI",
+  "messages": [
+    {
+      "message_id": 1727319491,
+      "author": "Pengfei Li",
+      "date_raw": "Thu, 26 Sep 2024 10:58:11 +0800",
+      "body": "Dear all,\nI am trying to perform minimization for one photosystem embedding with POPG\nlipid bilayer membrane. First 900 cycles of CPU minimization using pmemd\nand the next 60000 cycles of GPU minimization using pmemd.cuda can work\nwell. But when switched to the last 50000 cycles of CPU parallel\nminimization using pmemd.MPI, this task failed.\nThe associated files we used are attached. Please take a look at this issue\nhere. Thanks!\n01_Min.in: 400 cycles of CPU minimization; OK\n02_Min.in: 500 cycles of CPU minimization; OK\n03_Min.in: 10000 cycles of GPU minimization: OK\n04_Min.in: 50000 cycles of GPU minimization: OK\n05_Min.in: 50000 cycles of CPU parallel minimization: FAILED, erro info\nlike:\n[image: image.png]\nmailinglist.tar.gz\n<\nhttps://drive.google.com/file/d/1pH9LgVPVNmyNWohu_AmV0jDfx9H2Tzhy/view?usp=drive_web\n>\nBest wishes，\nPengfei Li\n----------------------------------------\nSenior Application Scientist at\nSingle Particle, LLC\npengfei.li.singleparticle.com\nhttps://www.singleparticle.com\n<\nhttp://singleparticle.cn/\n>\nhttps://twitter.com/singleparticle\nSingle Particle, your one-stop shop for structural biology needs\n[image: image.png]",
+      "url": "http://archive.ambermd.org/202409/0132.html"
+    },
+    {
+      "message_id": 1727326862,
+      "author": "David A Case",
+      "date_raw": "Wed, 25 Sep 2024 23:01:02 -0600",
+      "body": "On Thu, Sep 26, 2024, Pengfei Li via AMBER wrote:\n>I am trying to perform minimization for one photosystem embedding with POPG\n>lipid bilayer membrane. First 900 cycles of CPU minimization using pmemd\n>and the next 60000 cycles of GPU minimization using pmemd.cuda can work\n>well. But when switched to the last 50000 cycles of CPU parallel\n>minimization using pmemd.MPI, this task failed.\nOh my! I know this may be a big system, but why are you trying to do\n100000(!) steps of minimization? That's close to two orders of\nmagnitude more than I would think would be necessary. Is the energy\nactually changing much after the first few thousand steps?\nTwo ideas here:\n1. Run sander with ntmin=3 and maybe 1000 to 3000 steps. That should get\nyou a lot of relaxation away from initial bad contacts.\nThe default minimizer in Amber was written 50 years ago, does not understand\nhow to handle SHAKE restraints, and is quite inefficient. In spite of these\ndefects, it \"works\" OK for many systems, in the sense of generating a\nstructure that can subsequently be used for MD. But just giving it more and\nmore cycles is rarely a good option.\n2. If the system is still not low enough in energy, run MD with something\nlike ntt=3, temp0=0, gamma_ln=1.0, dt=0.001. Again, only use a few thousand\nsteps. Play around with the exact parameters, but such a strategy can also\nfix some problematic initial structures.\nThere are cases, such as chains passing through rings, that can only be\nfixed by finding such problems and manually fixing them. Or, if the force\nfield is suspect (especially having hydrogens with zero vdW radius that can\nstill get close to other atoms with a negative partial charge), then the\nforce field description will need fixing.\n...hope this helps...dac",
+      "url": "http://archive.ambermd.org/202409/0134.html",
+      "in_reply_to": 1727319491
+    }
+  ]
+}

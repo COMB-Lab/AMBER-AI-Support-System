@@ -1,0 +1,29 @@
+{
+  "thread_id": 1588800110,
+  "subject": "can i analysis number of water molecules in protein by watershell",
+  "messages": [
+    {
+      "message_id": 1588800110,
+      "author": "ʯ��",
+      "date_raw": "Wed, 06 May 2020 21:21:50 +0800(CST)",
+      "body": "Dear amber developers:\nIn the process of analyse the trajectory, I need to calculate the number of\nwater molecules inside the protein in each snapshot. Can watershell achieve\nthis goal? If not, can you recommend a better method. I am looking forward\nto your reply! Thanks very much!\nYours sincerely!\nNa Shi",
+      "url": "http://archive.ambermd.org/202005/0075.html"
+    },
+    {
+      "message_id": 1589991605,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 20 May 2020 12:20:05 -0400",
+      "body": "Hi,\nShort answer is unfortunately no. The 'watershell' command (or really\nany other command in cpptraj) doesn't have a concept of \"inside\" a\nprotein. It works by counting waters that are within certain distance\ncutoffs from each atom. I suppose if your protein were roughly\nspherical you could pick 1 atom or residue near the center of the\nprotein, choose a short first cutoff, then a second cutoff that's\nroughly the radius of your protein, but that seems pretty problematic.\nWould be interesting in the future to implement a command with concept\nof \"inside\" a protein, but I don't see myself getting to it anytime\nsoon unfortunately...\n-Dan\nOn Wed, May 6, 2020 at 9:18 AM 石娜 <shina14.mails.\njlu.edu.cn> wrote:\n>\n>\n> Dear amber developers:\n>\n> In the process of analyse the trajectory, I need to calculate the number of\n> water molecules inside the protein in each snapshot. Can watershell achieve\n> this goal? If not, can you recommend a better method. I am looking forward\n> to your reply! Thanks very much!\n> Yours sincerely!\n>\n> Na Shi\n>",
+      "url": "http://archive.ambermd.org/202005/0245.html",
+      "in_reply_to": 1588800110
+    },
+    {
+      "message_id": 1589992786,
+      "author": "Wesley Michael Botello-Smith",
+      "date_raw": "Wed, 20 May 2020 09:39:46 -0700",
+      "body": "If you are using pytraj, you could make use of the scipy.spatial.Delaunay\nto compute a convex hull for the protein. With a bit of legwork, you can\nuse the result as a way to test which waters are inside or outside of that\nhull.\nIt could also work well with volume map based approach as well.\nI've seen a handful of specialized analysis programs that take this kind of\napproach to define binding pockets and solvent channels. E.g. CASTp\nhttp://sts.bioe.uic.edu/castp/background.html\nand MOLE2\nhttps://www.ncbi.nlm.nih.gov/pmc/articles/PMC3765717/\nalthough there are\nliterally dozens of others.\nMany seem to work either on a grid / voxel approach, or a\nvornoi tesselation / delaunay triangulation approach, or some combination\nof the two.\nOn Wed, May 20, 2020 at 9:22 AM Daniel Roe <daniel.r.roe.gmail.\ncom> wrote:\n> Hi,\n>\n> Short answer is unfortunately no. The 'watershell' command (or really\n> any other command in cpptraj) doesn't have a concept of \"inside\" a\n> protein. It works by counting waters that are within certain distance\n> cutoffs from each atom. I suppose if your protein were roughly\n> spherical you could pick 1 atom or residue near the center of the\n> protein, choose a short first cutoff, then a second cutoff that's\n> roughly the radius of your protein, but that seems pretty problematic.\n> Would be interesting in the future to implement a command with concept\n> of \"inside\" a protein, but I don't see myself getting to it anytime\n> soon unfortunately...\n>\n> -Dan\n>\n> On Wed, May 6, 2020 at 9:18 AM 石娜 <shina14.mails.jlu.edu.cn> wrote:\n> >\n> >\n> > Dear amber developers:\n> >\n> > In the process of analyse the trajectory, I need to calculate the\n> number of\n> > water molecules inside the protein in each snapshot. Can watershell\n> achieve\n> > this goal? If not, can you recommend a better method. I am looking\n> forward\n> > to your reply! Thanks very much!\n> > Yours sincerely!\n> >\n> > Na Shi\n> >",
+      "url": "http://archive.ambermd.org/202005/0247.html",
+      "in_reply_to": 1588800110
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "thread_id": 1717531211,
+  "subject": "tLeap addAtomType usage",
+  "messages": [
+    {
+      "message_id": 1717531211,
+      "author": "Hantz, Eric",
+      "date_raw": "Tue, 4 Jun 2024 20:00:11 +0000",
+      "body": "Hello,\nI am trying to parameterize a small molecule for MD simulations in amber22, but I keep running into a tleap warning where it assigns a number of atoms as 'Sp0' hybridization. The following warning messages come up when I use tleap to ionize and solvate the protein-ligand complex.\n+Currently only Sp3-Sp3/Sp3-Sp2/Sp2-Sp2 are supported\n+---Tried to superimpose torsions for: *-C12-C10-*\n+--- With Sp2 - Sp0\n+--- Sp0 probably means a new atom type is involved\n+--- which needs to be added via addAtomTypes\n+Currently only Sp3-Sp3/Sp3-Sp2/Sp2-Sp2 are supported\n+---Tried to superimpose torsions for: *-N3-C10-*\n+--- With Sp2 - Sp0\n...\nI do not encounter these warning messages when making the lib file of the small molecule. I performed a geometry optimization for the small molecule in Gaussian16 and then ran a single point energy calculation to get the RESP charges. I created a mol2 file using antechamber and the RESP charges from g16. Then, used parmchk2 to generate the frcmod file. Afterwards, I used the mol2 and frcmod files to saveoff the .lib file.\nantechamber -i [g16 file].log -fi gout -o [filename].mol2 -fo mol2 -ao name -at \"gaff2\" \\\n-pf y -an y -c resp -nc 0 -rn LIG -ek \"ndiis_attempts=700\" -j 5\nparmchk2 -i [filename].mol2 -o [filename].frcmod -f mol2 -s 2\nI confirmed that the hybridization of all atoms that tleap lists as \"Sp0\" are indeed either sp2 or sp3 hybridization. Is there a tleap command where I can correct the hybridization of specific atoms? The warning message suggests to use addAtomTypes, which I tried to correct the hybridization but it did not resolve the warning messages:\naddAtomTypes {\n{ \"C10\" \"C\" \"sp3\" }\n{ \"C12\" \"C\" \"sp3\" }\n{ \"N3\" \"N\" \"sp2\" }\n...\n}\nThe topology files of the protein-ligand complex are generated from tLeap, but I'm not sure if I can trust the small molecule torsions/hybridizations. I have used my workflow for other small molecules and have not run into this issue before.\nAny help would be greatly appreciated,\nEric\n_______________________________________\nEric Hantz\nPostdoctoral Research Fellow - Renslo Lab\nUCSF - Pharmaceutical Chemistry\nEmail: eric.hantz.ucsf.edu\nPhone: 570-688-8720",
+      "url": "http://archive.ambermd.org/202406/0006.html"
+    },
+    {
+      "message_id": 1717540391,
+      "author": "David A Case",
+      "date_raw": "Tue, 4 Jun 2024 16:33:11 -0600",
+      "body": "On Tue, Jun 04, 2024, Hantz, Eric via AMBER wrote:\n>\n>\n>      +Currently only Sp3-Sp3/Sp3-Sp2/Sp2-Sp2 are supported\n>      +---Tried to superimpose torsions for: *-C12-C10-*\n>      +--- With Sp2 - Sp0\n>      +--- Sp0 probably means a new atom type is involved\n>      +--- which needs to be added via addAtomTypes\nI'm trying to figure out how you got atoms types C10, C12 and N3. As you\npoint out, this has nothing to do with small molecules, since GAFF2 atom\ntypes are all lower-case. Are you perhaps using some old force field (in an\n\"oldff\" folder)? Can you show us the entire tleap input where the error\nappears?\n>addAtomTypes {\n> { \"C10\" \"C\" \"sp3\" }\n> { \"C12\" \"C\" \"sp3\" }\n> { \"N3\" \"N\" \"sp2\" }\n>   ...\n>}\nThis looks correct, but you need to make sure that this command is executed\nbefore you load a lib file that has these atoms types.\n>The topology files of the protein-ligand complex are generated\n>from tLeap, but I'm not sure if I can trust the small molecule\n>torsions/hybridizations. I have used my workflow for other small molecules\n>and have not run into this issue before.\nAs noted above, this warning (which is in any event probably innocuous,) has\nnothing to do with small molecules. But I also don't see the atom types\nabove in any standard Amber force fields, but I could well be missing\nsomething -- this is why it would be good to see the complete tleap input file.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202406/0007.html",
+      "in_reply_to": 1717531211
+    },
+    {
+      "message_id": 1717638021,
+      "author": "David A Case",
+      "date_raw": "Wed, 5 Jun 2024 19:40:21 -0600",
+      "body": "On Wed, Jun 05, 2024, Hantz, Eric wrote:\n>Ah, I think I see my mistake. The tleap output in terminal contains messages such as:\n>      +Currently only Sp3-Sp3/Sp3-Sp2/Sp2-Sp2 are supported\n>      +---Tried to superimpose torsions for: *-C12-C10-*\n>      +--- With Sp2 - Sp0\n>\n>After checking the lig_0.lib file, it looks like the tleap output prints\n>the str name instead of the str type of the atom:\n>      !entry.LIG.unit.atoms table str name str type int typex int resx int flags int seq int elmnt dbl chg\n>        ...\n>       \"C10\" \"c5\" 0 1 131072 10 6 0.032933\nAh...this is at least as much my mistake as yours: I should have known more\nabout what tleap was actually printing.\nThe missing hybridizations for c5 and c6 atom types have been fixed in\nAmberTools24. But you can ignore the messages about superimposing torsions.\n...regards...dac",
+      "url": "http://archive.ambermd.org/202406/0008.html",
+      "in_reply_to": 1717531211
+    }
+  ]
+}

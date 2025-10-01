@@ -1,0 +1,45 @@
+{
+  "thread_id": 1642152480,
+  "subject": "NETCDF problem",
+  "messages": [
+    {
+      "message_id": 1642152480,
+      "author": "Björn Karlsson",
+      "date_raw": "Fri, 14 Jan 2022 09:28:00 +0000",
+      "body": "Dear all,\nI’m currently running all-atomistic MD simulations of amyloid fibril in explicit (TIP3P) water and ion environment using pmemd.CUDA (iwrap=0, ioutfm=1 and ntxo=2) on one V100 card.\nSo far I’ve managed to collect 500ns of trajectory data and everything has until this point work out well. When I’m now trying to continue my simulations to collect more data my simulation stops with the message:\nNetCDF error: Input/output error\nwrite_nc_restart(): Could not open restart\nAs far as I can understand this message informs me that the restart file is corrupt due to coordinate overflow (this is also confirmed when I convert the binary restart-file to a pdb-file and then look at the coordinates for diffusing water molecules). My believe was however that the use of binary NETCDF-files would prevent this behavior. Can anyone please help me to clear out what is happening here.\nWith kind regards, Björn\n-------------------------------------------------------------------------------------\nBjörn CG Karlsson\nAssociate Professor / Docent of Physical Chemistry\nPhysical Pharmacy Laboratory (PPL) –\nhttp://lnu.se/en/ppl\nLinnæus University\nFaculty of Health and Life Sciences\nDepartment of Chemistry and Biomedical Sciences\n391 82 Kalmar, Sweden\n+46 772 28 80 00 Telephone exchange\n+46 722 21 82 25 Mobile\nbjorn.karlsson_AT_lnu.se\nWe set knowledge in motion for a sustainable societal development. Linnaeus\nUniversity – a modern, international university in Småland, Sweden.\nWe process personal data in accordance with the General Data Protection\nRegulation, Lnu.se/en/gdpr<\nhttps://lnu.se/en/meet-linnaeus-university/contact-and-visit-us/personal-data/\n>.",
+      "url": "http://archive.ambermd.org/202201/0124.html"
+    },
+    {
+      "message_id": 1642166014,
+      "author": "David A Case",
+      "date_raw": "Fri, 14 Jan 2022 08:13:34 -0500",
+      "body": "On Fri, Jan 14, 2022, Bj�rn Karlsson wrote:\n>\n>NetCDF error: Input/output error\n>write_nc_restart(): Could not open restart\n>\n>As far as I can understand this message informs me that the restart file is\n>corrupt due to coordinate overflow (this is also confirmed when I convert\n>the binary restart-file to a pdb-file and then look at the coordinates for\n>diffusing water molecules). My believe was however that the use of binary\n>NETCDF-files would prevent this behavior. Can anyone please help me to\n>clear out what is happening here.\nYour understanding of netcdf format is correct. However, the above message\nlooks like it is happening when write_nc_restart is called, i.e. when you\nare trying to output a new netcdf restart file at the end of your new run.\nCheck your file names carefully. Unless you set the \"-O\" flag, amber will\nnot overwrite an existing file, which could lead to the above error if the\nrequested restart file already exists. But it could be some other\npermissions problem as well.\n....dac",
+      "url": "http://archive.ambermd.org/202201/0128.html",
+      "in_reply_to": 1642152480
+    },
+    {
+      "message_id": 1642166866,
+      "author": "Björn Karlsson",
+      "date_raw": "Fri, 14 Jan 2022 13:27:46 +0000",
+      "body": "Dear David,\nThanks for confirming my believes regarding the use of the NETCDF-files.\nI've carefully checked my job-file and the -O flag is always present before each run.\nMoreover, the simulation actually starts and runs for many nanoseconds before the error message pops up (how many nanoseconds vary from simulation to simulation basd on the use of ig=-1) so based on this I wouldn't be related to the use of the -O flag right?\nWith kind regards, Björn\n﻿On 2022-01-14, 14:16, \"David A Case\" <david.case.rutgers.\nedu> wrote:\nOn Fri, Jan 14, 2022, Björn Karlsson wrote:\n>\n>NetCDF error: Input/output error\n>write_nc_restart(): Could not open restart\n>\n>As far as I can understand this message informs me that the restart file is\n>corrupt due to coordinate overflow (this is also confirmed when I convert\n>the binary restart-file to a pdb-file and then look at the coordinates for\n>diffusing water molecules). My believe was however that the use of binary\n>NETCDF-files would prevent this behavior. Can anyone please help me to\n>clear out what is happening here.\nYour understanding of netcdf format is correct. However, the above message\nlooks like it is happening when write_nc_restart is called, i.e. when you\nare trying to output a new netcdf restart file at the end of your new run.\nCheck your file names carefully. Unless you set the \"-O\" flag, amber will\nnot overwrite an existing file, which could lead to the above error if the\nrequested restart file already exists. But it could be some other\npermissions problem as well.\n....dac",
+      "url": "http://archive.ambermd.org/202201/0130.html",
+      "in_reply_to": 1642152480
+    },
+    {
+      "message_id": 1642178308,
+      "author": "David A Case",
+      "date_raw": "Fri, 14 Jan 2022 11:38:28 -0500",
+      "body": "On Fri, Jan 14, 2022, Bj�rn Karlsson wrote:\n>I've carefully checked my job-file and the -O flag is always present before\n>each run.\n>Moreover, the simulation actually starts and runs for many nanoseconds\n>before the error message pops up (how many nanoseconds vary from simulation\n>to simulation basd on the use of ig=-1) so based on this I wouldn't be\n>related to the use of the -O flag right?\nAs a sanity check, run a short simulation (say 100 steps) and set ntwr=10,\nso it will try to write a restart file every ten steps. See if you get\nan error.\nIt may be that something else is going wrong with your simulation, and that\nthe write_nc_restart() error is a side effect. Your \"many nanoseconds\"\ncomment makes me suspect that this is a GPU run: is that correct? It would\nbe good to know more about your input parameters and system. Is this using\njust standard forcefields, or have you created residues just for this\nsystem? (If the latter, what force field did you use?)\nIt might be worth trying reducing dt as a test, especially if you are using\ndt=0.004 now. You could be running into integration errors, and things like\nvlimit checks are disabled on GPUs.\n....dac",
+      "url": "http://archive.ambermd.org/202201/0132.html",
+      "in_reply_to": 1642152480
+    },
+    {
+      "message_id": 1642182712,
+      "author": "Björn Karlsson",
+      "date_raw": "Fri, 14 Jan 2022 17:51:52 +0000",
+      "body": "Yes, I have been performing GPU-simulations for totally more than 500ns using a time-step of 0.004 ps for the \"production phase\" but I actually used a 0.002 ps time-step during equilibration.\nI have been using the standard AmberFF14SB and each system is built up by totally 40 peptides, surrounded by approx. 20 000 tip3p water molecules, 23 sodium and 63 chloride ions. As I wrote, I initially equilibrated the system with a 0.002 ps time-step for totally 60ns and then ran the rest of the simulation (500+ ns) with hydrogen mass repartitioning and a timestep of 0.004ps (of course using a new updated parameter file that was created by Parmed. Maybe this change in time step can have caused the effect I'm now experiencing?\nMy input file used for every 50ns simulation round has been the following:\nProd, NVT, 298.15K, 50ns\n&cntrl\nntt=3,\ngamma_ln=2.0,\ntemp0=298.15,\nntc=2,\nntf=2,\nntb=1,\ncut=12.0,\ndt=0.004,\nnstlim=12500000,\nig=-1,\nntwr=10000,\nntwx=10000,\nntpr=10000,\nioutfm=1,\nntxo=2,\nirest=1,\nntx=5\n/\n/Björn\n﻿On 2022-01-14, 17:41, \"David A Case\" <david.case.rutgers.edu> wrote:\nOn Fri, Jan 14, 2022, Björn Karlsson wrote:\n>I've carefully checked my job-file and the -O flag is always present before\n>each run.\n>Moreover, the simulation actually starts and runs for many nanoseconds\n>before the error message pops up (how many nanoseconds vary from simulation\n>to simulation basd on the use of ig=-1) so based on this I wouldn't be\n>related to the use of the -O flag right?\nAs a sanity check, run a short simulation (say 100 steps) and set ntwr=10,\nso it will try to write a restart file every ten steps. See if you get\nan error.\nIt may be that something else is going wrong with your simulation, and that\nthe write_nc_restart() error is a side effect. Your \"many nanoseconds\"\ncomment makes me suspect that this is a GPU run: is that correct? It would\nbe good to know more about your input parameters and system. Is this using\njust standard forcefields, or have you created residues just for this\nsystem? (If the latter, what force field did you use?)\nIt might be worth trying reducing dt as a test, especially if you are using\ndt=0.004 now. You could be running into integration errors, and things like\nvlimit checks are disabled on GPUs.\n....dac",
+      "url": "http://archive.ambermd.org/202201/0133.html",
+      "in_reply_to": 1642152480
+    }
+  ]
+}

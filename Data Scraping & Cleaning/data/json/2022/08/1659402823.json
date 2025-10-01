@@ -1,0 +1,29 @@
+{
+  "thread_id": 1659402823,
+  "subject": "Re: [AMBER] Amber22 installation",
+  "messages": [
+    {
+      "message_id": 1659402823,
+      "author": "David A Case",
+      "date_raw": "Mon, 1 Aug 2022 21:13:43 -0400",
+      "body": "On Mon, Aug 01, 2022, Maloney, Delilah via AMBER wrote:\n>To start with, anyone has better luck installing amber22 on RHEL7?\nHave you followed the instructions on the CentOS page?\nhttps://ambermd.org/InstCentOS.php\n>I am not able to get it to pass the config stage with openmpi.\nNote especially the comments on the web page above about Amber and openmpi.\nThey may well be relevant on RHEL7 as well.\n>And the serial version I am trying to make install stuck with cpptraj in\n>AmbertTools (54%).\nWe would need to see the exact error messages to be of much help. Please\nadd info on how you installed openmpi as well.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202208/0003.html"
+    },
+    {
+      "message_id": 1661200831,
+      "author": "Rybenkov, Valentin V.",
+      "date_raw": "Mon, 22 Aug 2022 20:40:31 +0000",
+      "body": "Hi,\nI am installing the gpu version of Amber22. AmberTools22, serial and parallel versions have been installed. This is a CentOS 7.9 machine with OpenMPI 4.1.1, CUDA 11.5.\nAt the stage of �make install�, I am getting the following error message (and many more similar lines to follow).\n[ 87%] Building NVCC (Device) object src/pmemd/src/xray/cuda/CMakeFiles/pmemd_xray_cuda.dir/src/xray/pmemd_xray_cuda_generated_BulkMaskGPU.cu.o\n/opt/oscer/software/CUDAcore/11.1.1/include/thrust/detail/allocator/allocator_traits.h(245): error: class \"thrust::detail::device_delete_allocator\" has no member \"value_type\"\ndetected during:\ninstantiation of class \"thrust::detail::allocator_traits<Alloc> [with Alloc=thrust::detail::device_delete_allocator]\"\n(402): here\ninstantiation of class \"thrust::detail::allocator_system<Alloc> [with Alloc=thrust::detail::device_delete_allocator]\"\nI found similar reports in the forum:\n�This problem was detected during beta testing on various platforms:\nRHELS 7.9 with GNU 9.1.0 and nvcc's 11.2.152, 11.1.105, 11.0.221;\nCentOS 7.9 with GNU 10.2.0 and nvcc 11.1.74.\nAnd was reported by user Felix Bangerter\non CentOS 7.8 with GNU 7.1.0 and CUDA 10.2.89.\nFor him the same problems did not occur when using CUDA 11.4.1.�\nSo, if the issue has been resolved for CUDA 11.4.1, I thought it would be resolved for CUDA 11.5 too, but apparently not. More so, the error message mentions CUDAcore/11.1.1. Apparently I am using two different versions of CUDA. At which stage during installation was this CUDAcore 11.1.1 set?\nI might have used earlier versions of CUDA to build AmberTools22 and initially build Amber22. Once the problem with the pmemd_xray_cuda surfaced, I made sure to load CUDA 11.5 and reran �./run_cmake� and �make install�. However, the same error was generated during �make install�. Any suggestions?\nThanks,\nValentin\nValentin V. Rybenkov\nUniversity of Oklahoma\n101 Stephenson Parkway\nNorman, OK 73019\nWeb: antibiotics.oucreate.com",
+      "url": "http://archive.ambermd.org/202208/0100.html",
+      "in_reply_to": 1659402823
+    },
+    {
+      "message_id": 1661256536,
+      "author": "David A Case",
+      "date_raw": "Tue, 23 Aug 2022 08:08:56 -0400",
+      "body": "On Mon, Aug 22, 2022, Rybenkov, Valentin V. via AMBER wrote:\n>\n>I am installing the gpu version of Amber22. AmberTools22, serial and\n>parallel versions have been installed. This is a CentOS 7.9 machine with\n>OpenMPI 4.1.1, CUDA 11.5.\n>\n>At the stage of “make install”, I am getting the following error message\n>(and many more similar lines to follow).\n>\n>[ 87%] Building NVCC (Device) object src/pmemd/src/xray/cuda/CMakeFiles/pmemd_xray_cuda.dir/src/xray/pmemd_xray_cuda_generated_BulkMaskGPU.cu.o\n>/opt/oscer/software/CUDAcore/11.1.1/include/thrust/detail/allocator/allocator_traits.h(245): error: class \"thrust::detail::device_delete_allocator\" has no member \"value_type\"\n> detected during:\n> instantiation of class \"thrust::detail::allocator_traits<Alloc> [with Alloc=thrust::detail::device_delete_allocator]\"\n>(402): here\n> instantiation of class \"thrust::detail::allocator_system<Alloc> [with Alloc=thrust::detail::device_delete_allocator]\"\n>\n>\n>I found similar reports in the forum:\n>\n>“This problem was detected during beta testing on various platforms:\n>RHELS 7.9 with GNU 9.1.0 and nvcc's 11.2.152, 11.1.105, 11.0.221;\n>CentOS 7.9 with GNU 10.2.0 and nvcc 11.1.74.\n>\n>And was reported by user Felix Bangerter\n>on CentOS 7.8 with GNU 7.1.0 and CUDA 10.2.89.\n>For him the same problems did not occur when using CUDA 11.4.1.”\nDid you try the workaround cited in the forum post you are quoting?\n(\nhttp://archive.ambermd.org/202206/0040.html\n) That has worked for several\nusers. We don't have a \"solution\" for CentOS/RHELS -- with some\ncombinations of GNU and CUDA it is OK, but for others it is not.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202208/0103.html",
+      "in_reply_to": 1659402823
+    }
+  ]
+}

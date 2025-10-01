@@ -1,0 +1,29 @@
+{
+  "thread_id": 1727867527,
+  "subject": "Length of translation vector from \"rmsd\" via cpptraj?",
+  "messages": [
+    {
+      "message_id": 1727867527,
+      "author": "Dr. Anselm Horn",
+      "date_raw": "Wed, 2 Oct 2024 13:12:07 +0200",
+      "body": "Dear Amber experts,\ncan I calculate and output the length of the translation vector obtained\nfrom an rmsd command for a trajectory within cpptraj?\nThe fit command goes like:\nrmsd TTT :1-50.C,CA,N savevectors combined vecsout vecall.dat\nAnd thus, the file vecall.dat contains two sets of vectors, i.e. six\nelements per line plus framenumber. Is there a possibility to write out\nthe lengths of those vectors?\n(Of course, I can post-process the data, but I'm almost sure that\ncpptraj contains the math-magic to do it itself ... However, I could not\nfind it in the manual.)\nBest,\nAnselm\nBioinformatik | NHR.FAU\nFriedrich-Alexander-Universität Erlangen-Nürnberg (FAU)\nGermany",
+      "url": "http://archive.ambermd.org/202410/0006.html"
+    },
+    {
+      "message_id": 1727883319,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 2 Oct 2024 11:35:19 -0400",
+      "body": "Hi,\nTo enable this, I just added the keyword 'magnitude' to the\n'vectormath' analysis command to the GitHub version of cpptraj\n(6.29.3): https://github.com/Amber-MD/cpptraj\nYou should just be able to add the command after your rms command, e.g.:\nrmsd TTT :1-50.C,CA,N savevectors combined vecsout vecall.dat\nvectormath vec1 TTT[TV] magnitude out vecall.magnitude.dat\nNote you could also change 'out' to be vecall.dat if you want it all\nwritten to the same file.\nHope this helps,\n-Dan\nOn Wed, Oct 2, 2024 at 7:15 AM Dr. Anselm Horn via AMBER\n<amber.ambermd.org> wrote:\n>\n> Dear Amber experts,\n>\n> can I calculate and output the length of the translation vector obtained\n> from an rmsd command for a trajectory within cpptraj?\n>\n> The fit command goes like:\n> rmsd TTT :1-50.C,CA,N savevectors combined vecsout vecall.dat\n>\n> And thus, the file vecall.dat contains two sets of vectors, i.e. six\n> elements per line plus framenumber. Is there a possibility to write out\n> the lengths of those vectors?\n>\n> (Of course, I can post-process the data, but I'm almost sure that\n> cpptraj contains the math-magic to do it itself ... However, I could not\n> find it in the manual.)\n>\n> Best,\n>\n> Anselm\n>\n> Bioinformatik | NHR.FAU\n> Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU)\n> Germany\n>\n>\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202410/0008.html",
+      "in_reply_to": 1727867527
+    },
+    {
+      "message_id": 1728028672,
+      "author": "Dr. Anselm Horn",
+      "date_raw": "Fri, 4 Oct 2024 09:57:52 +0200",
+      "body": "Dear Dan,\nthanks for that prompt and great support!\nBest,\nAnselm\nAm 02.10.2024 um 17:35 schrieb Daniel Roe:\n> Hi,\n>\n> To enable this, I just added the keyword 'magnitude' to the\n> 'vectormath' analysis command to the GitHub version of cpptraj\n> (6.29.3): https://github.com/Amber-MD/cpptraj\n>\n> You should just be able to add the command after your rms command, e.g.:\n>\n> rmsd TTT :1-50.C,CA,N savevectors combined vecsout vecall.dat\n> vectormath vec1 TTT[TV] magnitude out vecall.magnitude.dat\n>\n> Note you could also change 'out' to be vecall.dat if you want it all\n> written to the same file.\n>\n> Hope this helps,\n>\n> -Dan\n>\n> On Wed, Oct 2, 2024 at 7:15 AM Dr. Anselm Horn via AMBER\n> <amber.ambermd.org> wrote:\n>>\n>> Dear Amber experts,\n>>\n>> can I calculate and output the length of the translation vector obtained\n>> from an rmsd command for a trajectory within cpptraj?\n>>\n>> The fit command goes like:\n>> rmsd TTT :1-50.C,CA,N savevectors combined vecsout vecall.dat\n>>\n>> And thus, the file vecall.dat contains two sets of vectors, i.e. six\n>> elements per line plus framenumber. Is there a possibility to write out\n>> the lengths of those vectors?\n>>\n>> (Of course, I can post-process the data, but I'm almost sure that\n>> cpptraj contains the math-magic to do it itself ... However, I could not\n>> find it in the manual.)\n>>\n>> Best,\n>>\n>> Anselm\n>>\n>> Bioinformatik | NHR.FAU\n>> Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU)\n>> Germany\n>>\n>>\n>>\n>>\n>>\n>>",
+      "url": "http://archive.ambermd.org/202410/0012.html",
+      "in_reply_to": 1727867527
+    }
+  ]
+}

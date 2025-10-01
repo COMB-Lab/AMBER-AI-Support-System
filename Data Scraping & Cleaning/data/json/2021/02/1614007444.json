@@ -1,0 +1,29 @@
+{
+  "thread_id": 1614007444,
+  "subject": "Acpype error: Timed out process killed",
+  "messages": [
+    {
+      "message_id": 1614007444,
+      "author": "Shilpa Gupta",
+      "date_raw": "Mon, 22 Feb 2021 20:54:04 +0530",
+      "body": "Dear Amber users,\nI have run acpype for the generation of topology and coordinate parameters\nfor the nanotubes. For the smaller tubes (with less number of atoms) this\nscript is running fine but on increasing the size of the tube (with more\nnumber of atoms) script is showing an error. Error is\n========================================================================================\n| ACPYPE: AnteChamber PYthon Parser interfacE v. 2020-11-11T22:59:34CET (c)\n2021 AWSdS |\n========================================================================================\n==> Reading user's charges from mol2 file...\n==> ... charge set to 0\n==> Executing Antechamber...\n==> * Antechamber OK *\n==> Timed out! Process 7758 killed, max exec time (10800s) exceeded\nACPYPE FAILED: [Errno 3] No such process\nTotal time of execution: 5h 12m 39s\nHow can I run this. Any suggestion would be helpful. Thanks in advance.\nRegards\nShilpa",
+      "url": "http://archive.ambermd.org/202102/0220.html"
+    },
+    {
+      "message_id": 1614018141,
+      "author": "David A Case",
+      "date_raw": "Mon, 22 Feb 2021 13:22:21 -0500",
+      "body": "On Mon, Feb 22, 2021, Shilpa Gupta wrote:\n>I have run acpype for the generation of topology and coordinate parameters\n>for the nanotubes. For the smaller tubes (with less number of atoms) this\n>script is running fine but on increasing the size of the tube (with more\n>number of atoms) script is showing an error. Error is\nAntechamber is designed for small molecules, not for extended structures\nlike nanotubes. You will probably need to divide your structure into\nsmaller pieces, and assemble the bigger ones from smaller ones. See if you\ncan find a paper that describes the force-field generation process for\ntubes that are similar to the ones you have.\n...good luck....dac",
+      "url": "http://archive.ambermd.org/202102/0226.html",
+      "in_reply_to": 1614007444
+    },
+    {
+      "message_id": 1614025126,
+      "author": "Alan",
+      "date_raw": "Mon, 22 Feb 2021 21:18:46 +0100",
+      "body": "As Prof. Case said, you're playing off the limits.\nYet, ACPYPE has this option:\n-s MAX_TIME, --max_time MAX_TIME\nmax time (in sec) tolerance for sqm/mopac, default\nis\n3 hours\nIn my experience, ~250 atoms was already breaking the 10 hours limit (the\nmax I ever tested).\nBut you can try gasteiger:\n-c {gas,bcc,user}, --charge_method {gas,bcc,user}\ncharge method: gas, bcc (default), user (user's\ncharges in mol2 file)\nIt should work for a bigger system, yet it's not a semi-empirical\ncalculation like SQM.\nMy educated guess is that the charges for most of the tube would be regular\n(with small variation possibly) except for the ends, so, you may try with\ngasteiger and then try to replace the charges there following the profile\nyou see for a smaller tube you were able to run.\nBTW, how many atoms did you get ACPYPE to work with? And how big is the one\nfailing?\nBest,\nAlan\nOn Mon, 22 Feb 2021 at 19:22, David A Case <david.case.rutgers.\nedu> wrote:\n> On Mon, Feb 22, 2021, Shilpa Gupta wrote:\n>\n> >I have run acpype for the generation of topology and coordinate parameters\n> >for the nanotubes. For the smaller tubes (with less number of atoms) this\n> >script is running fine but on increasing the size of the tube (with more\n> >number of atoms) script is showing an error. Error is\n>\n> Antechamber is designed for small molecules, not for extended structures\n> like nanotubes. You will probably need to divide your structure into\n> smaller pieces, and assemble the bigger ones from smaller ones. See if you\n> can find a paper that describes the force-field generation process for\n> tubes that are similar to the ones you have.\n>\n> ...good luck....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202102/0229.html",
+      "in_reply_to": 1614007444
+    }
+  ]
+}

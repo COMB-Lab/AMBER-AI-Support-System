@@ -1,0 +1,45 @@
+{
+  "thread_id": 1621665634,
+  "subject": "AMberTools21 installation",
+  "messages": [
+    {
+      "message_id": 1621665634,
+      "author": "Neha Gandhi",
+      "date_raw": "Sat, 22 May 2021 16:40:34 +1000",
+      "body": "Hi AMBER List,\nI am trying to install AmberTools21 using cmake method. ./run_cmake is\ndownloading miniconda however, the configuration fails with below missing\npackages. I was assuming that miniconda is downloading and installing\nnumpy, scipy and matplotlib. I tried pip3 install numpy scipy matplotlib\nbut it still fails.\nWhat is the work around to this solution?\n-- Checking for Python package numpy -- not found\n-- Checking for Python package scipy -- not found\n-- Checking for Python package matplotlib -- not found\n-- \nRegards,\nDr. Neha S. Gandhi,",
+      "url": "http://archive.ambermd.org/202105/0190.html"
+    },
+    {
+      "message_id": 1621838038,
+      "author": "Gustaf Olsson",
+      "date_raw": "Mon, 24 May 2021 06:33:58 +0000",
+      "body": "I assume this is still during the ./run_cmake configuration?\nWhen installing, “make install”, is there any indication that miniconda is fetching and installing the mentioned packages?\nBest regards\n// Gustaf\n> On 22 May 2021, at 08:40, Neha Gandhi <n.gandhiau.gmail.\ncom> wrote:\n>\n> Hi AMBER List,\n>\n> I am trying to install AmberTools21 using cmake method. ./run_cmake is\n> downloading miniconda however, the configuration fails with below missing\n> packages. I was assuming that miniconda is downloading and installing\n> numpy, scipy and matplotlib. I tried pip3 install numpy scipy matplotlib\n> but it still fails.\n> What is the work around to this solution?\n>\n> -- Checking for Python package numpy -- not found\n> -- Checking for Python package scipy -- not found\n> -- Checking for Python package matplotlib -- not found\n>\n> --\n> Regards,\n> Dr. Neha S. Gandhi,\n>",
+      "url": "http://archive.ambermd.org/202105/0197.html",
+      "in_reply_to": 1621665634
+    },
+    {
+      "message_id": 1621849195,
+      "author": "Neha Gandhi",
+      "date_raw": "Mon, 24 May 2021 19:39:55 +1000",
+      "body": "Hi Olsson,\nYes miniconda is fetching the required packages yet ./run_cmake throws\nerror about the packages not found.\nWhile I managed to resolve the issue, run_cmake complained about not\nfinding Plumed packages and library. I don't want to install Plumed.\nI also tried installing using the old ./configure -noX11 -mpi gcc on Linux\ncluster, this didn't work either. It was looking for pnetcdf! I don't want\npnetcdf installation.\nI couldn't find anything in make files related to the above plumed or\npnetcdf issue.\nAny thoughts on these?\nBest regards,\nNeha\nOn Mon, 24 May 2021, 4:34 pm Gustaf Olsson, <gustaf.olsson.lnu.\nse> wrote:\n> I assume this is still during the ./run_cmake configuration?\n>\n> When installing, “make install”, is there any indication that miniconda is\n> fetching and installing the mentioned packages?\n>\n> Best regards\n> // Gustaf\n>\n> > On 22 May 2021, at 08:40, Neha Gandhi <n.gandhiau.gmail.\ncom> wrote:\n> >\n> > Hi AMBER List,\n> >\n> > I am trying to install AmberTools21 using cmake method. ./run_cmake is\n> > downloading miniconda however, the configuration fails with below missing\n> > packages. I was assuming that miniconda is downloading and installing\n> > numpy, scipy and matplotlib. I tried pip3 install numpy scipy matplotlib\n> > but it still fails.\n> > What is the work around to this solution?\n> >\n> > -- Checking for Python package numpy -- not found\n> > -- Checking for Python package scipy -- not found\n> > -- Checking for Python package matplotlib -- not found\n> >\n> > --\n> > Regards,\n> > Dr. Neha S. Gandhi,\n> >",
+      "url": "http://archive.ambermd.org/202105/0198.html",
+      "in_reply_to": 1621665634
+    },
+    {
+      "message_id": 1621850393,
+      "author": "Gustaf Olsson",
+      "date_raw": "Mon, 24 May 2021 09:59:53 +0000",
+      "body": "I have plenty of thoughts though many of them are probably not very accurate or particularly useful.\nIf you run ./run_cmake and then make install, I am assuming the installation/compilation finishes. Are you able to install/compile ambertools21 and have you added amber home to your path?\nAssuming a successful install, does this issue show up again if you re-run run_cmake?\nI don’t know what the default behaviour is. If conda finds and installs the packages it needs and the compilation works I would assume that rerunning the run_cmake script should find previously installed packages. This is just my assumption though.\nSo if run_cmake and make install finishes without errors and re-running run_cmake still notes the missing packages, I would assume that either $AMBERHOME is not correctly added to your PATH or maybe the install is in some location requiring elevated privileges, preventing the “checks” to successfully identify previously installed packages.\nThough these are just best guesses\nBest regards\n// Gustaf\n> On 24 May 2021, at 11:39, Neha Gandhi <n.gandhiau.gmail.\ncom> wrote:\n>\n> Hi Olsson,\n>\n> Yes miniconda is fetching the required packages yet ./run_cmake throws\n> error about the packages not found.\n>\n> While I managed to resolve the issue, run_cmake complained about not\n> finding Plumed packages and library. I don't want to install Plumed.\n>\n> I also tried installing using the old ./configure -noX11 -mpi gcc on Linux\n> cluster, this didn't work either. It was looking for pnetcdf! I don't want\n> pnetcdf installation.\n>\n> I couldn't find anything in make files related to the above plumed or\n> pnetcdf issue.\n>\n> Any thoughts on these?\n>\n> Best regards,\n> Neha\n>\n>\n>\n>\n> On Mon, 24 May 2021, 4:34 pm Gustaf Olsson, <gustaf.olsson.lnu.\nse> wrote:\n>\n>> I assume this is still during the ./run_cmake configuration?\n>>\n>> When installing, “make install”, is there any indication that miniconda is\n>> fetching and installing the mentioned packages?\n>>\n>> Best regards\n>> // Gustaf\n>>\n>>> On 22 May 2021, at 08:40, Neha Gandhi <n.gandhiau.gmail.\ncom> wrote:\n>>>\n>>> Hi AMBER List,\n>>>\n>>> I am trying to install AmberTools21 using cmake method. ./run_cmake is\n>>> downloading miniconda however, the configuration fails with below missing\n>>> packages. I was assuming that miniconda is downloading and installing\n>>> numpy, scipy and matplotlib. I tried pip3 install numpy scipy matplotlib\n>>> but it still fails.\n>>> What is the work around to this solution?\n>>>\n>>> -- Checking for Python package numpy -- not found\n>>> -- Checking for Python package scipy -- not found\n>>> -- Checking for Python package matplotlib -- not found\n>>>\n>>> --\n>>> Regards,\n>>> Dr. Neha S. Gandhi,\n>>>",
+      "url": "http://archive.ambermd.org/202105/0199.html",
+      "in_reply_to": 1621665634
+    },
+    {
+      "message_id": 1622034766,
+      "author": "David A Case",
+      "date_raw": "Wed, 26 May 2021 09:12:46 -0400",
+      "body": "On Mon, May 24, 2021, Neha Gandhi wrote:\n>\n>Yes miniconda is fetching the required packages yet ./run_cmake throws\n>error about the packages not found.\n>\n>While I managed to resolve the issue, run_cmake complained about not\n>finding Plumed packages and library. I don't want to install Plumed.\nAre you sure these are error messages? Cmake tells you lots about what it\nis looking for, and often says that a package is not found, but these are\njust for information.\nCan you post the cmake.log file? Also, what did you do to resolve the\nprevious issue about numpy?\n>\n>I also tried installing using the old ./configure -noX11 -mpi gcc on Linux\n>cluster, this didn't work either. It was looking for pnetcdf! I don't want\n>pnetcdf installation.\nAgain, this sounds like an information message, not an error.\n....dac",
+      "url": "http://archive.ambermd.org/202105/0223.html",
+      "in_reply_to": 1621665634
+    }
+  ]
+}

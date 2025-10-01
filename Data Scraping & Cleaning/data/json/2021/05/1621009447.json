@@ -1,0 +1,29 @@
+{
+  "thread_id": 1621009447,
+  "subject": "Problem re. non-integer charge in glycoprotein",
+  "messages": [
+    {
+      "message_id": 1621009447,
+      "author": "RAJAS MALLENAHALLI RAO",
+      "date_raw": "Fri, 14 May 2021 18:24:07 +0200",
+      "body": "Hello all,\nI'm using Amber to simulate a glycoprotein containing keratan sulfate\nglycans with sialic acid cap. I built the system using glycoprotein\nbuilder of glycam.org, and I replaced the glycosylated Asparagine\nresidues with NLN. I'm using ff14SB for protein & Glycam06-j1 for\nsugars. When I loaded the protein on tleap and checked for its charge,\nit gives me a non-integer value:\n> test = loadpdb prot1a.pdb\nLoading PDB file: ./prot1a.pdb\ntotal atoms in file: 4343\nLeap added 3978 missing atoms according to residue templates:\n3978 H / lone pairs\n> charge test\nTotal unperturbed charge: -49.992000\nTotal perturbed charge: -49.992000\nI tried to check where this is coming from, I tried on unglycosylated\nsystem, it gives integer value; on glycosylated system (w/o any charged\nresidues as well as with sialic acid) it gives integer value. The\nproblem starts when I add the sulfate groups. Is it advisable to fiddle\nwith the NLN residue library to even out the non-integer value? or is it\nsafe to ignore it altogether? Many thanks for suggestions/ help in\nadvance.\n-- \nRajas M Rao\nPostdoctoral researcher\nLaboratoire MEDyC CNRS UMR-7369\nUniversité de Reims Champagne-Ardenne",
+      "url": "http://archive.ambermd.org/202105/0139.html"
+    },
+    {
+      "message_id": 1621248124,
+      "author": "Dr. Anselm Horn",
+      "date_raw": "Mon, 17 May 2021 12:42:04 +0200",
+      "body": "Hi Rajas,\nfrom what you described it seems that the sulfate moiety is the origin\nof the non-integer charge; where do its charges come from?\nIMHO it would be save to ignore the charge deviation, since it only\naccounts for +0.008 a.u., and you probably have a sound literature\nreference for it.\nHowever, a practical workaround to obtain an integer charge would be to\nmodify the atomic charges of the sulfate moiety to account for the\ninaccuracy.\nBut other may comment here as well.\nBest regards,\nAnselm\nNHR.FAU\nFriedrich-Alexander-Universität Erlangen-Nürnberg\nGermany\nOn 05/14/2021 06:24 PM, RAJAS MALLENAHALLI RAO wrote:\n> Hello all,\n>\n> I'm using Amber to simulate a glycoprotein containing keratan sulfate\n> glycans with sialic acid cap. I built the system using glycoprotein\n> builder of glycam.org, and I replaced the glycosylated Asparagine\n> residues with NLN. I'm using ff14SB for protein & Glycam06-j1 for\n> sugars. When I loaded the protein on tleap and checked for its charge,\n> it gives me a non-integer value:\n>\n>> test = loadpdb prot1a.pdb\n> Loading PDB file: ./prot1a.pdb\n>   total atoms in file: 4343\n>   Leap added 3978 missing atoms according to residue templates:\n>        3978 H / lone pairs\n>> charge test\n> Total unperturbed charge: -49.992000\n> Total perturbed charge:   -49.992000\n>\n>\n> I tried to check where this is coming from, I tried on unglycosylated\n> system, it gives integer value; on glycosylated system (w/o any charged\n> residues as well as with sialic acid) it gives integer value. The\n> problem starts when I add the sulfate groups. Is it advisable to fiddle\n> with the NLN residue library to even out the non-integer value? or is it\n> safe to ignore it altogether? Many thanks for suggestions/ help in advance.\n>",
+      "url": "http://archive.ambermd.org/202105/0162.html",
+      "in_reply_to": 1621009447
+    },
+    {
+      "message_id": 1621254216,
+      "author": "RAJAS MALLENAHALLI RAO",
+      "date_raw": "Mon, 17 May 2021 14:23:36 +0200",
+      "body": "Hello,\nMany thanks for the suggestion. The sulphate moeity itself is charged\nhere (SO3-). It is part of the keratan sulphate glycosaminoglycan.\nRegards,\nOn 17/05/2021 12:42, Dr. Anselm Horn wrote:\n> Hi Rajas,\n>\n> from what you described it seems that the sulfate moiety is the origin\n> of the non-integer charge; where do its charges come from?\n>\n> IMHO it would be save to ignore the charge deviation, since it only\n> accounts for +0.008 a.u., and you probably have a sound literature\n> reference for it.\n> However, a practical workaround to obtain an integer charge would be to\n> modify the atomic charges of the sulfate moiety to account for the\n> inaccuracy.\n>\n> But other may comment here as well.\n>\n> Best regards,\n>\n> Anselm\n>\n> NHR.FAU\n> Friedrich-Alexander-Universität Erlangen-Nürnberg\n> Germany\n>\n>\n> On 05/14/2021 06:24 PM, RAJAS MALLENAHALLI RAO wrote:\n>> Hello all,\n>>\n>> I'm using Amber to simulate a glycoprotein containing keratan sulfate\n>> glycans with sialic acid cap. I built the system using glycoprotein\n>> builder of glycam.org, and I replaced the glycosylated Asparagine\n>> residues with NLN. I'm using ff14SB for protein & Glycam06-j1 for\n>> sugars. When I loaded the protein on tleap and checked for its charge,\n>> it gives me a non-integer value:\n>>\n>>> test = loadpdb prot1a.pdb\n>> Loading PDB file: ./prot1a.pdb\n>>   total atoms in file: 4343\n>>   Leap added 3978 missing atoms according to residue templates:\n>>        3978 H / lone pairs\n>>> charge test\n>> Total unperturbed charge: -49.992000\n>> Total perturbed charge:   -49.992000\n>>\n>>\n>> I tried to check where this is coming from, I tried on unglycosylated\n>> system, it gives integer value; on glycosylated system (w/o any\n>> charged\n>> residues as well as with sialic acid) it gives integer value. The\n>> problem starts when I add the sulfate groups. Is it advisable to\n>> fiddle\n>> with the NLN residue library to even out the non-integer value? or is\n>> it\n>> safe to ignore it altogether? Many thanks for suggestions/ help in\n>> advance.\n>>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202105/0163.html",
+      "in_reply_to": 1621009447
+    }
+  ]
+}

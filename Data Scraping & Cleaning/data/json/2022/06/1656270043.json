@@ -1,0 +1,37 @@
+{
+  "thread_id": 1656270043,
+  "subject": "REMD trajectory visualisation help",
+  "messages": [
+    {
+      "message_id": 1656270043,
+      "author": "Suchetana Gupta",
+      "date_raw": "Sun, 26 Jun 2022 12:00:43 -0700",
+      "body": "Hello Amber Users\nIs there any updated tutorial for running REMD simulations? I am trying to\ndo REMD simulations for cyclic peptides using Amber20. I have followed the\ntutorial at\nhttp://ambermd.org/tutorials/advanced/tutorial7/\nSomehow, I am unable to visualise the trajectory after following these\nsteps. The trajectory does not load in VMD. Any solution for it?\nIn case there is anyone who does REMD for cyclic peptides, can you please\nhelp me understand and proceed with the steps?\nThanks\nSuchetana Gupta\nUniversity of Oregon",
+      "url": "http://archive.ambermd.org/202206/0047.html"
+    },
+    {
+      "message_id": 1656273898,
+      "author": "Suchetana Gupta",
+      "date_raw": "Sun, 26 Jun 2022 13:04:58 -0700",
+      "body": "I have run a regular MD on the same cyclic peptide and it runs fine and I\ncan do all visualisations and stuff. However when I generate the REMD\ntrajectories using the same structure, VMD gives the error of cannot load\ntrajectory.\nThanks\nSuchetana\nOn Sun, Jun 26, 2022 at 12:58 PM David A Case <david.case.rutgers.edu>\nwrote:\n> On Sun, Jun 26, 2022, Suchetana Gupta via AMBER wrote:\n>\n> >Is there any updated tutorial for running REMD simulations? I am trying to\n> >do REMD simulations for cyclic peptides using Amber20. I have followed the\n> >tutorial...\n> >Somehow, I am unable to visualise the trajectory after following these\n> >steps. The trajectory does not load in VMD. Any solution for it?\n>\n> There should be no particular connection between using REMD, and having\n> your\n> system be a cyclic peptide.\n>\n> 1. does your system run OK without REMD, and can you visualize the\n> trajectories?\n>\n> 2. What is the exact error message you get in VMD? At what stage of the\n> process?\n>\n> ...thx...dac\n>\n>",
+      "url": "http://archive.ambermd.org/202206/0049.html",
+      "in_reply_to": 1656270043
+    },
+    {
+      "message_id": 1656276318,
+      "author": "Suchetana Gupta",
+      "date_raw": "Sun, 26 Jun 2022 13:45:18 -0700",
+      "body": "The exact message while trying to visualise on VMD is: Problem reading CRD\nfile\nI was trying to load the remd.mdcrd.001 file along with a top file.\nAlso, when I tried to extract temperature trajectories using the script (\nextract_300k_traj.x\n<\nhttp://ambermd.org/tutorials/advanced/tutorial7/files/extract_300k_traj.x\n>),\nI am getting the distance file as output but not any trajectory file. It\ndoes not show any error.\nPlease advise\nThank you\nSuchetana\nOn Sun, Jun 26, 2022 at 1:04 PM Suchetana Gupta <suchetana.gupta.gmail.com>\nwrote:\n> I have run a regular MD on the same cyclic peptide and it runs fine and I\n> can do all visualisations and stuff. However when I generate the REMD\n> trajectories using the same structure, VMD gives the error of cannot load\n> trajectory.\n> Thanks\n> Suchetana\n>\n> On Sun, Jun 26, 2022 at 12:58 PM David A Case <david.case.rutgers.edu>\n> wrote:\n>\n>> On Sun, Jun 26, 2022, Suchetana Gupta via AMBER wrote:\n>>\n>> >Is there any updated tutorial for running REMD simulations? I am trying\n>> to\n>> >do REMD simulations for cyclic peptides using Amber20. I have followed\n>> the\n>> >tutorial...\n>> >Somehow, I am unable to visualise the trajectory after following these\n>> >steps. The trajectory does not load in VMD. Any solution for it?\n>>\n>> There should be no particular connection between using REMD, and having\n>> your\n>> system be a cyclic peptide.\n>>\n>> 1. does your system run OK without REMD, and can you visualize the\n>> trajectories?\n>>\n>> 2. What is the exact error message you get in VMD? At what stage of the\n>> process?\n>>\n>> ...thx...dac\n>>\n>>",
+      "url": "http://archive.ambermd.org/202206/0051.html",
+      "in_reply_to": 1656270043
+    },
+    {
+      "message_id": 1656349952,
+      "author": "Adrian Roitberg",
+      "date_raw": "Mon, 27 Jun 2022 13:12:32 -0400",
+      "body": "Those are two different problems.\n1. what format is the remd.mdcrd.001 file in?\nYou need to know that to be able to decide what format to tell vmd to\nread it. It could be netcdf, crdbox, etc\n2. There is no trajout command in your cpptraj script, so you do not get\none,.\nBTW: Even if you can read the remd.mdcrd.001 file into vmd, that will be\na so called replica MD traj, NOT the 300K one, so be careful.\nAdrian\nOn 6/27/22 1:04 PM, Suchetana Gupta via AMBER wrote:\n> [External Email]\n>\n> Hello Amber users\n> I was wondering if you could help me with this issue. I can share the\n> relevant files, if needed.\n> Thanks\n> Suchetana\n>\n> On Sun, Jun 26, 2022 at 1:45 PM Suchetana Gupta <suchetana.gupta.gmail.com>\n> wrote:\n>\n>> The exact message while trying to visualise on VMD is: Problem reading CRD\n>> file\n>>\n>> I was trying to load the remd.mdcrd.001 file along with a top file.\n>>\n>> Also, when I tried to extract temperature trajectories using the script (\n>> extract_300k_traj.x\n>> <\nhttps://urldefense.proofpoint.com/v2/url?u=http-3A__ambermd.org_tutorials_advanced_tutorial7_files_extract-5F300k-5Ftraj.x&d=DwICAg&c=sJ6xIWYx-zLMB3EPkvcnVg&r=dl7Zd5Rzbdvo14I2ndQf43BvMwUa7mhu738hV_7ZGJc&m=2Csr8VBEjqZDYO81fVSnxVFndul4eYza8NMMXWznn5sQpixDznLML2OVOl\nEWvOxq&s=e6HQcg7aUP7fojrKwh_6NAgihaYEEA6iXw9k6G2Dum4&e= >),\n>> I am getting the distance file as output but not any trajectory file. It\n>> does not show any error.\n>>\n>> Please advise\n>> Thank you\n>> Suchetana\n>>\n>> On Sun, Jun 26, 2022 at 1:04 PM Suchetana Gupta <suchetana.gupta.gmail.com>\n>> wrote:\n>>\n>>> I have run a regular MD on the same cyclic peptide and it runs fine and I\n>>> can do all visualisations and stuff. However when I generate the REMD\n>>> trajectories using the same structure, VMD gives the error of cannot load\n>>> trajectory.\n>>> Thanks\n>>> Suchetana\n>>>\n>>> On Sun, Jun 26, 2022 at 12:58 PM David A Case <david.case.rutgers.edu>\n>>> wrote:\n>>>\n>>>> On Sun, Jun 26, 2022, Suchetana Gupta via AMBER wrote:\n>>>>\n>>>>> Is there any updated tutorial for running REMD simulations? I am trying\n>>>> to\n>>>>> do REMD simulations for cyclic peptides using Amber20. I have followed\n>>>> the\n>>>>> tutorial...\n>>>>> Somehow, I am unable to visualise the trajectory after following these\n>>>>> steps. The trajectory does not load in VMD. Any solution for it?\n>>>> There should be no particular connection between using REMD, and having\n>>>> your\n>>>> system be a cyclic peptide.\n>>>>\n>>>> 1. does your system run OK without REMD, and can you visualize the\n>>>> trajectories?\n>>>>\n>>>> 2. What is the exact error message you get in VMD? At what stage of the\n>>>> process?\n>>>>\n>>>> ...thx...dac\n>>>>\n>>>>\n>",
+      "url": "http://archive.ambermd.org/202206/0057.html",
+      "in_reply_to": 1656270043
+    }
+  ]
+}

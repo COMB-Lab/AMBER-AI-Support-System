@@ -1,0 +1,69 @@
+{
+  "thread_id": 1578641738,
+  "subject": "[ Error with MD ] Energetics of the system",
+  "messages": [
+    {
+      "message_id": 1578641738,
+      "author": "조준범",
+      "date_raw": "Fri, 10 Jan 2020 16:35:38 +0900",
+      "body": "Hi all,\nI'm trying to running polarizable simulation with modified force field\nwhich is written in frcmod files.\nEM is properly operated but when I try to run npt simulation, it stops at\nthe first step and says \"This is usually a symptom of some deeper problem\nwith the energetics of the system.\nMy input script and log is as follow.\nWhat can be the solution?\nAny advice would be grateful\nPEO-TFSI-Li\n&cntrl\nimin=0, igb=0, irest=0, ntx=1,\nnstlim=50000, dt=0.001,\nntt=1, gamma_ln=0.0, ig=-1,\ntempi=423.0, temp0=423.0, tautp=0.1,\nntp=1, pres0=1.0, taup=2.0,\ncomp=111.51,\nntb=2, ntc=2, ntf=2,\nntwe=1000, ntwx=1000, ntpr=1000, ntwr=1000,\ncut=10.0, scnb=1.0, scee=1.0,\nscqd=1.25, scdd=1.0,\nipol=1, nrespa=1,\niwrap=1,\nchnglpfrc=1,\nlpaa=0.5,0.5,\nlpbb=0.5,0.5,\nlpcc=0.0,0.0,\n/\n&ewald\nframeon=1, chngmask=1,\nverbose=0, ew_type=0,\nindmeth=3, scaldip=1,\nscalqddd=1, vdwmeth=1,\ndiptol=0.001,\ndiptau=9.0, ithole=1,\n/\n--------------------------------------------------------------------------------\n3. ATOMIC COORDINATES AND VELOCITIES\n--------------------------------------------------------------------------------\ndefault_name\nbegin time read from input coords = 0.000 ps\nNumber of triangulated 3-point waters found: 0\nSum of charges from parm topology file = -0.00052995\nForcing neutrality...\n--------------------------------------------------------------------------------\n4. RESULTS\n--------------------------------------------------------------------------------\n| # of SOLUTE degrees of freedom (RNDFP): 13837.\n| # of SOLVENT degrees of freedom (RNDFS): 0.\n| NDFMIN = 13834. NUM_NOSHAKE = 0 CORRECTED RNDFP = 13834.\n| TOTAL # of degrees of freedom (RNDF) = 13834.\n---------------------------------------------------\nAPPROXIMATING switch and d/dx switch using CUBIC SPLINE INTERPOLATION\nusing 5000.0 points per unit in tabled values\nTESTING RELATIVE ERROR over r ranging from 0.0 to cutoff\n| CHECK switch(x): max rel err = 0.2738E-14 at 2.422500\n| CHECK d/dx switch(x): max rel err = 0.8314E-11 at 2.736960\n---------------------------------------------------\n| Local SIZE OF NONBOND LIST = 1072065\n| TOTAL SIZE OF NONBOND LIST = 1072065\nNSTEP = 0 TIME(PS) = 0.000 TEMP(K) = 502.10 PRESS =\nNaN\nEtot = NaN EKtot = 5244.7829 EPtot =\nNaN\nBOND = 146.7381 ANGLE = 954.0864 DIHED =\n4268.2061\n1-4 NB = 1933.8019 1-4 EEL = -1196.6003 VDWAALS =\n242302019.5467\nEELEC = NaN EHBOND = 0.0000 RESTRAINT =\n0.0000\nEKCMT = 85.8978 VIRIAL = NaN VOLUME =\n965776.8188\nEPOLZ = NaN\nDipole convergence: rms = NaN temperature = 0.00\nDensity =\n0.0543\n------------------------------------------------------------------------------\nCoordinate resetting (SHAKE) cannot be accomplished,\ndeviation is too large\nNITER, NIT, LL, I and J are : 0 0 8 11 12\nNote: This is usually a symptom of some deeper\nproblem with the energetics of the system.\n-- \n*Junbeom Cho*\nIntegrated Ph. D. Student\nTheoretical and Computational Soft Matters Laboratory\nSchool of Chemical and Biological Engineering\nSeoul National University\n1, Gwanak-ro, Gwanak-gu, Seoul, 08826, Korea\nTel: +82-2-880-1529\nE-mail: cjb0704.snu.ac.kr",
+      "url": "http://archive.ambermd.org/202001/0118.html"
+    },
+    {
+      "message_id": 1578663819,
+      "author": "David Case",
+      "date_raw": "Fri, 10 Jan 2020 13:43:39 +0000",
+      "body": "On Fri, Jan 10, 2020, 조준범 wrote:\n> 1-4 NB = 1933.8019 1-4 EEL = -1196.6003 VDWAALS =242302019.5467\nYou vdW energy is enormous, indicating the two atoms are nearly on top\nof each other in the starting structure. You can use the \"check\"\ncommands in either cpptraj or parmed to identify which atoms are\ninvolved.\nYou indicate that you did \"EM\" (energy minimization??) first. If so,\nsee if the energies at the end of the minimzation match those at the\nbeginning of your dynamics. If they don't match, that may provide a\nclue about what is going on. (Of course, if they do match, something\nwent badly wrong at the minimization step....)\n....dac",
+      "url": "http://archive.ambermd.org/202001/0121.html",
+      "in_reply_to": 1578641738
+    },
+    {
+      "message_id": 1578671189,
+      "author": "Qing Lv",
+      "date_raw": "Fri, 10 Jan 2020 23:46:29 +0800 (CST)",
+      "body": "Dear Colleagues,\nI am doing a QM/MM umbrella sampling to calculate the PMF of an enzymatic reaction. The initial coordinates (with solvents and ions) for each sampling window were extracted from previous trajectories and the velocities were generated with ig=-1. The reaction coordinate (bond length difference) of each initial frame was closed to the center of the window. So, need I do energy-minimization and equilibration for each window? Since each initial conformation has no bad clashes (actually they can run MD well without minimizations) and is closed to the window center, I cannot understand why minimization and equilibration are still needed (as a lot of references do so).\nThanks,\nQing",
+      "url": "http://archive.ambermd.org/202001/0122.html",
+      "in_reply_to": 1578641738
+    },
+    {
+      "message_id": 1578671757,
+      "author": "Qing Lv",
+      "date_raw": "Fri, 10 Jan 2020 23:55:57 +0800 (CST)",
+      "body": "Dear All,\nI just thought of another question. People usually use NPT ensemble in MD simulations of protein-water system (like enzyme). However, in QM/MM MD (each trajectory is only tens of picosecond long), is NPT necessarily better than NVT? (In some cases, I used NVT because NPT sometimes causes strange errors.)\nThanks,\nQing",
+      "url": "http://archive.ambermd.org/202001/0123.html",
+      "in_reply_to": 1578641738
+    },
+    {
+      "message_id": 1578926175,
+      "author": "Qing Lv",
+      "date_raw": "Mon, 13 Jan 2020 22:36:15 +0800 (CST)",
+      "body": "Dear All,\nI wonder if the error bars are necessary for umbrella sampling in PMF calculation? If yes, how should the error bars be calculated? Need I do 2~3 repeats (with different random initial velocities assigned)?\nThanks,\nQing",
+      "url": "http://archive.ambermd.org/202001/0143.html",
+      "in_reply_to": 1578641738
+    },
+    {
+      "message_id": 1578926569,
+      "author": "Carlos Simmerling",
+      "date_raw": "Mon, 13 Jan 2020 10:42:49 -0400",
+      "body": "Error bars are not necessary unless you want to know how precise your\nresults might be. Otherwise you could have large uncertainties that you\ncannot estimate. I expect that most journal reviewers would want them\nincluded. Independent runs from different seeds are good, and in my opinion\nruns from different initial structures can be better. Keep in mind that the\nerrors bars are a lower bound on the true uncertainty.\nOn Mon, Jan 13, 2020, 10:36 AM Qing Lv <lvqingjiejie.163.com> wrote:\n> Dear All,\n>\n>\n> I wonder if the error bars are necessary for umbrella sampling in PMF\n> calculation? If yes, how should the error bars be calculated? Need I do 2~3\n> repeats (with different random initial velocities assigned)?\n>\n>\n> Thanks,\n> Qing\n>",
+      "url": "http://archive.ambermd.org/202001/0144.html",
+      "in_reply_to": 1578641738
+    },
+    {
+      "message_id": 1578970086,
+      "author": "Qing Lv",
+      "date_raw": "Tue, 14 Jan 2020 10:48:06 +0800 (CST)",
+      "body": "Thank you so much. Are there any tools in Amber or elsewhere to make such error bars from umbrella sampling?\nBest,\nQing\nAt 2020-01-13 22:42:49, \"Carlos Simmerling\" <carlos.simmerling.gmail.com> wrote:\n>Error bars are not necessary unless you want to know how precise your\n>results might be. Otherwise you could have large uncertainties that you\n>cannot estimate. I expect that most journal reviewers would want them\n>included. Independent runs from different seeds are good, and in my opinion\n>runs from different initial structures can be better. Keep in mind that the\n>errors bars are a lower bound on the true uncertainty.\n>\n>On Mon, Jan 13, 2020, 10:36 AM Qing Lv <lvqingjiejie.163.com> wrote:\n>\n>> Dear All,\n>>\n>>\n>> I wonder if the error bars are necessary for umbrella sampling in PMF\n>> calculation? If yes, how should the error bars be calculated? Need I do 2~3\n>> repeats (with different random initial velocities assigned)?\n>>\n>>\n>> Thanks,\n>> Qing\n>>",
+      "url": "http://archive.ambermd.org/202001/0154.html",
+      "in_reply_to": 1578641738
+    },
+    {
+      "message_id": 1579001435,
+      "author": "Carlos Simmerling",
+      "date_raw": "Tue, 14 Jan 2020 07:30:35 -0400",
+      "body": "We just do the calculation twice (an independent data set) , so tools\naren't needed. If you mean making the graph with error bass from the 2 data\nsets, amber doesn't really have graphing tools. Most programs (like\nxmgrace) allow using 2 data sets to make error bars.\nOn Mon, Jan 13, 2020, 10:48 PM Qing Lv <lvqingjiejie.163.com> wrote:\n> Thank you so much. Are there any tools in Amber or elsewhere to make such\n> error bars from umbrella sampling?\n>\n>\n> Best,\n> Qing\n>\n>\n>\n>\n>\n> At 2020-01-13 22:42:49, \"Carlos Simmerling\" <carlos.simmerling.gmail.com>\n> wrote:\n> >Error bars are not necessary unless you want to know how precise your\n> >results might be. Otherwise you could have large uncertainties that you\n> >cannot estimate. I expect that most journal reviewers would want them\n> >included. Independent runs from different seeds are good, and in my\n> opinion\n> >runs from different initial structures can be better. Keep in mind that\n> the\n> >errors bars are a lower bound on the true uncertainty.\n> >\n> >On Mon, Jan 13, 2020, 10:36 AM Qing Lv <lvqingjiejie.163.com> wrote:\n> >\n> >> Dear All,\n> >>\n> >>\n> >> I wonder if the error bars are necessary for umbrella sampling in PMF\n> >> calculation? If yes, how should the error bars be calculated? Need I do\n> 2~3\n> >> repeats (with different random initial velocities assigned)?\n> >>\n> >>\n> >> Thanks,\n> >> Qing\n> >>",
+      "url": "http://archive.ambermd.org/202001/0155.html",
+      "in_reply_to": 1578641738
+    }
+  ]
+}

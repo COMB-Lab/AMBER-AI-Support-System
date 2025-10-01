@@ -1,0 +1,45 @@
+{
+  "thread_id": 1614145306,
+  "subject": "How to recompile AmberTools",
+  "messages": [
+    {
+      "message_id": 1614145306,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Wed, 24 Feb 2021 00:41:46 -0500",
+      "body": "Dear Amber Community,\nFollowing the steps in an earlier post  <\nhttp://archive.ambermd.org/201303/0229.html\n> for how to modify the source code to include different atom types in MMGBSA calculations, I am stuck on the re-compile step. As I did not compile in the first place by hand—having used Anaconda—I’d greatly appreciate if someone could please point me to a step-by-step description of the process.\nBest regards,\nMatthew",
+      "url": "http://archive.ambermd.org/202102/0240.html"
+    },
+    {
+      "message_id": 1614154274,
+      "author": "Gustaf Olsson",
+      "date_raw": "Wed, 24 Feb 2021 08:11:14 +0000",
+      "body": "There are recommendations and guidance in the manual and on the ambermd.org website.\nSupplying some additional information regarding your OS might help.\nBest regards\n// Gustaf\n> On 24 Feb 2021, at 06:41, Matthew Guberman-Pfeffer <matthew.guberman-pfeffer.uconn.\nedu> wrote:\n>\n> Dear Amber Community,\n>\n> Following the steps in an earlier post <\nhttp://archive.ambermd.org/201303/0229.html\n> for how to modify the source code to include different atom types in MMGBSA calculations, I am stuck on the re-compile step. As I did not compile in the first place by hand—having used Anaconda—I’d greatly appreciate if someone could please point me to a step-by-step description of the process.\n>\n> Best regards,\n> Matthew\n>",
+      "url": "http://archive.ambermd.org/202102/0243.html",
+      "in_reply_to": 1614145306
+    },
+    {
+      "message_id": 1614197098,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Wed, 24 Feb 2021 15:04:58 -0500",
+      "body": "Hi Gustaf,\nI’m using Mac OS X 10.15.7 (Catalina). Are there specific instructions or pitfalls that I should look out for given this OS?\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202102/0250.html",
+      "in_reply_to": 1614145306
+    },
+    {
+      "message_id": 1614200798,
+      "author": "David A Case",
+      "date_raw": "Wed, 24 Feb 2021 16:06:38 -0500",
+      "body": "On Wed, Feb 24, 2021, Matthew Guberman-Pfeffer wrote:\n>\n>I’m using Mac OS X 10.15.7 (Catalina). Are there specific instructions or\n>pitfalls that I should look out for given this OS?\nSpecific instructions are here:\nhttps://ambermd.org/InstMacOS.php\n(get there from Amber Home -> Installation -> MacOS)\n...good luck....dac",
+      "url": "http://archive.ambermd.org/202102/0251.html",
+      "in_reply_to": 1614145306
+    },
+    {
+      "message_id": 1614240174,
+      "author": "Gustaf Olsson",
+      "date_raw": "Thu, 25 Feb 2021 08:02:54 +0000",
+      "body": "Hello Matthew\nThere are many pitfalls, depending on what you have installed and how it was installed :-)\nWith annoying persistence I am sticking with using the “homebrew” package manager, which has caused me some grief in the past.\nYou should, if you have not installed other compilers or use any strange system settings, be able to follow the recommendations on the website.\nYou need to install a fortran compiler, recommended is gfortran though version 9 or previous.\nThen it should be as simple as running './run_cmake' in the \"amber20_src/build/“ directory and if successfully executed, 'make install’\nIf compilation fails reporting something mentioning “yylex”, then add these lines:\nint yyerror( char *sStr );\nint yylex();\nafter\nextern int yyparse();\nwhich is found around line 199 in the \"amber20_src/AmberTools/src/leap/src/leap/parser.y” directory.\nGood luck and best regards\n// Gustaf\n> On 24 Feb 2021, at 21:04, Matthew Guberman-Pfeffer <matthew.guberman-pfeffer.uconn.\nedu> wrote:\n>\n> Hi Gustaf,\n>\n> I’m using Mac OS X 10.15.7 (Catalina). Are there specific instructions or pitfalls that I should look out for given this OS?\n>\n> Best,\n> Matthew\n>\n>",
+      "url": "http://archive.ambermd.org/202102/0253.html",
+      "in_reply_to": 1614145306
+    }
+  ]
+}

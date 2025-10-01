@@ -1,0 +1,21 @@
+{
+  "thread_id": 1605159902,
+  "subject": "Changes in DNA sugar chilarity at NMR volume restrained simulation",
+  "messages": [
+    {
+      "message_id": 1605159902,
+      "author": "lomzov",
+      "date_raw": "Thu, 12 Nov 2020 12:45:02 +0700",
+      "body": "Dear All,\nI am refining the duplex DNA structure using NOESY volume restraints and\nrestrained molecular dynamics simulations. In some cases, at a high\nrestraining potential (35 kcal), changes in sugar chirality (C1', C2',\nC3' or C4' atoms) were observed during the simulation (time scale 10-100\nns). This potential value was taken to increase the impact of NMR\nrestraints in total energy. Is this a high potential wall problem\n(atom's movement algorithm under high potential/force) or something else?\nHere input file for simulation:\n&cntrl\nimin=0, irest=1, ntx=5,\nnstlim=200000, dt=0.002,\nntf=1, ntc=1, ntb=0,\nntpr=500, ntwx=500, ntwr=500,\ncut=999.0,\nigb=1, saltcon=0.1,\nntt=2, temp0=300.0,\nnmropt=2, ipnlty=1, mxsub=10, tausw=0.101, pencut=-1,\n/\n&wt type='NOESY', istep1=0,istep2=200000,value1=35.0,\nvalue2=35.0, /\n&wt type='END' /\nNOESY=vol.rst\nLISTOUT=POUT\nand beginig of vol.rst file:\n&noeexp\nomega = 600,\nnpeak=55,57,61, -1,\ntaurot=3,\ntaumet=0.04,\noscale=4.37e-5,\nid2o=1,\nemix = 0.1, 0.2, 0.4,\nihp(1,1) = 10, jhp(1,1) = 7, aexp(1,1) = 366.79999, arange(1,1) = 36.68,\n...\nBest regards,\nAlexander Lomzov",
+      "url": "http://archive.ambermd.org/202011/0116.html"
+    },
+    {
+      "message_id": 1605187626,
+      "author": "David A Case",
+      "date_raw": "Thu, 12 Nov 2020 08:27:06 -0500",
+      "body": "On Thu, Nov 12, 2020, lomzov wrote:\n>\n>I am refining the duplex DNA structure using NOESY volume restraints and\n>restrained molecular dynamics simulations. In some cases, at a high\n>restraining potential (35 kcal), changes in sugar chirality (C1', C2',\n>C3' or C4' atoms) were observed during the simulation (time scale 10-100\n>ns). This potential value was taken to increase the impact of NMR\n>restraints in total energy. Is this a high potential wall problem\n>(atom's movement algorithm under high potential/force) or something else?\nIt sounds like a problem with the NOESY restraints. You could try some\ntests: run DNA with no NMR restraints (should be fine at 300K, based on\ntons of experience); use NOE distance restraints (if you have them)\nrather than NOESY volume restraints (just as a check); try a smaller\nNOESY volume weight (again, just as a test.)\nThere is an old program, makeCHIR_RST, which will create chirality\nrestraints for tetrahedral carbons that should (help) prevent chirality\nflips. It is in AmberTools/src/nmr_aux/prepare_input. Somehow, it is\nno longer installed in $AMBERHOME/bin under the new CMake scripts. But\nit's just a shell script: copy it to $AMBERHOME/bin and it will show up\nin your PATH.\nThat said, it's also possible that either your restraint weight or the\nNOESY volume setup are causing problems. In that case, enforcing\nchirality may only serve to hide the problem. Let us know if you\ncontinue to have problems -- it's been decades since I did things like\nthis, but I may still have some memory. You can check your settings\nagainst those in the $AMBERHOME/test/noesy folder (note the dates on the\nfiles there?).\n>igb=1, saltcon=0.1,\nI recommend switching to igb=8 for proteins and DNA: see the Reference\nManual for details.\n>\n>ntt=2, temp0=300.0,\nI recommend ntt=3 for GB calculations\n>&wt type='NOESY', istep1=0,istep2=200000,value1=35.0,\n35 does seem like a very high weight, but my memory is fuzzy here.\n....dac",
+      "url": "http://archive.ambermd.org/202011/0119.html",
+      "in_reply_to": 1605159902
+    }
+  ]
+}

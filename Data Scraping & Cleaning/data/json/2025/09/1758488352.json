@@ -1,0 +1,21 @@
+{
+  "thread_id": 1758488352,
+  "subject": "Error in nad+",
+  "messages": [
+    {
+      "message_id": 1758488352,
+      "author": "Kapali Suri",
+      "date_raw": "Sun, 21 Sep 2025 22:59:12 +0200",
+      "body": "Respected,\nI have nad+ frcmod, prepi and mol2 file, but in tleap when I'm adding in\ncomplex files, I am facing this issue.\nHow should I resolve this error?\nKindly help me.\nError: For atom (.R<***** 1719>.A<C9 15>) could not find vdW (or other)\nparameters for type (C.ar <\nhttp://c.ar/\n>)\nError: For atom (.R<***** 1719>.A<O17 17>) could not find vdW (or other)\nparameters for type (O.3)\n*Script I am using:*\nsource /home/neuron3/bin/amber22/dat/leap/cmd/oldff/leaprc.ff99SB\nsource leaprc.water.tip3p\nloadamberparams\n/storage/priya/bin/amber22/dat/leap/parm/frcmod.ionsjc_tip3p\nloadamberparams /home/neuron3/bin/amber22/dat/leap/parm/gaff.dat\nprotein = loadpdb recep_A_amber.pdb\nsaveamberparm protein receptor.prmtop receptor.inpcrd\nloadamberprep nad.prepi\nloadamberparams nad.frcmod\nnad_lig = loadmol2 nad.mol2\nloadamberprep tclh.prepi\nloadamberparams tclh.frcmod\ntclh_lig = loadmol2 tclh_out_ligand_01.mol2\ncomplex = combine {protein nad_lig tclh_lig}\nsolvatebox complex TIP3PBOX 10.0\naddions complex Na+ 0\naddions complex Cl- 0\nsaveamberparm complex complex.prmtop complex.inpcrd\nsavepdb complex complex.pdb\nquit",
+      "url": "http://archive.ambermd.org/202509/0051.html"
+    },
+    {
+      "message_id": 1758558450,
+      "author": "David A Case",
+      "date_raw": "Mon, 22 Sep 2025 10:27:30 -0600",
+      "body": "On Sun, Sep 21, 2025, Kapali Suri via AMBER wrote:\n>\n>I have nad+ frcmod, prepi and mol2 file, but in tleap when I'm adding in\n>complex files, I am facing this issue.\nYou don't say how you obtained the mol2 files, but it looks like it is using\nSybyl atom types, rather than GAFF atom types:\n>\n>Error: For atom (.R<***** 1719>.A<C9 15>) could not find vdW (or other)\n>parameters for type (C.ar <\nhttp://c.ar/\n>)\n>\n>Error: For atom (.R<***** 1719>.A<O17 17>) could not find vdW (or other)\n>parameters for type (O.3)\nYou need to prepare the mol2 files with antechamber in order to obtain\nGAFF atom types.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202509/0052.html",
+      "in_reply_to": 1758488352
+    }
+  ]
+}

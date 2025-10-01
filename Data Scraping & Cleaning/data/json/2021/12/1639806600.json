@@ -1,0 +1,29 @@
+{
+  "thread_id": 1639806600,
+  "subject": "Adding atom types to gaff.dat",
+  "messages": [
+    {
+      "message_id": 1639806600,
+      "author": "Sam Walsworth (Researcher)",
+      "date_raw": "Sat, 18 Dec 2021 05:50:00 +0000",
+      "body": "Hello\nI'm keen to develop a new atom type for Ag+ (bonded). Can this be done by adding it to the MOD4 section of gaff.dat if I have correct Rmin/2 and epsilon values, or is there issues with this method?\nSam\nUniversity of Huddersfield inspiring global professionals.\n[\nhttps://marketing.hud.ac.uk/_HOSTED/EmailSig2014/EmailSigFooterSeptember2021.jpg\n]\nThis transmission is confidential and may be legally privileged. If you receive it in error, please notify us immediately by e-mail and remove it from your system. If the content of this e-mail does not relate to the business of the University of Huddersfield, then we do not endorse it and will accept no liability.",
+      "url": "http://archive.ambermd.org/202112/0138.html"
+    },
+    {
+      "message_id": 1639840140,
+      "author": "David A Case",
+      "date_raw": "Sat, 18 Dec 2021 10:09:00 -0500",
+      "body": "On Sat, Dec 18, 2021, Sam Walsworth (Researcher) wrote:\n>\n>I'm keen to develop a new atom type for Ag+ (bonded). Can this be done by\n>adding it to the MOD4 section of gaff.dat if I have correct Rmin/2 and\n>epsilon values, or is there issues with this method?\nThe original impetus for defining the \"frcmod\" file was to discourage folks\nfrom making modifications to things like gaff.dat. Having frcmod files is\na way to document what was changed, and the changes will survive future\nupdates from Junmei to gaff.dat\nNote that if you are adding new atom types, you need to use AddAtomTypes to\ntell tleap about the element name and (less important) the hybridization.\nThe easiest was to do this is to make your own leaprc.bondedAg file,\npatterned after one of the existing files in $AMBERHOME/dat/leap/cmd.\n....dac",
+      "url": "http://archive.ambermd.org/202112/0139.html",
+      "in_reply_to": 1639806600
+    },
+    {
+      "message_id": 1640102369,
+      "author": "Pengfei Li",
+      "date_raw": "Tue, 21 Dec 2021 09:59:29 -0600",
+      "body": "Hi Sam,\nIf you want to develop a new atom type for Ag+ (bonded), you can use the MCPB.py program to handle it once in your original PDB file and the mol2 file for Ag you handle the Ag+ ion correctly. In order to make MCPB.py to recognize the Ag+ ion, you should treat it as an independent residue, and treat both its residue name and atom name as “AG” in both the pdb and mol2 files, and you should treat the atomic charge of the Ag+ ion in its mol2 file as +1.0.\nYou can check these two tutorials: http://ambermd.org/tutorials/advanced/tutorial20/mcpbpy.htm <http://ambermd.org/tutorials/advanced/tutorial20/mcpbpy.htm> and http://ambermd.org/tutorials/advanced/tutorial20/mcpbpy_heme.htm <http://ambermd.org/tutorials/advanced/tutorial20/mcpbpy_heme.htm>. You can also check the original paper of MCPB.py: https://pubs.acs.org/doi/abs/10.1021/acs.jcim.5b00674 <https://pubs.acs.org/doi/abs/10.1021/acs.jcim.5b00674>, in its SI there is an example of parameterizing an organometallic compound using MCPB.py. A book chapter published in last year provided useful tips for MCPB.py modeling as well.\nPengfei\n> On Dec 17, 2021, at 11:50 PM, Sam Walsworth (Researcher) <Sam.Walsworth.hud.\nac.uk> wrote:\n>\n> Hello\n>\n> I'm keen to develop a new atom type for Ag+ (bonded). Can this be done by adding it to the MOD4 section of gaff.dat if I have correct Rmin/2 and epsilon values, or is there issues with this method?\n>\n> Sam\n> University of Huddersfield inspiring global professionals.\n> [\nhttps://marketing.hud.ac.uk/_HOSTED/EmailSig2014/EmailSigFooterSeptember2021.jpg\n]\n>\n> This transmission is confidential and may be legally privileged. If you receive it in error, please notify us immediately by e-mail and remove it from your system. If the content of this e-mail does not relate to the business of the University of Huddersfield, then we do not endorse it and will accept no liability.\n>",
+      "url": "http://archive.ambermd.org/202112/0159.html",
+      "in_reply_to": 1639806600
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "thread_id": 1578502142,
+  "subject": "saxs_md",
+  "messages": [
+    {
+      "message_id": 1578502142,
+      "author": "Buteler,Maria del Pilar",
+      "date_raw": "Wed, 8 Jan 2020 16:49:02 +0000",
+      "body": "Hi, I would like to calculate the saxs profile for my simulation and I'm trying to set up the calculation. I would like to use saxs_md and I'm aware I need the trajectory in pdb format of my system and also a simulation of pure solvent. However, should the solvent simulation have the same number of atoms as my original simulation and also is just relaxing the solvent enough? My runs are using Tip3P water.\nThanks!!\nPilar Buteler\nPhD Candidate, Roitberg Research Group\nDepartment of Chemistry, University of Florida\nGainesville, FL 32611",
+      "url": "http://archive.ambermd.org/202001/0090.html"
+    },
+    {
+      "message_id": 1578504311,
+      "author": "Christina Bergonzo",
+      "date_raw": "Wed, 8 Jan 2020 12:25:11 -0500",
+      "body": "Hello!\nI have found that the pure solvent simulations needs to be\nwell-equilibrated. I have done the following:\n1. Initial minimization with 500 steps steepest descent/500steps conjugate\ngradient\n2. Heating to 300K at constant volume over 100 ps, Berendsen thermostat.\n3. Minimization with 500 steps steepest descent/500steps conjugate gradient\n4. Constant pressure equilibration at 300 K and 1 atm with a coupling\nconstant=0.2 (again, Berendsen) for 500 ps.\n5. Constant volume equilibration at 300 K for 500 ps with Berendsen.\nThe pure solvent simulation should have *more* atoms than the solvent\ncontribution of your system (solute + solvent).\nThat is, I have found that the volume of pure solvent (buffer) should be >\nvolume of solvent + solute (sample) - you can see in the attached plot what\nhappens when the buffer box size is too small.\nI check volumes at each step to make sure of this (can be done using the\nvolume command in Cpptraj),\nOne caveat is that the calculated spectra are only 'guaranteed' out to\nsmall angles of q (Hung Nguyen's paper should have more information about\nthis:\nhttps://aip-scitation-org.proxy-um.researchport.umd.edu/doi/pdf/10.1063/1.4953037?class=pdf\n).\nGood luck!\n-Christina\n[image: Plot.new.jpg]\nOn Wed, Jan 8, 2020 at 11:49 AM Buteler,Maria del Pilar <\npbuteler.chem.ufl.edu> wrote:\n> Hi, I would like to calculate the saxs profile for my simulation and I'm\n> trying to set up the calculation. I would like to use saxs_md and I'm\n> aware I need the trajectory in pdb format of my system and also a\n> simulation of pure solvent. However, should the solvent simulation have\n> the same number of atoms as my original simulation and also is just\n> relaxing the solvent enough? My runs are using Tip3P water.\n>\n> Thanks!!\n>\n>\n>\n> Pilar Buteler\n>\n> PhD Candidate, Roitberg Research Group\n>\n> Department of Chemistry, University of Florida\n>\n> Gainesville, FL 32611\n>",
+      "url": "http://archive.ambermd.org/202001/0091.html",
+      "in_reply_to": 1578502142
+    }
+  ]
+}

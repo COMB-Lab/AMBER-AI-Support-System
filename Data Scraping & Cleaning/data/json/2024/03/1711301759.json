@@ -1,0 +1,53 @@
+{
+  "thread_id": 1711301759,
+  "subject": "error_install_run_cmake_Amber22",
+  "messages": [
+    {
+      "message_id": 1711301759,
+      "author": "ABDELATIF MESSAOUDI",
+      "date_raw": "Sun, 24 Mar 2024 18:35:59 +0100",
+      "body": "Dear AMBER users,\nI am trying to install AMBER22. After running \"./run_cmake\"\nI am getting the error :( Attached please find my error message)\nBest regards\nAbdelatif Messaoudi\nLCMVAR, University of Batna1, Algeriaa",
+      "url": "http://archive.ambermd.org/202403/0144.html"
+    },
+    {
+      "message_id": 1711303170,
+      "author": "Daniel Roe",
+      "date_raw": "Sun, 24 Mar 2024 13:59:30 -0400",
+      "body": "Hi,\nHere is the relevant error message:\n> Unable to build internal Boost without zlib and libbz2\nYou need to either install the zlib or libbz2 development libraries,\nor Boost itself. If you can't do that, you could try to disable Boost\nand anything that depends on it via the cmake variable\n-DDISABLE_TOOLS=Boost (I think, those more familiar with cmake may\nwant to chime in here).\n-Dan\nOn Sun, Mar 24, 2024 at 1:36 PM ABDELATIF MESSAOUDI via AMBER\n<amber.ambermd.org> wrote:\n>\n> Dear AMBER users,\n>\n>\n> I am trying to install AMBER22. After running \"./run_cmake\"\n>\n> I am getting the error :( Attached please find my error message)\n>\n>\n>\n>\n> Best regards\n>\n>\n> Abdelatif Messaoudi\n>\n> LCMVAR, University of Batna1, Algeriaa\n>",
+      "url": "http://archive.ambermd.org/202403/0145.html",
+      "in_reply_to": 1711301759
+    },
+    {
+      "message_id": 1711305488,
+      "author": "David A Case",
+      "date_raw": "Sun, 24 Mar 2024 12:38:08 -0600",
+      "body": "On Sun, Mar 24, 2024, ABDELATIF MESSAOUDI via AMBER wrote:\n>\n>I am trying to install AMBER22. After running \"./run_cmake\"\n>I am getting the error :( Attached please find my error message)\nLook in the cmake.log file for the phrase \"CMake Error\". Then right above\nthat is the origin of the problem:\n>-- Unable to build internal Boost without zlib and libbz2\n>CMake Error at cmake/3rdPartyTools.cmake:108 (message):\n> 3rd party program boost is required to build Amber, but it is disabled\n> (likely because it was not found).\nYou need to install zlib and libbz2. See\nhttps://ambermd.org/Installation.php\n, and choose your OS.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202403/0147.html",
+      "in_reply_to": 1711301759
+    },
+    {
+      "message_id": 1711378443,
+      "author": "David A Case",
+      "date_raw": "Mon, 25 Mar 2024 08:54:03 -0600",
+      "body": "On Mon, Mar 25, 2024, ABDELATIF MESSAOUDI wrote:\n>Dear David\n>\n>Which file can I add these :\n>-DDISABLE_TOOLS=Boost\n>-DFORCE_DISABLE_LIBS=\"boost\".\n>\n>I really need to install Amber22 on my new machin\nThe above won't work. You need to install the zlib or libz2 libraries.\nExactly how you do this depends on your OS: please visit\nhttps://ambermd.org/Installation.php\n. For example, on Linux Ubuntu, the\nrequired command is this:\nsudo apt-get install libz-dev libbz2-dev\nFind the page for your operating system.\n...dac",
+      "url": "http://archive.ambermd.org/202403/0150.html",
+      "in_reply_to": 1711301759
+    },
+    {
+      "message_id": 1711390027,
+      "author": "ABDELATIF MESSAOUDI",
+      "date_raw": "Mon, 25 Mar 2024 19:07:07 +0100",
+      "body": "Dear AMBER users,\nI am trying to install AMBER22. After running \"./run_cmake\"\nI am getting the error :\n[ 93%] [NAB] Preprocessing mmpbsa_entropy.nab\n[ 93%] [NAB] Compiling mmpbsa_entropy.nab\n[ 93%] Building C object\nAmberTools/src/mmpbsa_py/CMakeFiles/mmpbsa_py_nabnmode.dir/CMakeFiles/nabfiles/mmpbsa_entropy.c.o\n[ 93%] Linking C executable mmpbsa_py_nabnmode\n/usr/bin/ld: warning: rism3d_closure_c.F90.o: requires executable stack\n(because the .note.GNU-stack section is executable)\n[ 93%] Built target mmpbsa_py_nabnmode\n[ 93%] [NAB] Preprocessing mmpbsa_energy.nab\n[ 94%] [NAB] Compiling mmpbsa_energy.nab\n[ 94%] Building C object\nAmberTools/src/mmpbsa_py/CMakeFiles/mmpbsa_py_energy.dir/CMakeFiles/nabfiles/mmpbsa_energy.c.o\n[ 94%] Linking C executable mmpbsa_py_energy\n/usr/bin/ld: warning: rism3d_closure_c.F90.o: requires executable stack\n(because the .note.GNU-stack section is executable)\n[ 94%] Built target mmpbsa_py_energy\n[ 94%] Building pysander native library\nCopying sander extension source to sanderles...\nrunning build\nrunning build_py\ncreating\n/home/lcmvar/SOFT/amber22_src/build/AmberTools/src/pysander/CMakeFiles/pysander-build\ncreating\n/home/lcmvar/SOFT/amber22_src/build/AmberTools/src/pysander/CMakeFiles/pysander-build/lib.linux-x86_64-cpython-312\ncreating\n/home/lcmvar/SOFT/amber22_src/build/AmberTools/src/pysander/CMakeFiles/pysander-build/lib.linux-x86_64-cpython-312/sander\ncopying sander/__init__.py ->\n/home/lcmvar/SOFT/amber22_src/build/AmberTools/src/pysander/CMakeFiles/pysander-build/lib.linux-x86_64-cpython-312/sander\ncreating\n/home/lcmvar/SOFT/amber22_src/build/AmberTools/src/pysander/CMakeFiles/pysander-build/lib.linux-x86_64-cpython-312/sanderles\ncopying sanderles/__init__.py ->\n/home/lcmvar/SOFT/amber22_src/build/AmberTools/src/pysander/CMakeFiles/pysander-build/lib.linux-x86_64-cpython-312/sanderles\nrunning build_ext\nbuilding 'sander.pysander' extension\ncreating\n/home/lcmvar/SOFT/amber22_src/build/AmberTools/src/pysander/CMakeFiles/pysander-build/temp.linux-x86_64-cpython-312\ncreating\n/home/lcmvar/SOFT/amber22_src/build/AmberTools/src/pysander/CMakeFiles/pysander-build/temp.linux-x86_64-cpython-312/sander\ncreating\n/home/lcmvar/SOFT/amber22_src/build/AmberTools/src/pysander/CMakeFiles/pysander-build/temp.linux-x86_64-cpython-312/sander/src\nicc -fno-strict-overflow -DNDEBUG -O2 -Wall -fPIC -O2 -isystem\n/home/lcmvar/SOFT/amber22_src/build/CMakeFiles/miniconda/install/include\n-fPIC -O2 -isystem\n/home/lcmvar/SOFT/amber22_src/build/CMakeFiles/miniconda/install/include\n-fPIC -I/home/lcmvar/SOFT/amber22_src/AmberTools/src/include\n-I/home/lcmvar/SOFT/amber22_src/AmberTools/src/sander\n-I/home/lcmvar/SOFT/amber22_src/build/CMakeFiles/miniconda/install/include/python3.12\n-c sander/src/pysandermodule.c -o\n/home/lcmvar/SOFT/amber22_src/build/AmberTools/src/pysander/CMakeFiles/pysander-build/temp.linux-x86_64-cpython-312/sander/src/pysandermodule.o\nerror: command 'icc' failed: No such file or directory\nmake[2]: ***\n[AmberTools/src/pysander/CMakeFiles/pysander.dir/build.make:76:\nAmberTools/src/pysander/CMakeFiles/pysander-build/pysander-build.stamp]\nError 1\nmake[1]: *** [CMakeFiles/Makefile2:7442:\nAmberTools/src/pysander/CMakeFiles/pysander.dir/all] Error 2\nmake: *** [Makefile:156: all] Error 2\n(base) lcmvar.lcmvar-System-Version:~/SOFT/amber22_src/build$",
+      "url": "http://archive.ambermd.org/202403/0151.html",
+      "in_reply_to": 1711301759
+    },
+    {
+      "message_id": 1711391981,
+      "author": "David A Case",
+      "date_raw": "Mon, 25 Mar 2024 12:39:41 -0600",
+      "body": "On Mon, Mar 25, 2024, ABDELATIF MESSAOUDI via AMBER wrote:\n>\n>I am trying to install AMBER22. After running \"./run_cmake\"\nDid you edit the run_cmake script? Are you trying to use Intel compilers?\n>/home/lcmvar/SOFT/amber22_src/build/AmberTools/src/pysander/CMakeFiles/pysander-build/temp.linux-x86_64-cpython-312/sander/src/pysandermodule.o\n>error: command 'icc' failed: No such file or directory\nPossible workarounds:\nUse GNU compilers (the default); Intel compilers should not be needed\nexcept for rare (and advanced) situations\nIf the first idea fails, try adding -DDISABLE_TOOLS=\"pysander\" to your\nrun_cmake script.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202403/0152.html",
+      "in_reply_to": 1711301759
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "thread_id": 1645043573,
+  "subject": "Fast 3-point water residue error",
+  "messages": [
+    {
+      "message_id": 1645043573,
+      "author": "Artur Hermano",
+      "date_raw": "Wed, 16 Feb 2022 20:32:53 +0000",
+      "body": "​Hello, Amber users!\nI am receiving the following error message when I try to minimize my system (protein+glycan+peptide in a water box):\nError: Fast 3-point water residue, name and bond data incorrect!\nI have originally built my system using CHARMM ff, then converted it to Amber input files using Chamber through Parmed. I cannot imagine what water-related issue can be happening here, and the web results do not seem of great help either. Do you guys have any idea what might be wrong here or what I should examine more carefully?\nThank you!\nArtur",
+      "url": "http://archive.ambermd.org/202202/0169.html"
+    },
+    {
+      "message_id": 1645196532,
+      "author": "Jason Swails",
+      "date_raw": "Fri, 18 Feb 2022 10:02:12 -0500",
+      "body": "When using constraints (SHAKE), Amber uses a special analytical constraint\nalgorithm (called SETTLE) to constrain water geometries (3-constraint\nsystems can be solved analytically). To recognize water residues to apply\nSETTLE to, sander and pmemd use the residue and atom names to identify\nthem. The defaults are 'WAT', 'O', 'H1', and 'H2'. tleap *always* assigns\nthese names to water atoms and residues, so Amber users rarely have to\nchange them.\nHowever, I think CHARMM uses different names for water residues (not sure\nabout atoms): TP3 (if using tip3p). So you have to override the \"watnam\"\nvariable in the input file to tell sander/pmemd how to find water residues.\nIn the &cntrl namelist, put watnam='TP3' (or whatever the water residue\nname in your topology file is).\nHTH,\nJason\nOn Wed, Feb 16, 2022 at 3:33 PM Artur Hermano <artur.hermano.hotmail.com>\nwrote:\n> Hello, Amber users!\n>\n> I am receiving the following error message when I try to minimize my\n> system (protein+glycan+peptide in a water box):\n>\n> Error: Fast 3-point water residue, name and bond data incorrect!\n>\n> I have originally built my system using CHARMM ff, then converted it to\n> Amber input files using Chamber through Parmed. I cannot imagine what\n> water-related issue can be happening here, and the web results do not seem\n> of great help either. Do you guys have any idea what might be wrong here or\n> what I should examine more carefully?\n>\n> Thank you!\n>\n> Artur\n>\n>",
+      "url": "http://archive.ambermd.org/202202/0182.html",
+      "in_reply_to": 1645043573
+    }
+  ]
+}

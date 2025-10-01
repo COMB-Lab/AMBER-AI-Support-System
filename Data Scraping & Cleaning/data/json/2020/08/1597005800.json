@@ -1,0 +1,45 @@
+{
+  "thread_id": 1597005800,
+  "subject": "Assigning new velocities from Maxwell-Boltzmann distribution (ntx = 1)",
+  "messages": [
+    {
+      "message_id": 1597005800,
+      "author": "German P. Barletta",
+      "date_raw": "Sun, 9 Aug 2020 17:43:20 -0300",
+      "body": "Dear Amber users,\nI'm trying to enhance sampling by taking frames of interest from a run\nand assigning them new velocities to start new replica runs (poor man's\nadaptive sampling).\nWhen I start new replicas, I give them 5ns for \"re-equilbration\". The\ninput for this re-equilibration is the same as the one for production but\ninstead of reading velocities from the input file (ntx = 5), I assign new\nvelocities at random (ntx = 1).\nThe problem is, for some reason, Amber says the starting temperature\n(~450K) is way higher than it is supposed to be (temp0 = tempi = 300.0) .\n100ps after, it's back to normal.\nShould I be worried? This happens with every replica I run. I'm attaching\nan output files from one of the replicas.\nI'd be thankful for any help.",
+      "url": "http://archive.ambermd.org/202008/0080.html"
+    },
+    {
+      "message_id": 1597040865,
+      "author": "Bill Ross",
+      "date_raw": "Sun, 9 Aug 2020 23:27:45 -0700",
+      "body": "It might be easier to begin equilibration if you assign velocities from\nthe forces on the atoms, or in any case either warm gradually or relax\nrestraints gradually.\nBill\nOn 8/9/20 1:43 PM, German P. Barletta wrote:\n> Dear Amber users,\n> I'm trying to enhance sampling by taking frames of interest from a run\n> and assigning them new velocities to start new replica runs (poor man's\n> adaptive sampling).\n>\n> When I start new replicas, I give them 5ns for \"re-equilbration\". The\n> input for this re-equilibration is the same as the one for production but\n> instead of reading velocities from the input file (ntx = 5), I assign new\n> velocities at random (ntx = 1).\n>\n> The problem is, for some reason, Amber says the starting temperature\n> (~450K) is way higher than it is supposed to be (temp0 = tempi = 300.0) .\n> 100ps after, it's back to normal.\n>\n> Should I be worried? This happens with every replica I run. I'm attaching\n> an output files from one of the replicas.\n>\n> I'd be thankful for any help.\n>\n>",
+      "url": "http://archive.ambermd.org/202008/0083.html",
+      "in_reply_to": 1597005800
+    },
+    {
+      "message_id": 1597060660,
+      "author": "David A Case",
+      "date_raw": "Mon, 10 Aug 2020 07:57:40 -0400",
+      "body": "On Sun, Aug 09, 2020, German P. Barletta wrote:\n> When I start new replicas, I give them 5ns for \"re-equilbration\". The\n>input for this re-equilibration is the same as the one for production but\n>instead of reading velocities from the input file (ntx = 5), I assign new\n>velocities at random (ntx = 1).\n>\n> The problem is, for some reason, Amber says the starting temperature\n>(~450K) is way higher than it is supposed to be (temp0 = tempi = 300.0) .\n>100ps after, it's back to normal.\nThis is not really a problem: it has to do with the fact that the random\nvelocity assignment in pmemd/sander doesn't know about SHAKE. This extra\ntemperature goes away very quickly -- try a short run with ntpr=1.\nThat said, cpptraj has a solution to this (I think), so that you can assign\nrandom velocities there (making a new restart file). That algorithm will\nrespect SHAKE. Somebody should put this into the main code.\n....dac",
+      "url": "http://archive.ambermd.org/202008/0086.html",
+      "in_reply_to": 1597005800
+    },
+    {
+      "message_id": 1597189587,
+      "author": "German P. Barletta",
+      "date_raw": "Tue, 11 Aug 2020 20:46:27 -0300",
+      "body": "Thank you for your answers. I tried setting the temperature with ptraj but\nran into a new problem.\nTaking the 7th frame and assigning new velocities to the whole system and\nletting cpptraj know I intend to use SHAKE for all hydrogens:\n----\nparm lb3f.prmtop\ntrajin lb3f.nc 7 7\nsetvelocity ntc 2\ntrajout a.rst7\ngo\n----\nChecking everything went ok:\n----\nparm lb3f.prmtop\ntrajin a.rst7\ntemperature ntc 2 out temp\ngo\n----\nBut the bad news is temp file looks like this:\n----\n#Frame Tdata_00001\n 1 213.6664\n----from\nI checked the source code and *setvelocity* looks fine but *temperature* does\na weird thing:\n------------\ndouble Frame::CalcTemperature(AtomMask const& mask, int deg_of_freedom)\nconst {\n...\ndouble fac = (Constants::GASK_KCAL/2.0) * deg_of_freedom; // Estimate for\nDoF\n...\n total_KE *= 0.5;\n return total_KE / fac;\n------------\nIf I'm not mistaken, the 2.0 and the 0.5 cancel each other.\nBeing suspicious of the *temperature* function, I launched a replica from\nmy *a.rst7* frame without restarting simulation and reading the velocities.\nI also set *ntpr = 1* so I could get the temperature after the 1st step.\nSure enough, *pmemd.cuda* agrees with *setvelocity*:\n---\nNSTEP = 1 TIME(PS) = 0.002 TEMP(K) = 303.02 PRESS =\n 0.0\n---\nSo, I think there's a bug in the *temperature* function.",
+      "url": "http://archive.ambermd.org/202008/0091.html",
+      "in_reply_to": 1597005800
+    },
+    {
+      "message_id": 1597238293,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 12 Aug 2020 09:18:13 -0400",
+      "body": "Hi,\nWhat version of cpptraj are you using? Check 'cpptraj\n--internal-version' ; if it is 4.23.1 or earlier, there was a bug in\nthe temperature calculation where removal of global degrees of freedom\nwas not properly taken into account. If I do a test with the current\ncpptraj (from GitHub or AmberTools 20) things seem ok, see below.\n-Dan\n```\nCPPTRAJ: Trajectory Analysis. V4.29.0 (GitHub)\n...\n[setvelocity ntc 2]\nRandom_Number: seed is <= 0, using wallclock time as seed (6139)\nSETVELOCITY: Assigning velocities for atoms in mask '*'\nTemperature= 300.00, using Maxwellian distribution.\nConstraints on bonds to H\nTime step= 0.002 ps, epsilon = 1e-07\n[temperature MyTemp ntc 2]\nTEMPERATURE: Calculate temperature for atoms in mask [*]\nConstraints: bonds to H\n[run]\n...\nACTION SETUP FOR PARM 'tz2.parm7' (2 actions):\n0: [setvelocity ntc 2]\nMask [*] corresponds to 223 atoms.\nConstraints on 106 bonds to hydrogen.\n# of degrees of freedom = 563\n1: [temperature MyTemp ntc 2]\nMask [*] corresponds to 223 atoms.\nConstraints on 106 bonds to hydrogen.\n# of degrees of freedom = 563\n...\n[printdata MyTemp]\n#Frame MyTemp\n1 303.2060\n```\nOn Tue, Aug 11, 2020 at 7:46 PM German P. Barletta <pbarletta.gmail.com> wrote:\n>\n> Thank you for your answers. I tried setting the temperature with ptraj but\n> ran into a new problem.\n>\n> Taking the 7th frame and assigning new velocities to the whole system and\n> letting cpptraj know I intend to use SHAKE for all hydrogens:\n> ----\n> parm lb3f.prmtop\n> trajin lb3f.nc 7 7\n> setvelocity ntc 2\n> trajout a.rst7\n> go\n> ----\n>\n> Checking everything went ok:\n>\n> ----\n> parm lb3f.prmtop\n> trajin a.rst7\n> temperature ntc 2 out temp\n> go\n> ----\n>\n> But the bad news is temp file looks like this:\n>\n> ----\n> #Frame Tdata_00001\n> 1 213.6664\n> ----from\n>\n> I checked the source code and *setvelocity* looks fine but *temperature* does\n> a weird thing:\n> ------------\n> double Frame::CalcTemperature(AtomMask const& mask, int deg_of_freedom)\n> const {\n> ...\n> double fac = (Constants::GASK_KCAL/2.0) * deg_of_freedom; // Estimate for\n> DoF\n> ...\n> total_KE *= 0.5;\n> return total_KE / fac;\n> ------------\n>\n> If I'm not mistaken, the 2.0 and the 0.5 cancel each other.\n>\n> Being suspicious of the *temperature* function, I launched a replica from\n> my *a.rst7* frame without restarting simulation and reading the velocities.\n> I also set *ntpr = 1* so I could get the temperature after the 1st step.\n> Sure enough, *pmemd.cuda* agrees with *setvelocity*:\n> ---\n> NSTEP = 1 TIME(PS) = 0.002 TEMP(K) = 303.02 PRESS =\n> 0.0\n> ---\n>\n> So, I think there's a bug in the *temperature* function.\n>",
+      "url": "http://archive.ambermd.org/202008/0098.html",
+      "in_reply_to": 1597005800
+    }
+  ]
+}

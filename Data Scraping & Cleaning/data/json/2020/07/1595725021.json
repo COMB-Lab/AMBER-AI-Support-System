@@ -1,0 +1,21 @@
+{
+  "thread_id": 1595725021,
+  "subject": "Maximum system size",
+  "messages": [
+    {
+      "message_id": 1595725021,
+      "author": "Jack Shepherd",
+      "date_raw": "Sun, 26 Jul 2020 01:57:01 +0100",
+      "body": "Hi all\nMaking a big system for simulation with pmemd.cuda recently I got the error\nc must be smaller than 10^4 angstroms and nfft3 must be between certain\nvalues. Reducing the system size and setting fft_grids_per_ang to be higher\nsorted it so I believe it is really just the system size. Is this check\nhard-coded or is it system/computer dependent and worked out at compile/run\ntime? Either way, any getting around it? Have access to Amber 16 and 18,\nusing 18 usually.\nthanks in advance\nall best\njack",
+      "url": "http://archive.ambermd.org/202007/0290.html"
+    },
+    {
+      "message_id": 1595811470,
+      "author": "David A Case",
+      "date_raw": "Sun, 26 Jul 2020 20:57:50 -0400",
+      "body": "On Sun, Jul 26, 2020, Jack Shepherd wrote:\n>\n>Making a big system for simulation with pmemd.cuda recently I got the\n>error c must be smaller than 10^4 angstroms and nfft3 must be between\n>certain values.\nThe maximum value for nfft1,2,3 is hard-coded in mdin_ewald_dat.F90 (see the\ngridhi variable), and the maximum box size is in boxhi (as 1000. Ang, not\n10000 Ang., and least as I read the code.)\nI know that people have doubled the gridhi value, and you might experiment\nwith making gridhi and boxhi larger. I'm not sure how these values will\ncarry over to pmemd.cuda, but you can experiment: run short simulations with\nCPU first, then make sure you get equivalent results on the GPU.\nOnce you get a very big system volume, the number of atoms is likely to become\nmore of a limitation than is the size of the box or the number of PME grid\npoints. Don't expect this to be straightforward: a cubic box of water\nwith sides of 1000 Ang. would have 33 million molecules, or 100 million atoms.\nThis is well beyond the expected range of Amber simulations, and generally\nrequires both specialized hardware and software.\n....dac",
+      "url": "http://archive.ambermd.org/202007/0296.html",
+      "in_reply_to": 1595725021
+    }
+  ]
+}

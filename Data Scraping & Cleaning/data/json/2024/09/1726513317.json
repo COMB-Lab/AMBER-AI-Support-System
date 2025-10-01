@@ -1,0 +1,37 @@
+{
+  "thread_id": 1726513317,
+  "subject": "Zn2+ bond angle parameter related error",
+  "messages": [
+    {
+      "message_id": 1726513317,
+      "author": "Debarati DasGupta",
+      "date_raw": "Mon, 16 Sep 2024 19:01:57 +0000",
+      "body": "Hi experts on the ZAFF research and modeling,\nI am new to modeling proteins with the Zn cation and I am working on prepping the system to run a MD on it.\nI have two cysteines (named them as CYM) and two histidine's (named as HE1) that chelate with the Zn2+ the NE2 chelating with the ZN. { followed this suggestion from Pengfei\nhttp://archive.ambermd.org/201407/0217.html\n)\nI have pulled in the ZAFF ff and the associated ff19SB the ions and the solvent ff. Not sure why I am still unable to get the parameters generated, Any ideas on where I should look?\nThanks\n[cid:794f9367-412a-40ab-a539-9417663b616c]",
+      "url": "http://archive.ambermd.org/202409/0075.html"
+    },
+    {
+      "message_id": 1726513856,
+      "author": "Carlos Simmerling",
+      "date_raw": "Mon, 16 Sep 2024 15:10:56 -0400",
+      "body": "it might be helpful to share the entire leap.log file as text (make sure it\nonly contains a single attempt at building the system, since it appends\neach time you run leap)\nOn Mon, Sep 16, 2024 at 3:08 PM Debarati DasGupta via AMBER <\namber.ambermd.org> wrote:\n> Hi experts on the ZAFF research and modeling,\n> I am new to modeling proteins with the Zn cation and I am working on\n> prepping the system to run a MD on it.\n>\n> I have two cysteines (named them as CYM) and two histidine's (named as\n> HE1) that chelate with the Zn2+ the NE2 chelating with the ZN. { followed\n> this suggestion from Pengfei\nhttp://archive.ambermd.org/201407/0217.html\n)\n>\n> I have pulled in the ZAFF ff and the associated ff19SB the ions and the\n> solvent ff. Not sure why I am still unable to get the parameters generated,\n> Any ideas on where I should look?\n>\n> Thanks\n>\n>\n> [cid:794f9367-412a-40ab-a539-9417663b616c]\n>",
+      "url": "http://archive.ambermd.org/202409/0076.html",
+      "in_reply_to": 1726513317
+    },
+    {
+      "message_id": 1726514225,
+      "author": "SATYAJIT KHATUA",
+      "date_raw": "Mon, 16 Sep 2024 15:17:05 -0400",
+      "body": "Hi Debarati,\nGoing through the coordination environment, you have the type 4 possibility\nof ZAFF (look at the table in\nhttps://ambermd.org/tutorials/advanced/tutorial20/ZAFF.php\n).\nSo, in your PDB file, rename the CYS as CY4, HIS as HD2 and Zinc ion as\nZN4. I hope this will generate your topology and coordinate, provided the\nZAFF frcmod and prep file correctly sourced.\n*Thanking you,*\n*Yours sincerely,*\n*Satyajit Khatua,*\n*Post-doctoral fellow,*\n*Department of Chemistry,*\n*Georgia State University,*\n*Atlanta, GA **30302.*\nOn Mon, Sep 16, 2024 at 3:02 PM Debarati DasGupta via AMBER <\namber.ambermd.org> wrote:\n> Hi experts on the ZAFF research and modeling,\n> I am new to modeling proteins with the Zn cation and I am working on\n> prepping the system to run a MD on it.\n>\n> I have two cysteines (named them as CYM) and two histidine's (named as\n> HE1) that chelate with the Zn2+ the NE2 chelating with the ZN. { followed\n> this suggestion from Pengfei\nhttp://archive.ambermd.org/201407/0217.html\n)\n>\n> I have pulled in the ZAFF ff and the associated ff19SB the ions and the\n> solvent ff. Not sure why I am still unable to get the parameters generated,\n> Any ideas on where I should look?\n>\n> Thanks\n>\n>\n> [cid:794f9367-412a-40ab-a539-9417663b616c]\n>",
+      "url": "http://archive.ambermd.org/202409/0077.html",
+      "in_reply_to": 1726513317
+    },
+    {
+      "message_id": 1726514477,
+      "author": "SATYAJIT KHATUA",
+      "date_raw": "Mon, 16 Sep 2024 15:21:17 -0400",
+      "body": "Also, add a line in your leap file as the following:\naddAtomTypes { { \"ZN\" \"Zn\" \"sp3\" } { \"S4\" \"S\" \"sp3\" } { \"N3\" \"N\" \"sp3\" } }\n*Best,*\n*Satyajit Khatua,*\n*Post-doctoral fellow,*\n*Department of Chemistry,*\n*Georgia State University,*\n*Atlanta, GA **30302.*\nOn Mon, Sep 16, 2024 at 3:17 PM SATYAJIT KHATUA <satyajitkhatua09.gmail.\ncom>\nwrote:\n> Hi Debarati,\n>\n> Going through the coordination environment, you have the type 4\n> possibility of ZAFF (look at the table in\n>\nhttps://ambermd.org/tutorials/advanced/tutorial20/ZAFF.php\n).\n> So, in your PDB file, rename the CYS as CY4, HIS as HD2 and Zinc ion as\n> ZN4. I hope this will generate your topology and coordinate, provided the\n> ZAFF frcmod and prep file correctly sourced.\n>\n> *Thanking you,*\n>\n>\n> *Yours sincerely,*\n> *Satyajit Khatua,*\n> *Post-doctoral fellow,*\n> *Department of Chemistry,*\n> *Georgia State University,*\n> *Atlanta, GA **30302.*\n>\n>\n> On Mon, Sep 16, 2024 at 3:02 PM Debarati DasGupta via AMBER <\n> amber.ambermd.org> wrote:\n>\n>> Hi experts on the ZAFF research and modeling,\n>> I am new to modeling proteins with the Zn cation and I am working on\n>> prepping the system to run a MD on it.\n>>\n>> I have two cysteines (named them as CYM) and two histidine's (named as\n>> HE1) that chelate with the Zn2+ the NE2 chelating with the ZN. { followed\n>> this suggestion from Pengfei\nhttp://archive.ambermd.org/201407/0217.html\n)\n>>\n>> I have pulled in the ZAFF ff and the associated ff19SB the ions and the\n>> solvent ff. Not sure why I am still unable to get the parameters generated,\n>> Any ideas on where I should look?\n>>\n>> Thanks\n>>\n>>\n>> [cid:794f9367-412a-40ab-a539-9417663b616c]\n>>",
+      "url": "http://archive.ambermd.org/202409/0078.html",
+      "in_reply_to": 1726513317
+    }
+  ]
+}

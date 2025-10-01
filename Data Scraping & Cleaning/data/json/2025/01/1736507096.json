@@ -1,0 +1,29 @@
+{
+  "thread_id": 1736507096,
+  "subject": "Error calculation halted in pmemd.cuda",
+  "messages": [
+    {
+      "message_id": 1736507096,
+      "author": "Bhattacharjee, Sinjini",
+      "date_raw": "Fri, 10 Jan 2025 11:04:56 +0000",
+      "body": "Dear Amber users,\nI am performing a production run on a membrane protein system using Amber20. My system is perfectly equilibrated at 303K and I used a gamma_ln = 5 for the Langevin thermostat, for the equilibration step.\nBut when I switch to gamma_ln=1 for the production run, I get the following error message and the simulation stops even though there is nothing wrong with the density.\nIs there a way to bypass this error?\nAlso, my other question would be does the gamma_ln value affect the MD results ?\nERROR: Calculation halted. Periodic box dimensions have changed too much\nfrom their initial values.\n……..\nAlternatively you can run with the CPU code until the density has converged and then switch back to the GPU code.\nThis is my input for MD:\nNPT 303K\n&cntrl\nimin=0,\nntx=5, ! Positions and velocities read formatted\nirest=1, ! Restart calculation\nntc=2,\nntf=2,\ntol=0.0000001,\nnstlim=9730000, ! Number of MD steps\nntt=3,\ngamma_ln=1.0,\nig=-1,\nntpr=10000,\nntwr=5000,\nntwx=5000,\ndt=0.002,\nntb=2, ! Constant pressure periodic boundary conditions\nntp=2, ! Anisotropic pressure coupling\ntaup=2.0, ! Pressure relaxation time (ps)\ntemp0=303.0,\ncut=10.0,\nioutfm=1,\nntxo=2,\n&end\n/\nThanks for your help!\n—\nSinjini Bhattacharjee, PhD (she/her)\nDepartment of Molecular Theory and Spectroscopy\nMax-Planck-Institut für Kohlenforschung\n45470 Mülheim (Ruhr), Germany\nemail: bhattacharjee.kofo.mpg.de<mailto:bhattacharjee.kofo.\nmpg.de>\n---",
+      "url": "http://archive.ambermd.org/202501/0062.html"
+    },
+    {
+      "message_id": 1736508027,
+      "author": "Steinbrecher, Thomas",
+      "date_raw": "Fri, 10 Jan 2025 12:20:27 +0100",
+      "body": "Hi Sinjini,\nwell, do your box dimensions change 'too much'? Note that the density can\nstill be perfectly ok, but the system maybe drifts into a slab like shape\nbecause x,y and z can vary independently of each other with ntp=2. Have you\nchecked plots of your a,b and c box vectors over the simulation? I seem to\nrecall a mailing list discussion that suggested very long (by the standards\nof back then, so many nanoseconds) simulations of membrane systems can run\ninto the issue of the box deforming too much. This is a random drift, so\nyour simulation may still be perfectly converged until you run into PBC\nartefacts. Maybe using semiisotropic pressure scaling ntp=3 (vary z alone\nand xy together) works better here? This option requires surface tension to\nbe on, but I think you can switch on csurften but still set gamme_ten to\nzero.\nKind Regards,\nThomas\nOn Fri, Jan 10, 2025 at 12:05 PM Bhattacharjee, Sinjini via AMBER <\namber.ambermd.org> wrote:\n> **Warning** The sender address (\"Bhattacharjee, Sinjini via AMBER\" ) can\n> not be verified, sender email address could be spoofed. Please take care to\n> proceed.\n> Dear Amber users,\n>\n> I am performing a production run on a membrane protein system using\n> Amber20. My system is perfectly equilibrated at 303K and I used a gamma_ln\n> = 5 for the Langevin thermostat, for the equilibration step.\n> But when I switch to gamma_ln=1 for the production run, I get the\n> following error message and the simulation stops even though there is\n> nothing wrong with the density.\n>\n> Is there a way to bypass this error?\n> Also, my other question would be does the gamma_ln value affect the MD\n> results ?\n>\n>\n>\n> ERROR: Calculation halted. Periodic box dimensions have changed too much\n> from their initial values.\n> ……..\n> Alternatively you can run with the CPU code until the density has\n> converged and then switch back to the GPU code.\n>\n> This is my input for MD:\n>\n> NPT 303K\n> &cntrl\n> imin=0,\n> ntx=5, ! Positions and velocities read formatted\n> irest=1, ! Restart calculation\n> ntc=2,\n> ntf=2,\n> tol=0.0000001,\n> nstlim=9730000, ! Number of MD steps\n> ntt=3,\n> gamma_ln=1.0,\n> ig=-1,\n> ntpr=10000,\n> ntwr=5000,\n> ntwx=5000,\n> dt=0.002,\n> ntb=2, ! Constant pressure periodic boundary conditions\n> ntp=2, ! Anisotropic pressure coupling\n> taup=2.0, ! Pressure relaxation time (ps)\n> temp0=303.0,\n> cut=10.0,\n> ioutfm=1,\n> ntxo=2,\n> &end\n> /\n>\n>\n> Thanks for your help!\n>\n>\n> —\n> Sinjini Bhattacharjee, PhD (she/her)\n>\n> Department of Molecular Theory and Spectroscopy\n> Max-Planck-Institut für Kohlenforschung\n> 45470 Mülheim (Ruhr), Germany\n>\n> email: bhattacharjee.kofo.mpg.de<mailto:bhattacharjee.kofo.\nmpg.de>\n> ---\n>\n>",
+      "url": "http://archive.ambermd.org/202501/0063.html",
+      "in_reply_to": 1736507096
+    },
+    {
+      "message_id": 1736863436,
+      "author": "Michal Husak",
+      "date_raw": "Tue, 14 Jan 2025 15:03:56 +0100",
+      "body": "Hi\nI was trying to compute charges in Antechamber for a simple molecule (DMSO) ...\nOf the S and O charges I get in 2 different programs following\nidentical values (Materials Studio, OpenBabel) ....\n1 S 0.0159\n2 O -0.2577\nSo this 2 programs agrees on the results ...\nBut Antechamber gives after the -c gas command:\nATOM 1 S1 -0.014965 s4\nATOM 2 O1 -0.681812 o\nAny glue what can be wrong ?\nMichal",
+      "url": "http://archive.ambermd.org/202501/0081.html",
+      "in_reply_to": 1736507096
+    }
+  ]
+}

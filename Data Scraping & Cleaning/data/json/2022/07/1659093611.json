@@ -1,0 +1,29 @@
+{
+  "thread_id": 1659093611,
+  "subject": "Regarding increase in size of combine trajectory",
+  "messages": [
+    {
+      "message_id": 1659093611,
+      "author": "Rajarshi Roy",
+      "date_raw": "Fri, 29 Jul 2022 16:50:11 +0530",
+      "body": "Dear AMBER developers and users,\nI want to create a combined trajectory file using my several trajectories.\nTo create the trajectory file, I am using the trajout command. However the\nsize of the combined trajectory increased by two times. Is it the standard\nway of doing it or any correction needs to be done?\nFor example, I have two trajectory files of 5.4 GB each and a combined file\nhas 22 GB.\nAny kind of suggestion is highly appreciated\n-- \n*with regards*\n*Rajarshi Roy*\n*PhD Research Scholar*\n*Biosciences and Biomedical Engineering*\n*Indian Institute of Technology, Indore*\n*India*",
+      "url": "http://archive.ambermd.org/202207/0167.html"
+    },
+    {
+      "message_id": 1659095134,
+      "author": "Carlos Simmerling",
+      "date_raw": "Fri, 29 Jul 2022 07:45:34 -0400",
+      "body": "Did you write to the same for at as what you read? That could make a\ndifference. Maybe you read a binary netcdf and wrote an ascii format, which\nis larger.\nOn Fri, Jul 29, 2022, 7:21 AM Rajarshi Roy via AMBER <amber.ambermd.org>\nwrote:\n> Dear AMBER developers and users,\n> I want to create a combined trajectory file using my several trajectories.\n> To create the trajectory file, I am using the trajout command. However the\n> size of the combined trajectory increased by two times. Is it the standard\n> way of doing it or any correction needs to be done?\n> For example, I have two trajectory files of 5.4 GB each and a combined file\n> has 22 GB.\n> Any kind of suggestion is highly appreciated\n>\n> --\n> *with regards*\n>\n> *Rajarshi Roy*\n>\n>\n> *PhD Research Scholar*\n>\n> *Biosciences and Biomedical Engineering*\n>\n> *Indian Institute of Technology, Indore*\n> *India*\n>",
+      "url": "http://archive.ambermd.org/202207/0168.html",
+      "in_reply_to": 1659093611
+    },
+    {
+      "message_id": 1659099981,
+      "author": "Daniel Roe",
+      "date_raw": "Fri, 29 Jul 2022 09:06:21 -0400",
+      "body": "On Fri, Jul 29, 2022 at 7:46 AM Carlos Simmerling via AMBER\n<amber.ambermd.org> wrote:\n>\n> Did you write to the same for at as what you read? That could make a\n> difference. Maybe you read a binary netcdf and wrote an ascii format, which\n> is larger.\nThis is almost certainly what is happening. The ASCII format is\nroughly 2x as large as NetCDF.\nIf you're doing the conversion from the command line then cpptraj will\nchoose the output trajectory format based on the filename extension.\nIf the extension is unrecognized it defaults to Amber ASCII. So you\nprobably want something like:\ncpptraj -p <top> -y <input traj> -x combined.nc\n-Dan",
+      "url": "http://archive.ambermd.org/202207/0169.html",
+      "in_reply_to": 1659093611
+    }
+  ]
+}

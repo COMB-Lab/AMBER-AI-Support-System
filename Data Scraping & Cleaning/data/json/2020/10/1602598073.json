@@ -1,0 +1,69 @@
+{
+  "thread_id": 1602598073,
+  "subject": "Error running small molecule simulation: \"RESTARTED DUE TO LINMIN FAILURE\" and \"an illegal memory access was encountered launching kernel kClearForces\" erros",
+  "messages": [
+    {
+      "message_id": 1602598073,
+      "author": "Állan Ferrari",
+      "date_raw": "Tue, 13 Oct 2020 11:07:53 -0300",
+      "body": "Hi,\nI am interested in running an MD simulation with a protein-ligand system.\nNonetheless, I keep running into a memory access error in the first MD\ncomputation (after minimization) which I can't figure out how to solve. To\nsimplify everything, I ran an MD simulation of the protein alone and\neverything worked smoothly. With the ligand alone, it keeps returning this\nerror though.\nLigand parameterization details: I optimized the ligand (squalene molecule)\ngeometry with Gaussian (options:\n#opt b3lyp/6-31+g geom=connectivity). Next, I computed the resp charges\nalso with gaussian (options: #p hf/6-31+g geom=check scf=tight pop=mk\niop(6/33=2)). Finally, I generated the prepi file using antechamber\n(antechamber -i res-charge.log -fi gout -o SQL.gaussian.prepi -fo prepi -c\nresp -nc -1 -m 1 -rn SQL -at amber ) and the parameters file with parmchk2\n( parmchk2 -i SQL.gaussian.prepi -f prepi -o SQL.gaff.frcmod ).\nBox simulation: I generated x_solv.prmtop and x_solv.ncrst with tleap\ncontaining the ligand alone with waters and Na+ Cl- ions. These files are\nattached for reference.\nMinimization (min-1.mdin): 2500 steepest descent minimization followed by\n2500 conjugate gradient. First 2500 steps work great. When it switches to\nCG, the algorithm starts returning \".... RESTARTED DUE TO LINMIN FAILURE\n...\" and it stops after a couple more then 200 steps. I read this should be\na problem itself, so I proceed.\nMD simulation in the NVT ensemble (nvt.mdmin). No error is reported in the\noutput. In the command line, \"an illegal memory access was encountered\nlaunching kernel kClearForces\" is reported.\nAdditional details:\n1) I'm running the simulations with AMBER20 pmemd.cuda_SPFP @GPUK40 and\n.GPUK20 machines.\n2) I have already run MD simulation with other ligands and it worked\nperfectly using this same strategy.\nI attached the files here (\nhttps://1drv.ms/u/s!AqJBrTd9Fp4I2nxFkJP7xwPNzvaU?e=e7VBuJ\n) which should be\nenough to reproduce my simulation if desired.\nLet me know if you need additional information.\nLooking forward to hearing from you.\nBest regards,\n-- \n*Állan*",
+      "url": "http://archive.ambermd.org/202010/0159.html"
+    },
+    {
+      "message_id": 1602601530,
+      "author": "David A Case",
+      "date_raw": "Tue, 13 Oct 2020 11:05:30 -0400",
+      "body": "On Tue, Oct 13, 2020, �llan Ferrari wrote:\n>\n>I am interested in running an MD simulation with a protein-ligand system.\n>Nonetheless, I keep running into a memory access error in the first MD\n>computation (after minimization) which I can't figure out how to solve. To\n>simplify everything, I ran an MD simulation of the protein alone and\n>everything worked smoothly. With the ligand alone, it keeps returning this\n>error though.\nHave you run a (short) ligand MD simulation using CPU version. That can\noften give better error messages than the GPU version provides. (The\nGPU version is optimized for speed, and does not always provide a lot of\ninformation when things go wrong.)\nIt is not uncommon that initial equilibration of a system may need to be\ndone on the CPU.\n....regards...dac",
+      "url": "http://archive.ambermd.org/202010/0161.html",
+      "in_reply_to": 1602598073
+    },
+    {
+      "message_id": 1602705464,
+      "author": "Állan Ferrari",
+      "date_raw": "Wed, 14 Oct 2020 16:57:44 -0300",
+      "body": "Hi David,\nI did try to run the minimization using the CPU.\n- sander returned after running first half with CG minimization (crashed\nafter switching to steepest descent minimization)\nProgram received signal SIGSEGV: Segmentation fault - invalid memory\nreference.\nBacktrace for this error:\n#0 0x2B4328F584B7\n#1 0x2B4328F576B0\n#2 0x2B43296E81FF\n#3 0x660170 in nb_adjust_\n#4 0x661E92 in ewald_force_\n#5 0x5A1F93 in force_\n#6 0x5FB5BC in runmin_\n#7 0x5E763C in sander_\n#8 0x5E0214 in MAIN__ at multisander.F90:?\nSegmentation fault (core dumped)\n- pmemd returned after running first half with CG minimization (crashed\nafter switching to steepest descent minimization)\nProgram received signal SIGSEGV: Segmentation fault - invalid memory\nreference.\nBacktrace for this error:\n#0 0x2B5842FBF4B7\n#1 0x2B5842FBE6B0\n#2 0x2B584374F1FF\n#3 0x4C6CA8 in __nb_exclusions_mod_MOD_nb_adjust\n#4 0x4BC093 in __pme_force_mod_MOD_pme_force\n#5 0x4EE4A8 in __runmin_mod_MOD_runmin_master\n#6 0x520140 in MAIN__ at pmemd.F90:?\nSegmentation fault (core dumped)\nWith mpirun -np 10 sander.MPI or mpirun -np 10 pmemd.MPI, the simulation\ndidn't go anywhere.\nIt stopped at...\n--------------------------------------------------------------------------------\n3. ATOMIC COORDINATES AND VELOCITIES\n--------------------------------------------------------------------------------\ndefault_name\nbegin time read from input coords = 0.000 ps\nNumber of triangulated 3-point waters found: 43483\nAny hint?\nOn Tue, Oct 13, 2020 at 12:05 PM David A Case <david.case.rutgers.\nedu>\nwrote:\n> On Tue, Oct 13, 2020, Állan Ferrari wrote:\n> >\n> >I am interested in running an MD simulation with a protein-ligand system.\n> >Nonetheless, I keep running into a memory access error in the first MD\n> >computation (after minimization) which I can't figure out how to solve. To\n> >simplify everything, I ran an MD simulation of the protein alone and\n> >everything worked smoothly. With the ligand alone, it keeps returning this\n> >error though.\n>\n> Have you run a (short) ligand MD simulation using CPU version. That can\n> often give better error messages than the GPU version provides. (The\n> GPU version is optimized for speed, and does not always provide a lot of\n> information when things go wrong.)\n>\n> It is not uncommon that initial equilibration of a system may need to be\n> done on the CPU.\n>\n> ....regards...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202010/0168.html",
+      "in_reply_to": 1602598073
+    },
+    {
+      "message_id": 1602763807,
+      "author": "David A Case",
+      "date_raw": "Thu, 15 Oct 2020 08:10:07 -0400",
+      "body": "On Wed, Oct 14, 2020, �llan Ferrari wrote:\n>\n>I did try to run the minimization using the CPU.\n>- sander returned after running first half with CG minimization (crashed\n>after switching to steepest descent minimization)\n>\n>Program received signal SIGSEGV: Segmentation fault - invalid memory\n>reference.\nCan you create a small example that shows this error? We need to be\nable to reproduce it in order to offer help. It looks like there may be\nsomething strange with this ligand. Please provide the prmtop, rst7 and\nmdin files you used.\nIf you can get a segfault after a smallish number of minimization steps,\ntry stopping a run right before the segfault, and looking at the\ncoordinates to see if there are problems. Use the \"check\" action in\ncpptraj to look for bad contacts. That might provide some clue, but the\nCPU version should not segfault even with bad potentials.\n....dac",
+      "url": "http://archive.ambermd.org/202010/0171.html",
+      "in_reply_to": 1602598073
+    },
+    {
+      "message_id": 1602768368,
+      "author": "Állan Ferrari",
+      "date_raw": "Thu, 15 Oct 2020 10:26:08 -0300",
+      "body": "Hi David,\nI have provided the files (prmtop, ncrst, rst7 and mdin and\nmin-1.out/nvt.out outputs from my attempts to run minimization and\nequilibration) here\nhttps://1drv.ms/u/s!AqJBrTd9Fp4I20ve2fWaXIaegQ6r?e=Xv5WNd\nI did try to generate a mdcrd file for the minimization by adding *nptx = 1*\n(and other numbers) at the mdin file and *-x min-1.mdcrd* to the command\nline.\nHowever, cpptraj confirms no trajectory is being saved.\n\"\"\"\n> parm ../../setup/x_solv.prmtop\n[parm ../../setup/x_solv.prmtop]\nReading '../../setup/x_solv.prmtop' as Amber Topology\nRadius Set: modified Bondi radii (mbondi)\n> trajin min-1.mdcrd\n[trajin min-1.mdcrd]\nReading 'min-1.mdcrd' as Amber NetCDF\nError: NetCDF file has no frames.\nError: Could not set up 'min-1.mdcrd' for reading.\nError: Could not set up input trajectory 'min-1.mdcrd'\n\"\"\"\nÁllan\nOn Thu, Oct 15, 2020 at 9:10 AM David A Case <david.case.rutgers.\nedu> wrote:\n> On Wed, Oct 14, 2020, Állan Ferrari wrote:\n> >\n> >I did try to run the minimization using the CPU.\n> >- sander returned after running first half with CG minimization (crashed\n> >after switching to steepest descent minimization)\n> >\n> >Program received signal SIGSEGV: Segmentation fault - invalid memory\n> >reference.\n>\n> Can you create a small example that shows this error? We need to be\n> able to reproduce it in order to offer help. It looks like there may be\n> something strange with this ligand. Please provide the prmtop, rst7 and\n> mdin files you used.\n>\n> If you can get a segfault after a smallish number of minimization steps,\n> try stopping a run right before the segfault, and looking at the\n> coordinates to see if there are problems. Use the \"check\" action in\n> cpptraj to look for bad contacts. That might provide some clue, but the\n> CPU version should not segfault even with bad potentials.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202010/0173.html",
+      "in_reply_to": 1602598073
+    },
+    {
+      "message_id": 1602769405,
+      "author": "David A Case",
+      "date_raw": "Thu, 15 Oct 2020 09:43:25 -0400",
+      "body": "On Thu, Oct 15, 2020, �llan Ferrari wrote:\n>\n>I did try to generate a mdcrd file for the minimization by adding *nptx = 1*\n>(and other numbers) at the mdin file and *-x min-1.mdcrd* to the command\n>line.\nThanks for the files. Minimizations do not create trajectories, as I\nguess you now know. I think you just have to adjust the number of steps\n(maxcyc) so that the job stops before the segfault.\n...dac",
+      "url": "http://archive.ambermd.org/202010/0174.html",
+      "in_reply_to": 1602598073
+    },
+    {
+      "message_id": 1602771100,
+      "author": "Állan Ferrari",
+      "date_raw": "Thu, 15 Oct 2020 11:11:40 -0300",
+      "body": "I now know! :X\nWhen I don't switch to steepest descent minimization (remove ncyc and keeps\nmaxcyc=5000), minimization finishes smoothly.\nEquilibration continues giving the error though.\nIn cpptraj, I would load the restart file? What coordinate file should I\ncheck?\n'''\nparm ../setup/x_solv.prmtop\ntrajin min-1.restrt\ncheck\n'''\nThanks,\nÁllan\nOn Thu, Oct 15, 2020 at 10:43 AM David A Case <david.case.rutgers.\nedu>\nwrote:\n> On Thu, Oct 15, 2020, Állan Ferrari wrote:\n> >\n> >I did try to generate a mdcrd file for the minimization by adding *nptx =\n> 1*\n> >(and other numbers) at the mdin file and *-x min-1.mdcrd* to the command\n> >line.\n>\n> Thanks for the files. Minimizations do not create trajectories, as I\n> guess you now know. I think you just have to adjust the number of steps\n> (maxcyc) so that the job stops before the segfault.\n>\n> ...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202010/0176.html",
+      "in_reply_to": 1602598073
+    },
+    {
+      "message_id": 1603024639,
+      "author": "David A Case",
+      "date_raw": "Sun, 18 Oct 2020 08:37:19 -0400",
+      "body": "On Thu, Oct 15, 2020, �llan Ferrari wrote:\n>\n>I have provided the files (prmtop, ncrst, rst7 and mdin and\n>min-1.out/nvt.out outputs from my attempts to run minimization and\n>equilibration) here\nThanks. Here's what I did:\n1. Used sander to run a minimization; found a segfault after step 200.\n(I was using the default value of ncyc.)\n2. Repeated calculation 1 with macyc=200, so the code would stop before\nthe crash.\n3. Ran cpptraj on the results of step 2, with the check option:\nWarning: Atoms 66:SQL_1.H41 and 82258:WAT_27549.H2 are close (0.00)\nLooking at the prmtop file (using parmed) I see that H41 has a charge of\n-1.2 (!) which seems way wrong. In fact, all the charges seem way too\nlarge -- you have aliphatic carbons with a charge of +2 and hydrogens\nwith charges of -1 (about). All charges for a saturated hydrocarbon\nshould be near zero -- say with hydrogens about +0.1.\nThis probably leads to an unstable potential energy surface, and that will\nneed to be fixed.\n...I hope this helps in your debugging process.....dac",
+      "url": "http://archive.ambermd.org/202010/0226.html",
+      "in_reply_to": 1602598073
+    }
+  ]
+}

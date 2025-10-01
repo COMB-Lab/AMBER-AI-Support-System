@@ -1,0 +1,21 @@
+{
+  "thread_id": 1619043647,
+  "subject": "PatchingError: .patches/AmberTools20_Unapplied_Patches/update.13 failed to apply. No changes made from this patch",
+  "messages": [
+    {
+      "message_id": 1619043647,
+      "author": "David Ricardo Figueroa Blanco",
+      "date_raw": "Wed, 21 Apr 2021 22:20:47 +0000",
+      "body": "Dear Amber users,\nI am trying to install the patch update.9 of AMBER2020 to execute LiGamD using pmemd.cuda. However after check avaible udpates d ./update_amber --check-updates and perform the update I am getting the error PatchingError: .patches/AmberTools20_Unapplied_Patches/update.13 failed to apply. No changes made from this patch\nhere all the output :\n$ ./update_amber --check-updates\nChecking for available patches online. This may take a few seconds...\nAvailable AmberTools 20 patches:\nupdate.13 (modifies pmemd.cuda, other, cuda, codes)\nReleased on January 4, 2021 (written by David Case)\nDescription:\nAdds support for CUDA SDK 11.1 for both CMake and legacy builds\nupdate.14 (modifies none)\nReleased on January 8, 2021 (written by Jeremy Leung)\nDescription:\nUpdated ff15ipq-m force field files.\nupdate.15 (modifies configure2)\nReleased on January 19,2021 (written by S. Schott Verdugo, C. Pfleger)\nDescription:\nFixed compilation typo with CUDA 11 and Ampere\nAvailable Amber 20 patches:\nupdate.7 (modifies pmemd.MPI)\nDescription:\nFixes an error in MBAR output for pmemd.MPI\nupdate.8 (modifies pmemd.cuda)\nDescription:\nThis bugfix addresses a tabulation error that can occur with\nCMAPs in small globular proteins or larger systems. The error\nwould manifest itself as a race condition after which some\nbonded interactions would diverge from their correct values,\nrapidly causing the simulation to crash. The behavior is\ncorrected by properly accounting for the number of unique\natoms in each bond work unit's import group.\nupdate.9 (modifies pmemd.cuda)\nDescription:\nFixes a bug in LiGaMD & Pep-GaMD in pmemd.cuda\nupdate.10 (modifies pmemd)\nDescription:\nupdate defintion of mask27 variable to support gfortran10\n$ ./update_amber --update\nPreparing to apply updates... please wait.\nApplying AmberTools 20/update.13\nPatchingError: .patches/AmberTools20_Unapplied_Patches/update.13 failed to apply. No changes made from this patch\nI would like to know if anybody knows how to fix this mistake.\nBest Regards,\nDavid",
+      "url": "http://archive.ambermd.org/202104/0174.html"
+    },
+    {
+      "message_id": 1619094385,
+      "author": "David A Case",
+      "date_raw": "Thu, 22 Apr 2021 08:26:25 -0400",
+      "body": "On Wed, Apr 21, 2021, David Ricardo Figueroa Blanco wrote:\n>\n>\n>$ ./update_amber --update\n>Preparing to apply updates... please wait.\n>Applying AmberTools 20/update.13\n>PatchingError: .patches/AmberTools20_Unapplied_Patches/update.13 failed to apply. No changes made from this patch\nupdate.13 makes changes to two files, preparing them for use with CUDA SDK\nversion 11.x. First, if you are not using version 11.1 or 11.2 for CUDA,\nyou should be able to ignore this message.\nYou can look in the cmake and AmberTools/src folders for \".rej\" files that\nwill give more information about what happened. It looks like you have\nearlier changes in those files that prevent the patch from applying. A\nsecond alternative is to look at the update.13 file (it's available on the\nweb site) and make the changes \"by hand\": if you are using CMake there is\nonly a single line that needs changing.\nA third alternative, if you haven't made other changes to the code, is to\nre-install things from the original tar files. This seems very likely to\nwork, since everyone who downloads AmberTools goes through the update step,\nand no else has reported a problem.\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202104/0182.html",
+      "in_reply_to": 1619043647
+    }
+  ]
+}

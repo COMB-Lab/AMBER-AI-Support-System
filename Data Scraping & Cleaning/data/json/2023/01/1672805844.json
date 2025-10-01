@@ -1,0 +1,37 @@
+{
+  "thread_id": 1672805844,
+  "subject": "amber20 installation error in ROCKY 8.5 with RTX A6000 GPU",
+  "messages": [
+    {
+      "message_id": 1672805844,
+      "author": "Md Fulbabu Sk",
+      "date_raw": "Tue, 3 Jan 2023 22:17:24 -0600",
+      "body": "Dear AMBER user and developer team,\nI am trying to install the Amber20 and AmberTools20 in my Rocky 8.5 Linux\nwith RTX A6000 GPU.\nWhen I tried to install PMEMD.CUDA then some error appeared,\nnvcc fatal : Unsupported gpu architecture 'compute_35'\nCMake Error at pbsa.cuda_generated_kLinearSolvers.cu.o.RELEASE.cmake:218\n(message):\nError generating\n/Scr/fulbabu/amber/amber20_src/build/AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir//./pbsa.cuda_generated_kLinearSolvers.cu.o\nany suggestions will be highly appreciated",
+      "url": "http://archive.ambermd.org/202301/0012.html"
+    },
+    {
+      "message_id": 1672841620,
+      "author": "David A Case",
+      "date_raw": "Wed, 4 Jan 2023 09:13:40 -0500",
+      "body": "On Tue, Jan 03, 2023, Md Fulbabu Sk via AMBER wrote:\n>I am trying to install the Amber20 and AmberTools20 in my Rocky 8.5 Linux\n>with RTX A6000 GPU.\n>When I tried to install PMEMD.CUDA then some error appeared,\n>nvcc fatal : Unsupported gpu architecture 'compute_35'\nCan you say what version of the CUDA SDK you have ('nvcc --version')?\nYou will need to edit the amber22_src/cuda/CudaConfig.cmake file, and remove\nall references to SM35FLAGS and SM30FLAGS. The re-run run_cmake.\n....good luck...dac",
+      "url": "http://archive.ambermd.org/202301/0013.html",
+      "in_reply_to": 1672805844
+    },
+    {
+      "message_id": 1672847078,
+      "author": "Md Fulbabu Sk",
+      "date_raw": "Wed, 4 Jan 2023 09:44:38 -0600",
+      "body": "Thanks for your reply Dave!\nMy nvcc version is below,\nfulbabu.shanghai /Scr/fulbabu$ nvcc --version\nnvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2022 NVIDIA Corporation\nBuilt on Mon_Oct_24_19:12:58_PDT_2022\nCuda compilation tools, release 12.0, V12.0.76\nBuild cuda_12.0.r12.0/compiler.31968024_0\nOn Wed, Jan 4, 2023 at 8:13 AM David A Case <david.case.rutgers.edu> wrote:\n> On Tue, Jan 03, 2023, Md Fulbabu Sk via AMBER wrote:\n>\n> >I am trying to install the Amber20 and AmberTools20 in my Rocky 8.5 Linux\n> >with RTX A6000 GPU.\n> >When I tried to install PMEMD.CUDA then some error appeared,\n> >nvcc fatal : Unsupported gpu architecture 'compute_35'\n>\n> Can you say what version of the CUDA SDK you have ('nvcc --version')?\n>\n> You will need to edit the amber22_src/cuda/CudaConfig.cmake file, and\n> remove\n> all references to SM35FLAGS and SM30FLAGS. The re-run run_cmake.\n>\n> ....good luck...dac\n>\n>",
+      "url": "http://archive.ambermd.org/202301/0016.html",
+      "in_reply_to": 1672805844
+    },
+    {
+      "message_id": 1672847258,
+      "author": "Ross Walker",
+      "date_raw": "Wed, 4 Jan 2023 10:47:38 -0500",
+      "body": "Try using CUDA 11.8 - support for older GPUs has been removed from CUDA 12, as well as some other functionality that is currently used so there will need to be an update released to support 12.0.\nAll the best\nRoss\n> On Jan 4, 2023, at 10:44, Md Fulbabu Sk via AMBER <amber.ambermd.org> wrote:\n>\n> Thanks for your reply Dave!\n> My nvcc version is below,\n> fulbabu.shanghai /Scr/fulbabu$ nvcc --version\n> nvcc: NVIDIA (R) Cuda compiler driver\n> Copyright (c) 2005-2022 NVIDIA Corporation\n> Built on Mon_Oct_24_19:12:58_PDT_2022\n> Cuda compilation tools, release 12.0, V12.0.76\n> Build cuda_12.0.r12.0/compiler.31968024_0\n>\n> On Wed, Jan 4, 2023 at 8:13 AM David A Case <david.case.rutgers.edu> wrote:\n>\n>> On Tue, Jan 03, 2023, Md Fulbabu Sk via AMBER wrote:\n>>\n>>> I am trying to install the Amber20 and AmberTools20 in my Rocky 8.5 Linux\n>>> with RTX A6000 GPU.\n>>> When I tried to install PMEMD.CUDA then some error appeared,\n>>> nvcc fatal : Unsupported gpu architecture 'compute_35'\n>>\n>> Can you say what version of the CUDA SDK you have ('nvcc --version')?\n>>\n>> You will need to edit the amber22_src/cuda/CudaConfig.cmake file, and\n>> remove\n>> all references to SM35FLAGS and SM30FLAGS. The re-run run_cmake.\n>>\n>> ....good luck...dac\n>>\n>>\n>",
+      "url": "http://archive.ambermd.org/202301/0017.html",
+      "in_reply_to": 1672805844
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "thread_id": 1724016332,
+  "subject": "Missing angle parameter between unconnected atoms",
+  "messages": [
+    {
+      "message_id": 1724016332,
+      "author": "Peng Zhang",
+      "date_raw": "Sun, 18 Aug 2024 17:25:32 -0400",
+      "body": "Hi Amber users,\nI tried to parameterize an organic molecule that is covalently linked to Cys. I treated the Cys and the organic molecule together as a whole new molecule (Cys-mol), and parameteried it using GAFF2. The N and C terminus of CYS are connected to LEU and GLY respectively. When I included the CYS-mol in the protein, I used the comannd \"bond\" to make connections between mol-CYS to LEU and GLY. When checking the system, tleap complains that there are two missing angle parameters. However, the three atoms that form the angle are not connected. Specifically, they are C(cys)-N(LEU)-C(GLY). The C(cys)-N(LEU) are connected (defined by the bond command), but C(GLY) connects with the N terminus of CYS, and it has no connection to LEU. Similarly, the other missing one is N(cys)-C(Gly)-N(LEU). Any suggestion? Thanks!\nBest wishes\nPeng\nHere is the tleap input (1 is LEU and 3 is GLY)\nsource leaprc.protein.ff19SB\nsource leaprc.gaff2\nCC1 = loadmol2 CC1.mol2\nloadamberparams CC1.frcmod\nmol = loadpdb CC1.pdb\nbond mol.1.C mol.2.N70\nbond mol.2.C71 mol.3.N\ncheck mol\nThe tleap output\n/home/software/amber24_cpu_old/bin/teLeap: Error!\nCould not find angle parameter for atom types: C - N - C\nfor atom C71 at position 14.716000, 23.717000, 7.310000,\natom N at position 14.960000, 23.417000, 6.018000,\nand atom C at position 11.629000, 24.072000, 8.312000.\n/home/software/amber24_cpu_old/bin/teLeap: Error!\nCould not find angle parameter for atom types: N - C - N\nfor atom N70 at position 12.860000, 24.535000, 8.612000,\natom C at position 11.629000, 24.072000, 8.312000,\nand atom N at position 14.960000, 23.417000, 6.018000.\n/home/software/amber24_cpu_old/bin/teLeap: Warning!\nThere are missing parameters.\ncheck: Warnings: 57\nUnit is OK",
+      "url": "http://archive.ambermd.org/202408/0094.html"
+    }
+  ]
+}

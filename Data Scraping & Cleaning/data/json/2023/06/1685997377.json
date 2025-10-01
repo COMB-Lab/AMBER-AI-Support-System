@@ -1,0 +1,29 @@
+{
+  "thread_id": 1685997377,
+  "subject": "Self Inconsistency within antechamber for NAD and NAP cofactors (expects different bond orders in different routines)",
+  "messages": [
+    {
+      "message_id": 1685997377,
+      "author": "Christopher Corbo",
+      "date_raw": "Mon, 5 Jun 2023 16:36:17 -0400",
+      "body": "Hello Amber Users,\nI have noticed a potential issue in amber16 & 20 for systems which contain\nNAD and NAP (3 letter pdb codes) cofactors.\nThe issue arises because when I pass the mol2 into antechamber for bcc\ncharges, it overrides the bond orders for the Nicotinamide ring. Initially\nthe ring is passed in as fully aromatic, but the message is given:\nNumber of bonds (3) does not match connectivity (2) for N.ar N6\nThe bond from N.ar to C2N becomes “1” bond order and to C6N becomes “2”\nbond order, while the remaining 4 bonds are still “ar”\nBcc charges are successfully calculated with overridden bond orders.\nHowever when I take the processed mol2 (with overridden bond orders) and\npass it back into antechamber with -fo prepi to create a prep file, there\nis a FATAL ERROR thrown for C2N because of an open valence (3). C2N has “1”\nbond to N6, “1” bond to a H and “ar” bond to C3N.\nWhen I manually adjust the bond orders back to all “ar” in the mol2 the\nprep file is then handled and created successfully.\nI have not tried this with amber22 yet.\nIs there any auxiliary files which have been validated that I should be\nusing for NAD and NAP instead? Or is there a way to address this issue\nwithin the software?\nWhile I can manually fix this problem, I have been working on developing a\nfully automated protocol for our lab to successfully rebuild our testset of\n1000+ protein ligand systems.\nKind Regards,\nChristopher Corbo\n-- \nChristopher Corbo\nPh.D. Student\nDepartment of Biochemistry and Structural Biology\nMember of the Rizzo Lab\nStony Brook University",
+      "url": "http://archive.ambermd.org/202306/0022.html"
+    },
+    {
+      "message_id": 1685998259,
+      "author": "David A Case",
+      "date_raw": "Mon, 5 Jun 2023 16:50:59 -0400",
+      "body": "On Mon, Jun 05, 2023, Christopher Corbo via AMBER wrote:\n>\n>I have noticed a potential issue in amber16 & 20 for systems which contain\n>NAD and NAP (3 letter pdb codes) cofactors.\n>\n>The issue arises because when I pass the mol2 into antechamber for bcc\n>charges, ...\nCan you say what you mean by \"the mol2\"? Where did this come from? Does it\nhave all the hydrogens present?\nI don't think we can understand what is going on (and hence try to help)\nwithout seeing the input you gave to antechamber. Please include the\ncommand line flags you used, as well.\n...thx...dac",
+      "url": "http://archive.ambermd.org/202306/0023.html",
+      "in_reply_to": 1685997377
+    },
+    {
+      "message_id": 1686021818,
+      "author": "Christopher Corbo",
+      "date_raw": "Mon, 5 Jun 2023 23:23:38 -0400",
+      "body": "Hi Dr. Case,\nThank you for the speedy reply.\nantechamber -fi mol2 -fo mol2 -c bcc -j 1 -at sybyl -s 2 -pf y -i\n${system}.cof.processed.mol2 -o ${system}.cof.am1bcc.mol2\nIs the command run to generate bcc charges. I realize the -j flag set to 1\nis pointless as it ultimately gets overridden for bcc calculations. This is\nthe step changing the bond order of the nicotinamide ring for bonds\n(N6-C21) and (N6-C16). (Sorry, the files I am attaching end up with\ndifferent atom names than those in the original email I sent).\nantechamber -i ../001.lig-prep/${system}.cof.am1bcc.mol2 -fi mol2 -o\n${system}.cof.ante.prep -fo prepi\nIs the command which throws a Fatal error for the reassigned bond types.\n(Open valence on C16). However if I use the bond orders which are present\nin ${system}.cof.processed.mol2 the step runs successfully.\nI am including an example for each of the cofactors, although the issue is\nessentially the same for both.\nThank you again for the help, it is appreciated!\nOn Mon, Jun 5, 2023 at 4:50 PM David A Case <david.case.rutgers.edu> wrote:\n> On Mon, Jun 05, 2023, Christopher Corbo via AMBER wrote:\n> >\n> >I have noticed a potential issue in amber16 & 20 for systems which contain\n> >NAD and NAP (3 letter pdb codes) cofactors.\n> >\n> >The issue arises because when I pass the mol2 into antechamber for bcc\n> >charges, ...\n>\n> Can you say what you mean by \"the mol2\"? Where did this come from? Does\n> it\n> have all the hydrogens present?\n>\n> I don't think we can understand what is going on (and hence try to help)\n> without seeing the input you gave to antechamber. Please include the\n> command line flags you used, as well.\n>\n> ...thx...dac\n>\n>\n-- \nChristopher Corbo\nPh.D. Student\nDepartment of Biochemistry and Structural Biology\nMember of the Rizzo Lab\nStony Brook University",
+      "url": "http://archive.ambermd.org/202306/0025.html",
+      "in_reply_to": 1685997377
+    }
+  ]
+}

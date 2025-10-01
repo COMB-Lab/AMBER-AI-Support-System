@@ -1,0 +1,29 @@
+{
+  "thread_id": 1640037056,
+  "subject": "Error running TI with pmemd.cuda: \"Error: an illegal memory access was encountered launching kernel kClearTIKinEnergy_kernel\"",
+  "messages": [
+    {
+      "message_id": 1640037056,
+      "author": "Ali Morshedi",
+      "date_raw": "Mon, 20 Dec 2021 13:50:56 -0800",
+      "body": "Hi all,\nWhen running TI MD simulations using pmemd.cuda, I sometimes get the\nfollowing error after some steps:\nError: an illegal memory access was encountered launching kernel\nkClearTIKinEnergy_kernel\nWhat's strange is that it's not reproducible. Meaning if I run the\nsimulation again, it might finish without the error ! Also energy,\ntemperature etc are all normal at the step that the error occurs.\nI'd appreciate it if you let me know any information you might have\nabout this.\nThanks,\nAli",
+      "url": "http://archive.ambermd.org/202112/0152.html"
+    },
+    {
+      "message_id": 1640073402,
+      "author": "Rafał Madaj",
+      "date_raw": "Tue, 21 Dec 2021 08:56:42 +0100",
+      "body": "Hi Ali,\nI encountered this problem when /lambda/ was close to boundary values\n(either 0 or 1).\nAs far as I remember, it is due to zero appearing in denominator when\ncalculating energy according to formula used in TI. As we have\nstochastic calculations it may appear that it sometimes does not\nencounter this problem.\nMy workaround for this was just ignoring the faulty calculations and\nafter all simulations either removing faulty /lambda/, or manually\nfitting the energy values by interpolation from polynomial regression\n(in excel or something similar).\nHowever, if it fails at other points too, make sure your system is in\nequilibrium.\nIs your timestep set to 1 or 2 fs? Including equilibration period.\nRegards,\nRafał\nOn 20.12.2021 22:50, Ali Morshedi wrote:\n> Hi all,\n>\n> When running TI MD simulations using pmemd.cuda, I sometimes get the\n> following error after some steps:\n> Error: an illegal memory access was encountered launching kernel\n> kClearTIKinEnergy_kernel\n>\n> What's strange is that it's not reproducible. Meaning if I run the\n> simulation again, it might finish without the error ! Also energy,\n> temperature etc are all normal at the step that the error occurs.\n>\n> I'd appreciate it if you let me know any information you might have\n> about this.\n>\n> Thanks,\n> Ali\n>",
+      "url": "http://archive.ambermd.org/202112/0155.html",
+      "in_reply_to": 1640037056
+    },
+    {
+      "message_id": 1640074193,
+      "author": "Ali Morshedi",
+      "date_raw": "Tue, 21 Dec 2021 00:09:53 -0800",
+      "body": "Thanks Rafal for your response.\nMy timestep is 2 fs. I hadn't thought about it, but I'll try running with 1\nfs.\nIt happens at other lambdas too. I considered the possibility of my system\nbeing out of equilibrium. But if I re-run the same simulation, it runs fine\nsome of the time ! Also the energy, temperature etc are totally fine when\nthe error occurs.\nI think for now I'll just run a few times and keep the results from the\nruns that finish without error.\nBest,\nAli\nOn Mon, Dec 20, 2021 at 11:57 PM Rafał Madaj <rmadaj.cbmm.\nlodz.pl> wrote:\n> Hi Ali,\n>\n> I encountered this problem when /lambda/ was close to boundary values\n> (either 0 or 1).\n> As far as I remember, it is due to zero appearing in denominator when\n> calculating energy according to formula used in TI. As we have\n> stochastic calculations it may appear that it sometimes does not\n> encounter this problem.\n>\n> My workaround for this was just ignoring the faulty calculations and\n> after all simulations either removing faulty /lambda/, or manually\n> fitting the energy values by interpolation from polynomial regression\n> (in excel or something similar).\n>\n> However, if it fails at other points too, make sure your system is in\n> equilibrium.\n>\n> Is your timestep set to 1 or 2 fs? Including equilibration period.\n>\n> Regards,\n>\n> Rafał\n>\n> On 20.12.2021 22:50, Ali Morshedi wrote:\n> > Hi all,\n> >\n> > When running TI MD simulations using pmemd.cuda, I sometimes get the\n> > following error after some steps:\n> > Error: an illegal memory access was encountered launching kernel\n> > kClearTIKinEnergy_kernel\n> >\n> > What's strange is that it's not reproducible. Meaning if I run the\n> > simulation again, it might finish without the error ! Also energy,\n> > temperature etc are all normal at the step that the error occurs.\n> >\n> > I'd appreciate it if you let me know any information you might have\n> > about this.\n> >\n> > Thanks,\n> > Ali\n> >",
+      "url": "http://archive.ambermd.org/202112/0156.html",
+      "in_reply_to": 1640037056
+    }
+  ]
+}

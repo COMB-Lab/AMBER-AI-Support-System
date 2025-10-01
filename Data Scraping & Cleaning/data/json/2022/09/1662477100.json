@@ -1,0 +1,29 @@
+{
+  "thread_id": 1662477100,
+  "subject": "paramfit and EQM - EVDW-ELE(MM) energy difference",
+  "messages": [
+    {
+      "message_id": 1662477100,
+      "author": "Cenk Andac",
+      "date_raw": "Tue, 6 Sep 2022 18:11:40 +0300",
+      "body": "Dear Amber community,\nI have been working on dihedral parameters development using paramfit.\nI have a simple question.\nIn developing AMBER dihedral parameters the following EQ is used.\nEdihedral = EQM - EVDW-ELE(MM) = (PK/IDIVF) * (1 + cos(PN*phi – PHASE))\nhere\nEdihedral = EQM - EVDW-ELE(MM)\nI was wondering when running paramfit with -q quantum_A.dat\nwhat kind of QM energies I need to use in\nquantum_A.dat, Edihedral or EQM ?\nthanks in advance,\nbest\nCenk Andac",
+      "url": "http://archive.ambermd.org/202209/0035.html"
+    },
+    {
+      "message_id": 1662554281,
+      "author": "Cenk Andac",
+      "date_raw": "Wed, 7 Sep 2022 15:38:01 +0300",
+      "body": "Hi Erdem,\nthanks for correcting the energy term in the eq. the equation should have\nbeen\nEMMdihedral = (PK/IDIVF) * (1 + cos(PN*phi – PHASE)) EQ.1\nand the EQM energy is rectified (EQMr) by substracting EMM (computed\nby zeroing Vn parameters for the dihedral of interest) from EQM to\nyield a a final EQMr curve , to which we fit the EMM curve.\nEQMr= EQM - EMM(with zero dihedral parameter of interest) EQ.2\nHaving said that, my question was\nwhether or not QM potential energies computed by paramfit are rectified by EQ.2.\nIf not, do we need to rectify it manually? or Do we really need to\nrectify it as in EQ.2.\nbest,\nCenk\nOn Wed, Sep 7, 2022 at 12:51 PM Erdem Yeler <erdemyeler.gmail.\ncom> wrote:\n> I think you are confused : in quantum_A.dat, you should put quantum\n> energies not MM energies. (PK/IDIVF) * (1 + cos(PN*phi – PHASE)) is a MM\n> energy NOT QM Energy.\n> All the best,\n> Erdem\n> Istanbul Technıcal University\n> Department of Chemistry\n>\n>\n>\n> Cenk Andac via AMBER <amber.ambermd.org>, 6 Eyl 2022 Sal, 18:16 tarihinde\n> şunu yazdı:\n>\n>> Dear Amber community,\n>>\n>> I have been working on dihedral parameters development using paramfit.\n>> I have a simple question.\n>> In developing AMBER dihedral parameters the following EQ is used.\n>>\n>> Edihedral = EQM - EVDW-ELE(MM) = (PK/IDIVF) * (1 + cos(PN*phi – PHASE))\n>>\n>> here\n>> Edihedral = EQM - EVDW-ELE(MM)\n>>\n>> I was wondering when running paramfit with -q quantum_A.dat\n>>\n>> what kind of QM energies I need to use in\n>> quantum_A.dat, Edihedral or EQM ?\n>>\n>> thanks in advance,\n>>\n>> best\n>>\n>> Cenk Andac\n>>",
+      "url": "http://archive.ambermd.org/202209/0048.html",
+      "in_reply_to": 1662477100
+    },
+    {
+      "message_id": 1662576907,
+      "author": "Cenk Andac",
+      "date_raw": "Wed, 7 Sep 2022 21:55:07 +0300",
+      "body": "Hi again, As I have moveed along the paramfit tutorial, I saw the\nfollowing equation, which I think already answers my question.\n[image: image.png]\nbest,\nCenk\nOn Wed, Sep 7, 2022 at 3:38 PM Cenk Andac <cenkandac.gmail.com> wrote:\n> Hi Erdem,\n> thanks for correcting the energy term in the eq. the equation should have\n> been\n>\n> EMMdihedral = (PK/IDIVF) * (1 + cos(PN*phi – PHASE)) EQ.1\n>\n> and the EQM energy is rectified (EQMr) by substracting EMM (computed by zeroing Vn parameters for the dihedral of interest) from EQM to\n> yield a a final EQMr curve , to which we fit the EMM curve.\n> EQMr= EQM - EMM(with zero dihedral parameter of interest) EQ.2\n>\n> Having said that, my question was\n>\n> whether or not QM potential energies computed by paramfit are rectified by EQ.2.\n>\n> If not, do we need to rectify it manually? or Do we really need to rectify it as in EQ.2.\n>\n> best,\n>\n> Cenk\n>\n>\n> On Wed, Sep 7, 2022 at 12:51 PM Erdem Yeler <erdemyeler.gmail.com> wrote:\n>\n>> I think you are confused : in quantum_A.dat, you should put quantum\n>> energies not MM energies. (PK/IDIVF) * (1 + cos(PN*phi – PHASE)) is a MM\n>> energy NOT QM Energy.\n>> All the best,\n>> Erdem\n>> Istanbul Technıcal University\n>> Department of Chemistry\n>>\n>>\n>>\n>> Cenk Andac via AMBER <amber.ambermd.org>, 6 Eyl 2022 Sal, 18:16\n>> tarihinde şunu yazdı:\n>>\n>>> Dear Amber community,\n>>>\n>>> I have been working on dihedral parameters development using paramfit.\n>>> I have a simple question.\n>>> In developing AMBER dihedral parameters the following EQ is used.\n>>>\n>>> Edihedral = EQM - EVDW-ELE(MM) = (PK/IDIVF) * (1 + cos(PN*phi – PHASE))\n>>>\n>>> here\n>>> Edihedral = EQM - EVDW-ELE(MM)\n>>>\n>>> I was wondering when running paramfit with -q quantum_A.dat\n>>>\n>>> what kind of QM energies I need to use in\n>>> quantum_A.dat, Edihedral or EQM ?\n>>>\n>>> thanks in advance,\n>>>\n>>> best\n>>>\n>>> Cenk Andac\n>>>",
+      "url": "http://archive.ambermd.org/202209/0049.html",
+      "in_reply_to": 1662477100
+    }
+  ]
+}

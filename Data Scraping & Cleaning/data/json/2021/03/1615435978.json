@@ -1,0 +1,21 @@
+{
+  "thread_id": 1615435978,
+  "subject": "sander/orca/xtb ：Low parallel efficiency",
+  "messages": [
+    {
+      "message_id": 1615435978,
+      "author": "wangjianing_mail",
+      "date_raw": "Thu, 11 Mar 2021 12:12:58 +0800 (GMT+08:00)",
+      "body": "Dear Amber user:\nI successfully used the gfn-xTB in amber QM/MM, by modifying sander/qm2_extern_orc_module.F90, but low parallel efficiency problem appeared.\nHowever both 'num_threads=12' in orc namelist of amber input file 、'%pal NPROCS 12 end' in orc_job.tpl and 'export OMP/MVK_NUM_THREADS' can not be efficiently parallel.\nBoth scheme can only increase the speed by up to about 10% than 1 core scheme, and even reduce the computational efficiency, I think this is abnormal. Can someone give me any help here?\n#SI\nsoftware: Amber18(gnu openmpi) openmpi 3.1.4 orca 4.2.1 gcc 4.8.5 openMP 201107\ntest reslut\nmethod orc-num_threadsxtb-pal NPORCS OPENMP ps/d\nxtb 1 1 164\nxtb 1 1 1267\nxtb 12 1 163\nxtb 1 12 121.8\nb3lyp 1 1 /0.17\nb3lyp 20 1 /0.17\nb3lyp 1 20 / 1.83\nRegards,\nJia-Ning Wang",
+      "url": "http://archive.ambermd.org/202103/0088.html"
+    },
+    {
+      "message_id": 1615471890,
+      "author": "Adrian Roitberg",
+      "date_raw": "Thu, 11 Mar 2021 09:11:30 -0500",
+      "body": "You should first try to run gfn-xtb alone and see if that parallelizes\nfor a system like yours, specially the size.\nI doubt that gfn-xtb would really parallelize over many cores, unless\nyou have a pretty large QM system.\nAdrian\nOn 3/10/21 11:12 PM, wangjianing_mail wrote:\n> [External Email]\n>\n> Dear Amber user:\n>\n>\n> I successfully used the gfn-xTB in amber QM/MM, by modifying sander/qm2_extern_orc_module.F90, but low parallel efficiency problem appeared.\n> However both 'num_threads=12' in orc namelist of amber input file 、'%pal NPROCS 12 end' in orc_job.tpl and 'export OMP/MVK_NUM_THREADS' can not be efficiently parallel.\n>\n>\n> Both scheme can only increase the speed by up to about 10% than 1 core scheme, and even reduce the computational efficiency, I think this is abnormal. Can someone give me any help here?\n>\n>\n> #SI\n> software: Amber18(gnu openmpi) openmpi 3.1.4 orca 4.2.1 gcc 4.8.5 openMP 201107\n> test reslut\n>\n> method orc-num_threadsxtb-pal NPORCS OPENMP ps/d\n> xtb 1 1 164\n> xtb 1 1 1267\n> xtb 12 1 163\n> xtb 1 12 121.8\n> b3lyp 1 1 /0.17\n> b3lyp 20 1 /0.17\n> b3lyp 1 20 / 1.83\n> Regards,\n> Jia-Ning Wang\n>",
+      "url": "http://archive.ambermd.org/202103/0093.html",
+      "in_reply_to": 1615435978
+    }
+  ]
+}

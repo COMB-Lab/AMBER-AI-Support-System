@@ -1,0 +1,45 @@
+{
+  "thread_id": 1620750013,
+  "subject": "solvent accessibility",
+  "messages": [
+    {
+      "message_id": 1620750013,
+      "author": "Cato, Lee",
+      "date_raw": "Tue, 11 May 2021 16:20:13 +0000",
+      "body": "I am trying to determine the solvent exposure for each residue on my protein.\nI believe molsurf is the most appropriate way to calculate this. However, I don't know how to calculate per residue rather than per atom. Is there a command that allows a per residue calculation of solvent accessibility?\nmy current code:\nparm wt.prmtop\ntrajin wt.nc\nmolsurf out test.dat\nrun\nThanks,\nCato\n--\nPh.D. Candidate\nBiochemistry, Cell, and Developmental Biology Program\nOrtlund Lab\nEmory University\n________________________________\nThis e-mail message (including any attachments) is for the sole use of\nthe intended recipient(s) and may contain confidential and privileged\ninformation. If the reader of this message is not the intended\nrecipient, you are hereby notified that any dissemination, distribution\nor copying of this message (including any attachments) is strictly\nprohibited.\nIf you have received this message in error, please contact\nthe sender by reply e-mail message and destroy all copies of the\noriginal message (including attachments).",
+      "url": "http://archive.ambermd.org/202105/0093.html"
+    },
+    {
+      "message_id": 1621015460,
+      "author": "Daniel Roe",
+      "date_raw": "Fri, 14 May 2021 14:04:20 -0400",
+      "body": "Hi,\nUnfortunately the 'molsurf' command doesn't have a real per-atom\nsurface area calculation - it's one of the long-standing items on my\nto-do list (that only gets longer and longer unfortunately). The LCPO\nsurface area calculation ('surf') can do per-atom, but it's quite\ninferior to 'molsurf'.\nMaybe there is an enterprising grad. student or post-doc who would\nlike to volunteer to add this to CPPTRAJ? :-)\nSorry I can't be more helpful,\n-Dan\nOn Tue, May 11, 2021 at 12:20 PM Cato, Lee <michael.lee.cato.emory.edu> wrote:\n>\n> I am trying to determine the solvent exposure for each residue on my protein.\n>\n> I believe molsurf is the most appropriate way to calculate this. However, I don't know how to calculate per residue rather than per atom. Is there a command that allows a per residue calculation of solvent accessibility?\n>\n> my current code:\n> parm wt.prmtop\n> trajin wt.nc\n> molsurf out test.dat\n> run\n>\n> Thanks,\n> Cato\n>\n> --\n> Ph.D. Candidate\n> Biochemistry, Cell, and Developmental Biology Program\n> Ortlund Lab\n> Emory University\n>\n> ________________________________\n>\n> This e-mail message (including any attachments) is for the sole use of\n> the intended recipient(s) and may contain confidential and privileged\n> information. If the reader of this message is not the intended\n> recipient, you are hereby notified that any dissemination, distribution\n> or copying of this message (including any attachments) is strictly\n> prohibited.\n>\n> If you have received this message in error, please contact\n> the sender by reply e-mail message and destroy all copies of the\n> original message (including attachments).\n>",
+      "url": "http://archive.ambermd.org/202105/0145.html",
+      "in_reply_to": 1620750013
+    },
+    {
+      "message_id": 1621041724,
+      "author": "David A Case",
+      "date_raw": "Fri, 14 May 2021 21:22:04 -0400",
+      "body": "On Fri, May 14, 2021, Dan Roe wrote:\n>\n>Unfortunately the 'molsurf' command doesn't have a real per-atom\n>surface area calculation - it's one of the long-standing items on my\n>to-do list (that only gets longer and longer unfortunately). The LCPO\n>surface area calculation ('surf') can do per-atom, but it's quite\n>inferior to 'molsurf'.\n>\n>Maybe there is an enterprising grad. student or post-doc who would\n>like to volunteer to add this to CPPTRAJ? :-)\nI think some care is required here. The molecular surface, (aka the\nsolvent-excluded surface, or SES) as defined by Connolly and Richards, and\nimplemented in molsurf and many other codes, includes surface segments\nthat can be assigned to a single atom, but also surface segments arising\nfrom places where the probe sphere is in contact with two or more atoms at\nthe same time. So it's not just a lack of coding that prevents a per-atom\ndecomposition: one would have to arbitrarily decide how to assign the latter\nareas to atoms. And almost any algorithm one thinks of will lead to some\nodd behaviors.\nOne \"can\" assign surface segments of the solvent-accessible surface (SAS) to\nindividual atoms. Adding up the values for all atoms in a residue would\nthen (by one definition) give residue-level values. I'm not sure how useful\nsuch numbers would be, nor whether they would be be less useful than\nthe corresponding LCPO values.\nLong-time participants in this list will know that I am often unhappy with\ndecomposition schemes for free energies. So don't lose heart too easily:\nit's good that there are people working to make good use of such approaches.\n....dac",
+      "url": "http://archive.ambermd.org/202105/0149.html",
+      "in_reply_to": 1620750013
+    },
+    {
+      "message_id": 1621107661,
+      "author": "German P. Barletta",
+      "date_raw": "Sat, 15 May 2021 13:41:01 -0600",
+      "body": "> The molecular surface, (aka the solvent-excluded surface, or SES) as\ndefined by Connolly and Richards, and implemented in molsurf and many other\ncodes, includes surface segments that can b\ne assigned to a single atom, but also surface segments arising from places\nwhere the probe sphere is in contact with two or more atoms at the same\ntime. So it's not just a lack of coding\nthat prevents a per-atom decomposition: one would have to arbitrarily\ndecide how to assign the latter areas to atoms. And almost any algorithm\none thinks of will lead to some odd behaviors.\n------\nThat's up to the algorithm. Lee & Richards algorithms can be made to slice\neach atom instead of the whole protein, thus getting the SAS of each atom.\nShrake & Rupley's algorithm represents the surface of each sphere (atom) as\na set of points so it can also get the SAS of each atom.\nI'd love to have the time to volunteer to code these algorithms in cpptraj.",
+      "url": "http://archive.ambermd.org/202105/0152.html",
+      "in_reply_to": 1620750013
+    },
+    {
+      "message_id": 1621108833,
+      "author": "David A Case",
+      "date_raw": "Sat, 15 May 2021 16:00:33 -0400",
+      "body": "On Sat, May 15, 2021, German P. Barletta wrote:\n>That's up to the algorithm. Lee & Richards algorithms can be made to slice\n>each atom instead of the whole protein, thus getting the SAS of each atom.\n>Shrake & Rupley's algorithm represents the surface of each sphere (atom) as\n>a set of points so it can also get the SAS of each atom.\nI agree that there is no inherent problem in dividing the SAS up into atomic\ncontributions. It's SES that is not decomposable in any simple way.\nThis leaves aside the question of how useful it is to know the per-atom\ncontribution to SAS.\n....dac",
+      "url": "http://archive.ambermd.org/202105/0153.html",
+      "in_reply_to": 1620750013
+    }
+  ]
+}

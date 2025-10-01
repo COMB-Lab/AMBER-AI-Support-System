@@ -1,0 +1,29 @@
+{
+  "thread_id": 1610479084,
+  "subject": "Non-integer/zero charges from RESP fitting?",
+  "messages": [
+    {
+      "message_id": 1610479084,
+      "author": "Kenneth Huang",
+      "date_raw": "Tue, 12 Jan 2021 14:18:04 -0500",
+      "body": "Hi all,\nI've noticed some odd behavior when I'm trying to fit the charges using the\nRESP procedure for several modified nucleic acids, but I'm not sure if it's\njust a rounding error.\nThe setup I have is to feed in the ESPs for the from Gaussian in the same\nflow Cornell et al did (ie, DMP, DGN, DAN, DCN, DTN, modified NAs) and\nrestrain the charges on the sugar except C1'/H1', O5/3', H5/3', for the\nnucleosides with the overall charge set to 0, ie\n1.0\n> inosine\n> 0 30\n> 1 0\n> 8 0\n> ...\n> 1 -1\n> 8 0\n> 1 0\n>\nWith restraints to make the O5'/H5' of the nucleosides and the CH3 on the\nDMP to add up to zero so I can 'remove' them for the full nucleotide.\nThe odd thing I've noticed is that while the canonical nucleosides\nthemselves add up to zero, my modified NAs are all very slightly off\n(0.000001). My instinct is that it's a rounding error, but when I check the\noutput, it says the net charge should be 0,\n>\n> Reading input for molecule 6 weight: 1.000\n> inosine\n>\n> Total charge (ich): 0\n> Number of centers: 30\n>\nSo I tried to dig around in the RESP code and I think the section\nresponsible for it is\nc\n> c as long as ncharge is not -99, implement the \"total charge\" constraint\n> c\n> if( ncharge .gt. -99 ) then\n> nlgrng= nlgrng + 1\n> c\n> if( nlgrng .gt. maxlgr) then\n> write(6,'(t2,a,i3,/,t2,a,i3)')\n> . ' Too many charge-group constraints', nlgrng,\n> . ' Maximum allowed: ', maxlgr\n> stop\n> endif\n> grpchg(nlgrng)= float( ncharge)\n> do j= ifirst, ilast\n> lgrcnt(nlgrng,j)= 1\n> enddo\n> endif\n> return\n> end\n>\nWhich from my limited understanding of it, looks like it should restrict\nthe charge to N decimal places (6?) which leaves me puzzled as why it'd be\nunable to zero the charges, instead of leaving them at 0.000001? Or am I\nmissing something very obvious?\nBest,\nKenneth\n-- \nAsk yourselves, all of you, what power would hell have if those imprisoned\nhere could not dream of heaven?",
+      "url": "http://archive.ambermd.org/202101/0209.html"
+    },
+    {
+      "message_id": 1610543717,
+      "author": "David A Case",
+      "date_raw": "Wed, 13 Jan 2021 08:15:17 -0500",
+      "body": "On Tue, Jan 12, 2021, Kenneth Huang wrote:\n>The odd thing I've noticed is that while the canonical nucleosides\n>themselves add up to zero, my modified NAs are all very slightly off\n>(0.000001). My instinct is that it's a rounding error, but when I check the\n>output, it says the net charge should be 0,\n>\n>>\n>> Reading input for molecule 6 weight: 1.000\n>> inosine\n>>\n>> Total charge (ich): 0\n>> Number of centers: 30\nThe \"Total charge (ich)\" look like an integer, not a real number.\n>Which from my limited understanding of it, looks like it should restrict\n>the charge to N decimal places (6?) which leaves me puzzled as why it'd be\n>unable to zero the charges, instead of leaving them at 0.000001? Or am I\n>missing something very obvious?\nIt's actually quite tricky to take a list of floating point numbers that add\nup to zero (to some very small tolerance, like 10^-12 or better), and\nconvert them into a list that, when printed with an F12.6 format, appear to\nadd to zero with no roundoff. Ideas are welcome; maybe Dave Cerutti knows\nhow this problem is handled in mdgx.\nIf you are making just a limited number of units, the only workaround I know\nof is to just hand-edit the output .mol2 or .off files, and force the\ncharges to add up to exactly zero. Or, just ignore the problem.\n...dac",
+      "url": "http://archive.ambermd.org/202101/0221.html",
+      "in_reply_to": 1610479084
+    },
+    {
+      "message_id": 1610563829,
+      "author": "Kenneth Huang",
+      "date_raw": "Wed, 13 Jan 2021 13:50:29 -0500",
+      "body": "Hi David,\nAh, that's good to know- I assumed it would be working with 1E-6 since\nthat's what it reports in, not something even more precise like 1E-12. I'll\ntry to see if there aren't any 'good' positions where I can just add on the\nmissing value.\nBest,\nKenneth\nOn Wed, Jan 13, 2021 at 8:15 AM David A Case <david.case.rutgers.edu> wrote:\n> On Tue, Jan 12, 2021, Kenneth Huang wrote:\n>\n> >The odd thing I've noticed is that while the canonical nucleosides\n> >themselves add up to zero, my modified NAs are all very slightly off\n> >(0.000001). My instinct is that it's a rounding error, but when I check\n> the\n> >output, it says the net charge should be 0,\n> >\n> >>\n> >> Reading input for molecule 6 weight: 1.000\n> >> inosine\n> >>\n> >> Total charge (ich): 0\n> >> Number of centers: 30\n>\n> The \"Total charge (ich)\" look like an integer, not a real number.\n>\n> >Which from my limited understanding of it, looks like it should restrict\n> >the charge to N decimal places (6?) which leaves me puzzled as why it'd be\n> >unable to zero the charges, instead of leaving them at 0.000001? Or am I\n> >missing something very obvious?\n>\n> It's actually quite tricky to take a list of floating point numbers that\n> add\n> up to zero (to some very small tolerance, like 10^-12 or better), and\n> convert them into a list that, when printed with an F12.6 format, appear to\n> add to zero with no roundoff. Ideas are welcome; maybe Dave Cerutti knows\n> how this problem is handled in mdgx.\n>\n> If you are making just a limited number of units, the only workaround I\n> know\n> of is to just hand-edit the output .mol2 or .off files, and force the\n> charges to add up to exactly zero. Or, just ignore the problem.\n>\n> ...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202101/0234.html",
+      "in_reply_to": 1610479084
+    }
+  ]
+}

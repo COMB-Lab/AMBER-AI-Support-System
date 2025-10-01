@@ -1,0 +1,21 @@
+{
+  "thread_id": 1639555384,
+  "subject": "loadpdb and SSBOND",
+  "messages": [
+    {
+      "message_id": 1639555384,
+      "author": "Alan",
+      "date_raw": "Wed, 15 Dec 2021 08:03:04 +0000",
+      "body": "I'm wondering how robust is loadpdb (from tleap).\nDoes it parse any information from a PDB header? If so, which ones?\nI look at this tutorial again\nhttps://ambermd.org/tutorials/basic/tutorial7/index.php\nand I wonder why MODRES and SSBOND lines are not processed automatically by\nloadpdb? Or it does and I'm just plain wrong?\nIf it's about a volunteer to tackle that, well I may try. Or is it already\nunder work?\nPlease, just give me some heads up, like which source file to look at.\n-- \nAlan Silva",
+      "url": "http://archive.ambermd.org/202112/0116.html"
+    },
+    {
+      "message_id": 1639664073,
+      "author": "David A Case",
+      "date_raw": "Thu, 16 Dec 2021 09:14:33 -0500",
+      "body": "On Wed, Dec 15, 2021, Alan wrote:\n>I'm wondering how robust is loadpdb (from tleap).\n>Does it parse any information from a PDB header? If so, which ones?\ntleap does make use of the CONECT records (which are not part of the\nheader). The general workflow is that pdb4amber will find SS bonds and\ncreate the needed CONECT records.\nI don't think that tleap makes any other use of the header info. Scott\nBrozell, who follows this list, is our tleap guru.\n>If it's about a volunteer to tackle that, well I may try. Or is it already\n>under work?\nI'll leave this one for Scott; but volunteers are certainly welcome. My\ngeneral feeling is that tleap is probably not the right place for such\nchanges. We should pre-process input PDB files, probably an\nexpanded/updated version of pdb4amber, to create a \"simplified\" PDB file\nthat tleap can handle. The pre-processor would probably be a python script,\nand could take advantage of a lot of functionality that is already in\nParmEd.\nIn fact, getting a next-gen version of pdb4amber, that could (as an example)\nhandle carbohydrates, is near the top of my \"Amber to-do list\".\n>Please, just give me some heads up, like which source file to look at.\nYou could do 'grep -i ssbond *.c' in\namber20_src/AmberTools/src/leap/src/leap. It looks like tleap recognizes\nSSBOND cards, but doesn't do anything with that information. I'm open to\ncounterarguments, but I don't think tleap is a very easy place to start\nmaking significant changes.\nThanks for the question.\n....dac",
+      "url": "http://archive.ambermd.org/202112/0126.html",
+      "in_reply_to": 1639555384
+    }
+  ]
+}

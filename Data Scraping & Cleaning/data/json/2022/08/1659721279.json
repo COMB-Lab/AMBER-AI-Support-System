@@ -1,0 +1,29 @@
+{
+  "thread_id": 1659721279,
+  "subject": "method to change residue numbering for amber masks after production",
+  "messages": [
+    {
+      "message_id": 1659721279,
+      "author": "Murray, Makay",
+      "date_raw": "Fri, 5 Aug 2022 17:41:19 +0000",
+      "body": "To any interested,\nI have a system with some nucleotides and a coordinated metal. Numbered via their masks :1-15 (nucleotides) and :16 for the metal.\nHowever, in one replica done by a student, the masks of that system are :1 (metal) and :2-16 (nucleotides)\nHow do I change the resid numbers in the odd ball system to match the other systems?\nI�ve seen the function �change� in the cpptraj section 34.9.4 in amber22.pdf. It�s function �oresnums� is very close to what I want but not quite.\nDoes anyone know of a method to edit the #Res value? Thanks!\n-Makay\nPhD Candidate",
+      "url": "http://archive.ambermd.org/202208/0034.html"
+    },
+    {
+      "message_id": 1659965522,
+      "author": "Daniel Roe",
+      "date_raw": "Mon, 8 Aug 2022 09:32:02 -0400",
+      "body": "Hi,\nOn Fri, Aug 5, 2022 at 1:41 PM Murray, Makay via AMBER\n<amber.ambermd.org> wrote:\n>\n> How do I change the resid numbers in the odd ball system to match the other systems?\n>\n> I’ve seen the function “change” in the cpptraj section 34.9.4 in amber22.pdf. It’s function “oresnums” is very close to what I want but not quite.\nHow exactly does the 'oresnums' functionality not work for you?\nJust to clarify, cpptraj is aware of two different kinds of numbering.\nThe \"residue number\" is the internal residue index starting from 1.\nThis just a function of the system's topology and can't be changed.\nThe \"original residue number\" (maybe unfortunately named but it is\nwhat it is) can also be thought of as \"PDB residue numbering\". This is\nwhat the 'oresnums' functionality lets you change. You can also change\nthe chain ID (via 'chainid') and insertion code (via 'icodes').\nWhat I would do in your situation is distinguish the nucelotides and\nthe metal via a combination of original residue numbering and chain\nID. For the original system:\nchange chainid of :1-15 to A\nchange chainid of :16 to B\nchange oresnums of :1-15 min 1 max 15\nchange oresnums of :16 min 1 max 1\nFor the \"oddball\" system:\nchange chainid of :2-16 to A\nchange chainid of :1 to B\nchange oresnums of :2-16 min 1 max 15\nchange oresnums of :1 min 1 max 1\nHope this helps,\n-Dan\n>\n>\n>\n> Does anyone know of a method to edit the #Res value? Thanks!\n>\n> -Makay\n> PhD Candidate\n>",
+      "url": "http://archive.ambermd.org/202208/0039.html",
+      "in_reply_to": 1659721279
+    },
+    {
+      "message_id": 1659965636,
+      "author": "Daniel Roe",
+      "date_raw": "Mon, 8 Aug 2022 09:33:56 -0400",
+      "body": "PS - You can use the '::' (colon colon) mask operator to select via\nchain ID and the ':;' (colon semicolon) mask operator to select by\n\"original\" residue number. So after you've set your chain IDs etc, to\nselect the metal in either system you would use \"::B\".\nOn Mon, Aug 8, 2022 at 9:32 AM Daniel Roe <daniel.r.roe.gmail.\ncom> wrote:\n>\n> Hi,\n>\n> On Fri, Aug 5, 2022 at 1:41 PM Murray, Makay via AMBER\n> <amber.ambermd.org> wrote:\n> >\n> > How do I change the resid numbers in the odd ball system to match the other systems?\n> >\n> > I’ve seen the function “change” in the cpptraj section 34.9.4 in amber22.pdf. It’s function “oresnums” is very close to what I want but not quite.\n>\n> How exactly does the 'oresnums' functionality not work for you?\n>\n> Just to clarify, cpptraj is aware of two different kinds of numbering.\n> The \"residue number\" is the internal residue index starting from 1.\n> This just a function of the system's topology and can't be changed.\n>\n> The \"original residue number\" (maybe unfortunately named but it is\n> what it is) can also be thought of as \"PDB residue numbering\". This is\n> what the 'oresnums' functionality lets you change. You can also change\n> the chain ID (via 'chainid') and insertion code (via 'icodes').\n>\n> What I would do in your situation is distinguish the nucelotides and\n> the metal via a combination of original residue numbering and chain\n> ID. For the original system:\n>\n> change chainid of :1-15 to A\n> change chainid of :16 to B\n> change oresnums of :1-15 min 1 max 15\n> change oresnums of :16 min 1 max 1\n>\n> For the \"oddball\" system:\n>\n> change chainid of :2-16 to A\n> change chainid of :1 to B\n> change oresnums of :2-16 min 1 max 15\n> change oresnums of :1 min 1 max 1\n>\n> Hope this helps,\n>\n> -Dan\n>\n>\n>\n> >\n> >\n> >\n> > Does anyone know of a method to edit the #Res value? Thanks!\n> >\n> > -Makay\n> > PhD Candidate\n> >",
+      "url": "http://archive.ambermd.org/202208/0040.html",
+      "in_reply_to": 1659721279
+    }
+  ]
+}

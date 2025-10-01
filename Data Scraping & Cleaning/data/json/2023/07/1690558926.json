@@ -1,0 +1,21 @@
+{
+  "thread_id": 1690558926,
+  "subject": "Default ensemble",
+  "messages": [
+    {
+      "message_id": 1690558926,
+      "author": "Shuo-Lin Weng",
+      "date_raw": "Fri, 28 Jul 2023 10:42:06 -0500",
+      "body": "Dear Amber users,\nI didn't set any volume and pressure control when I ran my production run.\nWhat is the default ensemble in this situation?\nHere is my prod.in file:\nA simulation for common production-level simulations\n&cntrl\nimin=0, ! No minimization\nirest=1, ! This IS a restart of an old MD simulation\nntx=5, ! So our inpcrd file has velocities\n! Temperature control\nntt=3, ! Langevin dynamics\ngamma_ln=1.0, ! Friction coefficient (ps^-1)\ntemp0=300.0, ! Target temperature\n! Potential energy control\ncut=9.0, ! nonbonded cutoff, in Angstroms\n! MD settings\nnstlim=12500000, ! 50 ns\ndt=0.004, ! time step (ps)\n! SHAKE\nntc=2, ! Constrain bonds containing hydrogen\nntf=2, ! Do not calculate forces of bonds containing hydrogen\n! Control how often information is printed\nntpr=25000, ! Print energies every 100000 steps, 100,000*0.002 =\n200ps\nntwx=25000, ! Print coordinates every 100000 steps to the trajectory\nntwr=25000, ! Print a restart file every 100000 steps (can be less\nfrequent)\nntxo=2, ! Write NetCDF format\nioutfm=1, ! Write NetCDF format (always do this!)\n! Wrap coordinates when printing them to the same unit cell\niwrap=1,\n! Set water atom/residue names for SETTLE recognition\nwatnam='SOL', ! Water residues are named WAT\nowtnm='OW', ! Water oxygens are named O\nhwtnm1='HW1'\nhwtnm2='HW2'\n&end\nThanks for any reply!",
+      "url": "http://archive.ambermd.org/202307/0151.html"
+    },
+    {
+      "message_id": 1690569940,
+      "author": "Carlos Simmerling",
+      "date_raw": "Fri, 28 Jul 2023 14:45:40 -0400",
+      "body": "Look in your ndout file, it lists all settings including the ones you did\nnot change from the defaults. Check those against the manual. Especially\ncheck ntb and ntp.\nOn Fri, Jul 28, 2023, 11:42 AM Shuo-Lin Weng via AMBER <amber.ambermd.org>\nwrote:\n> Dear Amber users,\n>\n> I didn't set any volume and pressure control when I ran my production run.\n> What is the default ensemble in this situation?\n> Here is my prod.in file:\n> A simulation for common production-level simulations\n> &cntrl\n> imin=0, ! No minimization\n> irest=1, ! This IS a restart of an old MD simulation\n> ntx=5, ! So our inpcrd file has velocities\n>\n> ! Temperature control\n> ntt=3, ! Langevin dynamics\n> gamma_ln=1.0, ! Friction coefficient (ps^-1)\n> temp0=300.0, ! Target temperature\n>\n>\n> ! Potential energy control\n> cut=9.0, ! nonbonded cutoff, in Angstroms\n>\n> ! MD settings\n> nstlim=12500000, ! 50 ns\n> dt=0.004, ! time step (ps)\n>\n> ! SHAKE\n> ntc=2, ! Constrain bonds containing hydrogen\n> ntf=2, ! Do not calculate forces of bonds containing hydrogen\n>\n> ! Control how often information is printed\n> ntpr=25000, ! Print energies every 100000 steps, 100,000*0.002 =\n> 200ps\n> ntwx=25000, ! Print coordinates every 100000 steps to the\n> trajectory\n> ntwr=25000, ! Print a restart file every 100000 steps (can be less\n> frequent)\n> ntxo=2, ! Write NetCDF format\n> ioutfm=1, ! Write NetCDF format (always do this!)\n>\n> ! Wrap coordinates when printing them to the same unit cell\n> iwrap=1,\n>\n> ! Set water atom/residue names for SETTLE recognition\n> watnam='SOL', ! Water residues are named WAT\n> owtnm='OW', ! Water oxygens are named O\n> hwtnm1='HW1'\n> hwtnm2='HW2'\n>\n> &end\n> Thanks for any reply!\n>",
+      "url": "http://archive.ambermd.org/202307/0152.html",
+      "in_reply_to": 1690558926
+    }
+  ]
+}

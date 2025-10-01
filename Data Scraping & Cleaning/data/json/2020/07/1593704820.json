@@ -1,0 +1,37 @@
+{
+  "thread_id": 1593704820,
+  "subject": "Defining new atoms in AMBER",
+  "messages": [
+    {
+      "message_id": 1593704820,
+      "author": "Kolattukudy P.  Santo",
+      "date_raw": "Thu, 2 Jul 2020 11:47:00 -0400",
+      "body": "Hello\nI am a trying to model a compound with new atomtypes. I have prepared the\nfrcmod file and a lib file using Xleap. But with new atom types it is\ngiving me several errors.\nIs it really possible to define new atom types and create lib files using\nxleap?\nThanks\nSanto\n-- \nBest,\nKP Santo\n--------------------------------------------------------------\nDr. Kolattukudy P. Santo\nPost doctoral Associate\nDepartment of Chemical and Biochemical Engineering\nRutgers, The State University of New Jersey\nNew Brunswick, New jersey\nUSA\n---------------------------------------------------------",
+      "url": "http://archive.ambermd.org/202007/0047.html"
+    },
+    {
+      "message_id": 1593710411,
+      "author": "David A Case",
+      "date_raw": "Thu, 2 Jul 2020 13:20:11 -0400",
+      "body": "On Thu, Jul 02, 2020, Kolattukudy P. Santo wrote:\n>I am a trying to model a compound with new atomtypes. I have prepared the\n>frcmod file and a lib file using Xleap. But with new atom types it is\n>giving me several errors.\nWe need to know details: just saying that is \"giving me several\nerrors\" doesn't provide much for us to go on.\n>Is it really possible to define new atom types and create lib files using\n>xleap?\nYou can create the lib files with LEaP, but you also need to use\naddAtomTypes{} when you want to load these in, and well as to define the\nmasses for force field parameters (etc.) of the new types in a frcmod\nfile. Forgetting the addAtomTypes step is a common (and understandable)\nomission, but I'm really guessing here. Look at the leaprc files in\n$AMBERHOME/dat/leap/cmd for examples of the syntax that is needed.\n....hope this helps....dac",
+      "url": "http://archive.ambermd.org/202007/0051.html",
+      "in_reply_to": 1593704820
+    },
+    {
+      "message_id": 1593721108,
+      "author": "Kolattukudy P.  Santo",
+      "date_raw": "Thu, 2 Jul 2020 16:18:28 -0400",
+      "body": "Dear Prof. Case.\nI am trying to model an octahedral zinc coordination model - with four\nwater occupying the coordination cites modeled as in the 'bonded' model and\nthe rest two cites as dummy atoms available for ligands as in the cationic\ndummy atom (CADA)model.\nI defined oxygens (DO), hydrogens(DH), dummy atoms(DZ) and the central\nzinc(ZO) as new atoms in xleap and created lib files. The frcmod files\ncreated with TIP3P parameters for water and CADA parameters for Zinc and\ndummies\nThe error is:\n-------------------------------------------\nWelcome to LEaP!\n(no leaprc in search path)\nSourcing: ./leap1.in\nLoading library: ./zob.lib\nLoading parameters: ./frcmod.zob\nReading force field modification type file (frcmod)\nReading title:\nAmber Force Field parameters hydrated Zinc-octahedral hybrid model-KP Santo\nLoading PDB file: ./zoct.pdb\nAdded missing heavy atom: .R<ZOB 5>.A<DO4 1>\nAdded missing heavy atom: .R<ZOB 2>.A<DO1 1>\nAdded missing heavy atom: .R<ZOB 3>.A<DO2 1>\nAdded missing heavy atom: .R<ZOB 13>.A<DH8 1>\n/users/santo_rug_15/amber18/bin/teLeap: Error!\nComparing atoms\n.R<ZOB 1>.A<ZO 1>,\n.R<ZOB 2>.A<DO1 1>,\n.R<ZOB 3>.A<DO2 1>, and\n.R<ZOB 12>.A<DH7 1>\nto atoms\n.R<ZOB 13>.A<DH8 1>,\n.R<ZOB 3>.A<DO2 1>,\n.R<ZOB 12>.A<DH7 1>, and\n.R<ZOB 1>.A<ZO 1>\nThis error may be due to faulty Connection atoms.\n!FATAL ERROR----------------------------------------\n!FATAL: In file [chirality.c], line 142\n!FATAL: Message: Atom named DH8 from ZOB did not match !\n!\n!ABORTING.\nOn Thu, 2 Jul 2020 at 13:20, David A Case <david.case.rutgers.edu> wrote:\n> On Thu, Jul 02, 2020, Kolattukudy P. Santo wrote:\n>\n> >I am a trying to model a compound with new atomtypes. I have prepared the\n> >frcmod file and a lib file using Xleap. But with new atom types it is\n> >giving me several errors.\n>\n> We need to know details: just saying that is \"giving me several\n> errors\" doesn't provide much for us to go on.\n>\n> >Is it really possible to define new atom types and create lib files\n> using\n> >xleap?\n>\n> You can create the lib files with LEaP, but you also need to use\n> addAtomTypes{} when you want to load these in, and well as to define the\n> masses for force field parameters (etc.) of the new types in a frcmod\n> file. Forgetting the addAtomTypes step is a common (and understandable)\n> omission, but I'm really guessing here. Look at the leaprc files in\n> $AMBERHOME/dat/leap/cmd for examples of the syntax that is needed.\n>\n> ....hope this helps....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202007/0053.html",
+      "in_reply_to": 1593704820
+    },
+    {
+      "message_id": 1593783714,
+      "author": "David A Case",
+      "date_raw": "Fri, 3 Jul 2020 09:41:54 -0400",
+      "body": "On Thu, Jul 02, 2020, Kolattukudy P. Santo wrote:\n>I am trying to model an octahedral zinc coordination model - with four\n>water occupying the coordination cites modeled as in the 'bonded' model and\n>the rest two cites as dummy atoms available for ligands as in the cationic\n>dummy atom (CADA)model.\n>I defined oxygens (DO), hydrogens(DH), dummy atoms(DZ) and the central\n>zinc(ZO) as new atoms in xleap and created lib files. The frcmod files\n>created with TIP3P parameters for water and CADA parameters for Zinc and\n>dummies\n>Loading PDB file: ./zoct.pdb\n> Added missing heavy atom: .R<ZOB 5>.A<DO4 1>\n> Added missing heavy atom: .R<ZOB 2>.A<DO1 1>\n> Added missing heavy atom: .R<ZOB 3>.A<DO2 1>\n> Added missing heavy atom: .R<ZOB 13>.A<DH8 1>\nThis means that there is a atom named DO4 in the ZOB residue in the PDB\nfile, but there is no such atom in your library file. You have to make\nsure that residue and atom names match.\nIf you can't figure it out, post the actual files for a small example;\njust describing in words what you tried to do is often fruitless: people\nneed to be able to reproduce the error.\n....dac",
+      "url": "http://archive.ambermd.org/202007/0058.html",
+      "in_reply_to": 1593704820
+    }
+  ]
+}

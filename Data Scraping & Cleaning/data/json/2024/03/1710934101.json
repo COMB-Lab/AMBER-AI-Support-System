@@ -1,0 +1,21 @@
+{
+  "thread_id": 1710934101,
+  "subject": "Possible bug in PMEMD (appearence of synchronization artifacts between parallel tasks)",
+  "messages": [
+    {
+      "message_id": 1710934101,
+      "author": "Charo del Genio",
+      "date_raw": "Wed, 20 Mar 2024 13:28:21 +0200",
+      "body": "Dear all,\nI'm trying to run a protein simulation using PMEMD on CPUs, and I'm getting some strange (and possibly worrying) behaviour. When analyzing the trajectory with cpptraj, I get recurrent spikes in bond\nenergy and angle energy (see attached file). To figure out what is happening, I checked the positions of the atoms residue by residue, and I found that each spike corresponds to several bonds just\nabout a bit overstretching, but doing it all together. To me, this seemed like a synchronization artifact, so I restarted the run for a while longer on a different number of processors (and on a\ndifferent machine, for that matters). What I found is that, passing from 128 to 8 CPUs, the density of spikes decreases. In the attached plot, the last 50 ns were run on 8 processors, whereas the\nprevious 200 were run on 128. The density of spikes in the last 50 ns is exactly 4 times smaller than in the previous 150 ns, which seems to be quite good proof that what I'm observing is, indeed, a\nsynchronization artifact between parallel tasks (the system also contains 32238 OPC waters). Note that, in my input file, I do explicitly use ig=-1.\nSo, am I correct in my thinking, or are there possible alternative explanations?\nCheers,\nCharo",
+      "url": "http://archive.ambermd.org/202403/0118.html"
+    },
+    {
+      "message_id": 1711724977,
+      "author": "Adrian Roitberg",
+      "date_raw": "Fri, 29 Mar 2024 11:09:37 -0400",
+      "body": "Hi Charo\nCould you share prmtop/input/rst/submission script so I can try it locally ?\nThanks\nOn 3/28/24 10:11 AM, Charo del Genio via AMBER wrote:\n> [External Email]\n>\n> Dear all,\n>        continuing from my previous email, this (attached) is the\n> temperature of the system, from the mdout files. As before, the first\n> 200 ns are on 128 processors, and the last 50 ns are on 8 processors.\n> Repeating the run with sander, I do not see this behaviour (so far).\n>\n> Any ideas on how to proceed would be much appreciated. At this stage,\n> it seems to me like results obtained with ntt=3 and pmemd.MPI could be\n> not reliable, at least in some cases.\n>\n>\n> Cheers,\n>\n> Charo\n>\n>",
+      "url": "http://archive.ambermd.org/202403/0172.html",
+      "in_reply_to": 1710934101
+    }
+  ]
+}

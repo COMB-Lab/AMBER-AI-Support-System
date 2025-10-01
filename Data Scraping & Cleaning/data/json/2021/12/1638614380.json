@@ -1,0 +1,53 @@
+{
+  "thread_id": 1638614380,
+  "subject": "Mmpbsa inp=1 or inp=2",
+  "messages": [
+    {
+      "message_id": 1638614380,
+      "author": "Fabian Glaser",
+      "date_raw": "Sat, 4 Dec 2021 12:39:40 +0200",
+      "body": "Dear amberexperts,\nI am working on agonist ranking project, computing free energy for wt and mutants. I tried several MMPBSA input values, and it seems that inp=1 is better than inp=2. inp=1 values give values more similar to experimental values, at least for some examples.\nI am running multiple trajectories, and I found the delta total values are very variable with a stdev of about +-3-5, specially for the mutants. I tried running very long simulations, but still the values drift a lot. I also tried different sampling using 500 or 1000 frames, but it did not improve the results.\nAny expert suggestion what could be tried will be highly appreciated.\nHave a nice weekend,\nFabian\n-------------------\nFabian Glaser\nBioinformatics Knowledge Unit - BKU\nThe Lorry I. Lokey Center for Life Sciences and Engineering\nTechnion - Israel Institute of Technology, Haifa, Israel\nhttps://lokey.technion.ac.il/bioinformatic-knowledge-unit/\nTel +972 (0) 4 8293701",
+      "url": "http://archive.ambermd.org/202112/0051.html"
+    },
+    {
+      "message_id": 1638624184,
+      "author": "Fabian Glaser",
+      "date_raw": "Sat, 4 Dec 2021 15:23:04 +0200",
+      "body": "Sorry maybe I will make specific questions about the correct / recommended use of mmpbsa to compare a series of agonist with the same target protein:\n1) is inp=1 the right choice?\n2) Is there a standard reccomende set of parameters?\n3) Is 1000 frames per point a good number?\n4) How many repetitions (number of independent trajectories) should be run to have good sampling?\nThanks a lot,\nFabian\n-------------------\nFabian Glaser\nBioinformatics Knowledge Unit - BKU\nThe Lorry I. Lokey Center for Life Sciences and Engineering\nTechnion - Israel Institute of Technology, Haifa, Israel\nhttps://lokey.technion.ac.il/bioinformatic-knowledge-unit/\nTel +972 (0) 4 8293701\n> On 4 Dec 2021, at 12:39, Fabian Glaser <fabian.glaser.gmail.com> wrote:\n>\n> Dear amberexperts,\n>\n> I am working on agonist ranking project, computing free energy for wt and mutants. I tried several MMPBSA input values, and it seems that inp=1 is better than inp=2. inp=1 values give values more similar to experimental values, at least for some examples.\n>\n> I am running multiple trajectories, and I found the delta total values are very variable with a stdev of about +-3-5, specially for the mutants. I tried running very long simulations, but still the values drift a lot. I also tried different sampling using 500 or 1000 frames, but it did not improve the results.\n>\n> Any expert suggestion what could be tried will be highly appreciated.\n>\n> Have a nice weekend,\n> Fabian\n>\n> -------------------\n> Fabian Glaser\n>\n> Bioinformatics Knowledge Unit - BKU\n> The Lorry I. Lokey Center for Life Sciences and Engineering\n> Technion - Israel Institute of Technology, Haifa, Israel\n>\n>\nhttps://lokey.technion.ac.il/bioinformatic-knowledge-unit/\n> Tel +972 (0) 4 8293701\n>",
+      "url": "http://archive.ambermd.org/202112/0052.html",
+      "in_reply_to": 1638614380
+    },
+    {
+      "message_id": 1638712590,
+      "author": "David A Case",
+      "date_raw": "Sun, 5 Dec 2021 08:56:30 -0500",
+      "body": "A better, if less-specific, version of my previous email about finding CUDA:\nAnyone having problems with the cmake installation should be sure to visit\nJamie Smith's Amber-specific page:\nhttps://ambermd.org/pmwiki/pmwiki.php/Main/CMake-Guide-to-Options\nThe \"Using CUDA\" section here repeats what I said in my earlier email. This\npage also has lots of suggestions for other cmake aspects, such a MPI,\nexternal libraries, MKL, Python, etc.)\n....dac",
+      "url": "http://archive.ambermd.org/202112/0057.html",
+      "in_reply_to": 1638614380
+    },
+    {
+      "message_id": 1638713084,
+      "author": "David A Case",
+      "date_raw": "Sun, 5 Dec 2021 09:04:44 -0500",
+      "body": "On Sat, Dec 04, 2021, Fabian Glaser wrote:\n>\n>I am working on agonist ranking project, computing free energy for wt and\n>mutants. I tried several MMPBSA input values, and it seems that inp=1 is\n>better than inp=2. inp=1 values give values more similar to experimental\n>values, at least for some examples.\nMy experience is limited and quite a bit out of date, but here goes: the\ninp=2 option seems a bit more \"fragile\" than does the simpler inp=1 option,\nespecially for absolute binding energies. I too ran into cases where inp=2\ngave very odd results, but the details are lost in the mists of time. Maybe\nRay and folks from his group can help here.\n>I am running multiple trajectories, and I found the delta total values are\n>very variable with a stdev of about +-3-5, specially for the mutants. I\n>tried running very long simulations, but still the values drift a lot. I\n>also tried different sampling using 500 or 1000 frames, but it did not\n>improve the results.\nAnswers here are surely system-specific. Try using more frames, and/or\ndifferent length simulations. Note that you are looking for convergnence\nhere, not for agreement with experiment.\nBe sure that your system is stable, and not always exploring new\nconfigurations as time progresses. Check results for (say) the first half\nof a given trajectory vs. the second half.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202112/0058.html",
+      "in_reply_to": 1638614380
+    },
+    {
+      "message_id": 1638878107,
+      "author": "Fabian Glaser",
+      "date_raw": "Tue, 7 Dec 2021 13:55:07 +0200",
+      "body": "Yes, I found something in the line you suggested during MD, which explains at least partially why the values jump.\nThanks a lot, very useful !!\nFabian\n-------------------\nFabian Glaser\nBioinformatics Knowledge Unit - BKU\nThe Lorry I. Lokey Center for Life Sciences and Engineering\nTechnion - Israel Institute of Technology, Haifa, Israel\nhttps://lokey.technion.ac.il/bioinformatic-knowledge-unit/\nTel +972 (0) 4 8293701\n> On 5 Dec 2021, at 16:04, David A Case <david.case.rutgers.edu> wrote:\n>\n> On Sat, Dec 04, 2021, Fabian Glaser wrote:\n>>\n>> I am working on agonist ranking project, computing free energy for wt and\n>> mutants. I tried several MMPBSA input values, and it seems that inp=1 is\n>> better than inp=2. inp=1 values give values more similar to experimental\n>> values, at least for some examples.\n>\n> My experience is limited and quite a bit out of date, but here goes: the\n> inp=2 option seems a bit more \"fragile\" than does the simpler inp=1 option,\n> especially for absolute binding energies. I too ran into cases where inp=2\n> gave very odd results, but the details are lost in the mists of time. Maybe\n> Ray and folks from his group can help here.\n>\n>> I am running multiple trajectories, and I found the delta total values are\n>> very variable with a stdev of about +-3-5, specially for the mutants. I\n>> tried running very long simulations, but still the values drift a lot. I\n>> also tried different sampling using 500 or 1000 frames, but it did not\n>> improve the results.\n>\n> Answers here are surely system-specific. Try using more frames, and/or\n> different length simulations. Note that you are looking for convergnence\n> here, not for agreement with experiment.\n>\n> Be sure that your system is stable, and not always exploring new\n> configurations as time progresses. Check results for (say) the first half\n> of a given trajectory vs. the second half.\n>\n> ...good luck...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202112/0070.html",
+      "in_reply_to": 1638614380
+    },
+    {
+      "message_id": 1638971781,
+      "author": "Fabian Glaser",
+      "date_raw": "Wed, 8 Dec 2021 15:56:21 +0200",
+      "body": "Hi David,\nI have a follow up question to this topic, I know now the ligand I am looking at switches between two possible conformation, one gives higher MMPBSA and the other one lower values. It’s clear from the experimental data that the correct values matches the lowest mmpbsa values conformation.\nBut system continues to switch between conformations, even after 2 micro seconds. So I wonder how to deal with that, as I am indeed looking for convergence, so I can believe the values when I add for example a similar ligand or additional mutants. Averaging does not seems a good strategy, maybe heating?\nAny suggestions will be greatly appreciated,\nFabian\n-------------------\nFabian Glaser\nBioinformatics Knowledge Unit - BKU\nThe Lorry I. Lokey Center for Life Sciences and Engineering\nTechnion - Israel Institute of Technology, Haifa, Israel\nhttps://lokey.technion.ac.il/bioinformatic-knowledge-unit/\nTel +972 (0) 4 8293701\n> On 5 Dec 2021, at 16:04, David A Case <david.case.rutgers.\nedu> wrote:\n>\n> On Sat, Dec 04, 2021, Fabian Glaser wrote:\n>>\n>> I am working on agonist ranking project, computing free energy for wt and\n>> mutants. I tried several MMPBSA input values, and it seems that inp=1 is\n>> better than inp=2. inp=1 values give values more similar to experimental\n>> values, at least for some examples.\n>\n> My experience is limited and quite a bit out of date, but here goes: the\n> inp=2 option seems a bit more \"fragile\" than does the simpler inp=1 option,\n> especially for absolute binding energies. I too ran into cases where inp=2\n> gave very odd results, but the details are lost in the mists of time. Maybe\n> Ray and folks from his group can help here.\n>\n>> I am running multiple trajectories, and I found the delta total values are\n>> very variable with a stdev of about +-3-5, specially for the mutants. I\n>> tried running very long simulations, but still the values drift a lot. I\n>> also tried different sampling using 500 or 1000 frames, but it did not\n>> improve the results.\n>\n> Answers here are surely system-specific. Try using more frames, and/or\n> different length simulations. Note that you are looking for convergnence\n> here, not for agreement with experiment.\n>\n> Be sure that your system is stable, and not always exploring new\n> configurations as time progresses. Check results for (say) the first half\n> of a given trajectory vs. the second half.\n>\n> ...good luck...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202112/0082.html",
+      "in_reply_to": 1638614380
+    }
+  ]
+}

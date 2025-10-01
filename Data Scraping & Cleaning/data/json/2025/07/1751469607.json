@@ -1,0 +1,21 @@
+{
+  "thread_id": 1751469607,
+  "subject": "Negative Temperature and SHAKE problems in MD with Frozen Atoms",
+  "messages": [
+    {
+      "message_id": 1751469607,
+      "author": "Matthew Tremblay",
+      "date_raw": "Wed, 2 Jul 2025 11:20:07 -0400",
+      "body": "Hello,\nI am working on QM/MM project in which my system is divided into 1) a QM\nregion of two adjacent amino acids, 2) a mobile MM region that contains all\natoms within 18 Angstroms of one of the QM atoms, and 3) a frozen MM region\nconsisting of the remainder of the protein and some solvent near the\nprotein surface. I'm currently equilibrating the mobile MM region for 10 ps\nusing sander.MPI (from AmberTools 25) while the QM region and outer MM\nregion are frozen using ibelly=1. The temperature is set to 300 K with\nAndersen-type coupling (ntt=2), no pressure coupling. The simulations are\ndone without PBCs and a nonbonded cutoff larger than my system size. This\nis done for 20 replicas that differ only in the geometry of the QM region,\nand the initial conformations of the MM regions are identical across\nreplicas. During this equilibration step, several of the replicas end up\nwith very distorted and unphysical geometries that cause the simulation to\nfail due to SHAKE (used only for hydrogen-containing bonds) giving up. All\nof the simulations display negative temperatures throughout the simulation.\nThe replicas that make it through the 10 ps oscillate around -300 K, while\nthe ones that fail have their temperatures become very large negative\nnumbers.\nI also tested minimizing the mobile MM region for 5000 steps while keeping\nthe QM and outer MM regions frozen and slowly heating from 0 K to 300 K,\nbut this didn't alleviate the geometry or negative temperature problems. I\nthink that there may be a problem with bad contacts between the mobile MM\nand QM regions, but the minimization ought to alleviate that. I'm also very\nconfused by the negative temperatures. This procedure was used by others in\nmy group for a similar system in past years, and they didn't run into the\nsame problems and didn't have any ideas. Does anyone have any advice?\nBest,\nMatthew Tremblay",
+      "url": "http://archive.ambermd.org/202507/0002.html"
+    },
+    {
+      "message_id": 1751825428,
+      "author": "David A Case",
+      "date_raw": "Sun, 6 Jul 2025 12:10:28 -0600",
+      "body": "On Wed, Jul 02, 2025, Matthew Tremblay via AMBER wrote:\n>\n>I am working on QM/MM project in which my system is divided into 1) a QM\n>region of two adjacent amino acids, 2) a mobile MM region that contains all\n>atoms within 18 Angstroms of one of the QM atoms, and 3) a frozen MM region\n>consisting of the remainder of the protein and some solvent near the\n>protein surface. I'm currently equilibrating the mobile MM region for 10 ps\n>using sander.MPI (from AmberTools 25) while the QM region and outer MM\n>region are frozen using ibelly=1. The temperature is set to 300 K with\n>Andersen-type coupling (ntt=2), no pressure coupling. The simulations are\n>done without PBCs and a nonbonded cutoff larger than my system size. This\n>is done for 20 replicas that differ only in the geometry of the QM region,\n>and the initial conformations of the MM regions are identical across\n>replicas. During this equilibration step, several of the replicas end up\n>with very distorted and unphysical geometries that cause the simulation to\n>fail due to SHAKE (used only for hydrogen-containing bonds) giving up. All\n>of the simulations display negative temperatures throughout the simulation.\n>The replicas that make it through the 10 ps oscillate around -300 K, while\n>the ones that fail have their temperatures become very large negative\n>numbers.\nTwo things to try: use restraints (ntr=1, perhaps with a weight of 5-10)\nrather than ibelly=1. The way degrees of freedom and temperature are\nreported might indeed be quirky with QM/MM and ibelly combined. Also, try\nntt=3 (say with gamma_ln=5 or so) rather than ntt=2. The latter is very\nlittle used and only lightly tested, (especially in combination with\nibelly). So it's worth seeing if the problem can be isolated.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202507/0010.html",
+      "in_reply_to": 1751469607
+    }
+  ]
+}

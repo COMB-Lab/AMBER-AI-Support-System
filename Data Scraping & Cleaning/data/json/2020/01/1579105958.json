@@ -1,0 +1,13 @@
+{
+  "thread_id": 1579105958,
+  "subject": "Harmless bug in Lipid11-17 residue libraries causing tleap to split fragments in saved PDB",
+  "messages": [
+    {
+      "message_id": 1579105958,
+      "author": "Matias Machado",
+      "date_raw": "Wed, 15 Jan 2020 13:32:38 -0300 (UYT)",
+      "body": "Dear Amber developers,\nWe've just found a possible \"harmless\" bug in Lipid11-17 libraries causing tleap to split lipid's head and tail fragments by TER statements when saving a PDB file.\nThe issue was previously reported in these threads:\n+ [\nhttp://archive.ambermd.org/201905/0138.html\n] ... [\nhttp://archive.ambermd.org/201905/0197.html\n]\n+ [\nhttp://archive.ambermd.org/201610/0143.html\n]\nA simple way to show the issue is executing the following lines in tleap (the same is obtained by loading a PDB):\nsource leaprc.lipid17\npopc = sequence {PA PC OL}\nsavepdb popc popc.pdb\nsaveamberparm popc popc.prmtop popc.rst7\nquit\nHead and tail fragments of POPC (PA, PC and OL) are split by TER statements in the output \"popc.pdb\" file despite belonging to the same chain. The connectivity is correctly set in popc.prmtop.\nI've found that the field \"!entry.*.unit.residueconnect\" (where * = any fragment) in lipid17.lib was set to \" 0 0 0 0 0 \", the same happens in lipid11.lib and lipid14.lib.\nSetting this entry to the same atom index in \"!entry.*.unit.connect\" fix the problem:\n!entry.OL.unit.residueconnect table int c1x int c2x int c3x int c4x int c5x int c6x\n1 1 0 0 0 0\n!entry.PA.unit.residueconnect table int c1x int c2x int c3x int c4x int c5x int c6x\n44 44 0 0 0 0\n!entry.PC.unit.residueconnect table int c1x int c2x int c3x int c4x int c5x int c6x\n1 37 0 0 0 0\nIt's not very clear to me the practical function of that entry, but the fix modifies the TREE_CHAIN_CLASSIFICATION section of the prmtop from \"BLA BLA BLA BLA...\" to something that makes more sense \"3 E E E 3 E E ... M ... B ...\"\nAlthough this isn't a dramatic issue, neither the simulation nor the analysis with cpptraj is affected, it may constitute a pitfall in the AMBER's pipeline, as the output PDB file from leap can't be properly used again as a new input for leap.\nBest regards,\nMatias Machado\n------------------------------------\nPhD.\nResearcher at Biomolecular Simulations Lab.\nInstitut Pasteur de Montevideo | Uruguay\n[\nhttp://pasteur.uy/en/labs/biomolecular-simulations-laboratory\n]\n[\nhttp://www.sirahff.com\n]",
+      "url": "http://archive.ambermd.org/202001/0172.html"
+    }
+  ]
+}

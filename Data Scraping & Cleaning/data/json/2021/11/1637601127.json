@@ -1,0 +1,53 @@
+{
+  "thread_id": 1637601127,
+  "subject": "amber20 - test suite picks up the wrong libgfortran",
+  "messages": [
+    {
+      "message_id": 1637601127,
+      "author": "Mark Dixon",
+      "date_raw": "Mon, 22 Nov 2021 17:12:07 +0000 (GMT)",
+      "body": "Hi there,\nI'm trying to tackle building amber20 using the new cmake-based system for\nthe first time. I'm not sure what compiler to use, so am playing with GCC\n11.2 on Rocky 8 Linux and have hit a problem.\nThe build process adds an RPATH into its test executables, with /usr/lib64\nplaced sufficiently near the start that the OS-provided GCC gfortran\nruntime overrides my compiler (which is in a non-standard location). The\ncontents of $AMBERHOME/{bin,lib} don't suffer from this problem.\nManually deleting the RPATH fixes the test executables, but is annoying.\ne.g.\n$ readelf -d ./AmberTools/test/nab/rismala-mdiis0 | grep RPATH\n0x000000000000000f (RPATH) Library rpath: [/local/slurm.1052/amber20/lib:/usr/lib64:/apps/developers/libraries/openblas/0.3.18/1/gcc-11.2/lib:/apps/developers/compilers/gcc/11.2/1/default/lib64:/lib64:/local/slurm.1052/amber20_src/build/AmberTools/src/xblas/build]\n$ ./AmberTools/test/nab/rismala-mdiis0\n./AmberTools/test/nab/rismala-mdiis0: /usr/lib64/libgfortran.so.5: version `GFORTRAN_10' not found (required by ./AmberTools/test/nab/rismala-mdiis0)\n./AmberTools/test/nab/rismala-mdiis0: /usr/lib64/libgfortran.so.5: version `GFORTRAN_10' not found (required by /local/slurm.1052/amber20/lib/libnetcdff.so.6)\n./AmberTools/test/nab/rismala-mdiis0: /usr/lib64/libgfortran.so.5: version `GFORTRAN_10' not found (required by /local/slurm.1052/amber20/lib/libpbsa.so)\n$ chrpath -d ./AmberTools/test/nab/rismala-mdiis0\n$ ./AmberTools/test/nab/rismala-mdiis0\ngetpdb: can't open file ala.pdb\n$ echo $LD_LIBRARY_PATH\n/local/slurm.1052/amber20/lib:/local/slurm.1052/amber20/lib:/apps/developers/libraries/openblas/0.3.18/1/gcc-11.2/lib:/apps/developers/libraries/openmpi/4.1.1/1/gcc-11.2/lib:/apps/developers/compilers/gcc/11.2/1/default/lib64:/apps/developers/compilers/gcc/11.2/1/default/lib:/apps/infrastructure/slurm/default/default/default/lib:/apps/infrastructure/slurm/default/default/default/lib:\n$ echo $LIBRARY_PATH\n/apps/developers/libraries/openblas/0.3.18/1/gcc-11.2/lib:/apps/developers/libraries/openmpi/4.1.1/1/gcc-11.2/lib:/apps/developers/compilers/gcc/11.2/1/default/lib64:/apps/developers/compilers/gcc/11.2/1/default/lib:/apps/infrastructure/slurm/default/default/default/lib:/apps/infrastructure/slurm/default/default/default/lib:/apps/infrastructure/slurm/default/default/default/lib:\nStarting again and giving cmake \"-DCMAKE_SKIP_INSTALL_RPATH=TRUE\" results\nin the same issue. Using \"-DCMAKE_SKIP_RPATH=TRUE\" causes the build to\nfail, with the \"make\" step no longer being able find bundled libraries it\nhas built (e.g. netcdf)\nAny tips, please? Or should I just be using intel or clang anyway?\nThanks,\nMark",
+      "url": "http://archive.ambermd.org/202111/0215.html"
+    },
+    {
+      "message_id": 1637687832,
+      "author": "David A Case",
+      "date_raw": "Tue, 23 Nov 2021 12:17:12 -0500",
+      "body": "On Mon, Nov 22, 2021, Mark Dixon wrote:\n>\n>I'm trying to tackle building amber20 using the new cmake-based system\n>for the first time. I'm not sure what compiler to use, so am playing\n>with GCC 11.2 on Rocky 8 Linux and have hit a problem.\n>\n>The build process adds an RPATH into its test executables, with\n>/usr/lib64 placed sufficiently near the start that the OS-provided GCC\n>gfortran runtime overrides my compiler (which is in a non-standard\n>location). The contents of $AMBERHOME/{bin,lib} don't suffer from this\n>problem.\n>\n>Manually deleting the RPATH fixes the test executables, but is annoying.\nWe are in the process of deprecating NAB. The first step was to remove\nreferences to it from the documentation. A second step (which you may wish\nto do now) is to not run the NAB tests by default. To do this, go to\namber20_src/AmberTools/test, and remove \"test.nab\" from the target list\nin test.serial and test.parallel2. Given your (somewhat?) unusual setup,\nand the declining interest in NAB, figuring out how to fix these RPATH\nissues in NAB is likely to be low on the to-do list. If you do need NAB,\nsee if you can just use the system compilers, which work in out CI tests.\nOf course, if anyone has a cmake-based fix to the RPATH problem, let us\nknow!\n[Aside: A third stage, removing NAB entirely (by moving it to its own\nrepository) is not likely to happen soon, since some workflows depend upon\nit. But we are encouraging people to convert to \"nabc\", which offers similar\nfunctionality, but with C rather than NAB as the programming language.]\n....dac",
+      "url": "http://archive.ambermd.org/202111/0224.html",
+      "in_reply_to": 1637601127
+    },
+    {
+      "message_id": 1637916384,
+      "author": "Mark Dixon",
+      "date_raw": "Fri, 26 Nov 2021 08:46:24 +0000 (GMT)",
+      "body": "On Tue, 23 Nov 2021, David A Case wrote:\n...\n> We are in the process of deprecating NAB. The first step was to remove\n> references to it from the documentation. A second step (which you may wish\n> to do now) is to not run the NAB tests by default. To do this, go to\n> amber20_src/AmberTools/test, and remove \"test.nab\" from the target list\n> in test.serial and test.parallel2. Given your (somewhat?) unusual setup,\n> and the declining interest in NAB, figuring out how to fix these RPATH\n> issues in NAB is likely to be low on the to-do list. If you do need NAB,\n> see if you can just use the system compilers, which work in out CI tests.\n...\nThanks for this: it's really helpful to know I can ignore those tests.\nOur setup may seem unusual, but it's an HPC machine - I don't think it's\nthat unusual to have a number of compilers and compiler versions\navailable.\nNow I just need to find the right combination for amber to pass its\nnumerical tests with nothing worse than rounding errors. I always seem to\nhave trouble with this bit...\nBest wishes,\nMark",
+      "url": "http://archive.ambermd.org/202111/0250.html",
+      "in_reply_to": 1637601127
+    },
+    {
+      "message_id": 1637936116,
+      "author": "David A Case",
+      "date_raw": "Fri, 26 Nov 2021 09:15:16 -0500",
+      "body": "On Fri, Nov 26, 2021, Mark Dixon wrote:\n>\n>Our setup may seem unusual, but it's an HPC machine - I don't think\n>it's that unusual to have a number of compilers and compiler versions\n>available.\nAgreed. If you have a prescription for removing RPATH from NAB binaries,\nlet us know and we might be able to get it into the build.\n>Now I just need to find the right combination for amber to pass its\n>numerical tests with nothing worse than rounding errors. I always seem\n>to have trouble with this bit...\nThe goal is not to have rounding errors (that we don't know about). You can\ngo to the web page below to see the compiler and OS'es we used when creating\nthe AmberTools21 release, and their results for the test suite:\nhttps://gitlab.ambermd.org/amber/amber/-/wikis/Singularity-reports\nThis goes through gcc10; gcc11 wasn't released until 4 days before the\nrelease date of AmberTools21.\n....dac",
+      "url": "http://archive.ambermd.org/202111/0252.html",
+      "in_reply_to": 1637601127
+    },
+    {
+      "message_id": 1637938524,
+      "author": "Mark Dixon",
+      "date_raw": "Fri, 26 Nov 2021 14:55:24 +0000 (GMT)",
+      "body": "On Fri, 26 Nov 2021, David A Case wrote:\n...\n> The goal is not to have rounding errors (that we don't know about). You can\n> go to the web page below to see the compiler and OS'es we used when creating\n> the AmberTools21 release, and their results for the test suite:\n>\n>\nhttps://gitlab.ambermd.org/amber/amber/-/wikis/Singularity-reports\n>\n> This goes through gcc10; gcc11 wasn't released until 4 days before the\n> release date of AmberTools21.\n...\nThat's wonderful!\nUnfortunately you need to login first, but there's no obvious sign up\npage.\nBest,\nMark",
+      "url": "http://archive.ambermd.org/202111/0253.html",
+      "in_reply_to": 1637601127
+    },
+    {
+      "message_id": 1637979072,
+      "author": "David A Case",
+      "date_raw": "Fri, 26 Nov 2021 21:11:12 -0500",
+      "body": "On Fri, Nov 26, 2021, Mark Dixon wrote:\n>>\nhttps://gitlab.ambermd.org/amber/amber/-/wikis/Singularity-reports\n>Unfortunately you need to login first, but there's no obvious sign up\nMy bad...I forgot about this. Let me see about getting this on to the\nregular Amber web site.\n...thx...dac",
+      "url": "http://archive.ambermd.org/202111/0263.html",
+      "in_reply_to": 1637601127
+    }
+  ]
+}

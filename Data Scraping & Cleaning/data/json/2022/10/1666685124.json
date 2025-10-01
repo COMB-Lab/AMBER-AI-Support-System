@@ -1,0 +1,21 @@
+{
+  "thread_id": 1666685124,
+  "subject": "ERROR while using receptor_mask in MMPBSA",
+  "messages": [
+    {
+      "message_id": 1666685124,
+      "author": "Amit Sharma \\(Asstt. Prof., MCARS\\)",
+      "date_raw": "Tue, 25 Oct 2022 13:35:24 +0530",
+      "body": "Hello, I am trying to calculate the binding energy between the specific\nresidue stretch (from residue :145-267) of the receptor with the ligand.\nThe whole receptor is of 274 residue. While running the script it gave\nfollowing error:\nFile \"/home/amber20_src/bin/MMPBSA.py\", line 98, in <module>\napp.loadcheck_prmtops()\nFile \"/home/amber20_src/lib/python3.9/site-packages/MMPBSA_mods/main.py\",\nline 610, in loadcheck_prmtops\nself.normal_system.Map(INPUT['receptor_mask'], INPUT['ligand_mask'])\nFile\n\"/home/amber20_src/lib/python3.9/site-packages/MMPBSA_mods/parm_setup.py\",\nline 129, in Map\nraise PrmtopError(\"provided receptor/ligand masks don't select \" +\nPrmtopError: provided receptor/ligand masks don't select every atom in the\ncomplex topology!\nExiting. All files have been retained.\nI am also attaching my input script (mmpbsa.in) :\nInput file for running PB and GB\n&general\nstartframe=1, endframe=59, interval=1,,keep_files=2, use_sander=1,\nentropy=1,verbose=1, receptor_mask=:145-267, ligand_mask=:275-298\n/\n&gb\nigb=2, saltcon=0.150\n/\n&pb\nistrng=0.150, radiopt=0,inp=1,\n/\nI was just wondering what the problem might be? Any suggestions to solve\nthis error?\nThanks in advance,\n-- \nSincerely,\n*Syeda Amna Arshi*\n*Ph.D. Scholar*\nMultidisciplinary Centre For Advanced Research and Studies\nJamia Millia Islamia\nDelhi-110025\n-- \nSincerely,\n*Syeda Amna Arshi*\n*Ph.D. Scholar*\nMultidisciplinary Centre For Advanced Research and Studies\nJamia Millia Islamia\nDelhi-110025\nPh.no: 7737638065\n-- \n_\n_\n*Please consider the environment before printing this email.*\nThe \ninformation contained in this electronic message and any *attachments to \nthis message are intended for the exclusive use of addressee(s) and may \ncontain proprietary, confidential or privileged information. If you are not \nthe intended recipient, you should not disseminate, distribute **or copy \nthis e-mail. Please notify the\nsender immediately and destroy all copies of \nthis message and any attachments.***\n**\n**WARNING***: The recipient should \ncheck this email and any attachments for\nthe presence of viruses. JMI \naccepts no liability for any damage caused by any\nvirus transmitted by this \nemail.*",
+      "url": "http://archive.ambermd.org/202210/0122.html"
+    },
+    {
+      "message_id": 1666786558,
+      "author": "David A Case",
+      "date_raw": "Wed, 26 Oct 2022 08:15:58 -0400",
+      "body": "On Tue, Oct 25, 2022, Amit Sharma (Asstt. Prof., MCARS) via AMBER wrote:\n>Hello, I am trying to calculate the binding energy between the specific\n>residue stretch (from residue :145-267) of the receptor with the ligand.\n>The whole receptor is of 274 residue. While running the script it gave\n>following error:\n>PrmtopError: provided receptor/ligand masks don't select every atom in the\n>complex topology!\nThis seems pretty clear, at least as far as Amber error messages go :-)\n> receptor_mask=:145-267, ligand_mask=:275-298\nThe union of your receptor and ligand doesn't include the entire system, which\nis what MMPBSA analysis requires.\nNote that energy is not pairwise de-composable, so that there is no correct\nanswer to the question of what is the binding of just residues 145-267 to the\nligand. You could use decomposition analysis to get a rough idea of what\nis going on.\nEasier: strip residues 1-144 and 268-274 from each snapshot using cpptraj.\ncpptraj can also provide a prmtop file corresponding to the smaller system.\nThen use that for your MMPBSA analysis. This is also approximate, since you\nare filling the space that used to be occupied by the stripped residues with\na high dielectric constant rather than a low one. But it may still provide\nsome insights.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202210/0127.html",
+      "in_reply_to": 1666685124
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "thread_id": 1591039560,
+  "subject": "Re: [AMBER] COM position",
+  "messages": [
+    {
+      "message_id": 1591039560,
+      "author": "Daniel Roe",
+      "date_raw": "Mon, 1 Jun 2020 15:26:00 -0400",
+      "body": "Hi,\nSo I think that the manual is actually helpful here. From the manual entry\nfor the cpptraj 'vector' command:\n[out <filename>] Write vector data to <filename> with format ’Vx Vy Vz Ox\nOy Oz’ where V denotes vector coordinates and ’O’ denotes origin\ncoordinates.\nSo the first 3 numbers are the actual vector. For 'vector mask' which is\n\"Store vector from center of mass of atoms in <mask1> to atoms in\n<mask2>.\", you are calculating XYZ(mask2) - XYZ(mask1), where XYZ(mask) is\nthe coordinates of the center of mass of atoms selected by <mask>. The\nsecond three numbers are the origin. In this case, the center of mass of\natoms in <mask1>. This is why the first 3 columns in the output from your\nsecond vector command (which only requests the center of mass of residues\n1-199) matches the origin of your first vector command. As for\n'ptrajoutput':\n[ptrajoutput] Write vector data in ptraj style (Vx Vy Vz Ox Oy Oz Vx+Ox\nVy+Oy Vz+Oz).\nSo the last 3 numbers are the real Cartesian coordinates of the vector\n\"head\" (with the \"tail\" being the origin).\nHope this helps,\n-Dan",
+      "url": "http://archive.ambermd.org/202006/0004.html"
+    },
+    {
+      "message_id": 1591141686,
+      "author": "mohamed marzouk",
+      "date_raw": "Wed, 3 Jun 2020 08:48:06 +0900",
+      "body": "Thank you 🙏 now very clear.\nI am most grateful Daniel\nBest regards,\nMohamed Marzouk Sobeh\nPh.D student at Life Science and Technology, Tokyo Institute of Technology, Tokyo, Japan.\nT.A Physics department,Ain Shams University, Cairo, Egypt.\nEmails:\nmohamed_marzouk.sci.asu.edu.eg\nmarzouk.aa.m.titech.ac.jp\nmarzouk_biophysics.yahoo.com\nmohamedmarzoukphysics.gmail.com\nMob. and WhatsApp.:\n+81 070-4070-9549\n+2 01061417414\n> On Jun 2, 2020, at 4:26 AM, Daniel Roe <daniel.r.roe.gmail.\ncom> wrote:\n>\n> Hi,\n>\n> So I think that the manual is actually helpful here. From the manual entry\n> for the cpptraj 'vector' command:\n>\n> [out <filename>] Write vector data to <filename> with format ’Vx Vy Vz Ox\n> Oy Oz’ where V denotes vector coordinates and ’O’ denotes origin\n> coordinates.\n>\n> So the first 3 numbers are the actual vector. For 'vector mask' which is\n> \"Store vector from center of mass of atoms in <mask1> to atoms in\n> <mask2>.\", you are calculating XYZ(mask2) - XYZ(mask1), where XYZ(mask) is\n> the coordinates of the center of mass of atoms selected by <mask>. The\n> second three numbers are the origin. In this case, the center of mass of\n> atoms in <mask1>. This is why the first 3 columns in the output from your\n> second vector command (which only requests the center of mass of residues\n> 1-199) matches the origin of your first vector command. As for\n> 'ptrajoutput':\n>\n> [ptrajoutput] Write vector data in ptraj style (Vx Vy Vz Ox Oy Oz Vx+Ox\n> Vy+Oy Vz+Oz).\n>\n> So the last 3 numbers are the real Cartesian coordinates of the vector\n> \"head\" (with the \"tail\" being the origin).\n>\n> Hope this helps,\n>\n> -Dan\n>",
+      "url": "http://archive.ambermd.org/202006/0007.html",
+      "in_reply_to": 1591039560
+    }
+  ]
+}

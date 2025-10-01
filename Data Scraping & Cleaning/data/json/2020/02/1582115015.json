@@ -1,0 +1,21 @@
+{
+  "thread_id": 1582115015,
+  "subject": "Running Amber in a GPU cluster",
+  "messages": [
+    {
+      "message_id": 1582115015,
+      "author": "Aravind R",
+      "date_raw": "Wed, 19 Feb 2020 17:53:35 +0530",
+      "body": "Dear AmberUsers,\nI am running my REMD simulations on an SGE cluster with 62 nodes with each\nnode having 2 Tesla K40m.\nI use the following input script to run the REMD simulation in\npmem.cuda.MPI and follow the same procedure as in \"*Folding Simulations for\nProteins with Diverse Topologies Are Accessible in Days with a\nPhysics-Based Force Field and Implicit Solvent*\" :\n#!/bin/bash\n#$ -N D1_REMD\n#$ -S /bin/bash\n#$ -cwd\n#$ -V\n#$ -q all.q\n#$ -pe mpirun 12\nexport AMBERHOME=/home/rana/aravindr/amber18\nsource $AMBERHOME/amber.sh\nexport LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_HOME/lib:$CUDA_HOME/lib64\nexport\nLD_LIBRARY_PATH=/softwares/cuda-8.0/lib:/softwares/cuda-8.0/lib64:$LD_LIBRARY_PATH\nexport LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/openmpi-1.8.2/bin/mpirun\ncd $SGE_O_WORKDIR\nexport CUDA_VISIBLE_DEVICES=\"0,1\"\nmpirun=~/openmpi-1.8.2/bin/mpirun\nsander_mpi=/home/rana/aravindr/amber18/bin/sander.MPI\npmemd_cuda=/home/rana/aravindr/amber18/bin/pmemd.cuda\npmemd_mpi=/home/rana/aravindr/amber18/bin/pmemd.MPI\ncpptraj_mpi=/home/rana/aravindr/amber18/bin/cpptraj.MPI\npmemd_cuda_mpi=/home/rana/aravindr/amber18/bin/pmemd.cuda.MPI\necho \"Current working directory: `pwd`\"\n$mpirun -np 12 $pmemd_cuda_mpi -ng 12 -groupfile remd.groupfile\nI see that in the paper they are able to achieve 800ns/day(system with\n73AA) for a protein of similar size, whereas I am able to get only\n77ns/day(system with 78AA) even after using HMR with the same number of\nreplicas. Is there something wrong with my pmemd.cuda.MPI implementation or\nshould I expect only this much performance from Tesla K40 cards?",
+      "url": "http://archive.ambermd.org/202002/0201.html"
+    },
+    {
+      "message_id": 1582115209,
+      "author": "Carlos Simmerling",
+      "date_raw": "Wed, 19 Feb 2020 07:26:49 -0500",
+      "body": "You can look at the benchmarks on the amber page, though you have to go far\nback to get k40 numbers. See here and compare to your results\nhttps://ambermd.org/gpus16/benchmarks.htm\nOn Wed, Feb 19, 2020, 7:21 AM Aravind R <aravindspg27.gmail.com> wrote:\n> Dear AmberUsers,\n> I am running my REMD simulations on an SGE cluster with 62 nodes with each\n> node having 2 Tesla K40m.\n> I use the following input script to run the REMD simulation in\n> pmem.cuda.MPI and follow the same procedure as in \"*Folding Simulations for\n> Proteins with Diverse Topologies Are Accessible in Days with a\n> Physics-Based Force Field and Implicit Solvent*\" :\n>\n> #!/bin/bash\n> #$ -N D1_REMD\n> #$ -S /bin/bash\n> #$ -cwd\n> #$ -V\n> #$ -q all.q\n> #$ -pe mpirun 12\n> export AMBERHOME=/home/rana/aravindr/amber18\n> source $AMBERHOME/amber.sh\n> export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_HOME/lib:$CUDA_HOME/lib64\n> export\n>\n> LD_LIBRARY_PATH=/softwares/cuda-8.0/lib:/softwares/cuda-8.0/lib64:$LD_LIBRARY_PATH\n> export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/openmpi-1.8.2/bin/mpirun\n> cd $SGE_O_WORKDIR\n> export CUDA_VISIBLE_DEVICES=\"0,1\"\n>\n> mpirun=~/openmpi-1.8.2/bin/mpirun\n> sander_mpi=/home/rana/aravindr/amber18/bin/sander.MPI\n> pmemd_cuda=/home/rana/aravindr/amber18/bin/pmemd.cuda\n> pmemd_mpi=/home/rana/aravindr/amber18/bin/pmemd.MPI\n> cpptraj_mpi=/home/rana/aravindr/amber18/bin/cpptraj.MPI\n> pmemd_cuda_mpi=/home/rana/aravindr/amber18/bin/pmemd.cuda.MPI\n>\n> echo \"Current working directory: `pwd`\"\n> $mpirun -np 12 $pmemd_cuda_mpi -ng 12 -groupfile remd.groupfile\n>\n> I see that in the paper they are able to achieve 800ns/day(system with\n> 73AA) for a protein of similar size, whereas I am able to get only\n> 77ns/day(system with 78AA) even after using HMR with the same number of\n> replicas. Is there something wrong with my pmemd.cuda.MPI implementation or\n> should I expect only this much performance from Tesla K40 cards?\n>",
+      "url": "http://archive.ambermd.org/202002/0202.html",
+      "in_reply_to": 1582115015
+    }
+  ]
+}

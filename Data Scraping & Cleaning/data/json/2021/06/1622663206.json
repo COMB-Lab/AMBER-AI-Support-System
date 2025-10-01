@@ -1,0 +1,45 @@
+{
+  "thread_id": 1622663206,
+  "subject": "position coordinate precision",
+  "messages": [
+    {
+      "message_id": 1622663206,
+      "author": "Lambach, Lauren",
+      "date_raw": "Wed, 2 Jun 2021 19:46:46 +0000",
+      "body": "Hi Amber users,\nI am trying to reproduce the Amber forces from my own calculations. I am very close, but I have determined that the discrepancies are from the lack of precision in the position coordinates of the atoms. I have tried using cpptraj with my input file:\nparm nacl.parm7\nloadcrd mdprod.nc name Crds\nprecision Crds 4.10\ncrdout Crds coords.dat\nNo matter what I try I can only get 3 decimal places. I would imagine there is a way to print out more decimal places. Does anyone know how I can do this?\nThanks in advance,\nLauren",
+      "url": "http://archive.ambermd.org/202106/0018.html"
+    },
+    {
+      "message_id": 1622664414,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 2 Jun 2021 16:06:54 -0400",
+      "body": "Hi,\nOn Wed, Jun 2, 2021 at 3:47 PM Lambach, Lauren <lauren-lambach.uiowa.edu> wrote:\n>\n> No matter what I try I can only get 3 decimal places. I would imagine there is a way to print out more decimal places. Does anyone know how I can do this?\nThis is because the Amber ASCII trajectory format is a fixed 8.3\nprecision. You can use the 'highprecision' keyword to get 8.6, but be\naware this format is much easier to overflow. If you need an ASCII\nformat use either Amber restart, mol2, or charmm cor with the 'ext'\nkeyword for extended precision.\nHope this helps,\n-Dan\n>\n> Thanks in advance,\n> Lauren\n>",
+      "url": "http://archive.ambermd.org/202106/0019.html",
+      "in_reply_to": 1622663206
+    },
+    {
+      "message_id": 1622664590,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 2 Jun 2021 16:09:50 -0400",
+      "body": "You can also use the ncdump tool (part of netcdf) to extract the\ncoordinates directly.\nOn Wed, Jun 2, 2021 at 4:06 PM Daniel Roe <daniel.r.roe.gmail.com> wrote:\n> Hi,\n>\n> On Wed, Jun 2, 2021 at 3:47 PM Lambach, Lauren <lauren-lambach.uiowa.edu>\n> wrote:\n> >\n> > No matter what I try I can only get 3 decimal places. I would imagine\n> there is a way to print out more decimal places. Does anyone know how I\n> can do this?\n>\n> This is because the Amber ASCII trajectory format is a fixed 8.3\n> precision. You can use the 'highprecision' keyword to get 8.6, but be\n> aware this format is much easier to overflow. If you need an ASCII\n> format use either Amber restart, mol2, or charmm cor with the 'ext'\n> keyword for extended precision.\n>\n> Hope this helps,\n>\n> -Dan\n>\n> >\n> > Thanks in advance,\n> > Lauren\n> >",
+      "url": "http://archive.ambermd.org/202106/0020.html",
+      "in_reply_to": 1622663206
+    },
+    {
+      "message_id": 1622666402,
+      "author": "Carlos Simmerling",
+      "date_raw": "Wed, 2 Jun 2021 16:40:02 -0400",
+      "body": "The best approach would be to use binary (netcdf) format.\nOn Wed, Jun 2, 2021, 3:47 PM Lambach, Lauren <lauren-lambach.uiowa.edu>\nwrote:\n> Hi Amber users,\n>\n> I am trying to reproduce the Amber forces from my own calculations. I am\n> very close, but I have determined that the discrepancies are from the lack\n> of precision in the position coordinates of the atoms. I have tried using\n> cpptraj with my input file:\n> parm nacl.parm7\n> loadcrd mdprod.nc name Crds\n> precision Crds 4.10\n> crdout Crds coords.dat\n>\n> No matter what I try I can only get 3 decimal places. I would imagine\n> there is a way to print out more decimal places. Does anyone know how I\n> can do this?\n>\n> Thanks in advance,\n> Lauren\n>",
+      "url": "http://archive.ambermd.org/202106/0021.html",
+      "in_reply_to": 1622663206
+    },
+    {
+      "message_id": 1622670931,
+      "author": "Lambach, Lauren",
+      "date_raw": "Wed, 2 Jun 2021 21:55:31 +0000",
+      "body": "Hi Dan,\nThank you so much. This helped a lot.\n-Lauren\n-----Original Message-----\nFrom: Daniel Roe <daniel.r.roe.gmail.com>\nSent: Wednesday, June 2, 2021 3:10 PM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] position coordinate precision\nYou can also use the ncdump tool (part of netcdf) to extract the coordinates directly.\nOn Wed, Jun 2, 2021 at 4:06 PM Daniel Roe <daniel.r.roe.gmail.com> wrote:\n> Hi,\n>\n> On Wed, Jun 2, 2021 at 3:47 PM Lambach, Lauren\n> <lauren-lambach.uiowa.edu>\n> wrote:\n> >\n> > No matter what I try I can only get 3 decimal places. I would\n> > imagine\n> there is a way to print out more decimal places. Does anyone know how\n> I can do this?\n>\n> This is because the Amber ASCII trajectory format is a fixed 8.3\n> precision. You can use the 'highprecision' keyword to get 8.6, but be\n> aware this format is much easier to overflow. If you need an ASCII\n> format use either Amber restart, mol2, or charmm cor with the 'ext'\n> keyword for extended precision.\n>\n> Hope this helps,\n>\n> -Dan\n>\n> >\n> > Thanks in advance,\n> > Lauren\n> >",
+      "url": "http://archive.ambermd.org/202106/0022.html",
+      "in_reply_to": 1622663206
+    }
+  ]
+}

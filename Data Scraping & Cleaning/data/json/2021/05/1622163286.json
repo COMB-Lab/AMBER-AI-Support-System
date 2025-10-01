@@ -1,0 +1,13 @@
+{
+  "thread_id": 1622163286,
+  "subject": "A bug in PMEMD which may cause aray (ti_dvdl_values) index out-of-boundary error",
+  "messages": [
+    {
+      "message_id": 1622163286,
+      "author": "Ye Mei",
+      "date_raw": "Fri, 28 May 2021 08:54:46 +0800",
+      "body": "Dear AMBER developers,\nThere is a bug in the PMEMD code, which may cause an out-of-boundary error\nfor array ti_dvdl_values, when\nifsc = 1,\nlogdvdl = 1,\nbarostat = 2,\nWhen logdvdl = 1, array ti_dvdl_values is used to save dV/dL values, which\nwill be printed out after the simulation. After each step of propagation,\nsubroutine ti_calc_dvdl was called once in subroutine pme_force.\nIn subroutine ti_calc_dvdl, the index for ti_dvdl_values increases by 1,\nand the value of dV/dL is saved to ti_dvdl_values as\n<code>\nif (logdvdl .ne. 0 .and. master) then\nti_dvdl_pnt = ti_dvdl_pnt + 1\nti_dvdl_values(ti_dvdl_pnt) = ti_ene(1, si_dvdl)\nend if\n</code>\nThis is fine until subroutine mcbar_trial is called, in which subroutine\npme_force is also called.\nTherefore, after every mcbarint (default 100) steps of propagation, there\nis one fake dV/dL value saved in array ti_dvdl_values and the index\nfor ti_dvdl_values increases by another one.\nFinally, the out-of-boundary error occurs.\nIt happens only in the CPU version, but not the GPU version.\nYe",
+      "url": "http://archive.ambermd.org/202105/0239.html"
+    }
+  ]
+}

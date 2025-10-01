@@ -1,0 +1,21 @@
+{
+  "thread_id": 1658223298,
+  "subject": "how to use Amber patched with Plumed",
+  "messages": [
+    {
+      "message_id": 1658223298,
+      "author": "Giulia Sormani",
+      "date_raw": "Tue, 19 Jul 2022 11:34:58 +0200",
+      "body": "Hello to everyone,\nI would like to use Amber patched with plumed for some umbrella sampling.\nOn the cluster on which I am running (m100 of cineca) there should be\ninstalled amber2020 patched with plumed2.8.0.\nHowever, I can t find which is the command to include the plumed.dat file\nin the running, if I run\npmemd.cuda -O -i NVT.in -o umbrella.out -p topology.prmtop -c\nprevious.restart -r next.restart -x umbrella.nc -inf umbrella.info -plumed\nplumed.dat\nI get the error\nunknown flag: -plumed\nAlso, on the amber or plumed manuals I can't find info or examples on how\nto do this.\nHope someone can help,\nGiulia",
+      "url": "http://archive.ambermd.org/202207/0032.html"
+    },
+    {
+      "message_id": 1658224929,
+      "author": "Domenico Marson",
+      "date_raw": "Tue, 19 Jul 2022 12:02:09 +0200",
+      "body": "Dear Giulia,\nTo use amber+plumed you don't have to call plumed with a flag, but you just\nhave to insert the following lines\nplumedfile = 'PLUMED_FILE_NAME', plumed = 1,\ninto your mdin file.\nAlso, unfortunately, PLUMED is not well tested with Amber, if you go to the\nplumed mailing list you can find reports of different misbehaviors.\nRestarts are poorly supported, and particularly you can't call the MPI\nversion of PLUMED with more cores than the ones you are using for AMBER (if\nyou are running on GPUs, as you shold with Amber, usually 1 to 4...). Also\nthe CPU and GPU have to communicate constantly at every step with PLUMED,\nhighly impacting the performance of your simulations with AMBER.\nYou can run some calculation in PLUMED with it's openMP implementation, but\nthere aren't many calculations that can be run with openMP unfortunately.\nI'm a great supporter of AMBER, I hate every time I have to switch to\nGROMACS or LAMMPS, but having said that, I strongly suggest you to use\nGROMACS with PLUMED, as it's well tested and you can easily optimize it's\nperformances with plumed.\nPS: that's is true if you have to perform some calculations that are only\navailable in plumed (METAD, OPES for example) or if you have to use some\nCVs that are implemented only in plumed. Otherwise you can easily stick to\nAMBER and use the facilities it offers, which usually run much faster. For\nexample umbrella sampling is easy to perform within AMBER.\nHave a nice day,\nDomenico\n*Domenico Marson*, Ph.D.\nRicercatore T.D. (A) | Research Fellow\nUniversità degli Studi di Trieste | University of Trieste\nDepartment of Engineering and Architecture (DEA)\nMolecular Biology and Nanotechnology Laboratory @ UniTS (MolBNL.UniTs)\nVia Valerio, 10 - 34127 Trieste (Italy)\ndomenico.marson.dia.\nunits.it\n+39 040 5583437\nSkype: domenicomars\nOn Tue, Jul 19, 2022 at 11:35 AM Giulia Sormani via AMBER <amber.ambermd.\norg>\nwrote:\n> Hello to everyone,\n>\n> I would like to use Amber patched with plumed for some umbrella sampling.\n> On the cluster on which I am running (m100 of cineca) there should be\n> installed amber2020 patched with plumed2.8.0.\n> However, I can t find which is the command to include the plumed.dat file\n> in the running, if I run\n>\n> pmemd.cuda -O -i NVT.in -o umbrella.out -p topology.prmtop -c\n> previous.restart -r next.restart -x umbrella.nc -inf umbrella.info -plumed\n> plumed.dat\n>\n> I get the error\n> unknown flag: -plumed\n>\n> Also, on the amber or plumed manuals I can't find info or examples on how\n> to do this.\n>\n> Hope someone can help,\n>\n> Giulia\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202207/0033.html",
+      "in_reply_to": 1658223298
+    }
+  ]
+}

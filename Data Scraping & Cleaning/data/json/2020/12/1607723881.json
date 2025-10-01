@@ -1,0 +1,29 @@
+{
+  "thread_id": 1607723881,
+  "subject": "tleap seems Si atom as S ... I don't know why",
+  "messages": [
+    {
+      "message_id": 1607723881,
+      "author": "Erdem Yeler",
+      "date_raw": "Sat, 12 Dec 2020 00:58:01 +0300",
+      "body": "Hi amberers,\nI parameterized a molecule including Si atom but when I prepared a topology\nfile I saw that tleap put 16 instead of 14 as Si Atom number. It didn't\ncause any problems in my simulation but should I change the \"Si\" symbol in\nmy Si.frcmod and Si.mol2 file?\nErdem",
+      "url": "http://archive.ambermd.org/202012/0152.html"
+    },
+    {
+      "message_id": 1607827850,
+      "author": "David A Case",
+      "date_raw": "Sat, 12 Dec 2020 21:50:50 -0500",
+      "body": "On Sat, Dec 12, 2020, Erdem Yeler wrote:\n>I parameterized a molecule including Si atom but when I prepared a topology\n>file I saw that tleap put 16 instead of 14 as Si Atom number. It didn't\n>cause any problems in my simulation but should I change the \"Si\" symbol in\n>my Si.frcmod and Si.mol2 file?\nThe standard leaprc files, like leaprc.gaff2, don't define any atom\ntypes for Si. It's not clear how you made your mol2 and frcmod file,\nperhaps by hand?\nYou need to include a addAtomTypes command to tell tleap what sort of\natom your silicons are, e.g.\naddAtomTypes P\n{ \"??\" \"Si\" \"sp3\" }\n}\nwhere you need to substitute whatever atom type you used for silicon for\nthe ?? above.\n....dac",
+      "url": "http://archive.ambermd.org/202012/0166.html",
+      "in_reply_to": 1607723881
+    },
+    {
+      "message_id": 1608209996,
+      "author": "Erdem Yeler",
+      "date_raw": "Thu, 17 Dec 2020 15:59:56 +0300",
+      "body": "Thanks for the answer! I will try it.\nDavid A Case <david.case.rutgers.\nedu>, 13 Ara 2020 Paz, 05:51 tarihinde\nşunu yazdı:\n> On Sat, Dec 12, 2020, Erdem Yeler wrote:\n>\n> >I parameterized a molecule including Si atom but when I prepared a\n> topology\n> >file I saw that tleap put 16 instead of 14 as Si Atom number. It didn't\n> >cause any problems in my simulation but should I change the \"Si\" symbol in\n> >my Si.frcmod and Si.mol2 file?\n>\n> The standard leaprc files, like leaprc.gaff2, don't define any atom\n> types for Si. It's not clear how you made your mol2 and frcmod file,\n> perhaps by hand?\n>\n> You need to include a addAtomTypes command to tell tleap what sort of\n> atom your silicons are, e.g.\n>\n> addAtomTypes P\n> { \"??\" \"Si\" \"sp3\" }\n> }\n>\n> where you need to substitute whatever atom type you used for silicon for\n> the ?? above.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202012/0251.html",
+      "in_reply_to": 1607723881
+    }
+  ]
+}

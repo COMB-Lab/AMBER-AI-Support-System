@@ -1,0 +1,37 @@
+{
+  "thread_id": 1709914824,
+  "subject": "AMBER error vlimit exceed for step",
+  "messages": [
+    {
+      "message_id": 1709914824,
+      "author": "VERONICA MARTIN HERNANDEZ",
+      "date_raw": "Fri, 8 Mar 2024 16:20:24 +0000",
+      "body": "Hi everyone\nI was performing TI calculations and the minimization went well, with the following output:\nFINAL RESULTS\n| TI region 1\nNSTEP ENERGY RMS GMAX NAME NUMBER\n****** -1.3744E+05 7.8915E-03 5.6513E-01 H2 24706\nBOND = 11603.4879 ANGLE = 22.1290 DIHED = 21.1698\nVDWAALS = 33301.1213 EEL = -182346.6482 HBOND = 0.0000\n1-4 VDW = 6.6181 1-4 EEL = -46.4153 RESTRAINT = 0.0000\nDV/DL = -22.0427\nSoftcore part of the system: 2 atoms, TEMP(K) = 0.00\nSC_Etot= 0.0000 SC_EKtot= 0.0000 SC_EPtot = 1.7742\nSC_BOND= 0.0025 SC_ANGLE= 0.0554 SC_DIHED = 0.0021\nSC_14NB= 0.0000 SC_14EEL= 0.0000 SC_VDW = -0.0011\nSC_EEL = 1.7154\nSC_RES_DIST= 0.0000 SC_RES_ANG= 0.0000 SC_RES_TORS= 0.0000\nSC_EEL_DER= 0.4021 SC_VDW_DER= 0.1780 SC_DERIV = 0.5801\n------------------------------------------------------------------------------\n| TI region 2\nNSTEP ENERGY RMS GMAX NAME NUMBER\n****** -1.3744E+05 7.8915E-03 5.6513E-01 H2 24706\nBOND = 11603.4879 ANGLE = 22.1290 DIHED = 21.1698\nVDWAALS = 33301.1213 EEL = -182346.6482 HBOND = 0.0000\n1-4 VDW = 6.6181 1-4 EEL = -46.4153 RESTRAINT = 0.0000\nDV/DL = -22.0427\nSoftcore part of the system: 2 atoms, TEMP(K) = 0.00\nSC_Etot= 0.0000 SC_EKtot= 0.0000 SC_EPtot = 0.9330\nSC_BOND= 0.0003 SC_ANGLE= 0.2909 SC_DIHED = 0.0021\nSC_14NB= 0.0000 SC_14EEL= 0.0000 SC_VDW = -0.0075\nSC_EEL = 0.6472\nSC_RES_DIST= 0.0000 SC_RES_ANG= 0.0000 SC_RES_TORS= 0.0000\nSC_EEL_DER= 0.4021 SC_VDW_DER= 0.1780 SC_DERIV = 0.5801\nBut when I perform the equilibration step (I do it with pmemd and cpus) I have always got the error of vlimit exceed for step, even from step 0.\nHow can I solve it?\nThanks in advance\nVero",
+      "url": "http://archive.ambermd.org/202403/0062.html"
+    },
+    {
+      "message_id": 1709951202,
+      "author": "He, Amy",
+      "date_raw": "Sat, 9 Mar 2024 02:26:42 +0000",
+      "body": "Hey Vero,\nThere could be different reasons for getting vlim exceed in dynamics simulations for TI. I have some experience with this, but other more experienced users might be able to give you better advice.\nHere’re two things I would suggest:\nInspect the minimized structure\nIs the minimized structure visibly distorted outside of the soft-core region? If so you might want to reassign the soft-core (see below). Also, even though the minimization could be run on a different lambda, it’s best to keep it the same as the designated value in the production runs.\nConsider the assignment of soft-core region\nI noticed THAT you had only 2 softcore atoms. If you’re running dual-top TI, then one of them is disappearing and the other is appearing. In that case, You might want to try including some more atoms in the soft-core region, like the directly bonded atoms.\nPreviously, I observed distorted imidazole rings in histidine residues, when I included only the dissociable H atom in the soft-core region. I was able to solve this after including the nitrogen atoms and adjusting the SHAKE-enabled region. But this might depend on the exact scaling scheme you are following for the soft-core region and how it is embedded in the surrounding system.\nIf you could provide a little more information on your system and your protocol, other members on this list server will be able to provide more specific suggestions :>\nHope this helps!\n--\nAmy He\nHadad Lab . OSU\nHe.1768.osu.edu\nFrom: VERONICA MARTIN HERNANDEZ via AMBER <amber.ambermd.org>\nDate: Friday, March 8, 2024 at 11:20 AM\nTo: AMBER Mailing List <amber.ambermd.\norg>\nSubject: [AMBER] AMBER error vlimit exceed for step\nHi everyone\nI was performing TI calculations and the minimization went well, with the following output:\n FINAL RESULTS\n| TI region 1\n NSTEP ENERGY RMS GMAX NAME NUMBER\n ****** -1.3744E+05 7.8915E-03 5.6513E-01 H2 24706\n BOND = 11603.4879 ANGLE = 22.1290 DIHED = 21.1698\n VDWAALS = 33301.1213 EEL = -182346.6482 HBOND = 0.0000\n 1-4 VDW = 6.6181 1-4 EEL = -46.4153 RESTRAINT = 0.0000\n DV/DL = -22.0427\n Softcore part of the system: 2 atoms, TEMP(K) = 0.00\n SC_Etot= 0.0000 SC_EKtot= 0.0000 SC_EPtot = 1.7742\n SC_BOND= 0.0025 SC_ANGLE= 0.0554 SC_DIHED = 0.0021\n SC_14NB= 0.0000 SC_14EEL= 0.0000 SC_VDW = -0.0011\n SC_EEL = 1.7154\n SC_RES_DIST= 0.0000 SC_RES_ANG= 0.0000 SC_RES_TORS= 0.0000\n SC_EEL_DER= 0.4021 SC_VDW_DER= 0.1780 SC_DERIV = 0.5801\n ------------------------------------------------------------------------------\n| TI region 2\n NSTEP ENERGY RMS GMAX NAME NUMBER\n ****** -1.3744E+05 7.8915E-03 5.6513E-01 H2 24706\n BOND = 11603.4879 ANGLE = 22.1290 DIHED = 21.1698\n VDWAALS = 33301.1213 EEL = -182346.6482 HBOND = 0.0000\n 1-4 VDW = 6.6181 1-4 EEL = -46.4153 RESTRAINT = 0.0000\n DV/DL = -22.0427\n Softcore part of the system: 2 atoms, TEMP(K) = 0.00\n SC_Etot= 0.0000 SC_EKtot= 0.0000 SC_EPtot = 0.9330\n SC_BOND= 0.0003 SC_ANGLE= 0.2909 SC_DIHED = 0.0021\n SC_14NB= 0.0000 SC_14EEL= 0.0000 SC_VDW = -0.0075\n SC_EEL = 0.6472\n SC_RES_DIST= 0.0000 SC_RES_ANG= 0.0000 SC_RES_TORS= 0.0000\n SC_EEL_DER= 0.4021 SC_VDW_DER= 0.1780 SC_DERIV = 0.5801\nBut when I perform the equilibration step (I do it with pmemd and cpus) I have always got the error of vlimit exceed for step, even from step 0.\nHow can I solve it?\nThanks in advance\nVero",
+      "url": "http://archive.ambermd.org/202403/0068.html",
+      "in_reply_to": 1709914824
+    },
+    {
+      "message_id": 1710345876,
+      "author": "David A Case",
+      "date_raw": "Wed, 13 Mar 2024 10:04:36 -0600",
+      "body": "On Fri, Mar 08, 2024, VERONICA MARTIN HERNANDEZ via AMBER wrote:\n>\n>I was performing TI calculations and the minimization went well,\n>But when I perform the equilibration step (I do it with pmemd and cpus) I\n>have always got the error of vlimit exceed for step, even from step 0.\nRun a zero-step (nstlim=0) MD equilibration run, and very carefully check\nthe differences in energy between the first step and the final step of\nminimization. (It is often the case the people turn off SHAKE for\nminimization, but turn it back on for MD: that *could* be a the origin of\nyour problem, but I'm just guessing here: you need to do some detective work\non your end.)\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202403/0084.html",
+      "in_reply_to": 1709914824
+    },
+    {
+      "message_id": 1711045364,
+      "author": "Téletchéa Stéphane",
+      "date_raw": "Thu, 21 Mar 2024 19:22:44 +0100",
+      "body": null,
+      "url": "http://archive.ambermd.org/202403/0123.html",
+      "in_reply_to": 1709914824
+    }
+  ]
+}

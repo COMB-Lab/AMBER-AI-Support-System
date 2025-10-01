@@ -1,0 +1,21 @@
+{
+  "thread_id": 1746513077,
+  "subject": "pmemd.cuda Aborted: \"double free or corruption (out)\" during minimization",
+  "messages": [
+    {
+      "message_id": 1746513077,
+      "author": "Devid Sahu",
+      "date_raw": "Tue, 6 May 2025 12:01:17 +0530",
+      "body": "Dear Amber Users,\nI encountered a fatal error while running a minimization using `pmemd.cuda`\nin Amber22. The job aborts with the following message:\ndouble free or corruption (out)\nProgram received signal SIGABRT: Process abort signal.\nBacktrace for this error:\n#0 0x15450b6a83ff in ???\n#1 0x15450b6a837f in ???\n#2 0x15450b692db4 in ???\n#3 0x15450b6eb4e6 in ???\n#4 0x15450b6f25eb in ???\n#5 0x15450b6f438f in ???\n#6 0x558a69 in ???\n#7 0x5acd57 in ???\n#8 0x5896bf in ???\n#9 0x4bd2fc in ???\n#10 0x15450b694492 in ???\n#11 0x4d65cd in ???\n#12 0xffffffffffffffff in ???\nThe command I used is:\npmemd.cuda -O -i minimization_solv.in -o minim_1/minim_1.out -p\ntrimer_solvated.prmtop -c trimer_solvated.inpcrd -r minim_1/minim_1.ncrst\n-ref trimer_solvated.inpcrd -inf minim_1/minim_1.info\nSome context:\n- The system is a trimer solvated in a custom chloroform box built with\n`tleap`.\n- I used GAFF for the ligand and a pre-equilibrated chloroform box\n(`CHCL3BOX`)\n- The minimization input includes restraints (`ntr=1`) on the solute.\nI’ve verified that:\n- The `prmtop` and `inpcrd` files are correctly generated.\n- The system contains 12480 atoms (from `ambpdb | grep -c '^ATOM'`).\nI would appreciate any suggestions on what might cause this corruption or\nsteps I can take to debug or fix it.\nThanks\nDevid",
+      "url": "http://archive.ambermd.org/202505/0014.html"
+    },
+    {
+      "message_id": 1746538285,
+      "author": "David A Case",
+      "date_raw": "Tue, 6 May 2025 07:31:25 -0600",
+      "body": "On Tue, May 06, 2025, Devid Sahu via AMBER wrote:\n>\n>I encountered a fatal error while running a minimization using `pmemd.cuda`\n>in Amber22. The job aborts with the following message:\n>\n>double free or corruption (out)\n>Program received signal SIGABRT: Process abort signal.\nSimplest thing is to run the minimization using sander, with ntmin=3. In\nmany cases, you can then switch back to pmemd.cuda for further simualation.\nIf this fails, we will probably need to know enough about the system to try\nto reproduce the problem.\n...dac",
+      "url": "http://archive.ambermd.org/202505/0016.html",
+      "in_reply_to": 1746513077
+    }
+  ]
+}

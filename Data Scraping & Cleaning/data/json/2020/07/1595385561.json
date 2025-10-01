@@ -1,0 +1,29 @@
+{
+  "thread_id": 1595385561,
+  "subject": "AMBER20 Error: No package metadata was found for pdb4amber",
+  "messages": [
+    {
+      "message_id": 1595385561,
+      "author": "Huang Tao",
+      "date_raw": "Wed, 22 Jul 2020 10:39:21 +0800",
+      "body": "Hi All,\nWhen I tried to use pdb4amber after the installation of AMBER20, one error\nhappened.\n\"importlib_metadata.PackageNotFoundError: No package metadata was found for\npdb4amber\"\nI have checked the first line of pdb4amber file under $AMBER_HOME/bin. The\nfirst line is as following.\n#!$AMBER_HOME//miniconda/bin/python\nDoes there anyone know how to solve this problem?\nMany thanks,\nTao Huang\nResearch Fellow at Hong Kong Baptist University",
+      "url": "http://archive.ambermd.org/202007/0244.html"
+    },
+    {
+      "message_id": 1595418910,
+      "author": "David A Case",
+      "date_raw": "Wed, 22 Jul 2020 07:55:10 -0400",
+      "body": "On Wed, Jul 22, 2020, Huang Tao wrote:\n>\n>When I tried to use pdb4amber after the installation of AMBER20, one error\n>happened.\n>\n>\"importlib_metadata.PackageNotFoundError: No package metadata was found for\n>pdb4amber\"\n>\n>I have checked the first line of pdb4amber file under $AMBER_HOME/bin. The\n>first line is as following.\n>\n>#!$AMBER_HOME//miniconda/bin/python\n1. Can you say when you built Amber20? There has been a recent change in\nwhat miniconda does that seems to affect pytraj and pdb4amber. Did you\nmake any changes to the run_cmake script?\nI think we may know what to do here, and (if so), we will publish a update\nsoon. (cc-ing to Jason)\nPossible aside:\nThe reference to $AMBER_HOME is very odd: the \"amber.sh\" script (in your\ninstallation folder), and everything else we use, uses $AMBERHOME (no\nunderscore). We are trying to make things independent of this variable, but\nthere are still places that refer to $AMBERHOME. Do you have that also set on\nyour machine? Do you know if you did something non-standard to get\n$AMBER_HOME? This may be unrelated to your pdb4amber problem, but using a\nnon-standard name here is likely to lead to trouble.\n...regards...dac",
+      "url": "http://archive.ambermd.org/202007/0246.html",
+      "in_reply_to": 1595385561
+    },
+    {
+      "message_id": 1595420081,
+      "author": "Huang Tao",
+      "date_raw": "Wed, 22 Jul 2020 20:14:41 +0800",
+      "body": "Dear Prof. Case,\nThanks a lot for your kindly reply. Firstly, the underscore of \"$AMBERHOME\"\nis just a typo, please ignore it. Secondly, when I built Amber20 with\nrun_cmake file, the only thing I change is to set CUDA flag to TURE. Please\nsee it as following.\n-------------------------------------------------------------------------\n# Assume this is Linux:\ncmake $AMBER_PREFIX/amber20_src \\\n-DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber20 \\\n-DCOMPILER=GNU \\\n-DMPI=FALSE -DCUDA=TRUE -DINSTALL_TESTS=TRUE \\\n-DDOWNLOAD_MINICONDA=TRUE -DMINICONDA_USE_PY3=TRUE \\\n2>&1 | tee cmake.log\n----------------------------------------------------------------------------\nI have tried other application related with minoconda python, such as\nparmed, and they worked fine. So I guess there might be some configuration\nproblems with pdb4amber?\nMany thanks,\nTao\nDavid A Case <david.case.rutgers.edu> 于2020年7月22日周三 下午7:55写道：\n> On Wed, Jul 22, 2020, Huang Tao wrote:\n> >\n> >When I tried to use pdb4amber after the installation of AMBER20, one error\n> >happened.\n> >\n> >\"importlib_metadata.PackageNotFoundError: No package metadata was found\n> for\n> >pdb4amber\"\n> >\n> >I have checked the first line of pdb4amber file under $AMBER_HOME/bin. The\n> >first line is as following.\n> >\n> >#!$AMBER_HOME//miniconda/bin/python\n>\n> 1. Can you say when you built Amber20? There has been a recent change in\n> what miniconda does that seems to affect pytraj and pdb4amber. Did you\n> make any changes to the run_cmake script?\n>\n> I think we may know what to do here, and (if so), we will publish a update\n> soon. (cc-ing to Jason)\n>\n> Possible aside:\n>\n> The reference to $AMBER_HOME is very odd: the \"amber.sh\" script (in your\n> installation folder), and everything else we use, uses $AMBERHOME (no\n> underscore). We are trying to make things independent of this variable,\n> but\n> there are still places that refer to $AMBERHOME. Do you have that also\n> set on\n> your machine? Do you know if you did something non-standard to get\n> $AMBER_HOME? This may be unrelated to your pdb4amber problem, but using a\n> non-standard name here is likely to lead to trouble.\n>\n> ...regards...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202007/0247.html",
+      "in_reply_to": 1595385561
+    }
+  ]
+}

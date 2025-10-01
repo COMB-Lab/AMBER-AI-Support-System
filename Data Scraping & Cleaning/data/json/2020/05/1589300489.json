@@ -1,0 +1,45 @@
+{
+  "thread_id": 1589300489,
+  "subject": "help",
+  "messages": [
+    {
+      "message_id": 1589300489,
+      "author": "MYRIAN TORRES RICO",
+      "date_raw": "Tue, 12 May 2020 18:21:29 +0200",
+      "body": "Hi everyone,\nIm trying again to launch MMPBSA but this error apppears and I don't\nknow how correct them:\nBeginning GB calculations with\n/opt/cesga/easybuild-cesga/software/MPI/intel/2016.4.258/impi/5.1.3.223/amber/16-at-17-patchlevel-10-15-cuda/bin/sander\ncalculating complex contribution...\ncalculating receptor contribution...\ncalculating ligand contribution...\nBeginning PB calculations with\n/opt/cesga/easybuild-cesga/software/MPI/intel/201\n6.4.258/impi/5.1.3.223/amber/16-at-17-patchlevel-10-15-cuda/bin/sander\ncalculating complex contribution...\nFile\n\"/opt/cesga/easybuild-cesga/software/MPI/intel/2016.4.258/impi/5.1.3.223/\namber/16-at-17-patchlevel-10-15-cuda/bin/MMPBSA.py\", line\n100, in <module>\napp.run_mmpbsa()\nFile\n\"/opt/cesga/easybuild-cesga/software/MPI/intel/2016.4.258/impi/5.1.3.223/\namber/16-at-17-patchlevel-10-15-cuda/lib/python2.7/site-packages/MMPBSA_mods/mai n.py\", line 218, in\nrun_mmpbsa\nself.calc_list.run(rank, self.stdout)\nFile\n\"/opt/cesga/easybuild-cesga/software/MPI/intel/2016.4.258/impi/5.1.3.223/\namber/16-at-17-patchlevel-10-15-cuda/lib/python2.7/site-packages/MMPBSA_mods/cal culation.py\", line 82, in\nrun\ncalc.run(rank, stdout=stdout, stderr=stderr)\nFile\n\"/opt/cesga/easybuild-cesga/software/MPI/intel/2016.4.258/impi/5.1.3.223/\namber/16-at-17-patchlevel-10-15-cuda/lib/python2.7/site-packages/MMPBSA_mods/cal culation.py\", line 433, in\nrun\nself.prmtop) + '\\n\\t'.join(error_list) + '\\n')\nCalcError:\n/opt/cesga/easybuild-cesga/software/MPI/intel/2016.4.258/impi/5.1.3.2\n23/amber/16-at-17-patchlevel-10-15-cuda/bin/sander\nfailed with prmtop smp-198ptn\n-dry.prmtop!\nThe problem is the dry.prmtop files but I don't know what I have modify...\nAny suggest?\nThanks in advance,\nMyriam",
+      "url": "http://archive.ambermd.org/202005/0152.html"
+    },
+    {
+      "message_id": 1589333667,
+      "author": "David A Case",
+      "date_raw": "Tue, 12 May 2020 21:34:27 -0400",
+      "body": "On Tue, May 12, 2020, MYRIAN TORRES RICO wrote:\n>\n>\n> 23/amber/16-at-17-patchlevel-10-15-cuda/bin/sander failed with\n> prmtop smp-198ptn -dry.prmtop! >\nHave you examined the mdout file from the sander run with the dry.prmtop\nas input? That is likely to provide your first clue about what is going\non.\n....dac",
+      "url": "http://archive.ambermd.org/202005/0155.html",
+      "in_reply_to": 1589300489
+    },
+    {
+      "message_id": 1589390873,
+      "author": "MYRIAN TORRES RICO",
+      "date_raw": "Wed, 13 May 2020 19:27:53 +0200",
+      "body": "Hi David,\nThis is the last step before the calculations stopped, the mdout file\nof pb (because my problems is that I want to obtein GB and PB\nenergies, but only I had obteined GB energies... ):\n2. CONTROL DATA FOR THE RUN\n--------------------------------------------------------------------------------\ndefault_name\nGeneral flags:\nimin = 5, nmropt = 0\nNature and format of input:\nntx = 1, irest = 0, ntrx = 1\nNature and format of output:\nntxo = 2, ntpr = 50, ntrx = 1, ntwr\n= 1\niwrap = 0, ntwx = 0, ntwv = 0, ntwe\n= 0\nioutfm = 1, ntwprt = 0, idecomp = 0,\nrbornstat= 0\nPotential function:\nntf = 1, ntb = 0, igb = 10, nsnb\n= 99999\nipol = 0, gbsa = 0, iesp = 0\ndielc = 1.00000, cut = 999.00000, intdiel = 1.00000\nFrozen or restrained atoms:\nibelly = 0, ntr = 0\nEnergy minimization:\nmaxcyc = 1, ncyc = 10, ntmin = 1\ndx0 = 0.01000, drms = 0.00010\nPB Bomb in pb_aaradi(): No radius assigned for atom 2175 C1 CG\nThanks in advance,\nMyriam\nDavid A Case <david.case.rutgers.\nedu> escribió:\n> On Tue, May 12, 2020, MYRIAN TORRES RICO wrote:\n>>\n>>\n>> 23/amber/16-at-17-patchlevel-10-15-cuda/bin/sander failed with\n>> prmtop smp-198ptn -dry.prmtop! >\n>\n> Have you examined the mdout file from the sander run with the dry.prmtop\n> as input? That is likely to provide your first clue about what is going\n> on.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202005/0163.html",
+      "in_reply_to": 1589300489
+    },
+    {
+      "message_id": 1589506291,
+      "author": "David A Case",
+      "date_raw": "Thu, 14 May 2020 21:31:31 -0400",
+      "body": "On Wed, May 13, 2020, MYRIAN TORRES RICO wrote:\n>PB Bomb in pb_aaradi(): No radius assigned for atom 2175 C1 CG\nJust do a Google search on the error message, and you can see lots of\nadvice. Generally speaking, setting radiopt=0, and using a fairly\nrecent version of AmberTools, will solve the problem. But I'm no PB\nexpert....\n...dac",
+      "url": "http://archive.ambermd.org/202005/0181.html",
+      "in_reply_to": 1589300489
+    },
+    {
+      "message_id": 1589533117,
+      "author": "MYRIAN TORRES RICO",
+      "date_raw": "Fri, 15 May 2020 10:58:37 +0200",
+      "body": "Thanks you so much David, I had proved this parameters radiopt=0 and\ninp=1 and it seems run!\nMyriam\nDavid A Case <david.case.rutgers.\nedu> escribió:\n> On Wed, May 13, 2020, MYRIAN TORRES RICO wrote:\n>\n>> PB Bomb in pb_aaradi(): No radius assigned for atom 2175 C1 CG\n>\n> Just do a Google search on the error message, and you can see lots of\n> advice. Generally speaking, setting radiopt=0, and using a fairly\n> recent version of AmberTools, will solve the problem. But I'm no PB\n> expert....\n>\n> ...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202005/0187.html",
+      "in_reply_to": 1589300489
+    }
+  ]
+}

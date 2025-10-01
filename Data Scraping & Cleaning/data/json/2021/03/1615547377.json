@@ -1,0 +1,29 @@
+{
+  "thread_id": 1615547377,
+  "subject": "Tleap Fatal error",
+  "messages": [
+    {
+      "message_id": 1615547377,
+      "author": "richa anand",
+      "date_raw": "Fri, 12 Mar 2021 16:39:37 +0530",
+      "body": "Dear Users,\nI am using the following input parameters for tleap input. Before it I have\nrun pdb4amber also.\nTleap input:\nsource leaprc.protein.ff14SB\nsource leaprc.RNA.OL3\nsource leaprc.water.tip3p\ndesigned = loadPdb 6mdz-R.amber.pdb\ncheck designed\naddions designed Na+ 8\nsolvatebox designed TIP3PBOX 10.00 0.75\ncharge designed\nsaveAmberParm designed 6mdz-R.amber.prm.top 6mdz-R.amber.prm.crd\nsavepdb designed 6mdz-R.amber.out.pdb\nquit\nAfter running, Tleap I am getting this error message again and again:\nFATAL: Atom .R<U5 805>.A<OP3 29> does not have a type.\nFATAL: Atom .R<U5 805>.A<P 30> does not have a type.\nFATAL: Atom .R<U5 805>.A<OP1 31> does not have a type.\nFATAL: Atom .R<U5 805>.A<OP2 32> does not have a type.\nFATAL: Atom .R<A5 825>.A<P 32> does not have a type.\nFATAL: Atom .R<A5 825>.A<OP1 33> does not have a type.\nFATAL: Atom .R<A5 825>.A<OP2 34> does not have a type.",
+      "url": "http://archive.ambermd.org/202103/0102.html"
+    },
+    {
+      "message_id": 1615553670,
+      "author": "David A Case",
+      "date_raw": "Fri, 12 Mar 2021 07:54:30 -0500",
+      "body": "On Fri, Mar 12, 2021, richa anand wrote:\n>\n>FATAL: Atom .R<U5 805>.A<OP3 29> does not have a type.\n>FATAL: Atom .R<U5 805>.A<P 30> does not have a type.\n>FATAL: Atom .R<U5 805>.A<OP1 31> does not have a type.\n>FATAL: Atom .R<U5 805>.A<OP2 32> does not have a type.\n>FATAL: Atom .R<A5 825>.A<P 32> does not have a type.\n>FATAL: Atom .R<A5 825>.A<OP1 33> does not have a type.\n>FATAL: Atom .R<A5 825>.A<OP2 34> does not have a type.\nYour RNA molecules have terminal monophosphates, which is not the default.\nIf you are using leaprc.RNA.OL3, just add the following line to your tleap\nscript, *after* the \"source leaprc.RNA.OL3\" command:\nloadOff terminal_monophosphate.lib\nIf you are using leaprc.RNA.LJbb, you should edit your input PDB file, to\nname residues 805 and 825 UMP and AMP, respectively.\n(Dan, Christina: the terminal_monophosphate.lib file allows users to avoid\nmodifying files that come from the RCSB, where \"U\" is used for a terminal\nbase irrespective of whether it has an attached phosphate or not. On the\nother hand, it fails if some terminal bases have phosphates and others do\nnot. Do you have thoughts on which is better?\nI'm thinking we should teach pdb4amber to look for this, and automatically\nchange U -> UMP, etc. Then have the -bres option in ambpdb do the reverse.)\n....dac",
+      "url": "http://archive.ambermd.org/202103/0103.html",
+      "in_reply_to": 1615547377
+    },
+    {
+      "message_id": 1615616172,
+      "author": "Kenneth Huang",
+      "date_raw": "Sat, 13 Mar 2021 01:16:12 -0500",
+      "body": "HI,\nThe problem is that you have a terminal base (U5/A5), but you also have a\n(multiple?) phosphate groups on it- any of the end 5' bases by definition\nwon't have the phosphate group on it, so you'd need to cut it off in your\ninput pdb.\nBest,\nKenneth\nOn Fri, Mar 12, 2021 at 6:10 AM richa anand <richaaanand.gmail.com> wrote:\n> Dear Users,\n>\n> I am using the following input parameters for tleap input. Before it I have\n> run pdb4amber also.\n>\n> Tleap input:\n>\n> source leaprc.protein.ff14SB\n> source leaprc.RNA.OL3\n> source leaprc.water.tip3p\n> designed = loadPdb 6mdz-R.amber.pdb\n> check designed\n> addions designed Na+ 8\n> solvatebox designed TIP3PBOX 10.00 0.75\n> charge designed\n> saveAmberParm designed 6mdz-R.amber.prm.top 6mdz-R.amber.prm.crd\n> savepdb designed 6mdz-R.amber.out.pdb\n> quit\n>\n>\n> After running, Tleap I am getting this error message again and again:\n>\n> FATAL: Atom .R<U5 805>.A<OP3 29> does not have a type.\n> FATAL: Atom .R<U5 805>.A<P 30> does not have a type.\n> FATAL: Atom .R<U5 805>.A<OP1 31> does not have a type.\n> FATAL: Atom .R<U5 805>.A<OP2 32> does not have a type.\n> FATAL: Atom .R<A5 825>.A<P 32> does not have a type.\n> FATAL: Atom .R<A5 825>.A<OP1 33> does not have a type.\n> FATAL: Atom .R<A5 825>.A<OP2 34> does not have a type.\n>",
+      "url": "http://archive.ambermd.org/202103/0107.html",
+      "in_reply_to": 1615547377
+    }
+  ]
+}

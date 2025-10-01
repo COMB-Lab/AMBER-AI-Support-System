@@ -1,0 +1,13 @@
+{
+  "thread_id": 1593014655,
+  "subject": "Re: [AMBER] Energy values from mdout files (excluding solvent molecules)",
+  "messages": [
+    {
+      "message_id": 1593014655,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 24 Jun 2020 12:04:15 -0400",
+      "body": "Hi,\nThe \"energy\" calculation from cpptraj will typically only calculate\npotential energies (if velocities are present it will also try to\ncalculate kinetic energies, but that is less reliable due to how the\nleapfrog integrator estimates kinetic energy; cpptraj doesn't have all\nthat information because it's typically not written to trajectory\nfiles). Also, if you want to have the \"exact\" energies you need to\nmake sure you're using PME and the same PME parameters (direct sum\ntolerance, spline order, etc). Cpptraj uses the same defaults as\nsander/pmemd, but you should double check.\nAs far as speed, you can improve things in two ways. One is to use the\nOpenMP-compiled cpptraj; the energy calculation will benefit from this\nquite a bit. The other is to use MPI-compiled cpptraj to divide the\ninput trajectory up. Ideally, use both (the OpenMP and MPI compiled\ncode) and you can benefit from both, just be sure that the number of\nMPI processes times number of OpenMP threads per process doesn't\nexceed the number of available cores.\nHope this helps.\n-Dan\nOn Thu, Apr 23, 2020 at 9:01 AM Eduardo R. Almeida\n<eduardoe.r.a.hotmail.com> wrote:\n>\n> Dear Amber users,\n>\n> I would like to analyze the energies printed in the mdout files referring only to the solute molecules. On the other words, I would like to build and analyze the graphics of these properties (potential energy, kinetic energy, total energy, temperature, pressure, density, volume, ...) excluding the values referring to the solvents molecules. Would it be possible?\n>\n> In order to do that, I used the energy calculation performed by the cpptraj where I selected the solute atoms (only including the lipids molecules) in a atom mask for this calculation. Specifically, this calculation has taken a long time (seven days for a lipid bilayer). Therefore, I would like to know if this alternative really calculates these macroscopic properties generated in the mdout files referring only to the solute molecule.\n>\n> Best regards,\n>\n> Eduardo.\n>\n>\n> ---------------------------------------------------------------------------\n> Eduardo R. Almeida\n> PhD student, Computational chemistry\n> Núcleo de Estudos em Química Computacional (NEQC)\n> Universidade Federal de Juiz de Fora (UFJF)\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202006/0228.html"
+    }
+  ]
+}

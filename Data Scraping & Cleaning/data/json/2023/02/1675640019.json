@@ -1,0 +1,29 @@
+{
+  "thread_id": 1675640019,
+  "subject": "GPU memory error during ABMD run",
+  "messages": [
+    {
+      "message_id": 1675640019,
+      "author": "Owen O'Reilly",
+      "date_raw": "Sun, 5 Feb 2023 18:33:39 -0500",
+      "body": "Dear AMBER community,\nI've recently been encountering an error when I try to run a single-walker\nflooding-type adaptively biased MD run using pmemd.cuda. The run will\nproceed as expected until around 1/10 of the expected duration, at which\npoint it will quit and write out a single error message:\ncudaMemcpy GpuBuffer::Download failed an illegal memory access was\nencountered\nThis has occurred in both AMBER18 and AMBER20, and has occurred with\nidentical simulations that ran properly a few months ago. I'm wondering if\nanyone has ever experienced this issue, and if so what was causing it? Any\nthoughts would be appreciated. The relevant .cntl and .in files are below:\n.cntl file:\n&cntrl\nimin=0, ntx=1, irest=0, ntxo=2, ntpr=25000,\nntwr=250000, ntwx=25000, ntwv=250000, ntwe=250000,\nntf=2, ntc=2, ntb=1, nstlim=25000000, dt=0.002,\nibelly=0,iwrap=1,ntr=0, nmropt=1,\ntemp0=300.0, tempi=300.0, tautp=1.0,\nntt=3, gamma_ln=1.0, ig=-1,\nntp=0, pres0=1.0, comp=44.6,\ntaup=0.2, tol=0.00001, infe=1\n&end\n&ewald\norder=4,\new_type=0\n&end\n/\n&wt type='REST',value1=1.0,value2=1.0, /\n&wt type='END' /\nLISTOUT=src/NoS_Stem.restraint\nDISANG=src/stem_base.rst\n/\n&abmd\nmode='FLOODING'\nmonitor_file='bias/NoS_Dih.mon.1.txt'\nmonitor_freq=500\numbrella_file='bias/NoS_Dih.bias.nc'\nsnapshots_basename='bias/NoS_Dih.snapshots',\ncv_file='src/cv_nstruct_dih.in'\ntimescale=1.0\n/\n&wt type='END'\n/\n.in file:\n&colvar\ncv_type = 'N_OF_STRUCTURES'\ncv_ni = 29, cv_nr = 86,\ncv_i = 156, 171, 187, 202, 218, 233, 249, 264, 280, 313, 627, 661, 1619,\n1653, 0,\n1059, 1075, 1091, 1106, 1120, 1136, 1152, 1167, 1182, 1197, 1518,\n1551, 695, 728\ncv_r = [coordinates, very long list]\ncv_min=0.0,cv_max=2.0\nresolution=0.05\n/\n&colvar\ncv_type = 'COM_TORSION'\ncv_ni = 12,\ncv_i = 355, 553, 0, 256, 648, 0, 225, 1572, 0, 32, 1765, 0\ncv_min = -3.15,cv_max = 3.15\nresolution = 0.315\n/\nSincerely,\nOwen",
+      "url": "http://archive.ambermd.org/202302/0025.html"
+    },
+    {
+      "message_id": 1675690401,
+      "author": "David A Case",
+      "date_raw": "Mon, 6 Feb 2023 08:33:21 -0500",
+      "body": "On Sun, Feb 05, 2023, Owen O'Reilly via AMBER wrote:\n>\n>I've recently been encountering an error when I try to run a single-walker\n>flooding-type adaptively biased MD run using pmemd.cuda. The run will\n>proceed as expected until around 1/10 of the expected duration, at which\n>point it will quit and write out a single error message:\n>\n>cudaMemcpy GpuBuffer::Download failed an illegal memory access was\n>encountered\n>\n>This has occurred in both AMBER18 and AMBER20, and has occurred with\n>identical simulations that ran properly a few months ago.\nCan you say what changed in the past few months? Are \"identical\nsimulations\" truly identical? Did you recompile the codes? Run them on\ndifferent hardware? (etc.)\nDo the cuda tests pass now? It's not impossible that you are seeing a\nhardware problem. Of course, maybe someone on the list will recognize\nthe symptom (the error message itself is of almost no use.)\n....dac",
+      "url": "http://archive.ambermd.org/202302/0032.html",
+      "in_reply_to": 1675640019
+    },
+    {
+      "message_id": 1675698745,
+      "author": "Owen O'Reilly",
+      "date_raw": "Mon, 6 Feb 2023 10:52:25 -0500",
+      "body": "The input files are identical and the job was run on the same hardware, so\nI'm leaning towards it either being an issue with the libraries having been\nrecompiled or possibly a result of my home directory being relocated.\nProbably should have mentioned that in the original posting.\nIn addition, a \"normal\" pmemd.cuda run without the ABMD parameters runs\nwith no issues.\n-Owen\nOn Mon, Feb 6, 2023 at 8:33 AM David A Case <david.case.rutgers.edu> wrote:\n> On Sun, Feb 05, 2023, Owen O'Reilly via AMBER wrote:\n> >\n> >I've recently been encountering an error when I try to run a single-walker\n> >flooding-type adaptively biased MD run using pmemd.cuda. The run will\n> >proceed as expected until around 1/10 of the expected duration, at which\n> >point it will quit and write out a single error message:\n> >\n> >cudaMemcpy GpuBuffer::Download failed an illegal memory access was\n> >encountered\n> >\n> >This has occurred in both AMBER18 and AMBER20, and has occurred with\n> >identical simulations that ran properly a few months ago.\n>\n> Can you say what changed in the past few months? Are \"identical\n> simulations\" truly identical? Did you recompile the codes? Run them on\n> different hardware? (etc.)\n>\n> Do the cuda tests pass now? It's not impossible that you are seeing a\n> hardware problem. Of course, maybe someone on the list will recognize\n> the symptom (the error message itself is of almost no use.)\n>\n> ....dac\n>\n>",
+      "url": "http://archive.ambermd.org/202302/0037.html",
+      "in_reply_to": 1675640019
+    }
+  ]
+}

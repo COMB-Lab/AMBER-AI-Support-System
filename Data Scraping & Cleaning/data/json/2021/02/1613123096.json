@@ -1,0 +1,29 @@
+{
+  "thread_id": 1613123096,
+  "subject": "Testing pmemd.cuda.MPI - how many failed file comparisons are innocuous?",
+  "messages": [
+    {
+      "message_id": 1613123096,
+      "author": "Nikolay N. Kuzmich",
+      "date_raw": "Fri, 12 Feb 2021 12:44:56 +0300",
+      "body": "Dear Amber users,\nI have installed the GPU version of pmemd (Amber 20) in parallel and ran\nthe tests for both 2 and 4 GPUs. The numbers of failed file comparisons\nwere 13 out of 135 and 33 out of 189 for 2 and 4 GPUs, respectively. These\nresults worry me a bit...\nBut what do you think?\nKind regards\nNick",
+      "url": "http://archive.ambermd.org/202102/0115.html"
+    },
+    {
+      "message_id": 1613131673,
+      "author": "David A Case",
+      "date_raw": "Fri, 12 Feb 2021 07:07:53 -0500",
+      "body": "On Fri, Feb 12, 2021, Nikolay N. Kuzmich wrote:\n>\n>I have installed the GPU version of pmemd (Amber 20) in parallel and ran\n>the tests for both 2 and 4 GPUs. The numbers of failed file comparisons\n>were 13 out of 135 and 33 out of 189 for 2 and 4 GPUs, respectively. These\n>results worry me a bit...\nCan you say exactly what test you ran, i.e. what command did you type to run\nthe tests?\n...thanks....dac",
+      "url": "http://archive.ambermd.org/202102/0117.html",
+      "in_reply_to": 1613123096
+    },
+    {
+      "message_id": 1613149055,
+      "author": "Nikolay N. Kuzmich",
+      "date_raw": "Fri, 12 Feb 2021 19:57:35 +0300",
+      "body": "Dear David,\n*> *\n*>I have installed the GPU version of pmemd (Amber 20) in parallel and ran *\n*>the tests for both 2 and 4 GPUs. The numbers of failed file comparisons *\n*>were 13 out of 135 and 33 out of 189 for 2 and 4 GPUs, respectively.\nThese *\n*>results worry me a bit... *\nCan you say exactly what test you ran, i.e. what command did you type to\nrun\nthe tests?\n...thanks....dac\nthat's what I did for the 2 cards right after make install:\nsource $AMBERHOME/amber.sh\nexport LD_LIBRARY_PATH=/usr/local/cuda-11.2/lib64\nexport DO_PARALLEL=\"mpirun -np 2\"\nsudo nvidia-smi -c 0\nexport CUDA_VISIBLE_DEVICES=0,1 *[I am not actually sure if it was\nnecessary - N.K.]*\nmake test\nand after that for the 4 cards:\nexport DO_PARALLEL=\"mpirun -np 4\"\nmake test\nKind regards\nNick",
+      "url": "http://archive.ambermd.org/202102/0120.html",
+      "in_reply_to": 1613123096
+    }
+  ]
+}

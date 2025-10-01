@@ -1,0 +1,37 @@
+{
+  "thread_id": 1715024132,
+  "subject": "Does pdb4amber take care of protonation states?",
+  "messages": [
+    {
+      "message_id": 1715024132,
+      "author": "Abdelrahman, Noureen",
+      "date_raw": "Mon, 6 May 2024 19:35:32 +0000",
+      "body": "Hello everyone,\nI am following the Amber tutorial: Simulating the Green Fluorescent Protein and Building a Modified Amino Acid Residue. In Step 1: Preparing PDB file, there is no mention of H++ or PROPKA for assigning protonation states. Step 1 only includes using pdb4amber to \"massage\" the PDB file to prepare it for use in tleap. The input pdb file (1EMA.pdb) and output file (gfp.pdb) from pdb4amber in the tutorial are both attached here. In the output file, the HIS residues have been changed to either HID or HIE. Does that mean pdb4amber took care of the protonation states? Or how were those changed in the output pdb file?\nThanks,\nNoureen",
+      "url": "http://archive.ambermd.org/202405/0015.html"
+    },
+    {
+      "message_id": 1715046919,
+      "author": "He, Amy",
+      "date_raw": "Tue, 7 May 2024 01:55:19 +0000",
+      "body": "Hi Noureen,\nIn this tutorial, pdb4amber uses program “reduce” via the “--reduce” flag to add the hydrogens, including determining the optimal tautomers for histidine.\n“reduce” can be used as a standalone program. You can find more information about “reduce” from the program’s site:\nhttp://kinemage.biochem.duke.edu/software/reduce/\nhttps://github.com/rlabduke/reduce\nOr from a recent Amber manual.\nIn pdb4amber, the use of reduce is similar to running the standalone reduce with -build and -nuclear. The “-build” option adds hydrogens to sidechains, determine whether to flip and evaluates the histidine tautomers. The “-nuclear” option controls X-H bond lengths and might have some minor effects on the outcomes (tautomeric states).\nHope this helps!\nA\nFrom: Abdelrahman, Noureen via AMBER <amber.ambermd.\norg>\nDate: Monday, May 6, 2024 at 3:36 PM\nTo: AMBER Mailing List <amber.ambermd.\norg>\nSubject: [AMBER] Does pdb4amber take care of protonation states?\nHello everyone,\nI am following the Amber tutorial: Simulating the Green Fluorescent Protein and Building a Modified Amino Acid Residue. In Step 1: Preparing PDB file, there is no mention of H++ or PROPKA for assigning protonation states. Step 1 only includes using pdb4amber to \"massage\" the PDB file to prepare it for use in tleap. The input pdb file (1EMA.pdb) and output file (gfp.pdb) from pdb4amber in the tutorial are both attached here. In the output file, the HIS residues have been changed to either HID or HIE. Does that mean pdb4amber took care of the protonation states? Or how were those changed in the output pdb file?\nThanks,\nNoureen",
+      "url": "http://archive.ambermd.org/202405/0016.html",
+      "in_reply_to": 1715024132
+    },
+    {
+      "message_id": 1715051531,
+      "author": "David A Case",
+      "date_raw": "Mon, 6 May 2024 21:12:11 -0600",
+      "body": "On Mon, May 06, 2024, Abdelrahman, Noureen via AMBER wrote:\n>\n>I am following the Amber tutorial: Simulating the Green Fluorescent Protein\n>and Building a Modified Amino Acid Residue. In Step 1: Preparing PDB file,\n>there is no mention of H++ or PROPKA for assigning protonation states. Step\n>1 only includes using pdb4amber to \"massage\" the PDB file to prepare it\n>for use in tleap. The input pdb file (1EMA.pdb) and output file (gfp.pdb)\n>from pdb4amber in the tutorial are both attached here. In the output file,\n>the HIS residues have been changed to either HID or HIE. Does that mean\n>pdb4amber took care of the protonation states? Or how were those changed in\n>the output pdb file?\nSeveral points:\n1. If you use the --reduce option in pdb4amber, reduce will add hydrogens,\nbut not explicitly based on any pKa calculations.\n2. If the input pdb file has hydrogens, pdb4amber will figure out which\nprotonation state each HIS residue has, and change the residue names\nappropriately.\n3. Starting with AmberTools24, we are including pdb2pqr (which calls propka3\ninternally) to assign protonation states. See Section 12.6 of the Amber\n2024 Reference Manual for more information.\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202405/0017.html",
+      "in_reply_to": 1715024132
+    },
+    {
+      "message_id": 1715367770,
+      "author": "Abdelrahman, Noureen",
+      "date_raw": "Fri, 10 May 2024 19:02:50 +0000",
+      "body": "Ah, makes sense. Thank you Amy!\n________________________________\nFrom: He, Amy <he.1768.buckeyemail.osu.edu>\nSent: Monday, May 6, 2024 9:55 PM\nTo: Abdelrahman, Noureen <noureen.unc.\nedu>; AMBER Mailing List <amber.ambermd.\norg>\nSubject: Re: Does pdb4amber take care of protonation states?\nHi Noureen,\nIn this tutorial, pdb4amber uses program “reduce” via the “--reduce” flag to add the hydrogens, including determining the optimal tautomers for histidine.\n“reduce” can be used as a standalone program. You can find more information about “reduce” from the program’s site:\nhttp://kinemage.biochem.duke.edu/software/reduce/\nhttps://github.com/rlabduke/reduce\nOr from a recent Amber manual.\nIn pdb4amber, the use of reduce is similar to running the standalone reduce with -build and -nuclear. The “-build” option adds hydrogens to sidechains, determine whether to flip and evaluates the histidine tautomers. The “-nuclear” option controls X-H bond lengths and might have some minor effects on the outcomes (tautomeric states).\nHope this helps!\nA\nFrom: Abdelrahman, Noureen via AMBER <amber.ambermd.\norg>\nDate: Monday, May 6, 2024 at 3:36 PM\nTo: AMBER Mailing List <amber.ambermd.\norg>\nSubject: [AMBER] Does pdb4amber take care of protonation states?\nHello everyone,\nI am following the Amber tutorial: Simulating the Green Fluorescent Protein and Building a Modified Amino Acid Residue. In Step 1: Preparing PDB file, there is no mention of H++ or PROPKA for assigning protonation states. Step 1 only includes using pdb4amber to \"massage\" the PDB file to prepare it for use in tleap. The input pdb file (1EMA.pdb) and output file (gfp.pdb) from pdb4amber in the tutorial are both attached here. In the output file, the HIS residues have been changed to either HID or HIE. Does that mean pdb4amber took care of the protonation states? Or how were those changed in the output pdb file?\nThanks,\nNoureen",
+      "url": "http://archive.ambermd.org/202405/0045.html",
+      "in_reply_to": 1715024132
+    }
+  ]
+}

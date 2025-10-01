@@ -1,0 +1,13 @@
+{
+  "thread_id": 1683147561,
+  "subject": "AmberTools23 fails to build with python 3.11",
+  "messages": [
+    {
+      "message_id": 1683147561,
+      "author": "Charo del Genio",
+      "date_raw": "Wed, 3 May 2023 21:59:21 +0100",
+      "body": "Dear all,\nI'm having serious problems building Amber with python 3.11. Specifically, I get a large number of errors when compiling pytraj, many of which are of the kind\npytraj/datasets/c_datasetlist.cpp:26453:1: error: too many initializers for ‘PyTypeObject’ {aka ‘_typeobject’}\nUpon inspecting the file, it looks like the slots that are assumed for PyTypeObject structures are wrong. In fact, the file has\n#if PY_VERSION_HEX >= 0x030B00A2\n0, /*tp_inline_values_offset*/\n#endif\nbut there is no tp_inline_values_offset slot for python 3.11, as can be checked in the official documentation at\nhttps://docs.python.org/3.11/c-api/typeobj.html\nIncidentally, it seems that there may be similar problems for other, older, versions of python as well. The only ones I'm confident are OK are 3.10.11 and 3.9.16.\nAdditionally, the same file causes the errors\npytraj/datasets/c_datasetlist.cpp:30516:26: error: ‘_PyErr_StackItem’ {aka ‘struct _err_stackitem’} has no member named ‘exc_type’\npytraj/datasets/c_datasetlist.cpp:30518:24: error: ‘_PyErr_StackItem’ {aka ‘struct _err_stackitem’} has no member named ‘exc_traceback’\nagain, in numerous locations. I'm not sure, however, what these mean, since I'm by no means an expert of python.\nSo, I suggest that a warning may be put up on the website to indicate that pythonn 3.11 is not (yet) supported.\nCheers,\nCharo\n-- \nDr. Charo I. del Genio\nSenior Lecturer in Statistical Physics\nApplied Mathematics Research Centre (AMRC)\nDesign Hub\nCoventry University Technology Park\nCoventry CV1 5FB\nUK\nhttps://charodelgenio.weebly.com",
+      "url": "http://archive.ambermd.org/202305/0009.html"
+    }
+  ]
+}

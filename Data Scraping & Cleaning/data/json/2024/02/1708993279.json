@@ -1,0 +1,13 @@
+{
+  "thread_id": 1708993279,
+  "subject": "Sander.mpi haults at 999 steps",
+  "messages": [
+    {
+      "message_id": 1708993279,
+      "author": "Montalvillo, Fernando",
+      "date_raw": "Tue, 27 Feb 2024 00:21:19 +0000",
+      "body": "Hi, I have been trying to follow the Amber TI tutorial:\nhttps://ambermd.org/tutorials/advanced/tutorial9/index.html#home\nI cannot run the free energy part of tutorial: the scripts submit_ligands.sh and submit_complex.sh.\nI was able to run the short equilibration for the set-up part which requires parallel running. So, I think I was able to install amber with mpi correctly. I installed Amber20 with AmberTools23 (i don't know if that is a problem). I installed mpi with openmpi-4.1.1\nI don't get any error; the simulation just halts at 999thstep for either the ligands or the complex simulations (weird, since they are different atom number size) and the job keeps appearing on the queue without being halted.\nThis is how I submit the job:\n#!/bin/bash\n#SBATCH --job-name=ti_ligands\n#SBATCH --nodes=1\n#SBATCH --ntasks=16\n#SBATCH --partition=torabifard\n#SBATCH --time=48:00:00\n#SBATCH --output=ti_complex_%j.out\n#SBATCH --error=ti_complex_%j.err\nsource /mfs/io/groups/torabifard/Amber20-mpi-Fernando/amber22/amber.sh\nexport PATH=/mfs/io/groups/torabifard/Amber20-mpi-Fernando/amber22_src/bin:$PATH\nexport LD_LIBRARY_PATH=/mfs/io/groups/torabifard/Amber20-mpi-Fernando/amber22_src/lib:$LD_LIBRARY_PATH\n# Run your simulation command here\nmpirun -np 16 $AMBERHOME/bin/sander.MPI -ng 2 -groupfile ../ti001.group",
+      "url": "http://archive.ambermd.org/202402/0119.html"
+    }
+  ]
+}

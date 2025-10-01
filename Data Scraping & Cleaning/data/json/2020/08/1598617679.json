@@ -1,0 +1,21 @@
+{
+  "thread_id": 1598617679,
+  "subject": "facing problem in 3DRISM",
+  "messages": [
+    {
+      "message_id": 1598617679,
+      "author": "angad sharma",
+      "date_raw": "Fri, 28 Aug 2020 17:57:59 +0530",
+      "body": "Actually I want to calculate the binding free energy of a dimer. And the\ncommand for the 3drism is as follows\nrism3d.snglpnt --pdb beta-fr1.pdb --prmtop beta10.prmtop --traj traj1.nc\n--buffer 45.0 --closure KH --guv betaAB1 --entropicDecomp --polarDecomp\n--xvv SPC_NaCl.xvv\nit is running properly with some warnings .\n|WARNING> Entropy decomposition is an undocumented, experimental feature.\n|WARNING> Turn off entropicDecomp unless you know exactly what you are\ndoing.\nWARNING> Input Xvv file version < 1.000.\nWARNING> Not performing energy/entropy decomposition or temperature\nderivatives.\nI just want to know how to remove these warnings to get correct output.",
+      "url": "http://archive.ambermd.org/202008/0239.html"
+    },
+    {
+      "message_id": 1598624801,
+      "author": "Tyler Luchko (Lists)",
+      "date_raw": "Fri, 28 Aug 2020 07:26:41 -0700",
+      "body": "Hi Angad,\nTo get rid of the warnings, remove the ‘--entropicDecomp’ flag. You only need this if you want to further decompose the excess chemical potential in to entropic and energetic components. OTOH, if you do want entropic decomposition, you will need to recreate your Xvv file. The one you have is from an older version that did not support entropic decomposition. The warning about this being an experimental feature is out of date.\nSimilarly, ‘--polarDecomp’ decomposes the excess chemical potential into polar and non-polar contributions and isn’t necessary to calculate binding free energies.\nTurning on both entropic and polar decomposition will cause your calculation to take much longer, so only use them if you need them.\nTyler\nTyler Luchko\nAssociate Professor\nDepartment of Physics & Astronomy\nCalifornia State University, Northridge\nNorthridge, CA\ntluchko.csun.edu\n818-677-6442\n> On Aug 28, 2020, at 5:27 AM, angad sharma <angadsharma54.gmail.\ncom> wrote:\n>\n> Actually I want to calculate the binding free energy of a dimer. And the\n> command for the 3drism is as follows\n> rism3d.snglpnt --pdb beta-fr1.pdb --prmtop beta10.prmtop --traj traj1.nc\n> --buffer 45.0 --closure KH --guv betaAB1 --entropicDecomp --polarDecomp\n> --xvv SPC_NaCl.xvv\n> it is running properly with some warnings .\n> |WARNING> Entropy decomposition is an undocumented, experimental feature.\n> |WARNING> Turn off entropicDecomp unless you know exactly what you are\n> doing.\n> WARNING> Input Xvv file version < 1.000.\n> WARNING> Not performing energy/entropy decomposition or temperature\n> derivatives.\n> I just want to know how to remove these warnings to get correct output.\n>",
+      "url": "http://archive.ambermd.org/202008/0240.html",
+      "in_reply_to": 1598617679
+    }
+  ]
+}

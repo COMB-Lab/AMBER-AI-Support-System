@@ -1,0 +1,29 @@
+{
+  "thread_id": 1728402635,
+  "subject": "BZIP2 Error when building Amber24",
+  "messages": [
+    {
+      "message_id": 1728402635,
+      "author": "Robert Palmere",
+      "date_raw": "Tue, 8 Oct 2024 15:50:35 +0000",
+      "body": "Hello all,\nI am encountering an issue with BZIP2 library not being completely found when installing AMBER24.\nAt the end of the build I receive multiple instances of the following warning:\nCMake Warning (dev) in CMakeLists.txt: Policy CMP0111 is not set: An imported target missing its location property fails during generation. Run \"cmake --help-policy CMP0111\" for policy details. Use the cmake_policy command to set the policy and suppress this warning. IMPORTED_LOCATION not set for imported target \"BZip2::BZip2\" configuration \"RELEASE\". This warning is for project developers. Use -Wno-dev to suppress it.\nThis is even though I have edited the “run_cmake” file to point to installed BZIP2 library. Here is the “cmake” command I am issuing:\ncmake $AMBER_PREFIX/amber24_src \\\n-DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber24 \\\n-DCOMPILER=GNU \\\n-DMPI=TRUE -DCUDA=TRUE -DINSTALL_TESTS=TRUE \\\n-DDOWNLOAD_MINICONDA=FALSE -DMVAPICH2GDR_GPU_DIRECT_COMM=TRUE \\\n-DZLIB_ROOT=/home/rdp135/zlib/ -DBZIP2_LIBRARIES=/scratch/rdp135/bzip2/lib/libbz2.a -DBZIP2_INCLUDE_DIR=/scratch/rdp135/bzip2/include/ \\\n-DNCCL=TRUE -DNCCL_LIBRARY=/scratch/rdp135/nccl/build/lib/libnccl_static.a -DNCCL_INCLUDE_DIR=/scratch/rdp135/nccl/build/include/ \\\n2>&1 | tee cmake.log\nSo it seems to find BZIP2 when I run cmake but when I go to build using “make install” at 66% I get the following error:\nAmberTools/src/cpptraj/src/CMakeFiles/cpptraj.dir/build.make:1172: *** target pattern contains no `%'. Stop. make[1]: *** [AmberTools/src/cpptraj/src/CMakeFiles/cpptraj.dir/all] Error 2 make: *** [all] Error 2\nLooking in AmberTools/src/cpptraj/src/CMakeFiles/cpptraj.dir/build.cmake at line 1172 I see:\nAmberTools/src/cpptraj/src/cpptraj: BZip2::BZip2-NOTFOUND\nEven though it is found when I run “./run_cmake”:\n-- Found BZip2: /scratch/rdp135/bzip2/lib/libbz2.a (found version \"1.0.8\")\nHow do I get the “IMPORTED_LOCATION” to be set for imported target “BZip2::BZip2” as indicated in the warning messages?\nAny thoughts would be much appreciated.\nBest,\nRobert",
+      "url": "http://archive.ambermd.org/202410/0020.html"
+    },
+    {
+      "message_id": 1728561669,
+      "author": "Téletchéa Stéphane",
+      "date_raw": "Thu, 10 Oct 2024 14:01:09 +0200",
+      "body": "Le 08/10/2024 à 17:50, Robert Palmere via AMBER a écrit :\n> -- Found BZip2: /scratch/rdp135/bzip2/lib/libbz2.a (found version \"1.0.8\")\n>\n>\n> How do I get the “IMPORTED_LOCATION” to be set for imported target “BZip2::BZip2” as indicated in the warning messages?\nDear Robert,\nHave you tried setting up LD_LIBRARY_PATH and include dirs using an\nenvironment variable prior the cmake command?\nI suspect not all routines make uses of the cmake defines (so using both\nmethods may help).\nWhen you have a mixed environment like this, it can be complicated,\nthere are explicit path search (/etc/ls.so.conf and subdirs)\nand implicit ones (deduced from CMAKE variables also).\nOn our supercomputer, the \"find\" command was missing for instance (which\nled to the behaviour your observe).\nHTH,\nStéphane\n-- \nMaître de conférences Hors Classe, PEDR, HDR\nUS2B, Nantes Université, CNRS, UMR 6286, Team Structural Bioinformatics, F-44000 Nantes\nhttp://www.us2b.univ-nantes.fr/\n-\nhttp://www.steletch.org",
+      "url": "http://archive.ambermd.org/202410/0022.html",
+      "in_reply_to": 1728402635
+    },
+    {
+      "message_id": 1728600042,
+      "author": "David A Case",
+      "date_raw": "Thu, 10 Oct 2024 16:40:42 -0600",
+      "body": "On Tue, Oct 08, 2024, Robert Palmere via AMBER wrote:\n>\n>I am encountering an issue with BZIP2 library not being completely found when installing AMBER24.\n>\n>cmake $AMBER_PREFIX/amber24_src \\\n> -DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber24 \\\n> -DCOMPILER=GNU \\\n> -DMPI=TRUE -DCUDA=TRUE -DINSTALL_TESTS=TRUE \\\n> -DDOWNLOAD_MINICONDA=FALSE -DMVAPICH2GDR_GPU_DIRECT_COMM=TRUE \\\n> -DZLIB_ROOT=/home/rdp135/zlib/ -DBZIP2_LIBRARIES=/scratch/rdp135/bzip2/lib/libbz2.a -DBZIP2_INCLUDE_DIR=/scratch/rdp135/bzip2/include/ \\\n> -DNCCL=TRUE -DNCCL_LIBRARY=/scratch/rdp135/nccl/build/lib/libnccl_static.a -DNCCL_INCLUDE_DIR=/scratch/rdp135/nccl/build/include/ \\\n> 2>&1 | tee cmake.log\nIs it possible for you to install libbz2 in a \"standard\" location, like\nunder /usr/lib (often in some folder like /usr/lib/x86_64-linux-gnu)?\nI understand that this requires privileges, but it also avoids the problem\nof having to specify the location in a way that cmake understands.\nIf this is not possible, trying to set an environment variable like\nLD_LIBRARY_PATH might be worth exploring, as has been suggested.\n...dac",
+      "url": "http://archive.ambermd.org/202410/0028.html",
+      "in_reply_to": 1728402635
+    }
+  ]
+}

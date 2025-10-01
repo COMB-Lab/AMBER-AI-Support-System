@@ -1,0 +1,29 @@
+{
+  "thread_id": 1704202586,
+  "subject": "CpHMD, Amber22, MAX_TITR_RES overflow",
+  "messages": [
+    {
+      "message_id": 1704202586,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Tue, 2 Jan 2024 08:36:26 -0500",
+      "body": "Dear Amber Community,\nI sent this question a few days ago, but presume it was missed because of new year celebrations!\nI am getting overflow in the MAX_TITR_RES variable when trying to run a CpHMD simulation with pmemd.cuda using Amber22.\nIt appears that constantpH.F90 is falling back to the hard-coded defaults because it is not reading the following from the top of my cpin file:\n&CNSTPHE_LIMITS\nntres=66, maxh=5, natchrg=273, ntstates=15\n/\nBut I do not know why constantpH.F90 is failing to read this section. How can I fix this error?\nI see the following in constantph.F90:\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202401/0008.html"
+    },
+    {
+      "message_id": 1704213871,
+      "author": "Vinicius Cruzeiro \\(Vinny\\)",
+      "date_raw": "Tue, 2 Jan 2024 16:44:31 +0000",
+      "body": "Just for testing purposes, try using the following and see if the calculations goes through:\n&CNSTPHE_LIMITS\nntres=273, maxh=5, natchrg=273, ntstates=273\n/\nVin�cius Wilian D. Cruzeiro, PhD\nScientist II, Computational Chemistry\nArchitect Therapeutics\nTwitter: .vwcruzeiro\n________________________________\nFrom: Matthew Guberman-Pfeffer via AMBER <amber.ambermd.org>\nSent: Tuesday, January 2, 2024 5:36 AM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: [AMBER] CpHMD, Amber22, MAX_TITR_RES overflow\nDear Amber Community,\nI sent this question a few days ago, but presume it was missed because of new year celebrations!\nI am getting overflow in the MAX_TITR_RES variable when trying to run a CpHMD simulation with pmemd.cuda using Amber22.\nIt appears that constantpH.F90 is falling back to the hard-coded defaults because it is not reading the following from the top of my cpin file:\n&CNSTPHE_LIMITS\nntres=66, maxh=5, natchrg=273, ntstates=15\n/\nBut I do not know why constantpH.F90 is failing to read this section. How can I fix this error?\nI see the following in constantph.F90:\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202401/0011.html",
+      "in_reply_to": 1704202586
+    },
+    {
+      "message_id": 1704217417,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Tue, 2 Jan 2024 12:43:37 -0500",
+      "body": "Yes, that worked! Why? Should I leave the increased settings you mentioned?\nBest,\nMatthew\n> On Jan 2, 2024, at 11:44 AM, Vinicius Cruzeiro (Vinny) <vcruzeiro.architecttherapeutics.\ncom> wrote:\n>\n> *Message sent from a system outside of UConn.*\n>\n> Just for testing purposes, try using the following and see if the calculations goes through:\n>\n> &CNSTPHE_LIMITS\n> ntres=273, maxh=5, natchrg=273, ntstates=273\n> /\n>\n> Vinícius Wilian D. Cruzeiro, PhD\n> Scientist II, Computational Chemistry\n> Architect Therapeutics\n> Twitter: .vwcruzeiro\n> From: Matthew Guberman-Pfeffer via AMBER <amber.ambermd.\norg>\n> Sent: Tuesday, January 2, 2024 5:36 AM\n> To: AMBER Mailing List <amber.ambermd.org>\n> Subject: [AMBER] CpHMD, Amber22, MAX_TITR_RES overflow\n>\n> Dear Amber Community,\n>\n> I sent this question a few days ago, but presume it was missed because of new year celebrations!\n>\n> I am getting overflow in the MAX_TITR_RES variable when trying to run a CpHMD simulation with pmemd.cuda using Amber22.\n> It appears that constantpH.F90 is falling back to the hard-coded defaults because it is not reading the following from the top of my cpin file:\n>\n> &CNSTPHE_LIMITS\n> ntres=66, maxh=5, natchrg=273, ntstates=15\n> /\n>\n> But I do not know why constantpH.F90 is failing to read this section. How can I fix this error?\n>\n> I see the following in constantph.F90:\n>\n> Best,\n> Matthew\n>\n>\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202401/0012.html",
+      "in_reply_to": 1704202586
+    }
+  ]
+}

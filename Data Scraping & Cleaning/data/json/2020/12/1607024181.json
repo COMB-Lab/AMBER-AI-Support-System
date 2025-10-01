@@ -1,0 +1,29 @@
+{
+  "thread_id": 1607024181,
+  "subject": "Calculation halted while running simulation",
+  "messages": [
+    {
+      "message_id": 1607024181,
+      "author": "angad sharma",
+      "date_raw": "Fri, 4 Dec 2020 01:06:21 +0530",
+      "body": "I am running a simulation on dsDNA. It runs well till minimization and\nheating but as it starts for the equilibration process within a minute it\nstops by showing the following error:-\nERROR: Calculation halted. Periodic box dimensions have changed too much\nfrom their initial values.\nYour system density has likely changed by a large amount, probably from\nstarting the simulation from a structure a long way from equilibrium.\n[Although this error can also occur if the simulation has blown up for\nsome reason]\nThe GPU code does not automatically reorganize grid cells and thus you\nwill need to restart the calculation from the previous restart file.\nThis will generate new grid cells and allow the calculation to continue.\nIt may be necessary to repeat this restarting multiple times if your\nsystem\nis a long way from an equilibrated density.\nAlternatively you can run with the CPU code until the density has\nconverged\nand then switch back to the GPU code.\nFor the above process the command was this:\npmemd.cuda -O -i eq.in -o eq.out -p dna1.prmtop -c heat.rst -r eq.rst -x\neq.mdcrd -inf eq.mdinfo",
+      "url": "http://archive.ambermd.org/202012/0053.html"
+    },
+    {
+      "message_id": 1607028267,
+      "author": "Carlos Simmerling",
+      "date_raw": "Thu, 3 Dec 2020 15:44:27 -0500",
+      "body": "it could be changes to the box during equilibration, and a restart may work\nas the message suggests.\nor, it may be high energies are making the system large.\nlook at your mdout file and see if the energies are getting high.\nOn Thu, Dec 3, 2020 at 2:37 PM angad sharma <angadsharma54.gmail.com> wrote:\n> I am running a simulation on dsDNA. It runs well till minimization and\n> heating but as it starts for the equilibration process within a minute it\n> stops by showing the following error:-\n>\n> ERROR: Calculation halted. Periodic box dimensions have changed too much\n> from their initial values.\n> Your system density has likely changed by a large amount, probably from\n> starting the simulation from a structure a long way from equilibrium.\n>\n> [Although this error can also occur if the simulation has blown up for\n> some reason]\n>\n> The GPU code does not automatically reorganize grid cells and thus you\n> will need to restart the calculation from the previous restart file.\n> This will generate new grid cells and allow the calculation to continue.\n> It may be necessary to repeat this restarting multiple times if your\n> system\n> is a long way from an equilibrated density.\n>\n> Alternatively you can run with the CPU code until the density has\n> converged\n> and then switch back to the GPU code.\n>\n> For the above process the command was this:\n> pmemd.cuda -O -i eq.in -o eq.out -p dna1.prmtop -c heat.rst -r eq.rst -x\n> eq.mdcrd -inf eq.mdinfo\n>",
+      "url": "http://archive.ambermd.org/202012/0054.html",
+      "in_reply_to": 1607024181
+    },
+    {
+      "message_id": 1607087912,
+      "author": "David A Case",
+      "date_raw": "Fri, 4 Dec 2020 08:18:32 -0500",
+      "body": "On Fri, Dec 04, 2020, angad sharma wrote:\n>I am running a simulation on dsDNA. It runs well till minimization and\n>heating but as it starts for the equilibration process within a minute it\n>stops by showing the following error:-\nI guess I will push back a little here. The error message you quote\n(reproduced below) is about as specific and detailed a message as you\nwill ever get from Amber. It lists two things you can check (is\nyour energy getting very high, is the density changing by a lot?)\nIt also suggests two things to try: (a) restart the calculation,\nperhaps several times; (b) use the CPU code until you get closer to a\nconverged density. [Personally, I tend to use the latter approach.]\nDid you try any of these suggestions? Note also that it can be\ndangerous to both heat the system and be running constant pressure\n(allowing the density to change) at the same time.\nSome good advice about equilibration is given by Roe and Brooks,\nJ. Chem. Phys. 153, 054123 (2020); doi: 10.1063/5.0013849. Note that\nfinal density equilibration only comes at the last step, and that most\nearlier steps use a 1 fs time step. It is certainly worth trying some\nof the ideas given in this paper if you are having troubles with system\nequilibration.\n...good luck....dac\n----------------------------------------------------------------------------\n>\n>ERROR: Calculation halted. Periodic box dimensions have changed too much\n>from their initial values.\n> Your system density has likely changed by a large amount, probably from\n> starting the simulation from a structure a long way from equilibrium.\n>\n> [Although this error can also occur if the simulation has blown up for\n>some reason]\n>\n> The GPU code does not automatically reorganize grid cells and thus you\n>will need to restart the calculation from the previous restart file.\n>This will generate new grid cells and allow the calculation to continue.\n>It may be necessary to repeat this restarting multiple times if your\n>system is a long way from an equilibrated density.\n>\n> Alternatively you can run with the CPU code until the density has\n>converged and then switch back to the GPU code.\n----------------------------------------------------------------------------",
+      "url": "http://archive.ambermd.org/202012/0064.html",
+      "in_reply_to": 1607024181
+    }
+  ]
+}

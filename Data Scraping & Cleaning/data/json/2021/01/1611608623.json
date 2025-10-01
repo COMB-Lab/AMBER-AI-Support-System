@@ -1,0 +1,21 @@
+{
+  "thread_id": 1611608623,
+  "subject": "abmd ignores cv_min cv_max and resolution for colvar=\"TORSION\"",
+  "messages": [
+    {
+      "message_id": 1611608623,
+      "author": "Luis Simon",
+      "date_raw": "Mon, 25 Jan 2021 22:03:43 +0100",
+      "body": "Hi Amber users…\nI tried to run an abmd calculation with two dihedral angles as colvars. I tried to set some limits to these angles, but amber ignores it, as well as the resolution. This is in the output file:\nNFE : CV #1 periodic, 125 points, min/max = -3.141593/3.141593\nNFE : CV #2 periodic, 125 points, min/max = -3.141593/3.141593\nThe colvar file is at follows:\n&colvar\ncv_type = 'TORSION'\ncv_ni = 4, cv_i = 636,634,640,641\nresolution = 0.2\ncv_min = -1.0\ncv_max = 2.1\n/\n&colvar\ncv_type = 'TORSION'\ncv_ni = 4, cv_i = 634,640,641,644\nresolution = 0.2\ncv_min = -4.2\ncv_max = -0.5\n/\nAnd the &abmd section of the input file is something like:\n&abmd\nmode='FLOODING'\nmonitor_file='abmd.001.txt'\nmonitor_freq=500\ncv_file='abmd_cv.in'\numbrella_file='abmd_umbrella.001.nc'\ntimescale=1\nselection_freq = 5000\nselection_constant = 0.00001\nselection_epsilon = 0.0\nwt_temperature = 10000\nwt_umbrella_file = 'wt_umbrella.001.nc’\n(I run 4 replicas, changing abmd_umbrella.001.nc and wt_umbrella.001.nc to 002, 003, and 004 files). I also wonder which of the nc files should be used with nee-umbrella-slice program. The tutorials uses wt_umbrella.001.nc, but I wonder if the results from different walkers do not need to be combined.\nThanks for your help!",
+      "url": "http://archive.ambermd.org/202101/0352.html"
+    },
+    {
+      "message_id": 1611952786,
+      "author": "Feng Pan",
+      "date_raw": "Fri, 29 Jan 2021 15:39:46 -0500",
+      "body": "Hi, Luis\nThe umbrella files 01-04 are identical in multiple walker ABMD, so you can\njust\ntake the first one to do analysis.\nFeng\nOn Mon, Jan 25, 2021 at 4:04 PM Luis Simon <lsimon.usal.\nes> wrote:\n> Hi Amber users…\n>\n> I tried to run an abmd calculation with two dihedral angles as colvars. I\n> tried to set some limits to these angles, but amber ignores it, as well as\n> the resolution. This is in the output file:\n>\n> NFE : CV #1 periodic, 125 points, min/max = -3.141593/3.141593\n> NFE : CV #2 periodic, 125 points, min/max = -3.141593/3.141593\n>\n> The colvar file is at follows:\n>\n> &colvar\n> cv_type = 'TORSION'\n> cv_ni = 4, cv_i = 636,634,640,641\n> resolution = 0.2\n> cv_min = -1.0\n> cv_max = 2.1\n>\n> /\n> &colvar\n> cv_type = 'TORSION'\n> cv_ni = 4, cv_i = 634,640,641,644\n> resolution = 0.2\n> cv_min = -4.2\n> cv_max = -0.5\n>\n> /\n>\n> And the &abmd section of the input file is something like:\n>\n> &abmd\n> mode='FLOODING'\n> monitor_file='abmd.001.txt'\n> monitor_freq=500\n> cv_file='abmd_cv.in'\n> umbrella_file='abmd_umbrella.001.nc'\n> timescale=1\n> selection_freq = 5000\n> selection_constant = 0.00001\n> selection_epsilon = 0.0\n> wt_temperature = 10000\n> wt_umbrella_file = 'wt_umbrella.001.nc’\n>\n> (I run 4 replicas, changing abmd_umbrella.001.nc and wt_umbrella.001.nc\n> to 002, 003, and 004 files). I also wonder which of the nc files should be\n> used with nee-umbrella-slice program. The tutorials uses\n> wt_umbrella.001.nc, but I wonder if the results from different walkers do\n> not need to be combined.\n>\n>\n> Thanks for your help!\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202101/0386.html",
+      "in_reply_to": 1611608623
+    }
+  ]
+}

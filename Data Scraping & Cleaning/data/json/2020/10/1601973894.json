@@ -1,0 +1,37 @@
+{
+  "thread_id": 1601973894,
+  "subject": "Re: [AMBER] A100 and RTX3090 Benchmarks",
+  "messages": [
+    {
+      "message_id": 1601973894,
+      "author": "Filip Fratev",
+      "date_raw": "Tue, 6 Oct 2020 11:44:54 +0300",
+      "body": "Hi Ross,\nThank you very much for this helpful update!\nDid you already mange to obtain some data for RTX3080?  This would be\nvery interesting bench considering the 2x lower price, 3080 vs 3090, and\nexpected not so significant difference with 3090.\nCan you also help me with an advice how to compile with CUDA 11.1? I can\ndo that only by Cuda 11.0.\nThank you!\nRegards,\nFilip\nНа 28-Sep-20 в 02:30, Ross Walker написа:\n> Hi Amberites,\n>\n> For those who are interested here's benchmarks for Amber 20 on the latest GPUs. I'll add this to the website shortly.\n>\n> CUDA 11.1\n> Amber 20 Update 6\n> AmberTools 20 Update 9\n> Driver 455.23.04\n>\n> Throughput ns/day GPU Model\n> Benchmark RTX2080TI RTX6000 A100 PCIe RTX3090\n> JAC Production NVE 4fs 970.51 1034.88 1199.22 1196.5\n> JAC Production NPT 4fs 940.61 1004.03 1194.5 1157.76\n> JAC Production NVE 2fs 510.21 540.17 611.08 632.19\n> JAC Production NPT 2fs 488.36 515.86 610.09 595.28\n> FactorIX Production NVE 2fs 205.92 217.25 271.36 264.78\n> FactorIX Production NPT 2fs 189.99 206.00 252.87 248.65\n> Cellulose Production NVE 2fs 43.89 47.41 85.23 63.23\n> Cellulose Production NPT 2fs 40.77 45.24 77.98 58.31\n> STMV Production NPT 4fs 25.21 28.49 52.02 38.65\n> TRPCage GB 2fs 1151.74 1189.25 1040.61 1225.53\n> Myoglobin GB 2fs 505.93 600.83 661.22 621.73\n> Nucleosome GB 2fs 15.22 16.81 29.66 21.08\n>\n> RTX3080 coming in a few days.\n>\n> All the best\n> Ross\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202010/0076.html"
+    },
+    {
+      "message_id": 1601987186,
+      "author": "David A Case",
+      "date_raw": "Tue, 6 Oct 2020 08:26:26 -0400",
+      "body": "On Tue, Oct 06, 2020, Filip Fratev wrote:\n>\n>Can you also help me with an advice how to compile with CUDA 11.1? I can\n>do that only by Cuda 11.0.\nTry this: on line 67 of cmake/CudaConfig.cmake, change\nelseif(${CUDA_VERSION} VERSION_EQUAL 11.0)\nto\nelseif(${CUDA_VERSION} VERSION_GREATER_EQUAL 11.0)\nWe're not 100% sure that this will work, but it's worth a try. Ross is\nrunning some tests of some other possible changes.\n....dac",
+      "url": "http://archive.ambermd.org/202010/0080.html",
+      "in_reply_to": 1601973894
+    },
+    {
+      "message_id": 1602004428,
+      "author": "Ross Walker",
+      "date_raw": "Tue, 6 Oct 2020 13:13:48 -0400",
+      "body": "Hi Filip,\nYes I just got done with benchmarking the 3080. Updated table below. - 3080 looks to be the best value for money (if you don't need the extra memory on the 3090).\nAll the best\nRoss\nAmber 20 Benchmarks\nCUDA 11.1\nAmber 20 Update 6\nAmberTools 20 Update 9\nDriver 455.23.04\nThroughput ns/day GPU Model\nBenchmark RTX2080TI RTX6000 A100 PCIe RTX3080 RTX3090\nJAC Production NVE 4fs 970.51 1034.88 1199.22 1101.24 1196.5\nJAC Production NPT 4fs 940.61 1004.03 1194.5 1086.21 1157.76\nJAC Production NVE 2fs 510.21 540.17 611.08 585.81 632.19\nJAC Production NPT 2fs 488.36 515.86 610.09 557.6 595.28\nFactorIX Production NVE 2fs 205.92 217.25 271.36 234.58 264.78\nFactorIX Production NPT 2fs 189.99 206 252.87 217.5 248.65\nCellulose Production NVE 2fs 43.89 47.41 85.23 53.44 63.23\nCellulose Production NPT 2fs 40.77 45.24 77.98 49.69 58.3\nSTMV Production NPT 4fs 25.21 28.49 52.02 32.18 38.65\nTRPCage GB 2fs 1151.74 1189.25 1040.61 1332.27 1225.53\nMyoglobin GB 2fs 505.93 600.83 661.22 619.67 621.73\nNucleosome GB 2fs 15.22 16.81 29.66 17.72 21.08\n> On Oct 6, 2020, at 04:44, Filip Fratev <fratev.biomed.\nbas.bg> wrote:\n>\n> Hi Ross,\n>\n> Thank you very much for this helpful update!\n>\n> Did you already mange to obtain some data for RTX3080? This would be very interesting bench considering the 2x lower price, 3080 vs 3090, and expected not so significant difference with 3090.\n>\n> Can you also help me with an advice how to compile with CUDA 11.1? I can do that only by Cuda 11.0.\n>\n> Thank you!\n>\n> Regards,\n>\n> Filip\n>\n>\n> На 28-Sep-20 в 02:30, Ross Walker написа:\n>> Hi Amberites,\n>>\n>> For those who are interested here's benchmarks for Amber 20 on the latest GPUs. I'll add this to the website shortly.\n>>\n>> CUDA 11.1\n>> Amber 20 Update 6\n>> AmberTools 20 Update 9\n>> Driver 455.23.04\n>>\n>> Throughput ns/day GPU Model\n>> Benchmark RTX2080TI RTX6000 A100 PCIe RTX3090\n>> JAC Production NVE 4fs 970.51 1034.88 1199.22 1196.5\n>> JAC Production NPT 4fs 940.61 1004.03 1194.5 1157.76\n>> JAC Production NVE 2fs 510.21 540.17 611.08 632.19\n>> JAC Production NPT 2fs 488.36 515.86 610.09 595.28\n>> FactorIX Production NVE 2fs 205.92 217.25 271.36 264.78\n>> FactorIX Production NPT 2fs 189.99 206.00 252.87 248.65\n>> Cellulose Production NVE 2fs 43.89 47.41 85.23 63.23\n>> Cellulose Production NPT 2fs 40.77 45.24 77.98 58.31\n>> STMV Production NPT 4fs 25.21 28.49 52.02 38.65\n>> TRPCage GB 2fs 1151.74 1189.25 1040.61 1225.53\n>> Myoglobin GB 2fs 505.93 600.83 661.22 621.73\n>> Nucleosome GB 2fs 15.22 16.81 29.66 21.08\n>>\n>> RTX3080 coming in a few days.\n>>\n>> All the best\n>> Ross\n>>\n>>\n>>",
+      "url": "http://archive.ambermd.org/202010/0081.html",
+      "in_reply_to": 1601973894
+    },
+    {
+      "message_id": 1602005505,
+      "author": "Ross Walker",
+      "date_raw": "Tue, 6 Oct 2020 13:31:45 -0400",
+      "body": "Hi Filip,\nThat change should be all you need. That will compile for SM80 which appears to work fine on RTX3080 and 3090 and passes all the tests. There is also an SM86 option which I have not had a chance to test the difference against SM80 yet. I suspect it would be minimal difference though without corresponding optimization within the AMBER code itself.\nAll the best\nRoss\n> On Oct 6, 2020, at 08:26, David A Case <david.case.rutgers.edu> wrote:\n>\n> On Tue, Oct 06, 2020, Filip Fratev wrote:\n>>\n>> Can you also help me with an advice how to compile with CUDA 11.1? I can\n>> do that only by Cuda 11.0.\n>\n> Try this: on line 67 of cmake/CudaConfig.cmake, change\n>\n> elseif(${CUDA_VERSION} VERSION_EQUAL 11.0)\n>\n> to\n>\n> elseif(${CUDA_VERSION} VERSION_GREATER_EQUAL 11.0)\n>\n> We're not 100% sure that this will work, but it's worth a try. Ross is\n> running some tests of some other possible changes.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202010/0082.html",
+      "in_reply_to": 1601973894
+    }
+  ]
+}

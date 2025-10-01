@@ -1,0 +1,21 @@
+{
+  "thread_id": 1735784490,
+  "subject": "process_mdout.perl doesn't extract Density data",
+  "messages": [
+    {
+      "message_id": 1735784490,
+      "author": "LI An-Bang",
+      "date_raw": "Thu, 2 Jan 2025 10:21:30 +0800",
+      "body": "Hi,\nI use process_mdout.perl  to extract data from \".out\" file of production MD, and found that the  Density data was not extracted.\nI checked the out file and script \"process_mdout.perl\", and found that the data is following:\n NSTEP =     3000   TIME(PS) =      26.000  TEMP(K) =   299.74  PRESS =  -263.7\n Etot   =    -68993.2902  EKtot   =     13497.2295  EPtot      =    -82490.5197\n BOND   =       174.2087  ANGLE   =       496.3624  DIHED      =       365.6343\n 1-4 NB =       192.5854  1-4 EEL =      1915.3936  VDWAALS    =     14605.5558\n EELEC  =   -100268.5665  EHBOND  =         0.0000  RESTRAINT  =         0.0000\n EKCMT  =      6401.9621  VIRIAL  =      7708.5840  VOLUME     =    229520.5066\n CMAP   =        28.3067\n                                                    Density    =         0.9847\n Ewald error estimate:   0.2134E-04\n ------------------------------------------------------------------------------\nBut apparently, script \"process_mdout.perl\" doesn't deal with the \" CMAP \" line before \"Density\" line.\nIt seems that the \" CMAP \" line is newly added, but \"process_mdout.perl\" didn't update correspondingly. \nI add the following statements in line 150 of \"process_mdout.perl\", then it can extract Density data.\n    if (/CMAP/) {\n($cmap) = /.*CMAP.*=(.*\\d*\\.\\d*)/;\nif ( $debug ) {\n    print $_;\n    print \"cmap is $cmap\\n\";\n}\n$_ = <INPUT>;\n    }\nPlease check this.\nPS. What is the meaning of \"EKCMT\" and \"CMAP\"? I searched in Amber24.pdf��but didn't found any results about them.\nAnbang Li\nInstitute of Biophysics, College of Physical Science and Technology,\nCentral China Normal University, China",
+      "url": "http://archive.ambermd.org/202501/0002.html"
+    },
+    {
+      "message_id": 1736053601,
+      "author": "David A Case",
+      "date_raw": "Sat, 4 Jan 2025 22:06:41 -0700",
+      "body": "On Thu, Jan 02, 2025, LI An-Bang via AMBER wrote:\n>\n>But apparently, script \"process_mdout.perl\" doesn't deal with the \"\n>CMAP \" line before \"Density\" line.\n>It seems that the \" CMAP \" line is newly added, but\n>\"process_mdout.perl\" didn't update correspondingly. \nThanks for the report. We will update the process_mdout.perl script\nas you suggest.\n>\n>\n>I add the following statements in line 150 of \"process_mdout.perl\", then it can extract Density data.\n>\n>\n>     if (/CMAP/) {\n> ($cmap) = /.*CMAP.*=(.*\\d*\\.\\d*)/;\n> if ( $debug ) {\n>     print $_;\n>     print \"cmap is $cmap\\n\";\n> }\n> $_ = <INPUT>;\n>     }\n>\n>PS. What is the meaning of \"EKCMT\" and \"CMAP\"? I searched in\n>Amber24.pdf，but didn't found any results about them.\nThe Amber manual has dozens of references to CMAP, but I agree that it more\nor less assumes that readers know what CMAP means. This came originally\nfrom CHARMM, and you can read about it here:\nhttps://charmm-gui.org/?doc=lecture&module=molecules_and_topology&lesson=3\nYou can also read about this here, in what might be the original publication\n(others can correct me if I am wrong):\nMacKerell, A. D. 2004. Empirical force fields for biological macromolecules: overview and issues. J. Comput. Chem. 25:1584–1606\nWe should update the file formats web page and explanations in Chapter 14 in\nthe Amber Reference Manual to better explain this.\n....dac",
+      "url": "http://archive.ambermd.org/202501/0022.html",
+      "in_reply_to": 1735784490
+    }
+  ]
+}

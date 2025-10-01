@@ -1,0 +1,37 @@
+{
+  "thread_id": 1743054684,
+  "subject": "Errors in Antechamber",
+  "messages": [
+    {
+      "message_id": 1743054684,
+      "author": "Devid Sahu",
+      "date_raw": "Thu, 27 Mar 2025 11:21:24 +0530",
+      "body": "Dear Users\nI want to run Antechamber for an organic molecule consisting of 280 atoms,\nwhich was optimized and assigned charges using the following parameters:\nInitially, the molecule was optimized using:\n*1*.%NProcShared=16\n%mem=16GB\n%chk=opt.chk\n# opt b3lyp/6-31g geom=connectivity\nUsing output from *1, *I ran:\n*2*.%NProcShared=16\n%mem=16GB\n%chk=opt2.chk\n#p b3lyp/6-31+g(d,p) pop=MK iop(6/33=2, 6/42=6) nosymm\nscf(xqc,maxcycle=9999)\nThen using output log file of *2,* I ran:\n*3*.%nprocshared=16\n%mem=16GB\n%chk=est_grid.chk\n#p b3lyp/6-31+g(d,p) nosymm iop(6/33=2,6/42=6) scf=(xqc,maxcycle=9999)\npop(chelpg,regular)\nFinally, I tried to run Antechamber using the final output log file with\nthe following command:\n*antechamber -i est_grid.log -fi gout -o est_grid.mol2 -fo mol2 -c resp -nc\n0 -m 1 -rn MOL*\nHowever, I encountered the following warning messages:\nWarning: atom type of C41 (cc) and C42 (cd) may be wrong.\nWarning: atom type of C85 (cc) and C86 (cd) may be wrong.\nWarning: atom type of C151 (cc) and C152 (cd) may be wrong.\nAdditionally, at the end of the process, I received this error:\n/home/s/miniconda3/envs/AmberTools23/bin/wrapped_progs/antechamber: Fatal\nError!\nCannot properly run \"/home/s/miniconda3/envs/AmberTools23/bin/respgen -i\nANTECHAMBER_RESP.AC -o ANTECHAMBER_RESP1.IN -f resp1 -e 1\".\nCould anyone help me resolve this issue? Any suggestions would be highly\nappreciated.\nThanks!!",
+      "url": "http://archive.ambermd.org/202503/0053.html"
+    },
+    {
+      "message_id": 1743107001,
+      "author": "Patricio Barletta",
+      "date_raw": "Thu, 27 Mar 2025 20:23:21 +0000",
+      "body": "Those warnings (errors) are coming `atomtype`, one of the from programs called by antechamber. Antechamber calls `atomtype`, bondtype, espgen, respgen and then resp, you can check them on the amber manual.\nSpecify GAFF2 (-at gaff2) and get bcc charges for your molecule (-c bcc). If you get the same errors, then you know the gaussian run is not related and that your starting molecule has the wrong connectivity or is not being properly specified (eg: it's coming from a PDB with bad or no CONECT records, missing Hs, etc.).",
+      "url": "http://archive.ambermd.org/202503/0057.html",
+      "in_reply_to": 1743054684
+    },
+    {
+      "message_id": 1743154764,
+      "author": "Devid Sahu",
+      "date_raw": "Fri, 28 Mar 2025 15:09:24 +0530",
+      "body": "Dear Users\nI wanted to follow up on my previous query regarding the Error in\nAntechamber.\nBelow is my original question for reference:\nI want to run Antechamber for an organic molecule consisting of 280 atoms,\nwhich was optimized and assigned charges using the following parameters:\nInitially, the molecule was optimized using:\n*1*.%NProcShared=16\n%mem=16GB\n%chk=opt.chk\n# opt b3lyp/6-31g geom=connectivity\nUsing output from *1, *I ran:\n*2*.%NProcShared=16\n%mem=16GB\n%chk=opt2.chk\n#p b3lyp/6-31+g(d,p) pop=MK iop(6/33=2, 6/42=6) nosymm\nscf(xqc,maxcycle=9999)\nThen using output log file of *2,* I ran:\n*3*.%nprocshared=16\n%mem=16GB\n%chk=est_grid.chk\n#p b3lyp/6-31+g(d,p) nosymm iop(6/33=2,6/42=6) scf=(xqc,maxcycle=9999)\npop(chelpg,regular)\nFinally, I tried to run Antechamber using the final output log file with\nthe following command:\n*antechamber -i est_grid.log -fi gout -o est_grid.mol2 -fo mol2 -c resp -nc\n0 -m 1 -rn MOL*\nHowever, I encountered the following warning messages:\nWarning: atom type of C41 (cc) and C42 (cd) may be wrong.\nWarning: atom type of C85 (cc) and C86 (cd) may be wrong.\nWarning: atom type of C151 (cc) and C152 (cd) may be wrong.\nAdditionally, at the end of the process, I received this error:\n/home/s/miniconda3/envs/AmberTools23/bin/wrapped_progs/antechamber: Fatal\nError!\nCannot properly run \"/home/s/miniconda3/envs/AmberTools23/bin/respgen -i\nANTECHAMBER_RESP.AC <\nhttp://antechamber_resp.ac/\n> -o ANTECHAMBER_RESP1.IN\n<\nhttp://antechamber_resp1.in/\n> -f resp1 -e 1\".\nCould anyone help me resolve this issue?\nI would really appreciate any insights or suggestions.\nThank you for your time.\nOn Thu, Mar 27, 2025 at 11:21 AM Devid Sahu <ds890.snu.\nedu.in> wrote:\n> Dear Users\n>\n> I want to run Antechamber for an organic molecule consisting of 280 atoms,\n> which was optimized and assigned charges using the following parameters:\n>\n> Initially, the molecule was optimized using:\n> *1*.%NProcShared=16\n> %mem=16GB\n> %chk=opt.chk\n> # opt b3lyp/6-31g geom=connectivity\n>\n> Using output from *1, *I ran:\n> *2*.%NProcShared=16\n> %mem=16GB\n> %chk=opt2.chk\n> #p b3lyp/6-31+g(d,p) pop=MK iop(6/33=2, 6/42=6) nosymm\n> scf(xqc,maxcycle=9999)\n>\n> Then using output log file of *2,* I ran:\n> *3*.%nprocshared=16\n> %mem=16GB\n> %chk=est_grid.chk\n> #p b3lyp/6-31+g(d,p) nosymm iop(6/33=2,6/42=6) scf=(xqc,maxcycle=9999)\n> pop(chelpg,regular)\n>\n> Finally, I tried to run Antechamber using the final output log file with\n> the following command:\n> *antechamber -i est_grid.log -fi gout -o est_grid.mol2 -fo mol2 -c resp\n> -nc 0 -m 1 -rn MOL*\n>\n> However, I encountered the following warning messages:\n> Warning: atom type of C41 (cc) and C42 (cd) may be wrong.\n> Warning: atom type of C85 (cc) and C86 (cd) may be wrong.\n> Warning: atom type of C151 (cc) and C152 (cd) may be wrong.\n>\n> Additionally, at the end of the process, I received this error:\n> /home/s/miniconda3/envs/AmberTools23/bin/wrapped_progs/antechamber: Fatal\n> Error!\n> Cannot properly run \"/home/s/miniconda3/envs/AmberTools23/bin/respgen -i\n> ANTECHAMBER_RESP.AC -o ANTECHAMBER_RESP1.IN -f resp1 -e 1\".\n>\n> Could anyone help me resolve this issue? Any suggestions would be highly\n> appreciated.\n>\n> Thanks!!\n>",
+      "url": "http://archive.ambermd.org/202503/0060.html",
+      "in_reply_to": 1743054684
+    },
+    {
+      "message_id": 1743270717,
+      "author": "David A Case",
+      "date_raw": "Sat, 29 Mar 2025 11:51:57 -0600",
+      "body": "On Thu, Mar 27, 2025, Patricio Barletta via AMBER wrote:\n>Those warnings (errors) are coming `atomtype`, one of the from programs\n>called by antechamber. Antechamber calls `atomtype`, bondtype, espgen,\n>respgen and then resp, you can check them on the amber manual.\nA small addition: when getting this sort of error from antechamber, look at\nthe various files in the folder you are working in. They will often contain\ninformation about the \"real\" errors.\n>\n>Specify GAFF2 (-at gaff2) and get bcc charges for your molecule (-c\n>bcc).\nAnother: now, the recommended charge model for gaff2 is abcg2, not bcc. See\nthe Reference Manual for information and literature citations.\n....dac",
+      "url": "http://archive.ambermd.org/202503/0067.html",
+      "in_reply_to": 1743054684
+    }
+  ]
+}

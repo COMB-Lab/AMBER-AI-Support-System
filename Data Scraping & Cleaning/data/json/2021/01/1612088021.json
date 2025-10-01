@@ -1,0 +1,21 @@
+{
+  "thread_id": 1612088021,
+  "subject": "Can't restart a RXSGLD run (possible bug)",
+  "messages": [
+    {
+      "message_id": 1612088021,
+      "author": "Charo del Genio",
+      "date_raw": "Sun, 31 Jan 2021 10:13:41 +0000",
+      "body": "Dear all,\ncontinuing the adventures in carrying out a RXSGLD, I'm having difficulties restarting the run. Specifically, when trying to restart the simulation, it dies at the very beginning, and the output\nfiles contain the message\n================================\nNo guiding effect on the first replica!\ntempsg, sgft=: 1.0000000000000000 1.0000000000000000\n================================\nNeedless to say, in the mdin files, tempsg and sgft for each replica are unchanged from the first run. I have tried to figure out the origin of the problem, but I have thus far failed.\nDoes anyone have any idea of why I am getting into this problem?\nCheers,\nCharo\n-- \nDr. Charo I. del Genio\nSenior Lecturer in Statistical Physics\nApplied Mathematics Research Centre (AMRC)\nDesign Hub\nCoventry University Technology Park\nCoventry CV1 5FB\nUK\nhttps://charodelgenio.weebly.com",
+      "url": "http://archive.ambermd.org/202101/0396.html"
+    },
+    {
+      "message_id": 1612096528,
+      "author": "Charo del Genio",
+      "date_raw": "Sun, 31 Jan 2021 12:35:28 +0000",
+      "body": "Dear all,\nin reference to my previous message, I think I did find the bug, in the end. What seems to happen is that, upon restarting the RXSGLD run, sander reads the final *guiding* temperatures from the\nreplica records in the restart files, and overwrites temp0 with them. In other words, it treats it at a T-REMD rather than a RXSGLD. In turn, this causes the error down the line.\nUpon detecting that the run is a RXSGLD, and not a T-REMD, the correct behaviour for sander should be to overwrite tempsg, rather than temp0, with the final temperatures found in the restart files,\nsince these are the final SGLD guiding temperatures for each replica, rather than their actual temperatures, which, for RXSGLD runs, are normally all the same and specified by temp0 in the input files.\nIt is highly likely that this is due to the sander command-line option (-rem 1) being the same for both T-REMD and RXSGLD, together with the omission of checks in the code to distinguish between the\ntwo cases. If I may give a suggestion, a new command-line option should be introduced specifically for RXSGLD (for example -rem 6, which I believe is currently unused), because the differences in\nbehaviour with T-REMD are only few, but they are subtle and substantial. This way, one would avoid similar problems in the future.\nBefore a fix, a very cumbersome workaround is to make sure the restart files are ASCII (ntxo=1), then, at the end of each run, edit them and remove the last number in the second row of each file,\nkeeping track of them. Then, edit all the input files and replace by hand the value of tempsg in each replica with the value of its current stage, which is the last number in the second row of the\ncorresponding restart file (the one that was removed). Then, restart the job. Obviously, if one has more than just a few replicas, this can become a bit confusing.\nSo, is there any way I can help in patching this?\nCheers,\nCharo\n-- \nDr. Charo I. del Genio\nSenior Lecturer in Statistical Physics\nApplied Mathematics Research Centre (AMRC)\nDesign Hub\nCoventry University Technology Park\nCoventry CV1 5FB\nUK\nhttps://charodelgenio.weebly.com",
+      "url": "http://archive.ambermd.org/202101/0397.html",
+      "in_reply_to": 1612088021
+    }
+  ]
+}

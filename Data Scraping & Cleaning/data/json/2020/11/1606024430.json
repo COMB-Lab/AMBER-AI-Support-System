@@ -1,0 +1,21 @@
+{
+  "thread_id": 1606024430,
+  "subject": "Tail-to-tail peptide linker?",
+  "messages": [
+    {
+      "message_id": 1606024430,
+      "author": "Alexander Izvorski",
+      "date_raw": "Sat, 21 Nov 2020 21:53:50 -0800",
+      "body": "Dear Amber users,\nI'm trying to simulate a peptide which has a synthetic linker connecting\nthe C-terminal ends to two polypeptide chains. The structure looks like\nthis:\nN-chain1-C-linker-C-chain2-N\nI have gone through the tutorial B5 Simulating the Green Fluorescent Protein\n<\nhttp://ambermd.org/tutorials/basic/tutorial5/\n> and I understand how to\ncreate a custom residue; if this was a synthetic linker between C and N,\nthe linker could be modelled as a \"residue\" and I'd be all set, but in this\ncase it's hard to see how to do that and also reverse the chain direction.\nIs there some way to create a system of the type I'm trying to model?\nMore broadly, is there a general way to model covalent linkages between\nmultiple protein chains, including a linker? (anything including\nsidechain-sidechain, head-tail, tail-tail, head-head, sidechain-tail etc,\nand including having a custom linker in between using GAFF)\nSincerely,\nAlex",
+      "url": "http://archive.ambermd.org/202011/0204.html"
+    },
+    {
+      "message_id": 1606053450,
+      "author": "David A Case",
+      "date_raw": "Sun, 22 Nov 2020 08:57:30 -0500",
+      "body": "On Sat, Nov 21, 2020, Alexander Izvorski wrote:\n>\n>I'm trying to simulate a peptide which has a synthetic linker connecting\n>the C-terminal ends to two polypeptide chains. The structure looks like\n>this:\n>\n>N-chain1-C-linker-C-chain2-N\nI think in this case, you need to create a PDB file looks like this:\n...first protein, N->C\nTER\n...linker\nTER\n...second protein, N->C\nafter loadPdb, use the bond command to create the cross-links you want\nbetween the linker and the two protein chains.\nThe downside of this is that the residue numbering for the second\nprotein will still be in the N->C direction. I can't immediately think\nof any easy way around this. (A number of subtle parts of both setup\nand analysis assume that proteins are described N->C; it's probably\neasier to live with it than to try to change it.)\nAs always, maybe someone on the list has a better idea.\n...good luck....dac",
+      "url": "http://archive.ambermd.org/202011/0205.html",
+      "in_reply_to": 1606024430
+    }
+  ]
+}

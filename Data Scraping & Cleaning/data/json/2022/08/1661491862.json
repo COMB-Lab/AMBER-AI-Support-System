@@ -1,0 +1,21 @@
+{
+  "thread_id": 1661491862,
+  "subject": "pmemd.mpi crashes",
+  "messages": [
+    {
+      "message_id": 1661491862,
+      "author": "Rybenkov, Valentin V.",
+      "date_raw": "Fri, 26 Aug 2022 05:31:02 +0000",
+      "body": "Hi,\nI have an odd problem. The same job for pmemd.MPI crashes on one computer but not another. This is a new installation of Amber22 on CentOS 7.9. The node that crashes is a better cpu, 128 cores with 125 GB memory. Nodes that work are 20-32 cores with ~40 GB memory. Diagnostics on the failing machine does not reveal problems. Crashes happen at various times when the job is rerun, but seem to occur whenever it is time to write data to disc, not necessarily for the first time. At low tasks_per_node (e.g. =6), crashes happen later. Could this difference in memory per core be an issue? Is there a parameter in Amber that controls how much memory per core is allocated?\nThanks,\nValentin\nValentin V. Rybenkov\nUniversity of Oklahoma\n101 Stephenson Parkway\nNorman, OK 73019\nWeb: antibiotics.oucreate.com",
+      "url": "http://archive.ambermd.org/202208/0124.html"
+    },
+    {
+      "message_id": 1661518131,
+      "author": "David A Case",
+      "date_raw": "Fri, 26 Aug 2022 08:48:51 -0400",
+      "body": "On Fri, Aug 26, 2022, Rybenkov, Valentin V. via AMBER wrote:\n>\n>I have an odd problem. The same job for pmemd.MPI crashes on one computer\n>but not another. This is a new installation of Amber22 on CentOS 7.9. The\n>node that crashes is a better cpu, 128 cores with 125 GB memory. Nodes that\n>work are 20-32 cores with ~40 GB memory. Diagnostics on the failing machine\n>does not reveal problems. Crashes happen at various times when the job is\n>rerun, but seem to occur whenever it is time to write data to disc, not\n>necessarily for the first time. At low tasks_per_node (e.g. =6), crashes\n>happen later. Could this difference in memory per core be an issue? Is\n>there a parameter in Amber that controls how much memory per core is\n>allocated?\nUse the \"limit\" command to check your StackSize limit; Using \"unlimit\nstacksize\" (exact command may vary with your OS and shell) can often help\nprevent segfaults.\nIf this doesn't help, can you provide more info on exactly what messages you\nsee when the program \"crashes\"? Does this happen during the middle of a\nrun, or (say) at or before the first step? Are you using the same number of\nMPI threads on each machine? Is there any indication of bad energetics\nbefore the crash occurs? Do the simulations appear to be successful using\nthe serial version of pmemd?\n...thx...dac",
+      "url": "http://archive.ambermd.org/202208/0127.html",
+      "in_reply_to": 1661491862
+    }
+  ]
+}

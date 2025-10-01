@@ -1,0 +1,37 @@
+{
+  "thread_id": 1616142913,
+  "subject": "AMBER 18 Installation error",
+  "messages": [
+    {
+      "message_id": 1616142913,
+      "author": "Rituparna Roy",
+      "date_raw": "Fri, 19 Mar 2021 08:35:13 +0000 (UTC)",
+      "body": "Dear all,\nOn installing Amber 18 in Ubuntu 20.04 LTS, I am getting the following error after ./configure gnu:\nChecking NetCDF...\nUsing bundled NetCDF library.\nStarting NetCDF build.\nConfiguring NetCDF C interface (may be time-consuming)...\nError: NetCDF C configure returned 1\nNetCDF configure failed!  Check the netcdf_config.log file\nin the /home/ritu/software/amber18//AmberTools/src directory.\nConfigure failed due to the errors above!\nI am attaching the netcdf_config.log file\nKindly help.",
+      "url": "http://archive.ambermd.org/202103/0183.html"
+    },
+    {
+      "message_id": 1616162178,
+      "author": "David A Case",
+      "date_raw": "Fri, 19 Mar 2021 09:56:18 -0400",
+      "body": "On Fri, Mar 19, 2021, Rituparna Roy wrote:\n>On installing Amber 18 in Ubuntu 20.04 LTS, I am getting the following\n>error after ./configure gnu:\nCan you say what version of gcc you are using (output of \"gcc --version\")?\nFor others on the list who may have encountered this, the error message is\nthis:\n----------------------------------------------------------------------------\nconfig.status: executing depfiles commands\nconfig.status: error: in\n`/home/ritu/software/amber18/AmberTools/src/netcdf-4.6.1':\nconfig.status: error: Something went wrong bootstrapping makefile fragments\nfor automatic dependency tracking. Try re-running configure with the\n'--disable-dependency-tracking' option to at least be able to build\nthe package (albeit without support for automatic dependency tracking).\nSee `config.log' for more details\n----------------------------------------------------------------------------\nPlease post a comment if you know what is going on here.\nWorth trying: add \"--disable-dependency-tracking\" to the line that\nstarts \"./configure\" in AmberTools/src/configure2 (about line 2684). Then\nre-run the configure script.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202103/0187.html",
+      "in_reply_to": 1616142913
+    },
+    {
+      "message_id": 1616164184,
+      "author": "Rituparna Roy",
+      "date_raw": "Fri, 19 Mar 2021 14:29:44 +0000 (UTC)",
+      "body": "I have gcc version:  gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0\nI had also added \"--disable-dependency-tracking\" to the line starting with \"./configure\" in AmberTools/src/configure2  (about line 2684),\n./configure --disable-dependency-tracking --host=x86_64-k1om-linux --build=x86_64-unknown-linux \\\nCC=\"$cc -mmic\" CFLAGS=\"$cflags $cnooptflags\" LDFLAGS=\"$ldflags -mmic\" \\\n--prefix=$amberprefix --disable-shared --disable-netcdf-4 --disable-dap \\\n--disable-doxygen > ../netcdf_config.log 2>&1\nBut the same error persists.\nOn Friday, 19 March, 2021, 7:26:50 pm IST, David A Case <david.case.rutgers.\nedu> wrote:\nOn Fri, Mar 19, 2021, Rituparna Roy wrote:\n>On installing Amber 18 in Ubuntu 20.04 LTS, I am getting the following\n>error after ./configure gnu:\nCan you say what version of gcc you are using (output of \"gcc --version\")?\nFor others on the list who may have encountered this, the error message is\nthis:\n----------------------------------------------------------------------------\nconfig.status: executing depfiles commands\nconfig.status: error: in\n`/home/ritu/software/amber18/AmberTools/src/netcdf-4.6.1':\nconfig.status: error: Something went wrong bootstrapping makefile fragments\nfor automatic dependency tracking.  Try re-running configure with the\n'--disable-dependency-tracking' option to at least be able to build\nthe package (albeit without support for automatic dependency tracking).\nSee `config.log' for more details\n----------------------------------------------------------------------------\nPlease post a comment if you know what is going on here.\nWorth trying: add \"--disable-dependency-tracking\" to the line that\nstarts \"./configure\" in AmberTools/src/configure2  (about line 2684).  Then\nre-run the configure script.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202103/0189.html",
+      "in_reply_to": 1616142913
+    },
+    {
+      "message_id": 1616201557,
+      "author": "David A Case",
+      "date_raw": "Fri, 19 Mar 2021 20:52:37 -0400",
+      "body": "On Fri, Mar 19, 2021, Rituparna Roy wrote:\n> I have gcc version:� gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0\nThat should be OK>\n>I had also added \"--disable-dependency-tracking\" to the line starting with\n>\"./configure\" in AmberTools/src/configure2� (about line 2684),\n>\n>But the same error persists.\nAssuming that it is *exactly* the same error, you may need to add the\n--disable-dependency-tracking to the netcdf fortran configure later on the\nconfigure2 script. But things are all very odd, since others have not\nreported this problem. Upgrading to Amber20 is certainly a very real\noption.\n....dac",
+      "url": "http://archive.ambermd.org/202103/0193.html",
+      "in_reply_to": 1616142913
+    }
+  ]
+}

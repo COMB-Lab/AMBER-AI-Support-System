@@ -1,0 +1,53 @@
+{
+  "thread_id": 1598019045,
+  "subject": "trouble with pdb4amber",
+  "messages": [
+    {
+      "message_id": 1598019045,
+      "author": "Mattia Cavallaro",
+      "date_raw": "Fri, 21 Aug 2020 16:10:45 +0200",
+      "body": "Good morning everyone,\nI'm working through the tutorial B5 about \"Simulating the GFP\". At the\nvery beginning, I have to eliminate water and add hydrogen atoms using\npdb4amber. The problem is that when I write the command and launch it,\nthe terminal give me the following error:\nimportlib.metadata.PackageNotFoundError: pdb4amber\nWhat can I do?\nThanks!\n[\nhttps://intranet.unisr.it/5xmille.jpg\n]",
+      "url": "http://archive.ambermd.org/202008/0145.html"
+    },
+    {
+      "message_id": 1598019352,
+      "author": "Bill Ross",
+      "date_raw": "Fri, 21 Aug 2020 07:15:52 -0700",
+      "body": "Showing what you typed, a copy/paste of that and the following error to\nsee the details, would mean a lot.\nMy only guess from the importlib.blabla message is that you might be\nrunning a shell script through a wrong interpreter.\nBill\nOn 8/21/20 7:10 AM, Mattia Cavallaro wrote:\n> Good morning everyone,\n>\n> I'm working through the tutorial B5 about \"Simulating the GFP\". At the\n> very beginning, I have to eliminate water and add hydrogen atoms using\n> pdb4amber. The problem is that when I write the command and launch it,\n> the terminal give me the following error:\n>\n> importlib.metadata.PackageNotFoundError: pdb4amber\n>\n> What can I do?\n>\n>\n> Thanks!\n>\n>\n>\n> [\nhttps://intranet.unisr.it/5xmille.jpg\n]\n>\n>",
+      "url": "http://archive.ambermd.org/202008/0147.html",
+      "in_reply_to": 1598019045
+    },
+    {
+      "message_id": 1598020419,
+      "author": "viktor drobot",
+      "date_raw": "Fri, 21 Aug 2020 17:33:39 +0300",
+      "body": "Hello. Please take a look at\nhttps://github.com/Amber-MD/pdb4amber/issues/85\nThis problem is related to the bug with Python setuptools\n73, Viktor\nпт, 21 авг. 2020 г., 17:16 Bill Ross <ross.cgl.\nucsf.edu>:\n> Showing what you typed, a copy/paste of that and the following error to\n> see the details, would mean a lot.\n>\n> My only guess from the importlib.blabla message is that you might be\n> running a shell script through a wrong interpreter.\n>\n> Bill\n>\n> On 8/21/20 7:10 AM, Mattia Cavallaro wrote:\n> > Good morning everyone,\n> >\n> > I'm working through the tutorial B5 about \"Simulating the GFP\". At the\n> > very beginning, I have to eliminate water and add hydrogen atoms using\n> > pdb4amber. The problem is that when I write the command and launch it,\n> > the terminal give me the following error:\n> >\n> > importlib.metadata.PackageNotFoundError: pdb4amber\n> >\n> > What can I do?\n> >\n> >\n> > Thanks!\n> >\n> >\n> >\n> > [\nhttps://intranet.unisr.it/5xmille.jpg\n]\n> >\n> >",
+      "url": "http://archive.ambermd.org/202008/0148.html",
+      "in_reply_to": 1598019045
+    },
+    {
+      "message_id": 1598029147,
+      "author": "David A Case",
+      "date_raw": "Fri, 21 Aug 2020 12:59:07 -0400",
+      "body": "On Fri, Aug 21, 2020, Mattia Cavallaro wrote:\n>\n>importlib.metadata.PackageNotFoundError: pdb4amber\nAre you using AmberTools20? Have you applied update.5? This should\nsolve the python problem here.\n(Run \"$AMBERHOME/update_amber --help\" to get info on updates; or just\nre-run \"run_cmake\")\n[You can also visit github.com as Viktor suggested, but the above\n*should* be simpler.]\n...good luck....dac",
+      "url": "http://archive.ambermd.org/202008/0150.html",
+      "in_reply_to": 1598019045
+    },
+    {
+      "message_id": 1598063622,
+      "author": "Hai Nguyen",
+      "date_raw": "Fri, 21 Aug 2020 22:33:42 -0400",
+      "body": "On Fri, Aug 21, 2020 at 12:59 PM David A Case <david.case.rutgers.edu>\nwrote:\n> On Fri, Aug 21, 2020, Mattia Cavallaro wrote:\n> >\n> >importlib.metadata.PackageNotFoundError: pdb4amber\n>\n>\n> Are you using AmberTools20? Have you applied update.5? This should\n> solve the python problem here.\n>\n>\nHi Dave,\nThe update.5 only helps if a user accepts amber to install Miniconda.\nIf a user uses his/her own python, there's still an issue.\nFor a quick fix, users can downgrade the version to setuptools==47.3.1\n(just like update.5 does).\nHai\n(Run \"$AMBERHOME/update_amber --help\" to get info on updates; or just\n> re-run \"run_cmake\")\n>\n>\n> [You can also visit github.com as Viktor suggested, but the above\n> *should* be simpler.]\n>\n> ...good luck....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202008/0156.html",
+      "in_reply_to": 1598019045
+    },
+    {
+      "message_id": 1598099157,
+      "author": "Mattia Cavallaro",
+      "date_raw": "Sat, 22 Aug 2020 14:25:57 +0200",
+      "body": "So, I have to downgrade the setuptools version and the problem will be\nfixed. Right?\nOn 22/08/20 04:33, Hai Nguyen wrote:\n> On Fri, Aug 21, 2020 at 12:59 PM David A Case <david.case.rutgers.edu>\n> wrote:\n>\n>> On Fri, Aug 21, 2020, Mattia Cavallaro wrote:\n>>> importlib.metadata.PackageNotFoundError: pdb4amber\n>>\n>\n>> Are you using AmberTools20? Have you applied update.5? This should\n>> solve the python problem here.\n>>\n>>\n> Hi Dave,\n> The update.5 only helps if a user accepts amber to install Miniconda.\n> If a user uses his/her own python, there's still an issue.\n>\n> For a quick fix, users can downgrade the version to setuptools==47.3.1\n> (just like update.5 does).\n>\n> Hai\n>\n> (Run \"$AMBERHOME/update_amber --help\" to get info on updates; or just\n>> re-run \"run_cmake\")\n>>\n>>\n>\n>> [You can also visit github.com as Viktor suggested, but the above\n>> *should* be simpler.]\n>>\n>> ...good luck....dac\n>>\n>>\n>>",
+      "url": "http://archive.ambermd.org/202008/0157.html",
+      "in_reply_to": 1598019045
+    }
+  ]
+}

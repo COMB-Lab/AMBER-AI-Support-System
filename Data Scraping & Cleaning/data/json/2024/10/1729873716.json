@@ -1,0 +1,21 @@
+{
+  "thread_id": 1729873716,
+  "subject": "How to Derive missing parameters for modified nucleosides (OL15/OL21)",
+  "messages": [
+    {
+      "message_id": 1729873716,
+      "author": "Maciej Spiegel",
+      "date_raw": "Fri, 25 Oct 2024 18:28:36 +0200",
+      "body": "Dear Users,\nI am new to molecular dynamics and am currently working on modified DNA/RNA nucleosides, derived from the OL21 and OL15 available templates, respectively. I would like to stick with these force fields instead of GAFF2, but I am wondering if it's reasonable to use GAFF2-generated parameters if the DNA/RNA forcefields cannot find them and yield “ATTN, needs revision”.\nAlternatively —and maybe that’s even more wise — I could derive parameters using QM calculations. OL21 seems to be primarily based on parm99 (Figure 1 of\nhttps://doi.org/10.1021/acs.jctc.3c00233\n<\nhttps://doi.org/10.1021/acs.jctc.3c00233\n>). According to the Amber24 manual and related studies:\n-\nhttps://doi.org/10.1002/1096-987X(200009\n)21:12<1049::AID-JCC3>3.0.CO;2-F <\nhttps://doi.org/10.1002/1096-987X(200009\n)21:12%3C1049::AID-JCC3%3E3.0.CO;2-F>\n-\nhttps://doi.org/10.1002/jcc.540161106\n<\nhttps://doi.org/10.1002/jcc.540161106\n>\n-\nhttps://doi.org/10.1021/ct600329w\n<\nhttps://doi.org/10.1021/ct600329w\n>\n, it seems that HF/6-31G(d) was used. I must not use a higher-level quantum theory, such as PBE0-D4/def2-TZVP for scans and fitting, as it might introduce inconsistencies. Is my understanding correct?\nFinally, can the DU atom of \"antechamber […] -at AMBER” type be simply resolved by manually editing it in the RESP-fitted .mol2 and then providing a .frcmod file encompassing this new atom type during the tleap step?\nThanks in advance,\n–\nMaciej Spiegel, MPharm PhD\nassistant professor\n.GitHub <\nhttps://farmaceut.github.io/\n>\nDepartment of Organic Chemistry and Pharmaceutical Technology,\nFaculty of Pharmacy, Wroclaw Medical University\nBorowska 211A, 50-556 Wroclaw, Poland",
+      "url": "http://archive.ambermd.org/202410/0090.html"
+    },
+    {
+      "message_id": 1730386393,
+      "author": "David A Case",
+      "date_raw": "Thu, 31 Oct 2024 08:53:13 -0600",
+      "body": "On Fri, Oct 25, 2024, Maciej Spiegel via AMBER wrote:\n>\n>I am new to molecular dynamics and am currently working on modified\n>DNA/RNA nucleosides, derived from the OL21 and OL15 available templates,\n>respectively. I would like to stick with these force fields instead of\n>GAFF2, but I am wondering if it's reasonable to use GAFF2-generated\n>parameters if the DNA/RNA forcefields cannot find them and yield “ATTN,\n>needs revision”.\nIt is recommended to start from standard Amber force fields, and use those\natom types as much as possible. Charges for the modifications should\nprobably use RESP charges with HF/6-31G*; you probably want to make as many\natoms have charges from the standard force field as possible -- i.e. limit\nthe number of atoms that have modified charges.\nBe sure to check the literature for work similar to what you want to do.\nThe contributed parameters web page\n(\nhttps://ambermd.org/AmberModels_contrib.php\n) has pointers for how to carry\nout RESP calculations, as well as pointers to a variety of modified\nnucleotides.\n>, it seems that HF/6-31G(d) was used. I must not use a higher-level quantum\n>theory, such as PBE0-D4/def2-TZVP for scans and fitting, as it might\n>introduce inconsistencies. Is my understanding correct?\nHF/6-31G(d) should only be used for charge determination. Better QM is\nappropriate for getting bond, angle and torsion parametes.\n>\n>Finally, can the DU atom of \"antechamber […] -at AMBER” type be simply\n>resolved by manually editing it in the RESP-fitted .mol2 and then providing\n>a .frcmod file encompassing this new atom type during the tleap step?\nYes, this can often work. Use your chemical intution, and be sure to test\nnew parameterizations on small systems first, before inserting them into\nlarge nucleic acid constructs.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202410/0102.html",
+      "in_reply_to": 1729873716
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "thread_id": 1621430653,
+  "subject": "How do I generate prmtop file for system containing more than 1 ligand?",
+  "messages": [
+    {
+      "message_id": 1621430653,
+      "author": "Min Chiang Gary Ong",
+      "date_raw": "Wed, 19 May 2021 06:24:13 -0700",
+      "body": "Hello,\nI am only interested in studying the interaction between 2 or more small\nmolecules (no proteins).\nWhile I can generate the prmtop and inpcrd file for a single ligand with no\nissues, I struggle to make it work for multiple ligands. I am able to\ngenerate the prmtop file successfully, but when I tried to visualize it\nwith VMD (load prmtop with the PDB file containing 2), the bonds are\ntotally haywire.\nAttached is 'asphaltene.pdb' - the original small molecule which I can\ngenerate a prmtop successfully, 'asphaltene-dimer.pdb' is 2 of the same\nmolecule in a same pdb file separated by TER and with different coordinates.\nI used tleap to generate my desired files as mentioned in the tutorial.\nsource leaprc.gaff #Source leaprc file for gaff\nloadamberprep asphaltene.prepi #Load the prepi file for the ligand\nloadamberparams asphaltene.frcmod\nmol = loadpdb asphaltene_dimer.pdb #Load PDB file for protein-ligand complex\nsaveamberparm mol asphaltene_test.prmtop asphaltene_test.inpcrd #Save AMBER\ntopology and coordinate files\nquit #Quit tleap program\nThe prepi and frcmod files are generated based on the single molecule PDB\nfile. However, the prmtop file I obtained using the above commands gave me\nwrong results when I tried to visualize it with VMD with the PDB.\nGary",
+      "url": "http://archive.ambermd.org/202105/0172.html"
+    },
+    {
+      "message_id": 1621441180,
+      "author": "Carlos Simmerling",
+      "date_raw": "Wed, 19 May 2021 12:19:40 -0400",
+      "body": "I think it may be that you are loading the original pdb with the leap\nprmtop. The atom order may not match. Try saving a pdb from inside leap and\nusing that with the prmtop for Vmd.\nOn Wed, May 19, 2021, 9:24 AM Min Chiang Gary Ong <minchiao.ucr.edu> wrote:\n> Hello,\n>\n> I am only interested in studying the interaction between 2 or more small\n> molecules (no proteins).\n>\n> While I can generate the prmtop and inpcrd file for a single ligand with no\n> issues, I struggle to make it work for multiple ligands. I am able to\n> generate the prmtop file successfully, but when I tried to visualize it\n> with VMD (load prmtop with the PDB file containing 2), the bonds are\n> totally haywire.\n>\n> Attached is 'asphaltene.pdb' - the original small molecule which I can\n> generate a prmtop successfully, 'asphaltene-dimer.pdb' is 2 of the same\n> molecule in a same pdb file separated by TER and with different\n> coordinates.\n>\n> I used tleap to generate my desired files as mentioned in the tutorial.\n>\n> source leaprc.gaff #Source leaprc file for gaff\n> loadamberprep asphaltene.prepi #Load the prepi file for the ligand\n> loadamberparams asphaltene.frcmod\n> mol = loadpdb asphaltene_dimer.pdb #Load PDB file for protein-ligand\n> complex\n> saveamberparm mol asphaltene_test.prmtop asphaltene_test.inpcrd #Save AMBER\n> topology and coordinate files\n> quit #Quit tleap program\n>\n> The prepi and frcmod files are generated based on the single molecule PDB\n> file. However, the prmtop file I obtained using the above commands gave me\n> wrong results when I tried to visualize it with VMD with the PDB.\n>\n> Gary\n>",
+      "url": "http://archive.ambermd.org/202105/0174.html",
+      "in_reply_to": 1621430653
+    },
+    {
+      "message_id": 1621444943,
+      "author": "David A Case",
+      "date_raw": "Wed, 19 May 2021 13:22:23 -0400",
+      "body": "On Wed, May 19, 2021, Min Chiang Gary Ong wrote:\n>\n>The prepi and frcmod files are generated based on the single molecule PDB\n>file. However, the prmtop file I obtained using the above commands gave me\n>wrong results when I tried to visualize it with VMD with the PDB.\nCan you say exactly what you did in VMD? The inputs to VMD should be your\nprmtop file and inpcrd file (both created by the saveAmberParm command in\ntleap.). The phrase \"visualize it with VMD with the PDB\" is pretty vague:\nwhat is \"it\" in this context, and what you do mean by \"with the PDB\".?\nYour approach looks OK...let's hope it's just a VMD problem.\n...dac\np.s. if it doesn't seem to be VMD, you can try this: use ambpdb to create a\nPDB file from your prmtop/inpcrd pair. Use a text editor to compare to your\nstarting dimer structure, or just load this new PDB file into VMD. And/or:\nuse the checkstructure option in cpptraj to look for bad bonds and contacts.",
+      "url": "http://archive.ambermd.org/202105/0176.html",
+      "in_reply_to": 1621430653
+    }
+  ]
+}

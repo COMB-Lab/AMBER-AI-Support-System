@@ -1,0 +1,45 @@
+{
+  "thread_id": 1630290508,
+  "subject": "descrepancy in net charge - TI output",
+  "messages": [
+    {
+      "message_id": 1630290508,
+      "author": "Delwakkada Liyanage, Senal Dinuka",
+      "date_raw": "Mon, 30 Aug 2021 02:28:28 +0000",
+      "body": "Dear amber users and developers,\nI have attempted a thermodynamic integration for absolute binding free energy estimation. I noticed a difference in the net charge according to the ParmEd output and the TI mdout for TI region 1. I have utilized the same topology file for the simulation and ParmEd both. In theory, I believe those should be the same for my TI mask for region 1. I appreciate a clarification in this regard.\nTI mdout\n--------------------------------------------------------------------------------\n3. ATOMIC COORDINATES AND VELOCITIES\n--------------------------------------------------------------------------------\ndefault_name\nbegin time read from input coords =216149.999 ps\nNumber of triangulated 3-point waters found: 13886\nSum of charges for TI region 1 = 26.00000000\nAssuming uniform neutralizing plasma\nSum of charges for TI region 2 = 22.00000000\nAssuming uniform neutralizing plasma\nParmEd output\nReading input from STDIN...\n> parm complex_solv.prmtop\nAdding prmtop complex_solv.prmtop to parm list. complex_solv.prmtop is the active parm.\n> netCharge\nThe net charge of :* is 8.0000\nThank you\nSenal Liyanage",
+      "url": "http://archive.ambermd.org/202108/0165.html"
+    },
+    {
+      "message_id": 1630328318,
+      "author": "David A Case",
+      "date_raw": "Mon, 30 Aug 2021 08:58:38 -0400",
+      "body": "On Mon, Aug 30, 2021, Delwakkada Liyanage, Senal Dinuka wrote:\n>\n>I have attempted a thermodynamic integration for absolute binding free\n>energy estimation. I noticed a difference in the net charge according\n>to the ParmEd output and the TI mdout for TI region 1.\n?? I don't see any discrepancy.\n> Number of triangulated 3-point waters found: 13886\n>\n> Sum of charges for TI region 1 = 26.00000000\n> Assuming uniform neutralizing plasma\n>\n>\n> Sum of charges for TI region 2 = 22.00000000\n> Assuming uniform neutralizing plasma\n>\n>The net charge of :* is 8.0000\nParmEd is reporting the net charge of all residues, \":*\". pmemd is reporting\nthe charges for the TI regions you defined, which are presumably not the\nentire system.\n....dac",
+      "url": "http://archive.ambermd.org/202108/0166.html",
+      "in_reply_to": 1630290508
+    },
+    {
+      "message_id": 1630332177,
+      "author": "Delwakkada Liyanage, Senal Dinuka",
+      "date_raw": "Mon, 30 Aug 2021 14:02:57 +0000",
+      "body": "Hello Dr. Case,\nThank you for this clarification. I was confused since I had already charge neutralized the system through tleap prior to these calculations.\nI would like one small clarification. According to my system, I have duplicates of the ligand where I specify the charge and vdW removal through \"crgmask\" and \"scmask#\". I would like to know when specifying the starting and ending states through \"timask#\", should I include the DNA residues as well? For example, this is the input for decharging step at \"lambda=0.5\"\nicfe = 1, clambda = 0.56262, klambda = 1,\ntimask1 = ':1-26', timask2 = ':1-25,27',\nifsc = 0, crgmask = ':27',\nresidues 26 and 27 are the copies of my ligand.\nThanks\nSenal\n________________________________\nFrom: David A Case <david.case.rutgers.edu>\nSent: Monday, August 30, 2021 7:58 AM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] descrepancy in net charge - TI output\nOn Mon, Aug 30, 2021, Delwakkada Liyanage, Senal Dinuka wrote:\n>\n>I have attempted a thermodynamic integration for absolute binding free\n>energy estimation. I noticed a difference in the net charge according\n>to the ParmEd output and the TI mdout for TI region 1.\n?? I don't see any discrepancy.\n> Number of triangulated 3-point waters found: 13886\n>\n> Sum of charges for TI region 1 = 26.00000000\n> Assuming uniform neutralizing plasma\n>\n>\n> Sum of charges for TI region 2 = 22.00000000\n> Assuming uniform neutralizing plasma\n>\n>The net charge of :* is 8.0000\nParmEd is reporting the net charge of all residues, \":*\". pmemd is reporting\nthe charges for the TI regions you defined, which are presumably not the\nentire system.\n....dac",
+      "url": "http://archive.ambermd.org/202108/0167.html",
+      "in_reply_to": 1630290508
+    },
+    {
+      "message_id": 1630354072,
+      "author": "David A Case",
+      "date_raw": "Mon, 30 Aug 2021 16:07:52 -0400",
+      "body": "On Mon, Aug 30, 2021, Delwakkada Liyanage, Senal Dinuka wrote:\n>\n>Thank you for this clarification. I was confused since I had already charge\n>neutralized the system through tleap prior to these calculations.\nSince parmed is reporting a non-neutral system, you might want to\ninvestigate what happened at the tleap stage.\n>\n>I would like one small clarification. According to my system, I have\n>duplicates of the ligand where I specify the charge and vdW removal through\n>\"crgmask\" and \"scmask#\". I would like to know when specifying the starting\n>and ending states through \"timask#\", should I include the DNA residues as\n>well? For example, this is the input for decharging step at \"lambda=0.5\"\n>\n> icfe = 1, clambda = 0.56262, klambda = 1,\n> timask1 = ':1-26', timask2 = ':1-25,27',\n> ifsc = 0, crgmask = ':27',\n>\n>residues 26 and 27 are the copies of my ligand.\nGenerally, you want the TI regions to be small, and not include atoms that\nare not changing between the end states. IF the DNA residues are unchanged\nbetween the two end states, you (generally) don't want them to be in the TI\nregions. Others may have other things to advise here, since I don't do very\nmany TI calculations any more.\n>> Sum of charges for TI region 1 = 26.00000000\n>> Sum of charges for TI region 2 = 22.00000000\nGiven what you said, there are very odd values. If residues 1-25 are DNA,\nwhy aren't the net charges negative? Does the ligand have an overall charge\nof 4, which might somehow explain the difference between TI region 1 and\nregion 2?\n....dac",
+      "url": "http://archive.ambermd.org/202108/0170.html",
+      "in_reply_to": 1630290508
+    },
+    {
+      "message_id": 1630448110,
+      "author": "Delwakkada Liyanage, Senal Dinuka",
+      "date_raw": "Tue, 31 Aug 2021 22:15:10 +0000",
+      "body": "Given what you said, there are very odd values. If residues 1-25 are DNA,\nwhy aren't the net charges negative? Does the ligand have an overall charge\nof 4, which might somehow explain the difference between TI region 1 and region 2?\nYes. My ligand has an overall charge of +4. So, the charge difference in TI region 2 is correct. However, it still doesn't explain the positive charge for TI region 1 when DNA is also considered. I analyzed the net charge of DNA through ParmEd and it was given as -23.000. So, with the ligand residue sum of charges for TI region 1 should be -18.00 and TI region 2 should be -22.00. I appreciate your thoughts regarding this.\nSenal\n________________________________\nFrom: David A Case <dacase1.gmail.com>\nSent: Monday, August 30, 2021 3:07 PM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] descrepancy in net charge - TI output\nOn Mon, Aug 30, 2021, Delwakkada Liyanage, Senal Dinuka wrote:\n>\n>Thank you for this clarification. I was confused since I had already charge\n>neutralized the system through tleap prior to these calculations.\nSince parmed is reporting a non-neutral system, you might want to\ninvestigate what happened at the tleap stage.\n>\n>I would like one small clarification. According to my system, I have\n>duplicates of the ligand where I specify the charge and vdW removal through\n>\"crgmask\" and \"scmask#\". I would like to know when specifying the starting\n>and ending states through \"timask#\", should I include the DNA residues as\n>well? For example, this is the input for decharging step at \"lambda=0.5\"\n>\n> icfe = 1, clambda = 0.56262, klambda = 1,\n> timask1 = ':1-26', timask2 = ':1-25,27',\n> ifsc = 0, crgmask = ':27',\n>\n>residues 26 and 27 are the copies of my ligand.\nGenerally, you want the TI regions to be small, and not include atoms that\nare not changing between the end states. IF the DNA residues are unchanged\nbetween the two end states, you (generally) don't want them to be in the TI\nregions. Others may have other things to advise here, since I don't do very\nmany TI calculations any more.\n>> Sum of charges for TI region 1 = 26.00000000\n>> Sum of charges for TI region 2 = 22.00000000\nGiven what you said, there are very odd values. If residues 1-25 are DNA,\nwhy aren't the net charges negative? Does the ligand have an overall charge\nof 4, which might somehow explain the difference between TI region 1 and\nregion 2?\n....dac",
+      "url": "http://archive.ambermd.org/202108/0178.html",
+      "in_reply_to": 1630290508
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "thread_id": 1674387157,
+  "subject": "Problem met in running GBn2 model",
+  "messages": [
+    {
+      "message_id": 1674387157,
+      "author": "Jiaan Zhu",
+      "date_raw": "Sun, 22 Jan 2023 11:32:37 +0000",
+      "body": "Dear Amber users,\nI’m trying to run simulations for a 8-mer ssDNA with artificial nucleotides by GBn2 model. I ran 5000 steps of energy minimization and then equilibration. I encountered phosphate aggregation in the equilibration step, as shown in the attached image. I checked the terms in the output file and found the rms fluctuation of EELEC and EGB were very large, EELEC significantly increased and EGB significantly decreased. I’m wondering if someone ever met a similar problem and how to deal with it. For normal ssDNA(without artificial nucleotides) everything works well, it only happens when adding new nucleotides.\nMy prmtop/prmcrd files, min.in, equ.in files are attached.\nBest regards,\nJiaan",
+      "url": "http://archive.ambermd.org/202301/0099.html"
+    },
+    {
+      "message_id": 1674394178,
+      "author": "Carlos Simmerling",
+      "date_raw": "Sun, 22 Jan 2023 08:29:38 -0500",
+      "body": "That seems unusual. Can you share your leap input? That's also where\nimportant things are set.\nOn Sun, Jan 22, 2023, 6:40 AM Jiaan Zhu via AMBER <amber.ambermd.\norg> wrote:\n> Dear Amber users,\n>\n> I’m trying to run simulations for a 8-mer ssDNA with artificial\n> nucleotides by GBn2 model. I ran 5000 steps of energy minimization and then\n> equilibration. I encountered phosphate aggregation in the equilibration\n> step, as shown in the attached image. I checked the terms in the output\n> file and found the rms fluctuation of EELEC and EGB were very large, EELEC\n> significantly increased and EGB significantly decreased. I’m wondering if\n> someone ever met a similar problem and how to deal with it. For normal\n> ssDNA(without artificial nucleotides) everything works well, it only\n> happens when adding new nucleotides.\n>\n> My prmtop/prmcrd files, min.in, equ.in files are attached.\n>\n> Best regards,\n> Jiaan\n>\n>",
+      "url": "http://archive.ambermd.org/202301/0100.html",
+      "in_reply_to": 1674387157
+    },
+    {
+      "message_id": 1674410357,
+      "author": "David A Case",
+      "date_raw": "Sun, 22 Jan 2023 12:59:17 -0500",
+      "body": "On Sun, Jan 22, 2023, Jiaan Zhu via AMBER wrote:\n>\n>\n> I’m trying to run simulations for a 8-mer ssDNA with artificial\n> nucleotides by GBn2 model.\nIn addition to what Carlos said: I'm concerned that your modified DNA\nresidues (DHY, DFX, DF, DH) are not recognized in the the code as being\n\"nucleic acid residues\", in the isnucat() routine in egb.F90 (in sander).\nThis would result in getting incorrect neck parameters assigned to the atoms\nin those residues. Since things seem to work well withouth modified\nnucleotides, it might be that you just need to tell Amber about your\nmodified residue names. Seems worth a try....look at the egb.F90 code, in\nthe isnucat() subroutine. Doesn't look that hard to modify.\nOf course, the problem could be somewhere else entirely, but this issue\nneeds to be addressed in any case.\n....dac",
+      "url": "http://archive.ambermd.org/202301/0103.html",
+      "in_reply_to": 1674387157
+    }
+  ]
+}

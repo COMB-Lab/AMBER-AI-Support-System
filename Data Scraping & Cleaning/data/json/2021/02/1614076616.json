@@ -1,0 +1,37 @@
+{
+  "thread_id": 1614076616,
+  "subject": "Problem with pmemd.MPI",
+  "messages": [
+    {
+      "message_id": 1614076616,
+      "author": "Pranjal Bhuyan",
+      "date_raw": "Tue, 23 Feb 2021 16:06:56 +0530",
+      "body": "Dear sir/madam, we have installed amber18 in our workstation and have\ncompiled parallel (MPI) versions of amber. But when we tried to run\ndynamics we could not do the same with pmemd.MPI. Instead, we have to use\nsander.MPI which is very much slower. Can you please give us a solution for\nthis issue so that we can run the dynamics by pmemd.MPI. The error that has\noccurred is as follows:\nsystem msg for write_line failure: Bad file descriptor\nMPI version of PMEMD must be used with 2 or more processors!\nMPI version of PMEMD must be used with 2 or more processors!\nMPI version of PMEMD must be used with 2 or more processors!\nMPI version of PMEMD must be used with 2 or more processors!\nMPI version of PMEMD must be used with 2 or more processors!\nMPI version of PMEMD must be used with 2 or more processors!\nMPI version of PMEMD must be used with 2 or more processors!\nMPI version of PMEMD must be used with 2 or more processors!\nMPI version of PMEMD must be used with 2 or more processors!\nMPI version of PMEMD must be used with 2 or more processors!\nMPI version of PMEMD must be used with 2 or more processors!\nMPI version of PMEMD must be used with 2 or more processors!\nMPI version of PMEMD must be used with 2 or more processors!\napplication called MPI_Abort(MPI_COMM_WORLD, 1) - process 0\n[unset]: write_line error; fd=-1 buf=:cmd=abort exitcode=1\n*Sincerely,*\n*Pranjal Bhuyan*\n*Research Scholar*\n*Department of Chemistry*\n*Cotton University*\n*Guwahati-781001, Assam, India*",
+      "url": "http://archive.ambermd.org/202102/0233.html"
+    },
+    {
+      "message_id": 1614084117,
+      "author": "David A Case",
+      "date_raw": "Tue, 23 Feb 2021 07:41:57 -0500",
+      "body": "On Tue, Feb 23, 2021, Pranjal Bhuyan wrote:\n> MPI version of PMEMD must be used with 2 or more processors!\nWhat is the command line that you used? It should be something like this:\nmpirun -np 4 pmemd.MPI [....other options here ]\n[This might be different if a queueing system like slurm is used. Contact a\nsystem administrator for help in that case.]\nHere I chose 4 as the number of MPI threads. (Try short simulations with\nvarying numbers of threads to get an idea of scaling for your system.)\n....dac",
+      "url": "http://archive.ambermd.org/202102/0234.html",
+      "in_reply_to": 1614076616
+    },
+    {
+      "message_id": 1614145521,
+      "author": "Pranjal Bhuyan",
+      "date_raw": "Wed, 24 Feb 2021 11:15:21 +0530",
+      "body": "dear sir, the command line we have used is as follows:\nnohup /home/new/amber18/amber18/bin/mpirun -np 16\n/home/new/amber18/amber18/bin/pmemd.MPI -o -i...(other options)\nOn Tue, Feb 23, 2021 at 6:12 PM David A Case <david.case.rutgers.edu> wrote:\n> On Tue, Feb 23, 2021, Pranjal Bhuyan wrote:\n>\n> > MPI version of PMEMD must be used with 2 or more processors!\n>\n> What is the command line that you used? It should be something like this:\n>\n> mpirun -np 4 pmemd.MPI [....other options here ]\n>\n> [This might be different if a queueing system like slurm is used. Contact\n> a\n> system administrator for help in that case.]\n>\n> Here I chose 4 as the number of MPI threads. (Try short simulations with\n> varying numbers of threads to get an idea of scaling for your system.)\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202102/0241.html",
+      "in_reply_to": 1614076616
+    },
+    {
+      "message_id": 1614169492,
+      "author": "David A Case",
+      "date_raw": "Wed, 24 Feb 2021 07:24:52 -0500",
+      "body": "On Wed, Feb 24, 2021, Pranjal Bhuyan wrote:\n>\n>nohup /home/new/amber18/amber18/bin/mpirun -np 16\n>/home/new/amber18/amber18/bin/pmemd.MPI -o -i...(other options)\nIs that all on one line, or was it split into two lines, as in the email?\n(The symptoms are consistent with not having everything on a single line.)\nSince it's not working, take away the \"nohup\" so you will immediately see\nthe errors on the screen. (Or, look at the nohup.out file. You will\nprobably get more information there.)\n....dac",
+      "url": "http://archive.ambermd.org/202102/0247.html",
+      "in_reply_to": 1614076616
+    }
+  ]
+}

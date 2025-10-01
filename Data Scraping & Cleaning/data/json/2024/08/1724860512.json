@@ -1,0 +1,37 @@
+{
+  "thread_id": 1724860512,
+  "subject": "Fwd: TI calculation using pmemd",
+  "messages": [
+    {
+      "message_id": 1724860512,
+      "author": "Tamalika Ash",
+      "date_raw": "Wed, 28 Aug 2024 10:55:12 -0500",
+      "body": "Hi,\nI am conducting a thermodynamic integration (TI) calculation using pmemd\nfor a system containing a box of ionic liquid and rare earth elements. My\ngoal is to compute the free energy change associated with mutating one rare\nearth element (RE1) into another (RE2). I have prepared the parameter and\nrestart files using parmed, and I am applying the softcore potential\nexclusively to the rare earth atoms. However, when I attempt to run the\ncalculation, I encounter the following error:\n''*Note: The following floating-point exceptions are signalling:\nIEEE_INVALID_FLAG IEEE_UNDERFLOW_FLAG IEEE_DENORMAL*\n*Note: The following floating-point exceptions are signalling:\nIEEE_INVALID_FLAG IEEE_UNDERFLOW_FLAG IEEE_DENORMALERROR: Calculation\nhalted. Periodic box dimensions have changed too much from their initial\nvalues.*\n*Your system density has likely changed by a large amount, probably from\nstarting the simulation from a structure a long way from equilibrium.*''\nAny help in this regard would be appreciated.\nThank you.",
+      "url": "http://archive.ambermd.org/202408/0169.html"
+    },
+    {
+      "message_id": 1724939717,
+      "author": "Timothy Giese",
+      "date_raw": "Thu, 29 Aug 2024 13:55:17 +0000",
+      "body": "The error message says that the unit cell has changed too much during the course of simulation. I'm guessing that you are equilibrating the system density. You'll simply have to restart the simulation from where it left off. Once the density stops changing by large amounts, it will stop complaining.",
+      "url": "http://archive.ambermd.org/202408/0172.html",
+      "in_reply_to": 1724860512
+    },
+    {
+      "message_id": 1724959679,
+      "author": "David A Case",
+      "date_raw": "Thu, 29 Aug 2024 13:27:59 -0600",
+      "body": "On Wed, Aug 28, 2024, Tamalika Ash via AMBER wrote:\n>\n>*Note: The following floating-point exceptions are signalling:\n>IEEE_INVALID_FLAG IEEE_UNDERFLOW_FLAG IEEE_DENORMALERROR: Calculation\n>halted. Periodic box dimensions have changed too much from their initial\n>values.*\n>*Your system density has likely changed by a large amount, probably from\n>starting the simulation from a structure a long way from equilibrium.*''\nIn addition to Tim's suggestion of just restarting, you might consider this:\nrun your initial equilibration (just long enough to get the system volume\nstabilized) using the CPU version. Then you can switch to the GPU.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202408/0175.html",
+      "in_reply_to": 1724860512
+    },
+    {
+      "message_id": 1725027105,
+      "author": "Darrin York",
+      "date_raw": "Fri, 30 Aug 2024 10:11:45 -0400",
+      "body": "On 8/29/2024 3:27 PM, David A Case via AMBER wrote:\n> On Wed, Aug 28, 2024, Tamalika Ash via AMBER wrote:\n>>\n>> *Note: The following floating-point exceptions are signalling:\n>> IEEE_INVALID_FLAG IEEE_UNDERFLOW_FLAG IEEE_DENORMALERROR: Calculation\n>> halted.  Periodic box dimensions have changed too much from their\n>> initial\n>> values.*\n>> *Your system density has likely changed by a large amount, probably from\n>> starting the simulation from a structure a long way from equilibrium.*''\n>\n> In addition to Tim's suggestion of just restarting, you might consider\n> this:\n> run your initial equilibration (just long enough to get the system volume\n> stabilized) using the CPU version.  Then you can switch to the GPU.\n>\n> ...good luck...dac\n>\nLet me add to Dave and Tim here.  Equilibrating solvent simulation\ncells, especially at the start of simulations is an important first\nstep.  Here are some general recommendations that you may want to\nconsider (they are subjective, or course).\nYou should be able to make a reasonable estimate of the target density\n(typically 1.0-1.2 g/mL is reasonable) of your system, and hence what a\nreasonable volume should be.  In some cases you may also want to enforce\na specific shape for the cell (for example, if you want to prepare a\nsystem so as to be able to be connected to another simulations with\nHamiltonian replica exchange - the unit cell vectors will need to be the\nsame within an isotropic scaling constant).\nWe have implemented a simple flag that makes these two things easier to\nachieve.  You can use ntp = 4 to slowly force the system to have a\nspecific set of lattice vectors over a given number of steps.  These\nparameters are controlled by the cntrl name list target_a, target_b,\ntarget_c (the target a,b and c lattice vector lengths) and target_n in\nthe ewald namelist for number of volume iterations to reach the target\nvolume respectively.\nSee \"21.6.8. Pressure regulation\" of the Amber24 manual for further details.\nOnce you force the system to roughly to the shape and volume you want,\nthen you can minimize the system (including the lattice vectors) and\nthen start dynamics again under constant pressure heating the system\nslowly back to the target temperature.\nWhile you are doing all this, you usually want to restrain your solute\nso that it does not adopt an artificial conformation - don't let it have\nconformational freedom until the solvent settles down and equilibrates.\nI hope you find these suggestions useful.\nbest wishes,\nDarrin\n-- \n======================================================================\nDarrin M. York : Distinguished Professor\n : Henry Rutgers University Chair\nInstitute for Quantitative :\n Biomedicine and Department of : Director, Laboratory for\n Chemistry & Chemical Biology : Biomolecular Simulation Research\n :\nRutgers, the State University : Darrin.York.rutgers.\nedu\n of New Jersey : fax: +1-732-445-4320\n174 Frelinghuysen Road : phone: +1-848-445-5199\nPiscataway, NJ 08854 USA : http://theory.rutgers.edu\n======================================================================",
+      "url": "http://archive.ambermd.org/202408/0179.html",
+      "in_reply_to": 1724860512
+    }
+  ]
+}

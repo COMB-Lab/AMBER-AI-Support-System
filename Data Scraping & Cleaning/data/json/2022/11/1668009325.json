@@ -1,0 +1,77 @@
+{
+  "thread_id": 1668009325,
+  "subject": "Installation Problem",
+  "messages": [
+    {
+      "message_id": 1668009325,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Wed, 9 Nov 2022 09:55:25 -0600",
+      "body": "Dear AMBER community,\nI am trying to install AMBER, first the serial version, and ultimately the GPU-enalbed version.\nI’m trying to do the installation on my account at the PSC (I was told each user has to install it for his/herself), but I’m having trouble. Below is the issue:\nThe provided instructions say \"mdgx was giving an error message and it is no longer used, so, in\nthe run.cmake add -DDISABLE_TOOLS=“mdgx”\nI found run_cmake, not run.cmake. Assuming it’s the same file, I added -DDISABLE_TOOLS=“mdgx”, but cmake complained:\nParse error in command line argument: -DDISABLE_TOOLS\nShould be: VAR:type=value\nCMake Error: No cmake script provided.\nCMake Error: Problem processing arguments. Aborting.\nIf I omit -DDISABLE_TOOLS, cmake works, and the following installation looks fine, but when I run the tests, I get the below errors:\npossible FAILURE: check bis_2.out.dif\npossible FAILURE: check spc.xvv.other.dif\npossible FAILURE: (ignored) check /jet/home/mag14011/amber22/AmberTools/src/FEW/examples/test/calc_a_1t/AMT/pqr_snaps/AMT_rec.pqr.3.dif\npossible FAILURE: check nve.out.dif\npossible FAILURE: (ignored) check min.out.dif\nThese tests don’t appear to have anything to do with mdgx unless I’m mistaken. How can I resolve these (possible) failures? I don’t know what they mean.\nUltimately, I want to install the GPU enabled version. I’d appreciate any help getting that done to move my research forward!\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202211/0058.html"
+    },
+    {
+      "message_id": 1668064035,
+      "author": "Scott Brozell",
+      "date_raw": "Thu, 10 Nov 2022 02:07:15 -0500",
+      "body": "Hi,\nOn Wed, Nov 09, 2022 at 09:55:25AM -0600, Matthew Guberman-Pfeffer via AMBER wrote:\n> I am trying to install AMBER, first the serial version, and ultimately the GPU-enalbed version.\n>\n> I???m trying to do the installation on my account at the PSC (I was told each user has to install it for his/herself), but I???m having trouble. Below is the issue:\n>\n> The provided instructions say \"mdgx was giving an error message and it is no longer used, so, in\n> the run.cmake add -DDISABLE_TOOLS=???mdgx???\n>\n> I found run_cmake, not run.cmake. Assuming it???s the same file, I added -DDISABLE_TOOLS=???mdgx???, but cmake complained:\n>\n> Parse error in command line argument: -DDISABLE_TOOLS\n> Should be: VAR:type=value\n> CMake Error: No cmake script provided.\n> CMake Error: Problem processing arguments. Aborting.\n>\n> If I omit -DDISABLE_TOOLS, cmake works, and the following installation looks fine, but when I run the tests, I get the below errors:\n>\n> possible FAILURE: check bis_2.out.dif\n> possible FAILURE: check spc.xvv.other.dif\n> possible FAILURE: (ignored) check /jet/home/mag14011/amber22/AmberTools/src/FEW/examples/test/calc_a_1t/AMT/pqr_snaps/AMT_rec.pqr.3.dif\n> possible FAILURE: check nve.out.dif\n> possible FAILURE: (ignored) check min.out.dif\n>\n> These tests don???t appear to have anything to do with mdgx unless I???m mistaken. How can I resolve these (possible) failures? I don???t know what they mean.\nWhat is the reference for the instructions you are following ?\nPresumably these are not the ones in the Amber manual.\nrun_cmake is indeed the Amber documented place to start;\nsee ambermd.org/Manuals.php\nYour cmake problem is due to the use of quotes since this worked for me:\n-DDISABLE_TOOLS=mdgx\n.\n.\n.\n-- NOT Building Tools:\n...\n-- mdgx - Disabled by user\n-- **************************************************************************\nTo check the possible failures, see the files under amber22/logs\nThe installation section of our manual also has advice on checking\nthe tests.\nscott",
+      "url": "http://archive.ambermd.org/202211/0062.html",
+      "in_reply_to": 1668009325
+    },
+    {
+      "message_id": 1668085723,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Thu, 10 Nov 2022 08:08:43 -0500",
+      "body": "Hi Scott,\nThanks for your reply! The instructions are those provided by the PSC, but they only differ from the Amber manual in that they indicate what modules to load and to disable mdgx. I checked the log files, and I see one test that failed:\nFAILURE: check nve.out.dif\n/jet/home/mag14011/amber22/test/pgm_512wat\n189c189\n< Etot = 0.0156 EKtot = 3.2681 EPtot = 3.2825\n> Etot = 0.0183 EKtot = 3.2681 EPtot = 3.2824\n### Maximum absolute error in matching lines = 2.70e-03 at line 189 field 3\n### Maximum relative error in matching lines = 1.73e-01 at line 189 field 3\nThe possible failure seem to be simply round-off issues.\npossible FAILURE: check bis_2.out.dif\n/jet/home/mag14011/amber22/AmberTools/test/py_resp/bis-naphthyl/resp-ind\n238c238\n< qchnge = 2.6466137125E-11\n> qchnge = 2.6466053481E-11\n### Maximum absolute error in matching lines = 8.36e-17 at line 238 field 3\n### Maximum relative error in matching lines = 3.16e-06 at line 238 field 3\n---------------------------------------\npossible FAILURE: check spc.xvv.other.dif\n/jet/home/mag14011/amber22/AmberTools/test/rism1d/spc-kh\n43c43\n< 5.9583872041744979E-1 -8.8128430347391506E-1\n> 5.9583872875081068E-1 -8.8128602837469283E-1\n### Maximum absolute error in matching lines = 1.72e-06 at line 43 field 2\n### Maximum relative error in matching lines = 1.96e-06 at line 43 field 2\nI’m not sure what to make of the failure. Should I be concerned? What should I try?\nBest,\nMatthew\n> On Nov 10, 2022, at 2:07 AM, Scott Brozell <sbrozell.comcast.\nnet> wrote:\n>\n> *Message sent from a system outside of UConn.*\n>\n>\n> Hi,\n>\n> On Wed, Nov 09, 2022 at 09:55:25AM -0600, Matthew Guberman-Pfeffer via AMBER wrote:\n>> I am trying to install AMBER, first the serial version, and ultimately the GPU-enalbed version.\n>>\n>> I???m trying to do the installation on my account at the PSC (I was told each user has to install it for his/herself), but I???m having trouble. Below is the issue:\n>>\n>> The provided instructions say \"mdgx was giving an error message and it is no longer used, so, in\n>> the run.cmake add -DDISABLE_TOOLS=???mdgx???\n>>\n>> I found run_cmake, not run.cmake. Assuming it???s the same file, I added -DDISABLE_TOOLS=???mdgx???, but cmake complained:\n>>\n>> Parse error in command line argument: -DDISABLE_TOOLS\n>> Should be: VAR:type=value\n>> CMake Error: No cmake script provided.\n>> CMake Error: Problem processing arguments. Aborting.\n>>\n>> If I omit -DDISABLE_TOOLS, cmake works, and the following installation looks fine, but when I run the tests, I get the below errors:\n>>\n>> possible FAILURE: check bis_2.out.dif\n>> possible FAILURE: check spc.xvv.other.dif\n>> possible FAILURE: (ignored) check /jet/home/mag14011/amber22/AmberTools/src/FEW/examples/test/calc_a_1t/AMT/pqr_snaps/AMT_rec.pqr.3.dif\n>> possible FAILURE: check nve.out.dif\n>> possible FAILURE: (ignored) check min.out.dif\n>>\n>> These tests don???t appear to have anything to do with mdgx unless I???m mistaken. How can I resolve these (possible) failures? I don???t know what they mean.\n>\n>\n> What is the reference for the instructions you are following ?\n> Presumably these are not the ones in the Amber manual.\n> run_cmake is indeed the Amber documented place to start;\n> see ambermd.org/Manuals.php\n>\n> Your cmake problem is due to the use of quotes since this worked for me:\n> -DDISABLE_TOOLS=mdgx\n> .\n> .\n> .\n> -- NOT Building Tools:\n> ...\n> -- mdgx - Disabled by user\n> -- **************************************************************************\n>\n>\n> To check the possible failures, see the files under amber22/logs\n> The installation section of our manual also has advice on checking\n> the tests.\n>\n> scott\n>",
+      "url": "http://archive.ambermd.org/202211/0063.html",
+      "in_reply_to": 1668009325
+    },
+    {
+      "message_id": 1668089058,
+      "author": "David A Case",
+      "date_raw": "Thu, 10 Nov 2022 09:04:18 -0500",
+      "body": "On Wed, Nov 09, 2022, Matthew Guberman-Pfeffer via AMBER wrote:\n>\n>\n>I found run_cmake, not run.cmake. Assuming it’s the same file, I added\n>-DDISABLE_TOOLS=“mdgx”, but cmake complained:\n>\n>Parse error in command line argument: -DDISABLE_TOOLS\n>Should be: VAR:type=value\n>CMake Error: No cmake script provided.\nSounds like you didn't add the -DDISABLE_TOOLS in the proper way. It is not\na command-line argument, but you put it inside the run_cmake script itself.\n>If I omit -DDISABLE_TOOLS, cmake works, and the following installation\n>looks fine,\nIs mdgx built with this run?\n> but when I run the tests, I get the below errors:\n>\n>possible FAILURE: check bis_2.out.dif\n>possible FAILURE: check spc.xvv.other.dif\n>possible FAILURE: check nve.out.dif\nLook at nve.out.dif and the other: do the errors look serious? It may be\nthat you won't have to worry about these errors.\n>\n.....dac",
+      "url": "http://archive.ambermd.org/202211/0065.html",
+      "in_reply_to": 1668009325
+    },
+    {
+      "message_id": 1668089196,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Thu, 10 Nov 2022 09:06:36 -0500",
+      "body": "Dr. Case, the diff value is attached.\nWhat do you think about the seriousness?\nYes, I think mdgx was built. I can try next to use the flag correctly (without quotes) like Scott suggested.\nBest,\nMatthew\n> On Nov 10, 2022, at 9:04 AM, David A Case <david.case.rutgers.edu> wrote:\n>\n> *Message sent from a system outside of UConn.*\n>\n>\n> On Wed, Nov 09, 2022, Matthew Guberman-Pfeffer via AMBER wrote:\n>>\n>>\n>> I found run_cmake, not run.cmake. Assuming it’s the same file, I added\n>> -DDISABLE_TOOLS=“mdgx”, but cmake complained:\n>>\n>> Parse error in command line argument: -DDISABLE_TOOLS\n>> Should be: VAR:type=value\n>> CMake Error: No cmake script provided.\n>\n> Sounds like you didn't add the -DDISABLE_TOOLS in the proper way. It is not\n> a command-line argument, but you put it inside the run_cmake script itself.\n>\n>> If I omit -DDISABLE_TOOLS, cmake works, and the following installation\n>> looks fine,\n>\n> Is mdgx built with this run?\n>\n>> but when I run the tests, I get the below errors:\n>>\n>> possible FAILURE: check bis_2.out.dif\n>> possible FAILURE: check spc.xvv.other.dif\n>> possible FAILURE: check nve.out.dif\n>\n> Look at nve.out.dif and the other: do the errors look serious? It may be\n> that you won't have to worry about these errors.\n>>\n>\n> .....dac\n>",
+      "url": "http://archive.ambermd.org/202211/0066.html",
+      "in_reply_to": 1668009325
+    },
+    {
+      "message_id": 1668107696,
+      "author": "James Kress",
+      "date_raw": "Thu, 10 Nov 2022 14:14:56 -0500",
+      "body": "Using Amber 22 on a RHEL 8 system. I had to go from RHEL 8.4 to 8.8 and\nCUDA toolkit 11.4 to 11.8 due to a server malfunction.\nDo I need to recompile Amber and amber tools or can I use the executables\ngenerate previously?\nThanks for any assistance.\nJim Kress\n-----Original Message-----\nFrom: Matthew Guberman-Pfeffer via AMBER <amber.ambermd.org>\nSent: Thursday, November 10, 2022 9:07 AM\nTo: David A Case <david.case.rutgers.edu>\nCc: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] Installation Problem\nDr. Case, the diff value is attached.\nWhat do you think about the seriousness?\nYes, I think mdgx was built. I can try next to use the flag correctly\n(without quotes) like Scott suggested.",
+      "url": "http://archive.ambermd.org/202211/0070.html",
+      "in_reply_to": 1668009325
+    },
+    {
+      "message_id": 1668126238,
+      "author": "Scott Brozell",
+      "date_raw": "Thu, 10 Nov 2022 19:23:58 -0500",
+      "body": "Hi,\nYes.\n(There are a lot of if ands or buts; however, the simplest way to\nguarantee that the new toolkit is used is to rebuild after running\nclean_build\n)\nscott\nOn Thu, Nov 10, 2022 at 02:14:56PM -0500, James Kress via AMBER wrote:\n> Using Amber 22 on a RHEL 8 system. I had to go from RHEL 8.4 to 8.8 and\n> CUDA toolkit 11.4 to 11.8 due to a server malfunction.\n>\n> Do I need to recompile Amber and amber tools or can I use the executables\n> generate previously?",
+      "url": "http://archive.ambermd.org/202211/0073.html",
+      "in_reply_to": 1668009325
+    },
+    {
+      "message_id": 1668183183,
+      "author": "David A Case",
+      "date_raw": "Fri, 11 Nov 2022 11:13:03 -0500",
+      "body": "On Thu, Nov 10, 2022, Matthew Guberman-Pfeffer via AMBER wrote:\n>\n>FAILURE: check nve.out.dif\n>/jet/home/mag14011/amber22/test/pgm_512wat\n>189c189\n>< Etot = 0.0156 EKtot = 3.2681 EPtot = 3.2825\n>> Etot = 0.0183 EKtot = 3.2681 EPtot = 3.2824\n>### Maximum absolute error in matching lines = 2.70e-03 at line 189 field 3\n>### Maximum relative error in matching lines = 1.73e-01 at line 189 field 3\n>\n>possible FAILURE: check bis_2.out.dif\n>/jet/home/mag14011/amber22/AmberTools/test/py_resp/bis-naphthyl/resp-ind\n>238c238\n>< qchnge = 2.6466137125E-11\n>> qchnge = 2.6466053481E-11\n>### Maximum absolute error in matching lines = 8.36e-17 at line 238 field 3\n>### Maximum relative error in matching lines = 3.16e-06 at line 238 field 3\n>---------------------------------------\n>possible FAILURE: check spc.xvv.other.dif\n>/jet/home/mag14011/amber22/AmberTools/test/rism1d/spc-kh\n>43c43\n>< 5.9583872041744979E-1 -8.8128430347391506E-1\n>> 5.9583872875081068E-1 -8.8128602837469283E-1\n>### Maximum absolute error in matching lines = 1.72e-06 at line 43 field 2\n>### Maximum relative error in matching lines = 1.96e-06 at line 43 field 2\n>\n>\n>I’m not sure what to make of the failure. Should I be concerned?\nNo, I don't think you should be concerned.....dac",
+      "url": "http://archive.ambermd.org/202211/0081.html",
+      "in_reply_to": 1668009325
+    },
+    {
+      "message_id": 1668183319,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Fri, 11 Nov 2022 11:15:19 -0500",
+      "body": "Thanks! Incidentally, I’ve since tried the GPU build and had no problem.\nThank you so much for the help!\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202211/0080.html",
+      "in_reply_to": 1668009325
+    }
+  ]
+}

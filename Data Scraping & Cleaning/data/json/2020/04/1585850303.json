@@ -1,0 +1,29 @@
+{
+  "thread_id": 1585850303,
+  "subject": "AMBER 18 cuda installation: error: redefinition of ‘simulationConst cSim’",
+  "messages": [
+    {
+      "message_id": 1585850303,
+      "author": "Sapna Shedge",
+      "date_raw": "Thu, 2 Apr 2020 10:58:23 -0700",
+      "body": "I am trying to do amber18 installation with Cuda-9.0\nI am getting following error\n*gti_global.cu:7:24:* *error: *redefinition of ‘*simulationConst cSim*’\n__constant__ simulationConst cSim;\n* ^*\n*simulationConst.h:12:24:* *error: *‘*simulationConst cSim*’ previously\ndeclared here\nextern __constant__ simulationConst cSim;\n* ^*\nmake[5]: *** [gti_global.o] Error 1\nmake[5]: *** Waiting for unfinished jobs....\nI saw that one person also got the same error and he was asked to provide\ncontent of simulationConst.h file. Here is content of this file\nifndef _CUDA_SIMULATION\n#define _CUDA_SIMULATION\n#include \"base_simulationConst.h\"\n#ifdef GTI\n#include \"gti_simulationConst.h\"\ntypedef gti_simulationConst simulationConst;\n#else\ntypedef base_simulationConst simulationConst;\n#endif\nextern __constant__ simulationConst cSim;\n#endif /* _CUDA_SIMULATION */\nAny help in this regards will be very useful.\nThank you!",
+      "url": "http://archive.ambermd.org/202004/0016.html"
+    },
+    {
+      "message_id": 1586048982,
+      "author": "Scott Brozell",
+      "date_raw": "Sat, 4 Apr 2020 21:09:42 -0400",
+      "body": "Hi,\nFWIW, i am able to build with\ngcc version 4.8.5 (GCC)\nCuda compilation tools, release 9.0, V9.0.176\nbut i am not using the canonical Amber18. And the one i have\nhas that line commented out in simulationConst.h, ie:\n//__constant__ simulationConst cSim;\nIf you have further issues then send verbose and verbatim details including:\n./update_amber --show-applied-patches\nnvcc -V\ngcc -v\nscott\nOn Thu, Apr 02, 2020 at 10:58:23AM -0700, Sapna Shedge wrote:\n> I am trying to do amber18 installation with Cuda-9.0\n>\n> I am getting following error\n>\n> *gti_global.cu:7:24:* *error: *redefinition of ???*simulationConst cSim*???\n>\n> __constant__ simulationConst cSim;\n>\n> * ^*\n>\n> *simulationConst.h:12:24:* *error: *???*simulationConst cSim*??? previously\n> declared here\n>\n> extern __constant__ simulationConst cSim;\n>\n> * ^*\n>\n> make[5]: *** [gti_global.o] Error 1\n>\n> make[5]: *** Waiting for unfinished jobs....\n>\n>\n> I saw that one person also got the same error and he was asked to provide\n> content of simulationConst.h file. Here is content of this file\n>\n>\n> ifndef _CUDA_SIMULATION\n>\n> #define _CUDA_SIMULATION\n>\n>\n> #include \"base_simulationConst.h\"\n>\n> #ifdef GTI\n>\n> #include \"gti_simulationConst.h\"\n>\n> typedef gti_simulationConst simulationConst;\n>\n> #else\n>\n> typedef base_simulationConst simulationConst;\n>\n> #endif\n>\n>\n> extern __constant__ simulationConst cSim;\n>\n>\n> #endif /* _CUDA_SIMULATION */",
+      "url": "http://archive.ambermd.org/202004/0041.html",
+      "in_reply_to": 1585850303
+    },
+    {
+      "message_id": 1586058863,
+      "author": "David Cerutti",
+      "date_raw": "Sat, 4 Apr 2020 23:54:23 -0400",
+      "body": "If you have the line \"__constant__ simulationConst cSim;\" uncommented, that\nprobably means you are working outside the default GTI branch. The\nnomenclature around this is pretty tricky, and involves a lot of aliasing\nto switch between the new code paths (Amber18, which brings more C++\nfunctionality into the layer between the original Fortran and the CUDA\nkernels) and the old code paths (Amber16). Not sure what to tell you,\nother than perhaps download the source anew and try re-installing.\nDave\nOn Sat, Apr 4, 2020 at 9:10 PM Scott Brozell <sbrozell.iqb.rutgers.edu>\nwrote:\n> Hi,\n>\n> FWIW, i am able to build with\n> gcc version 4.8.5 (GCC)\n> Cuda compilation tools, release 9.0, V9.0.176\n> but i am not using the canonical Amber18. And the one i have\n> has that line commented out in simulationConst.h, ie:\n> //__constant__ simulationConst cSim;\n>\n>\n> If you have further issues then send verbose and verbatim details\n> including:\n> ./update_amber --show-applied-patches\n> nvcc -V\n> gcc -v\n>\n> scott\n>\n> On Thu, Apr 02, 2020 at 10:58:23AM -0700, Sapna Shedge wrote:\n> > I am trying to do amber18 installation with Cuda-9.0\n> >\n> > I am getting following error\n> >\n> > *gti_global.cu:7:24:* *error: *redefinition of ???*simulationConst\n> cSim*???\n> >\n> > __constant__ simulationConst cSim;\n> >\n> > * ^*\n> >\n> > *simulationConst.h:12:24:* *error: *???*simulationConst cSim*???\n> previously\n> > declared here\n> >\n> > extern __constant__ simulationConst cSim;\n> >\n> > * ^*\n> >\n> > make[5]: *** [gti_global.o] Error 1\n> >\n> > make[5]: *** Waiting for unfinished jobs....\n> >\n> >\n> > I saw that one person also got the same error and he was asked to provide\n> > content of simulationConst.h file. Here is content of this file\n> >\n> >\n> > ifndef _CUDA_SIMULATION\n> >\n> > #define _CUDA_SIMULATION\n> >\n> >\n> > #include \"base_simulationConst.h\"\n> >\n> > #ifdef GTI\n> >\n> > #include \"gti_simulationConst.h\"\n> >\n> > typedef gti_simulationConst simulationConst;\n> >\n> > #else\n> >\n> > typedef base_simulationConst simulationConst;\n> >\n> > #endif\n> >\n> >\n> > extern __constant__ simulationConst cSim;\n> >\n> >\n> > #endif /* _CUDA_SIMULATION */\n>\n>",
+      "url": "http://archive.ambermd.org/202004/0044.html",
+      "in_reply_to": 1585850303
+    }
+  ]
+}

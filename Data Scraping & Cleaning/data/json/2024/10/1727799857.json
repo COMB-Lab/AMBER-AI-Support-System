@@ -1,0 +1,21 @@
+{
+  "thread_id": 1727799857,
+  "subject": "cpinutil.py error: AmberWarning: Molecule atoms are not contiguous!",
+  "messages": [
+    {
+      "message_id": 1727799857,
+      "author": "Abdelrahman, Noureen",
+      "date_raw": "Tue, 1 Oct 2024 16:24:17 +0000",
+      "body": "Dear all,\nI used the following tleap code to generate smURFP parm7 and rst7 files:\nsource leaprc.protein.ff19SB\nsource leaprc.water.opc\nsource leaprc.constph\nloadAmberPrep JRA.prepin\nloadAmberParams frcmod2_HN.JRA\nloadAmberParams frcmod1_HN.JRA\nx = loadPDB JRA.pdb\nbond x.51.SG x.266.CAB\naddions x Na+ 0.0\naddions x Cl- 0.0\nsolvatebox x OPCBOX 12.0\nsetbox x vdw\nsavepdb x smURFP_pH.pdb\nsaveAmberParm x smURFP_pH.parm7 smURFP_pH.rst7\nquit\nNow, I need to run pH REMD. To do that, I must create a new prmtop file with cpinutil.py and use the new intrinsic radii. When I do the following code:\ncpinutil.py -p smURFP_pH.parm7 -o smURFP_BV.cpin -op smURFP_BV_cpin.parm7 -resnames AS4 GL4 HIP LYS TYR CYS\nI get a warning message:\nAmberWarning: Molecule atoms are not contiguous!\nThe created prmtop file (smURFP_BV_cpin.parm7) is incorrect because the protein bonds are stretched everywhere, and I cannot run classical MD using it. When I do, I get a LINMIN error at minimization.\nHas anyone encountered this before? Or does anyone know a fix? I cannot attach the prmtop and rst7 files because they're large but I attached all the files needed to reproduce them using tleap.\nThanks,\nNoureen",
+      "url": "http://archive.ambermd.org/202410/0001.html"
+    },
+    {
+      "message_id": 1727803618,
+      "author": "Adrian Roitberg",
+      "date_raw": "Tue, 1 Oct 2024 13:26:58 -0400",
+      "body": "Just a general comment.\nThe constant pH method, as implemented, has NOT been parametrized for\nthe ff19SB/OPC combination you are using.\nIf I were you, I would reparametrize the so-called reference energies.\nTake a look at the manual on how to do that, using the findgref.py script.\nAdrian\nOn 10/1/24 12:24 PM, Abdelrahman, Noureen via AMBER wrote:\n> [External Email]\n>\n> Dear all,\n>\n> I used the following tleap code to generate smURFP parm7 and rst7 files:\n>\n> source leaprc.protein.ff19SB\n> source leaprc.water.opc\n> source leaprc.constph\n> loadAmberPrep JRA.prepin\n> loadAmberParams frcmod2_HN.JRA\n> loadAmberParams frcmod1_HN.JRA\n> x = loadPDB JRA.pdb\n> bond x.51.SG x.266.CAB\n> addions x Na+ 0.0\n> addions x Cl- 0.0\n> solvatebox x OPCBOX 12.0\n> setbox x vdw\n> savepdb x smURFP_pH.pdb\n> saveAmberParm x smURFP_pH.parm7 smURFP_pH.rst7\n> quit\n>\n> Now, I need to run pH REMD. To do that, I must create a new prmtop file with cpinutil.py and use the new intrinsic radii. When I do the following code:\n>\n> cpinutil.py -p smURFP_pH.parm7 -o smURFP_BV.cpin -op smURFP_BV_cpin.parm7 -resnames AS4 GL4 HIP LYS TYR CYS\n>\n> I get a warning message:\n> AmberWarning: Molecule atoms are not contiguous!\n>\n> The created prmtop file (smURFP_BV_cpin.parm7) is incorrect because the protein bonds are stretched everywhere, and I cannot run classical MD using it. When I do, I get a LINMIN error at minimization.\n>\n> Has anyone encountered this before? Or does anyone know a fix? I cannot attach the prmtop and rst7 files because they're large but I attached all the files needed to reproduce them using tleap.\n>\n> Thanks,\n> Noureen\n>\n>",
+      "url": "http://archive.ambermd.org/202410/0002.html",
+      "in_reply_to": 1727799857
+    }
+  ]
+}

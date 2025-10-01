@@ -1,0 +1,29 @@
+{
+  "thread_id": 1696405249,
+  "subject": "Analysis of pmemd performance for exascale",
+  "messages": [
+    {
+      "message_id": 1696405249,
+      "author": "Charles Laughton",
+      "date_raw": "Wed, 4 Oct 2023 07:40:49 +0000",
+      "body": "Hi all,\nAs part of an Exascale project I�ve been asked to gather information on biomolecular simulation code performance in terms of numerical methods. Specifically how - for typical large (c 1M atom) problem sizes � codes divide their time between the �numerical dwarves�. For reference, these are a) Dense linear algebra, b) Sparse linear algebra, c) Spectral. Methods (e.g. FFT), d) N-body methods, e) Structured grids, f) Unstructured grids, g) MapReduce, h) Combinational logic, i) Graph traversal, j) Dynamic programming, k) Backtrack & Branch-and-bound, l) Graphical models, and m) Finite state machines. What percentage of a typical run would be spent doing each of these?\nDoes anyone have any data on this for the latest releases of pmemd.cuda, in particular?\nMany thanks for all insights!\nCharlie Laughton\nSchool of Pharmacy\nUniversity of Nottingham, UK\nThis message and any attachment are intended solely for the addressee and may contain confidential information. If you have received this message in error, please contact the sender and delete the email and attachment. Any views or opinions expressed by the author of this email do not necessarily reflect the views of the University of Nottingham. Email communications with the University of Nottingham may be monitored where permitted by law.",
+      "url": "http://archive.ambermd.org/202310/0011.html"
+    },
+    {
+      "message_id": 1696516553,
+      "author": "David A Case",
+      "date_raw": "Thu, 5 Oct 2023 08:35:53 -0600",
+      "body": "On Wed, Oct 04, 2023, Charles Laughton via AMBER wrote:\n>\n>As part of an Exascale project I’ve been asked to gather information\n>on biomolecular simulation code performance in terms of numerical\n>methods. Specifically how - for typical large (c 1M atom) problem sizes\n>– codes divide their time between the “numerical dwarves”. For\n>reference, these are a) Dense linear algebra, b) Sparse linear algebra,\n>c) Spectral. Methods (e.g. FFT), d) N-body methods, e) Structured grids,\n>f) Unstructured grids, g) MapReduce, h) Combinational logic, i) Graph\n>traversal, j) Dynamic programming, k) Backtrack & Branch-and-bound, l)\n>Graphical models, and m) Finite state machines. What percentage of a\n>typical run would be spent doing each of these?\n>\n>Does anyone have any data on this for the latest releases of pmemd.cuda, in\n>particular?\nWe don't use this sort of language to analyze timings in pmemd. A small\nfraction of time in a 1 million atom run would involve FFTs. I'm not sure\nwhere to categorize all the rest (N-body methods?)\nIn our language, a big chunk of time goes into computing non-bonded\ninteractions (N-body?), and another big piece involves computing the\nnon-bonded list (graph traversal?).\nI understand that this is probably not very helpful. Maybe others on the\nlist have some better insight here.\n....dac",
+      "url": "http://archive.ambermd.org/202310/0020.html",
+      "in_reply_to": 1696405249
+    },
+    {
+      "message_id": 1696516911,
+      "author": "David A Case",
+      "date_raw": "Thu, 5 Oct 2023 08:41:51 -0600",
+      "body": "On Thu, Oct 05, 2023, David Case wrote:\n>>\n>>As part of an Exascale project I’ve been asked to gather information\n>>on biomolecular simulation code performance in terms of numerical\n>>methods.\nJust a quick addition here: as it currently exists, Amber is not really\nsuited for exaxcale computation. It has been written and optimized for\nexecution on one (or a very small number) of inexpensive GPU cards. Other\nsimulation packages are much more targetted toward more powerful (and more\nexpensive) HPC hardware.\nSome applications, such as replica exchange, can make use of many GPUs in\nthe context of loosely parallel execution.\n....dac",
+      "url": "http://archive.ambermd.org/202310/0021.html",
+      "in_reply_to": 1696405249
+    }
+  ]
+}

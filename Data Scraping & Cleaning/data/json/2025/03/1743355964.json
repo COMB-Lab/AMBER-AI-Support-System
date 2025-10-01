@@ -1,0 +1,21 @@
+{
+  "thread_id": 1743355964,
+  "subject": "Help with Missing Torsion Parameters for TCO and TCNitro FRET Probes in DNA System",
+  "messages": [
+    {
+      "message_id": 1743355964,
+      "author": "Rahul Singal",
+      "date_raw": "Sun, 30 Mar 2025 17:32:44 +0000",
+      "body": "Hi AMBER Community,\nI am currently modeling a DNA system incorporating TCO and TCNitro FRET probes. I initially used Antechamber to generate the parameters for the probes, but I recently realized that I should have used parmcal to compute the bond and angle parameters using GAFF2 (as provided in the gaff2.dat file in AmberTools23).\nWhile I was able to calculate most parameters, I couldn't find the torsion parameters for the following dihedrals:\n*\nh1�c3�o�P\n*\nc3�c3�o�P\n*\nc3�o�P�O2\n*\nc3�o�P�OS\nI would greatly appreciate any guidance on how to obtain or derive these missing torsion parameters.\nThank you in advance for your help!\nBest regards,\nRahul Singal",
+      "url": "http://archive.ambermd.org/202503/0070.html"
+    },
+    {
+      "message_id": 1743449781,
+      "author": "David A Case",
+      "date_raw": "Mon, 31 Mar 2025 13:36:21 -0600",
+      "body": "On Sun, Mar 30, 2025, Rahul Singal via AMBER wrote:\n>I am currently modeling a DNA system incorporating TCO and TCNitro FRET\n>probes. I initially used Antechamber to generate the parameters for the\n>probes, but I recently realized that I should have used parmcal to compute\n>the bond and angle parameters using GAFF2 (as provided in the gaff2.dat\n>file in AmberTools23).\n>While I was able to calculate most parameters, I couldn't find the torsion parameters for the following dihedrals:\n>\n> *\n>h1–c3–o–P\n> *\n>c3–c3–o–P\n> *\n>c3–o–P–O2\n> *\n>c3–o–P–OS\n>\nFirst: remember that upper case atom types come from Amber, whereas lower\ncase types are for GAFF2. So, you have to figure out how to translate lower\ncase atom types (in gaff2) to their upper case equivalents.\nExamples: a phosphorus atom in a phosphate group is P in Amber but p5 in\ngaff2 (since p5 corresponds to phosphorus with four connected atoms). O2 in\nAmber is an oxygen with one connected atom, and becomes o in gaff2. OS in\nAmber becomes os in gaff2. etc. [Look in $AMBERHOME/dat/leap/parm/gaff2.dat\nto find explanations for gaff2 atom types.]\nBut you seem to have a problem I can't resolve without more information: you\nseem to have \"o\" as the atom type between c3 and P, but \"o\" in gaff2 is for an\noxygen with only one connected atom. This almost certainly should be \"os\",\nbut it's unclear what the origin of this problem is.\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202503/0073.html",
+      "in_reply_to": 1743355964
+    }
+  ]
+}

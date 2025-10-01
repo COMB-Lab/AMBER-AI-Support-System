@@ -1,0 +1,29 @@
+{
+  "thread_id": 1711730296,
+  "subject": "RMSD of protein with domain insertion",
+  "messages": [
+    {
+      "message_id": 1711730296,
+      "author": "Colin Pierce",
+      "date_raw": "Fri, 29 Mar 2024 11:38:16 -0500",
+      "body": "Hello,\nI need to calculate the RMSD of an enzyme variant that contains a roughly 100 residue domain insertion. I’ve searched extensively and have been unable to find a way to do this. It seems that it may be possible in Amber22 by renaming the residues in cpptraj, however only Amber20 is supported in the HPC at my institution.\nIs there a way to exclude specific residues in the protein of interest from the RMSD comparison? I would like to exclude only those residues in the domain insertion so that I can assess the effects of the insertion on the rest of the protein.\nThank you,\nColin Pierce\nPostdoctoral Associate\nUniversity of Minnesota",
+      "url": "http://archive.ambermd.org/202403/0176.html"
+    },
+    {
+      "message_id": 1711730858,
+      "author": "Carlos Simmerling",
+      "date_raw": "Fri, 29 Mar 2024 12:47:38 -0400",
+      "body": "can you be more specific about the problem? calculating the RMSD should not\ndepend on an insertion.\nyou can choose any residue range that you want using an atom mask in the\nrmsd command.\nbut - are you trying to compare the one with the insertion to the one\nwithout the insertion? that would be more complex, but still possible.\nOn Fri, Mar 29, 2024 at 12:38 PM Colin Pierce via AMBER <amber.ambermd.\norg>\nwrote:\n> Hello,\n> I need to calculate the RMSD of an enzyme variant that contains a\n> roughly 100 residue domain insertion. I’ve searched extensively and have\n> been unable to find a way to do this. It seems that it may be possible in\n> Amber22 by renaming the residues in cpptraj, however only Amber20 is\n> supported in the HPC at my institution.\n>\n> Is there a way to exclude specific residues in the protein of interest\n> from the RMSD comparison? I would like to exclude only those residues in\n> the domain insertion so that I can assess the effects of the insertion on\n> the rest of the protein.\n>\n> Thank you,\n>\n> Colin Pierce\n> Postdoctoral Associate\n> University of Minnesota\n>",
+      "url": "http://archive.ambermd.org/202403/0177.html",
+      "in_reply_to": 1711730296
+    },
+    {
+      "message_id": 1711732547,
+      "author": "Carlos Simmerling",
+      "date_raw": "Fri, 29 Mar 2024 13:15:47 -0400",
+      "body": "you can use different masks for the simulation and reference structure (as\nwell as different prmtop files, which would also be needed in your case.\nAssuming you have built a prmtop for the WT as well, this should be\nfairly simple to do\nfirst, load your insertion prmtop and your WT prmtop using tags.\nhttps://amberhub.chpc.utah.edu/parameter-reference-tagging/\nthen, use the appropriate prmtop tag when loading in the reference\ncoordinates (WT tag).\nUse the insertion prmtop tag when loading the trajectory.\nthis should let you load in both coordinate sets with different prmtops.\nnow you want to do your rmsd calculation, but with different atom selection\nfor reference and trajectory.\nyou'll use both mask and refmask in the rmsd command, and use the tag to\nspecify that the reference should be your WT structure.\nhttps://amberhub.chpc.utah.edu/rmsd/\nOn Fri, Mar 29, 2024 at 1:01 PM Colin Pierce <colintpierce.icloud.\ncom>\nwrote:\n> Yes, I need the RMSD comparing the wild-type vs. the variant with the\n> insertion. The insertion itself is of little interest. Rather, I’m\n> interested in understanding how the insertion has affected specific loops\n> in the wt structure.\n>\n> On Mar 29, 2024, at 11:48 AM, Carlos Simmerling <\n> carlos.simmerling.gmail.\ncom> wrote:\n>\n> ﻿\n> can you be more specific about the problem? calculating the RMSD should\n> not depend on an insertion.\n> you can choose any residue range that you want using an atom mask in the\n> rmsd command.\n> but - are you trying to compare the one with the insertion to the one\n> without the insertion? that would be more complex, but still possible.\n>\n>\n> On Fri, Mar 29, 2024 at 12:38 PM Colin Pierce via AMBER <amber.ambermd.\norg>\n> wrote:\n>\n>> Hello,\n>> I need to calculate the RMSD of an enzyme variant that contains a\n>> roughly 100 residue domain insertion. I’ve searched extensively and have\n>> been unable to find a way to do this. It seems that it may be possible in\n>> Amber22 by renaming the residues in cpptraj, however only Amber20 is\n>> supported in the HPC at my institution.\n>>\n>> Is there a way to exclude specific residues in the protein of interest\n>> from the RMSD comparison? I would like to exclude only those residues in\n>> the domain insertion so that I can assess the effects of the insertion on\n>> the rest of the protein.\n>>\n>> Thank you,\n>>\n>> Colin Pierce\n>> Postdoctoral Associate\n>> University of Minnesota\n>>",
+      "url": "http://archive.ambermd.org/202403/0178.html",
+      "in_reply_to": 1711730296
+    }
+  ]
+}

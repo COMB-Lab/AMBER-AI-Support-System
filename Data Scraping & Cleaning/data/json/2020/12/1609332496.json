@@ -1,0 +1,61 @@
+{
+  "thread_id": 1609332496,
+  "subject": "cremer",
+  "messages": [
+    {
+      "message_id": 1609332496,
+      "author": "MYRIAN TORRES RICO",
+      "date_raw": "Wed, 30 Dec 2020 13:48:16 +0100",
+      "body": "Hi all,\nI have a question about the data's treatment in pucker.in. I have\nobtained my file.crd of 80ns more less, but when I launch the\npuckering calculation and I represent the graphs in Origin, only 10ns\nappears...why? any idea?\nThanks in advance\nMyriam",
+      "url": "http://archive.ambermd.org/202012/0346.html"
+    },
+    {
+      "message_id": 1609337429,
+      "author": "David A Case",
+      "date_raw": "Wed, 30 Dec 2020 09:10:29 -0500",
+      "body": "On Wed, Dec 30, 2020, MYRIAN TORRES RICO wrote:\n>\n>I have a question about the data's treatment in pucker.in. I have\n>obtained my file.crd of 80ns more less, but when I launch the\n>puckering calculation and I represent the graphs in Origin, only 10ns\n>appears...why? any idea?\nDoes this happen only with pucker calculations? What happens if you use\nthe same trajin commands, but ask for something like distance? What\nhappens if you ask for fewer snapshots in the trajin commands? Don't be\nafraid to experiment.\nAlso, look at the file that cpptraj creates: does it have the expected\nnumber of lines?\nBasically, there are many ways that one could get the behavior you\ndescribe. (It could even that Origin doesn't understand the format.) If\nyou can't debug it yourself, you will need to post the exact commands you\ngave to cpptraj.\n...good luck....dac\n-- \n====================================================================\nDavid A. Case | email: \nDept. of Chemistry & Chemical Biology | david.case.rutgers.edu\nRutgers University | skype: dacase\n174 Frelinghuysen Road, Rm. 208b | cell: +1-609-751-8668\nPiscataway, NJ 08854 USA | web: casegroup.rutgers.edu\n====================================================================",
+      "url": "http://archive.ambermd.org/202012/0347.html",
+      "in_reply_to": 1609332496
+    },
+    {
+      "message_id": 1609411585,
+      "author": "MYRIAN TORRES RICO",
+      "date_raw": "Thu, 31 Dec 2020 11:46:25 +0100",
+      "body": "Hi Daniel,\nI have probed this calculation for distances, and other files.crd and\never It takes 15% of all frames approximately...and also I probed\nother program different to origin, and the result is the same...Any\nsuggest? Is there another method to calculate puckering? This is my\nscript:\ntrajin /mnt/DISCO-EXTERNO/myriam/smp-199ptn4syn/smp-199ptn4rig_vcon3.mdcrd\npucker p1 .2175 .2189 @2187 @2184 @2178 @2177 out pucker1.\ndat cremer\namplitude theta range360\npucker p2 .2200 .2216 .2212 .2210 .2203 @2202 out pucker2.\ndat cremer\namplitude theta range360\npucker p3 .2221 .2235 .2233 .2230 .2224 .2223 out pucker3.dat cremer\namplitude theta range360\npucker p4 .2246 @2262 @2258 @2256 @2249 @2248 out pucker4.\ndat cremer\namplitude theta range360\npucker p5 .2267 .2282 .2278 .2276 @2270 @2269 out pucker5.\ndat cremer\namplitude theta range360\nThanks in advance,\nMyriam\nDavid A Case <david.case.rutgers.\nedu> escribió:\n> On Wed, Dec 30, 2020, MYRIAN TORRES RICO wrote:\n>>\n>> I have a question about the data's treatment in pucker.in. I have\n>> obtained my file.crd of 80ns more less, but when I launch the\n>> puckering calculation and I represent the graphs in Origin, only 10ns\n>> appears...why? any idea?\n>\n> Does this happen only with pucker calculations? What happens if you use\n> the same trajin commands, but ask for something like distance? What\n> happens if you ask for fewer snapshots in the trajin commands? Don't be\n> afraid to experiment.\n>\n> Also, look at the file that cpptraj creates: does it have the expected\n> number of lines?\n>\n> Basically, there are many ways that one could get the behavior you\n> describe. (It could even that Origin doesn't understand the format.) If\n> you can't debug it yourself, you will need to post the exact commands you\n> gave to cpptraj.\n>\n> ...good luck....dac\n>\n> --\n>\n> ====================================================================\n> David A. Case | email:\n> Dept. of Chemistry & Chemical Biology | david.case.rutgers.\nedu\n> Rutgers University | skype: dacase\n> 174 Frelinghuysen Road, Rm. 208b | cell: +1-609-751-8668\n> Piscataway, NJ 08854 USA | web: casegroup.rutgers.edu\n> ====================================================================\n>\n>",
+      "url": "http://archive.ambermd.org/202012/0364.html",
+      "in_reply_to": 1609332496
+    },
+    {
+      "message_id": 1609423800,
+      "author": "Daniel Roe",
+      "date_raw": "Thu, 31 Dec 2020 09:10:00 -0500",
+      "body": "Hi,\nYou have not explained your problem sufficiently. Your original issue\nappears to be that you are getting less data out of your calculation\nthan you expect, but you give only vague descriptions of what you are\ndoing.\nOn Thu, Dec 31, 2020 at 5:46 AM MYRIAN TORRES RICO\n<myriam.torres.iiq.\ncsic.es> wrote:\n>\n> trajin /mnt/DISCO-EXTERNO/myriam/smp-199ptn4syn/smp-199ptn4rig_vcon3.mdcrd\nHow many frames does cpptraj suggest are in this trajectory (check the\noutput)? What is the trajectory format (ascii/netcdf)? If it is ascii,\nare you sure you are using the correct topology file? How often did\nyou write the trajectory (i.e. what was ntwx) compared to your time\nstep (dt)? In general, the more details you provide, the more chance\nsomeone has of helping you.\n-Dan\n>\n> pucker p1 .2175 .2189 .2187 @2184 @2178 @2177 out pucker1.\ndat cremer\n> amplitude theta range360\n> pucker p2 .2200 .2216 .2212 .2210 .2203 @2202 out pucker2.\ndat cremer\n> amplitude theta range360\n> pucker p3 .2221 .2235 .2233 .2230 .2224 .2223 out pucker3.dat cremer\n> amplitude theta range360\n> pucker p4 .2246 @2262 @2258 @2256 @2249 @2248 out pucker4.\ndat cremer\n> amplitude theta range360\n> pucker p5 .2267 .2282 .2278 @2276 @2270 @2269 out pucker5.\ndat cremer\n> amplitude theta range360\n>\n> Thanks in advance,\n>\n>\n> Myriam\n>\n>\n>\n>\n> David A Case <david.case.rutgers.edu> escribió:\n>\n> > On Wed, Dec 30, 2020, MYRIAN TORRES RICO wrote:\n> >>\n> >> I have a question about the data's treatment in pucker.in. I have\n> >> obtained my file.crd of 80ns more less, but when I launch the\n> >> puckering calculation and I represent the graphs in Origin, only 10ns\n> >> appears...why? any idea?\n> >\n> > Does this happen only with pucker calculations? What happens if you use\n> > the same trajin commands, but ask for something like distance? What\n> > happens if you ask for fewer snapshots in the trajin commands? Don't be\n> > afraid to experiment.\n> >\n> > Also, look at the file that cpptraj creates: does it have the expected\n> > number of lines?\n> >\n> > Basically, there are many ways that one could get the behavior you\n> > describe. (It could even that Origin doesn't understand the format.) If\n> > you can't debug it yourself, you will need to post the exact commands you\n> > gave to cpptraj.\n> >\n> > ...good luck....dac\n> >\n> > --\n> >\n> > ====================================================================\n> > David A. Case | email:\n> > Dept. of Chemistry & Chemical Biology | david.case.rutgers.\nedu\n> > Rutgers University | skype: dacase\n> > 174 Frelinghuysen Road, Rm. 208b | cell: +1-609-751-8668\n> > Piscataway, NJ 08854 USA | web: casegroup.rutgers.edu\n> > ====================================================================\n> >\n> >",
+      "url": "http://archive.ambermd.org/202012/0368.html",
+      "in_reply_to": 1609332496
+    },
+    {
+      "message_id": 1609425148,
+      "author": "MYRIAN TORRES RICO",
+      "date_raw": "Thu, 31 Dec 2020 15:32:28 +0100",
+      "body": "Hi Daniel,\nMy problem is, the frames that I expect are 40000 (nstlim/ntwr), and\nwhen I calculate pucker, distances...with cpptraj, it only takes 11783\nframes (one of the examples), but in others simulations don't happen\nthis, and I don't know why...(I hope it is understood).\nThanks in advance,\nMyriam\nDaniel Roe <daniel.r.roe.gmail.com> escribió:\n> Hi,\n>\n> You have not explained your problem sufficiently. Your original issue\n> appears to be that you are getting less data out of your calculation\n> than you expect, but you give only vague descriptions of what you are\n> doing.\n>\n> On Thu, Dec 31, 2020 at 5:46 AM MYRIAN TORRES RICO\n> <myriam.torres.iiq.csic.es> wrote:\n>>\n>> trajin /mnt/DISCO-EXTERNO/myriam/smp-199ptn4syn/smp-199ptn4rig_vcon3.mdcrd\n>\n> How many frames does cpptraj suggest are in this trajectory (check the\n> output)? What is the trajectory format (ascii/netcdf)? If it is ascii,\n> are you sure you are using the correct topology file? How often did\n> you write the trajectory (i.e. what was ntwx) compared to your time\n> step (dt)? In general, the more details you provide, the more chance\n> someone has of helping you.\n>\n> -Dan\n>\n>>\n>> pucker p1 .2175 .2189 .2187 @2184 @2178 @2177 out pucker1.\ndat cremer\n>> amplitude theta range360\n>> pucker p2 .2200 .2216 .2212 .2210 .2203 @2202 out pucker2.\ndat cremer\n>> amplitude theta range360\n>> pucker p3 .2221 .2235 .2233 .2230 .2224 .2223 out pucker3.dat cremer\n>> amplitude theta range360\n>> pucker p4 @2246 @2262 @2258 @2256 @2249 @2248 out pucker4.\ndat cremer\n>> amplitude theta range360\n>> pucker p5 .2267 .2282 @2278 @2276 @2270 @2269 out pucker5.\ndat cremer\n>> amplitude theta range360\n>>\n>> Thanks in advance,\n>>\n>>\n>> Myriam\n>>\n>>\n>>\n>>\n>> David A Case <david.case.rutgers.edu> escribió:\n>>\n>> > On Wed, Dec 30, 2020, MYRIAN TORRES RICO wrote:\n>> >>\n>> >> I have a question about the data's treatment in pucker.in. I have\n>> >> obtained my file.crd of 80ns more less, but when I launch the\n>> >> puckering calculation and I represent the graphs in Origin, only 10ns\n>> >> appears...why? any idea?\n>> >\n>> > Does this happen only with pucker calculations? What happens if you use\n>> > the same trajin commands, but ask for something like distance? What\n>> > happens if you ask for fewer snapshots in the trajin commands? Don't be\n>> > afraid to experiment.\n>> >\n>> > Also, look at the file that cpptraj creates: does it have the expected\n>> > number of lines?\n>> >\n>> > Basically, there are many ways that one could get the behavior you\n>> > describe. (It could even that Origin doesn't understand the format.) If\n>> > you can't debug it yourself, you will need to post the exact commands you\n>> > gave to cpptraj.\n>> >\n>> > ...good luck....dac\n>> >\n>> > --\n>> >\n>> > ====================================================================\n>> > David A. Case | email:\n>> > Dept. of Chemistry & Chemical Biology | david.case.rutgers.\nedu\n>> > Rutgers University | skype: dacase\n>> > 174 Frelinghuysen Road, Rm. 208b | cell: +1-609-751-8668\n>> > Piscataway, NJ 08854 USA | web: casegroup.rutgers.edu\n>> > ====================================================================\n>> >\n>> >",
+      "url": "http://archive.ambermd.org/202012/0370.html",
+      "in_reply_to": 1609332496
+    },
+    {
+      "message_id": 1609428005,
+      "author": "David A Case",
+      "date_raw": "Thu, 31 Dec 2020 10:20:05 -0500",
+      "body": "On Thu, Dec 31, 2020, MYRIAN TORRES RICO wrote:\n>\n>My problem is, the frames that I expect are 40000 (nstlim/ntwr), and\nThe frames you should expect is nstlim/ntwx, not nstlim/ntwr. Does that\nhelp?\n....dac",
+      "url": "http://archive.ambermd.org/202012/0372.html",
+      "in_reply_to": 1609332496
+    },
+    {
+      "message_id": 1609431333,
+      "author": "MYRIAN TORRES RICO",
+      "date_raw": "Thu, 31 Dec 2020 17:15:33 +0100",
+      "body": "Ah yes, sorry, I wrote wrong. Actually I divided nstlim/ntwx.\nDavid A Case <david.case.rutgers.edu> escribió:\n> On Thu, Dec 31, 2020, MYRIAN TORRES RICO wrote:\n>>\n>> My problem is, the frames that I expect are 40000 (nstlim/ntwr), and\n>\n> The frames you should expect is nstlim/ntwx, not nstlim/ntwr. Does that\n> help?\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202012/0373.html",
+      "in_reply_to": 1609332496
+    }
+  ]
+}

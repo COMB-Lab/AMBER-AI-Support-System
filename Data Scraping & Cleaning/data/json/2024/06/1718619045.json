@@ -1,0 +1,21 @@
+{
+  "thread_id": 1718619045,
+  "subject": "Using ntp=1 for membrane embedded Protein-Ligand System with ifsc=1 Option",
+  "messages": [
+    {
+      "message_id": 1718619045,
+      "author": "­변진영 / 학생 / 약학과",
+      "date_raw": "Mon, 17 Jun 2024 19:10:45 +0900",
+      "body": "Dear AMBER Community,\nI am currently working on a simulation involving a membrane-embedded\nprotein-ligand system. Typically, for such systems, I used the following\nsettings:\n- barostat = 2\n- ntp = 3\n- csurften = 3\n- gamma_ten = 0.0\n- ninterface = 2\nHowever, I have encountered an issue when trying to calculate the relative\nbinding free energy of the protein-ligand system using the '*ifsc*' option.\nThe 'ifsc' option only supports ntp=1, which conflicts with my usual\nsettings for membrane-embedded systems.\nGiven this constraint, I am seeking advice on whether it is acceptable to\nrun the simulation with ntp=1 for a membrane-embedded protein-ligand system.\nAre there any potential issues or considerations I should be aware of when\nusing this setting?\nAny insights or recommendations from those with experience in similar\nsimulations would be greatly appreciated.\nThank you for your assistance.\nBest regards,\nJinyoung",
+      "url": "http://archive.ambermd.org/202406/0051.html"
+    },
+    {
+      "message_id": 1718639794,
+      "author": "Dickson, Callum",
+      "date_raw": "Mon, 17 Jun 2024 15:56:34 +0000",
+      "body": "Hi, this came up recently on the mailing list. Here was my response-\nMy typical workflow for free energy on membrane proteins with TI would be\n? Equilibrate the system (receptor+single ligand) under NPT with semiisotropic barostat (ntp=3) for >100 ns\n? Prepare/dock remaining ligand set using the equilibrated system\n? Run TI windows using ntp=1. Although it would be preferable to keep ntp=3, this is not currently possible and since TI windows are typically short (on the order of 5 ns) you should not expect large changes in the membrane during these windows\nIf you run membrane proteins under ntp=1 for hundreds of nanoseconds, you may see the membrane contracting along either the X- or Y- axis (such that it thins in one dimension and expands in the other). This is the motivation for the semiisotropic barostat, but short 5-10 ns TI windows are unlikely to encounter this.\nBest,\nCallum\n-----Original Message-----\nFrom: ������ / �л� / ���а� via AMBER <amber.ambermd.\norg>\nSent: Monday, June 17, 2024 6:11 AM\nTo: amber.ambermd.org\nSubject: [AMBER] Using ntp=1 for membrane embedded Protein-Ligand System with ifsc=1 Option\n!-------------------------------------------------------------------|\nThis Message Is From an External Sender\nThis message came from outside your organization.\n|-------------------------------------------------------------------!\nDear AMBER Community,\nI am currently working on a simulation involving a membrane-embedded protein-ligand system. Typically, for such systems, I used the following\nsettings:\n- barostat = 2\n- ntp = 3\n- csurften = 3\n- gamma_ten = 0.0\n- ninterface = 2\nHowever, I have encountered an issue when trying to calculate the relative binding free energy of the protein-ligand system using the '*ifsc*' option.\nThe 'ifsc' option only supports ntp=1, which conflicts with my usual settings for membrane-embedded systems.\nGiven this constraint, I am seeking advice on whether it is acceptable to run the simulation with ntp=1 for a membrane-embedded protein-ligand system.\nAre there any potential issues or considerations I should be aware of when using this setting?\nAny insights or recommendations from those with experience in similar simulations would be greatly appreciated.\nThank you for your assistance.\nBest regards,\nJinyoung",
+      "url": "http://archive.ambermd.org/202406/0052.html",
+      "in_reply_to": 1718619045
+    }
+  ]
+}

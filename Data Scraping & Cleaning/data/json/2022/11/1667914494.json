@@ -1,0 +1,29 @@
+{
+  "thread_id": 1667914494,
+  "subject": "installation",
+  "messages": [
+    {
+      "message_id": 1667914494,
+      "author": "Nitin Kulhar",
+      "date_raw": "Tue, 8 Nov 2022 19:04:54 +0530",
+      "body": "Hi\nSerial installation was successful and all tests were passed. However,\nattempting to install parallel amber executables (after adding -DMPI=TRUE\nin the 'run_cmake' script) leads to the following error:\n[ 11%] Linking C shared library libfftw_mpi.so\n/usr/bin/ld: cannot find\n$ORIGIN:$ORIGIN/../../lib:$ORIGIN/../../../lib:$ORIGIN/../../../compilers/lib:$ORIGIN/../../../../compilers/lib:$ORIGIN/../../../../../compilers/lib:\nNo such file or directory\ncollect2: error: ld returned 1 exit status\nAmberTools/src/fftw-3.3/mpi/CMakeFiles/fftw_mpi.dir/build.make:570: recipe\nfor target 'AmberTools/src/fftw-3.3/mpi/libfftw_mpi.so' failed\nmake[2]: *** [AmberTools/src/fftw-3.3/mpi/libfftw_mpi.so] Error 1\nCMakeFiles/Makefile2:3689: recipe for target\n'AmberTools/src/fftw-3.3/mpi/CMakeFiles/fftw_mpi.dir/all' failed\nmake[1]: *** [AmberTools/src/fftw-3.3/mpi/CMakeFiles/fftw_mpi.dir/all]\nError 2\nMakefile:170: recipe for target 'all' failed\nmake: *** [all] Error 2\nPlease let me know what I am doing wrong.\n-Nitin\n-- \nDisclaimer:- This footer text is to convey that this email is sent by one \nof the users of IITH. So, do not mark it as SPAM.",
+      "url": "http://archive.ambermd.org/202211/0045.html"
+    },
+    {
+      "message_id": 1668008620,
+      "author": "David A Case",
+      "date_raw": "Wed, 9 Nov 2022 10:43:40 -0500",
+      "body": "On Tue, Nov 08, 2022, Nitin Kulhar via AMBER wrote:\n>\n>Serial installation was successful and all tests were passed. However,\n>attempting to install parallel amber executables (after adding -DMPI=TRUE\n>in the 'run_cmake' script) leads to the following error:\n>\n>[ 11%] Linking C shared library libfftw_mpi.so\n>/usr/bin/ld: cannot find\n>$ORIGIN:$ORIGIN/../../lib:$ORIGIN/../../../lib:$ORIGIN/../../../compilers/lib:$ORIGIN/../../../../compilers/lib:$ORIGIN/../../../../../compilers/lib:\n>No such file or directory\nCan you say what MPI stack you are using, and how it was installed? This\nerror arises from trying to build fftw, which is a standard library, and not\na piece of Amber code. So the problem probably arises from how you are\nsetting up MPI.\n...thx...dac",
+      "url": "http://archive.ambermd.org/202211/0055.html",
+      "in_reply_to": 1667914494
+    },
+    {
+      "message_id": 1668109845,
+      "author": "Nitin Kulhar",
+      "date_raw": "Fri, 11 Nov 2022 01:20:45 +0530",
+      "body": "Dear all\nI unpacked openmpi in amber22_src/AmberTools/src and ran the following\ncommands:\n./configure_openmpi gnu\ncd amber22_src/build\n./clean_build\n./run_cmake\nmake install\nThe above led to the following error:\nScanning dependencies of target sander.MPI\n[ 46%] Linking Fortran executable sander.MPI\n/usr/bin/ld:\nCMakeFiles/sander_base_obj_mpi.dir/nose_hoover.F90.o(.debug_info+0x4551):\nunresolvable R_X86_64_64 relocation against symbol `mpi_fortran_argv_null_'\n/usr/bin/ld: final link failed: Nonrepresentable section on output\ncollect2: error: ld returned 1 exit status\nAmberTools/src/sander/CMakeFiles/sander.MPI.dir/build.make:658: recipe for\ntarget 'AmberTools/src/sander/sander.MPI' failed\nmake[2]: *** [AmberTools/src/sander/sander.MPI] Error 1\nCMakeFiles/Makefile2:4272: recipe for target\n'AmberTools/src/sander/CMakeFiles/sander.MPI.dir/all' failed\nmake[1]: *** [AmberTools/src/sander/CMakeFiles/sander.MPI.dir/all] Error 2\nMakefile:170: recipe for target 'all' failed\nmake: *** [all] Error 2\nI would appreciate any help in this regard\nThanks\n-Nitin\nOn Wed, Nov 9, 2022 at 9:13 PM David A Case <david.case.rutgers.\nedu> wrote:\n> On Tue, Nov 08, 2022, Nitin Kulhar via AMBER wrote:\n> >\n> >Serial installation was successful and all tests were passed. However,\n> >attempting to install parallel amber executables (after adding -DMPI=TRUE\n> >in the 'run_cmake' script) leads to the following error:\n> >\n> >[ 11%] Linking C shared library libfftw_mpi.so\n> >/usr/bin/ld: cannot find\n>\n> >$ORIGIN:$ORIGIN/../../lib:$ORIGIN/../../../lib:$ORIGIN/../../../compilers/lib:$ORIGIN/../../../../compilers/lib:$ORIGIN/../../../../../compilers/lib:\n> >No such file or directory\n>\n> Can you say what MPI stack you are using, and how it was installed? This\n> error arises from trying to build fftw, which is a standard library, and\n> not\n> a piece of Amber code. So the problem probably arises from how you are\n> setting up MPI.\n>\n> ...thx...dac\n>\n>\n-- \nDisclaimer:- This footer text is to convey that this email is sent by one \nof the users of IITH. So, do not mark it as SPAM.",
+      "url": "http://archive.ambermd.org/202211/0071.html",
+      "in_reply_to": 1667914494
+    }
+  ]
+}

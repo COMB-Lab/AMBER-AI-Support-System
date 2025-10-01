@@ -1,0 +1,37 @@
+{
+  "thread_id": 1621005569,
+  "subject": "Cpptraj segfaults on single REMD trajectories?",
+  "messages": [
+    {
+      "message_id": 1621005569,
+      "author": "Brian Radak",
+      "date_raw": "Fri, 14 May 2021 11:19:29 -0400",
+      "body": "I've recently been running a lot of one-dimensional HREMD (-rem 3) with\nPMEMDGTI. I started to notice certain analysis scripts failing and traced\nit back to a cpptraj segfault whenever one (and only one) REMD trajectory\nis read in - literally\n$ cpptraj -p prmtop -y mdcrd\nSegmentation fault (core dumped)\nI added -debug 999 and it looks like the trajectory is actually\nsuccessfully read and closed and _then_ the segfaults occurs.\nSuggestions? Is this bc of some automatic response to REMD annotations? Is\nthere a way to suppress that response? My only goal here is to do basic\nimaging and centering before extracting a frame. I don't actually have\ninterest in the REMD data itself.\nCheers,\nBrian",
+      "url": "http://archive.ambermd.org/202105/0134.html"
+    },
+    {
+      "message_id": 1621006340,
+      "author": "Daniel Roe",
+      "date_raw": "Fri, 14 May 2021 11:32:20 -0400",
+      "body": "Hi,\nWhat version of cpptraj are you using?\n-Dan\nOn Fri, May 14, 2021 at 11:20 AM Brian Radak <brian.radak.gmail.com> wrote:\n> I've recently been running a lot of one-dimensional HREMD (-rem 3) with\n> PMEMDGTI. I started to notice certain analysis scripts failing and traced\n> it back to a cpptraj segfault whenever one (and only one) REMD trajectory\n> is read in - literally\n>\n> $ cpptraj -p prmtop -y mdcrd\n> Segmentation fault (core dumped)\n>\n> I added -debug 999 and it looks like the trajectory is actually\n> successfully read and closed and _then_ the segfaults occurs.\n>\n> Suggestions? Is this bc of some automatic response to REMD annotations? Is\n> there a way to suppress that response? My only goal here is to do basic\n> imaging and centering before extracting a frame. I don't actually have\n> interest in the REMD data itself.\n>\n> Cheers,\n> Brian\n>",
+      "url": "http://archive.ambermd.org/202105/0135.html",
+      "in_reply_to": 1621005569
+    },
+    {
+      "message_id": 1621014040,
+      "author": "Brian Radak",
+      "date_raw": "Fri, 14 May 2021 13:40:40 -0400",
+      "body": "This is with 4.26.4\nThe problem also occurs (and was first observed) with pytraj.load() , but\ndoes not seem to occur with pytraj.iterload()\nOn Fri, May 14, 2021, 11:32 AM Daniel Roe <daniel.r.roe.gmail.com> wrote:\n> Hi,\n>\n> What version of cpptraj are you using?\n>\n> -Dan\n>\n> On Fri, May 14, 2021 at 11:20 AM Brian Radak <brian.radak.gmail.com>\n> wrote:\n>\n> > I've recently been running a lot of one-dimensional HREMD (-rem 3) with\n> > PMEMDGTI. I started to notice certain analysis scripts failing and traced\n> > it back to a cpptraj segfault whenever one (and only one) REMD trajectory\n> > is read in - literally\n> >\n> > $ cpptraj -p prmtop -y mdcrd\n> > Segmentation fault (core dumped)\n> >\n> > I added -debug 999 and it looks like the trajectory is actually\n> > successfully read and closed and _then_ the segfaults occurs.\n> >\n> > Suggestions? Is this bc of some automatic response to REMD annotations?\n> Is\n> > there a way to suppress that response? My only goal here is to do basic\n> > imaging and centering before extracting a frame. I don't actually have\n> > interest in the REMD data itself.\n> >\n> > Cheers,\n> > Brian\n> >",
+      "url": "http://archive.ambermd.org/202105/0140.html",
+      "in_reply_to": 1621005569
+    },
+    {
+      "message_id": 1621015047,
+      "author": "Daniel Roe",
+      "date_raw": "Fri, 14 May 2021 13:57:27 -0400",
+      "body": "Hi,\nOK, this may be a problem that has been fixed since that version\nbecause I can't seem to reproduce it. Can you try with a more recent\nversion (either GitHub or AmberTools 21) and see if the problem still\noccurs?\n-Dan\nOn Fri, May 14, 2021 at 1:41 PM Brian Radak <brian.radak.gmail.com> wrote:\n>\n> This is with 4.26.4\n>\n> The problem also occurs (and was first observed) with pytraj.load() , but\n> does not seem to occur with pytraj.iterload()\n>\n> On Fri, May 14, 2021, 11:32 AM Daniel Roe <daniel.r.roe.gmail.com> wrote:\n>\n> > Hi,\n> >\n> > What version of cpptraj are you using?\n> >\n> > -Dan\n> >\n> > On Fri, May 14, 2021 at 11:20 AM Brian Radak <brian.radak.gmail.com>\n> > wrote:\n> >\n> > > I've recently been running a lot of one-dimensional HREMD (-rem 3) with\n> > > PMEMDGTI. I started to notice certain analysis scripts failing and traced\n> > > it back to a cpptraj segfault whenever one (and only one) REMD trajectory\n> > > is read in - literally\n> > >\n> > > $ cpptraj -p prmtop -y mdcrd\n> > > Segmentation fault (core dumped)\n> > >\n> > > I added -debug 999 and it looks like the trajectory is actually\n> > > successfully read and closed and _then_ the segfaults occurs.\n> > >\n> > > Suggestions? Is this bc of some automatic response to REMD annotations?\n> > Is\n> > > there a way to suppress that response? My only goal here is to do basic\n> > > imaging and centering before extracting a frame. I don't actually have\n> > > interest in the REMD data itself.\n> > >\n> > > Cheers,\n> > > Brian\n> > >",
+      "url": "http://archive.ambermd.org/202105/0142.html",
+      "in_reply_to": 1621005569
+    }
+  ]
+}

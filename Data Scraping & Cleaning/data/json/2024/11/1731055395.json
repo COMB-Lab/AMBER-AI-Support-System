@@ -1,0 +1,45 @@
+{
+  "thread_id": 1731055395,
+  "subject": "ERROR: Calculation halted. Periodic box dimensions have changed too much from their initial values.",
+  "messages": [
+    {
+      "message_id": 1731055395,
+      "author": "Maciej Spiegel",
+      "date_raw": "Fri, 8 Nov 2024 09:43:15 +0100",
+      "body": "Hello,\nEncountered error: „ERROR: Calculation halted. Periodic box dimensions have changed too much from their initial values.\nYour system density has likely changed by a large amount, probably from\nstarting the simulation from a structure a long way from equilibrium.\"\nI run my simulations in 10 x 10 ns jobs using GPU. They keep failing at various stages, not just at the first interval—one job even terminated in the 9th interval! Although the errors suggest this might be due to significant density fluctuations, the density remains within the range of 1.0355 to 1.0383. I inspected the MD trajectory and didn’t notice any specific issues.\nI use H-mass repartitioned topology generated with CPPTRAJ.\nMy input is:\nproduction\n&cntrl\nimin=0,\nntx=5,\nntpr=1000,\nntwr=1000,\nntwx=1000,\nntwe=1000,\nnscm=1000,\nntf=2,\nntc=2,\nntb=2,\nntp=1,\ntautp=5.0,\ntaup=5.0,\nnstlim=2500000,\nt=0.0,\ndt=0.004,\ncut=9.0,\nntt=3,\ngamma_ln=2.0,\nig=-1,\nirest=1,\niwrap=1,\nioutfm=1,\n&end\n&ewald\new_type = 0,\nskinnb = 1.0,\n&end\n–\nMaciej Spiegel, MPharm PhD\nassistant professor\n.GitHub <\nhttps://farmaceut.github.io/\n>\nDepartment of Organic Chemistry and Pharmaceutical Technology,\nFaculty of Pharmacy, Wroclaw Medical University\nBorowska 211A, 50-556 Wroclaw, Poland",
+      "url": "http://archive.ambermd.org/202411/0012.html"
+    },
+    {
+      "message_id": 1731110147,
+      "author": "David A Case",
+      "date_raw": "Fri, 8 Nov 2024 16:55:47 -0700",
+      "body": "On Fri, Nov 08, 2024, Maciej Spiegel via AMBER wrote:\n>Encountered error: „ERROR: Calculation halted. Periodic box dimensions\n>have changed too much from their initial values.\n> Your system density has likely changed by a large amount, probably from\n> starting the simulation from a structure a long way from equilibrium.\"\n>\n>I run my simulations in 10 x 10 ns jobs using GPU. They keep failing at\n>various stages, not just at the first interval—one job even terminated\n>in the 9th interval! Although the errors suggest this might be due to\n>significant density fluctuations, the density remains within the range of\n>1.0355 to 1.0383. I inspected the MD trajectory and didn’t notice any\n>specific issues.\n>I use H-mass repartitioned topology generated with CPPTRAJ.\nIt might help to know exactly how you applied H-mass repartitioning. Have\nyou checked the masses in the prmtop file (with an editor, or with parmed)\nto make sure they are OK?\nA second idea, longshot: try some runs with NVT rather than NPT: does the\nproblem go away? If it does, try NPT but with barostat=2.\nBut overall, it looks like something is triggering a failure, and doing\nenough damage to lead to an incorrect error message. Others on the list may\nsee something that rings a bell. But we may need to get enough files to try\nto reproduce the problem.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202411/0020.html",
+      "in_reply_to": 1731055395
+    },
+    {
+      "message_id": 1731152420,
+      "author": "Maciej Spiegel",
+      "date_raw": "Sat, 9 Nov 2024 12:40:20 +0100",
+      "body": null,
+      "url": "http://archive.ambermd.org/202411/0021.html",
+      "in_reply_to": 1731055395
+    },
+    {
+      "message_id": 1731153017,
+      "author": "Carlos Simmerling",
+      "date_raw": "Sat, 9 Nov 2024 06:50:17 -0500",
+      "body": "Is the initial structure reliable?\nOn Sat, Nov 9, 2024, 6:40 AM Maciej Spiegel <maciej.spiegel.umw.\nedu.pl>\nwrote:\n> ﻿Not at all: Ol21+OL3+OPC water/ions, with missing parameters taken from\n> GAFF2 (vide frcmod files, annotated as such )\n>\n>\n> Maciej Spiegel, MPharm PhD\n> *assistant professor*\n>\n> *Department of Organic Chemistry **and **Pharmaceutical Technology,*\n> *Faculty of Pharmacy, **Wroclaw Medical University*\n> *Borowska 211A,\n> <\nhttps://www.google.com/maps/search/Borowska+211A,+50-556+Wroclaw,+Poland?entry=gmail&source=g\n> **50-556\n> Wroclaw, Poland\n> <\nhttps://www.google.com/maps/search/Borowska+211A,+50-556+Wroclaw,+Poland?entry=gmail&source=g\n>*\n>\n> Wiadomość napisana przez Carlos Simmerling <\n> carlos.simmerling.stonybrook.edu> w dniu 9 lis 2024, o godz. 12:32:\n>\n> ﻿\n> Perhaps you mentioned this earlier in the thread, but are you using any\n> custom or non-standard force field libraries? In my experience this is\n> often the issue when other things seem standard.\n>\n> On Sat, Nov 9, 2024, 4:14 AM Maciej Spiegel via AMBER <amber.ambermd.\norg>\n> wrote:\n>\n>> The hydrogen mass-repartitioned topology was created using CPPTraj (\n>>\nhttps://amberhub.chpc.utah.edu/creating-a-repartitioned-topology/\n). I\n>> verified the mass modifications with the same software, and the values are\n>> adjusted as expected.\n>>\n>> Following the protocol described in 10.1063/5.0013849 <\n>>\nhttps://doi.org/10.1063/5.0013849\n> yesterday, the periodic box error was\n>> resolved. However, a new error occurred: \"Error: an illegal memory access\n>> was encountered launching kernel kNLSkinTest\n>> Error: an illegal memory access was encountered launching kernel\n>> kNLSkinTest” This error led to some production runs failing (no footer in\n>> the output file and truncated frames), not at the beginning but towards the\n>> final nanoseconds of the Nth run.\n>>\n>> Monte Carlo sampling is already being applied.\n>> Attaching all relevant files: https://we.tl/t-pBxfxcLaf2\n>> By the way, ‚checkstructure’ of CPPTraj does not indicate errors other\n>> than \"Warning: Atoms 34826:WAT_8505.H1 and 34828:WAT_8505.EPW are close\n>> (0.78)” but I use OPC water so not relevant, I suppose.\n>>\n>> Thanks\n>> –\n>> Maciej Spiegel, MPharm PhD\n>> assistant professor\n>> .GitHub <\nhttps://farmaceut.github.io/\n>\n>>\n>> Department of Organic Chemistry and Pharmaceutical Technology,\n>> Faculty of Pharmacy, Wroclaw Medical University\n>> Borowska 211A, 50-556 Wroclaw, Poland\n>> <\nhttps://www.google.com/maps/search/Borowska+211A,+50-556+Wroclaw,+Poland?entry=gmail&source=g\n>\n>>\n>> > Wiadomość napisana przez David A Case <dacase1.gmail.\ncom> w dniu 9 lis\n>> 2024, o godz. 00:55:\n>> >\n>> > On Fri, Nov 08, 2024, Maciej Spiegel via AMBER wrote:\n>> >\n>> >> Encountered error: „ERROR: Calculation halted. Periodic box dimensions\n>> >> have changed too much from their initial values.\n>> >> Your system density has likely changed by a large amount, probably from\n>> >> starting the simulation from a structure a long way from equilibrium.\"\n>> >>\n>> >> I run my simulations in 10 x 10 ns jobs using GPU. They keep failing at\n>> >> various stages, not just at the first interval—one job even terminated\n>> >> in the 9th interval! Although the errors suggest this might be due to\n>> >> significant density fluctuations, the density remains within the range\n>> of\n>> >> 1.0355 to 1.0383. I inspected the MD trajectory and didn’t notice any\n>> >> specific issues.\n>> >\n>> >> I use H-mass repartitioned topology generated with CPPTRAJ.\n>> >\n>> > It might help to know exactly how you applied H-mass repartitioning.\n>> Have\n>> > you checked the masses in the prmtop file (with an editor, or with\n>> parmed)\n>> > to make sure they are OK?\n>> >\n>> > A second idea, longshot: try some runs with NVT rather than NPT: does\n>> the\n>> > problem go away? If it does, try NPT but with barostat=2.\n>> >\n>> > But overall, it looks like something is triggering a failure, and doing\n>> > enough damage to lead to an incorrect error message. Others on the\n>> list may\n>> > see something that rings a bell. But we may need to get enough files\n>> to try\n>> > to reproduce the problem.\n>> >\n>> > ...good luck...dac\n>> >\n>>\n>>",
+      "url": "http://archive.ambermd.org/202411/0022.html",
+      "in_reply_to": 1731055395
+    },
+    {
+      "message_id": 1731153791,
+      "author": "Maciej Spiegel",
+      "date_raw": "Sat, 9 Nov 2024 13:03:11 +0100",
+      "body": null,
+      "url": "http://archive.ambermd.org/202411/0023.html",
+      "in_reply_to": 1731055395
+    }
+  ]
+}

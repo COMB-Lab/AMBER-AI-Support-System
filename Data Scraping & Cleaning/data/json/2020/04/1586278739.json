@@ -1,0 +1,29 @@
+{
+  "thread_id": 1586278739,
+  "subject": "topology problems",
+  "messages": [
+    {
+      "message_id": 1586278739,
+      "author": "Seibold, Steve Allan",
+      "date_raw": "Tue, 7 Apr 2020 16:58:59 +0000",
+      "body": "Hi\nI have added a protein subunit (called A) to another protein(B) and created one polypeptide chain AB. There are no \"TER\" commands and the system is recognized and the prmtop and inpcrd files are built using tleap with no problem. The output pdb files (using leap) are fine-one polypeptide chain AB. When I use the output file prmtop to produce a pdb file of the inpcrd file, again there is no problem. It's a AB polypeptide.\nHowever, when I do an energy minimization and convert file.rst to a file.pdb using \"ambpdb -p prmtop -c file.rst > file.pdb\", the resulting pdb file separates the subunit A from B by creating an \"OXT\" at the end of A. That is A-oxt and thus becomes a separate subunit. Since the prmtop file does not call for a OXT at that position, how is ambpdb creating it?\nI am visualizing using VMD. I even loaded first the prmtop file and then the pdb file (of the restart file) and got A-oxt..\nThanks, Steve",
+      "url": "http://archive.ambermd.org/202004/0065.html"
+    },
+    {
+      "message_id": 1586287689,
+      "author": "Matias Machado",
+      "date_raw": "Tue, 07 Apr 2020 16:28:09 -0300 (UYT)",
+      "body": "Dear Steve,\nI'm not truly understanding your issue... leap parse the PDB structure according to the chain IDs and/or TER statements... if you want to have a single/unique continuous polypeptidic chain then name it the same (e.g. \"A\"), otherwise leap will split it in two (no peptidic bond between A and B is generated) and terminal residues are set accordingly (probably file \"leap.log\" says \"Mapped residue XXX, term: Terminal/beginning...\", that is the reason for the introduction of OXT atoms... because by default N and C termini are patch to be zwitterionic (OXT belongs to carboxyl at Ct).\nBest,\nMatias Machado\n------------------------------------\nPhD.\nResearcher at Biomolecular Simulations Lab.\nInstitut Pasteur de Montevideo | Uruguay\n[\nhttp://pasteur.uy/en/labs/biomolecular-simulations-laboratory\n]\n[\nhttp://www.sirahff.com\n]\n----- Mensaje original -----\nDe: \"Steve Allan Seibold\" <stevesei.ku.edu>\nPara: amber.ambermd.org\nEnviados: Martes, 7 de Abril 2020 13:58:59\nAsunto: [AMBER] topology problems\nHi\nI have added a protein subunit (called A) to another protein(B) and created one polypeptide chain AB. There are no \"TER\" commands and the system is recognized and the prmtop and inpcrd files are built using tleap with no problem. The output pdb files (using leap) are fine-one polypeptide chain AB. When I use the output file prmtop to produce a pdb file of the inpcrd file, again there is no problem. It's a AB polypeptide.\nHowever, when I do an energy minimization and convert file.rst to a file.pdb using \"ambpdb -p prmtop -c file.rst > file.pdb\", the resulting pdb file separates the subunit A from B by creating an \"OXT\" at the end of A. That is A-oxt and thus becomes a separate subunit. Since the prmtop file does not call for a OXT at that position, how is ambpdb creating it?\nI am visualizing using VMD. I even loaded first the prmtop file and then the pdb file (of the restart file) and got A-oxt..\nThanks, Steve",
+      "url": "http://archive.ambermd.org/202004/0066.html",
+      "in_reply_to": 1586278739
+    },
+    {
+      "message_id": 1586345828,
+      "author": "David A Case",
+      "date_raw": "Wed, 8 Apr 2020 07:37:08 -0400",
+      "body": "On Tue, Apr 07, 2020, Seibold, Steve Allan wrote:\n>Since the prmtop\n>file does not call for a OXT at that position, how is ambpdb creating it?\nIt's not. I can't see any way that ambpdb would add an OXT if it is not\nthere in the prmtop file. Did you open the prmtop file in a text editor\nto see what atoms are actually there?\n....dac\np.s. Matias has a very good guess: if your chain ID's were different,\nthat would cause tleap to insert a break. It would also be worth\nknowing what version of AmberTools you are using, since older versions\noperated differently with regard to TER cards. (But no version ever\nadded new OXT atoms....)",
+      "url": "http://archive.ambermd.org/202004/0067.html",
+      "in_reply_to": 1586278739
+    }
+  ]
+}

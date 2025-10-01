@@ -1,0 +1,45 @@
+{
+  "thread_id": 1683738199,
+  "subject": "Problem with aMD tutorial",
+  "messages": [
+    {
+      "message_id": 1683738199,
+      "author": "Raghuvir Pissurlenkar",
+      "date_raw": "Wed, 10 May 2023 22:33:19 +0530",
+      "body": "I am trying to execute the aMD tutorial\nI get the following error on the execution of the command (looks to me there is some issue with the input file which I cannot spot)\n$AMBERHOME/bin/pmemd.cuda -O -i md_wat.in -o md_wat.out -p ../*.prmtop -c ../1_/*.rst -r md_wat.rst -ref ../1_/*.rst\nfile = 'md_wat.in')\nFortran runtime error: Cannot match namelist object name .\nError termination. Backtrace:\n#0 0x7f5067b51d21 in ???\n#1 0x7f5067b52869 in ???\n#2 0x7f5067b5354f in ???\n#3 0x7f5067d9165d in ???\n#4 0x7f5067d9aae7 in ???\n#5 0x7f5067d9ad0c in ???\n#6 0x7f5067d9ae67 in ???\n#7 0x564e60b64a51 in ???\n#8 0x564e60c1fb82 in ???\n#9 0x564e60c00118 in ???\n#10 0x564e60b319ce in ???\n#11 0x7f5067948082 in __libc_start_main\nat ../csu/libc-start.c:308\n#12 0x564e60b4d74d in ???\n#13 0xffffffffffffffff in ???\nraghuvir.prometheus:~/amber-amd$",
+      "url": "http://archive.ambermd.org/202305/0045.html"
+    },
+    {
+      "message_id": 1683746363,
+      "author": "David A Case",
+      "date_raw": "Wed, 10 May 2023 15:19:23 -0400",
+      "body": "On Wed, May 10, 2023, Raghuvir Pissurlenkar via AMBER wrote:\n>I am trying to execute the aMD tutorial\nCan you be more explicit? Which tutorial? In tutorial 6.3, I don't see any\n\"md_wat.in\" file. Since that is the file that has the namelist problem,\nit's probably best to post the actual file here, in any event.\n(Apologies if I am missing something that is actually in that tutorial.)\n....dac",
+      "url": "http://archive.ambermd.org/202305/0048.html",
+      "in_reply_to": 1683738199
+    },
+    {
+      "message_id": 1683754725,
+      "author": "Raghuvir Pissurlenkar",
+      "date_raw": "Thu, 11 May 2023 03:08:45 +0530",
+      "body": "Dear Prof. Case\nLink to the tutorial \"\nhttps://ambermd.org/tutorials/advanced/tutorial22/section1.php”\nThe Structure input files I used are \"bpti-ff99SBi.prmtopp <\nhttps://ambermd.org/tutorials/advanced/tutorial22/files/bpti-ff99SBi.prmtop\n>, bpti-ff99SBi.inpcrd <\nhttps://ambermd.org/tutorials/advanced/tutorial22/files/bpti-ff99SBi.inpcrd\n>”\nThe input file I am referring to is \"heat-wat.in <\nhttp://heat-wat.in/\n>” which gets downloaded as \"\nhttps://ambermd.org/tutorials/advanced/tutorial22/files/md_wat.in”\n——————————\nRelax water\nLET WATER MOVE\n&cntrl\ntimlim = 999999., nmropt = 0, imin = 0,\nntx = 1, irest = 0, ntrx = 1, ntxo = 1,\nntpr = 500, ntwx = 500, ntwv = 0, ntwe = 0,\nntwr = 5000,\nntf = 2, ntb = 2,\ncut = 10.0, nsnb = 20,\nnstlim = 10000, nscm = 2500, iwrap = 1,\nt = 0.0, dt = 0.002,\ntemp0 = 300.0, tempi = 200.0, tautp=0.5,\nntt = 1,\nntp =1 , taup = 1.0,\nntc = 2, tol = 0.00001,\nibelly=0, ntr=1,\nrestraintmask=\"!:WAT\" , restraint_wt=10.0,\n&end\n/\n——————————————————\nI am able to successfully execute\n$AMBERHOME/bin/pmemd.cuda -O -i min_wat.in -o min_wat.out -p ../*.prmtop -c ../*.inpcrd -r min_wat.rst -ref ../*.inpcrd\nBut when am try running the following command the run fails\n$AMBERHOME/bin/pmemd.cuda -O -i md_wat.in -o md_wat.out -p ../*.prmtop -c ../1_/*.rst -r md_wat.rst -ref ../1_/*.rst\nRun output is\nAt line 980 of file /opt/amber22_src/src/pmemd/src/mdin_ctrl_dat.F90 (unit = 5, file = 'md_wat.in')\nFortran runtime error: Cannot match namelist object name .\nError termination. Backtrace:\n#0 0x7f31de94ad21 in ???\n#1 0x7f31de94b869 in ???\n#2 0x7f31de94c54f in ???\n#3 0x7f31deb8a65d in ???\n#4 0x7f31deb93ae7 in ???\n#5 0x7f31deb93d0c in ???\n#6 0x7f31deb93e67 in ???\n#7 0x55c64aa10a51 in ???\n#8 0x55c64aacbb82 in ???\n#9 0x55c64aaac118 in ???\n#10 0x55c64a9dd9ce in ???\n#11 0x7f31de741082 in __libc_start_main\nat ../csu/libc-start.c:308\n#12 0x55c64a9f974d in ???\n#13 0xffffffffffffffff in ???\nThanks for your help in advanced\nRegards\nRaghuvir\n> On 11-May-2023, at 00:49, David A Case <david.case.rutgers.\nedu> wrote:\n>\n> On Wed, May 10, 2023, Raghuvir Pissurlenkar via AMBER wrote:\n>\n>> I am trying to execute the aMD tutorial\n>\n> Can you be more explicit? Which tutorial? In tutorial 6.3, I don't see any\n> \"md_wat.in\" file. Since that is the file that has the namelist problem,\n> it's probably best to post the actual file here, in any event.\n>\n> (Apologies if I am missing something that is actually in that tutorial.)\n>\n> ....dac\n>",
+      "url": "http://archive.ambermd.org/202305/0049.html",
+      "in_reply_to": 1683738199
+    },
+    {
+      "message_id": 1683785287,
+      "author": "Charo del Genio",
+      "date_raw": "Thu, 11 May 2023 07:08:07 +0100",
+      "body": "On 10/05/2023 22:38, Raghuvir Pissurlenkar via AMBER wrote:\n> Dear Prof. Case\n> Link to the tutorial \"\nhttps://ambermd.org/tutorials/advanced/tutorial22/section1.php”\n> The Structure input files I used are \"bpti-ff99SBi.prmtopp <\nhttps://ambermd.org/tutorials/advanced/tutorial22/files/bpti-ff99SBi.prmtop\n>, bpti-ff99SBi.inpcrd <\nhttps://ambermd.org/tutorials/advanced/tutorial22/files/bpti-ff99SBi.inpcrd\n>”\n> The input file I am referring to is \"heat-wat.in <\nhttp://heat-wat.in/\n>” which gets downloaded as \"\nhttps://ambermd.org/tutorials/advanced/tutorial22/files/md_wat.in”\n> [...]\n> I am able to successfully execute\n> $AMBERHOME/bin/pmemd.cuda -O -i min_wat.in -o min_wat.out -p ../*.prmtop -c ../*.inpcrd -r min_wat.rst -ref ../*.inpcrd\n> But when am try running the following command the run fails\n> $AMBERHOME/bin/pmemd.cuda -O -i md_wat.in -o md_wat.out -p ../*.prmtop -c ../1_/*.rst -r md_wat.rst -ref ../1_/*.rst\n> [...]\n> Regards\n> Raghuvir\nMost likely that is because of the *. In all the commands of the tutorial, replace *.prmtop with bpti-ff99SBi.prmtop, and replace *.rst with the actual name of the restart file generated in the\nprevious step. For example, in the second command, use min_wat.rst; then in the next command, use md_wat.rst, etc. Also, the example commands expect these files each in a directory of its own, so you\neither have to move them there by hand, or change the command accordingly.\nAlso, it is a good idea to read the manual, where the syntax of the all the tools is explained.\nCheers,\nCharo\n-- \nDr. Charo I. del Genio\nSenior Lecturer in Statistical Physics\nApplied Mathematics Research Centre (AMRC)\nDesign Hub\nCoventry University Technology Park\nCoventry CV1 5FB\nUK\nhttps://charodelgenio.weebly.com",
+      "url": "http://archive.ambermd.org/202305/0055.html",
+      "in_reply_to": 1683738199
+    },
+    {
+      "message_id": 1683797839,
+      "author": "Charo del Genio",
+      "date_raw": "Thu, 11 May 2023 10:37:19 +0100",
+      "body": "On 11/05/2023 07:28, Raghuvir Pissurlenkar wrote:\n> Dear Charo\n> Thanks for the input but I have replaced the “ * “ with the proper name of the input file. The error lies in the execution or the input file.\n> I am able to execute the command before and after. I would request if someone could execute the tutorial.\n> Thanks and Regards\nHi Raghuvir,\nI had a look at the tutorial files. Please remove the timlim variable from the input file. I believe this option was removed from the code of pmemd a long time ago (but apparently it is still in\nsander). And please, do take into account that all the tutorial are just examples to show how some functionalities work, but they do not necessarily represent the best protocols to follow (this one,\nfor example, uses a quite old force field).\nCheers,\nCharo\n-- \nDr. Charo I. del Genio\nSenior Lecturer in Statistical Physics\nApplied Mathematics Research Centre (AMRC)\nDesign Hub\nCoventry University Technology Park\nCoventry CV1 5FB\nUK\nhttps://charodelgenio.weebly.com",
+      "url": "http://archive.ambermd.org/202305/0057.html",
+      "in_reply_to": 1683738199
+    }
+  ]
+}

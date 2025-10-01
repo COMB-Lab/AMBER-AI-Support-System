@@ -1,0 +1,61 @@
+{
+  "thread_id": 1736448374,
+  "subject": "prmtop and inpcrd file generation error:",
+  "messages": [
+    {
+      "message_id": 1736448374,
+      "author": "Kankana Bhattacharjee",
+      "date_raw": "Fri, 10 Jan 2025 00:16:14 +0530",
+      "body": "Dear AMBER users,\nI am trying to build-up the prmtop and inpcrd files for the ligand solvated\nstructure for the QMMM calculation. Actually, I built-up the prmtop and\ninpcrd files for my ligand-solvated structure using opc3pol water model.\nran till equilibration, Now for the production run, sourced tip3p water\nmodel ff and now want to generate the prmtop and inpcrd files using this\ntip3p water model. But, it seems lig-solv.prmtop and inpcrd files not\ncorrectly generated.\nI have used this:\n*source /apps/scratch/compile/amber22/amber22_cpu_mpi/dat/leap/cmd/source\nleaprc.water.tip3psource leaprc.gaff2loadamberparams pyrrole.frcmodligand\n=loadmol2 pyrrole.mol2check ligandmol =loadpdb lig-solv.pdb (which was used\nbefore using opc3pol water model)setbox mol vdwsaveamberparm ligand\nlig-solv-qmmm.prmtop lig-solv-qmmm.inpcrdquit*\nKindly suggest me how can I generate correctly the prmtop and inpcrd files\nfor ligand solavted structure ?\nThanks & Regards\nKankana Bhattacharjee\nPh.D. Scholar\nDepartment of Chemistry\nAshoka University\nSonipat, Haryana",
+      "url": "http://archive.ambermd.org/202501/0054.html"
+    },
+    {
+      "message_id": 1736455970,
+      "author": "Timothy Giese",
+      "date_raw": "Thu, 9 Jan 2025 20:52:50 +0000",
+      "body": "My guess is that you produced new parameter and restart files without error and you don't like them because the lattice vectors don't match your original system. If my guess is correct, then you can use the ChBox utility program to change the lattice vectors to match your original system. Note that you'll need to reequilibrate the system at constant pressure because different water models produce different system densities.",
+      "url": "http://archive.ambermd.org/202501/0056.html",
+      "in_reply_to": 1736448374
+    },
+    {
+      "message_id": 1736483431,
+      "author": "Kankana Bhattacharjee",
+      "date_raw": "Fri, 10 Jan 2025 10:00:31 +0530",
+      "body": "Sir, actually based on my input in leap.in file, the\nlig-solvated-qmmm.prmtop and inpcrd fles are not generated correctly/. I\nmean it seems program is not able to recognize water molecules and the new\nprmtop and inpcrd files are having no water molecule information. Kindly\nhelp.\nOn Fri, Jan 10, 2025 at 2:22 AM Timothy Giese <giese025.rutgers.\nedu> wrote:\n> My guess is that you produced new parameter and restart files without\n> error and you don't like them because the lattice vectors don't match your\n> original system. If my guess is correct, then you can use the ChBox\n> utility program to change the lattice vectors to match your original\n> system. Note that you'll need to reequilibrate the system at constant\n> pressure because different water models produce different system densities.\n>",
+      "url": "http://archive.ambermd.org/202501/0058.html",
+      "in_reply_to": 1736448374
+    },
+    {
+      "message_id": 1736483854,
+      "author": "Kankana Bhattacharjee",
+      "date_raw": "Fri, 10 Jan 2025 10:07:34 +0530",
+      "body": "Here, I am attaching the new prmtop and inpcrd files based on the above\nattached leap.in input. But, it is not generated correctly. Kindly help.\nOn Fri, Jan 10, 2025 at 10:00 AM Kankana Bhattacharjee <\nkankana.bhattacharjee_phd21.ashoka.edu.in> wrote:\n> Sir, actually based on my input in leap.in file, the\n> lig-solvated-qmmm.prmtop and inpcrd fles are not generated correctly/. I\n> mean it seems program is not able to recognize water molecules and the new\n> prmtop and inpcrd files are having no water molecule information. Kindly\n> help.\n>\n>\n> On Fri, Jan 10, 2025 at 2:22 AM Timothy Giese <giese025.rutgers.edu>\n> wrote:\n>\n>> My guess is that you produced new parameter and restart files without\n>> error and you don't like them because the lattice vectors don't match your\n>> original system. If my guess is correct, then you can use the ChBox\n>> utility program to change the lattice vectors to match your original\n>> system. Note that you'll need to reequilibrate the system at constant\n>> pressure because different water models produce different system densities.\n>>\n>",
+      "url": "http://archive.ambermd.org/202501/0057.html",
+      "in_reply_to": 1736448374
+    },
+    {
+      "message_id": 1736484740,
+      "author": "Kankana Bhattacharjee",
+      "date_raw": "Fri, 10 Jan 2025 10:22:20 +0530",
+      "body": "Sir, here I am attaching the leap.log file and also the screenshot. Dint\nreceive any error as such. But warnings present. Also, the new prmtop and\ninpcrd file is having no water information. Kindly help.\nOn Fri, Jan 10, 2025 at 10:10 AM David A Case <david.case.rutgers.edu>\nwrote:\n> On Fri, Jan 10, 2025, Kankana Bhattacharjee via AMBER wrote:\n> >\n> >But, it seems lig-solv.prmtop and inpcrd files not\n> >correctly generated.\n>\n> Can you show what error messages you recieved, either on the terminal, or\n> in the leap.log file? I know these messages can sometimes be confusing,\n> but\n> the are often understandable. In any event, just saying \"it didn't work\"\n> doesn't provide enough information for people on the list to be of much\n> help.\n>\n> (Don't try to just give your interpretation of what the errors mean -- cut\n> and paste the actual results.)\n>\n> ....dac\n>\n>",
+      "url": "http://archive.ambermd.org/202501/0059.html",
+      "in_reply_to": 1736448374
+    },
+    {
+      "message_id": 1736518360,
+      "author": "Timothy Giese",
+      "date_raw": "Fri, 10 Jan 2025 14:12:40 +0000",
+      "body": "When I'm preparing small ligand molecules, I closely follow tutorial 4b.\nhttps://ambermd.org/tutorials/basic/tutorial4b/\nSomething described in the tutorial that is not present in your logs are the use of the saveoff and loadoff commands which read/write residue definitions for future use. I would recommend putting your system aside for the time being and instead work through this tutorial a few times.",
+      "url": "http://archive.ambermd.org/202501/0064.html",
+      "in_reply_to": 1736448374
+    },
+    {
+      "message_id": 1736528277,
+      "author": "Kankana Bhattacharjee",
+      "date_raw": "Fri, 10 Jan 2025 22:27:57 +0530",
+      "body": "Ok. Thanks a lot for your suggestion.\nOn Fri, Jan 10, 2025 at 7:42 PM Timothy Giese <giese025.rutgers.\nedu> wrote:\n> When I'm preparing small ligand molecules, I closely follow tutorial 4b.\n>\nhttps://ambermd.org/tutorials/basic/tutorial4b/\n>\n> Something described in the tutorial that is not present in your logs are\n> the use of the saveoff and loadoff commands which read/write residue\n> definitions for future use. I would recommend putting your system aside\n> for the time being and instead work through this tutorial a few times.\n>",
+      "url": "http://archive.ambermd.org/202501/0065.html",
+      "in_reply_to": 1736448374
+    }
+  ]
+}

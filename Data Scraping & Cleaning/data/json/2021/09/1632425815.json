@@ -1,0 +1,45 @@
+{
+  "thread_id": 1632425815,
+  "subject": "Question regarding LIE calculations vs explicit solvent enthalpy calculations?",
+  "messages": [
+    {
+      "message_id": 1632425815,
+      "author": "Liao",
+      "date_raw": "Fri, 24 Sep 2021 03:36:55 +0800",
+      "body": "Dear Amber experts,\nWhile going thru some of the AMBER tutorials on the official website, and reading into the LIE method (\nhttp://ambermd.org/tutorials/advanced/tutorial24/liew.php\n), it seems that LIE is actually direct calculation of binding energy in explicit solvent, is this correct?\nIf so, what is the essential difference, or advantage/disadvantage between LIE and this other tutorial method, Host-Guest in Explicit Water Example (\nhttp://ambermd.org/tutorials/advanced/tutorial21/index.php\n)? I always read that explicit solvent energies are very hard to converge and would require long runs. The Host-Guest method in Explicit Water I had also tried as part of my research. The one difference I notice is that LIE considers only van der waals and electrostatic energies only, while the Host-Guest tutorial methods considers the total potential energy. But then again, did LIE overcome the explicit solvent energy convergence problem, like it wasn't much of a problem at all?\nThank there.",
+      "url": "http://archive.ambermd.org/202109/0125.html"
+    },
+    {
+      "message_id": 1632448359,
+      "author": "David A Case",
+      "date_raw": "Thu, 23 Sep 2021 21:52:39 -0400",
+      "body": "On Fri, Sep 24, 2021, Liao wrote:\n>...it seems that LIE is actually direct calculation of binding energy in\n>explicit solvent, is this correct?\nNo, this is not correct. LIE does not attempt to compute free energy\ndifferences, but rather to compute a quantity that is sometimes (often?)\n*correlated with* binding free energies.\nNote that the weighting factors (alpha, beta, gamma in Fig.4 in the\ntutorial) are far from one, and are only approximately universal. The LIE\nestimate is intuitive, and fairly straightforward to compute. So it has its\npros and cons, which is why it shows up workflows like FEW.\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202109/0128.html",
+      "in_reply_to": 1632425815
+    },
+    {
+      "message_id": 1632452719,
+      "author": "Liao",
+      "date_raw": "Thu, 23 Sep 2021 22:05:19 -0500",
+      "body": "Thanks for the response Dave,\nNever performed LIE before, I wonder, very practically, where does LIE actually get the vdw and elec energy values? I’m influenced by the explicit solvent binding energy example, in which the energies are obtained from the md output file that writes the different types of energy of the whole system for each snapshot. From my understanding, LIE reads only the intermolecular interaction energy of the ligand with its environment, doesn’t it? Where exactly is this number calculated, such that the water energy or protein energy is totally absent?\nI think this is what’s puzzling me the most, not the model or the theory.\n> On Sep 23, 2021, at 8:52 PM, David A Case <dacase1.gmail.\ncom> wrote:\n>\n> ﻿On Fri, Sep 24, 2021, Liao wrote:\n>\n>> ...it seems that LIE is actually direct calculation of binding energy in\n>> explicit solvent, is this correct?\n>\n> No, this is not correct. LIE does not attempt to compute free energy\n> differences, but rather to compute a quantity that is sometimes (often?)\n> *correlated with* binding free energies.\n>\n> Note that the weighting factors (alpha, beta, gamma in Fig.4 in the\n> tutorial) are far from one, and are only approximately universal. The LIE\n> estimate is intuitive, and fairly straightforward to compute. So it has its\n> pros and cons, which is why it shows up workflows like FEW.\n>\n> ...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202109/0129.html",
+      "in_reply_to": 1632425815
+    },
+    {
+      "message_id": 1632453540,
+      "author": "Liao",
+      "date_raw": "Thu, 23 Sep 2021 22:19:00 -0500",
+      "body": "Update: I think I found the answer to the question just mentioned. From this manual section. https://amberhub.chpc.utah.edu/lie/\nSo looks like one could define a region A and a region B, and calculate the interaction energy between A and B atoms, using the lie program. Did not know this was technically an option. Good to know now!\n> On Sep 23, 2021, at 10:05 PM, Liao <liaojunzhuo.aliyun.\ncom> wrote:\n>\n> ﻿Thanks for the response Dave,\n>\n> Never performed LIE before, I wonder, very practically, where does LIE actually get the vdw and elec energy values? I’m influenced by the explicit solvent binding energy example, in which the energies are obtained from the md output file that writes the different types of energy of the whole system for each snapshot. From my understanding, LIE reads only the intermolecular interaction energy of the ligand with its environment, doesn’t it? Where exactly is this number calculated, such that the water energy or protein energy is totally absent?\n> I think this is what’s puzzling me the most, not the model or the theory.\n>\n>>> On Sep 23, 2021, at 8:52 PM, David A Case <dacase1.gmail.\ncom> wrote:\n>>>\n>>> ﻿On Fri, Sep 24, 2021, Liao wrote:\n>>>\n>>> ...it seems that LIE is actually direct calculation of binding energy in\n>>> explicit solvent, is this correct?\n>>\n>> No, this is not correct. LIE does not attempt to compute free energy\n>> differences, but rather to compute a quantity that is sometimes (often?)\n>> *correlated with* binding free energies.\n>>\n>> Note that the weighting factors (alpha, beta, gamma in Fig.4 in the\n>> tutorial) are far from one, and are only approximately universal. The LIE\n>> estimate is intuitive, and fairly straightforward to compute. So it has its\n>> pros and cons, which is why it shows up workflows like FEW.\n>>\n>> ...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202109/0130.html",
+      "in_reply_to": 1632425815
+    },
+    {
+      "message_id": 1632512434,
+      "author": "Debarati DasGupta",
+      "date_raw": "Fri, 24 Sep 2021 19:40:34 +0000",
+      "body": "Hello Prof Case,\nSorry for chiming in, but I was curious, Page 676 of Amber 20 manual says …”The electrostatic interactions are calculated according to a simple shifting function shown below. The data file will contain two data sets—one for electrostatic interactions and one for van der Waals interactions. Periodic topologies and trajectories are required (i.e., explicit solvent is necessary). The minimum image convention is followed”\nAny idea why was the simple shifting function was implemented and when? Is this from the original Aqvist work on LIE?\nThanks\nDebarati\nFrom: Liao<mailto:liaojunzhuo.aliyun.com>\nSent: Thursday, September 23, 2021 11:19 PM\nTo: AMBER Mailing List<mailto:amber.ambermd.\norg>\nCc: David A Case<mailto:dacase1.gmail.\ncom>\nSubject: Re: [AMBER] Question regarding LIE calculations vs explicit solvent enthalpy calculations?\nUpdate: I think I found the answer to the question just mentioned. From this manual section. https://amberhub.chpc.utah.edu/lie/\nSo looks like one could define a region A and a region B, and calculate the interaction energy between A and B atoms, using the lie program. Did not know this was technically an option. Good to know now!\n> On Sep 23, 2021, at 10:05 PM, Liao <liaojunzhuo.aliyun.\ncom> wrote:\n>\n> ﻿Thanks for the response Dave,\n>\n> Never performed LIE before, I wonder, very practically, where does LIE actually get the vdw and elec energy values? I’m influenced by the explicit solvent binding energy example, in which the energies are obtained from the md output file that writes the different types of energy of the whole system for each snapshot. From my understanding, LIE reads only the intermolecular interaction energy of the ligand with its environment, doesn’t it? Where exactly is this number calculated, such that the water energy or protein energy is totally absent?\n> I think this is what’s puzzling me the most, not the model or the theory.\n>\n>>> On Sep 23, 2021, at 8:52 PM, David A Case <dacase1.gmail.\ncom> wrote:\n>>>\n>>> ﻿On Fri, Sep 24, 2021, Liao wrote:\n>>>\n>>> ...it seems that LIE is actually direct calculation of binding energy in\n>>> explicit solvent, is this correct?\n>>\n>> No, this is not correct. LIE does not attempt to compute free energy\n>> differences, but rather to compute a quantity that is sometimes (often?)\n>> *correlated with* binding free energies.\n>>\n>> Note that the weighting factors (alpha, beta, gamma in Fig.4 in the\n>> tutorial) are far from one, and are only approximately universal. The LIE\n>> estimate is intuitive, and fairly straightforward to compute. So it has its\n>> pros and cons, which is why it shows up workflows like FEW.\n>>\n>> ...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202109/0136.html",
+      "in_reply_to": 1632425815
+    }
+  ]
+}

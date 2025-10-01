@@ -1,0 +1,21 @@
+{
+  "thread_id": 1623778485,
+  "subject": "Fluctuation in GPU usage",
+  "messages": [
+    {
+      "message_id": 1623778485,
+      "author": "Aravind R",
+      "date_raw": "Tue, 15 Jun 2021 23:04:45 +0530",
+      "body": "Dear Amber Experts,\nI am using Amber(pmemd.cuda) in a cluster with 64 nodes, each containing 2\nNvidia Tesla K40m (not peer-to-peer connected). This is a shared cluster\nacross the institute. When amber runs in a single GPU with single core\nseparately it utilises 99% of GPU load and runs properly(attached\nOnly_amber.png).\nBut when the gromacs job is submitted to the same node, the GPU utilisation\ndecreases drastically (attached Amber_&_gromacs.png) and thereby the speed\nat which the job runs (attached Speed.png). Whereas gromacs jobs utilise\nthe GPU completely.\nThe script I use to submit the job attached herewith(Input_script.png)\nalong with top command results(Top_results.png).\nAlso, scheduler allows gromacs to run on the GPU when amber is already\nrunning whereas not the vice-versa.\nWhat is the reason for the decrease in GPU utilisation?\nThanks in advance,\nAravind R",
+      "url": "http://archive.ambermd.org/202106/0111.html"
+    },
+    {
+      "message_id": 1623779530,
+      "author": "Ross Walker",
+      "date_raw": "Tue, 15 Jun 2021 13:52:10 -0400",
+      "body": "Hi Aravind,\nGPUs are not designed to be shared and more to the point unlike AMBER, Gromacs makes heavy usage of all the resources on a node including all CPU cores and will also heavily load the PCI-E bus due to how much information it shuttles back and forth between CPU and GPU. As such I would highly recommend never trying to run Gromacs on a shared node. It can be done but you need to properly configure the queuing system and cgroups to properly isolate jobs to only the resources the queuing system provided.\nSimple solution is don't run Gromacs at the same time as other calculations and never have two jobs sharing a GPU. You use the CUDA_VISIBLE_DEVICES environment variable to control which GPUs jobs run on but even then Gromacs will load the CPU and PCI bus up so much that it still will likely impact other jobs running on the same node.\nAll the best\nRoss\n> On Jun 15, 2021, at 13:34, Aravind R <aradrive1.gmail.com> wrote:\n>\n> Dear Amber Experts,\n> I am using Amber(pmemd.cuda) in a cluster with 64 nodes, each containing 2\n> Nvidia Tesla K40m (not peer-to-peer connected). This is a shared cluster\n> across the institute. When amber runs in a single GPU with single core\n> separately it utilises 99% of GPU load and runs properly(attached\n> Only_amber.png).\n> But when the gromacs job is submitted to the same node, the GPU utilisation\n> decreases drastically (attached Amber_&_gromacs.png) and thereby the speed\n> at which the job runs (attached Speed.png). Whereas gromacs jobs utilise\n> the GPU completely.\n> The script I use to submit the job attached herewith(Input_script.png)\n> along with top command results(Top_results.png).\n> Also, scheduler allows gromacs to run on the GPU when amber is already\n> running whereas not the vice-versa.\n> What is the reason for the decrease in GPU utilisation?\n> Thanks in advance,\n> Aravind R\n> <Amber___gromacs.png><Input_script.png><Speed.png><Only_amber.png><Top_results.png>",
+      "url": "http://archive.ambermd.org/202106/0112.html",
+      "in_reply_to": 1623778485
+    }
+  ]
+}

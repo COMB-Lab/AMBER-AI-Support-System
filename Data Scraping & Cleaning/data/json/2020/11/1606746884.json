@@ -1,0 +1,21 @@
+{
+  "thread_id": 1606746884,
+  "subject": "TI electrostatic free energy",
+  "messages": [
+    {
+      "message_id": 1606746884,
+      "author": "Franz Waibl",
+      "date_raw": "Mon, 30 Nov 2020 15:34:44 +0100",
+      "body": "Dear Amber community,\nI am trying to compute the free energy of hydration of a set of small\nmolecules at different salt concentrations, using TI. I want to use a\n2-step transform (i.e., first remove the charges, then the Van der Waals\npart).\nHowever, I have problems figuring out how to set up the electrostatic\nstep in pmemd (CUDA-version, using Amber 20). Currently, my input file\nlooks like this:\nproduction 10 ns npt run - Berendsen barostat, TI, remove charges\n&cntrl\nntx=1, irest=0,\nioutfm=1,\nntb=2, iwrap=1,\nntp=1, barostat=2, pres0=1.0,taup=1.0,\nntc=2, ntf=1,\nntt=3, tempi=300.0, temp0=300.0, gamma_ln=2,\nnstlim=5000000, dt=0.002,\nntwr=50000, ntwx=5000,\nntpr=500,\nicfe=1, klambda=1, ifsc=0, timask1=':1', timask2=':2', crgmask=':2',\nifmbar=1, mbar_states=11, tishake=0,\nmbar_lambda=0.00,0.10,0.20,0.30,0.40,0.50,0.60,0.70,0.80,0.90,1.00,,\nclambda=0.50,\n/\n(Of course, I have equivalent input files for the other lambda values).\nOf this run, I am discarding the first 40% (4ns) as equilibration. The\n1st and second residue are 2 copies of my molecule (the topology was\ncreated using tleap by \"combine { solute solute solvent }\".)\nThe problem is that I am getting very large free energies (e.g, 130\nkcal/mol for caffeine, favoring lambda=0). This occurs with and without\nthe salt, so I think the problem is not related to the ions.\nFurthermore, I don't think that convergence is the problem, because I\ntried using 10x longer simulations for a few systems, and the results\nare very similar.\nThe VdW contribution is rather close to zero, and therefore doesn't\ncompensate the high values. I assume that this is realistic, and that\nthe problem is related to the electrostatics part. (is this correct?)\nI would be very thankful for any suggestions on what might be wrong here...\nBest regards,\nFranz Waibl",
+      "url": "http://archive.ambermd.org/202011/0283.html"
+    },
+    {
+      "message_id": 1606759818,
+      "author": "David A Case",
+      "date_raw": "Mon, 30 Nov 2020 13:10:18 -0500",
+      "body": "On Mon, Nov 30, 2020, Franz Waibl wrote:\n>\n>I am trying to compute the free energy of hydration of a set of small\n>molecules at different salt concentrations, using TI.\n>\n>The problem is that I am getting very large free energies (e.g, 130\n>kcal/mol for caffeine, favoring lambda=0).\nIs there any chance that your caffeine molecule has a net charge? It\nwould also be helpful to plot <dV/dlambda> vs. lambda: it that\napproximately a straight line? Is that value at lambda = 0.5 about 65?\nI'm really guessing here, but this looks like results for de-charging an\nion. (Use the \"summary\" command in parmed to look for the charge\nmodel.)\n....dac",
+      "url": "http://archive.ambermd.org/202011/0284.html",
+      "in_reply_to": 1606746884
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "thread_id": 1738776225,
+  "subject": "ReaxFF/AMBER inconsistency",
+  "messages": [
+    {
+      "message_id": 1738776225,
+      "author": "Dezs� Babai",
+      "date_raw": "Wed, 5 Feb 2025 17:23:45 +0000",
+      "body": "Hi,\nUpon looking at the ReaxFF/AMBER research paper and trying to replicate the results I found an inconsistency. I changed the nonperiodic reaxff test under tests/qmmm_EXTERN/QMMM_MD_ReaxFF to run for more steps, and opposed to the paper plotting the E_tot-E_avg over a period of 20ps showed an energy drift of around 1 kcal/mol/ps.\nI extensively looked at the reaxff puremd source code and have found some inconsistencies in the comments regarding the used units, namely the forces and charges. To be specific, the comments name AU*Angstroms/ps^2 as their units, however as there is no conversion happening in the corresponding fortran wrapper, I believe it is safe to assume that is supposed to use kcal/mol/Angstroms. The at the charges Coulombs is mentioned in puremd, however amber passes proton units to the interface. I don't know if this could explain a factor of around 10 in the reaxff energies/forces.\nAny suggestions of what might have gone wrong or what I could have overseen?\nI have been working on the newest release of AmberTools.\nThanks and best regards,\nDezs� Babai",
+      "url": "http://archive.ambermd.org/202502/0010.html"
+    }
+  ]
+}

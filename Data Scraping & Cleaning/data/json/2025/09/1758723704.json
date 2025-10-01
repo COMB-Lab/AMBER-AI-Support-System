@@ -1,0 +1,29 @@
+{
+  "thread_id": 1758723704,
+  "subject": "sander.MPI appears to be incompatible with QUICK API while doing free energy calculations",
+  "messages": [
+    {
+      "message_id": 1758723704,
+      "author": "Li, Zhen",
+      "date_raw": "Wed, 24 Sep 2025 14:21:44 +0000",
+      "body": "Dear Colleagues,\nI experienced issues with QM/MM-TI calculations using the \"sander.MPI + QUICK API\" interface, even with no GPU involved, as I am trying to keep problems simple at this time.\nFor whoever is interested, please find the link below to reproduce the issue. The command to run is �mpirun -n 4 sander.MPI -ng 2 -groupfile groupfile�:\nhttps://drive.google.com/file/d/1PsdqNEvXumDc58jCzRmP25InXUWl6-GF/view?usp=share_link\nSymptom-wise, the job is stuck for at least 12 hours (and remains stuck).\nInput-wise, the \"groupfile\" points to the \"mm.mdin\" and \"qm.mdin\" files, which control the QUICK API QM/MM-TI (basically, lambda=0 is mm, lambda=1 is qm). I have tried using PM3 and XTB to replace QUICK in the \"qm.mdin\" file, and they both worked fine without being stuck.\nMy gut feeling is that when QUICK API tries to register for resources, a race condition or deadlock occurs between the two MPI processes. But I could be wrong. Thank you for any insights to fix this issue.\nThe same issue also exists for sander.quick.cuda.MPI, but that can be resolved later. Please see the link below for a previous ticket at the QUICK GitHub.\nhttps://github.com/merzlab/QUICK/issues/392\nBest regards,\nZhen.\n_____________________\nZhen Li<\nhttp://lizhen62017.wixsite.com/home\n>, Ph.D.,\nThe Merz Research Group<\nhttp://merzgroup.org\n>,\nMichigan State University,\nCleveland Clinic.",
+      "url": "http://archive.ambermd.org/202509/0061.html"
+    },
+    {
+      "message_id": 1758725252,
+      "author": "Timothy Giese",
+      "date_raw": "Wed, 24 Sep 2025 14:47:32 +0000",
+      "body": "Thanks for the report. I was able to reproduce the symptom. When commsander is the same thing as mpi_comm_world, quick appears to run fine, but when doing an alchemical \"bookend\" simulation (mm -> qm/mm) using a groupfile, the communicator that quick should be using is a subset of the available processes. It appears that quick is using mpi_comm_world, however.\nHere are my observations:\n1. \"mpirun -n 2 sander.MPI -ng 2 -groupfile groupfile\" hangs when using icfe=1 for both the mm and qm/mm\n2. \"mpirun -n 2 sander.MPI -ng 2 -groupfile groupfile\" will successfully run the mm simulation the mm simulation when icfe=0; however, the qm/mm simulation hangs.\n3. \"mpirun -n 2 sander.MPI -O -p parm7 -c inp.rst7 -i qm.mdin ....\" will successfully run the qm/mm simulation.\nThe quick code needs to be changed to accept a mpi communicator as an argument and exclusively use that communicator. ...at least that is my current working hypothesis.\n-Tim",
+      "url": "http://archive.ambermd.org/202509/0062.html",
+      "in_reply_to": 1758723704
+    },
+    {
+      "message_id": 1758725884,
+      "author": "Timothy Giese",
+      "date_raw": "Wed, 24 Sep 2025 14:58:04 +0000",
+      "body": "This appears to be a known issue. It was already reported on the github issue tracker.\nhttps://github.com/merzlab/QUICK/issues/392\n________________________________\nFrom: Timothy Giese via AMBER <amber.ambermd.org>\nSent: Wednesday, September 24, 2025 10:47 AM\nTo: YASHIKA . via AMBER <amber.ambermd.org>\nSubject: Re: [AMBER] sander.MPI appears to be incompatible with QUICK API while doing free energy calculations\nThanks for the report. I was able to reproduce the symptom. When commsander is the same thing as mpi_comm_world, quick appears to run fine, but when doing an alchemical \"bookend\" simulation (mm -> qm/mm) using a groupfile, the communicator that quick should be using is a subset of the available processes. It appears that quick is using mpi_comm_world, however.\nHere are my observations:\n1. \"mpirun -n 2 sander.MPI -ng 2 -groupfile groupfile\" hangs when using icfe=1 for both the mm and qm/mm\n2. \"mpirun -n 2 sander.MPI -ng 2 -groupfile groupfile\" will successfully run the mm simulation the mm simulation when icfe=0; however, the qm/mm simulation hangs.\n3. \"mpirun -n 2 sander.MPI -O -p parm7 -c inp.rst7 -i qm.mdin ....\" will successfully run the qm/mm simulation.\nThe quick code needs to be changed to accept a mpi communicator as an argument and exclusively use that communicator. ...at least that is my current working hypothesis.\n-Tim",
+      "url": "http://archive.ambermd.org/202509/0063.html",
+      "in_reply_to": 1758723704
+    }
+  ]
+}

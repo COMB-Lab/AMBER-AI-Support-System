@@ -1,0 +1,29 @@
+{
+  "thread_id": 1596733858,
+  "subject": "Parmed: Residues cannot be part of 2 molecules! Molecule section will not be correctly set.",
+  "messages": [
+    {
+      "message_id": 1596733858,
+      "author": "Samuel A. Ratliff",
+      "date_raw": "Thu, 6 Aug 2020 17:10:58 +0000",
+      "body": "Hey all,\nI've found an issue in my .prmtop file that is caused by creating a bond in tleap between a protein and its heme. I've found some threads on here that suggest using checkValidity and setMolecules in parmed to repair the topology file, but when I do that, I get the following error:\n> checkValidity\nDetermining validity of prmtop\n1 total warnings\nParmWarning: ATOMS_PER_MOLECULE section corrupt! Molecules are not contiguous!\n> setMolecules\nSetting MOLECULE properties of the prmtop (SOLVENT_POINTERS and ATOMS_PER_MOLECULE)\nAmberWarning: Molecule atoms are not contiguous! I am attempting to reorder the atoms to fix this.\nAmberWarning: Residues cannot be part of 2 molecules! Molecule section will not be correctly set. [Offending residue is 497: <Residue HEM[497]>]\nI've also tried repairing it with fixatomorder in cpptraj. It runs with no errors, but when I run checkValidity on the topology file output by cpptraj, I still get the same set of warnings.\nAll suggestions welcome,\nSam Ratliff",
+      "url": "http://archive.ambermd.org/202008/0062.html"
+    },
+    {
+      "message_id": 1596745816,
+      "author": "David A Case",
+      "date_raw": "Thu, 6 Aug 2020 16:30:16 -0400",
+      "body": "On Thu, Aug 06, 2020, Samuel A. Ratliff wrote:\n>\n>\n>I've found an issue in my .prmtop file that is caused by creating a bond\n>in tleap between a protein and its heme.\nModify the pdb file so that the heme group directly follows the protein chain\nto which it will be attached.\n[Amber developers: does anyone know which parts of the code still need to know\nwhere the \"molecules\" are? I suspect we only have a molecular virial for\nbackwards compatibility with codes written 30 years ago, but I could be wrong\nhere -- I'm not really sure how the MC barostat works. Basically, I think\nwe have all these checks and atom-reorderings to deal with a problem that\nreally doesn't exist....]\n...dac",
+      "url": "http://archive.ambermd.org/202008/0066.html",
+      "in_reply_to": 1596733858
+    },
+    {
+      "message_id": 1596814466,
+      "author": "Samuel A. Ratliff",
+      "date_raw": "Fri, 7 Aug 2020 15:34:26 +0000",
+      "body": "I've done what you recommended, but I'm still getting the same set of errors. I also tried rebuilding my .prmtop file with tleap but I commented out the line where the heme and protein are bound together and I still get the same errors, including the one that says that atoms in the heme are in two residues. There was a little bit of processing done on the heme prior to this step, but it just involved removing an atom. I don't think this is causing the error, but I wanted to mention it in case it was relevant.\nThanks,\nSam\n________________________________________\nFrom: David A Case <david.case.rutgers.edu>\nSent: Thursday, August 6, 2020 4:30 PM\nTo: AMBER Mailing List\nCc: amber-developers.ambermd.org\nSubject: Re: [AMBER] Parmed: Residues cannot be part of 2 molecules! Molecule section will not be correctly set.\nOn Thu, Aug 06, 2020, Samuel A. Ratliff wrote:\n>\n>\n>I've found an issue in my .prmtop file that is caused by creating a bond\n>in tleap between a protein and its heme.\nModify the pdb file so that the heme group directly follows the protein chain\nto which it will be attached.\n[Amber developers: does anyone know which parts of the code still need to know\nwhere the \"molecules\" are? I suspect we only have a molecular virial for\nbackwards compatibility with codes written 30 years ago, but I could be wrong\nhere -- I'm not really sure how the MC barostat works. Basically, I think\nwe have all these checks and atom-reorderings to deal with a problem that\nreally doesn't exist....]\n...dac",
+      "url": "http://archive.ambermd.org/202008/0075.html",
+      "in_reply_to": 1596733858
+    }
+  ]
+}

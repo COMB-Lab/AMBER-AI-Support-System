@@ -1,0 +1,37 @@
+{
+  "thread_id": 1595813707,
+  "subject": "Amber20 Compiling problem with b2 and Boost.Regex",
+  "messages": [
+    {
+      "message_id": 1595813707,
+      "author": "Amanda Buyan",
+      "date_raw": "Mon, 27 Jul 2020 01:35:07 +0000",
+      "body": "Hi everyone,\nThanks for your suggestion on removing the PLUMED library - it helped! I have another question, as I'm installing Amber20 on multiple clusters:\nI'm currently having trouble with compiling even the serial version of Amber20 on the second cluster of ours. When I run the \"make install\" command (following the same procedure as on the other cluster), I get the following error:\n---\nBuilding Boost.Build engine with toolset gcc... tools/build/src/engine/bin.linuxx86_64/b2\nDetecting Python version... 3.6\nDetecting Python root... /usr\nUnicode/ICE support for Boost.Regex?... not foud.\nGenerating Boost.Build configuration in project-config.jam...\nBootstrapping is done. To build, run:\n./b2\nto adjust configuration, edit 'project-config.jam'.\n[ Further information about boost.build]\n/bin/sh: cmake: command not found\nmake[2]: *** [AmberTools/src/boost/Stamp/boost_build/boost_build-bootstrap] Error 127\nmake[1]: *** [AmberTools/src/boost/CMakeFiles/boost_build.dir/all] Error 2\nmake: *** [all] Error 2\n---\nI try to find the program b2, but I can't find any installation for it (it might have been on the other cluster, but I'm not sure). How do I check this? Do you have any advice on how to get past this step?\nThanks in advance for your help.\nBest wishes\nAmanda",
+      "url": "http://archive.ambermd.org/202007/0297.html"
+    },
+    {
+      "message_id": 1595855437,
+      "author": "David A Case",
+      "date_raw": "Mon, 27 Jul 2020 09:10:37 -0400",
+      "body": "On Mon, Jul 27, 2020, Amanda Buyan wrote:\n>\n>I'm currently having trouble with compiling even the serial version of\n>Amber20 on the second cluster of ours. When I run the \"make install\"\n>command (following the same procedure as on the other cluster), I get the\n>following error:\n>\n>---\n>Building Boost.Build engine with toolset gcc... tools/build/src/engine/bin.linuxx86_64/b2\n>Detecting Python version... 3.6\n>Detecting Python root... /usr\n>Unicode/ICE support for Boost.Regex?... not foud.\n>Generating Boost.Build configuration in project-config.jam...\n>\n>Bootstrapping is done. To build, run:\n>\n>./b2\n>\n>to adjust configuration, edit 'project-config.jam'.\n>\n>[ Further information about boost.build]\n>\n>/bin/sh: cmake: command not found\nI think this is the problem: you have to have cmake in your PATH: it's not\nenough to just specify the location in the run_cmake script.\nThis is not documented in our installation instructions. And, it might not be\nthe only problem. But check on the second cluster to see if cmake is in your\nPATH.\n...dac",
+      "url": "http://archive.ambermd.org/202007/0299.html",
+      "in_reply_to": 1595813707
+    },
+    {
+      "message_id": 1595890237,
+      "author": "Amanda Buyan",
+      "date_raw": "Mon, 27 Jul 2020 22:50:37 +0000",
+      "body": "Hi DAC,\nI just checked, and I've got cmake in my path (under /usr/local/bin, which I have added to my PATH in my .bashrc file, and I had to add it in the run_cmake as well). It's also version 3.14.5, if that helps.\nBest wishes\nAmanda\n________________________________\nFrom: David A Case <david.case.rutgers.edu>\nSent: 27 July 2020 23:10\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] Amber20 Compiling problem with b2 and Boost.Regex\nOn Mon, Jul 27, 2020, Amanda Buyan wrote:\n>\n>I'm currently having trouble with compiling even the serial version of\n>Amber20 on the second cluster of ours. When I run the \"make install\"\n>command (following the same procedure as on the other cluster), I get the\n>following error:\n>\n>---\n>Building Boost.Build engine with toolset gcc... tools/build/src/engine/bin.linuxx86_64/b2\n>Detecting Python version... 3.6\n>Detecting Python root... /usr\n>Unicode/ICE support for Boost.Regex?... not foud.\n>Generating Boost.Build configuration in project-config.jam...\n>\n>Bootstrapping is done. To build, run:\n>\n>./b2\n>\n>to adjust configuration, edit 'project-config.jam'.\n>\n>[ Further information about boost.build]\n>\n>/bin/sh: cmake: command not found\nI think this is the problem: you have to have cmake in your PATH: it's not\nenough to just specify the location in the run_cmake script.\nThis is not documented in our installation instructions. And, it might not be\nthe only problem. But check on the second cluster to see if cmake is in your\nPATH.\n...dac",
+      "url": "http://archive.ambermd.org/202007/0306.html",
+      "in_reply_to": 1595813707
+    },
+    {
+      "message_id": 1596066029,
+      "author": "Amanda Buyan",
+      "date_raw": "Wed, 29 Jul 2020 23:40:29 +0000",
+      "body": "Hi everyone,\nI was hoping you could help me with a further problem regarding Amber20. I've managed to compile Amber20, and I'm able to run sander with Plumed; however, when I try running pmemd.MPI with sander (once trying to compile it with and without the plumed library), I have to specify the PLUMED_KERNEL variable. In addition, once I do that, I get an error message saying that plumed isn't compiled for usage with MPI. However, I've followed all of the instructions given on the Amber website, and I am stuck as to how I can get Amber20 to use plumed with pmemd.MPI. Could you help please?\nBest wishes\nAmanda\n________________________________\nFrom: Amanda Buyan <Amanda.Buyan.anu.edu.au>\nSent: 28 July 2020 08:50\nTo: AMBER Mailing List <amber.ambermd.org>; david.case.rutgers.edu <david.case.rutgers.edu>\nSubject: Re: [AMBER] Amber20 Compiling problem with b2 and Boost.Regex\nHi DAC,\nI just checked, and I've got cmake in my path (under /usr/local/bin, which I have added to my PATH in my .bashrc file, and I had to add it in the run_cmake as well). It's also version 3.14.5, if that helps.\nBest wishes\nAmanda\n________________________________\nFrom: David A Case <david.case.rutgers.edu>\nSent: 27 July 2020 23:10\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] Amber20 Compiling problem with b2 and Boost.Regex\nOn Mon, Jul 27, 2020, Amanda Buyan wrote:\n>\n>I'm currently having trouble with compiling even the serial version of\n>Amber20 on the second cluster of ours. When I run the \"make install\"\n>command (following the same procedure as on the other cluster), I get the\n>following error:\n>\n>---\n>Building Boost.Build engine with toolset gcc... tools/build/src/engine/bin.linuxx86_64/b2\n>Detecting Python version... 3.6\n>Detecting Python root... /usr\n>Unicode/ICE support for Boost.Regex?... not foud.\n>Generating Boost.Build configuration in project-config.jam...\n>\n>Bootstrapping is done. To build, run:\n>\n>./b2\n>\n>to adjust configuration, edit 'project-config.jam'.\n>\n>[ Further information about boost.build]\n>\n>/bin/sh: cmake: command not found\nI think this is the problem: you have to have cmake in your PATH: it's not\nenough to just specify the location in the run_cmake script.\nThis is not documented in our installation instructions. And, it might not be\nthe only problem. But check on the second cluster to see if cmake is in your\nPATH.\n...dac",
+      "url": "http://archive.ambermd.org/202007/0331.html",
+      "in_reply_to": 1595813707
+    }
+  ]
+}

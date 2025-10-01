@@ -1,0 +1,21 @@
+{
+  "thread_id": 1619311032,
+  "subject": "Re: [AMBER] [ambermd.org代发]Re: Max relative errors questions in parallel and cuda.serial test",
+  "messages": [
+    {
+      "message_id": 1619311032,
+      "author": "石谷沁",
+      "date_raw": "Sun, 25 Apr 2021 00:37:12 +0000",
+      "body": "Hi David,\nThanks for the reply. I supplemented my system in another reply and it probably drowned in the messages.\nHere is my system:\nCentOS 7, 32 Xeon Gold cpus .3.3GHz, 1 Quadro RTX 5000\nCUDA toolkit is 11.1\nI followed the instructions on manual.\nAccording to\nhttps://ambermd.org/pmwiki/index.php/Main/CMake-Quick-Start\n. Cmake3 is recommended for CentOS 7. So I installed cmake3 and use cmake3 instead of cmake. For eg, in run_make script, cmake is changed to cmake3. In my system, a symbolic link of cmake is created directing to cmake3 in /usr/bin.\nI installed devtoolset-8 to make sure all gnu compilers are version with 8.3.1.\nI downloaded mpich3.3.2 package for parallel installation.\nThese are all the changes I've made for AMBER20 serial installation. For parallel and GPU installation, nothing changed except for turning -DMPI and -DCUDA flag to TRUE, respectively.\nI hope these could help. Please let me know what else you need for troubleshoot\nThe differences are quite large in GPU DPFP tests...I'm not sure if I can run any MD now...with default SPFP...?\nThanks a lot for the help!\n-Guqin\n-----邮件原件-----\n发件人: David A Case [mailto:david.case.rutgers.\nedu]\n发送时间: 2021年4月24日 21:32\n收件人: AMBER Mailing List <amber.ambermd.org>\n主题: [ambermd.org代发]Re: [AMBER] Max relative errors questions in parallel and cuda.serial test\nOn Thu, Apr 22, 2021, 石谷沁 wrote:\n>I double-checked the cuda.serial log. The possible failures all came out at DPFP:\n>==============================================================\n>cd myoglobin/ && ./Run_md_myoglobin_igb7 DPFP yes\n>Note: The following floating-point exceptions are signalling:\n>IEEE_INVALID_FLAG IEEE_UNDERFLOW_FLAG IEEE_DENORMAL diffing\n>myoglobin_md_igb7.out.GPU_DPFP with myoglobin_md_igb7.out possible\n>FAILURE: check myoglobin_md_igb7.out.dif\nThis is concerning.\n>\n>According to manual, SPFP is the default precision model for\n>pmemd.cuda. And I didn’t get any failures report on SPFP. So I guess I\n>can ignore those errors with DPFP in most general situations?\nAgain, very odd: the expectation is that DPFP tests will all pass, when compared to a CPU output, but that a fair number of SPFP tests will fail with roundoff errors.\nSo, I think you have genuine problems. Can you say (again?) what GPU you have, and what CUDA SDK version? Maybe the GPU gurus on the list (I am not one of them) will spot something.\nAlso, please say what changes you made to run_cmake (if you used that), and what command(s) you used to run the tests.\n....dac",
+      "url": "http://archive.ambermd.org/202104/0208.html"
+    },
+    {
+      "message_id": 1619352234,
+      "author": "David A Case",
+      "date_raw": "Sun, 25 Apr 2021 08:03:54 -0400",
+      "body": "On Sun, Apr 25, 2021, 石谷沁 wrote:\n>\n>\n>Here is my system:\n>CentOS 7, 32 Xeon Gold cpus .3.3GHz, 1 Quadro RTX 5000\n>CUDA toolkit is 11.1\nCan you post the diff log from \"make test.cuda.serial\"? I think someone may\nbe able to see if there are clues that arise from seeing exactly which test\nshow possible failures, and which do not.\nI have a Quadro RXT 5000 card, but it's on an Ubuntu system. I see a\nhandful of DPFP failures there, but (aside from the \"ignored\" ones) all\ninvolve maximum relative errors of less that 1.e-6.\n....dac",
+      "url": "http://archive.ambermd.org/202104/0210.html",
+      "in_reply_to": 1619311032
+    }
+  ]
+}

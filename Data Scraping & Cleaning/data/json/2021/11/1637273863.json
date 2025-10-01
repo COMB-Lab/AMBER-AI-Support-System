@@ -1,0 +1,45 @@
+{
+  "thread_id": 1637273863,
+  "subject": "How to create a MOH box (only methanol molecules)",
+  "messages": [
+    {
+      "message_id": 1637273863,
+      "author": "Alan",
+      "date_raw": "Thu, 18 Nov 2021 22:17:43 +0000",
+      "body": "Hi there,\nI just want to create solvent boxes, first I tried with methanol.\nI tried this but didn't work:\n(tleap)\nloadamberparams frcmod.meoh\nloadamberprep meoh.in\nloadOff meohbox.off\nsolvateBox MOH MOH 11\nsavepdb MOH moh.pdb\nsaveamberparm MOH moh.prm moh.crd\nErrors:\n...\nError: For atom (.R<MOH 243>.A<HC3 4>) could not find vdW (or other)\nparameters for type (H1)\nWarning: Parameter file was not saved.\nBut I manage to build a box this way:\n(tleap)\nloadamberprep meoh.in\nsavemol2 MOH moh.mol2 1\nThen edit moh.mol2 so I changed atom types to lowercase and changed CT to\nc3. Then I did:\n(tleap)\nsource leaprc.gaff2\nmol = loadmol2 moh1.mol2\nsolvatebox mol mol 11\nsaveamberparm mol moh.prm moh.crd\nsavepdb mol moh.pdb\nand this worked, I could even run a simulation with gmx after converting\namber input files with ACPYPE.\nWhat am I missing?\nMany thanks in advance,\n-- \nAlan Silva",
+      "url": "http://archive.ambermd.org/202111/0200.html"
+    },
+    {
+      "message_id": 1637325936,
+      "author": "David A Case",
+      "date_raw": "Fri, 19 Nov 2021 07:45:36 -0500",
+      "body": "On Thu, Nov 18, 2021, Alan wrote:\n>\n>I just want to create solvent boxes, first I tried with methanol.\n>\n>I tried this but didn't work:\n>(tleap)\n>loadamberparams frcmod.meoh\n>loadamberprep meoh.in\nYou don't say how you obtained any of these files.\n>Error: For atom (.R<MOH 243>.A<HC3 4>) could not find vdW (or other)\n>parameters for type (H1)\nDoes your frcmod.meoh file contain Lennard-Jones parameters for atom type\nH1? I suspect that you made meoh.in with GAFF atom types, but the\nmeohbox.off file uses Amber atom types.\n>\n>Then edit moh.mol2 so I changed atom types to lowercase and changed CT to\n>c3. Then I did:\nAgain, it looks like something went wrong at the stage where you made the\nmeoh.in file, but we don't have enough information to say much more.\n...dac",
+      "url": "http://archive.ambermd.org/202111/0204.html",
+      "in_reply_to": 1637273863
+    },
+    {
+      "message_id": 1637597034,
+      "author": "Alan",
+      "date_raw": "Mon, 22 Nov 2021 16:03:54 +0000",
+      "body": "Sorry, it's all from AmberTools!\namber21-11_linux/dat/leap/prep/meoh.in\namber21-11_linux/dat/leap/parm/frcmod.meoh\nI use the tleap and the commands exactly as they are, all come from amber\nlibrary.\nJust copy and paste inside >tleap shell and you see.\nBest regards,\nAlan\nOn Fri, 19 Nov 2021 at 12:46, David A Case <david.case.rutgers.\nedu> wrote:\n> On Thu, Nov 18, 2021, Alan wrote:\n> >\n> >I just want to create solvent boxes, first I tried with methanol.\n> >\n> >I tried this but didn't work:\n> >(tleap)\n> >loadamberparams frcmod.meoh\n> >loadamberprep meoh.in\n>\n> You don't say how you obtained any of these files.\n>\n> >Error: For atom (.R<MOH 243>.A<HC3 4>) could not find vdW (or other)\n> >parameters for type (H1)\n>\n> Does your frcmod.meoh file contain Lennard-Jones parameters for atom type\n> H1? I suspect that you made meoh.in with GAFF atom types, but the\n> meohbox.off file uses Amber atom types.\n> >\n> >Then edit moh.mol2 so I changed atom types to lowercase and changed CT to\n> >c3. Then I did:\n>\n> Again, it looks like something went wrong at the stage where you made the\n> meoh.in file, but we don't have enough information to say much more.\n>\n> ...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202111/0213.html",
+      "in_reply_to": 1637273863
+    },
+    {
+      "message_id": 1637617188,
+      "author": "Carlos Simmerling",
+      "date_raw": "Mon, 22 Nov 2021 16:39:48 -0500",
+      "body": "On Thu, Nov 18, 2021 at 5:19 PM Alan <alanwilter.gmail.com> wrote:\n> Hi there,\n>\n> I just want to create solvent boxes, first I tried with methanol.\n>\n> I tried this but didn't work:\n> (tleap)\n> loadamberparams frcmod.meoh\n> loadamberprep meoh.in\n> loadOff meohbox.off\n> solvateBox MOH MOH 11\n> savepdb MOH moh.pdb\n> saveamberparm MOH moh.prm moh.crd\n>\n> Errors:\n> ...\n> Error: For atom (.R<MOH 243>.A<HC3 4>) could not find vdW (or other)\n> parameters for type (H1)\n> Warning: Parameter file was not saved.\n>\nyes, this looks like an inconsistency in those files. The most\nstraightforward way to fix it seems to be to change the HC instances in the\nfrcmod.meoh to H1, which is what is used in the meoh.in prep file.\n> But I manage to build a box this way:\n> (tleap)\n> loadamberprep meoh.in\n> savemol2 MOH moh.mol2 1\n>\n> Then edit moh.mol2 so I changed atom types to lowercase and changed CT to\n> c3. Then I did:\n> (tleap)\n> source leaprc.gaff2\n> mol = loadmol2 moh1.mol2\n> solvatebox mol mol 11\n> saveamberparm mol moh.prm moh.crd\n> savepdb mol moh.pdb\n>\nI'm not sure why you are switching to GAFF types here - did you want to use\nthe meoh in the frcmod file, or switch over to GAFF?\n>\n> and this worked, I could even run a simulation with gmx after converting\n> amber input files with ACPYPE.\n>\n> What am I missing?\n>\n> Many thanks in advance,\n> --\n> Alan Silva\n>",
+      "url": "http://archive.ambermd.org/202111/0217.html",
+      "in_reply_to": 1637273863
+    },
+    {
+      "message_id": 1637837603,
+      "author": "Alan",
+      "date_raw": "Thu, 25 Nov 2021 10:53:23 +0000",
+      "body": "Thanks Carlos!\nAt first your tip didn't work but it made me understand the problem. First,\nyes, there's this H1 x HC inconsistency.\nBut to get the script to work I had to add *source leaprc.protein.ff14SB*!\n(verbosity 1 gave me the hint together your question why I used GAFF)\nSo, no this tleap.in works:\nverbosity 1\nsource leaprc.protein.ff14SB\nloadamberparams frcmod.meoh\nloadamberprep meoh.in\nloadOff meohbox.off\nsolvateBox MOH MOH 11\nsavepdb MOH moh.pdb\nsaveamberparm MOH moh.prm moh.crd\nquit\nBut I will have different results if changing HC to H1 in frcmod.meoh.\nHC mass is 1.00800 while H1 is 1.0 and so vdw diffs as well.\nBottomline, I believe frcmod.meoh needs to be updated. I'm wondering about\nthose who had done simulation with methanol solvent... likely this atomtype\ndiff wouldn't have much difference anyway.\nBest,\nAlan\nOn Mon, 22 Nov 2021 at 21:40, Carlos Simmerling <carlos.simmerling.gmail.\ncom>\nwrote:\n> On Thu, Nov 18, 2021 at 5:19 PM Alan <alanwilter.gmail.\ncom> wrote:\n>\n> > Hi there,\n> >\n> > I just want to create solvent boxes, first I tried with methanol.\n> >\n> > I tried this but didn't work:\n> > (tleap)\n> > loadamberparams frcmod.meoh\n> > loadamberprep meoh.in\n> > loadOff meohbox.off\n> > solvateBox MOH MOH 11\n> > savepdb MOH moh.pdb\n> > saveamberparm MOH moh.prm moh.crd\n> >\n> > Errors:\n> > ...\n> > Error: For atom (.R<MOH 243>.A<HC3 4>) could not find vdW (or other)\n> > parameters for type (H1)\n> > Warning: Parameter file was not saved.\n> >\n>\n>\n> yes, this looks like an inconsistency in those files. The most\n> straightforward way to fix it seems to be to change the HC instances in the\n> frcmod.meoh to H1, which is what is used in the meoh.in prep file.\n>\n>\n> > But I manage to build a box this way:\n> > (tleap)\n> > loadamberprep meoh.in\n> > savemol2 MOH moh.mol2 1\n> >\n> > Then edit moh.mol2 so I changed atom types to lowercase and changed CT to\n> > c3. Then I did:\n> > (tleap)\n> > source leaprc.gaff2\n> > mol = loadmol2 moh1.mol2\n> > solvatebox mol mol 11\n> > saveamberparm mol moh.prm moh.crd\n> > savepdb mol moh.pdb\n> >\n>\n>\n> I'm not sure why you are switching to GAFF types here - did you want to use\n> the meoh in the frcmod file, or switch over to GAFF?\n>\n>\n> >\n> > and this worked, I could even run a simulation with gmx after converting\n> > amber input files with ACPYPE.\n> >\n> > What am I missing?\n> >\n> > Many thanks in advance,\n> > --\n> > Alan Silva\n> >",
+      "url": "http://archive.ambermd.org/202111/0244.html",
+      "in_reply_to": 1637273863
+    }
+  ]
+}

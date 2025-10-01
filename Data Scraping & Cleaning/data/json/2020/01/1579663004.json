@@ -1,0 +1,21 @@
+{
+  "thread_id": 1579663004,
+  "subject": "cpptraj_clucster",
+  "messages": [
+    {
+      "message_id": 1579663004,
+      "author": "Lod King",
+      "date_raw": "Tue, 21 Jan 2020 19:16:44 -0800",
+      "body": "HI AMBER\nIs there any example with command to extract cluster and output with pdb\nusing cpptraj?",
+      "url": "http://archive.ambermd.org/202001/0245.html"
+    },
+    {
+      "message_id": 1580310829,
+      "author": "Thayer, Kelly",
+      "date_raw": "Wed, 29 Jan 2020 15:13:49 +0000",
+      "body": "If you are running cpptraj to perform clustering on an MD trajectory, you will get files called centroid.cn.pdb where n is an index beginning at 0 up to the number of clusters you have. These represent the pdb files of the centroids of your clusters.\nBelow is a snippet of BASH code from my wrapper script that generates the input for multiple cpptraj runs over a range of number of clusters.\nI hope you find this helpful!\nbest regards,\nKelly Thayer\n# STEP 1. Generate the input file to cpptraj directing k-means clustering\nfor NCLUST in $(seq 2 $MAXCLUST); do\ncat <<EOF> ${SAMPLENAME}_kclust$NCLUST-cpptraj.in\n# cluster analysis with cpptraj\n# Load stripped topology file\nparm ../${SAMPLENAME}_strip.prmtop\n# Reference file for aligning snapshots reference ../${SAMPLENAME}_strip.inpcrd\n# Load stripped trajectory file\ntrajin ../${SAMPLENAME}_1-100_strip.trj\n# Align all the snapshots on the reference structure\nrms reference $STARTRES-$ENDRES\n# Cluster with k-means cluster kmeans :$STARTRES-$ENDRES mass clusters $NCLUST maxit 1000 out cluster_out averagelinkage gracec\\\nolor summary summary_out info cluster_info repout centroid repfmt pdb clusterout cluster.nc clusterfmt n\\\netcdf\nEOF\ndone\n________________________________\nFrom: Lod King <lodking407.gmail.com>\nSent: Tuesday, January 21, 2020 10:16 PM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: [AMBER] cpptraj_clucster\nHI AMBER\nIs there any example with command to extract cluster and output with pdb\nusing cpptraj?",
+      "url": "http://archive.ambermd.org/202001/0323.html",
+      "in_reply_to": 1579663004
+    }
+  ]
+}

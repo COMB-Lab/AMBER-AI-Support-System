@@ -1,0 +1,29 @@
+{
+  "thread_id": 1670451069,
+  "subject": "about running mmgbsa energy calculation on some molecules in the simulation system",
+  "messages": [
+    {
+      "message_id": 1670451069,
+      "author": "laura zhang",
+      "date_raw": "Wed, 7 Dec 2022 22:11:09 +0000",
+      "body": "Dear all,\nI conducted an amber simulation which includes one protein and two ligands. I want to calculate the binding free energy of the protein with the 2nd ligand. I have the code to calculate mmgbsa energy pasted below.\nsolv_parm=\"./tm2.wet.complex.parm7\"\ncomplex_parm=\"./tm2.gas.comp2.parm7\"\nreceptor_parm=\"./tm2.gas.receptor.parm7\"\nlig_parm=\"./tm2.gas.lg2.parm7\"\ntrajectory=\"./10.prod.trj\"\nMMPBSA.py -O -i mmbgsa.in \\\n-o tm2_mmgbsa_results_10.dat \\\n-eo tm2_mmgbsa_perframe_10.dat \\\n-sp ${solv_parm} \\\n-cp ${complex_parm} \\\n-rp ${receptor_parm} \\\n-lp ${lig_parm} \\\n-y ${trajectory}\nhere, complex includes receptor+lg1+lg2 (1838 atoms), while comp2 includes receptor+lg2 (1809 atoms), and tm2.wet.complex.parm7 file can load 10.prod.trj file using vmd program.\nI got the error message in the log file as \"Error: Number of atoms in NetCDF file (1838) does not match number\nError: in associated topology (1809)!\nError: Could not set up '_MMPBSA_complex.nc.0' for reading.\nError: Could not set up input trajectory '_MMPBSA_complex.nc.0'.\nI am wondering how to solve such kind of problem. Thank you very much.\nLaura",
+      "url": "http://archive.ambermd.org/202212/0033.html"
+    },
+    {
+      "message_id": 1670453588,
+      "author": "Bill Miller III",
+      "date_raw": "Wed, 7 Dec 2022 16:53:08 -0600",
+      "body": "Looks like your prmtop files were not created properly since your atom numbers don’t match between the netcdf and complex prmtop. Did you use ante-MMPBSA.py to create your dry complex, receptor, and ligand prmtop files? If so, could you post the command you used? Can I assume at least one of your ligands has 29 atoms (this missing atoms 1838-1809)?\nAlso, is there any chance your two ligands are the same and given the same residue name in Amber? That would make generating the prmtop files a little more difficult, but still possible (I’ve done it actually).\n-Bill\n> On Dec 7, 2022, at 4:11 PM, laura zhang via AMBER <amber.ambermd.\norg> wrote:\n>\n> ﻿Dear all,\n>\n> I conducted an amber simulation which includes one protein and two ligands. I want to calculate the binding free energy of the protein with the 2nd ligand. I have the code to calculate mmgbsa energy pasted below.\n>\n> solv_parm=\"./tm2.wet.complex.parm7\"\n> complex_parm=\"./tm2.gas.comp2.parm7\"\n> receptor_parm=\"./tm2.gas.receptor.parm7\"\n> lig_parm=\"./tm2.gas.lg2.parm7\"\n> trajectory=\"./10.prod.trj\"\n> MMPBSA.py -O -i mmbgsa.in \\\n> -o tm2_mmgbsa_results_10.dat \\\n> -eo tm2_mmgbsa_perframe_10.dat \\\n> -sp ${solv_parm} \\\n> -cp ${complex_parm} \\\n> -rp ${receptor_parm} \\\n> -lp ${lig_parm} \\\n> -y ${trajectory}\n>\n> here, complex includes receptor+lg1+lg2 (1838 atoms), while comp2 includes receptor+lg2 (1809 atoms), and tm2.wet.complex.parm7 file can load 10.prod.trj file using vmd program.\n>\n> I got the error message in the log file as \"Error: Number of atoms in NetCDF file (1838) does not match number\n> Error: in associated topology (1809)!\n> Error: Could not set up '_MMPBSA_complex.nc.0' for reading.\n> Error: Could not set up input trajectory '_MMPBSA_complex.nc.0'.\n>\n> I am wondering how to solve such kind of problem. Thank you very much.\n>\n> Laura\n>\n>",
+      "url": "http://archive.ambermd.org/202212/0034.html",
+      "in_reply_to": 1670451069
+    },
+    {
+      "message_id": 1670505861,
+      "author": "David A Case",
+      "date_raw": "Thu, 8 Dec 2022 08:24:21 -0500",
+      "body": "On Wed, Dec 07, 2022, laura zhang via AMBER wrote:\n>\n>lg1 has 29 atoms. But I only wanted to calculate the binding energy between\n>receptor and lg2.\nDo you really want this: the binding energy between (protein + lg1) and\nlg2? In that case, you would define \"receptor\" as protein + lg1, and the\n\"ligand\" as lg2. Atom numbers should the add up.\nIt's actually not clear what simulations you have actually done. If you\njust have (protein + lg1 + lg2) and the two ligands, you could proceed with\nthe calculation outlined in the paragraph above, but you don't have enough\ninformation (simulations) to compute the binding energy between just the\nprotein and lg2.\nPut another way: \"receptor\" has to include everything except the ligand of\ninterest. The term \"receptor\" is often treated as a synonym for \"protein\",\nbut that only works if there is just a single ligand.\nI hope this clarifies things, but I recognize that I may have made things\nworse. If it's not clear, tell us exactly which simulations you have\ncarried out.\n....dac",
+      "url": "http://archive.ambermd.org/202212/0036.html",
+      "in_reply_to": 1670451069
+    }
+  ]
+}

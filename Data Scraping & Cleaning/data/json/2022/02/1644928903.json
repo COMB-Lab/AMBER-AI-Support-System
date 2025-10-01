@@ -1,0 +1,21 @@
+{
+  "thread_id": 1644928903,
+  "subject": "How to run 3drism.snglpnt calculations in amber20 without rst or traj files",
+  "messages": [
+    {
+      "message_id": 1644928903,
+      "author": "Daniel Fowles",
+      "date_raw": "Tue, 15 Feb 2022 12:41:43 +0000",
+      "body": "In older versions of Ambertools you could run a 3drism.snglpnt calculation with a solute pdb and prmtop files, and a solute xvv file. In the most recent version of ambertools20 I cannot run these calculations without also including a rst or traj file: ERROR: a RESTART or TRAJ file is required\nHere is the command I am submitting which worked fine in previous versions:\nrism3d.snglpnt --pdb 0001met.pdb --prmtop gen.prmtop --closure kh --maxstep 12000 --pc+ --gf --guv 3DRISM_0001met --cuv 3DRISM_0001met --huv 3DRISM_0001met --uuv 3DRISM_0001met --xvv SPC_NaCl.xvv 2>&1 | tee rism3d.log\nIn the amber manual it is stated that these files are only required if a pdb file is not given. However I am receiving this error even when a pdb file is present. Does anyone know if there is a workaround to this issue or how to obtain a traj or rst file for use in a 3drism.snglpnt calculation?\nThanks in advance",
+      "url": "http://archive.ambermd.org/202202/0141.html"
+    },
+    {
+      "message_id": 1644955331,
+      "author": "tluchko",
+      "date_raw": "Tue, 15 Feb 2022 20:02:11 +0000",
+      "body": "You now need a restart or trajectory file to use rism3d.snglpnt. Since you have a prmtop for your PDB, you can quickly get a restart or trajectory file using cpptraj. For example,\ncpptraj -p in.prmtop -y in.pdb -x out.nc\nwhere in.prmtop is your prmtop file, in.pdb is your PDB file and out.nc is the new trajectory. The suffixes matter here as cpptraj will use them to determine the file types.\nI've made a note to update the manual to reflect these changes.\nHope this helps,\nTyler\nSent with ProtonMail Secure Email.\n------- Original Message -------\nOn Tuesday, February 15th, 2022 at 4:41 AM, Daniel Fowles <daniel.fowles.strath.ac.uk> wrote:\n> In older versions of Ambertools you could run a 3drism.snglpnt calculation with a solute pdb and prmtop files, and a solute xvv file. In the most recent version of ambertools20 I cannot run these calculations without also including a rst or traj file: ERROR: a RESTART or TRAJ file is required\n>\n> Here is the command I am submitting which worked fine in previous versions:\n>\n> rism3d.snglpnt --pdb 0001met.pdb --prmtop gen.prmtop --closure kh --maxstep 12000 --pc+ --gf --guv 3DRISM_0001met --cuv 3DRISM_0001met --huv 3DRISM_0001met --uuv 3DRISM_0001met --xvv SPC_NaCl.xvv 2>&1 | tee rism3d.log\n>\n> In the amber manual it is stated that these files are only required if a pdb file is not given. However I am receiving this error even when a pdb file is present. Does anyone know if there is a workaround to this issue or how to obtain a traj or rst file for use in a 3drism.snglpnt calculation?\n>\n> Thanks in advance\n>\n> AMBER mailing list\n>\n> AMBER.ambermd.org\n>\n>\nhttp://lists.ambermd.org/mailman/listinfo/amber",
+      "url": "http://archive.ambermd.org/202202/0150.html",
+      "in_reply_to": 1644928903
+    }
+  ]
+}

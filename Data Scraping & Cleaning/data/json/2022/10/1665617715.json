@@ -1,0 +1,37 @@
+{
+  "thread_id": 1665617715,
+  "subject": "problem regarding \"change\" command",
+  "messages": [
+    {
+      "message_id": 1665617715,
+      "author": "Saikat Pal",
+      "date_raw": "Wed, 12 Oct 2022 23:35:15 +0000 (UTC)",
+      "body": "Dear all,\nI have converted my topology file with added PDB information (like chain ID and renumbering PDB) using \"parmed\". However, the previously mentioned information still missing in output file (like rmsf). I have gone through the following link:\nhttp://archive.ambermd.org/201709/0275.html\n|\n|\n| |\nRe: [AMBER] cpptraj: modification of topologies/trajectories from Daniel...\n|\n|\n|\nRe: [AMBER] How to fix the numbering of amino acid that got shifted in topology file that created in amber Tleap from Daniel Roe on 2021-06-07 (Amber Archive Jun 2021)\n|\n|\n| |\nRe: [AMBER] How to fix the numbering of amino acid that got shifted in t...\n|\n|\n|\nHere is following  my steps:\nparm rgs01-1.rgs01.parm7addPDB rgs01.pdbparmout rgs01-1-mod.rgs01.parm7go\nchange oresnums of :1-317 min 32 max 348change chainid of :1-317 to Achange oresnums of :318-449 min 60 max 191change chainid of :318-449 to Dout remap.dat\nIt shows the error:..................................................................................Changing chain ID of residue TYR:441 from 'D' to 'D'Changing chain ID of residue LEU:442 from 'D' to 'D'Changing chain ID of residue ASN:443 from 'D' to 'D'Changing chain ID of residue LEU:444 from 'D' to 'D'Changing chain ID of residue LEU:445 from 'D' to 'D'Changing chain ID of residue ASN:446 from 'D' to 'D'Changing chain ID of residue ASP:447 from 'D' to 'D'Changing chain ID of residue LEU:448 from 'D' to 'D'Changing chain ID of residue GLN:449 from 'D' to 'D'[out remap.dat]Warning: Data set 'outremap.dat' not found.Error: Data set with name 'outremap.dat' not found.'out remap.dat': Invalid command or expression.1 errors encountered reading input.TIME: Total execution time: 0.0169 seconds.Error: Error(s) occurred during execution.\nI want to put information like residue number and chain id in the topology file.\nThanks and Regards,\nSaikat Pal",
+      "url": "http://archive.ambermd.org/202210/0040.html"
+    },
+    {
+      "message_id": 1665643671,
+      "author": "FyD",
+      "date_raw": "Thu, 13 Oct 2022 08:47:51 +0200",
+      "body": "Dear All,\nThe total charge value of the molecular fragments in the Amber force\nfield libraries takes 'most of the time' an integer value. This is the\ncase for the terminal and central fragments of the amino-acids. This\nis also true for the central fragments of the nucleotides. However,\nthis is not correct for the terminal fragments of the nucleotides,\nwhere the sum of the total charges of the 2 terminal fragments has\nthat integer value.\nI wonder if there is an importance of having such an integer value for\na molecular fragment in the electrostatic interaction computation of a\nprotein/polynucleotide for instance, when running MD simulation in\ncondensed phase using the Particle mesh Ewald algorithm/a periodic box.\nI wonder also if there was not not 'something' like that in Amber 5 or\n6... If so, is it still true today with the last versions of the\nsander/pmemd program?\nThank you,\nregards, Francois",
+      "url": "http://archive.ambermd.org/202210/0041.html",
+      "in_reply_to": 1665617715
+    },
+    {
+      "message_id": 1665757680,
+      "author": "Daniel Roe",
+      "date_raw": "Fri, 14 Oct 2022 10:28:00 -0400",
+      "body": "Hi,\nThe error arises because 'out' is not a recognized command. What did\nyou intend with 'out remap.dat'? By itself, 'out' is not a command,\nthough it is a keyword for many other commands. Perhaps what you\nwanted instead of out was parmwrite out <file> to write a topology?\n-Dan\nOn Wed, Oct 12, 2022 at 7:37 PM Saikat Pal via AMBER <amber.ambermd.org> wrote:\n>\n>\n>\n> Dear all,\n>\n>\n> I have converted my topology file with added PDB information (like chain ID and renumbering PDB) using \"parmed\". However, the previously mentioned information still missing in output file (like rmsf). I have gone through the following link:\nhttp://archive.ambermd.org/201709/0275.html\n>\n>\n> |\n> |\n> | |\n> Re: [AMBER] cpptraj: modification of topologies/trajectories from Daniel...\n>\n>\n> |\n>\n> |\n>\n> |\n>\n>\n>\n> Re: [AMBER] How to fix the numbering of amino acid that got shifted in topology file that created in amber Tleap from Daniel Roe on 2021-06-07 (Amber Archive Jun 2021)\n>\n>\n> |\n> |\n> | |\n> Re: [AMBER] How to fix the numbering of amino acid that got shifted in t...\n>\n>\n> |\n>\n> |\n>\n> |\n>\n>\n>\n> Here is following my steps:\n>\n> parm rgs01-1.rgs01.parm7addPDB rgs01.pdbparmout rgs01-1-mod.rgs01.parm7go\n>\n>\n>\n> change oresnums of :1-317 min 32 max 348change chainid of :1-317 to Achange oresnums of :318-449 min 60 max 191change chainid of :318-449 to Dout remap.dat\n>\n>\n>\n> It shows the error:..................................................................................Changing chain ID of residue TYR:441 from 'D' to 'D'Changing chain ID of residue LEU:442 from 'D' to 'D'Changing chain ID of residue ASN:443 from 'D' to 'D'Changing chain ID of residue LEU:444 from 'D' to 'D'Changing chain ID of residue LEU:445 from 'D' to 'D'Changing chain ID of residue ASN:446 from 'D' to 'D'Changing chain ID of residue ASP:447 from 'D' to 'D'Changing chain ID of residue LEU:448 from 'D' to 'D'Changing chain ID of residue GLN:449 from 'D' to 'D'[out remap.dat]Warning: Data set 'outremap.dat' not found.Error: Data set with name 'outremap.dat' not found.'out remap.dat': Invalid command or expression.1 errors encountered reading input.TIME: Total execution time: 0.0169 seconds.Error: Error(s) occurred during execution.\n>\n>\n> I want to put information like residue number and chain id in the topology file.\n>\n> Thanks and Regards,\n>\n> Saikat Pal\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202210/0049.html",
+      "in_reply_to": 1665617715
+    },
+    {
+      "message_id": 1665763644,
+      "author": "David A Case",
+      "date_raw": "Fri, 14 Oct 2022 12:07:24 -0400",
+      "body": "On Thu, Oct 13, 2022, FyD via AMBER wrote:\n>\n>The total charge value of the molecular fragments in the Amber force\n>field libraries takes 'most of the time' an integer value. This is the\n>case for the terminal and central fragments of the amino-acids. This\n>is also true for the central fragments of the nucleotides. However,\n>this is not correct for the terminal fragments of the nucleotides,\n>where the sum of the total charges of the 2 terminal fragments has\n>that integer value.\n>\n>I wonder if there is an importance of having such an integer value for\n>a molecular fragment in the electrostatic interaction computation of a\n>protein/polynucleotide for instance, when running MD simulation in\n>condensed phase using the Particle mesh Ewald algorithm/a periodic\n>box.\nPeriodic calculations in Amber use PME, which will add a neutralizing\nbackground charge if the molecule has a net charge. It doesn't really care\nif the charge is integral or not.\nThe fact that you need both a 5' nucleotide and a 3' nucleotide on the same\nstrand in order to get an integral charge represents our best (simple) guess\nof the actual charge distribution.\n...hope this helps...dac",
+      "url": "http://archive.ambermd.org/202210/0052.html",
+      "in_reply_to": 1665617715
+    }
+  ]
+}

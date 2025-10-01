@@ -1,0 +1,21 @@
+{
+  "thread_id": 1726799354,
+  "subject": "MMPBSA error: LengthError: length mismatch in energy vectors",
+  "messages": [
+    {
+      "message_id": 1726799354,
+      "author": "홍종희",
+      "date_raw": "Fri, 20 Sep 2024 11:29:14 +0900",
+      "body": "Hi a;l\nI got another error produced in MMPBSA run\nLoading and checking parameter files for compatibility...\ncpptraj found! Using amber22/bin/cpptraj\nmmpbsa_py_energy found! Using amber22/bin/mmpbsa_py_energy\nPreparing trajectories for simulation...\n20 frames were processed by cpptraj for use in calculation.\nRunning calculations on normal system...\nBeginning GB calculations with /usr/local/amber22/bin/mmpbsa_py_energy\ncalculating complex contribution...\ncalculating receptor contribution...\ncalculating ligand contribution...\nFile \"/usr/local/amber22/bin/MMPBSA.py\", line 108, in\napp.parse_output_files()\nFile \"/usr/local/amber22/lib/python3.10/site-packages/MMPBSA_mods/main.py\", line 995, in parse_output_files\nself.calc_types[key]['delta'] = BindClass(\nFile \"/usr/local/amber22/lib/python3.10/site-packages/MMPBSA_mods/amber_outputs.py\", line 1027, in __init__\nself.delta2()\nFile \"/usr/local/amber22/lib/python3.10/site-packages/MMPBSA_mods/amber_outputs.py\", line 1256, in delta2\nself.lig.fill_composite_terms()\nFile \"/usr/local/amber22/lib/python3.10/site-packages/MMPBSA_mods/amber_outputs.py\", line 373, in fill_composite_terms\nself.data[component] = self.data[key] + self.data[component]\nFile \"/usr/local/amber22/lib/python3.10/site-packages/MMPBSA_mods/amber_outputs.py\", line 62, in __add__\nraise LengthError('length mismatch in energy vectors')\nLengthError: length mismatch in energy vectors\nhow can I trace the problem associated with this error ?\nThanks",
+      "url": "http://archive.ambermd.org/202409/0091.html"
+    },
+    {
+      "message_id": 1727196850,
+      "author": "Jason Swails",
+      "date_raw": "Tue, 24 Sep 2024 12:54:10 -0400",
+      "body": "Check the ligand output files and see if you can find an error in any\nenergy calculation for any of the frames.\nThe problem here is that MMPBSA.py found fewer ligand energy terms than it\nfound for the bound complex and receptors. The output files should show\nerrors if they were printed by the program that computed the energy.\nGood luck,\nJason\nOn Thu, Sep 19, 2024 at 10:29 PM 홍종희 via AMBER <amber.ambermd.\norg> wrote:\n> Hi a;l\n>\n>\n>\n> I got another error produced in MMPBSA run\n>\n>\n>\n> Loading and checking parameter files for compatibility...\n> cpptraj found! Using amber22/bin/cpptraj\n> mmpbsa_py_energy found! Using amber22/bin/mmpbsa_py_energy\n> Preparing trajectories for simulation...\n> 20 frames were processed by cpptraj for use in calculation.\n>\n> Running calculations on normal system...\n>\n> Beginning GB calculations with /usr/local/amber22/bin/mmpbsa_py_energy\n> calculating complex contribution...\n> calculating receptor contribution...\n> calculating ligand contribution...\n> File \"/usr/local/amber22/bin/MMPBSA.py\", line 108, in\n> app.parse_output_files()\n> File\n> \"/usr/local/amber22/lib/python3.10/site-packages/MMPBSA_mods/main.py\",\n> line 995, in parse_output_files\n> self.calc_types[key]['delta'] = BindClass(\n> File\n> \"/usr/local/amber22/lib/python3.10/site-packages/MMPBSA_mods/amber_outputs.py\",\n> line 1027, in __init__\n> self.delta2()\n> File\n> \"/usr/local/amber22/lib/python3.10/site-packages/MMPBSA_mods/amber_outputs.py\",\n> line 1256, in delta2\n> self.lig.fill_composite_terms()\n> File\n> \"/usr/local/amber22/lib/python3.10/site-packages/MMPBSA_mods/amber_outputs.py\",\n> line 373, in fill_composite_terms\n> self.data[component] = self.data[key] + self.data[component]\n> File\n> \"/usr/local/amber22/lib/python3.10/site-packages/MMPBSA_mods/amber_outputs.py\",\n> line 62, in __add__\n> raise LengthError('length mismatch in energy vectors')\n> LengthError: length mismatch in energy vectors\n>\n> how can I trace the problem associated with this error ?\n>\n>\n>\n> Thanks\n>\n>\n>\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202409/0118.html",
+      "in_reply_to": 1726799354
+    }
+  ]
+}

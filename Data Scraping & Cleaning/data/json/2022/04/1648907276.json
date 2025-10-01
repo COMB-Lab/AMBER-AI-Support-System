@@ -1,0 +1,21 @@
+{
+  "thread_id": 1648907276,
+  "subject": "Re: [AMBER] MMPBSA.py.MPI and pytraj bugs",
+  "messages": [
+    {
+      "message_id": 1648907276,
+      "author": "David A Case",
+      "date_raw": "Sat, 2 Apr 2022 09:47:56 -0400",
+      "body": "On Tue, Mar 22, 2022, David Poole wrote:\n>\n>Traceback (most recent call last):\n>> File \"/scistor/gt/dpo206/software/amber20/bin/MMPBSA.py.MPI\", line 55,\n>> in <module>\n>> raise MMPBSA_Error('Could not import mpi4py package! Use serial\n>> version '\n>> MMPBSA_mods.exceptions.MMPBSA_Error: Could not import mpi4py package! Use\n>> serial version or install mpi4py.\n>> Traceback (most recent call last):\n>> File \"/scistor/gt/dpo206/software/amber20/bin/MMPBSA.py.MPI\", line 53,\n>> in <module>\n>> from mpi4py import MPI\n>> ModuleNotFoundError: No module named 'mpi4py'\nCan you double-check your PYTHONPATH, and report what it is pointing to?\nI'm concerned that there may be some crosstalk between your \"current (conda)\nenvironment\" and what you call the \"amber environment\".\nYou can try by hand to execute the imports at the top of\n$AMBERHOME/AmberTools/src/mmpbsa_py/MMPBSA.py. Basically, at line 53, it\nis just doing \"from mpi4py import MPI\". Try this with amber.python under\ncircumstances where you know that the PYTHONPATH is the amber one. The\nerror message might be helpful.\n....regards...dac",
+      "url": "http://archive.ambermd.org/202204/0013.html"
+    },
+    {
+      "message_id": 1648952809,
+      "author": "Hai Nguyen",
+      "date_raw": "Sat, 2 Apr 2022 22:26:49 -0400",
+      "body": "On Sat, Apr 2, 2022 at 8:46 PM David Poole <thepoole.ucdavis.edu> wrote:\n> Cross-talk was indeed the issue. After some poking around I noticed that\n> mpi4py was installed in my conda environment, but not the conda environment\n> for amber (which is used by MMPBSA.py). To solve this issue, I only had to\n> deactivate all conda environments and then use 'amber.conda' to install\n> mpi4py into amber's conda environment. This seems to solve the problem I\n> faced. It seems silly not to include mpi4py in amber's conda environment by\n> default.\n> i think the conda version is for serial install, not for MPI.\nHai\n>\n> I note that when using amber.python, and my conda environment (with mpi4py)\n> activated, I could import mpi4py. But this was not the case with conda\n> environments deactivated. I am not the exper to figure out the role of this\n> cross talk, but it might be useful to note it.\n>\n> Anyway, thanks for the help, hope it continues to be useful to others.\n>\n> ~David Poole\n>\n> Can you double-check your PYTHONPATH, and report what it is pointing to?\n> > I'm concerned that there may be some crosstalk between your \"current\n> > (conda)\n> > environment\" and what you call the \"amber environment\".\n>\n>\n> > You can try by hand to execute the imports at the top of\n> > $AMBERHOME/AmberTools/src/mmpbsa_py/MMPBSA.py. Basically, at line 53, it\n> > is just doing \"from mpi4py import MPI\". Try this with amber.python under\n> > circumstances where you know that the PYTHONPATH is the amber one. The\n> > error message might be helpful.\n>\n>\n> > ....regards...dac\n>",
+      "url": "http://archive.ambermd.org/202204/0016.html",
+      "in_reply_to": 1648907276
+    }
+  ]
+}

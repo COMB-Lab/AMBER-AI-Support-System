@@ -1,0 +1,21 @@
+{
+  "thread_id": 1609611343,
+  "subject": "Generating LJ paramters of divalent copper ions",
+  "messages": [
+    {
+      "message_id": 1609611343,
+      "author": "angad sharma",
+      "date_raw": "Sat, 2 Jan 2021 23:45:43 +0530",
+      "body": "Actually I want to do RISM using copper ions . But parameters for copper\nions are not defined , basically the model for copper is not defined.\nI checked the parameters of copper ions in frcmod-ions files in amber which\nare as follows\nMass\nCu2+ 63.55\nBONBON\nCu2+ 1.218 0.00148497\ni am not getting to convert LJ parameters so that i can make my model of\nCopper.\nfor example\nfor magnesium\nMass\nMg2+ 24.305\nBONBON\nMg2+ 1.360(sigma) 0.01020237(epsilon)\nbut in MG.mdl file in amber they are written as\n%FLAG LJEPSILON\n%FORMAT(5e16.8)\n8.94700001e-01\n%FLAG LJSIGMA\n%FORMAT(5e16.8)\n7.92600000e-01\nI am not getting how they convert or transform it into this manner ,just\nlike charges get multiplied by 18.2223 for a model, how they do it for LJ\nparameters.",
+      "url": "http://archive.ambermd.org/202101/0008.html"
+    },
+    {
+      "message_id": 1609682967,
+      "author": "David A Case",
+      "date_raw": "Sun, 3 Jan 2021 09:09:27 -0500",
+      "body": "On Sat, Jan 02, 2021, angad sharma wrote:\nNote that the ion parameters you want depend on the water model you choose.\nWe almost always use the cSPCE water model for RISM, so the ion parameters\nto try first are this in leaprc.water.spce:\nloadAmberParams frcmod.ionsjc_spce\nloadAmberParams frcmod.ions234lm_126_spce\nThe first line is for monovalent ions, the second for divalents and higher.\nFor this set the Cu2+ parameters are:\nNONBON\nCu2+ 1.223 0.00160860\nThis doesn't mean that these are automatically the best values, since\ndivalents are hard to model, in either explicit or implicit force fields,\nbut this should be a good start.\nThere are many pairs of rmin/epsilon parameters that give similar results,\nwhich is why the values in the MG.mdl file look different that those in the\ncorresponding frcmod file. I think the MG.mdl values have been optimized to\nprovide easier convergence in RISM.\nIn biochemical systems (where Amber is most commonly used) the free Cu2+\nconcentration is generally *very* low. If you are planning to work at\nhigher concentrations, you may need to run tests to make sure that you are\nnot getting too much ion pairing between Cu2+ and an anion like Cl-.\nThe file format and units are discussed in Section 7.8.1 of the Amber 2020\nReference Manual.\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202101/0011.html",
+      "in_reply_to": 1609611343
+    }
+  ]
+}

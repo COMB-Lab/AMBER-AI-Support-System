@@ -1,0 +1,29 @@
+{
+  "thread_id": 1594339450,
+  "subject": "Mask behavior vs distance measurement?",
+  "messages": [
+    {
+      "message_id": 1594339450,
+      "author": "Kenneth Huang",
+      "date_raw": "Thu, 9 Jul 2020 20:04:10 -0400",
+      "body": "Hi all,\nI'm running into an odd situation where the behavior of the mask command\ndoesn't seem to be lining up exactly with the actual measured distance, ie\nif I have\nmask \"(:35.N4<:5.5)&:47-135&( :LYS.NZ | :ARG.NH1,NH2 | :GLU.OE1,OE2 |\n> :ASP.OD1,OD2 )\" maskout maskout_N4.dat\n>\nTo measure any charged groups of the protein within 5.5 A of the N4 group\non a DNA base, it says frame 1 has both NH groups on an ARG within the\nraidus,\n#Frame AtomNum Atom ResNum Res MolNum\n> 1 2527 NH1 108 ARG 3\n> 1 2530 NH2 108 ARG 3\n>\nBut when I try to fetch the distance via\ndistance dN4 :35.N4 :108.NH1 out dist.m35N4-108.dat noimage\n> distance dN4b :35.N4 :108.NH2 out dist.m35N4b-108.dat noimage\n>\nThe distance I get for both sets say that it's mugh further than the 5.5\nradius of mask?\n1 6.4996\n>\n>\n1 5.7482\n>\n>\nMy first thought is I've somehow messed up the selection algebra in the\nmask portion, but I can't seem to find an actual error in it?\nBest,\nKenneth\n-- \nAsk yourselves, all of you, what power would hell have if those imprisoned\nhere could not dream of heaven?",
+      "url": "http://archive.ambermd.org/202007/0139.html"
+    },
+    {
+      "message_id": 1594346778,
+      "author": "Daniel Roe",
+      "date_raw": "Thu, 9 Jul 2020 22:06:18 -0400",
+      "body": "Hi,\n<: means “residues within” so if _any_ part of the residue meets the\ndistance cutoff the whole residue is selected. Try <@ (atoms within)\ninstead.\n-Dan\nOn Thu, Jul 9, 2020 at 8:05 PM Kenneth Huang <kennethneltharion.gmail.\ncom>\nwrote:\n> Hi all,\n>\n> I'm running into an odd situation where the behavior of the mask command\n> doesn't seem to be lining up exactly with the actual measured distance, ie\n> if I have\n>\n> mask \"(:35.N4<:5.5)&:47-135&( :\nLYS.NZ\n| :ARG.NH1,NH2 | :GLU.OE1,OE2 |\n> > :ASP.OD1,OD2 )\" maskout maskout_N4.dat\n> >\n>\n> To measure any charged groups of the protein within 5.5 A of the N4 group\n> on a DNA base, it says frame 1 has both NH groups on an ARG within the\n> raidus,\n>\n> #Frame AtomNum Atom ResNum Res MolNum\n> > 1 2527 NH1 108 ARG 3\n> > 1 2530 NH2 108 ARG 3\n> >\n>\n> But when I try to fetch the distance via\n>\n> distance dN4 :35.N4 :108.NH1 out dist.\nm35N4-108.dat noimage\n> > distance dN4b :35.N4 :108.NH2 out dist.\nm35N4b-108.dat noimage\n> >\n>\n> The distance I get for both sets say that it's mugh further than the 5.5\n> radius of mask?\n>\n> 1 6.4996\n> >\n> >\n> 1 5.7482\n> >\n> >\n> My first thought is I've somehow messed up the selection algebra in the\n> mask portion, but I can't seem to find an actual error in it?\n>\n> Best,\n>\n> Kenneth\n>\n> --\n> Ask yourselves, all of you, what power would hell have if those imprisoned\n> here could not dream of heaven?\n>",
+      "url": "http://archive.ambermd.org/202007/0142.html",
+      "in_reply_to": 1594339450
+    },
+    {
+      "message_id": 1594402288,
+      "author": "Kenneth Huang",
+      "date_raw": "Fri, 10 Jul 2020 13:31:28 -0400",
+      "body": "Hi Daniel,\nThank! That fixed it- I had thought the &(. atom selection) would override\nthat part, but good to know.\nBest,\nKenneth\nOn Thu, Jul 9, 2020 at 10:06 PM Daniel Roe <daniel.r.roe.gmail.\ncom> wrote:\n> Hi,\n>\n> <: means “residues within” so if _any_ part of the residue meets the\n> distance cutoff the whole residue is selected. Try <@ (atoms within)\n> instead.\n>\n> -Dan\n>\n> On Thu, Jul 9, 2020 at 8:05 PM Kenneth Huang <kennethneltharion.gmail.\ncom>\n> wrote:\n>\n> > Hi all,\n> >\n> > I'm running into an odd situation where the behavior of the mask command\n> > doesn't seem to be lining up exactly with the actual measured distance,\n> ie\n> > if I have\n> >\n> > mask \"(:35.N4<:5.5)&:47-135&( :\nLYS.NZ\n| :ARG.NH1,NH2 | :GLU.OE1,OE2 |\n> > > :ASP.OD1,OD2 )\" maskout maskout_N4.\ndat\n> > >\n> >\n> > To measure any charged groups of the protein within 5.5 A of the N4 group\n> > on a DNA base, it says frame 1 has both NH groups on an ARG within the\n> > raidus,\n> >\n> > #Frame AtomNum Atom ResNum Res MolNum\n> > > 1 2527 NH1 108 ARG 3\n> > > 1 2530 NH2 108 ARG 3\n> > >\n> >\n> > But when I try to fetch the distance via\n> >\n> > distance dN4 :35.N4 :108.NH1 out dist.\nm35N4-108.dat noimage\n> > > distance dN4b :35.N4 :108.NH2 out dist.\nm35N4b-108.dat noimage\n> > >\n> >\n> > The distance I get for both sets say that it's mugh further than the 5.5\n> > radius of mask?\n> >\n> > 1 6.4996\n> > >\n> > >\n> > 1 5.7482\n> > >\n> > >\n> > My first thought is I've somehow messed up the selection algebra in the\n> > mask portion, but I can't seem to find an actual error in it?\n> >\n> > Best,\n> >\n> > Kenneth\n> >\n> > --\n> > Ask yourselves, all of you, what power would hell have if those\n> imprisoned\n> > here could not dream of heaven?\n> >",
+      "url": "http://archive.ambermd.org/202007/0147.html",
+      "in_reply_to": 1594339450
+    }
+  ]
+}

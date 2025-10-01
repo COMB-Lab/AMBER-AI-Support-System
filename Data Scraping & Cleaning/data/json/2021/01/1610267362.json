@@ -1,0 +1,37 @@
+{
+  "thread_id": 1610267362,
+  "subject": "Error searching for compatible GPU",
+  "messages": [
+    {
+      "message_id": 1610267362,
+      "author": "Hongwei Tan",
+      "date_raw": "Sun, 10 Jan 2021 16:29:22 +0800 (GMT+08:00)",
+      "body": "Hi all，\nI just installed Amber20 on my computer with two Nvidia tesla C2050 cards.\nThe operation system is Unbuntu 18.04. And the Cuda version is 9.0. No error\ninformation was reported during installation and compile processes.However,\nwhen I tried to run pmemd.cuda, I got an error message:\n\"Error searching for compatible GPU.\"\nHere is the output file:\n| PMEMD implementation of SANDER, Release 18\n| Compiled date/time: Tue Apr 28 09:19:54 2020\n| Run on 01/10/2021 at 15:25:22\n| Executable path: pmemd.cuda\n| Working directory: /home/apple/amber\n| Hostname: Unknown\n[-O]verwriting output\nFile Assignments:\n| MDIN: md.in\n| MDOUT: RAMP1_md.mdout\n| INPCRD: RAMP1_equil.rst7\n| PARM: RAMP1.prmtop\n| RESTRT: RAMP1_md.rst7\n| REFC: RAMP1_equil.rst7\n| MDVEL: mdvel\n| MDEN: mden\n| MDCRD: RAMP1_md.nc\n| MDINFO: mdinfo\n| MDFRC: mdfrc\nHere is the input file:\nExplicit solvent molecular dynamics constant pressure 50 ns MD\n&cntrl\nimin=0, irest=1, ntx=5,\nntpr=500000, ntwx=500000, ntwr=500000, nstlim=25000000,\ndt=0.002, ntt=3, tempi=300,\ntemp0=300, gamma_ln=1.0, ig=-1,\nntp=1, ntc=2, ntf=2, cut=9,\nntb=2, iwrap=1, ioutfm=1,\n/\nNote: ig = -1. Setting random seed to 800028 based on wallclock time in\nmicroseconds.\n| irandom = 1, using AMBER's internal random number generator (default).\nThe nvidia-smi showed that there are two C2050 cards in the computer:\n+-----------------------------------------------------------------------------+\n| NVIDIA-SMI 384.183 Driver Version: 384.183 CUDA Version: 9.0 |\n|-------------------------------+----------------------+----------------------+\n| GPU Name Persistence-M| Bus-Id Disp.A | Volatile Uncorr. ECC |\n| Fan Temp Perf Pwr:Usage/Cap| Memory-Usage | GPU-Util Compute M. |\n|===============================+======================+======================|\n| 0 Tesla C2050 Off | 00000000:02:00.0 Off | 0 |\n| 30% 50C P0 N/A / N/A | 0MiB / 2622MiB | 0% Default |\n+-------------------------------+----------------------+----------------------+\n| 1 Tesla C2050 Off | 00000000:83:00.0 Off | 2 |\n| 30% 53C P0 N/A / N/A | 0MiB / 2622MiB | 0% Default |\n+-------------------------------+----------------------+----------------------+\n+-----------------------------------------------------------------------------+\n| Processes: GPU Memory |\n| GPU PID Type Process name Usage |\n|=============================================================================|\n| No running processes found |\n+-----------------------------------------------------------------------------+\nI am wondering that if someone know how to fix this problem?\nThank you very much!\nHongwei",
+      "url": "http://archive.ambermd.org/202101/0133.html"
+    },
+    {
+      "message_id": 1610292950,
+      "author": "David A Case",
+      "date_raw": "Sun, 10 Jan 2021 10:35:50 -0500",
+      "body": "On Sun, Jan 10, 2021, Hongwei Tan wrote:\n>\n>I just installed Amber20 on my computer with two Nvidia tesla C2050 cards.\n>The operation system is Unbuntu 18.04. And the Cuda version is 9.0. No error\n>information was reported during installation and compile processes.However,\n>when I tried to run pmemd.cuda, I got an error message:\n>\"Error searching for compatible GPU.\"\nAmber20 no longer supports the Fermi architecture:\nhttps://ambermd.org/GPUHardware.php\nWe did not take this step lightly, but the C2050 dates from 2011, and the\ninternals of GPUs have changed so much since then that it was not feasible\nto continue such support. The performance of more modern GPUs, say going\nall the way back to the GTX1080Ti, is at least an order of magnitude better\nthan the C2050. If money is tight, you might be able to find some bargains\nout there for replacement GPUs.\n....regards...dac",
+      "url": "http://archive.ambermd.org/202101/0137.html",
+      "in_reply_to": 1610267362
+    },
+    {
+      "message_id": 1610307121,
+      "author": "David A Case",
+      "date_raw": "Sun, 10 Jan 2021 14:32:01 -0500",
+      "body": "On Sun, Jan 10, 2021, David Case wrote:\n>Amber20 no longer supports the Fermi architecture:\n>\n>We did not take this step lightly, but the C2050 dates from 2011, and the\n>internals of GPUs have changed so much since then that it was not feasible\n>to continue such support. The performance of more modern GPUs, say going\n>all the way back to the GTX1080Ti, is at least an order of magnitude better\n>than the C2050. If money is tight, you might be able to find some bargains\n>out there for replacement GPUs.\nJust to add to this, I've posted an interesting plot of pmemd.cuda\nperformance vs time here:\nhttps://ambermd.org/GPUPerformance.php\n....dac",
+      "url": "http://archive.ambermd.org/202101/0143.html",
+      "in_reply_to": 1610267362
+    },
+    {
+      "message_id": 1610326233,
+      "author": "Hongwei Tan",
+      "date_raw": "Mon, 11 Jan 2021 08:50:33 +0800 (GMT+08:00)",
+      "body": "Hi David,Thank you for replying. I also have a compute node with Titan-X, which isstill supported. I am going to install Amber20 on it.Thanks,Hongwei>\n>I just installed Amber20 on my computer with two Nvidia tesla C2050 cards.\n>The operation system is Unbuntu 18.04. And the Cuda version is 9.0. No error\n>information was reported during installation and compile processes.However,\n>when I tried to run pmemd.cuda, I got an error message:\n>\"Error searching for compatible GPU.\"\n>Amber20 no longer supports the Fermi architecture: https://ambermd.org/GPUHardware.php> We did not take this step lightly, but the C2050 dates from 2011, and the\n>internals of GPUs have changed so much since then that it was not feasible>to continue such support. The performance of more modern GPUs, say going >all the way back to the GTX1080Ti, is at least an order of magnitude better >than the C2050. If money is tight, you might be able to find some bargains >out there for replacement GPUs. >....regards...dac",
+      "url": "http://archive.ambermd.org/202101/0146.html",
+      "in_reply_to": 1610267362
+    }
+  ]
+}

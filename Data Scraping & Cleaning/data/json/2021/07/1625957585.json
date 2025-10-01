@@ -1,0 +1,21 @@
+{
+  "thread_id": 1625957585,
+  "subject": "PCA inconsistency on number of frames",
+  "messages": [
+    {
+      "message_id": 1625957585,
+      "author": "Mac Kevin Braza",
+      "date_raw": "Sat, 10 Jul 2021 15:53:05 -0700",
+      "body": "I am running PCA script from the tutorial here\nhttps://amberhub.chpc.utah.edu/introduction-to-principal-component-analysis/\nby Galindo-Murillo, Roe, and Cheatham. I am confused on why the error after\nreading the concatenate trajectory says that\n\"----- muOR-trajectories (1-100000, 1) -----\nPROJECTION: Calculating projection using eigenvectors 1 to 3 of myEvecs\nStart: 1 Stop: Final frame\nAtom Mask: [:972-1252&!.H*]\nMask [:972-1252&!.H*] corresponds to 2256 atoms.\n0% 10% 20% 30% 40% 50% 60% 70% 80% 90% Error: start 100001 > #Frames\n(100000), no frames will be processed.\n1 errors encountered reading input.\nError: Error(s) occurred during execution.\n100% Complete.\"\nI included here my script and the output file. Is there anything that I\nam missing? Thank you in advance!\nMac Kevin Braza",
+      "url": "http://archive.ambermd.org/202107/0066.html"
+    },
+    {
+      "message_id": 1626183084,
+      "author": "Daniel Roe",
+      "date_raw": "Tue, 13 Jul 2021 09:31:24 -0400",
+      "body": "Hi,\nIt's important to check the errors and warnings printed by cpptraj. I\nthink the main issue is revealed by these messages:\nError: # atoms in current topology (19712) != # atoms in coords set\n\"muOR-trajectories\" (19680)\nError: Setup failed for [createcrd]\nWarning: Topology '02_6DDE_BU72_PAM_nowater.prmtop' selected # atoms\n(19712) > original topology '01_6DDE_BU72_nowater.prmtop' (19680)\n19712 atoms will be averaged for '02_6DDE_BU72_PAM_nowater.prmtop'.\nThese stem from the fact that you are reading in two trajectories that\ncorrespond to different topologies (19680 vs 19712 atoms), but in many\nof these commands you're not e.g. selecting a common subset of atoms.\nIf you want to perform a combined principal component analysis on both\ntrajectories, you should strip the trajectories down to a common\nsubset of atoms first. The procedure for doing this was recently\ndiscussed on the mailing list; see\nhttp://archive.ambermd.org/202106/0167.html\nAlso, if possible I recommend using a more updated version of cpptraj\n(which should at least have better warnings and error checking). Hope\nthis helps,\n-Dan\nOn Sat, Jul 10, 2021 at 6:53 PM Mac Kevin Braza <mebraza.up.edu.ph> wrote:\n>\n> I am running PCA script from the tutorial here\n>\nhttps://amberhub.chpc.utah.edu/introduction-to-principal-component-analysis/\n> by Galindo-Murillo, Roe, and Cheatham. I am confused on why the error after\n> reading the concatenate trajectory says that\n>\n> \"----- muOR-trajectories (1-100000, 1) -----\n> PROJECTION: Calculating projection using eigenvectors 1 to 3 of myEvecs\n> Start: 1 Stop: Final frame\n> Atom Mask: [:972-1252&!.H*]\n> Mask [:972-1252&!.H*] corresponds to 2256 atoms.\n> 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% Error: start 100001 > #Frames\n> (100000), no frames will be processed.\n> 1 errors encountered reading input.\n> Error: Error(s) occurred during execution.\n> 100% Complete.\"\n>\n> I included here my script and the output file. Is there anything that I\n> am missing? Thank you in advance!\n>\n> Mac Kevin Braza\n>",
+      "url": "http://archive.ambermd.org/202107/0082.html",
+      "in_reply_to": 1625957585
+    }
+  ]
+}

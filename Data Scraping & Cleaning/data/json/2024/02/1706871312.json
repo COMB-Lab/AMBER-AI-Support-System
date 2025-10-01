@@ -1,0 +1,37 @@
+{
+  "thread_id": 1706871312,
+  "subject": "Re: [AMBER] QUICK QM/MM problem/bug",
+  "messages": [
+    {
+      "message_id": 1706871312,
+      "author": "Juraj Dobias",
+      "date_raw": "Fri, 2 Feb 2024 11:55:12 +0100",
+      "body": "Hi all,\nI have some updates.\nI noticed that problematic oxygens from ATP have ATOMIC_NUMBER -1 in\n.parm7 file. I don't know why, but after manually correcting them to 8,\nQM/MM seems to work properly. Does anybody know how could this happen? I\nam also wondering if it could possibly influence classical MD?\nJuraj\nOn 31. 01. 24 10:33, Juraj Dobias via AMBER wrote:\n> Dear developers and users,\n>\n> I compiled ambertools23 with QUICK support and successfully run QM/MM\n> calculation on my system. My system contains protein ATP molecule with\n> two Mg ions and druglike ligand. ATP parameters were obtained from\n> Richard Bryce site (amber.manchester.ac.uk) and ligand was\n> parametrized by openff sage2.1. I did standard MD using amber22\n> without any issues. QM/MM seems to be fine if I include ligand and Mg\n> ions in QM region, but after including ATP in QM region calculation\n> crashes with error:\n>\n> At line 184 of file\n> /home2/jurajdobias/QUICK/amber22_src/AmberTools/src/quick/src/modules/quick_sad_guess_module.f90\n> (unit = 212)\n> Fortran runtime error: Cannot open file\n> '/home2/jurajdobias/QUICK/amber22/AmberTools/src/quick/basis/DEF2-SVP.SAD/':\n> Is a directory\n>\n> From .out file it seems, that 3 oxygens on last phosphate were not\n> correctly identified as oxygens:\n>\n>   QMMM: QM Region Cartesian Coordinates (*=link atom)\n>   QMMM: QM_NO.   MM_NO.  ATOM         X         Y         Z\n>   QMMM:     1     5963      Mg       0.8115    5.9113    1.4435\n>   QMMM:     2     5964      Mg       2.7773    4.4252   -0.8689\n>   QMMM:     3     5965      ^@^@       2.0451    4.5731    5.3015\n>   QMMM:     4     5966      P        1.1880    5.4871    4.5387\n>   QMMM:     5     5967      ^@^@       1.5994    5.7518    3.1545\n>   QMMM:     6     5968      ^@^@       0.7944    6.6874    5.2830\n>\n> My explanation is that amber is searching for basis set in\n> DEF2-SVP.SAD/ directory, but for these oxygens, it is missing element\n> information, therefore it is trying to open directory.\n> I am attaching input and output files.\n>\n> Any help solving the issue would be greatly appreciated.\n>\n> Juraj\n>\n>",
+      "url": "http://archive.ambermd.org/202402/0000.html"
+    },
+    {
+      "message_id": 1706909097,
+      "author": "David A Case",
+      "date_raw": "Fri, 2 Feb 2024 14:24:57 -0700",
+      "body": "On Fri, Feb 02, 2024, Juraj Dobias via AMBER wrote:\n>\n>I noticed that problematic oxygens from ATP have ATOMIC_NUMBER -1 in\n>.parm7 file. I don't know why, but after manually correcting them to\n>8, QM/MM seems to work properly. Does anybody know how could this\n>happen? I am also wondering if it could possibly influence classical\n>MD?\nI'm not sure how the prmtop was built. But for classical MD, the atomic\nnumber is not used. You might want to double check (using parmed) that the\nmass of those oxygens in correct.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202402/0004.html",
+      "in_reply_to": 1706871312
+    },
+    {
+      "message_id": 1707122059,
+      "author": "Juraj Dobias",
+      "date_raw": "Mon, 5 Feb 2024 09:34:19 +0100",
+      "body": "Thank you for your answer. Masses for those oxygens are correct. I\nattach tleap script by which prmtop was prepared.\nJuraj\nOn 02. 02. 24 22:24, David A Case via AMBER wrote:\n> On Fri, Feb 02, 2024, Juraj Dobias via AMBER wrote:\n>>\n>> I noticed that problematic oxygens from ATP have ATOMIC_NUMBER -1 in\n>> .parm7 file. I don't know why, but after manually correcting them to\n>> 8, QM/MM seems to work properly. Does anybody know how could this\n>> happen? I am also wondering if it could possibly influence classical MD?\n>\n> I'm not sure how the prmtop was built.  But for classical MD, the atomic\n> number is not used.  You might want to double check (using parmed)\n> that the\n> mass of those oxygens in correct.\n>\n> ...good luck...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202402/0009.html",
+      "in_reply_to": 1706871312
+    },
+    {
+      "message_id": 1707150952,
+      "author": "David A Case",
+      "date_raw": "Mon, 5 Feb 2024 09:35:52 -0700",
+      "body": "On Mon, Feb 05, 2024, Juraj Dobias via AMBER wrote:\n>Thank you for your answer. Masses for those oxygens are correct. I\n>attach tleap script by which prmtop was prepared.\nThis is not enough information to really find the problem. Usually, what\nyou saw (incorrect atomic numbers) is because of a missing addAtomTypes\ncommand. Look at any of the standard leaprc files to see examples of these.\nYou will need to find the names of the atoms that have bad entries\n(presumably in the ATP.prep file), and add the corresponding addAtomTypes\ncommand.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202402/0012.html",
+      "in_reply_to": 1706871312
+    }
+  ]
+}

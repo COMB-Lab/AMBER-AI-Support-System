@@ -1,0 +1,53 @@
+{
+  "thread_id": 1581028735,
+  "subject": "On QM/MM dummy atom and deprotonated TYR",
+  "messages": [
+    {
+      "message_id": 1581028735,
+      "author": "David Sáez",
+      "date_raw": "Thu, 6 Feb 2020 19:38:55 -0300",
+      "body": "Hello everyone,\nI need a deprotonated TYR in my molecular dynamics simulation. I used\nparmed > changeProtState as suggested in many posts. It worked well for the\nMM part, but in the QM/MM section the software still \"sees\" the proton of\nTYR (I think it became a dummy atom during the MM simulations). Is there a\nway to keep it as a dummy atom?\nThanks",
+      "url": "http://archive.ambermd.org/202002/0067.html"
+    },
+    {
+      "message_id": 1581031658,
+      "author": "Clorice Reinhardt",
+      "date_raw": "Thu, 6 Feb 2020 18:27:38 -0500",
+      "body": "Hi David,\nI can't address the dummy atom question, but alternatively I just\nparameterized the tyrosine residue in the deprotonated form following the\nRESP procedure for the 20 canonical amino acids, created a lib file, and\nran MD from the get go with that. Which circumvents any issues with QM/MM\nand other simulations. I'm not sure your actual end goal here, so i can't\nsay if this is the best plan of action for you-but that's how i proceeded.\nClorice Reinhardt\nOn Thu, Feb 6, 2020 at 5:39 PM David Sáez <davidsaez.udec.\ncl> wrote:\n> Hello everyone,\n>\n> I need a deprotonated TYR in my molecular dynamics simulation. I used\n> parmed > changeProtState as suggested in many posts. It worked well for the\n> MM part, but in the QM/MM section the software still \"sees\" the proton of\n> TYR (I think it became a dummy atom during the MM simulations). Is there a\n> way to keep it as a dummy atom?\n>\n> Thanks\n>",
+      "url": "http://archive.ambermd.org/202002/0069.html",
+      "in_reply_to": 1581028735
+    },
+    {
+      "message_id": 1581043004,
+      "author": "David Sáez",
+      "date_raw": "Thu, 6 Feb 2020 23:36:44 -0300",
+      "body": "Hi Clorice,\nI think I'm going to follow your approach. It is the natural procedure in\nfact.\nIt 's just that the changeProtState command is so useful... my laziness was\nhoping it could work under a QM/MM scheme. :D\nThanks for your help!\nDavid.\nOn Thu, Feb 6, 2020 at 8:27 PM Clorice Reinhardt <clorice.reinhardt.yale.\nedu>\nwrote:\n> Hi David,\n>\n> I can't address the dummy atom question, but alternatively I just\n> parameterized the tyrosine residue in the deprotonated form following the\n> RESP procedure for the 20 canonical amino acids, created a lib file, and\n> ran MD from the get go with that. Which circumvents any issues with QM/MM\n> and other simulations. I'm not sure your actual end goal here, so i can't\n> say if this is the best plan of action for you-but that's how i proceeded.\n>\n> Clorice Reinhardt\n>\n>\n> On Thu, Feb 6, 2020 at 5:39 PM David Sáez <davidsaez.udec.\ncl> wrote:\n>\n> > Hello everyone,\n> >\n> > I need a deprotonated TYR in my molecular dynamics simulation. I used\n> > parmed > changeProtState as suggested in many posts. It worked well for\n> the\n> > MM part, but in the QM/MM section the software still \"sees\" the proton of\n> > TYR (I think it became a dummy atom during the MM simulations). Is there\n> a\n> > way to keep it as a dummy atom?\n> >\n> > Thanks\n> >",
+      "url": "http://archive.ambermd.org/202002/0070.html",
+      "in_reply_to": 1581028735
+    },
+    {
+      "message_id": 1581434909,
+      "author": "David Sáez",
+      "date_raw": "Tue, 11 Feb 2020 12:28:29 -0300",
+      "body": "Dear Clorice and Amber experts,\nIt is the first time I derive charges for a central nonnatural residue.\nAccording to the paper of Cieplak 1995, it must be capped with ACE and NME,\nand those residues have predefined charges.\nIs there a way to keep the charges of ACE and NME fixed to the predefined\nvalues during\nthe RESP fitting?\nTo the final .lib file I should only export the data regarding the central\nresidue, not ACE and NME, right?\nThanks!\nOn Thu, Feb 6, 2020 at 8:27 PM Clorice Reinhardt <clorice.reinhardt.yale.\nedu>\nwrote:\n> Hi David,\n>\n> I can't address the dummy atom question, but alternatively I just\n> parameterized the tyrosine residue in the deprotonated form following the\n> RESP procedure for the 20 canonical amino acids, created a lib file, and\n> ran MD from the get go with that. Which circumvents any issues with QM/MM\n> and other simulations. I'm not sure your actual end goal here, so i can't\n> say if this is the best plan of action for you-but that's how i proceeded.\n>\n> Clorice Reinhardt\n>\n>\n> On Thu, Feb 6, 2020 at 5:39 PM David Sáez <davidsaez.udec.cl> wrote:\n>\n> > Hello everyone,\n> >\n> > I need a deprotonated TYR in my molecular dynamics simulation. I used\n> > parmed > changeProtState as suggested in many posts. It worked well for\n> the\n> > MM part, but in the QM/MM section the software still \"sees\" the proton of\n> > TYR (I think it became a dummy atom during the MM simulations). Is there\n> a\n> > way to keep it as a dummy atom?\n> >\n> > Thanks\n> >",
+      "url": "http://archive.ambermd.org/202002/0091.html",
+      "in_reply_to": 1581028735
+    },
+    {
+      "message_id": 1581435291,
+      "author": "Clorice Reinhardt",
+      "date_raw": "Tue, 11 Feb 2020 10:34:51 -0500",
+      "body": "Hi David,\nThat's correct- you could either set them to the library values, or you can\ndo a group constraint of those blocking groups to force them to sum to 0. I\npersonally do the later option. For examples of a group restraint you can\nformat it following this tutorial:\nhttps://ambermd.org/tutorials/advanced/tutorial1/section1.htm\nHope that helps,\nClorice\nOn Tue, Feb 11, 2020 at 10:28 AM David Sáez <davidsaez.udec.\ncl> wrote:\n> Dear Clorice and Amber experts,\n>\n> It is the first time I derive charges for a central nonnatural residue.\n> According to the paper of Cieplak 1995, it must be capped with ACE and NME,\n> and those residues have predefined charges.\n>\n> Is there a way to keep the charges of ACE and NME fixed to the predefined\n> values during\n> the RESP fitting?\n>\n> To the final .lib file I should only export the data regarding the central\n> residue, not ACE and NME, right?\n>\n> Thanks!\n>\n> On Thu, Feb 6, 2020 at 8:27 PM Clorice Reinhardt <\n> clorice.reinhardt.yale.\nedu> wrote:\n>\n>> Hi David,\n>>\n>> I can't address the dummy atom question, but alternatively I just\n>> parameterized the tyrosine residue in the deprotonated form following the\n>> RESP procedure for the 20 canonical amino acids, created a lib file, and\n>> ran MD from the get go with that. Which circumvents any issues with QM/MM\n>> and other simulations. I'm not sure your actual end goal here, so i can't\n>> say if this is the best plan of action for you-but that's how i proceeded.\n>>\n>> Clorice Reinhardt\n>>\n>>\n>> On Thu, Feb 6, 2020 at 5:39 PM David Sáez <davidsaez.udec.\ncl> wrote:\n>>\n>> > Hello everyone,\n>> >\n>> > I need a deprotonated TYR in my molecular dynamics simulation. I used\n>> > parmed > changeProtState as suggested in many posts. It worked well for\n>> the\n>> > MM part, but in the QM/MM section the software still \"sees\" the proton\n>> of\n>> > TYR (I think it became a dummy atom during the MM simulations). Is\n>> there a\n>> > way to keep it as a dummy atom?\n>> >\n>> > Thanks\n>> >",
+      "url": "http://archive.ambermd.org/202002/0092.html",
+      "in_reply_to": 1581028735
+    },
+    {
+      "message_id": 1581436055,
+      "author": "Clorice Reinhardt",
+      "date_raw": "Tue, 11 Feb 2020 10:47:35 -0500",
+      "body": "David,\nFollowing up on your first point, if you do want to constrain them to\nspecific values in the libraries, then you could do that in the same\nfashion. You can build a qin file like they do in the tutorial, or list out\nthe values in your resp.in file like such:\n\"1 -0.4157\n1 7\" ...\n# where 1 is number of atoms, charge\n# molecule 1, atom 7\nClorice\nOn Tue, Feb 11, 2020 at 10:34 AM Clorice Reinhardt <\nclorice.reinhardt.yale.edu> wrote:\n> Hi David,\n> That's correct- you could either set them to the library values, or you\n> can do a group constraint of those blocking groups to force them to sum to\n> 0. I personally do the later option. For examples of a group restraint you\n> can format it following this tutorial:\n>\nhttps://ambermd.org/tutorials/advanced/tutorial1/section1.htm\n>\n> Hope that helps,\n> Clorice\n>\n>\n> On Tue, Feb 11, 2020 at 10:28 AM David Sáez <davidsaez.udec.\ncl> wrote:\n>\n>> Dear Clorice and Amber experts,\n>>\n>> It is the first time I derive charges for a central nonnatural residue.\n>> According to the paper of Cieplak 1995, it must be capped with ACE and NME,\n>> and those residues have predefined charges.\n>>\n>> Is there a way to keep the charges of ACE and NME fixed to the predefined\n>> values during\n>> the RESP fitting?\n>>\n>> To the final .lib file I should only export the data regarding the\n>> central residue, not ACE and NME, right?\n>>\n>> Thanks!\n>>\n>> On Thu, Feb 6, 2020 at 8:27 PM Clorice Reinhardt <\n>> clorice.reinhardt.yale.edu> wrote:\n>>\n>>> Hi David,\n>>>\n>>> I can't address the dummy atom question, but alternatively I just\n>>> parameterized the tyrosine residue in the deprotonated form following the\n>>> RESP procedure for the 20 canonical amino acids, created a lib file, and\n>>> ran MD from the get go with that. Which circumvents any issues with QM/MM\n>>> and other simulations. I'm not sure your actual end goal here, so i can't\n>>> say if this is the best plan of action for you-but that's how i\n>>> proceeded.\n>>>\n>>> Clorice Reinhardt\n>>>\n>>>\n>>> On Thu, Feb 6, 2020 at 5:39 PM David Sáez <davidsaez.udec.\ncl> wrote:\n>>>\n>>> > Hello everyone,\n>>> >\n>>> > I need a deprotonated TYR in my molecular dynamics simulation. I used\n>>> > parmed > changeProtState as suggested in many posts. It worked well\n>>> for the\n>>> > MM part, but in the QM/MM section the software still \"sees\" the proton\n>>> of\n>>> > TYR (I think it became a dummy atom during the MM simulations). Is\n>>> there a\n>>> > way to keep it as a dummy atom?\n>>> >\n>>> > Thanks\n>>> >",
+      "url": "http://archive.ambermd.org/202002/0093.html",
+      "in_reply_to": 1581028735
+    }
+  ]
+}

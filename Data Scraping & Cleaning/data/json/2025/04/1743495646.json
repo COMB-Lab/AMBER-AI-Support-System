@@ -1,0 +1,29 @@
+{
+  "thread_id": 1743495646,
+  "subject": "Issues building AMBER24 with CUDA 12.6",
+  "messages": [
+    {
+      "message_id": 1743495646,
+      "author": "Aravind Sankaran",
+      "date_raw": "Tue, 1 Apr 2025 10:20:46 +0200",
+      "body": "Hello,\nI'm trying to install amber24 from source at the Julich Supercomputing\nCenter. Our system uses CUDA 12.6 and GCC 13.3. The build fails after\nthrowing some errors from the PBSA module, specifically pointing to\nundefined or missing explicit type errors from the cusplibrary-cuda9.\nCould this be due to the incompatibility with the CUDA versions > 12.4?\nIf so, is there a fix for this without having to downgrade CUDA?\nOtherwise, is there someway to continue the build without the PBSA module?\nThank you in advance for your help.\n-- \nAravind Sankaran\nJuelich Supercomputing Center\nTelephone 02461 61-5159 (or the international spelling +49 2461 61-5159)\nE-mail: a.sankaran.fz-juelich.de\n---------------------------------------------------------------------------------------------\n---------------------------------------------------------------------------------------------\nForschungszentrum Jülich GmbH\n52425 Jülich\nSitz der Gesellschaft: Jülich\nEingetragen im Handelsregister des Amtsgerichts Düren Nr. HR B 3498\nVorsitzender des Aufsichtsrats: MinDir Stefan Müller\nGeschäftsführung: Prof. Dr. Astrid Lambrecht (Vorsitzende),\nDr. Stephanie Bauer (stellvertretende Vorsitzende),\nProf. Dr. Ir. Pieter Jansens, Prof. Dr. Laurens Kuipers\n---------------------------------------------------------------------------------------------\n---------------------------------------------------------------------------------------------",
+      "url": "http://archive.ambermd.org/202504/0001.html"
+    },
+    {
+      "message_id": 1743528910,
+      "author": "David A Case",
+      "date_raw": "Tue, 1 Apr 2025 11:35:10 -0600",
+      "body": "On Tue, Apr 01, 2025, Aravind Sankaran via AMBER wrote:\n>\n>I'm trying to install amber24 from source at the Julich Supercomputing\n>Center. Our system uses CUDA 12.6 and GCC 13.3. The build fails after\n>throwing some errors from the PBSA module, specifically pointing to\n>undefined or missing explicit type errors from the cusplibrary-cuda9.\n>Could this be due to the incompatibility with the CUDA versions >\n>12.4? If so, is there a fix for this without having to downgrade CUDA?\n>Otherwise, is there someway to continue the build without the PBSA\n>module?\nI think this will work: edit $AMBERHOME/AmberTools/src/pbsa/CMakeLists.txt:\nat about line 145, change \"if(CUDA)\" to \"if(FALSE)\". That should skip\nbuilding pbsa.cuda, while allowing other cuda programs to proceed.\nWe are working on getting pbsa to work with CUDA 12.6, but that is still in\nprogress. The upcoming release of AmberTools25 (due later this month) will\nhave a CMake variable that will accomplish the same task without requiring\nany hand-editing.\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202504/0005.html",
+      "in_reply_to": 1743495646
+    },
+    {
+      "message_id": 1743530053,
+      "author": "Nil Mu",
+      "date_raw": "Tue, 1 Apr 2025 17:54:13 +0000",
+      "body": "Hi Aravind,\nAmber 24 supports CUDA up to 11.4, according to the manual, and I have built it with CUDA 11.8 and GCC 11.2.0 for my HPC cluster, which passed all the tests.\nRegards,\nNil Mu\nHPC System Analyst\nResearch Computing, Research Technology Office\nArizona State University\n﻿On 4/1/25, 1:21 AM, \"Aravind Sankaran via AMBER\" <amber.ambermd.\norg <mailto:amber.ambermd.\norg>> wrote:\nHello,\nI'm trying to install amber24 from source at the Julich Supercomputing\nCenter. Our system uses CUDA 12.6 and GCC 13.3. The build fails after\nthrowing some errors from the PBSA module, specifically pointing to\nundefined or missing explicit type errors from the cusplibrary-cuda9.\nCould this be due to the incompatibility with the CUDA versions > 12.4?\nIf so, is there a fix for this without having to downgrade CUDA?\nOtherwise, is there someway to continue the build without the PBSA module?\nThank you in advance for your help.\n--\nAravind Sankaran\nJuelich Supercomputing Center\nTelephone 02461 61-5159 (or the international spelling +49 2461 61-5159)\nE-mail: a.sankaran.fz-juelich.de <mailto:a.sankaran.fz-juelich.\nde>\n---------------------------------------------------------------------------------------------\n---------------------------------------------------------------------------------------------\nForschungszentrum Jülich GmbH\n52425 Jülich\nSitz der Gesellschaft: Jülich\nEingetragen im Handelsregister des Amtsgerichts Düren Nr. HR B 3498\nVorsitzender des Aufsichtsrats: MinDir Stefan Müller\nGeschäftsführung: Prof. Dr. Astrid Lambrecht (Vorsitzende),\nDr. Stephanie Bauer (stellvertretende Vorsitzende),\nProf. Dr. Ir. Pieter Jansens, Prof. Dr. Laurens Kuipers\n---------------------------------------------------------------------------------------------\n---------------------------------------------------------------------------------------------",
+      "url": "http://archive.ambermd.org/202504/0006.html",
+      "in_reply_to": 1743495646
+    }
+  ]
+}

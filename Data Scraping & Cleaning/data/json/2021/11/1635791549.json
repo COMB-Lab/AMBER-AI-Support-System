@@ -1,0 +1,29 @@
+{
+  "thread_id": 1635791549,
+  "subject": "Restraint-like bonds using ParmEd setBond?",
+  "messages": [
+    {
+      "message_id": 1635791549,
+      "author": "Brian Radak",
+      "date_raw": "Mon, 1 Nov 2021 14:32:29 -0400",
+      "body": "My understanding is that adding new bonds with ParmEd is akin to adding new\nforce field terms such that nonbonded exclusions are updated in the\ntopology. The only difference is that a bond does not necessitate angles\nand dihedrals as in tleap (or a defined bond type). This seems to be\nverified by \"just doing it\" and checking that the energy difference is not\nin the BOND term only.\nMy question is - is there a way _not _ to update the exclusions so that the\nnew term is exactly like a harmonic restraint? This would trick the\nbookkeeping in alchemical calculations, which apply a lambda factor to\nnmropt terms.\nCheers,\nBrian",
+      "url": "http://archive.ambermd.org/202111/0005.html"
+    },
+    {
+      "message_id": 1635886329,
+      "author": "Jason Swails",
+      "date_raw": "Tue, 2 Nov 2021 16:52:09 -0400",
+      "body": "In general terms this is impossible, and that's because the PME code\ncomputes the exceptions from the lists of bonds, angles, and torsions. If\nyou used the GB code (either using a GB model or setting igb=6 to get\nvacuum electrostatics without periodic boundary conditions), then you can\nhack the exclusion list in the topology file to achieve what you want.\nI think you can do what you want if you're willing to use OpenMM (because\nyou can control the exceptions very fine-grained), but not within sander or\npmemd.\nHTH,\nJason\nOn Mon, Nov 1, 2021 at 2:32 PM Brian Radak <brian.radak.gmail.com> wrote:\n> My understanding is that adding new bonds with ParmEd is akin to adding new\n> force field terms such that nonbonded exclusions are updated in the\n> topology. The only difference is that a bond does not necessitate angles\n> and dihedrals as in tleap (or a defined bond type). This seems to be\n> verified by \"just doing it\" and checking that the energy difference is not\n> in the BOND term only.\n>\n> My question is - is there a way _not _ to update the exclusions so that the\n> new term is exactly like a harmonic restraint? This would trick the\n> bookkeeping in alchemical calculations, which apply a lambda factor to\n> nmropt terms.\n>\n> Cheers,\n> Brian\n>",
+      "url": "http://archive.ambermd.org/202111/0016.html",
+      "in_reply_to": 1635791549
+    },
+    {
+      "message_id": 1635907986,
+      "author": "Brian Radak",
+      "date_raw": "Tue, 2 Nov 2021 22:53:06 -0400",
+      "body": "Thanks for that clarification - I'll have to look into modifying the lambda\nscaling in nmropt instead then.\nOn Tue, Nov 2, 2021, 4:52 PM Jason Swails <jason.swails.gmail.com> wrote:\n> In general terms this is impossible, and that's because the PME code\n> computes the exceptions from the lists of bonds, angles, and torsions. If\n> you used the GB code (either using a GB model or setting igb=6 to get\n> vacuum electrostatics without periodic boundary conditions), then you can\n> hack the exclusion list in the topology file to achieve what you want.\n>\n> I think you can do what you want if you're willing to use OpenMM (because\n> you can control the exceptions very fine-grained), but not within sander or\n> pmemd.\n>\n> HTH,\n> Jason\n>\n> On Mon, Nov 1, 2021 at 2:32 PM Brian Radak <brian.radak.gmail.com> wrote:\n>\n> > My understanding is that adding new bonds with ParmEd is akin to adding\n> new\n> > force field terms such that nonbonded exclusions are updated in the\n> > topology. The only difference is that a bond does not necessitate angles\n> > and dihedrals as in tleap (or a defined bond type). This seems to be\n> > verified by \"just doing it\" and checking that the energy difference is\n> not\n> > in the BOND term only.\n> >\n> > My question is - is there a way _not _ to update the exclusions so that\n> the\n> > new term is exactly like a harmonic restraint? This would trick the\n> > bookkeeping in alchemical calculations, which apply a lambda factor to\n> > nmropt terms.\n> >\n> > Cheers,\n> > Brian\n> >",
+      "url": "http://archive.ambermd.org/202111/0020.html",
+      "in_reply_to": 1635791549
+    }
+  ]
+}

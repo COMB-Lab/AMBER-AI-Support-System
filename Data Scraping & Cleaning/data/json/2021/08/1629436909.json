@@ -1,0 +1,37 @@
+{
+  "thread_id": 1629436909,
+  "subject": "Grumpy GROMBER over a ZeroDivisionError",
+  "messages": [
+    {
+      "message_id": 1629436909,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Fri, 20 Aug 2021 01:21:49 -0400",
+      "body": "Dear Amber Community,\nI’m trying to use the gromber utility in ParMed, but I am getting the below error message. Can you please help me troubleshoot and resolve this issue?\ngromber ligand.top ligand.gro\nConverting Gromacs topology peridinina.top to Amber. Using topology directory [/usr/local/gromacs/share/gromacs/top]. Getting coordinates (and box) from peridinin.pdb.\nUnexpected failure:\nZeroDivisionError: float division by zero\nTraceback is\nFile \"/opt/anaconda3/envs/AmberTools20/lib/python3.9/site-packages/parmed/tools/parmed_cmd.py\", line 161, in _normaldo\naction.execute()\nFile \"/opt/anaconda3/envs/AmberTools20/lib/python3.9/site-packages/parmed/tools/actions.py\", line 4357, in execute\ntop = gromacs.GromacsTopologyFile(self.topfile,defines=self.defines)\nFile \"/opt/anaconda3/envs/AmberTools20/lib/python3.9/site-packages/parmed/gromacs/gromacstop.py\", line 251, in __init__\nself.read(fname, defines, parametrize)\nFile \"/opt/anaconda3/envs/AmberTools20/lib/python3.9/site-packages/parmed/gromacs/gromacstop.py\", line 337, in read\nself._parse_dihedrals(line, dihedral_types, proper_multiterm_dihedrals,\nFile \"/opt/anaconda3/envs/AmberTools20/lib/python3.9/site-packages/parmed/gromacs/gromacstop.py\", line 585, in _parse_dihedrals\ndih, diht = self._process_normal_dihedral(words, molecule.atoms, i,\nFile \"/opt/anaconda3/envs/AmberTools20/lib/python3.9/site-packages/parmed/gromacs/gromacstop.py\", line 883, in _process_normal_dihedral\nscee=1/self.defaults.fudgeQQ,\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202108/0128.html"
+    },
+    {
+      "message_id": 1629644812,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Sun, 22 Aug 2021 11:06:52 -0400",
+      "body": "Dear Amber Community,\nI’m trying to use the gromber utility in ParMed, but I am getting the below error message. Can you please help me troubleshoot and resolve this issue?\ngromber ligand.top ligand.gro\nConverting Gromacs topology peridinina.top to Amber. Using topology directory [/usr/local/gromacs/share/gromacs/top]. Getting coordinates (and box) from peridinin.pdb.\nUnexpected failure:\nZeroDivisionError: float division by zero\nTraceback is\nFile \"/opt/anaconda3/envs/AmberTools20/lib/python3.9/site-packages/parmed/tools/parmed_cmd.py\", line 161, in _normaldo\naction.execute()\nFile \"/opt/anaconda3/envs/AmberTools20/lib/python3.9/site-packages/parmed/tools/actions.py\", line 4357, in execute\ntop = gromacs.GromacsTopologyFile(self.topfile,defines=self.defines)\nFile \"/opt/anaconda3/envs/AmberTools20/lib/python3.9/site-packages/parmed/gromacs/gromacstop.py\", line 251, in __init__\nself.read(fname, defines, parametrize)\nFile \"/opt/anaconda3/envs/AmberTools20/lib/python3.9/site-packages/parmed/gromacs/gromacstop.py\", line 337, in read\nself._parse_dihedrals(line, dihedral_types, proper_multiterm_dihedrals,\nFile \"/opt/anaconda3/envs/AmberTools20/lib/python3.9/site-packages/parmed/gromacs/gromacstop.py\", line 585, in _parse_dihedrals\ndih, diht = self._process_normal_dihedral(words, molecule.atoms, i,\nFile \"/opt/anaconda3/envs/AmberTools20/lib/python3.9/site-packages/parmed/gromacs/gromacstop.py\", line 883, in _process_normal_dihedral\nscee=1/self.defaults.fudgeQQ,\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202108/0132.html",
+      "in_reply_to": 1629436909
+    },
+    {
+      "message_id": 1629723417,
+      "author": "David A Case",
+      "date_raw": "Mon, 23 Aug 2021 08:56:57 -0400",
+      "body": "On Sun, Aug 22, 2021, Matthew Guberman-Pfeffer wrote:\n>\n>I’m trying to use the gromber utility in ParMed, but I am getting the below\n>error message. Can you please help me troubleshoot and resolve this issue?\nI'm not sure that Jason Swails (author of parmed) follows this list. You\nmight create a issue at\nhttps://github.com/ParmEd/ParmEd/issues\n.\nYou might check your gromacs topology file to see if there is a zero in\nthe place where 1-4 electrostatic interaction parameters are set.\n...hope this helps...dac",
+      "url": "http://archive.ambermd.org/202108/0141.html",
+      "in_reply_to": 1629436909
+    },
+    {
+      "message_id": 1629911264,
+      "author": "Jason Swails",
+      "date_raw": "Wed, 25 Aug 2021 13:07:44 -0400",
+      "body": "As Dave mentioned, it looks like the 1-4 scaling term is either set to 0 or not set at all in the gromacs topology file.\nI’ll have to check if it’s the default in case none is provided or how gromacs itself handles this scenario.\nDo you know what the 1-4 scaling factors should be?\nThanks,\nJason\n--\nJason M. Swails \n> On Aug 23, 2021, at 8:57 AM, David A Case <dacase.chem.\nrutgers.edu> wrote:\n> \n> ﻿On Sun, Aug 22, 2021, Matthew Guberman-Pfeffer wrote:\n>> \n>> I’m trying to use the gromber utility in ParMed, but I am getting the below\n>> error message. Can you please help me troubleshoot and resolve this issue?\n> \n> I'm not sure that Jason Swails (author of parmed) follows this list. You\n> might create a issue at\nhttps://github.com/ParmEd/ParmEd/issues\n.\n> \n> You might check your gromacs topology file to see if there is a zero in\n> the place where 1-4 electrostatic interaction parameters are set.\n> \n> ...hope this helps...dac\n> \n> \n>",
+      "url": "http://archive.ambermd.org/202108/0152.html",
+      "in_reply_to": 1629436909
+    }
+  ]
+}

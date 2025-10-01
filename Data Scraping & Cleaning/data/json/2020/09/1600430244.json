@@ -1,0 +1,53 @@
+{
+  "thread_id": 1600430244,
+  "subject": "antechamber problem with negatively charged nitrogen",
+  "messages": [
+    {
+      "message_id": 1600430244,
+      "author": "Giorgos Lambrinidis",
+      "date_raw": "Fri, 18 Sep 2020 14:57:24 +0300",
+      "body": "Dear all\nI want to prepare oxypurinol molecule using antechamber module, which\nhas a nitrogen charged (2 single bonds). When i run\nantechamber -i 1.sdf -fi sdf -o 11.sdf -fo sdf -c bcc -nc -1\ni get the error\n/opt/AMBER/amber18/bin/to_be_dispatched/antechamber: Fatal Error!\nWeird atomic valence (2) for atom (ID: 3, Name: N1).\nPossible open valence.\nthe problems is found on the nitrogen which is charged (N-)\nThe input of my file is as follows:\n--------------------\noxypurinol_charged\n3D\nStructure written by MMmdl.\n14 15  0  0  1  0            999 V2000\n-0.6223    2.1307   -3.7849 O   0  0  0  0  0  0\n0.9471   -0.3746   -7.1353 O   0  0  0  0  0  0\n1.5647   -1.1275   -5.0608 N   0  5  0  0  0  0\n1.9602   -1.5361   -2.6636 N   0  0  0  0  0  0\n0.2446    0.7632   -5.3964 N   0  0  0  0  0  0\n1.6245   -0.9690   -1.4938 N   0  0  0  0  0  0\n1.4465   -0.8651   -3.7372 C   0  0  0  0  0  0\n0.7326    0.2059   -3.2116 C   0  0  0  0  0  0\n0.0440    1.1438   -4.0900 C   0  0  0  0  0  0\n0.8885    0.0753   -1.8242 C   0  0  0  0  0  0\n0.9542   -0.3006   -5.9088 C   0  0  0  0  0  0\n2.5306   -2.3670   -2.7215 H   0  0  0  0  0  0\n-0.1951    1.3533   -6.0866 H   0  0  0  0  0  0\n0.4704    0.7327   -1.0759 H   0  0  0  0  0  0\n1  9  2  0  0  0\n2 11  2  0  0  0\n3  7  1  0  0  0\n3 11  1  0  0  0\n4  6  1  0  0  0\n4  7  1  0  0  0\n4 12  1  0  0  0\n5  9  1  0  0  0\n5 11  1  0  0  0\n5 13  1  0  0  0\n6 10  2  0  0  0\n7  8  2  0  0  0\n8  9  1  0  0  0\n8 10  1  0  0  0\n10 14  1  0  0  0\nM  CHG  1   3  -1\nM  END\n--------------------\nAny help would be appreciated.\nRegards\nGeorge Lambrinidis\n--\n---------------------------------------------\nDr George Lambrinidis\nResearcher & Laboratory Assistant Staff\nSchool of Health Sciences\nFaculty of Pharmacy\nNational & Kapodistrian University of Athens\nGreece\ntel: +30 2107274304\n+30 2107274521\nfax: +30 2107274747\ne-mail: lambrinidis.pharm.uoa.gr\ngeolampr.gmail.com\n---------------------------------------------",
+      "url": "http://archive.ambermd.org/202009/0223.html"
+    },
+    {
+      "message_id": 1600441110,
+      "author": "David A Case",
+      "date_raw": "Fri, 18 Sep 2020 10:58:30 -0400",
+      "body": "On Fri, Sep 18, 2020, Giorgos Lambrinidis wrote:\n>\n>I want to prepare oxypurinol molecule using antechamber module, which\n>has a nitrogen charged (2 single bonds). When i run\n>\n>antechamber -i 1.sdf -fi sdf -o 11.sdf -fo sdf -c bcc -nc -1\n>\n>i get the error\n>\n>/opt/AMBER/amber18/bin/to_be_dispatched/antechamber: Fatal Error!\n>Weird atomic valence (2) for atom (ID: 3, Name: N1).\n> ������ Possible open valence.\n>\n>the problems is found on the nitrogen which is charged (N-)\nYou can try setting '-dr no' to remove the valence check, and see what\nhappens. But be sure to check the results carefully, since you will be\noutside the usual range of structures that GAFF has been built for.\nYou should also add '-at gaff2' to get more up-to-date parameters.\ncc-ing to Junmei, in case he has comments here.\n...dac",
+      "url": "http://archive.ambermd.org/202009/0229.html",
+      "in_reply_to": 1600430244
+    },
+    {
+      "message_id": 1600442982,
+      "author": "Giorgos Lambrinidis",
+      "date_raw": "Fri, 18 Sep 2020 18:29:42 +0300",
+      "body": "David\nThank you very much for the reply.\nI tried the flag -dr no. The resulting structure had wrong conectivities\nand the overall charge was 0 and 1 carbon had 5 bonds.\nHere is the structure:\n11\n-ISIS- 3D\n14 15 0 0 0 0 0 0 0 0 0\n-0.6220 2.1310 -3.7850 O 0 0 0 0 0\n0.9470 -0.3750 -7.1350 O 0 0 0 0 0\n1.5650 -1.1270 -5.0610 N 0 0 0 0 0\n1.9600 -1.5360 -2.6640 N 0 0 0 0 0\n0.2450 0.7630 -5.3960 N 0 0 0 0 0\n1.6250 -0.9690 -1.4940 N 0 0 0 0 0\n1.4460 -0.8650 -3.7370 C 0 0 0 0 0\n0.7330 0.2060 -3.2120 C 0 0 0 0 0\n0.0440 1.1440 -4.0900 C 0 0 0 0 0\n0.8880 0.0750 -1.8240 C 0 0 0 0 0\n0.9540 -0.3010 -5.9090 C 0 0 0 0 0\n2.5310 -2.3670 -2.7210 H 0 0 0 0 0\n-0.1950 1.3530 -6.0870 H 0 0 0 0 0\n0.4700 0.7330 -1.0760 H 0 0 0 0 0\n1 9 2 0 0 0\n2 11 2 0 0 0\n3 7 2 0 0 0\n3 11 1 0 0 0\n4 6 1 0 0 0\n4 7 1 0 0 0\n4 12 1 0 0 0\n5 9 1 0 0 0\n5 11 1 0 0 0\n5 13 1 0 0 0\n6 10 2 0 0 0\n7 8 1 0 0 0\n8 9 2 0 0 0\n8 10 1 0 0 0\n10 14 1 0 0 0\nM END\nGeorge\n> On Fri, Sep 18, 2020, Giorgos Lambrinidis wrote:\n>>\n>>I want to prepare oxypurinol molecule using antechamber module, which\n>>has a nitrogen charged (2 single bonds). When i run\n>>\n>>antechamber -i 1.sdf -fi sdf -o 11.sdf -fo sdf -c bcc -nc -1\n>>\n>>i get the error\n>>\n>>/opt/AMBER/amber18/bin/to_be_dispatched/antechamber: Fatal Error!\n>>Weird atomic valence (2) for atom (ID: 3, Name: N1).\n>>        Possible open valence.\n>>\n>>the problems is found on the nitrogen which is charged (N-)\n>\n> You can try setting '-dr no' to remove the valence check, and see what\n> happens. But be sure to check the results carefully, since you will be\n> outside the usual range of structures that GAFF has been built for.\n> You should also add '-at gaff2' to get more up-to-date parameters.\n>\n> cc-ing to Junmei, in case he has comments here.\n>\n> ...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202009/0231.html",
+      "in_reply_to": 1600430244
+    },
+    {
+      "message_id": 1600612745,
+      "author": "David A Case",
+      "date_raw": "Sun, 20 Sep 2020 10:39:05 -0400",
+      "body": "On Fri, Sep 18, 2020, Giorgos Lambrinidis wrote:\n>I tried the flag -dr no. The resulting structure had wrong conectivities\n>and the overall charge was 0 and 1 carbon had 5 bonds.\nI can't reproduce this. I used your file as input, and did this:\nantechamber -i 1.sdf -fi sdf -o 11.mol2 -fo mol2 -c bcc -nc -1 -dr no\nI used mol2 output since I'm more familiar with that file format.\nThe result is attached. The charges add up to -1; you can check your\nsqm.in and sqm.out file to get more info about charges. I don't see any\ncarbon atoms that have five bonds -- which carbon is it for you?\n....dac",
+      "url": "http://archive.ambermd.org/202009/0258.html",
+      "in_reply_to": 1600430244
+    },
+    {
+      "message_id": 1600675621,
+      "author": "Giorgos Lambrinidis",
+      "date_raw": "Mon, 21 Sep 2020 11:07:01 +0300",
+      "body": "Dac,\nThank you for your reply. Regarding our knowledge Nitrogen 3 must have 2\nsingle bonds in order to carry the negative charge. O1 and O2 must have\ndouble bond with carbon 11 and carbon9 respecively.\nThe structure generated has single bond between Carbon9 and Oxygen1\nsuggesting negative charge to the oxygen1 instead of nitrogen3. If this is\ncorrect i have to check it again. The question is why antechamber changed\nthe ionization from nitrogen to oxygen? I shall check the literature and i\nshall come back later.\nGeorge\n> On Fri, Sep 18, 2020, Giorgos Lambrinidis wrote:\n>\n>>I tried the flag -dr no. The resulting structure had wrong conectivities\n>>and the overall charge was 0 and 1 carbon had 5 bonds.\n>\n> I can't reproduce this. I used your file as input, and did this:\n>\n> antechamber -i 1.sdf -fi sdf -o 11.mol2 -fo mol2 -c bcc -nc -1 -dr no\n>\n> I used mol2 output since I'm more familiar with that file format.\n>\n> The result is attached. The charges add up to -1; you can check your\n> sqm.in and sqm.out file to get more info about charges. I don't see any\n> carbon atoms that have five bonds -- which carbon is it for you?\n>\n> ....dac\n>\n>",
+      "url": "http://archive.ambermd.org/202009/0261.html",
+      "in_reply_to": 1600430244
+    },
+    {
+      "message_id": 1600690829,
+      "author": "David A Case",
+      "date_raw": "Mon, 21 Sep 2020 08:20:29 -0400",
+      "body": "On Mon, Sep 21, 2020, Giorgos Lambrinidis wrote:\n>\n>Thank you for your reply. Regarding our knowledge Nitrogen 3 must have 2\n>single bonds in order to carry the negative charge. O1 and O2 must have\n>double bond with carbon 11 and carbon9 respecively.\n>\n>The structure generated has single bond between Carbon9 and Oxygen1\n>suggesting negative charge to the oxygen1 instead of nitrogen3. If this is\n>correct i have to check it again. The question is why antechamber changed\n>the ionization from nitrogen to oxygen? I shall check the literature and i\n>shall come back later.\nJust remember three things: first, antechamber is making suggestions, and\nthey may not always be correct; some things have to be assigned by hand.\nSecond, the charges come largely from the quantum calculations, so are\nindependent of what antechamber thinks the valencies are; (you might want\nto use RESP charges to get complete independence). Third, Amber\nmakes no use of bond orders, so there may be occasional problems there that\ndon't get noticed.\nYou can check the extent to which the structure and vibrational\nfrequencies predicted by GAFF2 match those from quantum mechanics. Might\nbe interesting to see what the open force field initiative's \"parsley\"\nforce field gives for this molecule.\n...good luck....dac",
+      "url": "http://archive.ambermd.org/202009/0265.html",
+      "in_reply_to": 1600430244
+    }
+  ]
+}

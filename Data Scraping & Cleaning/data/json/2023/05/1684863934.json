@@ -1,0 +1,37 @@
+{
+  "thread_id": 1684863934,
+  "subject": "Specifications of the QMMM coupling scheme in sander module?",
+  "messages": [
+    {
+      "message_id": 1684863934,
+      "author": "Alan Chien",
+      "date_raw": "Tue, 23 May 2023 13:45:34 -0400",
+      "body": "Hello all,\nI'm trying to determine the details of the QMMM coupling scheme used in the\nsander module when doing semi-empirical (PM6, AM1, etc) calculations.\nSpecifically, the manual doesn't detail the form of h_core in equation\n10.3.\nIs there a paper that details the implementation?\nAlan Chien | Senior Scientist II\n*he/him/his*\n[image: Schrödinger, Inc.] <https://schrodinger.com/>",
+      "url": "http://archive.ambermd.org/202305/0099.html"
+    },
+    {
+      "message_id": 1684928574,
+      "author": "David A Case",
+      "date_raw": "Wed, 24 May 2023 07:42:54 -0400",
+      "body": "On Tue, May 23, 2023, Alan Chien via AMBER wrote:\n>\n>I'm trying to determine the details of the QMMM coupling scheme used in the\n>sander module when doing semi-empirical (PM6, AM1, etc) calculations.\n>Specifically, the manual doesn't detail the form of h_core in equation\n>10.3.\nh_core is determined by the QM method itself, since the gas-phase results\nfor each method match those published by the original authors.\nI'm not sure what paper you are referring to here. The most detailed\ndescription of what is in Amber is here: Walker, Crowley, Case, J. Comput.\nChem. 29:1019 (2008). But it doesn't have any Eq. 10.3\nI'm not expert on semi-empirical QM, but I would have thought that h_core is\njust a point charge, placed at the atomic nucleus, with a charge of Z-Ncore,\nwhere Ncore is the number of core electrons.\n....hope this helps....dac",
+      "url": "http://archive.ambermd.org/202305/0105.html",
+      "in_reply_to": 1684863934
+    },
+    {
+      "message_id": 1684935893,
+      "author": "David A Case",
+      "date_raw": "Wed, 24 May 2023 09:44:53 -0400",
+      "body": ">On Tue, May 23, 2023, Alan Chien via AMBER wrote:\n>\n>I'm trying to determine the details of the QMMM coupling scheme used in the\n>sander module when doing semi-empirical (PM6, AM1, etc) calculations.\n>Specifically, the manual doesn't detail the form of h_core in equation\n>10.3.\nSorry: I didn't read your email carefully enough, and answered too soon.\nYou did make clear that you were looking at Eq. 10.3 in the Reference\nManual.\nI think h_core in Eq. 10.3 is just 1/r_qm. That is, one just has the\nCoulomb interaction between Q_m, the charge on MM atom \"m\", and Z_q, which\nis the nuclear charge minus the core charge on QM atom \"q\".\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202305/0109.html",
+      "in_reply_to": 1684863934
+    },
+    {
+      "message_id": 1684949287,
+      "author": "Alan Chien",
+      "date_raw": "Wed, 24 May 2023 13:28:07 -0400",
+      "body": "Thanks for the source David! I'll take a look through it.\nI'm no expert either in seQM/MM either, but as I understand it, because\nAM1/PM3/etc make heavy use of MNDO/NDDO/etc approximations, one again needs\nto adjust the integrals involved in the hcore term for seQM/MM. See for\ninstance the paper here (\nhttps://onlinelibrary.wiley.com/doi/10.1002/jcc.540110605\n) and the\ndiscussion around Eq 10-14.\nI'm unclear if this is the main way seQM/MM couplings are computed or if\nthere are other popular schemes. For instance, MOPAC uses a different\nscheme (\nhttp://openmopac.net/manual/QMMM.html\n), with the paper detailing\nthis implementation here (\nhttps://onlinelibrary.wiley.com/doi/abs/10.1002/jcc.540130212\n- see\ndiscussion for eqs 1-5).\nSo my question could be re-phrased as: Do you know if AMBER's sander\nfollows either of the above schemes or perhaps just uses a canonical seQM\n1/r_qm evaluation for h_core?\nAlan Chien | Senior Scientist II\n*he/him/his*\n[image: Schrödinger, Inc.] <https://schrodinger.com/>\nOn Wed, May 24, 2023 at 9:46 AM David A Case via AMBER <amber.ambermd.\norg>\nwrote:\n> >On Tue, May 23, 2023, Alan Chien via AMBER wrote:\n> >\n> >I'm trying to determine the details of the QMMM coupling scheme used in\n> the\n> >sander module when doing semi-empirical (PM6, AM1, etc) calculations.\n> >Specifically, the manual doesn't detail the form of h_core in equation\n> >10.3.\n>\n> Sorry: I didn't read your email carefully enough, and answered too soon.\n> You did make clear that you were looking at Eq. 10.3 in the Reference\n> Manual.\n>\n> I think h_core in Eq. 10.3 is just 1/r_qm. That is, one just has the\n> Coulomb interaction between Q_m, the charge on MM atom \"m\", and Z_q, which\n> is the nuclear charge minus the core charge on QM atom \"q\".\n>\n> ...hope this helps....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202305/0110.html",
+      "in_reply_to": 1684863934
+    }
+  ]
+}

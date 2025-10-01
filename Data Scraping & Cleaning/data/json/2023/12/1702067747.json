@@ -1,0 +1,21 @@
+{
+  "thread_id": 1702067747,
+  "subject": ": QMMM error - odd number of electrons",
+  "messages": [
+    {
+      "message_id": 1702067747,
+      "author": "Yang, Li-Yen",
+      "date_raw": "Fri, 8 Dec 2023 20:35:47 +0000",
+      "body": "Hello,\nI am trying to use antechamber to create a mol2 file for my ligand.\nI first used the reduce command to reduce my ligand and produced a file lipid_dipal_h.pdb.\nWhen I ran:\nantechamber -i lipid_dipal_h.pdb -fi pdb -o lipid_dipal .mol2 -fo mol2 -c bcc -s 2 -nc 0\nsqm.out gives me a similar error:\nQMMM: System specified with odd number of electrons ( 453)\nQMMM: but odd spin ( 1). You most likely have the charge of\nQMMM: QM region (qmcharge) set incorrectly. Correct error and re-run calculation.\nI checked lipid_dipal_h.pdb in Pymol, but I can�t find anything wrong with it.\nIt seems like all the hydrogens are added properly. I couldn�t figure out why this is not working for antechamber.\nI�m attaching the file lipid_dipal_h.pdb.\nDoes anyone know how to solve this problem?\nI tried looking up similar errors online, and I saw that it might be resulting from the incorrect specification of the charge (-nc).\nHowever, I�m pretty sure the charge of this ligand is 0, and I�ve verified that using the �charge� command in tleap.\nAny suggestions are greatly appreciated!\nBest,\nZoey",
+      "url": "http://archive.ambermd.org/202312/0064.html"
+    },
+    {
+      "message_id": 1702076825,
+      "author": "David A Case",
+      "date_raw": "Fri, 8 Dec 2023 16:07:05 -0700",
+      "body": "On Fri, Dec 08, 2023, Yang, Li-Yen via AMBER wrote:\n>antechamber -i lipid_dipal_h.pdb -fi pdb -o lipid_dipal .mol2 -fo mol2 -c bcc -s 2 -nc 0\n>\n>sqm.out gives me a similar error:\n>QMMM: System specified with odd number of electrons ( 453)\nLooks to me like you input molecule should have a -1 charge because of the\nphospho-diester group. But you have told antechamber that the net charge\n(-nc) is zero, which implied an odd number of electrons.\n>However, I’m pretty sure the charge of this ligand is 0, and I’ve\n>verified that using the “charge” command in tleap.\nIt's hard to understand how tleap could know about the charge of your unit\nif antechamber failed to create the proper library files.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202312/0065.html",
+      "in_reply_to": 1702067747
+    }
+  ]
+}

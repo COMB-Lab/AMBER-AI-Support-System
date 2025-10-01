@@ -1,0 +1,37 @@
+{
+  "thread_id": 1687754137,
+  "subject": "cpptraj and nastruct",
+  "messages": [
+    {
+      "message_id": 1687754137,
+      "author": "Jing Qu",
+      "date_raw": "Mon, 26 Jun 2023 00:35:37 -0400",
+      "body": "Dear all,\nI'm using CPPTRAJ to analyze simulations of parallel strand DNA and want to\nget step parameters via nastruct. Does anyone know how nastruct identify\nthe molecule as parallel strands? If I write \"guessbp bptype para\" in the\nnastruct command, the program will simply get stuck and look as if it is\nnot continuing to run at all. If I just write \"guessbp\", it would seem to\ntreat the molecule as anti-parallel. What is the correct way to do that?\nThanks in advance,\nJing",
+      "url": "http://archive.ambermd.org/202306/0111.html"
+    },
+    {
+      "message_id": 1687783900,
+      "author": "Daniel Roe",
+      "date_raw": "Mon, 26 Jun 2023 08:51:40 -0400",
+      "body": "Hi,\nWhat version of cpptraj are you using? If it's before version 6.18.0\nyou should upgrade - base pair detection has been greatly improved\nsince then (see\nhttps://github.com/Amber-MD/cpptraj/pull/1018\n).\n-Dan\nOn Mon, Jun 26, 2023 at 12:36 AM Jing Qu via AMBER <amber.ambermd.\norg> wrote:\n>\n> Dear all,\n>\n> I'm using CPPTRAJ to analyze simulations of parallel strand DNA and want to\n> get step parameters via nastruct. Does anyone know how nastruct identify\n> the molecule as parallel strands? If I write \"guessbp bptype para\" in the\n> nastruct command, the program will simply get stuck and look as if it is\n> not continuing to run at all. If I just write \"guessbp\", it would seem to\n> treat the molecule as anti-parallel. What is the correct way to do that?\n>\n> Thanks in advance,\n> Jing\n>",
+      "url": "http://archive.ambermd.org/202306/0116.html",
+      "in_reply_to": 1687754137
+    },
+    {
+      "message_id": 1688043512,
+      "author": "Daniel Roe",
+      "date_raw": "Thu, 29 Jun 2023 08:58:32 -0400",
+      "body": "Your best bet is to install the GitHub version:\nhttps://github.com/Amber-MD/cpptraj\nYou can also install AmberTools 23, which has an updated version of\ncpptraj: https://ambermd.org/GetAmber.php#ambertools\n-Dan\nOn Mon, Jun 26, 2023 at 11:57 PM Jing Qu <jqu2.ncsu.\nedu> wrote:\n>\n> Hi,\n>\n> On one computer the version is V18.01, another one is V5.1.0. Neither one is okay, is it? By the way, how to upgrade the cpptraj?\n>\n> Thanks,\n> Jing\n>\n> On Mon, Jun 26, 2023 at 8:51 AM Daniel Roe <daniel.r.roe.gmail.\ncom> wrote:\n>>\n>> Hi,\n>>\n>> What version of cpptraj are you using? If it's before version 6.18.0\n>> you should upgrade - base pair detection has been greatly improved\n>> since then (see\nhttps://github.com/Amber-MD/cpptraj/pull/1018\n).\n>>\n>> -Dan\n>>\n>> On Mon, Jun 26, 2023 at 12:36 AM Jing Qu via AMBER <amber.ambermd.\norg> wrote:\n>> >\n>> > Dear all,\n>> >\n>> > I'm using CPPTRAJ to analyze simulations of parallel strand DNA and want to\n>> > get step parameters via nastruct. Does anyone know how nastruct identify\n>> > the molecule as parallel strands? If I write \"guessbp bptype para\" in the\n>> > nastruct command, the program will simply get stuck and look as if it is\n>> > not continuing to run at all. If I just write \"guessbp\", it would seem to\n>> > treat the molecule as anti-parallel. What is the correct way to do that?\n>> >\n>> > Thanks in advance,\n>> > Jing\n>> >",
+      "url": "http://archive.ambermd.org/202306/0145.html",
+      "in_reply_to": 1687754137
+    },
+    {
+      "message_id": 1688149692,
+      "author": "Daniel Roe",
+      "date_raw": "Fri, 30 Jun 2023 14:28:12 -0400",
+      "body": "Hi,\nYou only need HIP if you want to run cpptraj on AMD GPUs (just like\nyou only need CUDA if you want to run on NVIDIA GPUs). Really the\n\"core\" of what you need is NetCDF and BLAS/LAPACK (and maybe FFTW if\nyou want the PME functionality).\n'./configure --buildlibs gnu && make install' should be able to\nprovide a functioning executable for you with (hopefully) minimal\nfuss.\nGood luck,\n-Dan\nOn Fri, Jun 30, 2023 at 1:13 PM Jing Qu <jqu2.ncsu.\nedu> wrote:\n>\n> Hi,\n>\n> Thank you all for answering my questions. There's one more question about installing. In the GitHub it says for full functionality, CPPTRAJ makes use of a list of libraries. One is HIP. How to get and install it if my system doesn't have it?\n>\n> Best,\n> Jing\n>\n> On Thu, Jun 29, 2023 at 8:58 AM Daniel Roe <daniel.r.roe.gmail.\ncom> wrote:\n>>\n>> Your best bet is to install the GitHub version:\n>>\nhttps://github.com/Amber-MD/cpptraj\n>>\n>> You can also install AmberTools 23, which has an updated version of\n>> cpptraj: https://ambermd.org/GetAmber.php#ambertools\n>>\n>> -Dan\n>>\n>> On Mon, Jun 26, 2023 at 11:57 PM Jing Qu <jqu2.ncsu.\nedu> wrote:\n>> >\n>> > Hi,\n>> >\n>> > On one computer the version is V18.01, another one is V5.1.0. Neither one is okay, is it? By the way, how to upgrade the cpptraj?\n>> >\n>> > Thanks,\n>> > Jing\n>> >\n>> > On Mon, Jun 26, 2023 at 8:51 AM Daniel Roe <daniel.r.roe.gmail.\ncom> wrote:\n>> >>\n>> >> Hi,\n>> >>\n>> >> What version of cpptraj are you using? If it's before version 6.18.0\n>> >> you should upgrade - base pair detection has been greatly improved\n>> >> since then (see\nhttps://github.com/Amber-MD/cpptraj/pull/1018\n).\n>> >>\n>> >> -Dan\n>> >>\n>> >> On Mon, Jun 26, 2023 at 12:36 AM Jing Qu via AMBER <amber.ambermd.\norg> wrote:\n>> >> >\n>> >> > Dear all,\n>> >> >\n>> >> > I'm using CPPTRAJ to analyze simulations of parallel strand DNA and want to\n>> >> > get step parameters via nastruct. Does anyone know how nastruct identify\n>> >> > the molecule as parallel strands? If I write \"guessbp bptype para\" in the\n>> >> > nastruct command, the program will simply get stuck and look as if it is\n>> >> > not continuing to run at all. If I just write \"guessbp\", it would seem to\n>> >> > treat the molecule as anti-parallel. What is the correct way to do that?\n>> >> >\n>> >> > Thanks in advance,\n>> >> > Jing\n>> >> >",
+      "url": "http://archive.ambermd.org/202306/0150.html",
+      "in_reply_to": 1687754137
+    }
+  ]
+}

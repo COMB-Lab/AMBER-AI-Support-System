@@ -1,0 +1,29 @@
+{
+  "thread_id": 1601364332,
+  "subject": "REMD Trajectory Processing",
+  "messages": [
+    {
+      "message_id": 1601364332,
+      "author": "Aravind R",
+      "date_raw": "Tue, 29 Sep 2020 12:55:32 +0530",
+      "body": "Dear Amberites,\nTo understand the folding pathway of protein of interest, I performed REMD\nsimulation as mentioned in\nhttps://pubs.acs.org/doi/abs/10.1021/ja5032776\n.\nI did this as 3 * 10 us simulations each starting from the last as per\nsuggestions from Jason in archive.ambermd.org/201403/0529.html.\nNow, to get a Replica trajectory and temperature trajectory for the entire\nsimulation, can I concatenate the trajectories from the 3 simulations using\ntrajin and trajout like the following?\nparm Sys_Prep/d1.prmtop\ntrajin Prod_0us-10us/remd.mdcrd.001\ntrajin Prod_10us-20us/remd.mdcrd.001\ntrajin Prod_20us-30us/remd.mdcrd.001\ntrajout Analysis/remd.mdcrd.001\nI ask this because REMD trajectories are bit different from the usual amber\ntrajectories and therefore does it make sense to do so. Can I do this for\nall the replicas before I continue with the analysis? If not, how should I\nproceed?\nRegards,\nAravind R",
+      "url": "http://archive.ambermd.org/202009/0367.html"
+    },
+    {
+      "message_id": 1601379764,
+      "author": "Daniel Roe",
+      "date_raw": "Tue, 29 Sep 2020 07:42:44 -0400",
+      "body": "Hi,\nTo extract frames at a specific temperature you need to add the ‘remdtraj’\nand ‘remdtrajtemp <T>’ keywords to the ‘trajin’ commands. See the manual\nfor full details - there is a whole subsection on REMD trajectory\nprocessing I think.\n-Dan\nOn Tue, Sep 29, 2020 at 3:27 AM Aravind R <aravindspg27.gmail.\ncom> wrote:\n> Dear Amberites,\n>\n> To understand the folding pathway of protein of interest, I performed REMD\n>\n> simulation as mentioned in\nhttps://pubs.acs.org/doi/abs/10.1021/ja5032776\n.\n>\n> I did this as 3 * 10 us simulations each starting from the last as per\n>\n> suggestions from Jason in archive.ambermd.org/201403/0529.html.\n>\n> Now, to get a Replica trajectory and temperature trajectory for the entire\n>\n> simulation, can I concatenate the trajectories from the 3 simulations using\n>\n> trajin and trajout like the following?\n>\n>\n>\n> parm Sys_Prep/d1.prmtop\n>\n> trajin Prod_0us-10us/remd.mdcrd.001\n>\n> trajin Prod_10us-20us/remd.mdcrd.001\n>\n> trajin Prod_20us-30us/remd.mdcrd.001\n>\n> trajout Analysis/remd.mdcrd.001\n>\n>\n>\n> I ask this because REMD trajectories are bit different from the usual amber\n>\n> trajectories and therefore does it make sense to do so. Can I do this for\n>\n> all the replicas before I continue with the analysis? If not, how should I\n>\n> proceed?\n>\n>\n>\n> Regards,\n>\n> Aravind R\n>\n>",
+      "url": "http://archive.ambermd.org/202009/0376.html",
+      "in_reply_to": 1601364332
+    },
+    {
+      "message_id": 1601385499,
+      "author": "Carlos Simmerling",
+      "date_raw": "Tue, 29 Sep 2020 09:18:19 -0400",
+      "body": "yes this will give you replica trajectories, which you would want to\nanalyze for continuous properties such as pathway. Follow Dan Roe's advice\nto obtain temperature-specific data (which is discontinuous in cartesian\nspace but can be used to evaluate thermodynamic or ensemble properties).\nNote that the \"pathway\" data will be discontinuous in temperature and\ntherefore should be interpreted with caution.\nOn Tue, Sep 29, 2020 at 3:27 AM Aravind R <aravindspg27.gmail.com> wrote:\n> Dear Amberites,\n> To understand the folding pathway of protein of interest, I performed REMD\n> simulation as mentioned in\nhttps://pubs.acs.org/doi/abs/10.1021/ja5032776\n.\n> I did this as 3 * 10 us simulations each starting from the last as per\n> suggestions from Jason in archive.ambermd.org/201403/0529.html.\n> Now, to get a Replica trajectory and temperature trajectory for the entire\n> simulation, can I concatenate the trajectories from the 3 simulations using\n> trajin and trajout like the following?\n>\n> parm Sys_Prep/d1.prmtop\n> trajin Prod_0us-10us/remd.mdcrd.001\n> trajin Prod_10us-20us/remd.mdcrd.001\n> trajin Prod_20us-30us/remd.mdcrd.001\n> trajout Analysis/remd.mdcrd.001\n>\n> I ask this because REMD trajectories are bit different from the usual amber\n> trajectories and therefore does it make sense to do so. Can I do this for\n> all the replicas before I continue with the analysis? If not, how should I\n> proceed?\n>\n> Regards,\n> Aravind R\n>",
+      "url": "http://archive.ambermd.org/202009/0382.html",
+      "in_reply_to": 1601364332
+    }
+  ]
+}

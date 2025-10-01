@@ -1,0 +1,13 @@
+{
+  "thread_id": 1680543737,
+  "subject": "p5 to C.3 conversion in ATOMTYPE_CHECK.TAB",
+  "messages": [
+    {
+      "message_id": 1680543737,
+      "author": "Christopher Corbo",
+      "date_raw": "Mon, 3 Apr 2023 13:42:17 -0400",
+      "body": "Hello,\nWhile converting parm and crd files with Amber atom types into sybyl mol2,\na \"p5\" atom (present in small organic molecule phosphates) is converted to\n\"C.3\" in the mol2.\nThis conversion is happening in the program ambpdb, but it appears the\nformer top2mol2 program also results in the same.\nI was able to trace this down to a definition in:\n~dat/antechamber/ATOMTYPE_CHECK.TAB\nWhere p5 is mapped to C.3. All other phosphorus atom types are defined as\nP.3. This also seems to be in conflict with this other file:\n~dat/antechamber/CORR_NAME_TYPE.DAT\nWhere p5 seems to be defined as P.3 as far as I can tell.\nWhen I change the definition in ATOMTYPE_CHECK.TAB to p5 P.3 I get the\nexpected outcome when converting the mol2, so this is definitely the file\nambpdb is reading in.\nThis same set of definitions is present in Amber16 to Amber22. I am\nwondering if this is a mistake, or is there a reason for this? Thank you.\nRegards,\n-- \nChristopher Corbo\nPh.D. Student\nDepartment of Biochemistry and Structural Biology\nMember of the Rizzo Lab\nStony Brook University",
+      "url": "http://archive.ambermd.org/202304/0005.html"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "thread_id": 1628053181,
+  "subject": "Amber parmeters for ACE-CYX bond",
+  "messages": [
+    {
+      "message_id": 1628053181,
+      "author": "Ali Kusay",
+      "date_raw": "Wed, 4 Aug 2021 04:59:41 +0000",
+      "body": "Hello,\nI would like some help parameterising this peptide fragment (\nhttps://imgur.com/LumK7Wh\n). This features an unusual bond between the CH3 atom of ACE and sulphur atom in cysteine, I could not find previous forums with advice on this.\nI know that I can use the bond command in tleap to bond ACE-CH3 and S-CYX, but there in an extra hydrogen from ACE-CH3 that needs to be removed for this to work. I think that I also need to reassign partial charges for the ACE-CYX residues?\nCould anyone please provide some advice on what to do to achieve this?\nCheers,\nAli Kusay",
+      "url": "http://archive.ambermd.org/202108/0017.html"
+    },
+    {
+      "message_id": 1628165940,
+      "author": "Carlos Simmerling",
+      "date_raw": "Thu, 5 Aug 2021 08:19:00 -0400",
+      "body": "you probably would want to create a new residue that corresponds to the\nmodified ACE without one hydrogen. WHen you fit parameters for it (such as\npartial charges), it's probably best to choose a model compound that has a\nsulfur attached to the carbon, or perhaps an attached CYX depending on your\nresources. the bond itself could be added in leap as one would do with a\ndisulfide.\nWe did a similar procedure for a cofactor bound to a CYX using GAFF and\nantechamber, and the methods description might serve as an example:\nhttps://pubs.acs.org/doi/full/10.1021/acschembio.0c00543\nOn Wed, Aug 4, 2021 at 1:00 AM Ali Kusay <Ali.Kusay.anu.edu.au> wrote:\n> Hello,\n>\n> I would like some help parameterising this peptide fragment (\n>\nhttps://imgur.com/LumK7Wh\n). This features an unusual bond between the CH3\n> atom of ACE and sulphur atom in cysteine, I could not find previous forums\n> with advice on this.\n>\n> I know that I can use the bond command in tleap to bond ACE-CH3 and S-CYX,\n> but there in an extra hydrogen from ACE-CH3 that needs to be removed for\n> this to work. I think that I also need to reassign partial charges for the\n> ACE-CYX residues?\n>\n> Could anyone please provide some advice on what to do to achieve this?\n>\n> Cheers,\n>\n> Ali Kusay\n>\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202108/0031.html",
+      "in_reply_to": 1628053181
+    },
+    {
+      "message_id": 1629715803,
+      "author": "Ali Saad Kusay",
+      "date_raw": "Mon, 23 Aug 2021 10:50:03 +0000",
+      "body": "Hi Carlos,\nThanks very much for this, rarely does this level of detail make into publications\nI did eventually make a prmtop file by using a custom ACE residue with one less hydrogen and bonding it to CYX through the sulphur atom. I generated an angle from the GAFF2 library and between ACE: C-CT|-|S :CYX which is missing from the protein forcefield.\nThe issue was that the dihedrals across the ACE-CYX interface looked weird and this was not helped by simply generating these particular dihedrals using GAFF2. The angles in question are ACE: N-C-C|-|S :CYX and ACE: C-C|-|S-C :CYX and when I compared the ones produced by Antechamber and a QM dihedral scan, there was significant difference between them.\nWhat I ended up doing is using the Lipargen server to generate OPLS parameters, for C-S-C-C it identified that this is similar to the methionine side chain and for N-C-C-S, that it is similar to this series of atoms in cysteine and assigned dihedrals accordingly.\nThis was a good learning experience for me so thanks again for your help\nCheers,\nAli Kusay\n﻿On 5/8/21, 10:22 pm, \"Carlos Simmerling\" <carlos.simmerling.gmail.\ncom> wrote:\nyou probably would want to create a new residue that corresponds to the\nmodified ACE without one hydrogen. WHen you fit parameters for it (such as\npartial charges), it's probably best to choose a model compound that has a\nsulfur attached to the carbon, or perhaps an attached CYX depending on your\nresources. the bond itself could be added in leap as one would do with a\ndisulfide.\nWe did a similar procedure for a cofactor bound to a CYX using GAFF and\nantechamber, and the methods description might serve as an example:\nhttps://pubs.acs.org/doi/full/10.1021/acschembio.0c00543\nOn Wed, Aug 4, 2021 at 1:00 AM Ali Kusay <Ali.Kusay.anu.\nedu.au> wrote:\n> Hello,\n>\n> I would like some help parameterising this peptide fragment (\n>\nhttps://imgur.com/LumK7Wh\n). This features an unusual bond between the CH3\n> atom of ACE and sulphur atom in cysteine, I could not find previous forums\n> with advice on this.\n>\n> I know that I can use the bond command in tleap to bond ACE-CH3 and S-CYX,\n> but there in an extra hydrogen from ACE-CH3 that needs to be removed for\n> this to work. I think that I also need to reassign partial charges for the\n> ACE-CYX residues?\n>\n> Could anyone please provide some advice on what to do to achieve this?\n>\n> Cheers,\n>\n> Ali Kusay\n>\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202108/0140.html",
+      "in_reply_to": 1628053181
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "thread_id": 1613693892,
+  "subject": "Making sense of tip3p.frcmod",
+  "messages": [
+    {
+      "message_id": 1613693892,
+      "author": "Paul, Austin",
+      "date_raw": "Fri, 19 Feb 2021 00:18:12 +0000",
+      "body": "Hello,\nI am trying to wrap my head around the parameters in Amber's tip3p.frcmod file.\nWith the help of this tutorial (\nhttps://www.mpikg.mpg.de/6106699/Tutorial_ModifyingAmber_ff14SB_parameters_v07_AVV.pdf\n) and the frcmod file format specs (\nhttps://ambermd.org/FileFormats.php\n), I believe I have worked out how most of the parameters come into play, but I am left with a couple lingering questions:\nBOND\nOW-HW 553.0 0.9572 TIP3P water\nHW-HW 553.0 1.5136 TIP3P water\nMost TIP3P descriptions provide an O-H bond length (9.572A) and an angle (104.52deg). I've deduced that the H-H bond length here (1.5136A) can be calculated from those values via law of cosines. However, I am still perplexed as to the value of 553. The frcmod spec states that this is the harmonic force constant, in units of kcal/mol/(A**2). Yet, TIP3P is a rigid model, so are these values even relevant? Where did this specific value come from? Would changing it be significant? What would happen if someone ran a simulation without using the SETTLE algorithm to keep the water rigid?\nThank you,\nAustin Paul\nSoftware Engineer\nWyss Institute\nHarvard University",
+      "url": "http://archive.ambermd.org/202102/0159.html"
+    },
+    {
+      "message_id": 1613701479,
+      "author": "David A Case",
+      "date_raw": "Thu, 18 Feb 2021 21:24:39 -0500",
+      "body": "On Fri, Feb 19, 2021, Paul, Austin wrote:\n>\n>BOND\n>OW-HW 553.0 0.9572 TIP3P water\n>HW-HW 553.0 1.5136 TIP3P water\n>\n>Yet, TIP3P is a rigid model, so are these values even relevant?\nYou are correct: the force constants are not relevant for a rigid water.\nIf you want to use tip3p, you should always ask for SHAKE (ntc=2), which\nactually becomes SETTLE for water.\nSometimes, one wants to minimize a conformation with TIP3P waters using\nan algorithm that is not compatible with SHAKE/SETTLE. The the force\nconstants above keep the molecule \"pretty\" rigid. It's not longer really\nTIP3P, but is often close enough for such purposes.\n>What would happen if someone ran a simulation without using the SETTLE\n>algorithm to keep the water rigid?\nI don't know the answer here. It's probably been done by accident,\npresumably even by me, but I don't have any real recollection. Things\nwould look obviously bad if one used a usual time step of 2 to 4 fs, since\na non-rigid water simulation would need a very short time step, probably on\nthe order of 0.5 fs.\n....dac",
+      "url": "http://archive.ambermd.org/202102/0160.html",
+      "in_reply_to": 1613693892
+    }
+  ]
+}

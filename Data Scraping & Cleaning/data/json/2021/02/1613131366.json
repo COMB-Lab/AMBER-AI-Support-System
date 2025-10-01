@@ -1,0 +1,21 @@
+{
+  "thread_id": 1613131366,
+  "subject": "Amber20 GPU plus PLUMED",
+  "messages": [
+    {
+      "message_id": 1613131366,
+      "author": "Domenico Marson",
+      "date_raw": "Fri, 12 Feb 2021 13:02:46 +0100",
+      "body": "Dear Amber Users,\nI have maybe a rather silly question, but I couldn't find an answer\nanywhere.\nI'm \"successfully\" using PLUMED with pmemd.cuda from AMBER 20 and I'm very\nhappy with it,\nbut I can't find a way to instruct PLUMED to run in parallel (MPI) while\ncalling it from a serial pmemd.cuda run (within the mdin file, as usual).\nI know it is possible to run parallel PLUMED within AMBER with the MPI\nversion of pmemd.cuda, but I'm pretty happy with the speed reached by the\nserial AMBE run, I would only like to speed-up the PLUMED computations\nunlocking its MPI capabilities (the version of PLUMED I compiled is\nMPI-enabled of course). Switching to a cuda.MPI run will not solve the\nproblem, as the GPU is already far quicker than the PLUMED part...\nAs far as I understand this is possible in GROMACS, so I think it should be\npossible also in AMBER, I just don't understand how to achieve the wanted\nbehaviour (serial GPU AMBER run + MPI PLUMED run).\nThank you all for you assistance,\nbest regards,\nDomenico\n*Domenico Marson*, Ph.D.\nAssegnista di Ricerca | Postdoctoral Researcher\nUniversità degli Studi di Trieste | University of Trieste\nDepartment of Engineering and Architecture (DEA)\nMolecular Biology and Nanotechnology Laboratory . UniTS (MolBNL.UniTs)\nVia Valerio, 10 - 34127 Trieste (Italy)\ndomenico.marson.dia.units.it\n+39 040 5583757\nSkype: domenicomars",
+      "url": "http://archive.ambermd.org/202102/0116.html"
+    },
+    {
+      "message_id": 1613654644,
+      "author": "David A Case",
+      "date_raw": "Thu, 18 Feb 2021 08:24:04 -0500",
+      "body": "On Fri, Feb 12, 2021, Domenico Marson wrote:\n>\n>As far as I understand this is possible in GROMACS, so I think it should be\n>possible also in AMBER, I just don't understand how to achieve the wanted\n>behaviour (serial GPU AMBER run + MPI PLUMED run).\nThe only straightforward path is to use the openMP capabilities of plumed,\nso MPI doesn't get involved. Basic info is here:\nhttps://www.plumed.org/doc-v2.5/user-doc/html/_openmp.html\nWarning: I haven't tried this, but it seems like it ought to work. But only\nparts of plumed use openMP, so it may not help for your particular use case.\nMaking a version of pmemd.cuda.MPI where only thread 0 interacts with the\nGPU sounds possible, but also sounds like a fair amount of coding work.\n....dac",
+      "url": "http://archive.ambermd.org/202102/0156.html",
+      "in_reply_to": 1613131366
+    }
+  ]
+}

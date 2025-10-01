@@ -1,0 +1,37 @@
+{
+  "thread_id": 1621526339,
+  "subject": "Covalent bonds across periodic boundaries supported yet/ever?",
+  "messages": [
+    {
+      "message_id": 1621526339,
+      "author": "Tucker Burgin",
+      "date_raw": "Thu, 20 May 2021 11:58:59 -0400",
+      "body": "GROMACS can support covalent bonds across a periodic boundary. I am\ninterested in converting a GROMACS model that makes use of this feature for\nuse with Amber using ParmEd's gromber command, but it appears that Amber\ndoesn't know how to handle these bonds correctly.\nThe most recent discussion of this I could find was from 2009:\nhttp://archive.ambermd.org/200910/0240.html\nHas there been any update to this since then? Are there any intentions of\nadding this feature in the future?\nThanks!\n-Tucker",
+      "url": "http://archive.ambermd.org/202105/0187.html"
+    },
+    {
+      "message_id": 1622034511,
+      "author": "David A Case",
+      "date_raw": "Wed, 26 May 2021 09:08:31 -0400",
+      "body": "On Thu, May 20, 2021, Tucker Burgin wrote:\n>GROMACS can support covalent bonds across a periodic boundary. I am\n>interested in converting a GROMACS model that makes use of this feature for\n>use with Amber using ParmEd's gromber command, but it appears that Amber\n>doesn't know how to handle these bonds correctly.\nYou are correct: Amber doesn't allow for such bonds. I'm not aware of any\nefforts to change this.\n....regards...dac",
+      "url": "http://archive.ambermd.org/202105/0222.html",
+      "in_reply_to": 1621526339
+    },
+    {
+      "message_id": 1622060078,
+      "author": "Matias Machado",
+      "date_raw": "Wed, 26 May 2021 17:14:38 -0300 (UYT)",
+      "body": "Dear David,\nJust a curiosity appealing to your vast knowledge of the AMBER code...\nAren't bonds defined according to the shortest distance criteria in PBC?\nOtherwise, I can't imagine how AMBER deals with molecules (e.g proteins) that split through PBC images...\nI mention that because this subject has pooped up before in the mailing list [\nhttp://archive.ambermd.org/201905/0109.html\n]... and I recall Tomas Bishop saying he was able to simulate bonds across periodic boundaries for DNA...\nIf that is the case, then creating bonds across PBC just requires correctly defining the box boundaries, no extra code is needed... am I right? :-/\nAll the best,\nMatías\n----- Mensaje original -----\nDe: \"David A Case\" <david.case.rutgers.edu>\nPara: \"AMBER Mailing List\" <amber.ambermd.org>\nEnviados: Miércoles, 26 de Mayo 2021 10:08:31\nAsunto: Re: [AMBER] Covalent bonds across periodic boundaries supported yet/ever?\nOn Thu, May 20, 2021, Tucker Burgin wrote:\n>GROMACS can support covalent bonds across a periodic boundary. I am\n>interested in converting a GROMACS model that makes use of this feature for\n>use with Amber using ParmEd's gromber command, but it appears that Amber\n>doesn't know how to handle these bonds correctly.\nYou are correct: Amber doesn't allow for such bonds. I'm not aware of any\nefforts to change this.\n....regards...dac",
+      "url": "http://archive.ambermd.org/202105/0230.html",
+      "in_reply_to": 1621526339
+    },
+    {
+      "message_id": 1622060836,
+      "author": "Thomas Cheatham",
+      "date_raw": "Wed, 26 May 2021 20:27:16 +0000",
+      "body": "No, the bonds are not imaged by PBC since this is expensive since you have to look in all 27 directions ... there is code in CPPTRAJ / ptraj that can do this for calculating distances but these checks are not done in sander / pmemd since bonds are only within a molecule (typically) and the molecule is imaged, not the atoms so the molecule never spans the periodic box. If say you had a molecule and a ligand and you added a bond, you could have issues with molecule based imaging and the bond; to get around this, you would turn off imaging.\nCHARMM has the capability to do bonds across periodic images - for AMBER, I think code would have to be added.\n--tec3\n________________________________________\nFrom: Matias Machado <mmachado.pasteur.edu.uy>\nSent: Wednesday, May 26, 2021 2:14 PM\nTo: AMBER Mailing List\nSubject: Re: [AMBER] Covalent bonds across periodic boundaries supported yet/ever?\nDear David,\nJust a curiosity appealing to your vast knowledge of the AMBER code...\nAren't bonds defined according to the shortest distance criteria in PBC?\nOtherwise, I can't imagine how AMBER deals with molecules (e.g proteins) that split through PBC images...\nI mention that because this subject has pooped up before in the mailing list [\nhttp://archive.ambermd.org/201905/0109.html\n]... and I recall Tomas Bishop saying he was able to simulate bonds across periodic boundaries for DNA...\nIf that is the case, then creating bonds across PBC just requires correctly defining the box boundaries, no extra code is needed... am I right? :-/\nAll the best,\nMat�as\n----- Mensaje original -----\nDe: \"David A Case\" <david.case.rutgers.edu>\nPara: \"AMBER Mailing List\" <amber.ambermd.org>\nEnviados: Mi�rcoles, 26 de Mayo 2021 10:08:31\nAsunto: Re: [AMBER] Covalent bonds across periodic boundaries supported yet/ever?\nOn Thu, May 20, 2021, Tucker Burgin wrote:\n>GROMACS can support covalent bonds across a periodic boundary. I am\n>interested in converting a GROMACS model that makes use of this feature for\n>use with Amber using ParmEd's gromber command, but it appears that Amber\n>doesn't know how to handle these bonds correctly.\nYou are correct: Amber doesn't allow for such bonds. I'm not aware of any\nefforts to change this.\n....regards...dac",
+      "url": "http://archive.ambermd.org/202105/0231.html",
+      "in_reply_to": 1621526339
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "thread_id": 1589113714,
+  "subject": "the error from make test.serial",
+  "messages": [
+    {
+      "message_id": 1589113714,
+      "author": "谢信锐",
+      "date_raw": "Sun, 10 May 2020 20:28:34 +0800 (GMT+08:00)",
+      "body": "Hi,\nWhen I installed the amber20, under the process of 'make test.serial', I have met a error and don't have any idea to deal with it.\nThe error is shown as follow:\n###Finished serial test suite for Amber 20 at Sun May 10 19:12:32 CST 2020.\nmake[2]: Leaving directory '/home/xxr/amber/amber20/test'\ngrep: /home/xxr/amber/amber20/logs/test_amber_serial/2020-05-10_19-12-31.log: No such file or directory\ngrep: /home/xxr/amber/amber20/logs/test_amber_serial/2020-05-10_19-12-31.log: No such file or directory\ngrep: /home/xxr/amber/amber20/logs/test_amber_serial/2020-05-10_19-12-31.log: No such file or directory\ngrep: /home/xxr/amber/amber20/logs/test_amber_serial/2020-05-10_19-12-31.log: No such file or directory\ntee: /home/xxr/amber/amber20/logs/test_amber_serial/2020-05-10_19-12-31.log: No such file or directory\n0 file comparisons passed\ntee: /home/xxr/amber/amber20/logs/test_amber_serial/2020-05-10_19-12-31.log: No such file or directory\n0 file comparisons failed\ntee: /home/xxr/amber/amber20/logs/test_amber_serial/2020-05-10_19-12-31.log: No such file or directory\n0 tests experienced errors\ntee: /home/xxr/amber/amber20/logs/test_amber_serial/2020-05-10_19-12-31.log: No such file or directory\nTest log file saved as /home/xxr/amber/amber20/logs/test_amber_serial/2020-05-10_19-12-31.log\ntee: /home/xxr/amber/amber20/logs/test_amber_serial/2020-05-10_19-12-31.log: No such file or directory\nNo test diffs to save!\nmake[1]: Leaving directory '/home/xxr/amber/amber20/test'\nSummary of AmberTools serial tests:\ncat: ../logs/test_at_serial/at_summary: No such file or directory\nMakefile:13: recipe for target 'test.serial' failed\nmake: *** [test.serial] Error 1\n###\nKind regard!\nXinrui Xie\nDepartment of Chemistry\nZhejiang University\nTel: 18840831322\nE-mail: xinruixie.zju.edu.cn",
+      "url": "http://archive.ambermd.org/202005/0120.html"
+    },
+    {
+      "message_id": 1589116782,
+      "author": "David A Case",
+      "date_raw": "Sun, 10 May 2020 09:19:42 -0400",
+      "body": "On Sun, May 10, 2020, 谢信锐 wrote:\n>\n>When I installed the amber20, under the process of 'make test.serial', I have met a error and don't have any idea to deal with it.\n>\n>\n>###Finished serial test suite for Amber 20 at Sun May 10 19:12:32 CST 2020.\n>make[2]: Leaving directory '/home/xxr/amber/amber20/test'\n>grep: /home/xxr/amber/amber20/logs/test_amber_serial/2020-05-10_19-12-31.log: No such file or directory\nOdd. Is it possible that you don't have write permissions in\n/home/xxr/amber/amber20? Is there a \"logs\" file in that folder? Have\nyou installed both AmberTools20 and Amber20, or just the former?\nTry starting the test run and look for any messages (especially error\nmessages) at the very beginning of the output.\n....dac",
+      "url": "http://archive.ambermd.org/202005/0122.html",
+      "in_reply_to": 1589113714
+    },
+    {
+      "message_id": 1589119209,
+      "author": "谢信锐",
+      "date_raw": "Sun, 10 May 2020 22:00:09 +0800 (GMT+08:00)",
+      "body": "Hi,\nThank you very much! I find why this error occurs. The installation of AMBER20 is under the account of root, but I incautiously use the user account to run the \"make test-serial\".\nAt last, I successfully run the \"make test-serial\", but some errors occur as follow:\n1)Segmentation fault (core dumped)\n./Run.nmode3: Program error\nMakefile:127: recipe for target 'nmode3_test' failed\nmake[3]: *** [nmode3_test] Error 1\nRunning test of the isotropic periodic sum technique\n2)make[3]: Leaving directory '/home/xxr/amber20/amber20/AmberTools/test/nab'\nMakefile:114: recipe for target 'test.nab' failed\nmake[2]: *** [test.nab] Error 2\nHow can I remedy those error?\nKind regard!\n> -----Original Messages-----\n> From: \"David A Case\" <david.case.rutgers.\nedu>\n> Sent Time: 2020-05-10 21:19:42 (Sunday)\n> To: \"AMBER Mailing List\" <amber.ambermd.org>\n> Cc:\n> Subject: Re: [AMBER] the error from make test.serial\n>\n> On Sun, May 10, 2020, 谢信锐 wrote:\n> >\n> >When I installed the amber20, under the process of 'make test.serial', I have met a error and don't have any idea to deal with it.\n> >\n> >\n> >###Finished serial test suite for Amber 20 at Sun May 10 19:12:32 CST 2020.\n> >make[2]: Leaving directory '/home/xxr/amber/amber20/test'\n>\n> >grep: /home/xxr/amber/amber20/logs/test_amber_serial/2020-05-10_19-12-31.log: No such file or directory\n>\n> Odd. Is it possible that you don't have write permissions in\n> /home/xxr/amber/amber20? Is there a \"logs\" file in that folder? Have\n> you installed both AmberTools20 and Amber20, or just the former?\n>\n> Try starting the test run and look for any messages (especially error\n> messages) at the very beginning of the output.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202005/0123.html",
+      "in_reply_to": 1589113714
+    },
+    {
+      "message_id": 1589134648,
+      "author": "David A Case",
+      "date_raw": "Sun, 10 May 2020 14:17:28 -0400",
+      "body": "On Sun, May 10, 2020, 谢信锐 wrote:\n> Thank you very much! I find why this error occurs. The installation of\n> AMBER20 is under the account of root, but I incautiously use the user\n> account to run the \"make test-serial\".\nYou should avoid installing Amber as root! Install, test, and run it as\nan ordinary user. You are being \"incautious\" in doing anything as root\nthat does not really require those privileges.\n>\n>1)Segmentation fault (core dumped)\n>./Run.nmode3: Program error\n>Makefile:127: recipe for target 'nmode3_test' failed\n>make[3]: *** [nmode3_test] Error 1\n>Running test of the isotropic periodic sum technique\n>2)make[3]: Leaving directory '/home/xxr/amber20/amber20/AmberTools/test/nab'\n>Makefile:114: recipe for target 'test.nab' failed\n>make[2]: *** [test.nab] Error 2\nWe would need to know information about your OS, compiler settings, and\nso on. As you can see from ambermd.org/Installation.php, Amber20 and\nAmberTools20 *should* work on many variants of Linux, and on Mac OSX.\nThat doesn't mean that it will work on each individual machine, but\ndebugging this will require more information.\nYou should also go to the AmberTools/test/nab directory and run the\ntests there by hand, to see in any errors come to the screen, or if the\njobs were partially done.\nAlso note that errors in nab test won't bother you if you don't plan to\nuse nab (which is a long-deprecated part of Amber).\n....dac",
+      "url": "http://archive.ambermd.org/202005/0125.html",
+      "in_reply_to": 1589113714
+    }
+  ]
+}

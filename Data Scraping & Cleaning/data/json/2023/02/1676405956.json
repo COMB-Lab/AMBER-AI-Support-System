@@ -1,0 +1,21 @@
+{
+  "thread_id": 1676405956,
+  "subject": "Warning tells me to report",
+  "messages": [
+    {
+      "message_id": 1676405956,
+      "author": "Bryan Cox",
+      "date_raw": "Tue, 14 Feb 2023 20:19:16 +0000",
+      "body": "Hi,\nJust got AMBER22, and I’m following the installation instructions from the manual. While running “make install”, I get the following error at 91%:\n[ 91%] Building pytraj native library\nsys.argv ['setup.py', 'build', '--disable-openmp']\nOriginal compiler envs\nCXX = /usr/bin/clang++\nCC = /usr/bin/clang\nCOMPILER =\nuse_pip = False, cpptraj_home =\ncompile_c_extension = True\n2.0.6\nuse_prebuilt_cythonized_files = False\npytraj is inside AMBERHOME\nusing environment: CC=/usr/bin/clang, CXX=/usr/bin/clang++\nusing CC=/usr/bin/clang, CXX=/usr/bin/clang++\nFinal compiler envs\nCXX = /usr/bin/clang++\nCC = /usr/bin/clang\nCOMPILER =\nTraceback (most recent call last):\nFile \"/Users/bcox/amber/amber22_src/AmberTools/src/pytraj/setup.py\", line 171, in <module>\nprepare_env_for_osx()\nFile \"/Users/bcox/amber/amber22_src/AmberTools/src/pytraj/setup.py\", line 165, in prepare_env_for_osx\nwarnings.warn(\"darwin_major_to_osx_map needs to be updated! Report this issue if build fails.\")\nNameError: name 'warnings' is not defined. Did you mean: 'Warning'?\nmake[2]: *** [AmberTools/src/pytraj/CMakeFiles/python-build/pytraj-build.stamp] Error 1\nmake[1]: *** [AmberTools/src/pytraj/CMakeFiles/pytraj.dir/all] Error 2\nmake: *** [all] Error 2\nThis email and any attachments may contain CONFIDENTIAL or PRIVILEGED information and is a private communication between the intended\naddressee and Terremoto Biosciences, Inc. If you have received this email in error, distributing, copying, using or disclosing its\ncontents is prohibited. Please notify us of the delivery error by replying to this message and then delete it from your system.\nThank you.",
+      "url": "http://archive.ambermd.org/202302/0078.html"
+    },
+    {
+      "message_id": 1676471996,
+      "author": "David A Case",
+      "date_raw": "Wed, 15 Feb 2023 09:39:56 -0500",
+      "body": "On Tue, Feb 14, 2023, Bryan Cox via AMBER wrote:\n>\n>Just got AMBER22, and I’m following the installation instructions from\n>the manual. While running “make install”, I get the following error at\n>91%:\n> File \"/Users/bcox/amber/amber22_src/AmberTools/src/pytraj/setup.py\", line 171, in <module>\n> prepare_env_for_osx()\n> File \"/Users/bcox/amber/amber22_src/AmberTools/src/pytraj/setup.py\", line 165, in prepare_env_for_osx\n> warnings.warn(\"darwin_major_to_osx_map needs to be updated! Report this issue if build fails.\")\ngrrr....When you add the idiosyncracies (e.g. frequent changes that destroy\nbackward comopatibility) of python to those of OSX, stir into the mixture\nthe fact that most Amber developers (including me) know little about either,\nthe combination can be quite dangerous.\nTry this: edit your amber22_src/AmberTools/src/pytraj/setup.py script, to\nadd the following entry at about line 156:\n'22': '13.1',\n(comes right after the line that defines '21'.)\n>NameError: name 'warnings' is not defined. Did you mean: 'Warning'?\nAlso, at the top of the file (about line 16) add the following:\nimport warnings\nYou may need to make similar changes to the setup.py script in the parmed\nfolder.\nCaveat: I can't test these since I don't have easy access to a machine\nrunning OSX 13 (Ventura) -- I'm guessing that you must be doing that(?)\nLet us know if this does or doesn't help.\n...dac",
+      "url": "http://archive.ambermd.org/202302/0079.html",
+      "in_reply_to": 1676405956
+    }
+  ]
+}

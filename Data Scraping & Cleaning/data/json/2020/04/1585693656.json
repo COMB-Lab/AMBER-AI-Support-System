@@ -1,0 +1,29 @@
+{
+  "thread_id": 1585693656,
+  "subject": "sum of charges from parm file",
+  "messages": [
+    {
+      "message_id": 1585693656,
+      "author": "Lenka",
+      "date_raw": "Wed, 01 Apr 2020 00:27:36 +0200 (CEST)",
+      "body": "Hi,\nI am to simulate protein in 0.15M NaCl. It is a membrane protein so I build\nthe membrane in Charmm and generate files for Amber.\nDespite the fact I select 0.15M NaCl, I get this message in the min_mdout\nfile:\nSum of charges from parm topology file =   0.00000000\nForcing neutrality...\nShouldn't there be a charge present in the parm file if the ions add to 150\nmM NaCl? There are ions present in the generated pdb.\nMy second question is, if I select the charge will the Amber PME calculation\nneutralize the charge anyway? I was under the impression that this happens\nso how can you run a simulation at 0.15M?\nThank you for the explanation\nL.",
+      "url": "http://archive.ambermd.org/202004/0000.html"
+    },
+    {
+      "message_id": 1585694867,
+      "author": "Lenka",
+      "date_raw": "Wed, 01 Apr 2020 00:47:47 +0200 (CEST)",
+      "body": "Dear Clorice,\nOf course! Duh! Not my best day:)\nThank you for answering my question, yes that all makes sense now and I dont\nhave to dive into Ewald calculations.\nL.\n---------- Původní e-mail ----------\nOd: Clorice Reinhardt <clorice.reinhardt.yale.edu>\nKomu: AMBER Mailing List <amber.ambermd.\norg>\nDatum: 31. 3. 2020 23:42:06\nPředmět: Re: [AMBER] sum of charges from parm file\n\"Hi Lenka,\nThere are ions in the selected file yes, but because its NaCl, there are\nequal amounts Na+ as Cl-, so it will be neutral. I think the answer to your\nfirst question will resolve the second, but i am unsure whether you are\nalso referring to building the protein in tleap or something with the\nactual MD.\nHopefully that helped.\nClorice\nOn Tue, Mar 31, 2020 at 6:28 PM Lenka <Vellryba.seznam.\ncz> wrote:\n>\n> Hi,\n>\n>\n>\n>\n>\n> I am to simulate protein in 0.15M NaCl. It is a membrane protein so I\n> build\n> the membrane in Charmm and generate files for Amber.\n>\n>\n>\n>\n>\n> Despite the fact I select 0.15M NaCl, I get this message in the min_mdout\n> file:\n>\n>\n>\n>\n>\n> Sum of charges from parm topology file = 0.00000000\n> Forcing neutrality...\n>\n>\n>\n>\n>\n> Shouldn't there be a charge present in the parm file if the ions add to\n150\n> mM NaCl? There are ions present in the generated pdb.\n>\n>\n>\n>\n>\n> My second question is, if I select the charge will the Amber PME\n> calculation\n> neutralize the charge anyway? I was under the impression that this happens\n> so how can you run a simulation at 0.15M?\n>\n>\n>\n>\n>\n> Thank you for the explanation\n>\n>\n>\n>\n>\n> L.\n>",
+      "url": "http://archive.ambermd.org/202004/0001.html",
+      "in_reply_to": 1585693656
+    },
+    {
+      "message_id": 1586448731,
+      "author": "Pengfei Li",
+      "date_raw": "Thu, 9 Apr 2020 12:12:11 -0400",
+      "body": "Hi Lenka,\nI guess Clorice implied that 0.15 M NaCl solution would not retain this concentration after you running the NPT simulations. This is because when adding the water box tleap usually generates a system with density smaller than 1.0 g/ml. So if you want to have 0.15 M concentration of NaCl in your production MD simulations (which is usually done after NPT equilibration that corrects the system density), you need to recalculate how many Na+ and Cl- ions you needed based on the volume of the system after the NPT equilibration, and then start your whole simulations from the tleap modeling all over again, in this way you would likely to have the ion concentration as you want in your production MD simulations.\nHope it helps,\nPengfei\n> On Mar 31, 2020, at 6:47 PM, Lenka <Vellryba.seznam.cz> wrote:\n>\n>\n> Dear Clorice,\n>\n>\n>\n>\n>\n> Of course! Duh! Not my best day:)\n>\n>\n>\n>\n>\n> Thank you for answering my question, yes that all makes sense now and I dont\n> have to dive into Ewald calculations.\n>\n>\n>\n>\n>\n> L.\n>\n>\n>\n>\n>\n>\n>\n> ---------- Původní e-mail ----------\n> Od: Clorice Reinhardt <clorice.reinhardt.yale.\nedu>\n> Komu: AMBER Mailing List <amber.ambermd.org>\n> Datum: 31. 3. 2020 23:42:06\n> Předmět: Re: [AMBER] sum of charges from parm file\n> \"Hi Lenka,\n>\n> There are ions in the selected file yes, but because its NaCl, there are\n> equal amounts Na+ as Cl-, so it will be neutral. I think the answer to your\n> first question will resolve the second, but i am unsure whether you are\n> also referring to building the protein in tleap or something with the\n> actual MD.\n>\n> Hopefully that helped.\n> Clorice\n>\n> On Tue, Mar 31, 2020 at 6:28 PM Lenka <Vellryba.seznam.\ncz> wrote:\n>\n>>\n>> Hi,\n>>\n>>\n>>\n>>\n>>\n>> I am to simulate protein in 0.15M NaCl. It is a membrane protein so I\n>> build\n>> the membrane in Charmm and generate files for Amber.\n>>\n>>\n>>\n>>\n>>\n>> Despite the fact I select 0.15M NaCl, I get this message in the min_mdout\n>> file:\n>>\n>>\n>>\n>>\n>>\n>> Sum of charges from parm topology file = 0.00000000\n>> Forcing neutrality...\n>>\n>>\n>>\n>>\n>>\n>> Shouldn't there be a charge present in the parm file if the ions add to\n> 150\n>> mM NaCl? There are ions present in the generated pdb.\n>>\n>>\n>>\n>>\n>>\n>> My second question is, if I select the charge will the Amber PME\n>> calculation\n>> neutralize the charge anyway? I was under the impression that this happens\n>\n>> so how can you run a simulation at 0.15M?\n>>\n>>\n>>\n>>\n>>\n>> Thank you for the explanation\n>>\n>>\n>>\n>>\n>>\n>> L.\n>>",
+      "url": "http://archive.ambermd.org/202004/0076.html",
+      "in_reply_to": 1585693656
+    }
+  ]
+}

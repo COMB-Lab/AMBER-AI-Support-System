@@ -1,0 +1,53 @@
+{
+  "thread_id": 1586490447,
+  "subject": "Acetylated the truncated N- terminal",
+  "messages": [
+    {
+      "message_id": 1586490447,
+      "author": "Lod King",
+      "date_raw": "Thu, 9 Apr 2020 20:47:27 -0700",
+      "body": "Hi Amber\n*I have seen many papers talking about *\"acetylated the truncated N-\nterminal ....... to eliminate artificial charges at the N-termini\"\n*I wonder what does it mean to the PDB structure and how did it achieve? *",
+      "url": "http://archive.ambermd.org/202004/0085.html"
+    },
+    {
+      "message_id": 1586494944,
+      "author": "David Sáez",
+      "date_raw": "Fri, 10 Apr 2020 01:02:24 -0400",
+      "body": "Hi Lod,\nI guess that piece of text refers to the charge derivation procedure for\nresidues that would normally be part of a bigger molecule or polymer.\nFor example, in deriving RESP charges for an aminoacid residue you cannot\nuse the zwitterionic or neutral molecule, because in an actual protein\nthat residue has \"lost\" some of the atoms in the formation of the peptide\nbond. So the standard is, for charge calculation purposes,\nto block the residue with NME and ACE residues at the C-terminal and\nN-terminal groups, respectively. In that way I think you give a common\n\"peptide-like\" environment to all your residues.\nThen you make the QM calculations on that blocked structure, and in the\ncharge derivation process you keep the charges fixed to a standard value\nfor those blocking groups,\nvarying only the atomic charges of your actual residue.\nThe procedure is nicely explained in this tutorial,\nhttps://ambermd.org/tutorials/advanced/tutorial1/section1.htm\n, for a\nnon-protein molecule.\nBest,\nDavid.\nOn Thu, Apr 9, 2020 at 11:47 PM Lod King <lodking407.gmail.com> wrote:\n> Hi Amber\n>\n> *I have seen many papers talking about *\"acetylated the truncated N-\n> terminal ....... to eliminate artificial charges at the N-termini\"\n>\n> *I wonder what does it mean to the PDB structure and how did it achieve? *\n>",
+      "url": "http://archive.ambermd.org/202004/0087.html",
+      "in_reply_to": 1586490447
+    },
+    {
+      "message_id": 1586495403,
+      "author": "Lod King",
+      "date_raw": "Thu, 9 Apr 2020 22:10:03 -0700",
+      "body": "thanks a lot.\nWhen AMBER is creating prmtop file for my protein. Do I have to prepare\nsome steps to rename in the PDB file prior to call AMBER, or it will\nautomatically add the ACE to my peptide?\nOn Thu, Apr 9, 2020 at 10:02 PM David Sáez <davidsaez.udec.\ncl> wrote:\n> Hi Lod,\n>\n> I guess that piece of text refers to the charge derivation procedure for\n> residues that would normally be part of a bigger molecule or polymer.\n>\n> For example, in deriving RESP charges for an aminoacid residue you cannot\n> use the zwitterionic or neutral molecule, because in an actual protein\n> that residue has \"lost\" some of the atoms in the formation of the peptide\n> bond. So the standard is, for charge calculation purposes,\n> to block the residue with NME and ACE residues at the C-terminal and\n> N-terminal groups, respectively. In that way I think you give a common\n> \"peptide-like\" environment to all your residues.\n>\n> Then you make the QM calculations on that blocked structure, and in the\n> charge derivation process you keep the charges fixed to a standard value\n> for those blocking groups,\n> varying only the atomic charges of your actual residue.\n>\n> The procedure is nicely explained in this tutorial,\n>\nhttps://ambermd.org/tutorials/advanced/tutorial1/section1.htm\n, for a\n> non-protein molecule.\n>\n> Best,\n>\n> David.\n>\n> On Thu, Apr 9, 2020 at 11:47 PM Lod King <lodking407.gmail.\ncom> wrote:\n>\n> > Hi Amber\n> >\n> > *I have seen many papers talking about *\"acetylated the truncated N-\n> > terminal ....... to eliminate artificial charges at the N-termini\"\n> >\n> > *I wonder what does it mean to the PDB structure and how did it achieve?\n> *\n> >",
+      "url": "http://archive.ambermd.org/202004/0088.html",
+      "in_reply_to": 1586490447
+    },
+    {
+      "message_id": 1586495779,
+      "author": "Abdul-Rashid III Sampaco",
+      "date_raw": "Fri, 10 Apr 2020 13:16:19 +0800",
+      "body": "Hi Lod,\nThis might simply mean adding an ACE residue at the N-terminal of your\nprotein. This is usually done when the available structure has missing\nresidues on the terminal ends. To avoid a positive charge on the N-terminal\nend of your truncated protein, you can cap it using ACE. The same thing can\nalso be done for a truncated C-terminal end using NME (N-methylation).\nOn Fri, Apr 10, 2020 at 11:48 AM Lod King <lodking407.gmail.com> wrote:\n> Hi Amber\n>\n> *I have seen many papers talking about *\"acetylated the truncated N-\n> terminal ....... to eliminate artificial charges at the N-termini\"\n>\n> *I wonder what does it mean to the PDB structure and how did it achieve? *\n>",
+      "url": "http://archive.ambermd.org/202004/0089.html",
+      "in_reply_to": 1586490447
+    },
+    {
+      "message_id": 1586499093,
+      "author": "David Sáez",
+      "date_raw": "Fri, 10 Apr 2020 02:11:33 -0400",
+      "body": "Maybe there are more efficient ways, but I usually add the capping atoms\nto the pdb (using Chimera or Avogadro, for example)\nand then change the residue name of those atoms to \"ACE\". Then tleap\nshould recognize the residue and add the hydrogens.\nhope this helps,\nDavid.\nOn Fri, Apr 10, 2020 at 1:10 AM Lod King <lodking407.gmail.\ncom> wrote:\n> thanks a lot.\n>\n> When AMBER is creating prmtop file for my protein. Do I have to prepare\n> some steps to rename in the PDB file prior to call AMBER, or it will\n> automatically add the ACE to my peptide?\n>\n> On Thu, Apr 9, 2020 at 10:02 PM David Sáez <davidsaez.udec.\ncl> wrote:\n>\n> > Hi Lod,\n> >\n> > I guess that piece of text refers to the charge derivation procedure for\n> > residues that would normally be part of a bigger molecule or polymer.\n> >\n> > For example, in deriving RESP charges for an aminoacid residue you cannot\n> > use the zwitterionic or neutral molecule, because in an actual protein\n> > that residue has \"lost\" some of the atoms in the formation of the peptide\n> > bond. So the standard is, for charge calculation purposes,\n> > to block the residue with NME and ACE residues at the C-terminal and\n> > N-terminal groups, respectively. In that way I think you give a common\n> > \"peptide-like\" environment to all your residues.\n> >\n> > Then you make the QM calculations on that blocked structure, and in the\n> > charge derivation process you keep the charges fixed to a standard value\n> > for those blocking groups,\n> > varying only the atomic charges of your actual residue.\n> >\n> > The procedure is nicely explained in this tutorial,\n> >\nhttps://ambermd.org/tutorials/advanced/tutorial1/section1.htm\n, for a\n> > non-protein molecule.\n> >\n> > Best,\n> >\n> > David.\n> >\n> > On Thu, Apr 9, 2020 at 11:47 PM Lod King <lodking407.gmail.\ncom> wrote:\n> >\n> > > Hi Amber\n> > >\n> > > *I have seen many papers talking about *\"acetylated the truncated N-\n> > > terminal ....... to eliminate artificial charges at the N-termini\"\n> > >\n> > > *I wonder what does it mean to the PDB structure and how did it\n> achieve?\n> > *\n> > >",
+      "url": "http://archive.ambermd.org/202004/0090.html",
+      "in_reply_to": 1586490447
+    },
+    {
+      "message_id": 1586499293,
+      "author": "Lod King",
+      "date_raw": "Thu, 9 Apr 2020 23:14:53 -0700",
+      "body": "Thank you very much.\nOn Thu, Apr 9, 2020 at 11:11 PM David Sáez <davidsaez.udec.\ncl> wrote:\n> Maybe there are more efficient ways, but I usually add the capping atoms\n> to the pdb (using Chimera or Avogadro, for example)\n> and then change the residue name of those atoms to \"ACE\". Then tleap\n> should recognize the residue and add the hydrogens.\n>\n> hope this helps,\n>\n> David.\n>\n> On Fri, Apr 10, 2020 at 1:10 AM Lod King <lodking407.gmail.\ncom> wrote:\n>\n> > thanks a lot.\n> >\n> > When AMBER is creating prmtop file for my protein. Do I have to prepare\n> > some steps to rename in the PDB file prior to call AMBER, or it will\n> > automatically add the ACE to my peptide?\n> >\n> > On Thu, Apr 9, 2020 at 10:02 PM David Sáez <davidsaez.udec.\ncl> wrote:\n> >\n> > > Hi Lod,\n> > >\n> > > I guess that piece of text refers to the charge derivation procedure\n> for\n> > > residues that would normally be part of a bigger molecule or polymer.\n> > >\n> > > For example, in deriving RESP charges for an aminoacid residue you\n> cannot\n> > > use the zwitterionic or neutral molecule, because in an actual protein\n> > > that residue has \"lost\" some of the atoms in the formation of the\n> peptide\n> > > bond. So the standard is, for charge calculation purposes,\n> > > to block the residue with NME and ACE residues at the C-terminal and\n> > > N-terminal groups, respectively. In that way I think you give a common\n> > > \"peptide-like\" environment to all your residues.\n> > >\n> > > Then you make the QM calculations on that blocked structure, and in the\n> > > charge derivation process you keep the charges fixed to a standard\n> value\n> > > for those blocking groups,\n> > > varying only the atomic charges of your actual residue.\n> > >\n> > > The procedure is nicely explained in this tutorial,\n> > >\nhttps://ambermd.org/tutorials/advanced/tutorial1/section1.htm\n, for a\n> > > non-protein molecule.\n> > >\n> > > Best,\n> > >\n> > > David.\n> > >\n> > > On Thu, Apr 9, 2020 at 11:47 PM Lod King <lodking407.gmail.\ncom> wrote:\n> > >\n> > > > Hi Amber\n> > > >\n> > > > *I have seen many papers talking about *\"acetylated the truncated N-\n> > > > terminal ....... to eliminate artificial charges at the N-termini\"\n> > > >\n> > > > *I wonder what does it mean to the PDB structure and how did it\n> > achieve?\n> > > *\n> > > >",
+      "url": "http://archive.ambermd.org/202004/0091.html",
+      "in_reply_to": 1586490447
+    }
+  ]
+}

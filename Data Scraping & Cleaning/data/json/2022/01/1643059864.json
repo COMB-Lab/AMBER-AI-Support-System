@@ -1,0 +1,61 @@
+{
+  "thread_id": 1643059864,
+  "subject": "Restraint file for amber20 with pmemd.cuda implementation",
+  "messages": [
+    {
+      "message_id": 1643059864,
+      "author": "Prithviraj Nandigrami",
+      "date_raw": "Mon, 24 Jan 2022 21:31:04 +0000",
+      "body": "Dear All,\nI am trying to setup an MD run with distance restraint between two atoms. My restraint file for amber12 looks as below:\n# LIG119.CA DUM120.D1\n&rst\niat=1758,1774,\nialtd=0,\nr1= 0, r2= 0.1, r3= 15, r4= 15.1,\nrk2=500.0, rk3=500.0 ,\n/\nHow do I convert this restraint file to be compatible with amber20 using pmemd.cuda?\nAny help would be much appreciated.\nThank you.\nP. N.",
+      "url": "http://archive.ambermd.org/202201/0202.html"
+    },
+    {
+      "message_id": 1643060786,
+      "author": "Carlos Simmerling",
+      "date_raw": "Mon, 24 Jan 2022 16:46:26 -0500",
+      "body": "did you try this in Amber 20 and get an error? with a quick glance it seems\nok.\nOn Mon, Jan 24, 2022 at 4:31 PM Prithviraj Nandigrami <\nprithviraj.nandigrami.einsteinmed.edu> wrote:\n> Dear All,\n>\n> I am trying to setup an MD run with distance restraint between two atoms.\n> My restraint file for amber12 looks as below:\n>\n> # LIG119.CA DUM120.D1\n> &rst\n> iat=1758,1774,\n> ialtd=0,\n> r1= 0, r2= 0.1, r3= 15, r4= 15.1,\n> rk2=500.0, rk3=500.0 ,\n> /\n>\n>\n> How do I convert this restraint file to be compatible with amber20 using\n> pmemd.cuda?\n>\n> Any help would be much appreciated.\n>\n> Thank you.\n> P. N.\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202201/0205.html",
+      "in_reply_to": 1643059864
+    },
+    {
+      "message_id": 1643063061,
+      "author": "Prithviraj Nandigrami",
+      "date_raw": "Mon, 24 Jan 2022 22:24:21 +0000",
+      "body": "Yes, I tried this input file with amber20 (using the executable pmemd.cuda on a graphics card) and got an error message. Specifically, I get the following in the output log file:\n5. REFERENCE ATOM COORDINATES\ndefault_name\n----- READING GROUP 1; TITLE:\nDISANG=./restraints.in\nrfree: End of file on unit 5\nAny insight on how to fix this error would be much appreciated.\nThank you.\nP.N.\n________________________________\nFrom: Rana Rehan Khalid <ray.binm.gmail.com>\nSent: Monday, January 24, 2022 5:09 PM\nTo: Prithviraj Nandigrami <prithviraj.nandigrami.einsteinmed.edu>\nSubject: Fwd: [AMBER] Restraint file for amber20 with pmemd.cuda implementation\nCAUTION: This email comes from an external source; the attachments and/or links may compromise our secure environment. Do not open or click on suspicious emails. Please click on the �Phish Alert� button on the top right of the Outlook dashboard to report any suspicious emails.\n---------- Forwarded message ---------\nFrom: Carlos Simmerling <carlos.simmerling.gmail.com<mailto:carlos.simmerling.gmail.com>>\nDate: Mon, Jan 24, 2022 at 4:47 PM\nSubject: Re: [AMBER] Restraint file for amber20 with pmemd.cuda implementation\nTo: AMBER Mailing List <amber.ambermd.org<mailto:amber.ambermd.org>>\ndid you try this in Amber 20 and get an error? with a quick glance it seems\nok.\nOn Mon, Jan 24, 2022 at 4:31 PM Prithviraj Nandigrami <\nprithviraj.nandigrami.einsteinmed.edu<mailto:prithviraj.nandigrami.einsteinmed.edu>> wrote:\n> Dear All,\n>\n> I am trying to setup an MD run with distance restraint between two atoms.\n> My restraint file for amber12 looks as below:\n>\n> # LIG119.CA<\nhttps://nam04.safelinks.protection.outlook.com/?url=http%3A%2F%2Flig119.ca%2F&data=04%7C01%7Cprithviraj.nandigrami%40einsteinmed.edu%7C2f14bd1cd74948d6a51008d9df8637a1%7C9c01f0fd65e040c089a82dfd51e62025%7C0%7C0%7C637786589838737851%7CUnknown%7CTWFpbGZsb3d8eyJWIjo\niMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&sdata=wKhsyc9g4hINB5JfZso2vuja%2Fk8PVqVDqdYub%2FKPepU%3D&reserved=0> DUM120.D1\n> &rst\n> iat=1758,1774,\n> ialtd=0,\n> r1= 0, r2= 0.1, r3= 15, r4= 15.1,\n> rk2=500.0, rk3=500.0 ,\n> /\n>\n>\n> How do I convert this restraint file to be compatible with amber20 using\n> pmemd.cuda?\n>\n> Any help would be much appreciated.\n>\n> Thank you.\n> P. N.\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202201/0209.html",
+      "in_reply_to": 1643059864
+    },
+    {
+      "message_id": 1643119564,
+      "author": "David A Case",
+      "date_raw": "Tue, 25 Jan 2022 09:06:04 -0500",
+      "body": "On Mon, Jan 24, 2022, Prithviraj Nandigrami wrote:\n>Yes, I tried this input file with amber20 (using the executable pmemd.cuda on a graphics card) and got an error message. Specifically, I get the following in the output log file:\n>\n>5. REFERENCE ATOM COORDINATES\n>\n> default_name\n> ----- READING GROUP 1; TITLE:\n> DISANG=./restraints.in\n>\n> rfree: End of file on unit 5\nThis error has nothing to do with the restraint block you posted. Can you\npost the complete mdin file? The program thinks your \"DISANG\" card is the\ntitle for a set of group restraints, which suggests that you have something\nin the wrong place.\nIt's possible that an input file that worked in Amber12 might fail in\nAmber20, but we need to get more information.\n....dac",
+      "url": "http://archive.ambermd.org/202201/0213.html",
+      "in_reply_to": 1643059864
+    },
+    {
+      "message_id": 1643123794,
+      "author": "Prithviraj Nandigrami",
+      "date_raw": "Tue, 25 Jan 2022 15:16:34 +0000",
+      "body": "Hi,\nHere is the complete input file I am trying to run:\nHi,\nSorry about my ommision.\nHere is the input file:\nsimann with pos-restraint on receptor + dist restraint on ligand\n&cntrl\nntwx = 100,\nntwe = 100, ntwr = 50, ntpr = 1000, ntxo = 1, ioutfm = 0,\nimin = 0,\nntx = 1,\ntemp0 = 300,\ntempi = 300,\nig = -1,\nnstlim = 20000,\ndt = 0.002,\nntb = 0,\nnscm = 100,\nntc = 2, ntf = 2,\nntt = 2, vrand = 1000,\nigb = 1, cut = 999.0,\nnmropt = 1,\nntr = 1,\n/\n&wt type='END', /\nDISANG=./restraints.in\n________________________________\nFrom: Rana Rehan Khalid <ray.binm.gmail.com>\nSent: Tuesday, January 25, 2022 10:12 AM\nTo: Prithviraj Nandigrami <prithviraj.nandigrami.einsteinmed.edu>\nSubject: Fwd: [AMBER] Restraint file for amber20 with pmemd.cuda implementation\nCAUTION: This email comes from an external source; the attachments and/or links may compromise our secure environment. Do not open or click on suspicious emails. Please click on the �Phish Alert� button on the top right of the Outlook dashboard to report any suspicious emails.\n---------- Forwarded message ---------\nFrom: David A Case <david.case.rutgers.edu<mailto:david.case.rutgers.edu>>\nDate: Tue, Jan 25, 2022 at 9:06 AM\nSubject: Re: [AMBER] Restraint file for amber20 with pmemd.cuda implementation\nTo: AMBER Mailing List <amber.ambermd.org<mailto:amber.ambermd.org>>\nOn Mon, Jan 24, 2022, Prithviraj Nandigrami wrote:\n>Yes, I tried this input file with amber20 (using the executable pmemd.cuda on a graphics card) and got an error message. Specifically, I get the following in the output log file:\n>\n>5. REFERENCE ATOM COORDINATES\n>\n> default_name\n> ----- READING GROUP 1; TITLE:\n> DISANG=./restraints.in<\nhttps://nam04.safelinks.protection.outlook.com/?url=http%3A%2F%2Frestraints.in%2F&data=04%7C01%7Cprithviraj.nandigrami%40einsteinmed.edu%7C7e2a7af6f6824bd1705208d9e015230a%7C9c01f0fd65e040c089a82dfd51e62025%7C0%7C0%7C637787203658556243%7CUnknown%7CTWFpbGZsb3d8eyJ\nWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&sdata=g09iGQTmDOuekWO%2FFTCzyjbMi%2BKaTjuM4JK33D86QKs%3D&reserved=0>\n>\n> rfree: End of file on unit 5\nThis error has nothing to do with the restraint block you posted. Can you\npost the complete mdin file? The program thinks your \"DISANG\" card is the\ntitle for a set of group restraints, which suggests that you have something\nin the wrong place.\nIt's possible that an input file that worked in Amber12 might fail in\nAmber20, but we need to get more information.\n....dac",
+      "url": "http://archive.ambermd.org/202201/0215.html",
+      "in_reply_to": 1643059864
+    },
+    {
+      "message_id": 1643124360,
+      "author": "Carlos Simmerling",
+      "date_raw": "Tue, 25 Jan 2022 10:26:00 -0500",
+      "body": "are you sure that you want to be using both ntr=1 and nmropt=1? they are\ndifferent types of restraints, and it's possible to use both but you need\nto take extra care.\nOn Tue, Jan 25, 2022 at 10:16 AM Prithviraj Nandigrami <\nprithviraj.nandigrami.einsteinmed.\nedu> wrote:\n> Hi,\n>\n> Here is the complete input file I am trying to run:\n>\n> Hi,\n>\n> Sorry about my ommision.\n>\n> Here is the input file:\n>\n> simann with pos-restraint on receptor + dist restraint on ligand\n> &cntrl\n> ntwx = 100,\n> ntwe = 100, ntwr = 50, ntpr = 1000, ntxo = 1, ioutfm = 0,\n> imin = 0,\n> ntx = 1,\n> temp0 = 300,\n> tempi = 300,\n> ig = -1,\n> nstlim = 20000,\n> dt = 0.002,\n> ntb = 0,\n> nscm = 100,\n> ntc = 2, ntf = 2,\n> ntt = 2, vrand = 1000,\n> igb = 1, cut = 999.0,\n> nmropt = 1,\n> ntr = 1,\n> /\n> &wt type='END', /\n> DISANG=./restraints.in\n>\n> ________________________________\n> From: Rana Rehan Khalid <ray.binm.gmail.com>\n> Sent: Tuesday, January 25, 2022 10:12 AM\n> To: Prithviraj Nandigrami <prithviraj.nandigrami.einsteinmed.\nedu>\n> Subject: Fwd: [AMBER] Restraint file for amber20 with pmemd.cuda\n> implementation\n>\n> CAUTION: This email comes from an external source; the attachments and/or\n> links may compromise our secure environment. Do not open or click on\n> suspicious emails. Please click on the “Phish Alert” button on the top\n> right of the Outlook dashboard to report any suspicious emails.\n>\n>\n> ---------- Forwarded message ---------\n> From: David A Case <david.case.rutgers.edu<mailto:david.case.rutgers.\nedu>>\n> Date: Tue, Jan 25, 2022 at 9:06 AM\n> Subject: Re: [AMBER] Restraint file for amber20 with pmemd.cuda\n> implementation\n> To: AMBER Mailing List <amber.ambermd.\norg<mailto:amber.ambermd.\norg>>\n>\n>\n> On Mon, Jan 24, 2022, Prithviraj Nandigrami wrote:\n>\n> >Yes, I tried this input file with amber20 (using the executable\n> pmemd.cuda on a graphics card) and got an error message. Specifically, I\n> get the following in the output log file:\n> >\n> >5. REFERENCE ATOM COORDINATES\n> >\n> > default_name\n> > ----- READING GROUP 1; TITLE:\n> > DISANG=./restraints.in<\n>\nhttps://nam04.safelinks.protection.outlook.com/?url=http%3A%2F%2Frestraints.in%2F&data=04%7C01%7Cprithviraj.nandigrami%40einsteinmed.edu%7C7e2a7af6f6824bd1705208d9e015230a%7C9c01f0fd65e040c089a82dfd51e62025%7C0%7C0%7C637787203658556243%7CUnknown%7CTWFpbGZsb3d8eyJ\nWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&sdata=g09iGQTmDOuekWO%2FFTCzyjbMi%2BKaTjuM4JK33D86QKs%3D&reserved=0\n> >\n> >\n> > rfree: End of file on unit 5\n>\n> This error has nothing to do with the restraint block you posted. Can you\n> post the complete mdin file? The program thinks your \"DISANG\" card is the\n> title for a set of group restraints, which suggests that you have something\n> in the wrong place.\n>\n> It's possible that an input file that worked in Amber12 might fail in\n> Amber20, but we need to get more information.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202201/0216.html",
+      "in_reply_to": 1643059864
+    },
+    {
+      "message_id": 1643134284,
+      "author": "David A Case",
+      "date_raw": "Tue, 25 Jan 2022 13:11:24 -0500",
+      "body": "On Tue, Jan 25, 2022, Prithviraj Nandigrami wrote:\n>Here is the input file:\n>\n>simann with pos-restraint on receptor + dist restraint on ligand\n> &cntrl\n...\n> ntr = 1,\n>/\n> &wt type='END', /\n> DISANG=./restraints.in\nYou are setting ntr=1, but not setting restraintmask and restraint_wt.\nThis makes the program think you are using the \"old\" GROUP identification\ncards, But there aren't any of those in your input file -- they should come\nafter the file redirection cards. (It's not clear to me how this input could\nhave worked in Amber12.)\nIt's easiest to set restraintmask and restraint_wt in the cntrl namelist.\nOr you can use the group input, as described in Section 23.3. Section 21.5\ndescribes the sections of the input file, and what they need to contain.\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202201/0219.html",
+      "in_reply_to": 1643059864
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "thread_id": 1638258638,
+  "subject": "open mpi compiler error",
+  "messages": [
+    {
+      "message_id": 1638258638,
+      "author": "Ayesha Fatima",
+      "date_raw": "Tue, 30 Nov 2021 10:50:38 +0300",
+      "body": "Dear all,\nI am installing amber 18 on the wsl2 ubuntu 20.04. My machine is ASUS AMD\nRYZEN5.\nPreviously I had successfully installed amber18 serial and parallel on\nwsl1 Ubuntu 18.04. No issues were experienced.\nI followed the\nhttps://www.ovetande.se/software/amber/install/ambertools19-windows10-wsl/\ninstructions and the serial was installed successfully. Make tests also ran\ncorrectly as indicated on the website\nTo install parallel the command line is\ncd $AMBERHOME/AmberTools/src/\nwget\nhttps://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.1.tar.gz\ntar xvf openmpi-4.0.1.tar.gz\n./configure_openmpi -np $4 (I have 4 CPUS) gnu\ni get this error:\n------------------------------------------------------------\nSetting AMBERHOME to /mnt/d/amber_files/amber18\nArchitecture/compiler is not supported\nUsage: ./configure_openmpi [flags] compiler\nwhere compiler is one of:\ngnu (=gcc/gfortran), intel (=icc/ifort), pgi (=pgcc/pgf90)\nOption flags:\n-static Create statically linked executables (not recommended for\nMacOSX)\n-np Number of processes for parallel Make\nNote: See http://www.open-mpi.org/software/ompi/v1.6/ for information\non how to obtain openmpi.\n--------------------------------------------------------------------------------------\nI checked the gcc, g++ and gfortran installed on my machine. They are\nversions (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0\nI am unable to understand what is wrong except, there may be\nincompatibility with Ubuntu 20.04.\nI had similar issues with another machine Ubuntu 20.04 and parallelisation.\nSo I changed the machine.\nDid anyone else have the same problem?\nThank you\nRegards\nAyesha",
+      "url": "http://archive.ambermd.org/202111/0275.html"
+    },
+    {
+      "message_id": 1638279974,
+      "author": "David A Case",
+      "date_raw": "Tue, 30 Nov 2021 08:46:14 -0500",
+      "body": "On Tue, Nov 30, 2021, Ayesha Fatima wrote:\n>./configure_openmpi -np $4 (I have 4 CPUS) gnu\nThis is not correct. Leave out the \"$\" before the \"4\".\n....dac",
+      "url": "http://archive.ambermd.org/202111/0277.html",
+      "in_reply_to": 1638258638
+    },
+    {
+      "message_id": 1638293753,
+      "author": "Ayesha Fatima",
+      "date_raw": "Tue, 30 Nov 2021 20:35:53 +0300",
+      "body": "Dear Prof.\nthank you as always for your prompt response.\nI tried doing that.\nwget\nhttps://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.2.tar.bz2\ntar xvfj openmpi-4.1.2.tar.bz2\nremaining in the AmberTools/src folder the command line is\n./configure_openmpi -np 4 gnu\nthe error is\nSetting AMBERHOME to /mnt/d/amber_files/amber18\nYou must download openmpi and extract it here\n(for example, type 'tar xvfj openmpi-1.8.tar.bz2')\nSee\nhttp://www.open-mpi.org/software/ompi/v1.8/\nfor more info;\nThen, re-run this script.\n----------------------------------\nI cannot understand why the error.\nThank you\nBest regards\nAyesha\nOn Tue, Nov 30, 2021 at 4:46 PM David A Case <david.case.rutgers.edu> wrote:\n> On Tue, Nov 30, 2021, Ayesha Fatima wrote:\n>\n> >./configure_openmpi -np $4 (I have 4 CPUS) gnu\n>\n> This is not correct. Leave out the \"$\" before the \"4\".\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202111/0280.html",
+      "in_reply_to": 1638258638
+    },
+    {
+      "message_id": 1638305713,
+      "author": "David A Case",
+      "date_raw": "Tue, 30 Nov 2021 15:55:13 -0500",
+      "body": "On Tue, Nov 30, 2021, Ayesha Fatima wrote:\n>wget\n>\nhttps://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.2.tar.bz2\n>tar xvfj openmpi-4.1.2.tar.bz2\n>\n>You must download openmpi and extract it here\n> (for example, type 'tar xvfj openmpi-1.8.tar.bz2')\n>See\nhttp://www.open-mpi.org/software/ompi/v1.8/\nfor more info;\nLook for the \"mpidirs\" variable in the configure_openmpi script, and change\nit to something like this (from the current AmberTools release):\n# Get the list of openmpi directories\nmpidirs=`/bin/ls -d openmpi-[2-4].[0-9]*/ 2>/dev/null | tail -n 1`\nYou problem probably arises from the fact that you are using an old version\nof the script, which was prepared before openmpi version 4 was released.\n....dac",
+      "url": "http://archive.ambermd.org/202111/0281.html",
+      "in_reply_to": 1638258638
+    }
+  ]
+}

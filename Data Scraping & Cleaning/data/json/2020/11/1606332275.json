@@ -1,0 +1,45 @@
+{
+  "thread_id": 1606332275,
+  "subject": "AMBER 18 cuda installation error",
+  "messages": [
+    {
+      "message_id": 1606332275,
+      "author": "Mariangela Dametto",
+      "date_raw": "Wed, 25 Nov 2020 16:24:35 -0300",
+      "body": "Dear all,\nI am facing a problem when installing AMBER 18 with CUDA on Docker. Both\nserial and parallel parts of the code are successfully installed on CPUs. I\ntried to install using both CUDA 9.0 and CUDA 10.2, and I got the same\nerror. I saw the problem posted before, but I could not find the reply.\nThe gcc version is 7.5.0.\nBelow are the last lines of the installation process, and the lines of the\nfile \"simulationConst.h\".\nPlease, would anyone have an idea for me to try to solve this problem?\nThank you!\n################################################################################\n/usr/local/cuda-9.2/bin/nvcc -gencode arch=compute_30,code=sm_30 -gencode\narch=compute_35,code=sm_35 -gencode arch=compute_37,code=sm_37 -gencode\narch=compute_50,code=sm_50 -gencode arch=compute_52,code=sm_52 -gencode\narch=compute_53,code=sm_53 -gencode arch=compute_60,code=sm_60 -gencode\narch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_70, -gencode\narch=compute_61,code=sm_70 -Wno-deprecated-declarations -use_fast_math -O3\n-Duse_SPFP -DCUDA -DGTI -I/usr/local/cuda-9.2/include -IB40C --std c++11 -c\ngti_energies_kernels.cu\nsimulationConst.h(12): warning: extern declaration of the entity cSim is\ntreated as a static definition\nsimulationConst.h(12): warning: extern declaration of the entity cSim is\ntreated as a static definition\nptxas fatal : Unresolved extern function '_Z13faster_sincosdPdS_'\nMakefile:50: recipe for target 'gti_energies_kernels.o' failed\nmake[5]: *** [gti_energies_kernels.o] Error 255\nmake[5]: Leaving directory '/amber18/src/pmemd/src/cuda'\nMakefile:191: recipe for target 'cuda_spfp_libs' failed\nmake[4]: *** [cuda_spfp_libs] Error 2\nmake[4]: Leaving directory '/amber18/src/pmemd/src'\nMakefile:75: recipe for target 'cuda_SPFP' failed\nmake[3]: *** [cuda_SPFP] Error 2\nmake[3]: Leaving directory '/amber18/src/pmemd/src'\nMakefile:29: recipe for target 'cuda_serial' failed\nmake[2]: *** [cuda_serial] Error 2\nmake[2]: Leaving directory '/amber18/src/pmemd'\nMakefile:50: recipe for target 'cuda_serial' failed\nmake[1]: *** [cuda_serial] Error 2\nmake[1]: Leaving directory '/amber18/src'\nMakefile:7: recipe for target 'install' failed\nmake: *** [install] Error 2\n###############################################################################\nsimulationConst.h file:\n##################################################################\n#ifndef _CUDA_SIMULATION\n#define _CUDA_SIMULATION\n#include \"base_simulationConst.h\"\n#ifdef GTI\n#include \"gti_simulationConst.h\"\ntypedef gti_simulationConst simulationConst;\n#else\ntypedef base_simulationConst simulationConst;\n#endif\nextern __constant__ simulationConst cSim;\n#ifdef __CUDACC_RDC__\n#define CSIM_STO extern __device__ __constant__\n#else\n#define CSIM_STO __device__ __constant__\n#endif\n#endif /* _CUDA_SIMULATION */\n#####################################################################",
+      "url": "http://archive.ambermd.org/202011/0243.html"
+    },
+    {
+      "message_id": 1606344024,
+      "author": "Tru Huynh",
+      "date_raw": "Wed, 25 Nov 2020 23:40:24 +0100",
+      "body": "Hi,\nOn Wed, Nov 25, 2020 at 04:24:35PM -0300, Mariangela Dametto wrote:\n> Dear all,\n>\n> I am facing a problem when installing AMBER 18 with CUDA on Docker. Both\n> serial and parallel parts of the code are successfully installed on CPUs. I\n> tried to install using both CUDA 9.0 and CUDA 10.2, and I got the same\n> error. I saw the problem posted before, but I could not find the reply.\n> The gcc version is 7.5.0.\n>\n..\nI am not sure that gcc 7.5.0 is supported for cuda 9.2 or 10.2\nhttps://docs.nvidia.com/cuda/archive/9.2/cuda-installation-guide-linux/index.html\nhttps://docs.nvidia.com/cuda/archive/10.2/cuda-installation-guide-linux/index.html\nymmv,\nTru\n-- \nTru Huynh (PhD) | mailto:tru.pasteur.fr | tel +33 1 45 68 87 37\nhttps://research.pasteur.fr/en/team/structural-bioinformatics/\nInstitut Pasteur, 25-28 rue du Docteur Roux, 75724 Paris CEDEX 15 France",
+      "url": "http://archive.ambermd.org/202011/0245.html",
+      "in_reply_to": 1606332275
+    },
+    {
+      "message_id": 1606482848,
+      "author": "David A Case",
+      "date_raw": "Fri, 27 Nov 2020 08:14:08 -0500",
+      "body": "On Wed, Nov 25, 2020, Mariangela Dametto wrote:\n>\n>I am facing a problem when installing AMBER 18 with CUDA on Docker. Both\n>serial and parallel parts of the code are successfully installed on CPUs. I\n>tried to install using both CUDA 9.0 and CUDA 10.2, and I got the same\n>error. I saw the problem posted before, but I could not find the reply.\n>The gcc version is 7.5.0.\n>\n>Below are the last lines of the installation process, and the lines of the\n>file \"simulationConst.h\".\nThe references to simulationConst.h are just warnings. The real error\nis this one:\n>ptxas fatal : Unresolved extern function '_Z13faster_sincosdPdS_'\n>Makefile:50: recipe for target 'gti_energies_kernels.o' failed\nI'm cc-ing this to Taisung in case he has any ideas. Also, please be\nsure that you have installed all updates:\ncd $AMBERHOME && ./update_amber --update\n...regards....dac",
+      "url": "http://archive.ambermd.org/202011/0255.html",
+      "in_reply_to": 1606332275
+    },
+    {
+      "message_id": 1606739125,
+      "author": "Mariangela Dametto",
+      "date_raw": "Mon, 30 Nov 2020 09:25:25 -0300",
+      "body": "Deall all,\nThank you very much for your help.\nI would like to share the solution that worked for me.\nI could solve my problem by running the script ./configure_python (that is\nin the folder AMBERHOME/AmberTools/src) at the beginning of the whole\ninstallation.\nI had to run this script even before asking for the update_amber (as David\nCase warned me to do), otherwise there were several python libraries\ncomplainings.\nBest regards,\nMariangela\nOn Fri, Nov 27, 2020 at 10:18 AM David A Case <david.case.rutgers.edu>\nwrote:\n> On Wed, Nov 25, 2020, Mariangela Dametto wrote:\n> >\n> >I am facing a problem when installing AMBER 18 with CUDA on Docker. Both\n> >serial and parallel parts of the code are successfully installed on CPUs.\n> I\n> >tried to install using both CUDA 9.0 and CUDA 10.2, and I got the same\n> >error. I saw the problem posted before, but I could not find the reply.\n> >The gcc version is 7.5.0.\n> >\n> >Below are the last lines of the installation process, and the lines of the\n> >file \"simulationConst.h\".\n>\n> The references to simulationConst.h are just warnings. The real error\n> is this one:\n>\n> >ptxas fatal : Unresolved extern function '_Z13faster_sincosdPdS_'\n> >Makefile:50: recipe for target 'gti_energies_kernels.o' failed\n>\n> I'm cc-ing this to Taisung in case he has any ideas. Also, please be\n> sure that you have installed all updates:\n>\n> cd $AMBERHOME && ./update_amber --update\n>\n> ...regards....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202011/0281.html",
+      "in_reply_to": 1606332275
+    },
+    {
+      "message_id": 1606741580,
+      "author": "accuratefreeenergy.gmail.com",
+      "date_raw": "Mon, 30 Nov 2020 08:06:20 -0500",
+      "body": "Hi Mariangela,\nDo you still have problem to compile after update? Also, please\nremember to re-install (configure) AMBER after the updates.\nLet us know the results. Thanks!\nTaisung\n-----Original Message-----\nFrom: David A Case <david.case.rutgers.edu>\nSent: Friday, November 27, 2020 8:14 AM\nTo: AMBER Mailing List <amber.ambermd.org>\nCc: Taisung Lee <taisung.gmail.com>\nSubject: Re: [AMBER] AMBER 18 cuda installation error\nOn Wed, Nov 25, 2020, Mariangela Dametto wrote:\n>\n>I am facing a problem when installing AMBER 18 with CUDA on Docker.\n>Both serial and parallel parts of the code are successfully installed\n>on CPUs. I tried to install using both CUDA 9.0 and CUDA 10.2, and I\n>got the same error. I saw the problem posted before, but I could not find\nthe reply.\n>The gcc version is 7.5.0.\n>\n>Below are the last lines of the installation process, and the lines of\n>the file \"simulationConst.h\".\nThe references to simulationConst.h are just warnings. The real error is\nthis one:\n>ptxas fatal : Unresolved extern function '_Z13faster_sincosdPdS_'\n>Makefile:50: recipe for target 'gti_energies_kernels.o' failed\nI'm cc-ing this to Taisung in case he has any ideas. Also, please be sure\nthat you have installed all updates:\ncd $AMBERHOME && ./update_amber --update\n...regards....dac",
+      "url": "http://archive.ambermd.org/202011/0282.html",
+      "in_reply_to": 1606332275
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "thread_id": 1624933304,
+  "subject": "Estimating protein-protein interactions",
+  "messages": [
+    {
+      "message_id": 1624933304,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Mon, 28 Jun 2021 22:21:44 -0400",
+      "body": "Dear Amber Community,\nI am trying to compute how the stability of a protein-protein interface changes with protonation of the acidic groups within a 10 Å distance of the interface. I’ve computed the non-bonded interactions for MD snapshots using either the linear interaction method with some dielectric constant specified (4 or 80) or using esander. One aspect that confuses me is that the VDW energies are positive. I was expecting strongly negative values. Is there just a sign convention I’m missing?\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202106/0226.html"
+    },
+    {
+      "message_id": 1625058089,
+      "author": "David A Case",
+      "date_raw": "Wed, 30 Jun 2021 09:01:29 -0400",
+      "body": "On Mon, Jun 28, 2021, Matthew Guberman-Pfeffer wrote:\n>\n>I am trying to compute how the stability of a protein-protein interface\n>changes with protonation of the acidic groups within a 10 Å distance of\n>the interface. I’ve computed the non-bonded interactions for MD snapshots\n>using either the linear interaction method with some dielectric constant\n>specified (4 or 80) or using esander. One aspect that confuses me is that\n>the VDW energies are positive. I was expecting strongly negative values. Is\n>there just a sign convention I’m missing?\nIt's not clear what you are computing, or exactly how. How do the numbers\nyou get compare to the values that are printed in the mdout file? Are you\nonly computing a subset of the LJ interactions?\n....dac",
+      "url": "http://archive.ambermd.org/202106/0234.html",
+      "in_reply_to": 1624933304
+    },
+    {
+      "message_id": 1625059879,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Wed, 30 Jun 2021 09:31:19 -0400",
+      "body": "Hello Dr. Gase,\nI’ve tried a few different approaches to calculate inter-domain non-bonded interactions.\n1) In cpptraj:\nlie LIE :1-425 :426-850 out LIEanalysis_NoProt_Del4.dat cutvdw 12.0 cutelec 12.0 diel 4\nWhere the two masks correspond to all the residues in the two protein domains that are in contact.\nOr,\n2) Again in cpptraj,\nesander XXXX out XXXX.dat parmname XXXX.parm7 cut 9999.0 igb 2 extdiel 78.5 intdiel 4.0 ntb 0 ntf 2 ntc 2\nWhere XXXX is either DM1, DM2, or DM1DM2 for domain #1, #2, or both #1 and #2. I saved separate trajectories in a prior step with one or the other or both of the domains from the original trajectory.\n(I haven’t used the “pairwise” function in cpptraj, just because my understanding is that the electrostatics are not screened by the environment in any way.)\nThe output in mdout reads (for one time step):\nNSTEP = 18000000 TIME(PS) = 54000.000 TEMP(K) = 299.00 PRESS = 0.0\nEtot = -444472.8967 EKtot = 109676.4062 EPtot = -554149.3030\nBOND = 2571.3718 ANGLE = 6977.2214 DIHED = 8519.2870\n1-4 NB = 2865.7846 1-4 EEL = 38657.1336 VDWAALS = 74142.2504\nEELEC = -687882.3518 EHBOND = 0.0000 RESTRAINT = 0.0000\n------------------------------------------------------------------------------\nSo, even in the simulation, the VDW term is positive. This puzzles me.\nDid this help to clarify my question? Please let me know if I should provide more information.\nBest,\nMatthew\n> On Jun 30, 2021, at 9:01 AM, David A Case <david.case.rutgers.\nedu> wrote:\n>\n> *Message sent from a system outside of UConn.*\n>\n>\n> On Mon, Jun 28, 2021, Matthew Guberman-Pfeffer wrote:\n>\n>>\n>> I am trying to compute how the stability of a protein-protein interface\n>> changes with protonation of the acidic groups within a 10 Å distance of\n>> the interface. I’ve computed the non-bonded interactions for MD snapshots\n>> using either the linear interaction method with some dielectric constant\n>> specified (4 or 80) or using esander. One aspect that confuses me is that\n>> the VDW energies are positive. I was expecting strongly negative values. Is\n>> there just a sign convention I’m missing?\n>\n> It's not clear what you are computing, or exactly how. How do the numbers\n> you get compare to the values that are printed in the mdout file? Are you\n> only computing a subset of the LJ interactions?\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202106/0236.html",
+      "in_reply_to": 1624933304
+    }
+  ]
+}

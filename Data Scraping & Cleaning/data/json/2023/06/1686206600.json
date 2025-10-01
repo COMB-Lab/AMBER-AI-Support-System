@@ -1,0 +1,29 @@
+{
+  "thread_id": 1686206600,
+  "subject": "error in amber22 installation",
+  "messages": [
+    {
+      "message_id": 1686206600,
+      "author": "홍종희",
+      "date_raw": "Thu, 08 Jun 2023 15:43:20 +0900",
+      "body": "Hi all\nI got the error while I'm installing amber22 on my GPU server\nI use  cuda-11.2 and gcc 8\nfirst\nin amber22_src/build\n./run_cmake  runs with no problem\nbut while running make install  I got the error\n[ 77%] Building NVCC (Device) object AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/pbsa.cuda_generated_cusparse_LinearSolvers.cu.o\n/usr/local/amber22_src/AmberTools/src/pbsa/cusparse_LinearSolvers.cu(82): error: identifier \"CUSPARSE_SPMV_ALG_DEFAULT\" is undefined\n/usr/local/amber22_src/AmberTools/src/pbsa/cusparse_LinearSolvers.cu(236): error: identifier \"CUSPARSE_SPMV_ALG_DEFAULT\" is undefined\n2 errors detected in the compilation of \"/usr/local/amber22_src/AmberTools/src/pbsa/cusparse_LinearSolvers.cu\".\nCMake Error at pbsa.cuda_generated_cusparse_LinearSolvers.cu.o.RELEASE.cmake:278 (message):\nseems  to me that it's related to cuda but I don't know how to figure out it\nAny suggestions would be welcomed\nThanks\n신테카바이오\nBI사업팀\n이사 / 팀장  홍종희",
+      "url": "http://archive.ambermd.org/202306/0039.html"
+    },
+    {
+      "message_id": 1686229911,
+      "author": "David A Case",
+      "date_raw": "Thu, 8 Jun 2023 09:11:51 -0400",
+      "body": "On Thu, Jun 08, 2023, 홍종희 via AMBER wrote:\n>I use  cuda-11.2 and gcc 8\n>\n>\n>[ 77%] Building NVCC (Device) object AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/pbsa.cuda_generated_cusparse_LinearSolvers.cu.o\n>/usr/local/amber22_src/AmberTools/src/pbsa/cusparse_LinearSolvers.cu(82): error: identifier \"CUSPARSE_SPMV_ALG_DEFAULT\" is undefined\n>\n>/usr/local/amber22_src/AmberTools/src/pbsa/cusparse_LinearSolvers.cu(236): error: identifier \"CUSPARSE_SPMV_ALG_DEFAULT\" is undefined\n>\n>2 errors detected in the compilation of \"/usr/local/amber22_src/AmberTools/src/pbsa/cusparse_LinearSolvers.cu\".\n>CMake Error at pbsa.cuda_generated_cusparse_LinearSolvers.cu.o.RELEASE.cmake:278 (message):\n>\nI'm cc-ing this to Ray Luo, to see if he can figure it out. It may be\nrelated to the particular version of CUDA you have.\nWorkaround: add -DDISABLE_TOOLS=\"pbsa\" to your run_cmake script.\n(Especially if you don't plan to use the CUDA version of pbsa.)\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202306/0040.html",
+      "in_reply_to": 1686206600
+    },
+    {
+      "message_id": 1686285797,
+      "author": "홍종희",
+      "date_raw": "Fri, 09 Jun 2023 13:43:17 +0900",
+      "body": "I could manage this problem by changing CUSPARSE_SPMV_ALG_DEFAULT to CUSPARSE_MV_ALG_DEFAULT\nThe installation seems to finish without any problem\nIs there any problem associated with change from CUSPARSE_SPMV_ALG_DEFAULT to CUSPARSE_MV_ALG_DEFAULT ?\nThanks\n----- Original Message -----\nFrom: 홍종희\nTo: amber.ambermd.org\nSent: Thu , June 08, 2023 15:43 PM\nSubject: error in amber22 installation\nHi all\nI got the error while I'm installing amber22 on my GPU server\nI use  cuda-11.2 and gcc 8\nfirst\nin amber22_src/build\n./run_cmake  runs with no problem\nbut while running make install  I got the error\n[ 77%] Building NVCC (Device) object AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/pbsa.cuda_generated_cusparse_LinearSolvers.cu.o\n/usr/local/amber22_src/AmberTools/src/pbsa/cusparse_LinearSolvers.cu(82): error: identifier \"CUSPARSE_SPMV_ALG_DEFAULT\" is undefined\n/usr/local/amber22_src/AmberTools/src/pbsa/cusparse_LinearSolvers.cu(236): error: identifier \"CUSPARSE_SPMV_ALG_DEFAULT\" is undefined\n2 errors detected in the compilation of \"/usr/local/amber22_src/AmberTools/src/pbsa/cusparse_LinearSolvers.cu\".\nCMake Error at pbsa.cuda_generated_cusparse_LinearSolvers.cu.o.RELEASE.cmake:278 (message):\nseems  to me that it's related to cuda but I don't know how to figure out it\nAny suggestions would be welcomed\nThanks\n신테카바이오\nBI사업팀\n이사 / 팀장  홍종희",
+      "url": "http://archive.ambermd.org/202306/0044.html",
+      "in_reply_to": 1686206600
+    }
+  ]
+}

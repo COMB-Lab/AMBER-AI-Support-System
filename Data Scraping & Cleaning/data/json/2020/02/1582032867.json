@@ -1,0 +1,45 @@
+{
+  "thread_id": 1582032867,
+  "subject": "mmpbsa.py",
+  "messages": [
+    {
+      "message_id": 1582032867,
+      "author": "Sruthi Sudhakar",
+      "date_raw": "Tue, 18 Feb 2020 19:04:27 +0530",
+      "body": "I have stripped ions and water from the complex1_solv.prmtop using\nante-MMPBSA.py. and created the nc files without the water and ion\ninformation. Then I had an error since the number of atoms in complex was\nnot ligand+ receptor. So I removed ions from the receptor and tried again.\nThe job started running but it has been stuck in the following line for\nlike 3 hours. The nc file now has no ions or water. Does it usually take\nthis long to complete the mmpbsa calculation?\nMMPBSA.py -O -i mmpbsa.in -o FINAL_RESULTS_MMPBSA.dat -cp\ndry.complex1_sol.prmtop -rp rec.prmtop -lp ligand.prmtop -y *.nc\nLoading and checking parameter files for compatibility...\nmmpbsa_py_energy found! Using /apps/amber18/bin/mmpbsa_py_energy\ncpptraj found! Using /apps/amber18/bin/cpptraj\nmmpbsa_py_nabnmode found! Using /apps/amber18/bin/mmpbsa_py_nabnmode\nPreparing trajectories for simulation...\n28001 frames were processed by cpptraj for use in calculation.\n28001 frames were processed by cpptraj for nmode calculations.\nRunning calculations on normal system...\nBeginning GB calculations with /apps/amber18/bin/mmpbsa_py_energy\ncalculating complex contribution...\ncalculating receptor contribution...\ncalculating ligand contribution...\nBeginning PB calculations with /apps/amber18/bin/mmpbsa_py_energy\ncalculating complex contribution...\nWarning: inp=1 was old default\nWarning: cavity_surften=0.0378 not recommended for inp=1, switching to\ninp=1 default value: 0.0050\nWarning: cavity_offset=-0.5692 not recommended for inp=1, switching to\ninp=1 default value: 0.000\nWarning: sprob=.557 not recommended for inp=1, switching to inp=1 default\nvalue: 1.400",
+      "url": "http://archive.ambermd.org/202002/0179.html"
+    },
+    {
+      "message_id": 1582033171,
+      "author": "David A Case",
+      "date_raw": "Tue, 18 Feb 2020 08:39:31 -0500",
+      "body": "On Tue, Feb 18, 2020, Sruthi Sudhakar wrote:\n>The job started running but it has been stuck in the following line for\n>like 3 hours.\n>28001 frames were processed by cpptraj for use in calculation.\nTry running a sample calculation with something like 5 frames, to make\nsure everything is working OK. Here on the list, we don't know anything\nabout what options you chose for the MM/PBSA calculation, nor do we know\nanything about how large your system is. So people here are unlikely to\nbe able to offer much real help. Start with the simplest and fastest\ncalculations (e.g. GB only, no PB), then slowly add more complexit and more\nframes.\n...dac",
+      "url": "http://archive.ambermd.org/202002/0181.html",
+      "in_reply_to": 1582032867
+    },
+    {
+      "message_id": 1582038185,
+      "author": "Ray Luo",
+      "date_raw": "Tue, 18 Feb 2020 07:03:05 -0800",
+      "body": "Looks like you have 28001 frames. This is not a trivial amount of work\nfor typical-sized proteins. You can estimate how long it would take\ngiven the time to compute 5 or 10 frames ...\nAll the best,\nRay\n--\nRay Luo, Ph.D.\nProfessor of Structural Biology/Biochemistry/Biophysics,\nChemical Physics, Biomedical Engineering, and Chemical Engineering\nDepartment of Molecular Biology and Biochemistry\nUniversity of California, Irvine, CA 92697-3900\nOn Tue, Feb 18, 2020 at 6:35 AM Sruthi Sudhakar\n<sruthisudhakarraji.gmail.com> wrote:\n>\n> I am getting result when i tried with5 frames with GB and PB\n>\n> On Tue, Feb 18, 2020 at 7:09 PM David A Case <david.case.rutgers.edu> wrote:\n>\n> > On Tue, Feb 18, 2020, Sruthi Sudhakar wrote:\n> >\n> > >The job started running but it has been stuck in the following line for\n> > >like 3 hours.\n> > >28001 frames were processed by cpptraj for use in calculation.\n> >\n> > Try running a sample calculation with something like 5 frames, to make\n> > sure everything is working OK. Here on the list, we don't know anything\n> > about what options you chose for the MM/PBSA calculation, nor do we know\n> > anything about how large your system is. So people here are unlikely to\n> > be able to offer much real help. Start with the simplest and fastest\n> > calculations (e.g. GB only, no PB), then slowly add more complexit and more\n> > frames.\n> >\n> > ...dac\n> >\n> >\n> >",
+      "url": "http://archive.ambermd.org/202002/0187.html",
+      "in_reply_to": 1582032867
+    },
+    {
+      "message_id": 1582038335,
+      "author": "Sruthi Sudhakar",
+      "date_raw": "Tue, 18 Feb 2020 20:35:35 +0530",
+      "body": "Thank you so much sir. I will do the same.\nOn Tue, Feb 18, 2020 at 8:33 PM Ray Luo <rluo.uci.edu> wrote:\n> Looks like you have 28001 frames. This is not a trivial amount of work\n> for typical-sized proteins. You can estimate how long it would take\n> given the time to compute 5 or 10 frames ...\n>\n> All the best,\n> Ray\n> --\n> Ray Luo, Ph.D.\n> Professor of Structural Biology/Biochemistry/Biophysics,\n> Chemical Physics, Biomedical Engineering, and Chemical Engineering\n> Department of Molecular Biology and Biochemistry\n> University of California, Irvine, CA 92697-3900\n>\n> On Tue, Feb 18, 2020 at 6:35 AM Sruthi Sudhakar\n> <sruthisudhakarraji.gmail.com> wrote:\n> >\n> > I am getting result when i tried with5 frames with GB and PB\n> >\n> > On Tue, Feb 18, 2020 at 7:09 PM David A Case <david.case.rutgers.edu>\n> wrote:\n> >\n> > > On Tue, Feb 18, 2020, Sruthi Sudhakar wrote:\n> > >\n> > > >The job started running but it has been stuck in the following line\n> for\n> > > >like 3 hours.\n> > > >28001 frames were processed by cpptraj for use in calculation.\n> > >\n> > > Try running a sample calculation with something like 5 frames, to make\n> > > sure everything is working OK. Here on the list, we don't know\n> anything\n> > > about what options you chose for the MM/PBSA calculation, nor do we\n> know\n> > > anything about how large your system is. So people here are unlikely\n> to\n> > > be able to offer much real help. Start with the simplest and fastest\n> > > calculations (e.g. GB only, no PB), then slowly add more complexit and\n> more\n> > > frames.\n> > >\n> > > ...dac\n> > >\n> > >\n> > >",
+      "url": "http://archive.ambermd.org/202002/0189.html",
+      "in_reply_to": 1582032867
+    },
+    {
+      "message_id": 1582038434,
+      "author": "Sruthi Sudhakar",
+      "date_raw": "Tue, 18 Feb 2020 20:37:14 +0530",
+      "body": "I am getting result when i tried with5 frames with GB and PB\nOn Tue, Feb 18, 2020 at 7:09 PM David A Case <david.case.rutgers.edu> wrote:\n> On Tue, Feb 18, 2020, Sruthi Sudhakar wrote:\n>\n> >The job started running but it has been stuck in the following line for\n> >like 3 hours.\n> >28001 frames were processed by cpptraj for use in calculation.\n>\n> Try running a sample calculation with something like 5 frames, to make\n> sure everything is working OK. Here on the list, we don't know anything\n> about what options you chose for the MM/PBSA calculation, nor do we know\n> anything about how large your system is. So people here are unlikely to\n> be able to offer much real help. Start with the simplest and fastest\n> calculations (e.g. GB only, no PB), then slowly add more complexit and more\n> frames.\n>\n> ...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202002/0183.html",
+      "in_reply_to": 1582032867
+    }
+  ]
+}

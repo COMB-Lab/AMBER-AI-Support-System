@@ -1,0 +1,21 @@
+{
+  "thread_id": 1748363665,
+  "subject": "Bug in CPPTRAJ following alignment",
+  "messages": [
+    {
+      "message_id": 1748363665,
+      "author": "Helmut Carter",
+      "date_raw": "Tue, 27 May 2025 16:34:25 +0000",
+      "body": "Hello,\nI have found a bug in CPPTRAJ where aligning a trajectory, saving it, then loading it causes incorrect energies, possibly due to the placement of non-target atoms (that is, atoms in the mask for align). In a minimal example using a small molecule solvated in water, where the trajectory is 2 frames, the following happens:\n# script 1\nparm example.parm7\ntrajin example.nc\nalign !(:WAT)\ntrajout aligned.nc\nenergy * etype pme cut 9\ngo\navg(ENE_00001[total]) # returns -17959.450391 as expected\ncheck\ngo # no warnings from check\n# script 2\nparm example.parm7\ntrajin aligned.nc\nenergy * etype pme cut 9\ngo\navg(ENE_00001[total]) # returns 84244.631388\ncheck\ngo # 10 close contact warnings from check\nBy varying the energy mask, I have found that the incorrect energy stems from the solvent molecules. In the analysis of a 5 frame long trajectory, the energy after saving and loading was 35591055618150936.000000. This bug happens with V6.4.4 from AmberTools and V6.29.13 from GitHub. Please let me know if there's any more useful information I can provide.\nThank you,\nHelmut Carter",
+      "url": "http://archive.ambermd.org/202505/0055.html"
+    },
+    {
+      "message_id": 1748363899,
+      "author": "Carlos Simmerling",
+      "date_raw": "Tue, 27 May 2025 12:38:19 -0400",
+      "body": "I don't know the details of your system, but aligning a trajectory carried\nout in a periodic system can shift it such that the system no longer fits\nin the periodic cell that was originally present. the resulting energies\nwill indeed be far off, since the system does not fit in a periodic cell\nbut you are asking Amber to calculate the energies using that cell.\nIn my experience cpptraj warns about this when it processes that command.\nDid you see anything in the output when you did the trajout step?\nOn Tue, May 27, 2025 at 12:34 PM Helmut Carter via AMBER <amber.ambermd.\norg>\nwrote:\n> Hello,\n>\n> I have found a bug in CPPTRAJ where aligning a trajectory, saving it, then\n> loading it causes incorrect energies, possibly due to the placement of\n> non-target atoms (that is, atoms in the mask for align). In a minimal\n> example using a small molecule solvated in water, where the trajectory is 2\n> frames, the following happens:\n> # script 1\n> parm example.parm7\n> trajin example.nc\n> align !(:WAT)\n> trajout aligned.nc\n> energy * etype pme cut 9\n> go\n> avg(ENE_00001[total]) # returns -17959.450391 as expected\n> check\n> go # no warnings from check\n>\n> # script 2\n> parm example.parm7\n> trajin aligned.nc\n> energy * etype pme cut 9\n> go\n> avg(ENE_00001[total]) # returns 84244.631388\n> check\n> go # 10 close contact warnings from check\n>\n> By varying the energy mask, I have found that the incorrect energy stems\n> from the solvent molecules. In the analysis of a 5 frame long trajectory,\n> the energy after saving and loading was 35591055618150936.000000. This bug\n> happens with V6.4.4 from AmberTools and V6.29.13 from GitHub. Please let me\n> know if there's any more useful information I can provide.\n>\n> Thank you,\n> Helmut Carter\n>",
+      "url": "http://archive.ambermd.org/202505/0056.html",
+      "in_reply_to": 1748363665
+    }
+  ]
+}

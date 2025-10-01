@@ -1,0 +1,13 @@
+{
+  "thread_id": 1656158644,
+  "subject": "Re: [AMBER] writing dna-ligand topology using amber t-leap",
+  "messages": [
+    {
+      "message_id": 1656158644,
+      "author": "David A Case",
+      "date_raw": "Sat, 25 Jun 2022 08:04:04 -0400",
+      "body": "On Sat, Jun 25, 2022, İmren Bayıl via AMBER wrote:\n>my problem is that\n>occurred complex_clean2_wat.prmtop complex_clean2_wat inpcrd these two\n>files include B ligand I couldnt sure because I will use these two files in\n>namd md simulation.\nIt's hard to provide much advice here: (a) we don't know what is in the\ncomplex_clean2.pdb file; (b) we don't know if any errors were reported in\nthe tleap run.\nYou can use ParmEd (or a text editor) to see what is inside prmtop files.\nMaybe that will answer your questions. You can also use savePdb inside\ntleap, or ambpdb afterwards, to create a PDB file that you can examine in\na visualization program.\nI recommend avoiding the use of the \"combine\" command in tleap. Just make\na pdb file that has exactly the components you want, then load that into\ntleap.\nBelow, I've added some comments about your tleap script. Also note that it\nis often helpful to do things in steps, instead of trying to create a really\ncomplicated script. Stop after each \"saveAmberParm\" step, and examine the\nresults.\n>tleap\n>source leaprc.constph\n>source leaprc.gaff\n>gaff = loadamberparams gaff.dat # this is redundant\n> lig=loadmol2 B.mol2\n>loadamberparams B.frcmod\n> saveoff lig B.lib # this and the next line don't do anything\n>loadoff B.lib # and could end up overwriting \"lig\"\n>saveamberparm lig B.prmtop B.inpcrd\n>source leaprc.water.tip3p\n>loadOff atomic_ions.lib # leaprc.water.tip3 already does this\n>loadAmberParams frcmod.tip3p # \"\n>loadAmberParams frcmod.ions1lm_126_tip3p # \"\n>loadAmberParams frcmod.ionsjc_tip3p # \"\n> loadAmberParams frcmod.ions234lm_126_tip3p # \"\n>source leaprc.DNA.bsc1\n>loadoff DNA.parmBSC1.lib # leaprc.DNA.bsc1 already does this\n> loadoff parmBSC1.lib # \"\n> loadamberparams frcmod.parmbsc1 # \"\n> rec=loadpdb complex_clean2.pdb # check your naming conventions: you\n# are calling this \"rec\" but the file name has\n# \"complex\"\n>com=combine {rec lig}\n>check com\n>saveamberparm com complex_clean2_gas.prmtop complex_clean2_gas.inpcrd\n>savepdb com complex_clean2_gas.pdb\n>solvatebox com TIP3PBOX 10\n>charge com\n>addions com Na+ 0\n> saveamberparm com complex_clean2_wat.prmtop complex_clean2_wat.inpcrd\n...good luck....dac",
+      "url": "http://archive.ambermd.org/202206/0041.html"
+    }
+  ]
+}

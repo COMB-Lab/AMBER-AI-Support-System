@@ -1,0 +1,37 @@
+{
+  "thread_id": 1612318557,
+  "subject": "Random seed for restart files that have velocities?",
+  "messages": [
+    {
+      "message_id": 1612318557,
+      "author": "Liao",
+      "date_raw": "Tue, 2 Feb 2021 20:15:57 -0600",
+      "body": "Dear Amber community,\nI have a question regarding the random start seed: so if I’m continuing an MD run using a restart file with velocity, in the mdin setting the random seed still seems to be effective. Why is this the case? If all my velocities are given, what’s being perturbed here?\nThanks!",
+      "url": "http://archive.ambermd.org/202102/0022.html"
+    },
+    {
+      "message_id": 1612320170,
+      "author": "Carlos Simmerling",
+      "date_raw": "Tue, 2 Feb 2021 21:42:50 -0500",
+      "body": "Are you using a Langevin integrator? the random seed initializes the\nnumbers for the \"random\" collision forces of the integrator.\nOn Tue, Feb 2, 2021 at 9:16 PM Liao <liaojunzhuo.aliyun.\ncom> wrote:\n> Dear Amber community,\n>\n> I have a question regarding the random start seed: so if I’m continuing an\n> MD run using a restart file with velocity, in the mdin setting the random\n> seed still seems to be effective. Why is this the case? If all my\n> velocities are given, what’s being perturbed here?\n>\n> Thanks!\n>\n>",
+      "url": "http://archive.ambermd.org/202102/0023.html",
+      "in_reply_to": 1612318557
+    },
+    {
+      "message_id": 1612324682,
+      "author": "Liao",
+      "date_raw": "Tue, 2 Feb 2021 21:58:02 -0600",
+      "body": "Yes I’m using the Langevin thermostat. So does that mean if I save my MD half way but also keep it running, when I restart another one from the saved restart file, the new trajectory will always be different from the one that kept running?\nWhat if I wanted to exactly reproduce the continuous trajectory from the half-way saved restart frame?\nThanks!\n> On Feb 2, 2021, at 8:43 PM, Carlos Simmerling <carlos.simmerling.gmail.\ncom> wrote:\n>\n> ﻿Are you using a Langevin integrator? the random seed initializes the\n> numbers for the \"random\" collision forces of the integrator.\n>\n>> On Tue, Feb 2, 2021 at 9:16 PM Liao <liaojunzhuo.aliyun.\ncom> wrote:\n>>\n>> Dear Amber community,\n>>\n>> I have a question regarding the random start seed: so if I’m continuing an\n>> MD run using a restart file with velocity, in the mdin setting the random\n>> seed still seems to be effective. Why is this the case? If all my\n>> velocities are given, what’s being perturbed here?\n>>\n>> Thanks!\n>>\n>>",
+      "url": "http://archive.ambermd.org/202102/0024.html",
+      "in_reply_to": 1612318557
+    },
+    {
+      "message_id": 1612359840,
+      "author": "David A Case",
+      "date_raw": "Wed, 3 Feb 2021 08:44:00 -0500",
+      "body": "On Tue, Feb 02, 2021, Liao wrote:\n>Yes I’m using the Langevin thermostat. So does that mean if I save my MD\n>half way but also keep it running, when I restart another one from the\n>saved restart file, the new trajectory will always be different from the\n>one that kept running?\n>What if I wanted to exactly reproduce the continuous trajectory from the\n>half-way saved restart frame?\nAmber doesn't provide any way to do this using a restart file saved part way\nthrough the trajectory: there is no record of what random number seed was\nbeing used at that point.\nYou can re-run a trajectory from the beginning, because the seed that was\nactually used is printed in the output. Use that value for ig in your\nre-run. But you can't use CPU parallel for this, since that code is\nnon-deterministic. And you should not re-use an old seed for any other\npurpose.\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202102/0028.html",
+      "in_reply_to": 1612318557
+    }
+  ]
+}

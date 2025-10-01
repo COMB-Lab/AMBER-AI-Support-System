@@ -1,0 +1,21 @@
+{
+  "thread_id": 1641841159,
+  "subject": "Help in ligand preparation_antechamber",
+  "messages": [
+    {
+      "message_id": 1641841159,
+      "author": "Arooma Maryam",
+      "date_raw": "Mon, 10 Jan 2022 13:59:19 -0500",
+      "body": "Hi Amber user\nI am working on a ligand that is covalently bound to FAD cofactor. . *Both\nPO4s meioties of FAD together have -2 whereas the drug part has -1 (please\nsee par.pdb). *Overall charge on this FAD bound drug is -1.\nTo prepare this compound, i used this command\n*antechamber -i par.pdb -fi pdb -o lig.am1bcc.mol2 -fo mol2 -c bcc -s 2\n-nc -1*\n*but the output lig.am1bcc.mol2 shows 0 charge and two PO4 meioties have\nalso changed. *\n*In par.pdb ligand structure, P atom has two oxygen (O1P and O1P), O1P has\n-1 charge and valency of O2P is complete and shows double bonds. Same is\nthe case with PA oxygens. In lig.am1bcc.mol charges on thes PO4 atoms and\ndrug have been removed and overall charge is zero (please see\nlig.am1bcc.mol2 file).*\n- *In another attempt I tried parameterizing it with sybyl and gaff2.\nOutput files were even worse. *\n* antechamber -i par.mol2 -fi mol2 -o ligand-out.mol2 -fo mol2\n-at sybyl -pf y*\n* antechamber -i ligand-out.mol2 -fi mol2 -o lig.am1bcc.mol2\n-fo mol2 -at gaff2 -c bcc -rn LIG -pf yes -nc -1*\n* I wonder if anyone could help me fix this charge issue. *\n*Thank you *\n*Arooma*",
+      "url": "http://archive.ambermd.org/202201/0066.html"
+    },
+    {
+      "message_id": 1641914400,
+      "author": "David A Case",
+      "date_raw": "Tue, 11 Jan 2022 10:20:00 -0500",
+      "body": "On Mon, Jan 10, 2022, Arooma Maryam wrote:\n>I am working on a ligand that is covalently bound to FAD cofactor. . *Both\n> PO4s meioties of FAD together have -2 whereas the drug part has -1 (please\n>see par.pdb). *Overall charge on this FAD bound drug is -1.\nDo you not mean the drug part has charge of +1 (formally at the N1\nposition)? That would lead to a net charge of -1 for the whole ligand.\nYour \"par.pdb\" file has duplicate atom names: atoms 17 and 18 are both\nnamed \"N1\", atoms 21 and 22 are both named \"C2\", etc. Antechamber will\nrename duplicate atoms, but that makes the atom names in the mol2 file\ndiffer from those in the input PDB file, and makes it very hard to do any\ndebugging. Start with an input PDB file where the atom names are unique.\n> To prepare this compound, i used this command\n>*antechamber -i par.pdb -fi pdb -o lig.am1bcc.mol2 -fo mol2 -c bcc -s 2\n>-nc -1*\n>*but the output lig.am1bcc.mol2 shows 0 charge and two PO4 meioties have\n>also changed. *\n??? The sum of the charges in the mol2 file is -1, just as you requested for\nwith the \"-nc -1\" flag. I'm not sure why you think it \"shows 0 charge\".\nFor a di-phosphate system like this one, I'd recommend turning off geometry\noptimzation at the bcc step: add -ek \"qm_theory='AM1' maxcyc=0\" to your\nantechamber run. This will dramatically speed up the sqm calculation, and\nshould lead to somewhat better charges.\nBottom line, though: your ligand may actually be correctly parameterized,\nbut the atom name problem should be fixed before going forward.\nTry a minimization on just the ligand itself to see what it does to the\ngeometry.\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202201/0075.html",
+      "in_reply_to": 1641841159
+    }
+  ]
+}

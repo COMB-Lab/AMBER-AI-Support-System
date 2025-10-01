@@ -1,0 +1,21 @@
+{
+  "thread_id": 1695620072,
+  "subject": "amber unit",
+  "messages": [
+    {
+      "message_id": 1695620072,
+      "author": "Dulal Mondal",
+      "date_raw": "Mon, 25 Sep 2023 11:04:32 +0530",
+      "body": "Dear Experts,\nI have a nc file that contains positions and velocity. I convert this nc\nfile to mdvel. The mdvel file contains only velocity information. My\nquestion is, what is the velocity unit written in the nc and mdvel files?\n>From this nc file, I calculate velocity autocorrelation using the following\ncommand.\nvelocityautocorr .O out cpvec.dat diffout diff1.dat tstep 0.002 direct\nI also calculate the diffusion constant. I can not understand the unit of\nthe velocity autocorrelation function. The manual mentions that velocity is\nwritten in Angstrom/ 1/20 ps. But the unit of diffusion is Ang.^2/ps. I\nalso integrate using the command.\nintegrate cpvec.dat:2 out cpptrajinte.dat name int\n>From manual it is mentioned that \"In addition to calculating the velocity\nautocorrelation function, the self-diffusion coefficient will be reported\nin the output, calculated from the\nintegral over the VAC function.\"\nThe integrand value and the data that are written in diffout file\n\"diff1.dat\" should be match.\nThanking You.\n*With regards,*\n*Dulal Mondal,*\n*Research Scholar,*\n*Department of Chemistry,*\n*IIT Kharagpur, Kharagpur 721302.*",
+      "url": "http://archive.ambermd.org/202309/0115.html"
+    },
+    {
+      "message_id": 1695650670,
+      "author": "Daniel Roe",
+      "date_raw": "Mon, 25 Sep 2023 10:04:30 -0400",
+      "body": "Hi,\n> The manual mentions that velocity is written in Angstrom/ 1/20 ps.\nThis is correct and is the unit of velocities in Amber\ntrajectory/restart formats, and is a result of the unit system (AKMA)\nthat Amber uses.\n> But the unit of diffusion is Ang.^2/ps\nThis is also correct. Cpptraj internally converts velocity information\nto Ang/ps before processing.\n> I also integrate using the command.\n>\n> integrate cpvec.dat:2 out cpptrajinte.dat name int\nI'm guessing you read in the data with 'readdata' but didn't specify\nthe index column, so cpptraj read the time (column 1) from cpvec.dat\nas a data set and the VAC function from column 2 as a separate data\nset. You need to specify:\nreaddata cpvec.dat index 1\nThis matters because the integration needs the correct X values.\nHopefully this clears things up.\n-Dan\nPS - Is there any reason you're using 'direct' in 'velocityautocorr'?\nIt's so much slower than the FFT version of the calc and the results\nare the same - it's really just there for debugging.\nOn Mon, Sep 25, 2023 at 1:38 AM Dulal Mondal via AMBER\n<amber.ambermd.org> wrote:\n>\n> Dear Experts,\n>\n> I have a nc file that contains positions and velocity. I convert this nc\n> file to mdvel. The mdvel file contains only velocity information. My\n> question is, what is the velocity unit written in the nc and mdvel files?\n> From this nc file, I calculate velocity autocorrelation using the following\n> command.\n>\n> velocityautocorr .O out cpvec.dat diffout diff1.dat tstep 0.002 direct\n>\n> I also calculate the diffusion constant. I can not understand the unit of\n> the velocity autocorrelation function. The manual mentions that velocity is\n> written in Angstrom/ 1/20 ps. But the unit of diffusion is Ang.^2/ps. I\n> also integrate using the command.\n>\n> integrate cpvec.dat:2 out cpptrajinte.dat name int\n>\n> From manual it is mentioned that \"In addition to calculating the velocity\n> autocorrelation function, the self-diffusion coefficient will be reported\n> in the output, calculated from the\n> integral over the VAC function.\"\n>\n> The integrand value and the data that are written in diffout file\n> \"diff1.dat\" should be match.\n>\n> Thanking You.\n> *With regards,*\n> *Dulal Mondal,*\n> *Research Scholar,*\n> *Department of Chemistry,*\n> *IIT Kharagpur, Kharagpur 721302.*\n>",
+      "url": "http://archive.ambermd.org/202309/0117.html",
+      "in_reply_to": 1695620072
+    }
+  ]
+}

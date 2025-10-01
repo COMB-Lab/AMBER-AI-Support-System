@@ -1,0 +1,21 @@
+{
+  "thread_id": 1678806771,
+  "subject": "Wrong distance calculation with cpptraj",
+  "messages": [
+    {
+      "message_id": 1678806771,
+      "author": "Azurmendi, Hugo",
+      "date_raw": "Tue, 14 Mar 2023 15:12:51 +0000",
+      "body": "I’m getting a puzzling result with cpptraj. I run an MD on a long polysaccharide, I then run a cpptraj script to load the parm file and trajectory (I run in octahedral cell with water but save only the PS), calculate the distance between the extremes (distance r2to60 :2 :60 out r.dat) and save the selected frames as pdb in the same process. Next, I load the pdb trajectory and calculate the same distance (as L1), the result is different (but correct). The latter calculation is the correct one, I can load the trajectory as PDB or .nc in Pymol and confirm the result.\nI run out of ideas what I could do different, please, advise.\nFirst lines of distances:\n#Frame L1 #Frame r2to60\n1 81.0188 1 41.0548\n2 81.5262 2 40.7852\n3 83.2191 3 40.6565\n4 77.5096 4 48.3777\n5 75.7135 5 49.6401\n6 70.3752 6 53.8676\n7 68.1719 7 58.3595\n8 67.3075 8 59.0428\n9 64.6456 9 58.7674\n…\nThanks,\nHugo",
+      "url": "http://archive.ambermd.org/202303/0064.html"
+    },
+    {
+      "message_id": 1678816529,
+      "author": "Daniel Roe",
+      "date_raw": "Tue, 14 Mar 2023 13:55:29 -0400",
+      "body": "Not really possible to say for certain what's going on based on the\ninformation given, but I suspect you have a trajectory where the unit\ncell information is messed up (either from corruption or because you\nrotated the coordinates w.r.t. unit cell vectors via 'rms' or\nsomething) and that's messing up the minimum imaged distance\ncalculation. An easy test is to do the distance calculation from the\ntopology and trajectory with the 'noimage' keyword to turn off imaging\n- I'm guessing you will get the same #s as in the 'r2to60' column.\n-Dan\nOn Tue, Mar 14, 2023 at 1:52 PM Azurmendi, Hugo via AMBER\n<amber.ambermd.org> wrote:\n>\n> I’m getting a puzzling result with cpptraj. I run an MD on a long polysaccharide, I then run a cpptraj script to load the parm file and trajectory (I run in octahedral cell with water but save only the PS), calculate the distance between the extremes (distance r2to60 :2 :60 out r.dat) and save the selected frames as pdb in the same process. Next, I load the pdb trajectory and calculate the same distance (as L1), the result is different (but correct). The latter calculation is the correct one, I can load the trajectory as PDB or .nc in Pymol and confirm the result.\n> I run out of ideas what I could do different, please, advise.\n>\n> First lines of distances:\n> #Frame L1 #Frame r2to60\n> 1 81.0188 1 41.0548\n> 2 81.5262 2 40.7852\n> 3 83.2191 3 40.6565\n> 4 77.5096 4 48.3777\n> 5 75.7135 5 49.6401\n> 6 70.3752 6 53.8676\n> 7 68.1719 7 58.3595\n> 8 67.3075 8 59.0428\n> 9 64.6456 9 58.7674\n> …\n>\n> Thanks,\n> Hugo\n>",
+      "url": "http://archive.ambermd.org/202303/0065.html",
+      "in_reply_to": 1678806771
+    }
+  ]
+}

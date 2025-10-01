@@ -1,0 +1,13 @@
+{
+  "thread_id": 1688304687,
+  "subject": "Re: [AMBER] Kerror about MMPBSA",
+  "messages": [
+    {
+      "message_id": 1688304687,
+      "author": "Bill Miller III",
+      "date_raw": "Sun, 2 Jul 2023 08:31:27 -0500",
+      "body": "Based on the error, it appears MMPBSA is trying to predict the ligand mask and is finding no atoms. Which is why it is telling you that it “can’t pass no mask to strip” because there are no ligand atoms to remove when preparing the trajectory files. Did you create the dry prmtop files with ante-MMPBSA.py? I would start with double checking that your dry prmtop files were generated correctly.\n-Bill\n> On Jul 2, 2023, at 8:22 AM, ZangRiran via AMBER <amber.ambermd.\norg> wrote:\n>\n> ﻿Hello\n> I am running mmpbsa in amber18 using the following command\" MMPBSA-1.py -O -i mmpbsa.in -o mmpbsa.dat -do final_mmpbsa.dat -sp com_solvated.prmtop -cp com.prmtop -rp ras.prmtop -lp raf.prmtop -y md.crd\"\n> But I am encountering an error which says \"Loading and checking parameter files for compatibility...\n> sander found! Using /mnt/disk1/software/AMBER18/amber18/bin/sander\n> cpptraj found! Using /mnt/disk1/software/AMBER18/amber18/bin/cpptraj\n> File \"/mnt/disk1/software/AMBER18/amber18/bin/MMPBSA-1.py\", line 99, in <module>\n> app.file_setup()\n> File \"/mnt/disk1/software/AMBER18/amber18/lib/python2.7/site-packages/MMPBSA_mods/main.py\", line 156, in file_setup\n> self.mpi_size, str(external_progs['cpptraj']), self.pre)\n> File \"/mnt/disk1/software/AMBER18/amber18/lib/python2.7/site-packages/MMPBSA_mods/make_trajs.py\", line 104, in make_trajectories\n> traj.Strip(INPUT['ligand_mask'])\n> File \"/mnt/disk1/software/AMBER18/amber18/lib/python2.7/site-packages/MMPBSA_mods/make_trajs.py\", line 646, in Strip\n> raise InternalError('Cannot pass no mask to Strip!')\n> InternalError: Cannot pass no mask to Strip!\"\n> And the input file MMPBSA content is \"\n> &general\n> endframe = 10000,\n> verbose = 1,\n> strip_mask = \":WAT:CL:CLO:IB:K:LI:MG:NA:NB\",\n> /\n> &gb\n> igb = 5, saltcon = 0.100,\n> /\n> &pb\n> istrng = 0.100,\n> /\n> &decomp\n> idecomp = 1, print_res = \"1-77\", dec_verbose = 1,\n> /\"\n>\n> How to rectify this kindly help as I am badly stuck in this.\n> Thank you,\n> Regards.\n>\n>\n>\n>\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202307/0002.html"
+    }
+  ]
+}

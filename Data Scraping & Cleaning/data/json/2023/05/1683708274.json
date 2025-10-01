@@ -1,0 +1,21 @@
+{
+  "thread_id": 1683708274,
+  "subject": "Can pmemd.cuda.MPI run on gpu with compute mode set as exclusive process?",
+  "messages": [
+    {
+      "message_id": 1683708274,
+      "author": "Siwakorn Sukharom",
+      "date_raw": "Wed, 10 May 2023 08:44:34 +0000",
+      "body": "When I run pmemd.cuda.MPI on gpu that set the compute mode to exclusive process, i got this error\ncudaDeviceEnablePeerAccess CUDA-capable device(s) is/are busy or unavailable\ncudaDeviceEnablePeerAccess CUDA-capable device(s) is/are busy or unavailable\nbut it can run fine on default mode. However, the problem is the system admin prefer to set gpu mode to exclusive process and ask me if i can make amber to run on exclusive process or not\n________________________________\nDisclaimer:\nThis e-mail and any files transmitted with it may contain confidential and proprietary information of the National Science and Technology Development Agency (NSTDA), Thailand. They are intended solely for the use of the addressed individuals or entities. If you are not the intended recipient, you are required to immediately delete this e-mail and its contents from your system. Any disclosure, distribution, or action based upon the contents of this e-mail is strictly prohibited. Any views or opinions presented in this e-mail are solely those of the sender and do not necessarily represent those of NSTDA. NSTDA does not accept any responsibility for the content of this message or the consequences of any actions taken on the basis of the information provided. NSTDA accepts no liability for any damage caused by any virus or malware which may be inserted in this e-mail during transmission.",
+      "url": "http://archive.ambermd.org/202305/0041.html"
+    },
+    {
+      "message_id": 1683718538,
+      "author": "Ross Walker",
+      "date_raw": "Wed, 10 May 2023 07:35:38 -0400",
+      "body": "Hi Siwakorn,\nYes when running the GPU MPI code it has to create an inter-GPU process for the communication. This is prohibited when running the GPUs in exclusive mode hence the error.\nAsking why your sysadmin prefers the GPUs to be in exclusive mode is a reasonable question - they just need to properly configure a queuing system that treats GPUs like a consumable. It's pretty easy to do. Assuming though that they don't want to do that you are stuck running single GPU runs I'm afraid. That said the acceleration from multi-GPU is minimal these days with AMBER, unless running very large GB simulations, so there is not much to gain. You are better off running two independent simulations from different starting conditions to improve your overall sampling.\nAll the best\nRoss\n> On May 10, 2023, at 04:44, Siwakorn Sukharom via AMBER <amber.ambermd.org> wrote:\n>\n> When I run pmemd.cuda.MPI on gpu that set the compute mode to exclusive process, i got this error\n>\n>\n> cudaDeviceEnablePeerAccess CUDA-capable device(s) is/are busy or unavailable\n> cudaDeviceEnablePeerAccess CUDA-capable device(s) is/are busy or unavailable\n>\n> but it can run fine on default mode. However, the problem is the system admin prefer to set gpu mode to exclusive process and ask me if i can make amber to run on exclusive process or not\n>\n> ________________________________\n>\n> Disclaimer:\n>\n> This e-mail and any files transmitted with it may contain confidential and proprietary information of the National Science and Technology Development Agency (NSTDA), Thailand. They are intended solely for the use of the addressed individuals or entities. If you are not the intended recipient, you are required to immediately delete this e-mail and its contents from your system. Any disclosure, distribution, or action based upon the contents of this e-mail is strictly prohibited. Any views or opinions presented in this e-mail are solely those of the sender and do not necessarily represent those of NSTDA. NSTDA does not accept any responsibility for the content of this message or the consequences of any actions taken on the basis of the information provided. NSTDA accepts no liability for any damage caused by any virus or malware which may be inserted in this e-mail during transmission.\n>",
+      "url": "http://archive.ambermd.org/202305/0043.html",
+      "in_reply_to": 1683708274
+    }
+  ]
+}

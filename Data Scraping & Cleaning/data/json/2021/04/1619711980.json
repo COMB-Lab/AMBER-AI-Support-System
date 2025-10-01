@@ -1,0 +1,53 @@
+{
+  "thread_id": 1619711980,
+  "subject": "Adventures installing AMBER 20 in Centos 7",
+  "messages": [
+    {
+      "message_id": 1619711980,
+      "author": "Azurmendi, Hugo",
+      "date_raw": "Thu, 29 Apr 2021 15:59:40 +0000",
+      "body": "Hello there.\nI just finished installing AMBER 20 on a new Linux and found a few problems that I think developers should be aware of. I did a fresh install of Centos 7 installing the recommended packages for centos with yum. The problems were:\n1. For parallel I followed the instructions for Fedora to install openmpi as follows (not sure all these are required, but it worked):\n· yum install dnf\n· dnf install openmpi openmpi-devel environment-modules\n· source /etc/profile.d/modules.sh (to load modules)\n· Add line 'module load mpi/openmpi-x86_64' to .bashrc/.cshrc.\nAt this point I could start ‘make test.parallel’, however it would stall (without messages) after a few tests. I finally could get it to go all the way through by taking out (renaming the corresponding $AMBERHOME/test/testname) the tests for dhfr and rism3d. I haven’t investigated further this issue.\n1. The initial installation and test I did it in bash, deciding to switch to csh later. I sourced to amber.csh (located in the amber20 folder) in my .cshrc but didn’t work:\n* It warned that the shell was not csh, which it was. I fixed replacing ( \"$0\" != '-tcsh' && \"$0\" != '-csh' ) for ( \"$0\" !~ '*csh' ) in the ‘if’ line of amber.csh.\n* AMBERHOME was set to the path of the .cshrc instead of the path to amber.csh. I commented the setenv line in amber.csh and set AMBERHOME in my .cshrc in the old fashion.\nHope that helps to improve future releases. Looking forward to comments if I did something wrong.\nHugo",
+      "url": "http://archive.ambermd.org/202104/0250.html"
+    },
+    {
+      "message_id": 1619720989,
+      "author": "David A Case",
+      "date_raw": "Thu, 29 Apr 2021 14:29:49 -0400",
+      "body": "On Thu, Apr 29, 2021, Azurmendi, Hugo wrote:\n>I just finished installing AMBER 20 on a new Linux and found a few problems\n>that I think developers should be aware of. I did a fresh install of Centos\n>7 installing the recommended packages for centos with yum. The problems\n>were:\n>\n> 1. For parallel I followed the instructions for Fedora\nCan you say a little more about exactly what you did? Did you make any\nchanges to run_cmake other than setting -DMPI_TRUE? What value did you set\nfor DO_PARALLEL, and what was the exact command you used to run the tests?\n* It warned that the shell was not csh\nI can believe that the amber.csh may not work in all cases, but it would be\nmore helpful if you could quote the exact error message, since that would\ntell us what the value of the \"$0\" variable is in your case.\n...thx...dac",
+      "url": "http://archive.ambermd.org/202104/0252.html",
+      "in_reply_to": 1619711980
+    },
+    {
+      "message_id": 1619725696,
+      "author": "David A Case",
+      "date_raw": "Thu, 29 Apr 2021 15:48:16 -0400",
+      "body": "On Thu, Apr 29, 2021, David Case wrote:\n>\n> * It warned that the shell was not csh\nSorry for my earlier reply -- I should have just tested things out myself!\nIt indeed looks like an bug in the script. I wonder if you are the only\nAmberTools user out there who uses csh(?).\nI'll get an update prepared to fix this.\n> 1. For parallel I followed the instructions for Fedora\nI'm not quite sure why you followed the Fedora instructions rather than the\nCentOS instructions:\nhttps://ambermd.org/InstCentOS.php\nThis link just states that the openmpi and mpich libraries one gets from\n\"yum install\" don't work with Amber. There are instructions there to build\nfrom source: do this after you have installed the serial code (and hence\nhave an AMBERHOME environment variable.)\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202104/0254.html",
+      "in_reply_to": 1619711980
+    },
+    {
+      "message_id": 1619726506,
+      "author": "Azurmendi, Hugo",
+      "date_raw": "Thu, 29 Apr 2021 20:01:46 +0000",
+      "body": "OK. Since bash is the default most people must use that.\nI'm retesting with -np 8 to verify it still happening and I'll get back to you.\nThanks,\nHugo\n﻿On 4/29/21, 3:50 PM, \"David A Case\" <david.case.rutgers.\nedu> wrote:\nCAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you recognize the sender and know the content is safe.\nOn Thu, Apr 29, 2021, David Case wrote:\n>\n> * It warned that the shell was not csh\nSorry for my earlier reply -- I should have just tested things out myself!\nIt indeed looks like an bug in the script. I wonder if you are the only\nAmberTools user out there who uses csh(?).\nI'll get an update prepared to fix this.\n> 1. For parallel I followed the instructions for Fedora\nI'm not quite sure why you followed the Fedora instructions rather than the\nCentOS instructions:\nhttps://ambermd.org/InstCentOS.php\nThis link just states that the openmpi and mpich libraries one gets from\n\"yum install\" don't work with Amber. There are instructions there to build\nfrom source: do this after you have installed the serial code (and hence\nhave an AMBERHOME environment variable.)\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202104/0255.html",
+      "in_reply_to": 1619711980
+    },
+    {
+      "message_id": 1619751322,
+      "author": "Gerald Monard",
+      "date_raw": "Fri, 30 Apr 2021 11:55:22 +0900",
+      "body": "Hi,\nThe MPI implementation of openmpi or mpich provided in CentOS is a pain.\nCentOS 8 is even worse. The best is to install your own version. You can\nuse the configure_openmpi.sh script available in AmberTools/src if you\nwant some automatic configuration and build.\nI have also experienced that these official implementations can hang\nforever. Not always on the same test scripts though ...\nGerald.\nLe ven. 30 avr. 2021 à 01:00, Azurmendi, Hugo <Hugo.Azurmendi.fda.\nhhs.gov>\na écrit :\n> Hello there.\n> I just finished installing AMBER 20 on a new Linux and found a few\n> problems that I think developers should be aware of. I did a fresh install\n> of Centos 7 installing the recommended packages for centos with yum. The\n> problems were:\n>\n> 1. For parallel I followed the instructions for Fedora to install\n> openmpi as follows (not sure all these are required, but it worked):\n> · yum install dnf\n> · dnf install openmpi openmpi-devel environment-modules\n> · source /etc/profile.d/modules.sh (to load modules)\n> · Add line 'module load mpi/openmpi-x86_64' to .bashrc/.cshrc.\n> At this point I could start ‘make test.parallel’, however it would stall\n> (without messages) after a few tests. I finally could get it to go all the\n> way through by taking out (renaming the corresponding\n> $AMBERHOME/test/testname) the tests for dhfr and rism3d. I haven’t\n> investigated further this issue.\n>\n>\n> 1. The initial installation and test I did it in bash, deciding to\n> switch to csh later. I sourced to amber.csh (located in the amber20 folder)\n> in my .cshrc but didn’t work:\n> * It warned that the shell was not csh, which it was. I fixed\n> replacing ( \"$0\" != '-tcsh' && \"$0\" != '-csh' ) for ( \"$0\" !~ '*csh' ) in\n> the ‘if’ line of amber.csh.\n> * AMBERHOME was set to the path of the .cshrc instead of the path\n> to amber.csh. I commented the setenv line in amber.csh and set AMBERHOME in\n> my .cshrc in the old fashion.\n>\n> Hope that helps to improve future releases. Looking forward to comments if\n> I did something wrong.\n> Hugo\n>\n>",
+      "url": "http://archive.ambermd.org/202104/0258.html",
+      "in_reply_to": 1619711980
+    },
+    {
+      "message_id": 1619753275,
+      "author": "Kevin Keane",
+      "date_raw": "Thu, 29 Apr 2021 20:27:55 -0700",
+      "body": "I had the same experience. There are two main problems with the OpenMPI\nversion included in CentOS 7 and 8:\n- The version is positively ancient, and long out of support.\n- The version is compiled without support for most of the usual schedulers.\nIn most environments, that makes the OpenMPI from the distribution useless.\nTo resolve that, you will need to download a supported version (currently,\n3.1, 4.0 or 4.1) of OpenMPI as source tarball. Then install the correct dev\nRPMs for the resource manager you are using (such as slurm, torque or the\nlike).\nCurrent versions of OpenMPI include a spec file to build RPMs. You will\nneed to apply some tweaks to compile in the appropriate scheduler support.\nHint: I found that building a virtual machine as a compile environment with\nthe exactly right libraries etc. installed works wonders. I use vagrant for\nthat purpose.\nOnce this process is finished, you will have an RPM that you can distribute\nto the HPC.\nHint 2: if you can, don't try to get several OpenMPI versions to coexist.\nIt is possible, but not quite trivial to do.",
+      "url": "http://archive.ambermd.org/202104/0259.html",
+      "in_reply_to": 1619711980
+    }
+  ]
+}

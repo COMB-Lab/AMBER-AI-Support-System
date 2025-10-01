@@ -1,0 +1,21 @@
+{
+  "thread_id": 1640033806,
+  "subject": "Amber20 installation error - Centos 7",
+  "messages": [
+    {
+      "message_id": 1640033806,
+      "author": "Suguna Sakkiah",
+      "date_raw": "Mon, 20 Dec 2021 20:56:46 +0000",
+      "body": "Hi,\nI tried to install Amber20 - centos 7. I followed the below steps to install but got a error message while running run_cmake.\nStep 1:\nyum -y install tcsh make \\\ngcc gcc-gfortran gcc-c++ \\\nwhich flex bison patch bc \\\nlibXt-devel libXext-devel \\\nperl perl-ExtUtils-MakeMaker util-linux wget \\\nbzip2 bzip2-devel zlib-devel tar\nStep 2:\ncd /usr/local\n/usr/local/cmake-3.18.2-Linux-x86_64.sh\nStep 3:\nexport PATH=$PATH:/usr/local/cmake-3.18.2-Linux-x86_64/bin\nStep 4:\ntar xvfj /data/Amber/Amber20.tar.bz2\ntar xvfj /data/Amber/AmberTools20.tar.bz2\nStep 5:\ncd /data/Amber/amber20_src\n./configure gnu\nsource /data/Amber/amber20_src/amber.sh\nStep 6:\nrun_cmake file:\n# Assume this is Linux:\ncmake $AMBER_PREFIX/amber20_src \\\n-DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber20 \\\n-DCOMPILER=GNU \\\n-DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-11.4 \\\n-DUSE_FFT=TRUE \\\n-DMPI=TRUE -DCUDA=TRUE -DOPENMPI=TRUE -DNCCL=TRUE -DINSTALL_TESTS=TRUE \\\n-DDOWNLOAD_MINICONDA=TRUE -DMINICONDA_USE_PY3=TRUE \\\n2>&1 | tee cmake.log\n./run_cmake\n-- Amber source found, building AmberTools and Amber\n-- Could NOT find MPI_C (missing: MPI_C_LIBRARIES MPI_C_INCLUDE_PATH)\n-- Could NOT find MPI_CXX (missing: MPI_CXX_LIBRARIES MPI_CXX_INCLUDE_PATH)\n-- Could NOT find MPI_Fortran (missing: MPI_Fortran_LIBRARIES MPI_Fortran_INCLUDE_PATH)\nCMake Error at cmake/MPIConfig.cmake:12 (message):\nYou requested MPI, but the MPI C library was not found. Please install one\nand try again, or set MPI_C_INCLUDE_PATH and MPI_C_LIBRARIES to point to\nyour MPI.\nCall Stack (most recent call first):\nCMakeLists.txt:118 (include)\n-- Configuring incomplete, errors occurred!\nSee also \"/data/Amber/amber20_src/build/CMakeFiles/CMakeOutput.log\".\nIf the cmake build report looks OK, you should now do the following:\nmake install\nsource /data/Amber/amber20/amber.sh\nConsider adding the last line to your login startup script, e.g. ~/.bashrc\nI installed openmpi3 and updated in the bashrc file:\nexport PATH=\"${PATH}:/usr/lib64/openmpi3/bin\"\nexport LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH:/usr/lib64/openmpi3/lib\"\nRegards\nSuguna\n________________________________\nC4 Therapeutics, Inc. Confidentiality Notice: This message is private and may contain confidential and proprietary information. If you have received this message in error, please notify us and remove it from your system and note that you must not copy, distribute or take any action in reliance on it. Any unauthorized use or disclosure of the contents of this message is not permitted and may be unlawful.",
+      "url": "http://archive.ambermd.org/202112/0150.html"
+    },
+    {
+      "message_id": 1640053596,
+      "author": "David A Case",
+      "date_raw": "Mon, 20 Dec 2021 21:26:36 -0500",
+      "body": "On Mon, Dec 20, 2021, Suguna Sakkiah wrote:\n>\n>I tried to install Amber20 - centos 7. I followed the below steps to\n>install but got a error message while running run_cmake.\n>-- Could NOT find MPI_C (missing: MPI_C_LIBRARIES MPI_C_INCLUDE_PATH)\n>-- Could NOT find MPI_CXX (missing: MPI_CXX_LIBRARIES MPI_CXX_INCLUDE_PATH)\n>-- Could NOT find MPI_Fortran (missing: MPI_Fortran_LIBRARIES MPI_Fortran_INCLUDE_PATH)\n>I installed openmpi3 and updated in the bashrc file:\nYou don't say anything about *how* openmpie was installed, and it looks\nlike cmake can't find it.\nMPI plus Amber is rather tricky on CentOS: be sure to read this page:\nhttps://ambermd.org/InstCentOS.php\nwhich has instructions about what to do. Be sure that executables like\n\"mpicc\", \"mpif90\" and \"mpirun\" are in your PATH.\n...hope this helps....dac\np.s.: I'd recommend starting simple with run_cmake, and building your way\nup. Don't try to add cuda and MPI all at once. Start with a serial build,\nthen add CUDA, then consider adding MPI.",
+      "url": "http://archive.ambermd.org/202112/0154.html",
+      "in_reply_to": 1640033806
+    }
+  ]
+}

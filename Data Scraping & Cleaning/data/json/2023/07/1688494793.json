@@ -1,0 +1,21 @@
+{
+  "thread_id": 1688494793,
+  "subject": "[amber] ph constant simulation question",
+  "messages": [
+    {
+      "message_id": 1688494793,
+      "author": "Yang, Li-Yen",
+      "date_raw": "Tue, 4 Jul 2023 18:19:53 +0000",
+      "body": "Dear Amber Community,\nI am trying to run an ph constant simulation with pmemd.cuda.\nBut I got this error: \"Constant pH pair list overflow. Increase MAX_TITR_RES in constantph.F90; recompile.\"\n>From my cpin file, I have 52 titratable residues.\nAnd I have the following settings in my cpin file:\n&CNSTPHE_LIMITS\nntres=52, maxh=5, natchrg=251, ntstates=15,\nIs there a way to solve this problem just by modifying the cpin file without recompiling amber?\nIf so, how should I modify the file?\nIf I do have to recompile amber, what value should I set MAX_TITR_RES to?\n(Ideally I would like it to be as large as possible so I won't need to complile it everytime when I have a different protein with different number of titratable groups. But I'm not sure if setting it to a large value will be a bad idea?)\nThank you!\nBest,\nZoey",
+      "url": "http://archive.ambermd.org/202307/0019.html"
+    },
+    {
+      "message_id": 1688497625,
+      "author": "SATYAJIT KHATUA",
+      "date_raw": "Wed, 5 Jul 2023 00:37:05 +0530",
+      "body": "Hi,\nIf possible, shift to AMBER 22. There is no issue with the MAX_TITR_RES\nsetting in AMBER 22. It will adapt to your titratable residue numbers in an\nautomated way.\nIf not, then there are two possible ways:\n1. Depending on the solution pH and the pKa(s) of the titratable\nresidue(s), you can select those residues that can change their protonation\nstates in the desired pH. In this way, you can reduce the residue list.\n2. If option 1 is not the solution you desire, then you may change the\nMAX_TITR_RES setting (~ 100) in constantph.F90 in sander as well as in\npmemd folder. After changing the setting, recompile the amber. Look, it is\napriori impossible to decide what will be the best likely guess for the\nMAX_TITR_RES setting. Depending on your system, you should do the changing\nand recompiling.\n*With regards,*\n*Satyajit Khatua*\nOn Tue, Jul 4, 2023 at 11:50 PM Yang, Li-Yen via AMBER <amber.ambermd.\norg>\nwrote:\n> Dear Amber Community,\n>\n> I am trying to run an ph constant simulation with pmemd.cuda.\n> But I got this error: \"Constant pH pair list overflow. Increase\n> MAX_TITR_RES in constantph.F90; recompile.\"\n>\n> From my cpin file, I have 52 titratable residues.\n> And I have the following settings in my cpin file:\n> &CNSTPHE_LIMITS\n> ntres=52, maxh=5, natchrg=251, ntstates=15,\n>\n> Is there a way to solve this problem just by modifying the cpin file\n> without recompiling amber?\n> If so, how should I modify the file?\n>\n> If I do have to recompile amber, what value should I set MAX_TITR_RES to?\n> (Ideally I would like it to be as large as possible so I won't need to\n> complile it everytime when I have a different protein with different number\n> of titratable groups. But I'm not sure if setting it to a large value will\n> be a bad idea?)\n>\n>\n> Thank you!\n>\n> Best,\n> Zoey\n>\n>",
+      "url": "http://archive.ambermd.org/202307/0020.html",
+      "in_reply_to": 1688494793
+    }
+  ]
+}

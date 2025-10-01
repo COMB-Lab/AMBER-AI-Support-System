@@ -1,0 +1,53 @@
+{
+  "thread_id": 1598158346,
+  "subject": "amber14 cuda code does not work",
+  "messages": [
+    {
+      "message_id": 1598158346,
+      "author": "Carlos",
+      "date_raw": "Sat, 22 Aug 2020 23:52:26 -0500",
+      "body": "Hi dear all.\nI have installed amber14 with GPU code. I have installed serial amber14\nwith AmberTools15 successfully and also CUDA version. When installation is\ncomplete, I get the message: Amber14 CUDA version is completed. It seems\nlooks well, but when I run pmemd.cuda, I get this advertisement:\ncudaGetDeviceCount failed CUDA driver version is insufficient for CUDA\nruntime version\nI have checked cuda libs and they are in /usr/local/cuda-7.5/lib64 and it\nseems is ok.\ncould somebody help me please?\nThanks in advance",
+      "url": "http://archive.ambermd.org/202008/0160.html"
+    },
+    {
+      "message_id": 1598193206,
+      "author": "David A Case",
+      "date_raw": "Sun, 23 Aug 2020 10:33:26 -0400",
+      "body": "On Sat, Aug 22, 2020, Carlos wrote:\n>\n>cudaGetDeviceCount failed CUDA driver version is insufficient for CUDA\n>runtime version\nCan you run any GPU programs? This message doesn't appear to have anything\nto do with Amber. It is saying that you probably need to update your driver.\nDo a Google search on \"cudaGetDeviceCount failed CUDA driver version is\ninsufficient for CUDA runtime version\"\nand see if the advice offered there helps.\n...dac",
+      "url": "http://archive.ambermd.org/202008/0161.html",
+      "in_reply_to": 1598158346
+    },
+    {
+      "message_id": 1598196619,
+      "author": "Bill Ross",
+      "date_raw": "Sun, 23 Aug 2020 08:30:19 -0700",
+      "body": "Also, does nvidia-smi work?\nBill\nOn 8/23/20 7:33 AM, David A Case wrote:\n> On Sat, Aug 22, 2020, Carlos wrote:\n>> cudaGetDeviceCount failed CUDA driver version is insufficient for CUDA\n>> runtime version\n> Can you run any GPU programs? This message doesn't appear to have anything\n> to do with Amber. It is saying that you probably need to update your driver.\n>\n> Do a Google search on \"cudaGetDeviceCount failed CUDA driver version is\n> insufficient for CUDA runtime version\"\n>\n> and see if the advice offered there helps.\n>\n> ...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202008/0162.html",
+      "in_reply_to": 1598158346
+    },
+    {
+      "message_id": 1598210590,
+      "author": "Carlos",
+      "date_raw": "Sun, 23 Aug 2020 14:23:10 -0500",
+      "body": "Thanks for your information.\nnvidia-smi shows all information about GPU card and it looks ok.\nI will search in cuda forums. I thought it Was problem of AMBER\nRegards.\nEl dom., 23 de agosto de 2020 10:30 a. m., Bill Ross <ross.cgl.\nucsf.edu>\nescribió:\n> Also, does nvidia-smi work?\n>\n> Bill\n>\n>\n> On 8/23/20 7:33 AM, David A Case wrote:\n> > On Sat, Aug 22, 2020, Carlos wrote:\n> >> cudaGetDeviceCount failed CUDA driver version is insufficient for CUDA\n> >> runtime version\n> > Can you run any GPU programs? This message doesn't appear to have\n> anything\n> > to do with Amber. It is saying that you probably need to update your\n> driver.\n> >\n> > Do a Google search on \"cudaGetDeviceCount failed CUDA driver version is\n> > insufficient for CUDA runtime version\"\n> >\n> > and see if the advice offered there helps.\n> >\n> > ...dac\n> >\n> >\n> >",
+      "url": "http://archive.ambermd.org/202008/0165.html",
+      "in_reply_to": 1598158346
+    },
+    {
+      "message_id": 1598280387,
+      "author": "Daniel Roe",
+      "date_raw": "Mon, 24 Aug 2020 10:46:27 -0400",
+      "body": "Hi,\nFor CUDA 7.5 you will need driver version >= 352.31.\nhttps://docs.nvidia.com/deploy/cuda-compatibility/index.html\nEnsure you are running at least that version. Then check you can run a\nCUDA program by e.g. compiling and running the deviceQueryDrv SDK\nsample.\n-Dan\nOn Sun, Aug 23, 2020 at 12:52 AM Carlos <carlos.rom.74he.gmail.com> wrote:\n>\n> Hi dear all.\n>\n> I have installed amber14 with GPU code. I have installed serial amber14\n> with AmberTools15 successfully and also CUDA version. When installation is\n> complete, I get the message: Amber14 CUDA version is completed. It seems\n> looks well, but when I run pmemd.cuda, I get this advertisement:\n>\n> cudaGetDeviceCount failed CUDA driver version is insufficient for CUDA\n> runtime version\n>\n> I have checked cuda libs and they are in /usr/local/cuda-7.5/lib64 and it\n> seems is ok.\n>\n> could somebody help me please?\n>\n> Thanks in advance\n>",
+      "url": "http://archive.ambermd.org/202008/0175.html",
+      "in_reply_to": 1598158346
+    },
+    {
+      "message_id": 1598369302,
+      "author": "Carlos",
+      "date_raw": "Tue, 25 Aug 2020 10:28:22 -0500",
+      "body": "Thanks for your support. I uninstall cuda 7.5 and then install cuda 6.5\nand it is working.\nThanks again.\nRegards.\nEl lun., 24 de agosto de 2020 9:46 a. m., Daniel Roe <daniel.r.roe.gmail.\ncom>\nescribió:\n> Hi,\n>\n> For CUDA 7.5 you will need driver version >= 352.31.\n>\nhttps://docs.nvidia.com/deploy/cuda-compatibility/index.html\n>\n> Ensure you are running at least that version. Then check you can run a\n> CUDA program by e.g. compiling and running the deviceQueryDrv SDK\n> sample.\n>\n> -Dan\n>\n> On Sun, Aug 23, 2020 at 12:52 AM Carlos <carlos.rom.74he.gmail.\ncom> wrote:\n> >\n> > Hi dear all.\n> >\n> > I have installed amber14 with GPU code. I have installed serial amber14\n> > with AmberTools15 successfully and also CUDA version. When installation\n> is\n> > complete, I get the message: Amber14 CUDA version is completed. It seems\n> > looks well, but when I run pmemd.cuda, I get this advertisement:\n> >\n> > cudaGetDeviceCount failed CUDA driver version is insufficient for CUDA\n> > runtime version\n> >\n> > I have checked cuda libs and they are in /usr/local/cuda-7.5/lib64 and\n> it\n> > seems is ok.\n> >\n> > could somebody help me please?\n> >\n> > Thanks in advance\n> >",
+      "url": "http://archive.ambermd.org/202008/0198.html",
+      "in_reply_to": 1598158346
+    }
+  ]
+}

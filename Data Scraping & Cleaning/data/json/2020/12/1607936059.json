@@ -1,0 +1,53 @@
+{
+  "thread_id": 1607936059,
+  "subject": "Disulphide bonds",
+  "messages": [
+    {
+      "message_id": 1607936059,
+      "author": "Gustaf Olsson",
+      "date_raw": "Mon, 14 Dec 2020 08:54:19 +0000",
+      "body": "Hello everyone\nI just want to double check something.\nI ran packmol including a peptide with a disulphide bond, using only the one peptide packmol seems to have added the correct conect record in the produced PDB file:\nCONECT 9 52\nThen when I run leap with 'bond sys.2.SG go.7.SG’ and try to write top/crd files leap exits with an error:\n!FATAL: Message: 1-4: cannot add bond 14 95\nThis may be caused by duplicate bond specifications;\nfor example, explicit bond commands in addition to PDB conect records.\nIs it safe to assume that the correct conect record in my PDB file is correctly applied in leap or is this something which should be “stripped” from the PDB and the bond created using leap.\nBest regards\n// Gustaf",
+      "url": "http://archive.ambermd.org/202012/0173.html"
+    },
+    {
+      "message_id": 1607950365,
+      "author": "Bill Ross",
+      "date_raw": "Mon, 14 Dec 2020 04:52:45 -0800",
+      "body": "If you run MD in vacuum at 100K or more, it should become apparent if\nthe bond is there.\nBill\nOn 12/14/20 12:54 AM, Gustaf Olsson wrote:\n> Hello everyone\n>\n> I just want to double check something.\n>\n> I ran packmol including a peptide with a disulphide bond, using only the one peptide packmol seems to have added the correct conect record in the produced PDB file:\n>\n> CONECT 9 52\n>\n> Then when I run leap with 'bond sys.2.SG go.7.SG’ and try to write top/crd files leap exits with an error:\n>\n> !FATAL: Message: 1-4: cannot add bond 14 95\n> This may be caused by duplicate bond specifications;\n> for example, explicit bond commands in addition to PDB conect records.\n>\n> Is it safe to assume that the correct conect record in my PDB file is correctly applied in leap or is this something which should be “stripped” from the PDB and the bond created using leap.\n>\n> Best regards\n> // Gustaf\n>",
+      "url": "http://archive.ambermd.org/202012/0185.html",
+      "in_reply_to": 1607936059
+    },
+    {
+      "message_id": 1607952438,
+      "author": "Gustaf Olsson",
+      "date_raw": "Mon, 14 Dec 2020 13:27:18 +0000",
+      "body": "Hello Bill\nYes, I have unintentionally tried this before when including numerous peptides and not issuing the bond command for each separate peptide. Turns out that it worked fairly well for a single peptide, not so much when including multiple peptides and it pretty much resulted in the “analysis” suggested. The bond was not present, though neither was the CONECT info in the packmol output or the warning in leap.\nI was curious if it was possible to confirm a correct disulphide bond using parmed/cpptraj or some other tool available in the prmtop/inpcrd file before initiating the simulations. Checking in VMD or Chimera was my first instinct though turns out that GUI software can sometimes render sulphide bonds if the distance criteria seems reasonable, even if these are not present for the simulation engine.\nBest regards\n// Gustaf\n> On 14 Dec 2020, at 13:52, Bill Ross <ross.cgl.ucsf.edu> wrote:\n>\n> If you run MD in vacuum at 100K or more, it should become apparent if\n> the bond is there.\n>\n> Bill\n>\n> On 12/14/20 12:54 AM, Gustaf Olsson wrote:\n>> Hello everyone\n>>\n>> I just want to double check something.\n>>\n>> I ran packmol including a peptide with a disulphide bond, using only the one peptide packmol seems to have added the correct conect record in the produced PDB file:\n>>\n>> CONECT 9 52\n>>\n>> Then when I run leap with 'bond sys.2.SG go.7.SG’ and try to write top/crd files leap exits with an error:\n>>\n>> !FATAL: Message: 1-4: cannot add bond 14 95\n>> This may be caused by duplicate bond specifications;\n>> for example, explicit bond commands in addition to PDB conect records.\n>>\n>> Is it safe to assume that the correct conect record in my PDB file is correctly applied in leap or is this something which should be “stripped” from the PDB and the bond created using leap.\n>>\n>> Best regards\n>> // Gustaf\n>>",
+      "url": "http://archive.ambermd.org/202012/0188.html",
+      "in_reply_to": 1607936059
+    },
+    {
+      "message_id": 1607954529,
+      "author": "Carlos Simmerling",
+      "date_raw": "Mon, 14 Dec 2020 09:02:09 -0500",
+      "body": "you can do this in many ways, here are two suggestions:\n- if you load the prmtop into vmd prior to loading the coordinates, the\nbonds in the prmtop, not the distance, will be used to determine which\nbonds to show\n- use parmed to write bond info with the printbonds command and a mask\nrestricting the list to SG atoms. See this example that shows the SG-SG\nbond:\n> printbonds .SG\nAtom 1 Atom 2 R eq Frc Cnst\n254 SG ( S) 658 SG ( S) 2.0380 166.0000\nOn Mon, Dec 14, 2020 at 8:27 AM Gustaf Olsson <gustaf.olsson.lnu.\nse> wrote:\n> Hello Bill\n>\n> Yes, I have unintentionally tried this before when including numerous\n> peptides and not issuing the bond command for each separate peptide. Turns\n> out that it worked fairly well for a single peptide, not so much when\n> including multiple peptides and it pretty much resulted in the “analysis”\n> suggested. The bond was not present, though neither was the CONECT info in\n> the packmol output or the warning in leap.\n>\n> I was curious if it was possible to confirm a correct disulphide bond\n> using parmed/cpptraj or some other tool available in the prmtop/inpcrd file\n> before initiating the simulations. Checking in VMD or Chimera was my first\n> instinct though turns out that GUI software can sometimes render sulphide\n> bonds if the distance criteria seems reasonable, even if these are not\n> present for the simulation engine.\n>\n> Best regards\n> // Gustaf\n>\n>\n> > On 14 Dec 2020, at 13:52, Bill Ross <ross.cgl.\nucsf.edu> wrote:\n> >\n> > If you run MD in vacuum at 100K or more, it should become apparent if\n> > the bond is there.\n> >\n> > Bill\n> >\n> > On 12/14/20 12:54 AM, Gustaf Olsson wrote:\n> >> Hello everyone\n> >>\n> >> I just want to double check something.\n> >>\n> >> I ran packmol including a peptide with a disulphide bond, using only\n> the one peptide packmol seems to have added the correct conect record in\n> the produced PDB file:\n> >>\n> >> CONECT 9 52\n> >>\n> >> Then when I run leap with 'bond sys.2.SG go.7.SG’ and try to write\n> top/crd files leap exits with an error:\n> >>\n> >> !FATAL: Message: 1-4: cannot add bond 14 95\n> >> This may be caused by duplicate bond specifications;\n> >> for example, explicit bond commands in addition to PDB conect\n> records.\n> >>\n> >> Is it safe to assume that the correct conect record in my PDB file is\n> correctly applied in leap or is this something which should be “stripped”\n> from the PDB and the bond created using leap.\n> >>\n> >> Best regards\n> >> // Gustaf\n> >>",
+      "url": "http://archive.ambermd.org/202012/0190.html",
+      "in_reply_to": 1607936059
+    },
+    {
+      "message_id": 1607955085,
+      "author": "David A Case",
+      "date_raw": "Mon, 14 Dec 2020 09:11:25 -0500",
+      "body": "On Mon, Dec 14, 2020, Bill Ross wrote:\n>If you run MD in vacuum at 100K or more, it should become apparent if\n>the bond is there.\nFar easier: just use the parmed printBonds action to print out the bonds\nin the relevant region.\n....dac",
+      "url": "http://archive.ambermd.org/202012/0193.html",
+      "in_reply_to": 1607936059
+    },
+    {
+      "message_id": 1608018197,
+      "author": "Gustaf Olsson",
+      "date_raw": "Tue, 15 Dec 2020 07:43:17 +0000",
+      "body": "Thank you Carlos and David, printBonds did the trick fast and simple.\nI came to the realisation that I should have spent a little more time checking the available options in parmed though thank you very much for supplying a solution.\nThis will come in handy next time working on a multi molecular system.\nBest regards\n// Gustaf\n> On 14 Dec 2020, at 15:11, David A Case <david.case.rutgers.edu> wrote:\n>\n> On Mon, Dec 14, 2020, Bill Ross wrote:\n>\n>> If you run MD in vacuum at 100K or more, it should become apparent if\n>> the bond is there.\n>\n> Far easier: just use the parmed printBonds action to print out the bonds\n> in the relevant region.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202012/0201.html",
+      "in_reply_to": 1607936059
+    }
+  ]
+}

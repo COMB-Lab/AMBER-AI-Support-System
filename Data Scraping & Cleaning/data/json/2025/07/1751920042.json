@@ -1,0 +1,29 @@
+{
+  "thread_id": 1751920042,
+  "subject": "Adapting angle parameters for new angles",
+  "messages": [
+    {
+      "message_id": 1751920042,
+      "author": "Christian Seitz",
+      "date_raw": "Mon, 7 Jul 2025 20:27:22 +0000",
+      "body": "Hello,\nI am trying to convert a pdb from CHARMM to AMBER, to run a simulation. This pdb contains glycans, some of which contain sialic acid. When I load this pdb into tleap, I see missing angle parameters:\nError: Could not find angle parameter for atom types: Cy - Cg - Os\nHowever, the $AMBERHOME/dat/leap/parm/GLYCAM_06j.dat file contains these parameters:\nOs-Cg-Cg 70.00 108.50 Methoxyethane (Ethylmethyl ether)\nOs-Cy-Cg 70.00 108.50 Methoxyethane (Ethylmethyl ether) - for sialic acid only!\n1) I am always wary about changing parameters; is it acceptable to add this new parameter for these atom types to $AMBERHOME/dat/leap/parm/GLYCAM_06j.dat?\nOs-Cg-Cy 70.00 108.50\nIf not, how would I go about getting parameters for Os-Cg-Cy?\n2) I manage the AMBER installation for my organization; are there best practices for modifying parameter files like this that others will use?\nThanks in advance!\nBest,\nChristian\nChristian Seitz\nPhD, Dept. of Computer Science | UChicago\ncgseitz.uchicago.edu<mailto:cgseitz.uchicago.edu>\n[www.linkedin.com/in/christianseitz21]<\nhttp://www.linkedin.com/in/christianseitz21\n>",
+      "url": "http://archive.ambermd.org/202507/0015.html"
+    },
+    {
+      "message_id": 1751922477,
+      "author": "Timothy Giese",
+      "date_raw": "Mon, 7 Jul 2025 21:07:57 +0000",
+      "body": "You could write a separate frcmod file to extend (or change) the force field parameters rather than modifying the official parameter file. Here is a link describing the frcmod file format:\nhttps://ambermd.org/FileFormats.php#frcmod\nHere is an example:\n\"\"\"\nRemark line goes here\nMASS\nBOND\nANGLE\nOs-Cg-Cy 70.00 108.50\nDIHE\nIMPROPER\nNONBON\n\"\"\"\nTo incorporate this in the tleap input, you'd load the force field parameters as normal, then add the command \"loadamberparams my_custom_params.frcmod\" before reading the pdb file.\nAlthough this may not be directly relevant to your situation, one often encounters frcmod files when parametrizing small drug-like molecules using antechamber and parmchk2. The parmchk2 program is used to write a frcmod file that contains guesses for the missing parameters. An example can be found in the tutorial linked below. Note that the default behavior of parmchk2 is to look for parameters missing from the gaff force field; use the --help option for additional info.\nhttps://ambermd.org/tutorials/basic/tutorial4b/index.php",
+      "url": "http://archive.ambermd.org/202507/0016.html",
+      "in_reply_to": 1751920042
+    },
+    {
+      "message_id": 1752001210,
+      "author": "Christian Seitz",
+      "date_raw": "Tue, 8 Jul 2025 19:00:10 +0000",
+      "body": "Hi Timothy,\nThanks for the suggestions, I made an frcmod file instead of changing the official parameter file and added in all of my custom parameters. I can build the system as expected now~\nbest,\nChristian\nChristian Seitz\nPhD, Dept. of Computer Science | UChicago\ncgseitz.uchicago.edu<mailto:cgseitz.uchicago.edu>\n[www.linkedin.com/in/christianseitz21]<\nhttp://www.linkedin.com/in/christianseitz21\n>\n________________________________\nFrom: Timothy Giese <giese025.rutgers.edu>\nSent: Monday, July 7, 2025 14:07\nTo: Christian Seitz <cgseitz.uchicago.edu>; AMBER Mailing List <amber.ambermd.org>\nSubject: Re: Adapting angle parameters for new angles\nYou could write a separate frcmod file to extend (or change) the force field parameters rather than modifying the official parameter file. Here is a link describing the frcmod file format:\nhttps://ambermd.org/FileFormats.php#frcmod\n<\nhttps://urldefense.com/v3/__https://ambermd.org/FileFormats.php*frcmod__;Iw!!BpyFHLRN4TMTrA!5OZDyDzR81fZhXTP6oE44QSRcNB6_xQVlZHpRI_wiemTJlvx73SL1YHHmTdXdDytj04EVkMsstKGBjdGnW70Ckx0\n$>\nHere is an example:\n\"\"\"\nRemark line goes here\nMASS\nBOND\nANGLE\nOs-Cg-Cy 70.00 108.50\nDIHE\nIMPROPER\nNONBON\n\"\"\"\nTo incorporate this in the tleap input, you'd load the force field parameters as normal, then add the command \"loadamberparams my_custom_params.frcmod\" before reading the pdb file.\nAlthough this may not be directly relevant to your situation, one often encounters frcmod files when parametrizing small drug-like molecules using antechamber and parmchk2. The parmchk2 program is used to write a frcmod file that contains guesses for the missing parameters. An example can be found in the tutorial linked below. Note that the default behavior of parmchk2 is to look for parameters missing from the gaff force field; use the --help option for additional info.\nhttps://ambermd.org/tutorials/basic/tutorial4b/index.php\n<\nhttps://urldefense.com/v3/__https://ambermd.org/tutorials/basic/tutorial4b/index.php__;!!BpyFHLRN4TMTrA!5OZDyDzR81fZhXTP6oE44QSRcNB6_xQVlZHpRI_wiemTJlvx73SL1YHHmTdXdDytj04EVkMsstKGBjdGnQCTJFra\n$>",
+      "url": "http://archive.ambermd.org/202507/0019.html",
+      "in_reply_to": 1751920042
+    }
+  ]
+}

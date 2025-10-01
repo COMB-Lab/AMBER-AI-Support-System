@@ -1,0 +1,21 @@
+{
+  "thread_id": 1582021187,
+  "subject": "What Can I do for Mixture of Solutions simulation and what should I assign epsilon value for this?",
+  "messages": [
+    {
+      "message_id": 1582021187,
+      "author": "Erdem Yeler",
+      "date_raw": "Tue, 18 Feb 2020 13:19:47 +0300",
+      "body": "Hi,\nI want to simulate protein-ligand interaction in 70%water -30%ethanol\n(percents for volume) For this;\n1) Should assign \"epsin\" in input files? For example epsin = 80 #for water\n2) Let's say I should assign new value to epsin. Can I use this formula :\n(Prakongpan and Nagai, 1984; Chien, 1984; Dumanovic et al., 1992*) *\n€mixture = a1€1+a2€2 (a is percent of volume and € is you know, epsilon :)\n)\nso for 70%water -30%ethanol\n€=78*0.70 +24.3*0.3 = 61.89\nor should I use (from this article: International Journal of Pharmaceutics\n269 (2004) 353–360 A simple relationship between dielectric constant of\nmixed solvents with solvent composition and temperature Abolghasem Jouyban)\nthis formula:\nln εm = φ1 ln ε1 + φ2 ln ε2 + φ1φ2 2 i=0 Ki(φ1 − φ2) i\n3)is the method I am planning of doing this simulation (to assign epsin\nvalue and to use the formula) wrong? if it is... what is the rightest way\nto do it?\nThank you so much for your help by now",
+      "url": "http://archive.ambermd.org/202002/0178.html"
+    },
+    {
+      "message_id": 1582042653,
+      "author": "David A Case",
+      "date_raw": "Tue, 18 Feb 2020 11:17:33 -0500",
+      "body": "On Tue, Feb 18, 2020, Erdem Yeler wrote:\n>I want to simulate protein-ligand interaction in 70%water -30%ethanol\n>(percents for volume) For this;\n>1) Should assign \"epsin\" in input files? For example epsin = 80 #for water\nepsin is the \"internal\" dielectric (that is, inside the protein). It\nwould not be an appropriate parameter to describe the solvent.\nAmber GB models have generally only been calibrated using epsin=1.\nEven if you decide to use epsout (not epsin), a mixed methanol/water\nsolvent is only approximately characterized by its dielectric constant.\nUpshot is that you should understand that you are making significant\n(and mostly untested) approximations to try to treat methanol/water as a\ndielectric continuum. But as long as you are looking for general\ntrends, trying things might be informative. You are likely to find\nthat an external dielectric of 62 is not much different than 78, at\nleast for a lot of solutes.\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202002/0192.html",
+      "in_reply_to": 1582021187
+    }
+  ]
+}

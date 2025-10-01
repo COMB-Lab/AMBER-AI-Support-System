@@ -1,0 +1,37 @@
+{
+  "thread_id": 1673787668,
+  "subject": "Center of mass, velocity, Momentum calculation",
+  "messages": [
+    {
+      "message_id": 1673787668,
+      "author": "Dulal Mondal",
+      "date_raw": "Sun, 15 Jan 2023 18:31:08 +0530",
+      "body": "Dear Users,\nI have a trajectory file (nc file) which contains only position information\nbut no velocity information.\nMy questions are\n1) How can I calculate the center of mass (COM) of a particular residue\n(HIS-64)?\n2) How can I calculate momentum?\nI am trying to draw a phase space. X-axis represents COM and Y-axis\nrepresents momentum.\nThanking you\n-- \n*With regards,*\n*Dulal Mondal,*\n*Research Scholar,*\n*Department of Chemistry,*\n*IIT Kharagpur, Kharagpur 721302.*",
+      "url": "http://archive.ambermd.org/202301/0061.html"
+    },
+    {
+      "message_id": 1673893787,
+      "author": "David A Case",
+      "date_raw": "Mon, 16 Jan 2023 13:29:47 -0500",
+      "body": "On Sun, Jan 15, 2023, Dulal Mondal via AMBER wrote:\n>\n>I have a trajectory file (nc file) which contains only position information\n>but no velocity information.\n>1) How can I calculate the center of mass (COM) of a particular residue\n>(HIS-64)?\nIn cpptraj, two linked statements should do the trick:\nvector his64com center :64 # computes the center of mass of residue 64\nrun\nwritedata his64.crd vectraj his64com trajfmt crd noorigin\n#writes out the center of mass coordinates for residue 64 at each\n# frame of the trajectory to the file his64.crd\n>2) How can I calculate momentum?\nWithout having velocities, you can't get at momenta.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202301/0068.html",
+      "in_reply_to": 1673787668
+    },
+    {
+      "message_id": 1673930757,
+      "author": "Dulal Mondal",
+      "date_raw": "Tue, 17 Jan 2023 10:15:57 +0530",
+      "body": "Dear Experts,\nThank you sir for your suggestion. I have calculated the center of mass\n(COM) of HIS-64 using vector command. can I try to calculate the velocity\nof the COM using the dr/dt equation. Is it correct If I calculate the\nvelocity using differential equation (dr/dt) ?\nOn Mon, Jan 16, 2023 at 11:59 PM David A Case <david.case.rutgers.edu>\nwrote:\n> On Sun, Jan 15, 2023, Dulal Mondal via AMBER wrote:\n> >\n> >I have a trajectory file (nc file) which contains only position\n> information\n> >but no velocity information.\n>\n> >1) How can I calculate the center of mass (COM) of a particular residue\n> >(HIS-64)?\n>\n> In cpptraj, two linked statements should do the trick:\n>\n> vector his64com center :64 # computes the center of mass of residue\n> 64\n> run\n> writedata his64.crd vectraj his64com trajfmt crd noorigin\n> #writes out the center of mass coordinates for residue 64 at each\n> # frame of the trajectory to the file his64.crd\n>\n> >2) How can I calculate momentum?\n>\n> Without having velocities, you can't get at momenta.\n>\n> ...good luck...dac\n>\n>",
+      "url": "http://archive.ambermd.org/202301/0074.html",
+      "in_reply_to": 1673787668
+    },
+    {
+      "message_id": 1673978717,
+      "author": "Daniel Roe",
+      "date_raw": "Tue, 17 Jan 2023 13:05:17 -0500",
+      "body": "Hi,\nOn Mon, Jan 16, 2023 at 11:46 PM Dulal Mondal via AMBER\n<amber.ambermd.org> wrote:\n> (COM) of HIS-64 using vector command. can I try to calculate the velocity\n> of the COM using the dr/dt equation. Is it correct If I calculate the\n> velocity using differential equation (dr/dt) ?\nIn general I would say probably not unless your trajectory write\nfrequency is very close to your time step. Otherwise the velocity\napproximation will likely be too rough. I know from experience for\nexample that a velocity autocorrelation function calculated using\nactual on-step velocities starts to differ quite a bit between actual\nand approximated velocities as the trajectory write frequency\nincreases (although maybe thats a bad example since the VAC fxn needs\na fairly high write frequency to be useful anyway). Perhaps others\nhave a different perspective.\n-Dan\n>\n> On Mon, Jan 16, 2023 at 11:59 PM David A Case <david.case.rutgers.edu>\n> wrote:\n>\n> > On Sun, Jan 15, 2023, Dulal Mondal via AMBER wrote:\n> > >\n> > >I have a trajectory file (nc file) which contains only position\n> > information\n> > >but no velocity information.\n> >\n> > >1) How can I calculate the center of mass (COM) of a particular residue\n> > >(HIS-64)?\n> >\n> > In cpptraj, two linked statements should do the trick:\n> >\n> > vector his64com center :64 # computes the center of mass of residue\n> > 64\n> > run\n> > writedata his64.crd vectraj his64com trajfmt crd noorigin\n> > #writes out the center of mass coordinates for residue 64 at each\n> > # frame of the trajectory to the file his64.crd\n> >\n> > >2) How can I calculate momentum?\n> >\n> > Without having velocities, you can't get at momenta.\n> >\n> > ...good luck...dac\n> >\n> >\n>",
+      "url": "http://archive.ambermd.org/202301/0081.html",
+      "in_reply_to": 1673787668
+    }
+  ]
+}

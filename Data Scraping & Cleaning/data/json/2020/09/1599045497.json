@@ -1,0 +1,45 @@
+{
+  "thread_id": 1599045497,
+  "subject": "best way to umbrella-sample a pseudo-dihedral angle Collective Variable",
+  "messages": [
+    {
+      "message_id": 1599045497,
+      "author": "Akshay Prabhakant",
+      "date_raw": "Wed, 2 Sep 2020 16:48:17 +0530",
+      "body": "A warm hello to the AMBER community,\nI would like to ask everyone the best way to carry out an umbrella-sampling\nsimulation for a pseudo-dihedral angle(COM's of 4 groups as specified by me\nwill be treated as the 4 points used to calculate the dihedral angle) as a\ncollective variable, using pmemd(and not sander, since my system is\nlarge(more than 100K atoms), and hence won't be able to maintain such a\ntime-wise lengthy simulation). I have already eliminated the nmropt method\nand plumed, since I found out that there is no support for PLUMED in pmemd,\nand for nmropt=1 type of umbrella sampling simulations, \"Implementation\ndoes not currently support the use of COM simulations for angle or dihedral\nrestraints. Require iat(3) >= 0 \" was encountered. I have attached a\nscreenshot for the same.\n[image: Screenshot from 2020-09-01 18-36-04.png]\nThank You in advance.\nRegards,\nAkshay Prabhakant.",
+      "url": "http://archive.ambermd.org/202009/0016.html"
+    },
+    {
+      "message_id": 1599047842,
+      "author": "Bill Ross",
+      "date_raw": "Wed, 2 Sep 2020 04:57:22 -0700",
+      "body": "Looks like you can't do it with a GPU. I would be impressed if you could\ndo it on CPU. Imagine what would be coded: a rotating force on four\ncenters of mass, distributed to each atom, that would require lots and\nlots of runtime to develop, and may not pay off. My bet having been to\nWoodstock is that it hasn't been done.\nBill\nOn 9/2/20 4:18 AM, Akshay Prabhakant wrote:\n> A warm hello to the AMBER community,\n> I would like to ask everyone the best way to carry out an umbrella-sampling\n> simulation for a pseudo-dihedral angle(COM's of 4 groups as specified by me\n> will be treated as the 4 points used to calculate the dihedral angle) as a\n> collective variable, using pmemd(and not sander, since my system is\n> large(more than 100K atoms), and hence won't be able to maintain such a\n> time-wise lengthy simulation). I have already eliminated the nmropt method\n> and plumed, since I found out that there is no support for PLUMED in pmemd,\n> and for nmropt=1 type of umbrella sampling simulations, \"Implementation\n> does not currently support the use of COM simulations for angle or dihedral\n> restraints. Require iat(3) >= 0 \" was encountered. I have attached a\n> screenshot for the same.\n>\n> [image: Screenshot from 2020-09-01 18-36-04.png]\n>\n> Thank You in advance.\n>\n> Regards,\n> Akshay Prabhakant.\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202009/0017.html",
+      "in_reply_to": 1599045497
+    },
+    {
+      "message_id": 1599052240,
+      "author": "David A Case",
+      "date_raw": "Wed, 2 Sep 2020 09:10:40 -0400",
+      "body": "On Wed, Sep 02, 2020, Akshay Prabhakant wrote:\n>since I found out that there is no support for PLUMED in pmemd,\nThis should not be true (at least, any more). If you are using Amber20, be\nsure to apply all updates, since very recent ones update sander and pmemd to\nthe new plumed API. Older versions of Amber should also work, but it may be\ntrickier to get going.\nBeyond that, check out section 23.4.2, which describes the COM_TORSION\ncollective variables.\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202009/0019.html",
+      "in_reply_to": 1599045497
+    },
+    {
+      "message_id": 1599056843,
+      "author": "Kellon Belfon",
+      "date_raw": "Wed, 2 Sep 2020 10:27:23 -0400",
+      "body": "Hi Akshay,\nWhich version of Amber are you using?\nAmber20 should support nrmopt=1 for CoM angle and torsion for pmemd and\npmemd.cuda.\nOn Wed, Sep 2, 2020, 9:10 AM David A Case <david.case.rutgers.edu> wrote:\n> On Wed, Sep 02, 2020, Akshay Prabhakant wrote:\n>\n> >since I found out that there is no support for PLUMED in pmemd,\n>\n> This should not be true (at least, any more). If you are using Amber20, be\n> sure to apply all updates, since very recent ones update sander and pmemd\n> to\n> the new plumed API. Older versions of Amber should also work, but it may\n> be\n> trickier to get going.\n>\n> Beyond that, check out section 23.4.2, which describes the COM_TORSION\n> collective variables.\n>\n> ....good luck....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202009/0022.html",
+      "in_reply_to": 1599045497
+    },
+    {
+      "message_id": 1599155353,
+      "author": "Akshay Prabhakant",
+      "date_raw": "Thu, 3 Sep 2020 23:19:13 +0530",
+      "body": "Thank you Bill Ross, David A. Case and Kellon Belfon for replying.\nI am using the AMBER18 version as of now, but will soon request my\ninstitute authorities to update it to the latest version. Thank you for the\nupdate on nmropt.\nRegards,\nAkshay.\nOn Wed, Sep 2, 2020 at 7:58 PM Kellon Belfon <kellonbelfon.gmail.com> wrote:\n> Hi Akshay,\n>\n> Which version of Amber are you using?\n>\n> Amber20 should support nrmopt=1 for CoM angle and torsion for pmemd and\n> pmemd.cuda.\n>\n> On Wed, Sep 2, 2020, 9:10 AM David A Case <david.case.rutgers.edu> wrote:\n>\n> > On Wed, Sep 02, 2020, Akshay Prabhakant wrote:\n> >\n> > >since I found out that there is no support for PLUMED in pmemd,\n> >\n> > This should not be true (at least, any more). If you are using Amber20,\n> be\n> > sure to apply all updates, since very recent ones update sander and pmemd\n> > to\n> > the new plumed API. Older versions of Amber should also work, but it may\n> > be\n> > trickier to get going.\n> >\n> > Beyond that, check out section 23.4.2, which describes the COM_TORSION\n> > collective variables.\n> >\n> > ....good luck....dac\n> >\n> >\n> >",
+      "url": "http://archive.ambermd.org/202009/0033.html",
+      "in_reply_to": 1599045497
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "thread_id": 1699614547,
+  "subject": "Regarding maximum molecular system size",
+  "messages": [
+    {
+      "message_id": 1699614547,
+      "author": "Singh,Ravi",
+      "date_raw": "Fri, 10 Nov 2023 11:09:07 +0000",
+      "body": "Hello Sir/Madam,\nThe limitation for molecular system in amber is 999999 atoms. However, I have to simulate a system with more than this limitation. I am concerned with if it can produce the right results.\nCan we increase this limitation ??\nThankyou for your comments\nRavi Singh\nGet Outlook for Android<\nhttps://aka.ms/AAb9ysg\n>",
+      "url": "http://archive.ambermd.org/202311/0056.html"
+    },
+    {
+      "message_id": 1699648936,
+      "author": "David A Case",
+      "date_raw": "Fri, 10 Nov 2023 13:42:16 -0700",
+      "body": "On Fri, Nov 10, 2023, Singh,Ravi via AMBER wrote:\n>The limitation for molecular system in amber is 999999 atoms.\nWhy do you think this? I've run many simulations with a few million atoms.\nCan you give details of exactly what you tried, and what the error was?\n...dac",
+      "url": "http://archive.ambermd.org/202311/0062.html",
+      "in_reply_to": 1699614547
+    },
+    {
+      "message_id": 1699656021,
+      "author": "Todd Minehardt",
+      "date_raw": "Fri, 10 Nov 2023 16:40:21 -0600",
+      "body": "Ravi,\nI've recently done an all-atom minimization of a system comprising 2.6\nmillion atoms (protein, membrane, water, counterions) with (serial) sander.\nYou should not have any issues at all.\nCheers,\nTodd\nOn Fri, Nov 10, 2023 at 5:16 AM Singh,Ravi via AMBER <amber.ambermd.\norg>\nwrote:\n> Hello Sir/Madam,\n> The limitation for molecular system in amber is 999999 atoms. However, I\n> have to simulate a system with more than this limitation. I am concerned\n> with if it can produce the right results.\n> Can we increase this limitation ??\n>\n>\n>\n> Thankyou for your comments\n> Ravi Singh\n>\n> Get Outlook for Android<\nhttps://aka.ms/AAb9ysg\n>\n>",
+      "url": "http://archive.ambermd.org/202311/0063.html",
+      "in_reply_to": 1699614547
+    },
+    {
+      "message_id": 1699771226,
+      "author": "Singh,Ravi",
+      "date_raw": "Sun, 12 Nov 2023 06:40:26 +0000",
+      "body": "Hello,\nThe create .mdcrd file I used below command.\ntrajin md.nc 1 10000 10\ntrajout md_1.mdcrd crd\nI am not aware if it is autoimage.\nHowever upon looking inside those created files I get below coordinates. Box size 74*74*75\n>Cpptraj Generated trajectory\n>-416.730-101.326 -63.637-416.090-100.840 -62.850-416.804-100.678 -64.539-416.217\nIs there a better way to create mdcrd file from .nc files ??\n________________________________\nFrom: David A Case <dacase1.gmail.com>\nSent: 12 November 2023 02:46\nTo: Singh,Ravi <ravi_comp.chem.22.gm.gist.ac.kr>\nSubject: Re: [AMBER] Regarding maximum molecular system size\nOn Sat, Nov 11, 2023, Singh,Ravi wrote:\n>Hello David,\nPlease send amber-related questions to the mail reflector, amber.ambermd.org,\nand not to me personally. That way, many people can see your question and try\nto help, and the answers can help others with similar questions. See\nhttp://lists.ambermd.org/mailman/listinfo/amber\nfor information on how to\nsubscribe.\n>I have a molecular system of 37,500 atoms(water 10,000 and butanol\n>500). But I received weird coordinates. The box size was around\n>75�75�75. However, I expect all my simulated molecules to be within those\n>dimensions. For reference I will paste few lines of the coordinates which I\n>received. Even the pdb file obtained the number of molecules ended on 9999\n>and started from 0. Please have a look at the coordinates.\n>\n>Cpptraj Generated trajectory\n>-416.730-101.326 -63.637-416.090-100.840 -62.850-416.804-100.678 -64.539-416.217\nAs a wild guess, this might be an imaging problem. Have you used autoimage\nin cpptraj to pack things back into a single unit cell?\nThe pdb format does not permit more than 10,000 residues, since the residue\nnumber column is only 4-characters wide. This is only a problem with that\nformat, and (depending on use) is often not a problem. The limitation has\nnothing to do with Amber, but with an limited (and deprecated) format that\nwas created in the 1970's.\n...dac",
+      "url": "http://archive.ambermd.org/202311/0068.html",
+      "in_reply_to": 1699614547
+    },
+    {
+      "message_id": 1699789223,
+      "author": "Carlos Simmerling",
+      "date_raw": "Sun, 12 Nov 2023 06:40:23 -0500",
+      "body": "You need to use the autoimage command if you want to autoimage.\nOn Sun, Nov 12, 2023, 1:40 AM Singh,Ravi via AMBER <amber.ambermd.\norg>\nwrote:\n> Hello,\n> The create .mdcrd file I used below command.\n>\n> trajin md.nc 1 10000 10\n> trajout md_1.mdcrd crd\n>\n> I am not aware if it is autoimage.\n> However upon looking inside those created files I get below coordinates.\n> Box size 74*74*75\n> >Cpptraj Generated trajectory\n> >-416.730-101.326 -63.637-416.090-100.840 -62.850-416.804-100.678\n> -64.539-416.217\n> Is there a better way to create mdcrd file from .nc files ??\n>\n> ________________________________\n> From: David A Case <dacase1.gmail.\ncom>\n> Sent: 12 November 2023 02:46\n> To: Singh,Ravi <\nravi_comp.chem.22.gm\n.\ngist.ac.kr>\n> Subject: Re: [AMBER] Regarding maximum molecular system size\n>\n> On Sat, Nov 11, 2023, Singh,Ravi wrote:\n> >Hello David,\n>\n> Please send amber-related questions to the mail reflector,\n> amber.ambermd.org,\n> and not to me personally. That way, many people can see your question and\n> try\n> to help, and the answers can help others with similar questions. See\n>\nhttp://lists.ambermd.org/mailman/listinfo/amber\nfor information on how to\n> subscribe.\n>\n> >I have a molecular system of 37,500 atoms(water 10,000 and butanol\n> >500). But I received weird coordinates. The box size was around\n> >75×75×75. However, I expect all my simulated molecules to be within those\n> >dimensions. For reference I will paste few lines of the coordinates which\n> I\n> >received. Even the pdb file obtained the number of molecules ended on 9999\n> >and started from 0. Please have a look at the coordinates.\n> >\n> >Cpptraj Generated trajectory\n> >-416.730-101.326 -63.637-416.090-100.840 -62.850-416.804-100.678\n> -64.539-416.217\n>\n> As a wild guess, this might be an imaging problem. Have you used autoimage\n> in cpptraj to pack things back into a single unit cell?\n>\n> The pdb format does not permit more than 10,000 residues, since the residue\n> number column is only 4-characters wide. This is only a problem with that\n> format, and (depending on use) is often not a problem. The limitation has\n> nothing to do with Amber, but with an limited (and deprecated) format that\n> was created in the 1970's.\n>\n> ...dac\n>\n>",
+      "url": "http://archive.ambermd.org/202311/0072.html",
+      "in_reply_to": 1699614547
+    },
+    {
+      "message_id": 1699891617,
+      "author": "David A Case",
+      "date_raw": "Mon, 13 Nov 2023 09:06:57 -0700",
+      "body": "On Sun, Nov 12, 2023, Singh,Ravi via AMBER wrote:\n>The create .mdcrd file I used below command.\n>\n>trajin md.nc 1 10000 10\n>trajout md_1.mdcrd crd\nJust to be more clear: add \"autoimage\" between the trajin and trajout lines.\nPlease read the manual section on the autoimage command to learn more.\n....dac",
+      "url": "http://archive.ambermd.org/202311/0085.html",
+      "in_reply_to": 1699614547
+    }
+  ]
+}

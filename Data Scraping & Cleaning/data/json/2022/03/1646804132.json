@@ -1,0 +1,21 @@
+{
+  "thread_id": 1646804132,
+  "subject": "Penalty Scores for Amino Acid Dihedral Parameters",
+  "messages": [
+    {
+      "message_id": 1646804132,
+      "author": "Nathan Black",
+      "date_raw": "Tue, 8 Mar 2022 23:35:32 -0600",
+      "body": "Hello AMBER Users,\nI am working with systems which have nonstandard C-terminal amino acid\nresidues (such as norleucine, tert-leucine, norvaline, etc.). When using\nParmchk2 to check for missing parameters from parm10.dat, only this was\ngiven:\nIMPROPER\nCX-O2-C -O2 10.5 180.0 2.0 Using general improper\ntorsional angle X-O2-C-O2, penalty score= 3.0\nI was able to recreate this with standard C-terminal amino acid residues\n(by loading the ff14SB force field into LEaP, saving a .mol2 file\ncorresponding to CLEU and CVAL, then running Parmchk2 on those .mol2\nfiles). The same dihedral parameter and comment were reported in the\nresulting .frcmod files.\nCan anyone with more experience tell me how significant of a penalty score\nthis is, and if it is worth trying to fix using paramfit or mdgx? I mention\nit because this parameter is also missing for standard amino acid residues,\nand not just the nonstandards that I built myself.\nAll the best,\n-NDB",
+      "url": "http://archive.ambermd.org/202203/0032.html"
+    },
+    {
+      "message_id": 1646834885,
+      "author": "David A Case",
+      "date_raw": "Wed, 9 Mar 2022 09:08:05 -0500",
+      "body": "On Tue, Mar 08, 2022, Nathan Black wrote:\n>\n>IMPROPER\n>CX-O2-C -O2 10.5 180.0 2.0 Using general improper\n>torsional angle X-O2-C-O2, penalty score= 3.0\n>\n>Can anyone with more experience tell me how significant of a penalty score\n>this is, and if it is worth trying to fix using paramfit or mdgx?\nAs the comment in the parmxx.dat files indicate, this out-of-plane penalty\nfor the C in a CO2 group was established in 1986(!), and no one has touched\nit since then. It keeps the four-atom group planar with a pretty strong\nrestraint. There is no evidence that anyone has thought about this in some\nfour decades; for example, the GAFF force field just took this parameter\nover from the same source.\n>because this parameter is also missing for standard amino acid residues,\n>and not just the nonstandards that I built myself.\nThis is a \"wild-card\" because the thought is that the CO2 group planarity is\nindependent of the atom type the carbon is bonded to.\nI'd personally think that there are lots of other things of higher priority\nin force field development for non-standard amino acids.\n....dac",
+      "url": "http://archive.ambermd.org/202203/0035.html",
+      "in_reply_to": 1646804132
+    }
+  ]
+}

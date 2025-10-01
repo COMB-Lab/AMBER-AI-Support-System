@@ -1,0 +1,29 @@
+{
+  "thread_id": 1586164346,
+  "subject": "ERROR: Calculation halted. Periodic box dimensions have changed too much from their initial values.",
+  "messages": [
+    {
+      "message_id": 1586164346,
+      "author": "Gallo, Angelo",
+      "date_raw": "Mon, 6 Apr 2020 09:12:26 +0000",
+      "body": "Dear Amber users,\nI was running, as most of time, a minimization with some heat steps and equilibration prior the production step.\nIt is the first time I am using AMBER18 to generate the prmtop and prmcrd file I never experienced the error reported below.\nUsually I generated the prmtop and prmcrd with either Amber12 or Amber14.\nJust few days ago using AMBER18 on the protein in its apo form I had no issue, but today I had the following error on the same protein but holo. In this holo protein there is just a modified residue.\nLooking at the prmtop and prmcrd I can’t see any error if there is any\nIt does not stop immediately I have five steps and it stops at the third one (sander2.in)\nAs attached file you can find the input file I have been using.\nERROR: Calculation halted. Periodic box dimensions have changed too much from their initial values.\nYour system density has likely changed by a large amount, probably from\nstarting the simulation from a structure a long way from equilibrium.\n[Although this error can also occur if the simulation has blown up for some reason]\nThe GPU code does not automatically reorganize grid cells and thus you\nwill need to restart the calculation from the previous restart file.\nThis will generate new grid cells and allow the calculation to continue.\nIt may be necessary to repeat this restarting multiple times if your system\nis a long way from an equilibrated density.\nAlternatively you can run with the CPU code until the density has converged\nand then switch back to the GPU code.\nAny suggestion for debugging this issue\nThanks in advance\nBest\nAngelo Gallo",
+      "url": "http://archive.ambermd.org/202004/0059.html"
+    },
+    {
+      "message_id": 1586170358,
+      "author": "Carlos Simmerling",
+      "date_raw": "Mon, 6 Apr 2020 06:52:38 -0400",
+      "body": "First check the density and see if it is reasonable. It may just be a\nchange during equilibration as the message says. If it did get too large,\nthen look carefully at your modified residue. Problems in md are often\nrelated to bad parameters, or ok parameters not properly used. It can also\nbe that your initial structure was poor and needs more careful\nequilibration. Analyze your energies to check that.\nOn Mon, Apr 6, 2020, 5:12 AM Gallo, Angelo <A.Gallo.1.warwick.\nac.uk> wrote:\n> Dear Amber users,\n>\n>\n>\n> I was running, as most of time, a minimization with some heat steps and\n> equilibration prior the production step.\n>\n>\n>\n> It is the first time I am using AMBER18 to generate the prmtop and prmcrd\n> file I never experienced the error reported below.\n>\n> Usually I generated the prmtop and prmcrd with either Amber12 or Amber14.\n>\n>\n>\n> Just few days ago using AMBER18 on the protein in its apo form I had no\n> issue, but today I had the following error on the same protein but holo. In\n> this holo protein there is just a modified residue.\n>\n>\n>\n> Looking at the prmtop and prmcrd I can’t see any error if there is any\n>\n>\n>\n> It does not stop immediately I have five steps and it stops at the third\n> one (sander2.in)\n>\n>\n>\n> As attached file you can find the input file I have been using.\n>\n>\n>\n> ERROR: Calculation halted. Periodic box dimensions have changed too much\n> from their initial values.\n>\n> Your system density has likely changed by a large amount, probably from\n>\n> starting the simulation from a structure a long way from equilibrium.\n>\n>\n>\n> [Although this error can also occur if the simulation has blown up for\n> some reason]\n>\n>\n>\n> The GPU code does not automatically reorganize grid cells and thus you\n>\n> will need to restart the calculation from the previous restart file.\n>\n> This will generate new grid cells and allow the calculation to continue.\n>\n> It may be necessary to repeat this restarting multiple times if your\n> system\n>\n> is a long way from an equilibrated density.\n>\n>\n>\n> Alternatively you can run with the CPU code until the density has\n> converged\n>\n> and then switch back to the GPU code.\n>\n>\n>\n> Any suggestion for debugging this issue\n>\n>\n>\n> Thanks in advance\n>\n>\n>\n> Best\n>\n>\n>\n> Angelo Gallo\n>",
+      "url": "http://archive.ambermd.org/202004/0060.html",
+      "in_reply_to": 1586164346
+    },
+    {
+      "message_id": 1586174639,
+      "author": "David A Case",
+      "date_raw": "Mon, 6 Apr 2020 08:03:59 -0400",
+      "body": "On Mon, Apr 06, 2020, Gallo, Angelo wrote:\n>\n>ERROR: Calculation halted. Periodic box dimensions have changed too much from their initial values.\n>\n> Alternatively you can run with the CPU code until the density has converged\n> and then switch back to the GPU code.\nJust to add to what Carlos said, the error message you got suggested\nseveral approaches. In my experience, the one quoted above is likely to\nbe the easiest. Also, be sure to see what the density of your system\nis, and how it is changing with time.\n....dac",
+      "url": "http://archive.ambermd.org/202004/0062.html",
+      "in_reply_to": 1586164346
+    }
+  ]
+}

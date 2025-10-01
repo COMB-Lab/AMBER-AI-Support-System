@@ -1,0 +1,45 @@
+{
+  "thread_id": 1676515771,
+  "subject": "drug including B atom",
+  "messages": [
+    {
+      "message_id": 1676515771,
+      "author": "laura zhang",
+      "date_raw": "Thu, 16 Feb 2023 02:49:31 +0000",
+      "body": "Dear amber users,\nI am working on a drug molecule which has a B atom. I got the following error message when trying to generate forcefield parameters for this molecule using antechamber.\n-- Check Geometry --\nfor those bonded\nWarning: Large distance for BOND 80 C27 F 0 1.54 [0.90 - 1.54]\nWarning: Large distance for BOND 81 C27 F1 0 1.54 [0.90 - 1.54]\nfor those not bonded\n-- Check Weird Bonds --\nStatus: pass\n-- Check Number of Units --\nStatus: pass\nacdoctor mode has completed checking the input file.\nInfo: Bond types are assigned for valence state (7) with penalty (1).\nInfo: Total number of electrons: 393; net charge: 0\nInfo: The number of electrons is odd (393).\nPlease check the total charge (-nc flag) and spin multiplicity (-m flag).\nRunning: /home/amber20/bin/sqm -O -i sqm.in -o sqm.out\n/home/amber20/bin/wrapped_progs/antechamber: Fatal Error!\nCannot properly run \"/home/amber20/bin/sqm -O -i sqm.in -o sqm.out\".\nCannot open file (drug_antechamber.mol2) with mode (r).\nNo such file or directory\nI am wondering how to solve the issue. Thank you very much.\nLaura",
+      "url": "http://archive.ambermd.org/202302/0086.html"
+    },
+    {
+      "message_id": 1676534189,
+      "author": "Steinbrecher, Thomas",
+      "date_raw": "Thu, 16 Feb 2023 08:56:29 +0100",
+      "body": "Hi Laura,\nit looks like your input structure has an issue. The total number of\nelectrons comes out as odd so you are likely missing either a hydrogen or a\ncharge somewhere (I'd also have a look at those long bond warnings). Maybe\nyour B-atom is engaged in an odd bonding arrangement as boron is wont to\ndo? Without seeing the structure it is hard to tell, but try and visualize\nit and check if you have a chemically reasonable structure with all\nvalences saturated.\nKind Regards,\nThomas\nOn Thu, Feb 16, 2023 at 3:49 AM laura zhang via AMBER <amber.ambermd.org>\nwrote:\n> Dear amber users,\n>\n> I am working on a drug molecule which has a B atom. I got the following\n> error message when trying to generate forcefield parameters for this\n> molecule using antechamber.\n>\n> -- Check Geometry --\n> for those bonded\n> Warning: Large distance for BOND 80 C27 F 0\n> 1.54 [0.90 - 1.54]\n> Warning: Large distance for BOND 81 C27 F1 0\n> 1.54 [0.90 - 1.54]\n> for those not bonded\n> -- Check Weird Bonds --\n> Status: pass\n> -- Check Number of Units --\n> Status: pass\n> acdoctor mode has completed checking the input file.\n>\n> Info: Bond types are assigned for valence state (7) with penalty (1).\n> Info: Total number of electrons: 393; net charge: 0\n> Info: The number of electrons is odd (393).\n> Please check the total charge (-nc flag) and spin multiplicity (-m\n> flag).\n>\n> Running: /home/amber20/bin/sqm -O -i sqm.in -o sqm.out\n> /home/amber20/bin/wrapped_progs/antechamber: Fatal Error!\n> Cannot properly run \"/home/amber20/bin/sqm -O -i sqm.in -o sqm.out\".\n> Cannot open file (drug_antechamber.mol2) with mode (r).\n> No such file or directory\n>\n> I am wondering how to solve the issue. Thank you very much.\n>\n> Laura\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202302/0087.html",
+      "in_reply_to": 1676515771
+    },
+    {
+      "message_id": 1676556470,
+      "author": "David A Case",
+      "date_raw": "Thu, 16 Feb 2023 09:07:50 -0500",
+      "body": "On Thu, Feb 16, 2023, laura zhang via AMBER wrote:\n>\n>I am working on a drug molecule which has a B atom. I got the following\n>error message when trying to generate forcefield parameters for this\n>molecule using antechamber.\nGAFF does not support boron. I'm a little surprised that acdoctor did not\nmake a clear report of that, but it's hard to be sure without seeing your\ninput file.\nYou can look into mgdx or parmfit to help generate a force field by hand,\nusing (probably) some quantum calculations as input. It's certainly worth a\nGoogle search to see if compounds like yours have been fit to simple force\nfields before.\n....dac",
+      "url": "http://archive.ambermd.org/202302/0092.html",
+      "in_reply_to": 1676515771
+    },
+    {
+      "message_id": 1676558015,
+      "author": "laura zhang",
+      "date_raw": "Thu, 16 Feb 2023 14:33:35 +0000",
+      "body": "[cid:bb0b93dd-7d06-4f09-adb4-264bc2325a80]\nabove is the structure of the drug. I added hydrogen atoms in chimera. At the end of the step, chimera pointed out that the B atom needs assignment. I chose the geometry of B as tetragonal and with no subsitution. I am not sure if that is correct. Then when I added charge (neutralize it), it did not work. Maybe that is the reason why if failed? Could I know what kind of assignment on geometry and substitution I should use? Thanks a lot.\nLaura\n________________________________\nFrom: Steinbrecher, Thomas <thomas.steinbrecher.roche.com>\nSent: Thursday, February 16, 2023 2:56\nTo: laura zhang <lqzhang0332.hotmail.com>; AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [Sender Not Verified] [AMBER] drug including B atom\nHi Laura,\nit looks like your input structure has an issue. The total number of electrons comes out as odd so you are likely missing either a hydrogen or a charge somewhere (I'd also have a look at those long bond warnings). Maybe your B-atom is engaged in an odd bonding arrangement as boron is wont to do? Without seeing the structure it is hard to tell, but try and visualize it and check if you have a chemically reasonable structure with all valences saturated.\nKind Regards,\nThomas\nOn Thu, Feb 16, 2023 at 3:49 AM laura zhang via AMBER <amber.ambermd.org<mailto:amber.ambermd.org>> wrote:\nDear amber users,\nI am working on a drug molecule which has a B atom. I got the following error message when trying to generate forcefield parameters for this molecule using antechamber.\n-- Check Geometry --\nfor those bonded\nWarning: Large distance for BOND 80 C27 F 0 1.54 [0.90 - 1.54]\nWarning: Large distance for BOND 81 C27 F1 0 1.54 [0.90 - 1.54]\nfor those not bonded\n-- Check Weird Bonds --\nStatus: pass\n-- Check Number of Units --\nStatus: pass\nacdoctor mode has completed checking the input file.\nInfo: Bond types are assigned for valence state (7) with penalty (1).\nInfo: Total number of electrons: 393; net charge: 0\nInfo: The number of electrons is odd (393).\nPlease check the total charge (-nc flag) and spin multiplicity (-m flag).\nRunning: /home/amber20/bin/sqm -O -i sqm.in<https://na01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fsqm.in%2F&data=05%7C01%7C%7Cafde1dabf26942afff4f08db0ff35819%7C84df9e7fe9f640afb435aaaaaaaaaaaa%7C1%7C0%7C638121310049345721%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=ZHjw1m8rVKqLpwvWHXS8QR3KKdKbx7cVqtqRjNFANbo%3D&reserved=0> -o sqm.out\n/home/amber20/bin/wrapped_progs/antechamber: Fatal Error!\nCannot properly run \"/home/amber20/bin/sqm -O -i sqm.in<\nhttps://na01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fsqm.in%2F&data=05%7C01%7C%7Cafde1dabf26942afff4f08db0ff35819%7C84df9e7fe9f640afb435aaaaaaaaaaaa%7C1%7C0%7C638121310049345721%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haW\nwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=ZHjw1m8rVKqLpwvWHXS8QR3KKdKbx7cVqtqRjNFANbo%3D&reserved=0> -o sqm.out\".\nCannot open file (drug_antechamber.mol2) with mode (r).\nNo such file or directory\nI am wondering how to solve the issue. Thank you very much.\nLaura",
+      "url": "http://archive.ambermd.org/202302/0096.html",
+      "in_reply_to": 1676515771
+    },
+    {
+      "message_id": 1676600709,
+      "author": "David A Case",
+      "date_raw": "Thu, 16 Feb 2023 21:25:09 -0500",
+      "body": "On Thu, Feb 16, 2023, laura zhang via AMBER wrote:\n>above is the structure of the drug. I added hydrogen atoms in chimera. At\n>the end of the step, chimera pointed out that the B atom needs assignment.\n>I chose the geometry of B as tetragonal and with no subsitution. I am not\n>sure if that is correct. Then when I added charge (neutralize it), it did\n>not work. Maybe that is the reason why if failed? Could I know what kind\n>of assignment on geometry and substitution I should use? Thanks a lot.\nHope this is not too much of a repeat: GAFF cannot handle boron. You might\nsee if a literature search leads to useful force field information. The\nparamfit or mdgx programs can help with parameterization, but expect a fair\nlearning curve.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202302/0100.html",
+      "in_reply_to": 1676515771
+    }
+  ]
+}

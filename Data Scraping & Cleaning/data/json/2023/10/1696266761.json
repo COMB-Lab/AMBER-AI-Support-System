@@ -1,0 +1,13 @@
+{
+  "thread_id": 1696266761,
+  "subject": "Re: [AMBER] Error: Incompatible CUDA and GNU versions 9.4.0]",
+  "messages": [
+    {
+      "message_id": 1696266761,
+      "author": "David A Case",
+      "date_raw": "Mon, 2 Oct 2023 11:12:41 -0600",
+      "body": "On Sun, Oct 01, 2023, Maryam Foroozmehr via AMBER wrote:\n>\n> I ran into the following issue\n> Error: Incompatible CUDA and GNU versions 9.4.0\n> since my CUDA version is 10.1 detected\n> and I followed the instructions given in\n>\nhttps://stackoverflow.com/questions/6622454/cuda-incompatible-with-my-gcc-version\n> ,\n> however, I still keep getting the same error message.\n>\n> In the ./run_cmake, I set\n> -DCUDA=TRUE\n> and also set\n> DCUDA_TOOLKIT_ROOT_DIR=/usr/lib/nvidia-cuda-toolkit,\n> basically, the path where my CUDA is installed.\n> With gcc --version I get\n> gcc (Ubuntu 7.5.0-6ubuntu2) 7.5.0\n>\n> I installed GCC version 7 and create symbolic link using\n> sudo ln -s /usr/bin/gcc-7 /usr/lib/nvidia-cuda-toolkit/bin/gcc\nThis won't do you any good with Amber: it is using the version of\ngcc/gfortran that is in your PATH variable, not anything inside\n/usr/lib/nvidia-cuda/toolkit (unless that is in your PATH).\nSo, you should type \"which gcc\" (or \"which gfortran\") at the command prompt,\nand make sure that these compilers are compatible with CUDA 10.1 (basically,\nthat they are version 8 or lower, and I understand it.) You may just need\nto update your PATH variable to point to the correct compilers.\n....good luck...dac",
+      "url": "http://archive.ambermd.org/202310/0004.html"
+    }
+  ]
+}

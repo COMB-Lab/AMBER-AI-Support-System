@@ -1,0 +1,21 @@
+{
+  "thread_id": 1634467363,
+  "subject": "Meaning of 3D-RISM output files?",
+  "messages": [
+    {
+      "message_id": 1634467363,
+      "author": "Gao Zhenting",
+      "date_raw": "Sun, 17 Oct 2021 18:42:43 +0800",
+      "body": "Hi there,\nI am reading the following paper to learn 3D-RISM\n(1)Nguyen, C.; Yamazaki, T.; Kovalenko, A.; Case, D. A.; Gilson, M. K.;\nKurtzman, T.; Luchko, T. A Molecular Reconstruction Approach to Site-Based\n3D-RISM and Comparison to GIST Hydration Thermodynamic Maps in an Enzyme\nActive Site. Plos One 2019, 14 (7), e0219473.\nhttps://doi.org/10.1371/journal.pone.0219473\n.\nFor the paper, the following command is used to calculated the density and\nenergy distributions.\n$AMBERHOME/bin/rism3d.snglpnt \\\n- --prmtop fxa-strip.parm7 \\\n- --traj fxa-strip.nc --xvv cTIP3P_pse3.xvv \\\n- --entropicDecomp --molReconstruct \\\n- --guv g \\\n- --exchem exchem --entropy entropy --solvene solvene --potUV potUV \\\n- --exchemUC exchemUC \\\n- --solvcut 999999. --buffer 24. --tolerance 1e-2,1e-6 \\\n- --closure kh,pse2,pse3 --uccoeff\n0.0327564,-3.26166,-0.000507492,0.0100166 \\\n- --mdiis_restart 100.0 --mdiis_nvec 10\\\n- --centering 3 \\\n- --verbose 2 > rism.out\nThere are 4 files which are molecular reconstructed\nentropy.mol.1.dx\npotUV.mol.1.dx\nsolvene.mol.1.dx\nexchem.mol.1.dx\nWhich output file is related to \"Water-water energy density distributions\",\n\"Solute-water energy density distributions\", and \"Total water energy\ndensity distributions\"?\nBest\nZhenting",
+      "url": "http://archive.ambermd.org/202110/0132.html"
+    },
+    {
+      "message_id": 1634579530,
+      "author": "tluchko",
+      "date_raw": "Mon, 18 Oct 2021 17:52:10 +0000",
+      "body": "Hi Zhenting,\nThe meaning of the command line flags can be found in the Amber manual. For the files you have listed\nentropy.mol.1.dx\n: solvent -T∆S density distribution\npotUV.mol.1.dx\n: solute-water energy density distribution\nsolvene.mol.1.dx\n: total water energy density distribution\nexchem.mol.1.dx\n: excess chemical potential energy density distribution\nThe water-water energy density distribution can be obtained by subtracting potUV from solvene. A convenient Python library for this calculation is\nhttps://github.com/MDAnalysis/GridDataFormats\n.\nHope this helps,\nTyler\nSent with ProtonMail Secure Email.\n‐‐‐‐‐‐‐ Original Message ‐‐‐‐‐‐‐\nOn Sunday, October 17th, 2021 at 3:42 AM, Gao Zhenting <zhentgpicasa.gmail.\ncom> wrote:\n> Hi there,\n>\n> I am reading the following paper to learn 3D-RISM\n>\n> (1)Nguyen, C.; Yamazaki, T.; Kovalenko, A.; Case, D. A.; Gilson, M. K.;\n>\n> Kurtzman, T.; Luchko, T. A Molecular Reconstruction Approach to Site-Based\n>\n> 3D-RISM and Comparison to GIST Hydration Thermodynamic Maps in an Enzyme\n>\n> Active Site. Plos One 2019, 14 (7), e0219473.\n>\n>\nhttps://doi.org/10.1371/journal.pone.0219473\n.\n>\n> For the paper, the following command is used to calculated the density and\n>\n> energy distributions.\n>\n> $AMBERHOME/bin/rism3d.snglpnt \\\n>\n> - --prmtop fxa-strip.parm7 \\\n> - --traj fxa-strip.nc --xvv cTIP3P_pse3.xvv \\\n> - --entropicDecomp --molReconstruct \\\n> - --guv g \\\n> - --exchem exchem --entropy entropy --solvene solvene --potUV potUV \\\n> - --exchemUC exchemUC \\\n> - --solvcut 999999. --buffer 24. --tolerance 1e-2,1e-6 \\\n> - --closure kh,pse2,pse3 --uccoeff\n>\n> 0.0327564,-3.26166,-0.000507492,0.0100166 \\\n> - --mdiis_restart 100.0 --mdiis_nvec 10\\\n> - --centering 3 \\\n> - --verbose 2 > rism.out\n>\n> There are 4 files which are molecular reconstructed\n>\n> entropy.mol.1.dx\n>\n> potUV.mol.1.dx\n>\n> solvene.mol.1.dx\n>\n> exchem.mol.1.dx\n>\n> Which output file is related to \"Water-water energy density distributions\",\n>\n> \"Solute-water energy density distributions\", and \"Total water energy\n>\n> density distributions\"?\n>\n> Best\n>\n> Zhenting\n>\n> AMBER mailing list\n>\n> AMBER.ambermd.org\n>\n>\nhttp://lists.ambermd.org/mailman/listinfo/amber",
+      "url": "http://archive.ambermd.org/202110/0138.html",
+      "in_reply_to": 1634467363
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "thread_id": 1593581303,
+  "subject": "Re: [AMBER] Error in Installing Amber 20 on GPU",
+  "messages": [
+    {
+      "message_id": 1593581303,
+      "author": "Suchetana Gupta",
+      "date_raw": "Wed, 1 Jul 2020 10:58:23 +0530",
+      "body": "Hi Dave\nThanks for the response. Yes, we did set the cuda_home environment variable\nand the cuda sdk is set in usr/local/cuda. We checked it.\nWe are unable to understand why cuda is not being used. Any help is\nappreciated.\nThanks\nSuchetana Gupta\nIACS, Kolkata\nOn Tue, Jun 30, 2020 at 5:11 PM David A Case <david.case.rutgers.edu> wrote:\n> On Tue, Jun 30, 2020, Suchetana Gupta wrote:\n>\n> >Yes, we did modify -DCUDA=TRUE in the CMake script.\n>\n>\n> You need to study the cmake output to look for why the build report says\n> that CUDA is OFF. The test output just says what it said before, that\n> you never build pmemd.cuda.\n>\n> Have you set your CUDA_HOME environment variable? Is the cuda SDK in a\n> standard place, like /usr/local/cuda?\n>\n> ...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202007/0002.html"
+    },
+    {
+      "message_id": 1593618301,
+      "author": "David A Case",
+      "date_raw": "Wed, 1 Jul 2020 11:45:01 -0400",
+      "body": "On Wed, Jul 01, 2020, Suchetana Gupta wrote:\n>Thanks for the response. Yes, we did set the cuda_home environment variable\n>and the cuda sdk is set in usr/local/cuda. We checked it.\n>We are unable to understand why cuda is not being used. Any help is\n>appreciated.\nAre you sure there is nothing relating to cuda in the output from\nrun_cake? If you can't find anything relevant, please post that output,\nas a plain text file attachment.\n...dac",
+      "url": "http://archive.ambermd.org/202007/0014.html",
+      "in_reply_to": 1593581303
+    },
+    {
+      "message_id": 1593625191,
+      "author": "Suchetana Gupta",
+      "date_raw": "Wed, 1 Jul 2020 23:09:51 +0530",
+      "body": "Thanks for the response Dave.\nWe tried a lot of options and tinkered with the cuda versions etc. We set\nthe cuda home variable to cuda 10. Yet while the installation happens, it\nis calling cuda 9. And it is calling for gcc 6. Our machine has gcc 7.5. I\nam attaching the cmake output file and make install file in text form.\nPlease help us solve this.\nThanks\nSuchetana Gupta\nIACS, Kolkata\nOn Wed, Jul 1, 2020 at 9:15 PM David A Case <david.case.rutgers.edu> wrote:\n> On Wed, Jul 01, 2020, Suchetana Gupta wrote:\n>\n> >Thanks for the response. Yes, we did set the cuda_home environment\n> variable\n> >and the cuda sdk is set in usr/local/cuda. We checked it.\n> >We are unable to understand why cuda is not being used. Any help is\n> >appreciated.\n>\n> Are you sure there is nothing relating to cuda in the output from\n> run_cake? If you can't find anything relevant, please post that output,\n> as a plain text file attachment.\n>\n> ...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202007/0016.html",
+      "in_reply_to": 1593581303
+    },
+    {
+      "message_id": 1593627209,
+      "author": "Suchetana Gupta",
+      "date_raw": "Wed, 1 Jul 2020 23:43:29 +0530",
+      "body": "I also tried by setting cuda home environment to 9. Yet, the same error\npersisted. Attaching the error message.\nIs it possible to make Amber use cuda 10 and gnu 7.5 somehow?\nHow do we overcome this? Our machine supports gnu 7.5\nThanks\nSuchetana Gupta\nIACS, Kolkata\nOn Wed, Jul 1, 2020 at 11:09 PM Suchetana Gupta <tutulg.gmail.com> wrote:\n> Thanks for the response Dave.\n> We tried a lot of options and tinkered with the cuda versions etc. We set\n> the cuda home variable to cuda 10. Yet while the installation happens, it\n> is calling cuda 9. And it is calling for gcc 6. Our machine has gcc 7.5. I\n> am attaching the cmake output file and make install file in text form.\n> Please help us solve this.\n> Thanks\n> Suchetana Gupta\n> IACS, Kolkata\n>\n> On Wed, Jul 1, 2020 at 9:15 PM David A Case <david.case.rutgers.edu>\n> wrote:\n>\n>> On Wed, Jul 01, 2020, Suchetana Gupta wrote:\n>>\n>> >Thanks for the response. Yes, we did set the cuda_home environment\n>> variable\n>> >and the cuda sdk is set in usr/local/cuda. We checked it.\n>> >We are unable to understand why cuda is not being used. Any help is\n>> >appreciated.\n>>\n>> Are you sure there is nothing relating to cuda in the output from\n>> run_cake? If you can't find anything relevant, please post that output,\n>> as a plain text file attachment.\n>>\n>> ...dac\n>>\n>>\n>>",
+      "url": "http://archive.ambermd.org/202007/0018.html",
+      "in_reply_to": 1593581303
+    },
+    {
+      "message_id": 1593669321,
+      "author": "Gustaf Olsson",
+      "date_raw": "Thu, 2 Jul 2020 05:55:21 +0000",
+      "body": "The error log seems pretty clear:\n#error -- unsupported GNU version! gcc versions later than 6 are not supported!\nI am uncertain if this is a restriction from Amber or the installed CUDA version though this matters less. What happens if you install gcc6 and try to build?\nIt seems that compiling amber using the gnu compilers (pretty much been my default since 2010-2018) is being met with more complications as the build seems picky regarding versions and particularly in combination with openmpi/cuda.\nAnyway, I would initially start by reverting to gcc6 and see if that produces a working build.\nBest regards\n// Gustaf\nOn 1 Jul 2020, at 20:13, Suchetana Gupta <tutulg.gmail.com<mailto:tutulg.gmail.com>> wrote:",
+      "url": "http://archive.ambermd.org/202007/0026.html",
+      "in_reply_to": 1593581303
+    },
+    {
+      "message_id": 1593669461,
+      "author": "Suchetana Gupta",
+      "date_raw": "Thu, 2 Jul 2020 11:27:41 +0530",
+      "body": "Thanks for the response. Actually we have other programs running on this\nmachine which will be disrupted if we shift to gcc6. That is why we were\nthinking of there is some other alternative.\nThanks\nSuchetana Gupta\nIACS, Kolkata\nOn Thu, 2 Jul 2020, 11:25 Gustaf Olsson, <gustaf.olsson.lnu.se> wrote:\n> The error log seems pretty clear:\n>\n> #error -- unsupported GNU version! gcc versions later than 6 are not\n> supported!\n>\n> I am uncertain if this is a restriction from Amber or the installed CUDA\n> version though this matters less. What happens if you install gcc6 and try\n> to build?\n>\n> It seems that compiling amber using the gnu compilers (pretty much been my\n> default since 2010-2018) is being met with more complications as the build\n> seems picky regarding versions and particularly in combination with\n> openmpi/cuda.\n>\n> Anyway, I would initially start by reverting to gcc6 and see if that\n> produces a working build.\n> Best regards\n> // Gustaf\n>\n> On 1 Jul 2020, at 20:13, Suchetana Gupta <tutulg.gmail.com<mailto:\n> tutulg.gmail.com>> wrote:\n>\n>",
+      "url": "http://archive.ambermd.org/202007/0027.html",
+      "in_reply_to": 1593581303
+    },
+    {
+      "message_id": 1593672249,
+      "author": "Gustaf Olsson",
+      "date_raw": "Thu, 2 Jul 2020 06:44:09 +0000",
+      "body": "I don’t know what OS you are working on though I would assume it is some linux distro. These often ship with a version of gcc pre-installed. It should also be possible to install a “second version” of gcc, not making this the default.\nThere might be a gcc4 version hidden somewhere already, which you should be able to check using something like\n$ find /usr/ -name “gcc\"\nor with an appropriate search path, you could potentially solve the issue through symlinking. Though I also assume that this might cause problems if there are other software depending on cuda.\n$ sudo ln -s /path/to/bin/gcc-4.X /path/to/cuda/bin/gcc and sudo ln -s /path/to/bin/g++-4.X /path/to/cuda/bin/g++\nI think the default cuda binary directory is \"/usr/local/cuda/bin”. Though I would suspect that this would also mean that you should build the rest of amber with the same version of gcc to avoid issues? (Someone with more insight might be able to chime in here).\nI would guess that you could export/alias another version of gcc for the particular install and the repeating this manually for a session when amber is being used, not making any changes persistent (CXX=g++-4.4 CC=gcc-4.4)\nHowever, it seems that the problem might be something else, if you have Cuda 10 installed, it should support gnu gcc 7. So the best way to solve this issue seems to be to get the correct version of Cuda included in the configuration of the amber install, then the gnu gcc problem should resolve itself. Does amber support Cuda 10?\nBest regards\n// Gustaf\n> On 2 Jul 2020, at 07:57, Suchetana Gupta <tutulg.gmail.\ncom> wrote:\n>\n> Thanks for the response. Actually we have other programs running on this\n> machine which will be disrupted if we shift to gcc6. That is why we were\n> thinking of there is some other alternative.\n> Thanks\n> Suchetana Gupta\n> IACS, Kolkata\n>\n> On Thu, 2 Jul 2020, 11:25 Gustaf Olsson, <gustaf.olsson.lnu.\nse> wrote:\n>\n>> The error log seems pretty clear:\n>>\n>> #error -- unsupported GNU version! gcc versions later than 6 are not\n>> supported!\n>>\n>> I am uncertain if this is a restriction from Amber or the installed CUDA\n>> version though this matters less. What happens if you install gcc6 and try\n>> to build?\n>>\n>> It seems that compiling amber using the gnu compilers (pretty much been my\n>> default since 2010-2018) is being met with more complications as the build\n>> seems picky regarding versions and particularly in combination with\n>> openmpi/cuda.\n>>\n>> Anyway, I would initially start by reverting to gcc6 and see if that\n>> produces a working build.\n>> Best regards\n>> // Gustaf\n>>\n>> On 1 Jul 2020, at 20:13, Suchetana Gupta <tutulg.gmail.\ncom<mailto:\n>> tutulg.gmail.com>> wrote:\n>>\n>>",
+      "url": "http://archive.ambermd.org/202007/0029.html",
+      "in_reply_to": 1593581303
+    },
+    {
+      "message_id": 1593691622,
+      "author": "David A Case",
+      "date_raw": "Thu, 2 Jul 2020 08:07:02 -0400",
+      "body": "On Wed, Jul 01, 2020, Suchetana Gupta wrote:\n>We tried a lot of options and tinkered with the cuda versions etc. We set\n>the cuda home variable to cuda 10. Yet while the installation happens, it\n>is calling cuda 9. And it is calling for gcc 6. Our machine has gcc 7.5. I\n>am attaching the cmake output file and make install file in text form.\n>Please help us solve this.\nWe just need more information. Exactly *how* did you \"set the cuda home\nvariable to cuda 10\"? What version is in /usr/local/cuda? Where is\ncuda 9 and where is cuda 10?\nUnfortunately, the people that really understand the ins and outs of\ncuda building generally don't follow this email list.\n....dac",
+      "url": "http://archive.ambermd.org/202007/0035.html",
+      "in_reply_to": 1593581303
+    },
+    {
+      "message_id": 1593692572,
+      "author": "Suchetana Gupta",
+      "date_raw": "Thu, 2 Jul 2020 17:52:52 +0530",
+      "body": "Hi\nVersion of /usr/local/cuda is cuda 9.0.176\nBoth Cuda-9.0 cuda-10.0 are in this path: /usr/local\nWe set CUDA_HOME by giving the command\nexport CUDA_HOME=/usr/local/cuda-10.0\nThanks\nSuchetana Gupta\nIACS, Kolkata\nOn Thu, 2 Jul 2020, 17:37 David A Case, <david.case.rutgers.edu> wrote:\n> On Wed, Jul 01, 2020, Suchetana Gupta wrote:\n>\n> >We tried a lot of options and tinkered with the cuda versions etc. We set\n> >the cuda home variable to cuda 10. Yet while the installation happens, it\n> >is calling cuda 9. And it is calling for gcc 6. Our machine has gcc 7.5. I\n> >am attaching the cmake output file and make install file in text form.\n> >Please help us solve this.\n>\n> We just need more information. Exactly *how* did you \"set the cuda home\n> variable to cuda 10\"? What version is in /usr/local/cuda? Where is\n> cuda 9 and where is cuda 10?\n>\n> Unfortunately, the people that really understand the ins and outs of\n> cuda building generally don't follow this email list.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202007/0037.html",
+      "in_reply_to": 1593581303
+    },
+    {
+      "message_id": 1593694589,
+      "author": "Gustaf Olsson",
+      "date_raw": "Thu, 2 Jul 2020 12:56:29 +0000",
+      "body": "Both Cuda-9.0 cuda-10.0 are in this path: /usr/local\nThis sounds strange and could be a cause of problems.\n$ cat /usr/local/cuda/version.txt\n$ nvcc —version\n$ which nvcc\n$ ls -la /usr/local/cuda/nvcc\nIf both versions (9 and 10) are installed, which one is linked from (usr/local/cuda), and which has priority in your path?\nMultiple versions can be installed though only one can be the “default”. If cuda 9 is linked or has priority in your path, \"setting cuda 10” during compile might not actually produce the desired result as it seems that the config script still finds cuda 9.\nBest regards\n// Gustaf\nOn 2 Jul 2020, at 14:22, Suchetana Gupta <tutulg.gmail.\ncom<mailto:tutulg.gmail.\ncom>> wrote:\nHi\nVersion of /usr/local/cuda is cuda 9.0.176\nBoth Cuda-9.0 cuda-10.0 are in this path: /usr/local\nWe set CUDA_HOME by giving the command\nexport CUDA_HOME=/usr/local/cuda-10.0\nThanks\nSuchetana Gupta\nIACS, Kolkata\nOn Thu, 2 Jul 2020, 17:37 David A Case, <david.case.rutgers.\nedu<mailto:david.case.rutgers.\nedu>> wrote:\nOn Wed, Jul 01, 2020, Suchetana Gupta wrote:\nWe tried a lot of options and tinkered with the cuda versions etc. We set\nthe cuda home variable to cuda 10. Yet while the installation happens, it\nis calling cuda 9. And it is calling for gcc 6. Our machine has gcc 7.5. I\nam attaching the cmake output file and make install file in text form.\nPlease help us solve this.\nWe just need more information. Exactly *how* did you \"set the cuda home\nvariable to cuda 10\"? What version is in /usr/local/cuda? Where is\ncuda 9 and where is cuda 10?\nUnfortunately, the people that really understand the ins and outs of\ncuda building generally don't follow this email list.\n....dac",
+      "url": "http://archive.ambermd.org/202007/0040.html",
+      "in_reply_to": 1593581303
+    },
+    {
+      "message_id": 1593694720,
+      "author": "Gustaf Olsson",
+      "date_raw": "Thu, 2 Jul 2020 12:58:40 +0000",
+      "body": "Sorry, and what does your PATH say regarding cuda? Something along the lines of\n$ echo $PATH\nBest regards\n// Gustaf\nOn 2 Jul 2020, at 14:56, Gustaf Olsson <gustaf.olsson.lnu.\nse<mailto:gustaf.olsson.lnu.\nse>> wrote:\nBoth Cuda-9.0 cuda-10.0 are in this path: /usr/local\nThis sounds strange and could be a cause of problems.\n$ cat /usr/local/cuda/version.txt\n$ nvcc —version\n$ which nvcc\n$ ls -la /usr/local/cuda/nvcc\nIf both versions (9 and 10) are installed, which one is linked from (usr/local/cuda), and which has priority in your path?\nMultiple versions can be installed though only one can be the “default”. If cuda 9 is linked or has priority in your path, \"setting cuda 10” during compile might not actually produce the desired result as it seems that the config script still finds cuda 9.\nBest regards\n// Gustaf\nOn 2 Jul 2020, at 14:22, Suchetana Gupta <tutulg.gmail.\ncom<mailto:tutulg.gmail.\ncom>> wrote:\nHi\nVersion of /usr/local/cuda is cuda 9.0.176\nBoth Cuda-9.0 cuda-10.0 are in this path: /usr/local\nWe set CUDA_HOME by giving the command\nexport CUDA_HOME=/usr/local/cuda-10.0\nThanks\nSuchetana Gupta\nIACS, Kolkata\nOn Thu, 2 Jul 2020, 17:37 David A Case, <david.case.rutgers.edu<mailto:david.case.rutgers.\nedu>> wrote:\nOn Wed, Jul 01, 2020, Suchetana Gupta wrote:\nWe tried a lot of options and tinkered with the cuda versions etc. We set\nthe cuda home variable to cuda 10. Yet while the installation happens, it\nis calling cuda 9. And it is calling for gcc 6. Our machine has gcc 7.5. I\nam attaching the cmake output file and make install file in text form.\nPlease help us solve this.\nWe just need more information. Exactly *how* did you \"set the cuda home\nvariable to cuda 10\"? What version is in /usr/local/cuda? Where is\ncuda 9 and where is cuda 10?\nUnfortunately, the people that really understand the ins and outs of\ncuda building generally don't follow this email list.\n....dac",
+      "url": "http://archive.ambermd.org/202007/0041.html",
+      "in_reply_to": 1593581303
+    },
+    {
+      "message_id": 1593709884,
+      "author": "David A Case",
+      "date_raw": "Thu, 2 Jul 2020 13:11:24 -0400",
+      "body": "On Thu, Jul 02, 2020, Suchetana Gupta wrote:\n>Version of /usr/local/cuda is cuda 9.0.176\n>Both Cuda-9.0 cuda-10.0 are in this path: /usr/local\n>We set CUDA_HOME by giving the command\n>export CUDA_HOME=/usr/local/cuda-10.0\nTry adding this to your cmake run:\n-DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-10.0\nAlso, check your $PATH to see which version of nvcc is chosen. More\ndetails are here:\nhttps://ambermd.org/pmwiki/pmwiki.php/Main/CMake-Guide-to-Options\n....dac",
+      "url": "http://archive.ambermd.org/202007/0050.html",
+      "in_reply_to": 1593581303
+    },
+    {
+      "message_id": 1593751914,
+      "author": "Suchetana Gupta",
+      "date_raw": "Fri, 3 Jul 2020 10:21:54 +0530",
+      "body": "Thanks for the response. As per your suggestion, we edited the run cmake\nfile at DCUDA_TOOLKIT_DIR ta cuda-10.0. The installation was okay. But the\nmake test.cuda.serial gave error. Attaching it in the txt file. Also,\nattached is the output for nvcc --output.\nNow in our machine, on typing nvidia-smi, we are getting the error: failed\nto initialize nvml: driver library version mismatch\nOn typing pmemd.cuda in terminal, it could recognise, so assuming that\ninstallation is there. But some error again with the cuda.\nPlease guide us.\nThanks\nSuchetana Gupta\nIACS, Kolkata\nOn Thu, Jul 2, 2020 at 10:41 PM David A Case <david.case.rutgers.edu> wrote:\n> On Thu, Jul 02, 2020, Suchetana Gupta wrote:\n>\n> >Version of /usr/local/cuda is cuda 9.0.176\n> >Both Cuda-9.0 cuda-10.0 are in this path: /usr/local\n> >We set CUDA_HOME by giving the command\n> >export CUDA_HOME=/usr/local/cuda-10.0\n>\n> Try adding this to your cmake run:\n>\n> -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-10.0\n>\n> Also, check your $PATH to see which version of nvcc is chosen. More\n> details are here:\n>\n>\nhttps://ambermd.org/pmwiki/pmwiki.php/Main/CMake-Guide-to-Options\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202007/0055.html",
+      "in_reply_to": 1593581303
+    },
+    {
+      "message_id": 1593783444,
+      "author": "David A Case",
+      "date_raw": "Fri, 3 Jul 2020 09:37:24 -0400",
+      "body": "On Fri, Jul 03, 2020, Suchetana Gupta wrote:\n>Thanks for the response. As per your suggestion, we edited the run cmake\n>file at DCUDA_TOOLKIT_DIR ta cuda-10.0. The installation was okay. But the\n>make test.cuda.serial gave error. Attaching it in the txt file. Also,\n>attached is the output for nvcc --output.\n>Now in our machine, on typing nvidia-smi, we are getting the error: failed\n>to initialize nvml: driver library version mismatch\nI don't see how just changing an option in run_cmake could have caused\nnvidia-smi to change its behavior. Most of your test errors come from\nthings that seem related to this: not finding a CUDA device, or not\nbeing able to intialize it.\nThis is not something that can be debugged remotely: you will need to\nfind someone who has access to your machine and can examine the problem\nof the mismatch between drivers and library version.\n....dac",
+      "url": "http://archive.ambermd.org/202007/0057.html",
+      "in_reply_to": 1593581303
+    },
+    {
+      "message_id": 1593855827,
+      "author": "Suchetana Gupta",
+      "date_raw": "Sat, 4 Jul 2020 15:13:47 +0530",
+      "body": "Hi David\nI have no clue what happened. All we did is reboot our system. Now\neverything is working fine. Thanks a lot for your help.\nRegards\nSuchetana Gupta\nIACS, Kolkata\nOn Fri, 3 Jul 2020, 19:07 David A Case, <david.case.rutgers.edu> wrote:\n> On Fri, Jul 03, 2020, Suchetana Gupta wrote:\n>\n> >Thanks for the response. As per your suggestion, we edited the run cmake\n> >file at DCUDA_TOOLKIT_DIR ta cuda-10.0. The installation was okay. But the\n> >make test.cuda.serial gave error. Attaching it in the txt file. Also,\n> >attached is the output for nvcc --output.\n>\n> >Now in our machine, on typing nvidia-smi, we are getting the error: failed\n> >to initialize nvml: driver library version mismatch\n>\n> I don't see how just changing an option in run_cmake could have caused\n> nvidia-smi to change its behavior. Most of your test errors come from\n> things that seem related to this: not finding a CUDA device, or not\n> being able to intialize it.\n>\n> This is not something that can be debugged remotely: you will need to\n> find someone who has access to your machine and can examine the problem\n> of the mismatch between drivers and library version.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202007/0074.html",
+      "in_reply_to": 1593581303
+    },
+    {
+      "message_id": 1593864100,
+      "author": "David A Case",
+      "date_raw": "Sat, 4 Jul 2020 08:01:40 -0400",
+      "body": "On Sat, Jul 04, 2020, Suchetana Gupta wrote:\n>I have no clue what happened. All we did is reboot our system. Now\n>everything is working fine. Thanks a lot for your help.\nActually, just rebooting is apparently a common response to what you saw.\nIt seems that it *is* possible to have this sort of behavior just by building\nAmber with cuda. See, for example:\nhttps://stackoverflow.com/questions/43022843/nvidia-nvml-driver-library-version-mismatch\n[I found this just by Googling on the error message.]\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202007/0076.html",
+      "in_reply_to": 1593581303
+    }
+  ]
+}

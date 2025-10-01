@@ -1,0 +1,21 @@
+{
+  "thread_id": 1715962394,
+  "subject": "TIP 3P IONS",
+  "messages": [
+    {
+      "message_id": 1715962394,
+      "author": "Ramírez, Gustavo",
+      "date_raw": "Fri, 17 May 2024 12:13:14 -0400",
+      "body": "Hi AMBER community,\nI'm having some issues every time I try to add ions to my system that are\ndifferent from Na+, K+, and Cl-. For some reason, *frcmod.ionsjc_tip3p* is\nnot allowing me to use Br- and I-. Here I attached the script that I am\nusing and the error screen.\nThank you!\n-------------------------------------------------------------------------------------------\n-------------------------------------------------------------------------------------------\nsource leaprc.gaff2\nsource leaprc.water.tip3p\nloadamberparams frcmod.mon\nloadoff monomer.lib\nloadoff atomic_ions.lib\nloadamberparams frcmod.ionsjc_tip3p\nMOL = loadpdb dimer_old.pdb\n#set default nocenter off\n#setBox MOL \"vdw\" 100\n#check MOL\naddIons2 MOL Na+ 2\naddIons2 MOL Br- 2\naddIons2 MOL Cl- 0\ncheck MOL\nsolvatebox MOL TIP3PBOX 30.0\nsaveamberparm MOL dimer_tip3p_ions.parm7 dimer_tip3p_ions.rst7\nsavepdb MOL dimer_tip3p_ions.pdb\nquit\n---------------------------------------------------------------------------------------------\n---------------------------------------------------------------------------------------------\nError screen:\n[image: Captura de pantalla (52).png]",
+      "url": "http://archive.ambermd.org/202405/0074.html"
+    },
+    {
+      "message_id": 1715971250,
+      "author": "David A Case",
+      "date_raw": "Fri, 17 May 2024 12:40:50 -0600",
+      "body": "On Fri, May 17, 2024, Ram�rez, Gustavo via AMBER wrote:\n>\n>I'm having some issues every time I try to add ions to my system that are\n>different from Na+, K+, and Cl-. For some reason, *frcmod.ionsjc_tip3p* is\n>not allowing me to use Br- and I-. Here I attached the script that I am\n>using and the error screen.\n>\n>source leaprc.gaff2\n>source leaprc.water.tip3p\n>loadamberparams frcmod.mon\n>loadoff monomer.lib\n>\n>loadoff atomic_ions.lib\n>loadamberparams frcmod.ionsjc_tip3p\nYou should not use the two commands above: they are already included\nin the leaprc.water.tip3p command, which contains the ion parameters\nrecommended for use with tip3p. (It's *possible* that loading all this\ntwice is causing a problem -- see below for debugging.)\n>addIons2 MOL Na+ 2\n>addIons2 MOL Br- 2\n>addIons2 MOL Cl- 0\nUnfortunately, your screenshot doesn't indicate anything about which of the\nabove commands led to the error. Run tleap interactively, and type in the\nabove commands to see where the error is coming from.\nAlso, please follow the suggestions in the error message: use the \"list\"\ncommand to make sure that the ions you want are actually loaded. Use the\n\"desc\" command to make sure that the offending residue name indeed refers to\nthe ion you want.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202405/0076.html",
+      "in_reply_to": 1715962394
+    }
+  ]
+}

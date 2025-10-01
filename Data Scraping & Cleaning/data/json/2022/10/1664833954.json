@@ -1,0 +1,29 @@
+{
+  "thread_id": 1664833954,
+  "subject": "AMBER22 installation on Linux",
+  "messages": [
+    {
+      "message_id": 1664833954,
+      "author": "Azurmendi, Hugo",
+      "date_raw": "Mon, 3 Oct 2022 21:52:34 +0000",
+      "body": "I am having troubles installing amber22 in Centos 7. I followed instructions to get cmake and gcc (version 9.2). I also took conda off PATH to avoid conflicts with miniconda. All seems to work until it reaches 94% in make install where I get:\n…\n[ 94%] Linking C executable xaLeap\n../Xraw/libXaw.a(AsciiSrc.c.o): In function `InitStringOrFile':\nAsciiSrc.c:(.text+0x131e): warning: the use of `tmpnam' is dangerous, better use `mkstemp'\n/usr/lib64/libSM.so: undefined reference to `uuid_unparse_lower.UUID_1.\n0'\n/usr/lib64/libSM.so: undefined reference to `uuid_generate.UUID_1.\n0'\ncollect2: error: ld returned 1 exit status\nmake[2]: *** [AmberTools/src/leap/src/leap/xaLeap] Error 1\nmake[1]: *** [AmberTools/src/leap/src/leap/CMakeFiles/xaLeap.dir/all] Error 2\nmake: *** [all] Error 2\nI just can’t find a solution to this.\nI was able to install AmberTools22 with conda, however I don’t know how to add or include Amber22 to that. If that were possible it could be a solution.\nPlease, advice. Thanks.\nHugo",
+      "url": "http://archive.ambermd.org/202210/0003.html"
+    },
+    {
+      "message_id": 1664892684,
+      "author": "SATYAJIT KHATUA",
+      "date_raw": "Tue, 4 Oct 2022 14:11:24 +0000",
+      "body": "Hi,\nMaybe you can try adding the option \"-DBUILD_GUI=FALSE\" in the run_cmake file. In that case, you will not have GUI version of leap though. If that seems ok to you then the above option should suffice your need.\nBest wishes,\nSatyajit Khatua\nGet Outlook for Android<\nhttps://aka.ms/AAb9ysg\n>\n________________________________\nFrom: Azurmendi, Hugo via AMBER <amber.ambermd.org>\nSent: Tuesday, October 4, 2022 3:22:34 AM\nTo: AMBER.ambermd.org <AMBER.ambermd.org>\nSubject: [AMBER] AMBER22 installation on Linux\nI am having troubles installing amber22 in Centos 7. I followed instructions to get cmake and gcc (version 9.2). I also took conda off PATH to avoid conflicts with miniconda. All seems to work until it reaches 94% in make install where I get:\n�\n[ 94%] Linking C executable xaLeap\n../Xraw/libXaw.a(AsciiSrc.c.o): In function `InitStringOrFile':\nAsciiSrc.c:(.text+0x131e): warning: the use of `tmpnam' is dangerous, better use `mkstemp'\n/usr/lib64/libSM.so: undefined reference to `uuid_unparse_lower.UUID_1.0'\n/usr/lib64/libSM.so: undefined reference to `uuid_generate.UUID_1.0'\ncollect2: error: ld returned 1 exit status\nmake[2]: *** [AmberTools/src/leap/src/leap/xaLeap] Error 1\nmake[1]: *** [AmberTools/src/leap/src/leap/CMakeFiles/xaLeap.dir/all] Error 2\nmake: *** [all] Error 2\nI just can�t find a solution to this.\nI was able to install AmberTools22 with conda, however I don�t know how to add or include Amber22 to that. If that were possible it could be a solution.\nPlease, advice. Thanks.\nHugo",
+      "url": "http://archive.ambermd.org/202210/0011.html",
+      "in_reply_to": 1664833954
+    },
+    {
+      "message_id": 1664908960,
+      "author": "Scott Brozell",
+      "date_raw": "Tue, 4 Oct 2022 14:42:40 -0400",
+      "body": "Hi,\nFor software unrelated to Amber, we have encountered a similar error:\nmpicc pingpong.c\n/usr/lib64/libblkid.so.1: undefined reference to `uuid_unparse.UUID_1.0'\nA compile time, but not run time, workaround is to add the uuid library:\nmpicc pingpong.c -luuid\n./a.out\n./a.out: /apps/python/3.9/lib/libuuid.so.1: no version information available (required by /lib64/libblkid.so.1)\nWe discovered that unloading python/3.9 fixes both the compile and the run.\nThat changes python from 3.9.12 back to the native OS version of 3.6.8\nSo you might try harder to purge your environment of non native python stuff.\nSome details:\nRed Hat Enterprise Linux release 8.4 (Ootpa)\nCurrently Loaded Modules:\n1) xalt/latest 3) gcc-compatibility/10.3.0 5) mvapich2/2.3.6\n2) modules/au2022 4) intel/2021.4.0 6) python/3.9\nscott\nOn Tue, Oct 04, 2022 at 02:11:24PM +0000, SATYAJIT KHATUA via AMBER wrote:\n>\n> Maybe you can try adding the option \"-DBUILD_GUI=FALSE\" in the run_cmake file. In that case, you will not have GUI version of leap though. If that seems ok to you then the above option should suffice your need.\n>\n> ________________________________\n> From: Azurmendi, Hugo via AMBER <amber.ambermd.org>\n> Sent: Tuesday, October 4, 2022 3:22:34 AM\n>\n> I am having troubles installing amber22 in Centos 7. I followed instructions to get cmake and gcc (version 9.2). I also took conda off PATH to avoid conflicts with miniconda. All seems to work until it reaches 94% in make install where I get:\n> ?\n> [ 94%] Linking C executable xaLeap\n> ../Xraw/libXaw.a(AsciiSrc.c.o): In function `InitStringOrFile':\n> AsciiSrc.c:(.text+0x131e): warning: the use of `tmpnam' is dangerous, better use `mkstemp'\n> /usr/lib64/libSM.so: undefined reference to `uuid_unparse_lower.UUID_1.0'\n> /usr/lib64/libSM.so: undefined reference to `uuid_generate.UUID_1.0'\n> collect2: error: ld returned 1 exit status\n> make[2]: *** [AmberTools/src/leap/src/leap/xaLeap] Error 1\n>\n> I was able to install AmberTools22 with conda, however I don?t know how to add or include Amber22 to that. If that were possible it could be a solution.",
+      "url": "http://archive.ambermd.org/202210/0012.html",
+      "in_reply_to": 1664833954
+    }
+  ]
+}

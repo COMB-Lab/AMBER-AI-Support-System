@@ -1,0 +1,45 @@
+{
+  "thread_id": 1626171764,
+  "subject": "DNA Strand Broken after minimization",
+  "messages": [
+    {
+      "message_id": 1626171764,
+      "author": "Sumon Naskar",
+      "date_raw": "Tue, 13 Jul 2021 15:52:44 +0530",
+      "body": "Dear sir,\nI was making a complex structure with the monomer of 5w2a for\npre-insertion stage.\nFirst I removed the solvent molecules and the unwanted molecules. Then I\nremoved the Magnesium atom and the incoming nucleotide from the pdb\nfile.\nThen I load my adduct and the above mentioned pdb complex for making the\nrequired complex i.e complex with my adduct. By applying the below\ncommands in leap.\n_source leaprc.protein.ff14SB_\n_source leaprc.DNA.bsc1_\n_source leaprc.water.tip3p_\n_U0 = loadmol2 ./CT-A_m1-c1_m2-c1.mol2_\n_frcmod1 = loadamberparams ./frcmod.known_\n_frcmod2 = loadamberparams ./frcmod.correspondence_\n_frcmod3 = loadamberparams ./output.frcmod_\n_complex = loadpdb complex.pdb_\n_check complex_\n_saveamberparm complex complex.prmtop complex.inpcrd_\n_ _\nThen I run a small minimization with this prmtop and inpcrd files to\nremove bad contacts. I got a ncrst file from here. I make a pdb file\nwith the prmtop and this ncrst file. The pdb file I have get have one\nDNA strand terminated from the place where my adduct is attached.\nCan you please tell me why this is and happening? And how to fix this\nproblem?\nLike here is no connection between the *P* atom and the O3' of\nguanosine.\nRegards,\nSumon Naskar",
+      "url": "http://archive.ambermd.org/202107/0078.html"
+    },
+    {
+      "message_id": 1626196400,
+      "author": "Carlos Simmerling",
+      "date_raw": "Tue, 13 Jul 2021 13:13:20 -0400",
+      "body": "two things you might try:\n1) pdb files don't always contain information about bonds, and programs use\ndistance between atoms to guess bonds. Your visualization software may be\ndoing this. If you use VMD, you can load the prmtop file first and then the\ncoordinates, and it will use bond info from the prmtop\n2) use parmed on your prmtop and see if bonds are present using the\n\"printbonds\" command.\nOn Tue, Jul 13, 2021 at 6:23 AM Sumon Naskar <205030041.iitb.ac.in> wrote:\n> Dear sir,\n>\n> I was making a complex structure with the monomer of 5w2a for\n> pre-insertion stage.\n>\n> First I removed the solvent molecules and the unwanted molecules. Then I\n> removed the Magnesium atom and the incoming nucleotide from the pdb\n> file.\n>\n> Then I load my adduct and the above mentioned pdb complex for making the\n> required complex i.e complex with my adduct. By applying the below\n> commands in leap.\n>\n> _source leaprc.protein.ff14SB_\n>\n> _source leaprc.DNA.bsc1_\n>\n> _source leaprc.water.tip3p_\n>\n> _U0 = loadmol2 ./CT-A_m1-c1_m2-c1.mol2_\n>\n> _frcmod1 = loadamberparams ./frcmod.known_\n>\n> _frcmod2 = loadamberparams ./frcmod.correspondence_\n>\n> _frcmod3 = loadamberparams ./output.frcmod_\n>\n> _complex = loadpdb complex.pdb_\n>\n> _check complex_\n>\n> _saveamberparm complex complex.prmtop complex.inpcrd_\n>\n> _ _\n>\n> Then I run a small minimization with this prmtop and inpcrd files to\n> remove bad contacts. I got a ncrst file from here. I make a pdb file\n> with the prmtop and this ncrst file. The pdb file I have get have one\n> DNA strand terminated from the place where my adduct is attached.\n>\n> Can you please tell me why this is and happening? And how to fix this\n> problem?\n>\n> Like here is no connection between the *P* atom and the O3' of\n> guanosine.\n>\n> Regards,\n>\n> Sumon Naskar\n>",
+      "url": "http://archive.ambermd.org/202107/0086.html",
+      "in_reply_to": 1626171764
+    },
+    {
+      "message_id": 1626200935,
+      "author": "Sumon Naskar",
+      "date_raw": "Tue, 13 Jul 2021 23:58:55 +0530",
+      "body": "I'm sure no bond is present between the P-atom and the O3'. The usual\nbond length between P and the O3' atoms is around 1.6 Angstrom but in my\nstructure where the DNA strand is terminated, the distance between the\nP-atom and the O3' atom is 3.9 Angstrom. Here are the snapshots from the\nPYMOL visualization software.\nOn 2021-07-13 22:43, Carlos Simmerling wrote:\n> two things you might try:\n> 1) pdb files don't always contain information about bonds, and programs use\n> distance between atoms to guess bonds. Your visualization software may be\n> doing this. If you use VMD, you can load the prmtop file first and then the\n> coordinates, and it will use bond info from the prmtop\n> 2) use parmed on your prmtop and see if bonds are present using the\n> \"printbonds\" command.\n>\n> On Tue, Jul 13, 2021 at 6:23 AM Sumon Naskar <205030041.iitb.ac.in> wrote:\n>\n>> Dear sir,\n>>\n>> I was making a complex structure with the monomer of 5w2a for\n>> pre-insertion stage.\n>>\n>> First I removed the solvent molecules and the unwanted molecules. Then I\n>> removed the Magnesium atom and the incoming nucleotide from the pdb\n>> file.\n>>\n>> Then I load my adduct and the above mentioned pdb complex for making the\n>> required complex i.e complex with my adduct. By applying the below\n>> commands in leap.\n>>\n>> _source leaprc.protein.ff14SB_\n>>\n>> _source leaprc.DNA.bsc1_\n>>\n>> _source leaprc.water.tip3p_\n>>\n>> _U0 = loadmol2 ./CT-A_m1-c1_m2-c1.mol2_\n>>\n>> _frcmod1 = loadamberparams ./frcmod.known_\n>>\n>> _frcmod2 = loadamberparams ./frcmod.correspondence_\n>>\n>> _frcmod3 = loadamberparams ./output.frcmod_\n>>\n>> _complex = loadpdb complex.pdb_\n>>\n>> _check complex_\n>>\n>> _saveamberparm complex complex.prmtop complex.inpcrd_\n>>\n>> _ _\n>>\n>> Then I run a small minimization with this prmtop and inpcrd files to\n>> remove bad contacts. I got a ncrst file from here. I make a pdb file\n>> with the prmtop and this ncrst file. The pdb file I have get have one\n>> DNA strand terminated from the place where my adduct is attached.\n>>\n>> Can you please tell me why this is and happening? And how to fix this\n>> problem?\n>>\n>> Like here is no connection between the *P* atom and the O3' of\n>> guanosine.\n>>\n>> Regards,\n>>\n>> Sumon Naskar\n>>",
+      "url": "http://archive.ambermd.org/202107/0090.html",
+      "in_reply_to": 1626171764
+    },
+    {
+      "message_id": 1626214537,
+      "author": "David A Case",
+      "date_raw": "Tue, 13 Jul 2021 16:15:37 -0600",
+      "body": "On Tue, Jul 13, 2021, Sumon Naskar wrote:\n>I'm sure no bond is present between the P-atom and the O3'. The usual\n>bond length between P and the O3' atoms is around 1.6 Angstrom but in my\n>structure where the DNA strand is terminated, the distance between the\n>P-atom and the O3' atom is 3.9 Angstrom. Here are the snapshots from the\n>PYMOL visualization software.\nFirst task: determine if the bond is present in the prmtop file: use the\nprintBonds actin in parmed.\nSecond task: if the bond is not there (seems most likely) try to figure out\nwhy. It seems likely that you need to use the \"bond\" command in tleap to\ncreate the missing bond.\n....dac",
+      "url": "http://archive.ambermd.org/202107/0093.html",
+      "in_reply_to": 1626171764
+    },
+    {
+      "message_id": 1626296731,
+      "author": "Sumon Naskar",
+      "date_raw": "Thu, 15 Jul 2021 02:35:31 +0530",
+      "body": null,
+      "url": "http://archive.ambermd.org/202107/0099.html",
+      "in_reply_to": 1626171764
+    }
+  ]
+}

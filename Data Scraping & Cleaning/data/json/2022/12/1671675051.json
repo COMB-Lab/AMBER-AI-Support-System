@@ -1,0 +1,21 @@
+{
+  "thread_id": 1671675051,
+  "subject": "Using filter command to select frames from the RDF",
+  "messages": [
+    {
+      "message_id": 1671675051,
+      "author": "Swapnil Singh",
+      "date_raw": "Wed, 21 Dec 2022 21:10:51 -0500",
+      "body": "Hello,\nI am trying to sort the frames based on my RDF output. In the RDF I can see\ntwo conformations at a distance of 4-8 A and another at 8-10 A so I want to\nsee those frames so that I can visualize those conformations. I am able to\nuse the filter command for distance but can not use it for RDF as I cannot\nname anything after radial (also attached distance command that worked\nwell). Can someone please help me out with this?\n*#filter RDFparm CaM_solv.prmtoptrajin CaM_solv_equil.nc 1 last 1radial out\n108-39.dat 0.1 15.0 :108.N1 :39.CG filter min 3.0 max 8.0 out filter.dat\nouttraj distance1-filtered.nc <\nhttp://distance1-filtered.nc\n> netcdf go*\nparm CaMCNFiNOSout_solv.prmtop\ntrajin CaMCNFiNOSout_equil.nc 1 last 1\ndihedral D :108.CA :108.CB :108.C2 :108.C3 out torsion.dat\nfilter D min 80.0 max 90.0 out filter.dat\nouttraj distance1-filtered.nc netcdf\ngo\nThanks,\nSwapnil",
+      "url": "http://archive.ambermd.org/202212/0083.html"
+    },
+    {
+      "message_id": 1671721605,
+      "author": "Daniel Roe",
+      "date_raw": "Thu, 22 Dec 2022 10:06:45 -0500",
+      "body": "Hi,\nOn Wed, Dec 21, 2022 at 9:11 PM Swapnil Singh via AMBER\n<amber.ambermd.org> wrote:\n>\n> Hello,\n> I am trying to sort the frames based on my RDF output. In the RDF I can see\n> two conformations at a distance of 4-8 A and another at 8-10 A so I want to\n> see those frames so that I can visualize those conformations. I am able to\n> use the filter command for distance but can not use it for RDF as I cannot\n> name anything after radial (also attached distance command that worked\n> well). Can someone please help me out with this?\nSo the issue here is that the radial distribution function is really a\nhistogram, but you're trying to use it as a time series. If all you\nwant is to extract the frames where the distance between :108.N1\n:39.CG ranges from 4 to 8 Ang. you would do something like:\nparm myparm.parm7\ntrajin mytraj.nc\ndistance d1 :108.N1 :39.CG\nfilter d1 min 4 max 8\ntrajout traj.n1.cg.4.8.nc\nIf you want to do multiple output trajectories in a single pass you\ncould use the 'maxmin' keyword of 'outtraj' instead:\nparm myparm.parm7\ntrajin mytraj.nc\ndistance d1 :108.N1 :39.CG\nouttraj traj.n1.cg.4.8.nc maxmin d1 min 4 max 8\nouttraj traj.nc.cg.8.10.nc maxmin d1 min 8 max 10\nHope this helps,\n-Dan\n>\n>\n>\n>\n>\n>\n>\n> *#filter RDFparm CaM_solv.prmtoptrajin CaM_solv_equil.nc 1 last 1radial out\n> 108-39.dat 0.1 15.0 :108.N1 :39.CG filter min 3.0 max 8.0 out filter.dat\n> outtraj distance1-filtered.nc <\nhttp://distance1-filtered.nc\n> netcdf go*\n>\n> parm CaMCNFiNOSout_solv.prmtop\n> trajin CaMCNFiNOSout_equil.nc 1 last 1\n> dihedral D :108.CA :108.CB :108.C2 :108.C3 out torsion.dat\n> filter D min 80.0 max 90.0 out filter.dat\n> outtraj distance1-filtered.nc netcdf\n> go\n>\n>\n>\n> Thanks,\n> Swapnil\n>",
+      "url": "http://archive.ambermd.org/202212/0086.html",
+      "in_reply_to": 1671675051
+    }
+  ]
+}

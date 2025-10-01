@@ -1,0 +1,21 @@
+{
+  "thread_id": 1615018358,
+  "subject": "How to define COM for groups in ASMD",
+  "messages": [
+    {
+      "message_id": 1615018358,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Sat, 6 Mar 2021 03:12:38 -0500",
+      "body": "Dear Amber Community,\nSimilar to a recent post, I want to pull apart two proteins by applying a distance restraint to their centers of mass. I know that a distance restraint of the form\n&rst\niat=-1,-1\nr2=15.,\nr2a=20.\nrk2 = 5000\nigr1=...\nigr2=…\n/\nwould apply to the coordinate-averaged positions of the groups. Would a work around to instead use COMs be (I’m not sure what to do with the iat variable):\n&rst\nrestraint = \"distance( COM(...) COM(...) )”\n/\nOr, is there no way to implement this?\nBest regards,\nMatthew",
+      "url": "http://archive.ambermd.org/202103/0044.html"
+    },
+    {
+      "message_id": 1615343858,
+      "author": "Kellon Belfon",
+      "date_raw": "Tue, 9 Mar 2021 21:37:38 -0500",
+      "body": "Hi Matthew,\nThe form you mentioned first should work for COM distances between two\ngroups of atoms specified by igr1 and igr2. While the manual does mention\ncoordinate-averaged position is being used, however, when ir6 =0 (which is\nthe default) then the averaged position is calculated using center-of mass\naveraging. So what you have listed here should work as CoM distance\nbetween the two groups (igr1 and igr2). You need to add the atom numbers to\nigr1 and igr2 that correspond to the group.\n&rst\niat=-1,-1\nr2=15.,\nr2a=20.\nrk2 = 5000\nigr1=...\nigr2=…\n/\nAlso if you are varying the distance over some number of steps (using r2\nand r2a) then you will have to define ifvari=1). Check out page 549 in the\nmanual for more information.\nThe other form (natural language) is used for sander.\nOn Sat, Mar 6, 2021 at 3:13 AM Matthew Guberman-Pfeffer <\nmatthew.guberman-pfeffer.uconn.\nedu> wrote:\n> Dear Amber Community,\n>\n> Similar to a recent post, I want to pull apart two proteins by applying a\n> distance restraint to their centers of mass. I know that a distance\n> restraint of the form\n>\n> &rst\n> iat=-1,-1\n> r2=15.,\n> r2a=20.\n> rk2 = 5000\n> igr1=...\n> igr2=…\n> /\n>\n> would apply to the coordinate-averaged positions of the groups. Would a\n> work around to instead use COMs be (I’m not sure what to do with the iat\n> variable):\n> &rst\n> restraint = \"distance( COM(...) COM(...) )”\n> /\n>\n> Or, is there no way to implement this?\n>\n> Best regards,\n> Matthew\n>\n>",
+      "url": "http://archive.ambermd.org/202103/0076.html",
+      "in_reply_to": 1615018358
+    }
+  ]
+}

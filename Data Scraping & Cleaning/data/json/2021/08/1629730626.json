@@ -1,0 +1,21 @@
+{
+  "thread_id": 1629730626,
+  "subject": "Issue with MM/PBSA calculations on membrane system",
+  "messages": [
+    {
+      "message_id": 1629730626,
+      "author": "Gilberto Pereira",
+      "date_raw": "Mon, 23 Aug 2021 16:57:06 +0200",
+      "body": "Dear members of the Amber mailing list.\nI am trying to carry out some MM/PBSA calculations in a protein-ligand\nsystem whose simulation included a POPC membrane and explicit solvent,\ncarried out using GROMACS and converted to Amber format with GROMBER. The\nwater and membrane atoms were removed previous to the MM/PBSA calculation.\nBelow is the input file used to setup up the MM/PBSA run using AmberTools18.\n\"\nSample input file for MMPBSA with membrane proteins\n&general\nuse_sander=1,\nstartframe=1000, endframe=2000, interval=100,\nkeep_files=1, debug_printlevel=2\n/\n&pb\nradiopt=0, indi=4.0, istrng=0.150, exdi=80.0,\nfillratio=1.25, ipb=1, nfocus=1,\nbcopt=10, eneopt=1, cutfd=7.0, cutnb=99.0,\nnpbverb=1, solvopt=2, inp=1,\nmemopt=1, emem=1.0, mctrdz=90.31, mthick=46, poretype=1,\nmaxarcdot=15000, sasopt=0,\n/\n\"\nUpon submission of the calculation, the program crashes with the following\nerror:\nminimizing coord set # 1\nPB bomb in pb_atmlist(): MAXNEI too short\nCould you please help me to solve this issue?\nBest regards,\nGilberto Pereira",
+      "url": "http://archive.ambermd.org/202108/0142.html"
+    },
+    {
+      "message_id": 1629748353,
+      "author": "Ray Luo",
+      "date_raw": "Mon, 23 Aug 2021 12:52:33 -0700",
+      "body": "Hi Gilberto,\nThis was reported before for systems with large residues. Basically\nthe default neighbor list is too small to store its neighbor atoms ...\nPlease edit the file $AMBERHOME/AmberTools/src/pbsa/pb_def.h and\nchange the current value of 30000 to 60000 at the following line:\n#define MAXNEI 30000\nAnd recompile Amber or AmberTools.\nAll the best,\nRay\n--\nRay Luo, Ph.D.\nProfessor of Structural Biology/Biochemistry/Biophysics,\nChemical and Materials Physics, Chemical and Biomolecular Engineering,\nBiomedical Engineering, and Materials Science and Engineering\nDepartment of Molecular Biology and Biochemistry\nUniversity of California, Irvine, CA 92697-3900\nOn Mon, Aug 23, 2021 at 7:59 AM Gilberto Pereira\n<gilberto.pereiraportugal.gmail.com> wrote:\n>\n> Dear members of the Amber mailing list.\n>\n> I am trying to carry out some MM/PBSA calculations in a protein-ligand\n> system whose simulation included a POPC membrane and explicit solvent,\n> carried out using GROMACS and converted to Amber format with GROMBER. The\n> water and membrane atoms were removed previous to the MM/PBSA calculation.\n> Below is the input file used to setup up the MM/PBSA run using AmberTools18.\n>\n> \"\n> Sample input file for MMPBSA with membrane proteins\n> &general\n> use_sander=1,\n> startframe=1000, endframe=2000, interval=100,\n> keep_files=1, debug_printlevel=2\n> /\n> &pb\n> radiopt=0, indi=4.0, istrng=0.150, exdi=80.0,\n> fillratio=1.25, ipb=1, nfocus=1,\n> bcopt=10, eneopt=1, cutfd=7.0, cutnb=99.0,\n> npbverb=1, solvopt=2, inp=1,\n> memopt=1, emem=1.0, mctrdz=90.31, mthick=46, poretype=1,\n> maxarcdot=15000, sasopt=0,\n> /\n> \"\n> Upon submission of the calculation, the program crashes with the following\n> error:\n>\n> minimizing coord set # 1\n> PB bomb in pb_atmlist(): MAXNEI too short\n>\n> Could you please help me to solve this issue?\n>\n> Best regards,\n> Gilberto Pereira\n>",
+      "url": "http://archive.ambermd.org/202108/0144.html",
+      "in_reply_to": 1629730626
+    }
+  ]
+}

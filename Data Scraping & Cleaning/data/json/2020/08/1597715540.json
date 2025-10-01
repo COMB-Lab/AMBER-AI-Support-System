@@ -1,0 +1,13 @@
+{
+  "thread_id": 1597715540,
+  "subject": "no collective variables output for infe=1 and abfqmmm",
+  "messages": [
+    {
+      "message_id": 1597715540,
+      "author": "FLORA, JOSEPH",
+      "date_raw": "Tue, 18 Aug 2020 01:52:20 +0000",
+      "body": "Dear Amber Folks,\nI modified the Run.abfqmmm_dmpoh_md to use infe=1 and pmd. The run completed but nothing follows after the following output for the colvars file (i.e., no colvars printed)\n# = NFE%PMD ==================================================================\n# << anchor(1) : position = -10.000000, 0.000000, 0.000000, 10.000000\n# strength = 400.000000, 400.000000 >>\n# << anchor(2) : position = 0.000000, 2.792520, 3.141590, 3.141590\n# strength = 100.000000, 100.000000 >>\n# -----------------------------------------------------------------------------\n# MD time (ps), CV(1:2)\n# =============================================================================\nThe energies and constraints at the end of the 10 step test simulation were identical with the test run using nmr restraints (angle restraints were 0), indicating that the simulation propagated properly. I looked at nfe_pmd_hooks.F90 to try to follow the write statements. I think the printout should be happening with following statement but I can't fully follow the bigger picture logic with abfqmmm. I can get full colvars output with adqmmm.\nNFE_MASTER_ONLY_BEGIN\nif (nfe_real_mdstep) then\nif (mod(mdstep, output_freq).eq.0) then\nwrite (unit = pmd_UNIT, fmt = output_fmt) &\nsander_mdtime(), cv_inst(1:ncolvars)\ncall flush_UNIT(pmd_UNIT)\nend if\nmdstep = mdstep + 1\nend if ! nfe_real_mdstep\nNFE_MASTER_ONLY_END\nAny help is appreciated. I am running Amber18 (and will be in the process of upgrading to Amber20). Attached are the revised Runfile and the disang.cv file used.\nThanks!\nJoe",
+      "url": "http://archive.ambermd.org/202008/0124.html"
+    }
+  ]
+}

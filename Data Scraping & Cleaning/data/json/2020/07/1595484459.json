@@ -1,0 +1,21 @@
+{
+  "thread_id": 1595484459,
+  "subject": "Problem compiling Amber20 - undefined reference to 'plumedmain_create'",
+  "messages": [
+    {
+      "message_id": 1595484459,
+      "author": "Amanda Buyan",
+      "date_raw": "Thu, 23 Jul 2020 06:07:39 +0000",
+      "body": "Hi everyone,\nI hope you can help me with this, and I hope it is a user error - I'm attempting to compile Amber20 on our CentOS GPU cluster, and am running into some trouble even trying to compile the serial version! The error I'm getting is\n[ 52%] Linking Fortran executable sander.LES\nCMakeFiles/sander.LES.dir/Plumed.c.o:(.data+0x10):undefined reference to 'plumedmain_create'\nCMakeFiles/sander.LES.dir/Plumed.c.o:(.data+0x18):undefined reference to 'plumedmain_cmd'\nCMakeFiles/sander.LES.dir/Plumed.c.o:(.data+0x20):undefined reference to 'plumedmain_finalize'\ncollect2: error: ls returned 1 exist status\nmake[2]: *** [AmberTools/src/sander/sander.LES] Error 1\nmake[1]: *** [AmberTools/src/sander/CMakeFiles/sander.LES.dir/all] Error 2\nmake: *** [all] Error 2\nI'm installing it in /usr/local/, and have checked that the md5sum is correct. I am then running the following commands:\ntar xvfj AmberTools20.tar.bz2\ntar xvfj Amber20.tar.bz2\ncd amber20_src/AmberTools/src\nsudo tar -xvzf mpich-3.2.1.tar.gz\ncd /usr/local/amber20_source/build\nsudo ./run_cmake\nsudo make install\nI also have the correct cmake installed, and we have an earlier version of Amber on the cluster, and should have everything Amber needs for installation. If it helps, plumed is also installed on this cluster for a separate software package. Can anyone point me to a possible reason why this should happen?\nBest wishes\nAmanda",
+      "url": "http://archive.ambermd.org/202007/0264.html"
+    },
+    {
+      "message_id": 1595505939,
+      "author": "David A Case",
+      "date_raw": "Thu, 23 Jul 2020 08:05:39 -0400",
+      "body": "On Thu, Jul 23, 2020, Amanda Buyan wrote:\n>\n>[ 52%] Linking Fortran executable sander.LES\n>CMakeFiles/sander.LES.dir/Plumed.c.o:(.data+0x10):undefined reference to 'plumedmain_create'\nAs a test, try adding '-DFORCE_DISABLE_LIBS=plumed' to the run_cmake script.\n(According to the cmake build report, you should still be able to load plumed\nat run time. But I'm not a plumed user, so cannot provide much extra\ninformation.)\n>\n>sudo ./run_cmake\n>sudo make install\nWe strongly recommend that you install Amber in a location where you have\nwrite permissions, and avoid using \"sudo\".\n...good luck....dac",
+      "url": "http://archive.ambermd.org/202007/0266.html",
+      "in_reply_to": 1595484459
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "thread_id": 1619571266,
+  "subject": "答复: [ambermd.org代发]Re: Max relative errors questions in parallel and cuda.serial test",
+  "messages": [
+    {
+      "message_id": 1619571266,
+      "author": "石谷沁",
+      "date_raw": "Wed, 28 Apr 2021 00:54:26 +0000",
+      "body": "Hi All,\nThought I need to bring this up again...I encountered large CUDA test error with DPFP precision mode. The maximum relative errors are usually at the level of e-01.\nBelow I attached .diff and .log from test_amber_cuda and test_at_cuda, respectively.\nhttps://drive.google.com/drive/folders/1wAUz_8538PwKDSVbM1ZR4wuDQsuybbKG?usp=sharing\nAnd the forwarded info are my hardware sys and how I install the AMBER20.\nSince I'm really in a hurry in running a few MD jobs. Would anyone have an idea if I could run classical MD with SPFP mode (which is the default) safely? Thank you!\nBest,\nGuqin\n===============================================================================================================\nHi David,\nThanks for the reply. I supplemented my system in another reply and it probably drowned in the messages.\nHere is my system:\nCentOS 7, 32 Xeon Gold cpus .3.3GHz, 1 Quadro RTX 5000 CUDA toolkit is 11.1\nI followed the instructions on manual.\nAccording to\nhttps://ambermd.org/pmwiki/index.php/Main/CMake-Quick-Start\n. Cmake3 is recommended for CentOS 7. So I installed cmake3 and use cmake3 instead of cmake. For eg, in run_make script, cmake is changed to cmake3. In my system, a symbolic link of cmake is created directing to cmake3 in /usr/bin.\nI installed devtoolset-8 to make sure all gnu compilers are version with 8.3.1.\nI downloaded mpich3.3.2 package for parallel installation.\nThese are all the changes I've made for AMBER20 serial installation. For parallel and GPU installation, nothing changed except for turning -DMPI and -DCUDA flag to TRUE, respectively.\nI hope these could help. Please let me know what else you need for troubleshoot The differences are quite large in GPU DPFP tests...I'm not sure if I can run any MD now...with default SPFP...?\nThanks a lot for the help!\n-Guqin\n=================================================================================================================\n-----邮件原件-----\n发件人: David A Case [mailto:david.case.rutgers.edu]\n发送时间: 2021年4月24日 21:32\n收件人: AMBER Mailing List <amber.ambermd.\norg>\n主题: [ambermd.org代发]Re: [AMBER] Max relative errors questions in parallel and cuda.serial test\nOn Thu, Apr 22, 2021, 石谷沁 wrote:\n>I double-checked the cuda.serial log. The possible failures all came out at DPFP:\n>==============================================================\n>cd myoglobin/ && ./Run_md_myoglobin_igb7 DPFP yes\n>Note: The following floating-point exceptions are signalling:\n>IEEE_INVALID_FLAG IEEE_UNDERFLOW_FLAG IEEE_DENORMAL diffing\n>myoglobin_md_igb7.out.GPU_DPFP with myoglobin_md_igb7.out possible\n>FAILURE: check myoglobin_md_igb7.out.dif\nThis is concerning.\n>\n>According to manual, SPFP is the default precision model for\n>pmemd.cuda. And I didn’t get any failures report on SPFP. So I guess I\n>can ignore those errors with DPFP in most general situations?\nAgain, very odd: the expectation is that DPFP tests will all pass, when compared to a CPU output, but that a fair number of SPFP tests will fail with roundoff errors.\nSo, I think you have genuine problems. Can you say (again?) what GPU you have, and what CUDA SDK version? Maybe the GPU gurus on the list (I am not one of them) will spot something.\nAlso, please say what changes you made to run_cmake (if you used that), and what command(s) you used to run the tests.\n....dac",
+      "url": "http://archive.ambermd.org/202104/0227.html"
+    },
+    {
+      "message_id": 1619611081,
+      "author": "David A Case",
+      "date_raw": "Wed, 28 Apr 2021 07:58:01 -0400",
+      "body": "On Wed, Apr 28, 2021, 石谷沁 wrote:\n>\n>Thought I need to bring this up again...I encountered large CUDA test error\n>with DPFP precision mode. The maximum relative errors are usually at the\n>level of e-01.\nThe errors you see are quite serious. But they are all in generalized Born\ncalculations, so you are probably safe in running explicit solvent\nsimulations.\nI think you mentioned that you didn't see errors in SPFP. Could you\ngo to $AMBERHOME/test and run \"make test.cuda.serial.SPFP\"? Do you see no\nerrors there?\n....thanks....dac",
+      "url": "http://archive.ambermd.org/202104/0232.html",
+      "in_reply_to": 1619571266
+    },
+    {
+      "message_id": 1619657866,
+      "author": "石谷沁",
+      "date_raw": "Thu, 29 Apr 2021 00:57:46 +0000",
+      "body": "Dear David,\nThanks for your follow-up. If the errors are with GB calculation, then that's quite serious because the most common post-processing tasks we will do is MMPB(GB)SA.\nUnfortunately just a few days ago the server suffered a crash when we tried to re-allocate the disk space. I lost the amber20_installation directories. I will re-install everything and report the results.\nDavid, what will be the potential way to solve this DPFP errors? Re-compiling with different ways? Install on a different workstation/cluster.....?\nThanks a lot,\nGuqin\n-----邮件原件-----\n发件人: David A Case [mailto:david.case.rutgers.\nedu]\n发送时间: 2021年4月28日 19:58\n收件人: AMBER Mailing List <amber.ambermd.org>\n主题: [ambermd.org代发]Re: [AMBER] 答复: [ambermd.org代发]Re: Max relative errors questions in parallel and cuda.serial test\nOn Wed, Apr 28, 2021, 石谷沁 wrote:\n>\n>Thought I need to bring this up again...I encountered large CUDA test\n>error with DPFP precision mode. The maximum relative errors are usually\n>at the level of e-01.\nThe errors you see are quite serious. But they are all in generalized Born calculations, so you are probably safe in running explicit solvent simulations.\nI think you mentioned that you didn't see errors in SPFP. Could you go to $AMBERHOME/test and run \"make test.cuda.serial.SPFP\"? Do you see no errors there?\n....thanks....dac",
+      "url": "http://archive.ambermd.org/202104/0243.html",
+      "in_reply_to": 1619571266
+    },
+    {
+      "message_id": 1619698175,
+      "author": "David A Case",
+      "date_raw": "Thu, 29 Apr 2021 08:09:35 -0400",
+      "body": "On Thu, Apr 29, 2021, 石谷沁 wrote:\n>\n>Thanks for your follow-up. If the errors are with GB calculation, then\n>that's quite serious because the most common post-processing tasks we will\n>do is MMPB(GB)SA.\nDo you use pmemd.cuda for such tasks? Is it really significantly faster\nthan pmemd or sander on a CPU? I ask because getting single frame energies\ninvolves a lot of initialization tasks that reduce the speed advantage of\nthe GB calculation itself.\n>\n>David, what will be the potential way to solve this DPFP\n>errors? Re-compiling with different ways? Install on a different\n>workstation/cluster.....?\nBoth of the above are good ideas. It's certainly possible that you are\nseeing a hardware problem, so trying a different GPU might help.\nChanging compilers or OS might also help identify the problem. Right now,\nwe don't have any way to reproduce the problem at our end.\n...regards....dac",
+      "url": "http://archive.ambermd.org/202104/0248.html",
+      "in_reply_to": 1619571266
+    }
+  ]
+}

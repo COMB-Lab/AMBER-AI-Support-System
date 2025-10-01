@@ -1,0 +1,21 @@
+{
+  "thread_id": 1623245169,
+  "subject": "Error in pdb4amber for AmberTools21",
+  "messages": [
+    {
+      "message_id": 1623245169,
+      "author": "Bhattacharjee, Sinjini",
+      "date_raw": "Wed, 9 Jun 2021 13:26:09 +0000",
+      "body": "Hello, I have been trying to clean up a pdb file after adding hydrogens from the H++ server. But this error pops up. I tried with an example from the metal-ion modelling tutorial and the same thing happens. Can you tell me if this is a bug and how to resolve this?\nTraceback (most recent call last):\nFile \"/Users/bhattacharjee/miniconda3/envs/AmberTools21/bin/pdb4amber\", line 33, in <module>\nsys.exit(load_entry_point('pdb4amber==20.1', 'console_scripts', 'pdb4amber')())\nFile \"/Users/bhattacharjee/miniconda3/envs/AmberTools21/lib/python3.9/site-packages/pdb4amber/pdb4amber.py\", line 816, in main\nrun(\nFile \"/Users/bhattacharjee/miniconda3/envs/AmberTools21/lib/python3.9/site-packages/pdb4amber/pdb4amber.py\", line 520, in run\npdbfixer._write_renum(base_filename)\nFile \"/Users/bhattacharjee/miniconda3/envs/AmberTools21/lib/python3.9/site-packages/pdb4amber/pdb4amber.py\", line 388, in _write_renum\nfh.write(\"%3s %c %5s %3s %5s\\n\" %\nTypeError: %c requires int or char\nI also attach a sample pdb file herewith.",
+      "url": "http://archive.ambermd.org/202106/0063.html"
+    },
+    {
+      "message_id": 1623247996,
+      "author": "David A Case",
+      "date_raw": "Wed, 9 Jun 2021 10:13:16 -0400",
+      "body": "On Wed, Jun 09, 2021, Bhattacharjee, Sinjini wrote:\n>Hello, I have been trying to clean up a pdb file after adding hydrogens\n>from the H++ server.\nYou PDB file is really messed up. I'm not sure whether you did this, or it\nis the result of the H++ server. PDB ATOM records have data in partiulcar\ncolumns. Your file starts like this:\nATOM 1 N VAL 1 13.975 44.824 -8.191 1.00 0.00 N\nATOM 2 H1 VAL 1 14.347 45.427 -8.914 1.00 0.00 H\nbut a correct ATOM record should look like this:\nATOM 11 C8 G B 15 1.794 2.345 20.675 1.00 68.35 C\nYou residue names are in columns 19-21 instead of 18-20; you x-coordinates\nare in columns 32-39 instead of 31-38, etc.\nYou might want to start over, or use a text editor to fix the format of your\nPDB file.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202106/0065.html",
+      "in_reply_to": 1623245169
+    }
+  ]
+}

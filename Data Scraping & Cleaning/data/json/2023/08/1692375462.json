@@ -1,0 +1,21 @@
+{
+  "thread_id": 1692375462,
+  "subject": "LEaP scripting",
+  "messages": [
+    {
+      "message_id": 1692375462,
+      "author": "amber–––",
+      "date_raw": "Fri, 18 Aug 2023 19:17:42 +0300",
+      "body": "Dear Amber community,\nI'm trying to figure out how LEaP concepts work. Please, check the script I wrote to build isolysine residue (lysine which forms amide bond with ε-N-atom), is it correct? I will really appreciate any help\nsource leaprc.protein.ff19SB\nsource leaprc.gaff\nLYX = copy LYS\nset LYX name \"LYX\"\nset LYX.1 name \"LYX\"\n# terminal nytrogen\nset LYX.1.NZ type n3\nset LYX head LYX.1.NZ\nset LYX.1 connect0 LYX.1.NZ\n# terminal hydrogens\nremove LYX LYX.1.HZ3\nset LYX.1.HZ1 type hn\nset LYX.1.HZ2 type hn\n# build peptide\np = sequence { ALA LYX ALA LYS }\nAlso I have a question: I've found in the documentation that water parameters must be sourced after macromolecular parameters, in which order must I source custom and GAFF parameters?\n— Vsevolod",
+      "url": "http://archive.ambermd.org/202308/0063.html"
+    },
+    {
+      "message_id": 1692442152,
+      "author": "Dr. Anselm Horn",
+      "date_raw": "Sat, 19 Aug 2023 12:49:12 +0200",
+      "body": "Dear Vsevolod,\nsince you intend to create a new residue, you have to ensure that it has\nthe correct atom types for the new topology, adapted (newly generated)\natomic charges, and all necessary parameters, which arise from the atom\ntypes and the topology.\nSince you obviously want to apply parm19SB, I have no solution for you\nout of the box. For parm14SB and parm99SB I had a parameter set ready to\nuse, which I could share with you (and which still awaits its due\npublication, alas ...)\nConcerning the order of reading in parameters:\nAs a rule of thumb, read in any modified parameters after the respective\ngeneral parameters have been read in, because the special parameters\nnormally build on the general ones; and solvent parameters normally go last.\nMaybe this helps.\nBest,\nAnselm\nBioinformatik | NHR.FAU\nFriedrich-Alexander-Universität Erlangen-Nürnberg (FAU)\nGermany\nOn 08/18/2023 06:17 PM, amber--- via AMBER wrote:\n> Dear Amber community,\n>\n> I'm trying to figure out how LEaP concepts work. Please, check the script I wrote to build isolysine residue (lysine which forms amide bond with ε-N-atom), is it correct? I will really appreciate any help\n> source leaprc.protein.ff19SB\n> source leaprc.gaff\n>\n> LYX = copy LYS\n> set LYX name \"LYX\"\n> set LYX.1 name \"LYX\"\n>\n> # terminal nytrogen\n> set LYX.1.NZ type n3\n> set LYX head LYX.1.NZ\n> set LYX.1 connect0 LYX.1.NZ\n>\n> # terminal hydrogens\n> remove LYX LYX.1.HZ3\n> set LYX.1.HZ1 type hn\n> set LYX.1.HZ2 type hn\n>\n> # build peptide\n> p = sequence { ALA LYX ALA LYS }\n> Also I have a question: I've found in the documentation that water parameters must be sourced after macromolecular parameters, in which order must I source custom and GAFF parameters?\n> — Vsevolod\n>",
+      "url": "http://archive.ambermd.org/202308/0064.html",
+      "in_reply_to": 1692375462
+    }
+  ]
+}

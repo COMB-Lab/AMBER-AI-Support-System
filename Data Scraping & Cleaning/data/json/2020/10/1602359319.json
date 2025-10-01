@@ -1,0 +1,21 @@
+{
+  "thread_id": 1602359319,
+  "subject": "Re: [AMBER] NVIDIA GeForce RTX 3080 GPUs (Ross Walker)",
+  "messages": [
+    {
+      "message_id": 1602359319,
+      "author": "German P. Barletta",
+      "date_raw": "Sat, 10 Oct 2020 16:48:39 -0300",
+      "body": "Ross,\nthanks for all the info. Hope you don't mind answering a few extra\nquestions:\n1. I've read that Amber developers plan on taking advantage of the new\nA100's MIG feature. So with 2 A100s one should be able to run REMD with up\nto, say, 12 replicas. This would be great news for those of us without\naccess to HPC servers, but I wonder if A100s and the necessary hardware\nwill be too expensive. Do you think they will be worth it? Or is it better\nto stick with the 3080s and hope the next generation will feature MIG on\ncheaper cards?\n2. About the 3090s power consumption: do the 3080s have the same issue?\nDo you think some optimization on the code can be done or should I expect\nmax power consumption and set up my system for extra cooling? I worry about\nthe card lifespan too.\nThanks for all the help.",
+      "url": "http://archive.ambermd.org/202010/0144.html"
+    },
+    {
+      "message_id": 1602364907,
+      "author": "Ross Walker",
+      "date_raw": "Sat, 10 Oct 2020 17:21:47 -0400",
+      "body": "Hi German,\nMIG should just work I believe. I don't think anything would need to be changed in the code. You just enable it in the driver, specify how many 'partial' GPUs you want and they show up in NVIDIA-smi. It's pretty simple but kind of annoyingly implemented in that you have to reboot everytime you want to change it. In terms of whether it will help for things like REMD and TI in AMBER I very much doubt it would be worth the cost. It's > 20x for an A100 over a RTX3080 and I suspect if you just run 4 or so REMD replicas per 3080 GPU it actually won't be that bad (assuming it fits in the memory) A 20GB 3080 is supposedly in the works so if that model gets released the GPU memory won't be the issue. I haven't tried it myself but I suspect it won't be too bad and would certainly save a lot of money.\nThe 3080 has a 320W TDP. So a little less than the 3090 but not a great deal. I didn't get power numbers on the last test I did unfortunately to see if it hits the peak.I'll try it again in a couple of days. I expect it will similarly hit the max TDP though so you'd be looking at 1.3KW for 4 GPUs under load. Still not great. :-( As for lifespan I doubt it makes much difference. Time will tell with the 3080s and 3090s but certainly the 2080TIs have been way more reliable in my experience than the V100s so there is a good chance that trend will continue. I've seen around a 30% failure rate with SXM2 and SXM3 V100s - the HBM memory is faulty and you start getting thousands of uncorrectable ECC errors. The design flaw is to the point they should probably be recalled but instead NVIDIA just recommends a convoluted approach for continually checking and rebooting. https://docs.nvidia.com/deploy/dynamic-page-retirement/index.html <https://docs.nvidia.com/deploy/dynamic-page-retirement/index.html>\nIt will be interesting to see if this flaw has been addressed in the A100s or not.\nAll the best\nRoss\n> On Oct 10, 2020, at 15:48, German P. Barletta <pbarletta.gmail.com> wrote:\n>\n> Ross,\n> thanks for all the info. Hope you don't mind answering a few extra\n> questions:\n>\n> 1. I've read that Amber developers plan on taking advantage of the new\n> A100's MIG feature. So with 2 A100s one should be able to run REMD with up\n> to, say, 12 replicas. This would be great news for those of us without\n> access to HPC servers, but I wonder if A100s and the necessary hardware\n> will be too expensive. Do you think they will be worth it? Or is it better\n> to stick with the 3080s and hope the next generation will feature MIG on\n> cheaper cards?\n>\n> 2. About the 3090s power consumption: do the 3080s have the same issue?\n> Do you think some optimization on the code can be done or should I expect\n> max power consumption and set up my system for extra cooling? I worry about\n> the card lifespan too.\n>\n>\n> Thanks for all the help.\n>",
+      "url": "http://archive.ambermd.org/202010/0146.html",
+      "in_reply_to": 1602359319
+    }
+  ]
+}

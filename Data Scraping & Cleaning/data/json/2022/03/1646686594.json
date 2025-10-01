@@ -1,0 +1,21 @@
+{
+  "thread_id": 1646686594,
+  "subject": "glibc causing amber install error",
+  "messages": [
+    {
+      "message_id": 1646686594,
+      "author": "Bruno Cramer",
+      "date_raw": "Mon, 7 Mar 2022 17:56:34 -0300",
+      "body": "Hi,\nI am trying to install amber: /usr/local/amber20_src/build. *./run-cmake*\ngoes fine. (using version AmberTools21.tar)\nWhen using *make install* I get error messages related to glibc as follows:\n............................\n[ 26%] Linking Fortran executable gbnsr6\n/usr/bin/ld: /lib/x86_64-linux-gnu/libmvec.so.1: undefined reference to\n`logf.GLIBC_2.27'\n/usr/bin/ld: /lib/x86_64-linux-gnu/libmvec.so.1: undefined reference to\n`log.GLIBC_2.29'\n*etc (more similar lines)*\n.......................\ncollect2: error: ld returned 1 exit status\nmake[2]: *** [AmberTools/src/gbnsr6/CMakeFiles/gbnsr6.dir/build\n.make:558: AmberTools/src/gbnsr6/gbnsr6] Error 1\nmake[1]: *** [CMakeFiles/Makefile2:4028: AmberTools/src/gbnsr6/\nCMakeFiles/gbnsr6.dir/all] Error 2\nmake: *** [Makefile:156: all] Error 2\n----------------------------\nCheking my glibc version I get\n(base) bcramer.schrodinger:/usr/local/amber20_src/build$\nlibc6 is already the newest version (2.31-0ubuntu9.7).\n-------------------\nAny suggestion to solve the problem is wellcome.\nRegards\nBruno",
+      "url": "http://archive.ambermd.org/202203/0021.html"
+    },
+    {
+      "message_id": 1646744487,
+      "author": "David A Case",
+      "date_raw": "Tue, 8 Mar 2022 08:01:27 -0500",
+      "body": "On Mon, Mar 07, 2022, Bruno Cramer wrote:\n>I am trying to install amber: /usr/local/amber20_src/build. *./run-cmake*\n>goes fine. (using version AmberTools21.tar)\n>When using *make install* I get error messages related to glibc as follows:\n>............................\n>[ 26%] Linking Fortran executable gbnsr6\n>/usr/bin/ld: /lib/x86_64-linux-gnu/libmvec.so.1: undefined reference to\n>`logf.GLIBC_2.27'\n>/usr/bin/ld: /lib/x86_64-linux-gnu/libmvec.so.1: undefined reference to\n>`log.GLIBC_2.29'\n>*etc (more similar lines)*\n>.......................\n>Cheking my glibc version I get\n>(base) bcramer.schrodinger:/usr/local/amber20_src/build$\n>libc6 is already the newest version (2.31-0ubuntu9.7).\nThe fact that three different versions (2.27, 2.29 and 2.31) are referenced\nis suspicious. What version of the compilers are you using? You might look\nat the date of /lib/x86_64-linux-gnu/libmvec.so.1.\nAlso, save the output of the make invocation, e.g.\nVERBOSE=1 make install | tee make.log\nAre other Fortran files correctly linked before you get to gbnsr6? The\nverbose flag will give the complete linking instructions that are failing,\nwhich might also provide some clue.\n....good luck...dac",
+      "url": "http://archive.ambermd.org/202203/0029.html",
+      "in_reply_to": 1646686594
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "thread_id": 1648638552,
+  "subject": "Entropy calculations upon covalent modification",
+  "messages": [
+    {
+      "message_id": 1648638552,
+      "author": "Aravind R",
+      "date_raw": "Wed, 30 Mar 2022 16:39:12 +0530",
+      "body": "Hi All,\nI am trying to calculate the change in entropy upon protein binding. I have\nperformed a us scale simulations consisting of :\nJust Protein A\nAnd Protein A+ Protein B (Covalently bound).\nTo find the change in internal Dynamics upon protein binding, I would like\nto calculate Schlitter's Entropy OR Quasi-harmonic Approach.\n(like done in the following paper: Nonspecific yet decisive: Ubiquitination\ncan affect the native-state dynamics of the modified protein. *Protein Sci*.\n2015;24(10):1580-1592. doi:10.1002/pro.2688 - Figure 10 ).\nSince, in my system, the proteins are covalently bound, I get No# of atoms\nin CP is not equal to RP + LP error when I use MMPBSA.py to calculate\nentropy (performed as mentioned in tutorial3 section5 from amber website).\nCan anyone help me understand if there is any workaround for thor OR is\nthere any other method to calculate Conformation entropy upon covalent\nbinding.\nThanks in advance!\nRegards,\nAravind Ravichandran",
+      "url": "http://archive.ambermd.org/202203/0181.html"
+    },
+    {
+      "message_id": 1648644875,
+      "author": "David A Case",
+      "date_raw": "Wed, 30 Mar 2022 08:54:35 -0400",
+      "body": "On Wed, Mar 30, 2022, Aravind R wrote:\n>Since, in my system, the proteins are covalently bound, I get No# of atoms\n>in CP is not equal to RP + LP error when I use MMPBSA.py to calculate\n>entropy (performed as mentioned in tutorial3 section5 from amber website).\nThis seems a situation where one must to MMPBSA calculations \"by hand\".\nWhen breaking a covalent bond, the chemistry of the two fragments also\nchanges; for example, there may be extra hydrogens or capping groups that\ntake the place of the inter-protein bond that is being broken.\nTry this: prepare three prmtop/inpcrd files, for CP, RP and LP. Then run\nMMPBSA in the \"stability\" mode (Note 2 in Section 36.3.4) where\nyou just analyze a single trajectory for a single system. Do this for\neach of your three systems, then combine the reults.\n[The fact that the number of atoms in CP is not the sum of RP + LP will\nlead to some formal errors in comparing estimated free energies. But the\nideas and insights you are looking to get from approximate methods like\nMMPBSA should still be valid.]\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202203/0183.html",
+      "in_reply_to": 1648638552
+    }
+  ]
+}
