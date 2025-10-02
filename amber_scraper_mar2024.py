@@ -60,7 +60,7 @@ def _soup(html: str) -> BeautifulSoup:
 # -------------------------------
 BASE_URL = "http://archive.ambermd.org"
 MONTH = "202403"  # March 2024
-THREADS_INDEX = f"{BASE_URL}/{MONTH}/thread.html"
+THREADS_INDEX = f"{BASE_URL}/{MONTH}/"
 OUTPUT_DIR = os.path.join("data", "threads")
 USER_AGENT = (
     "Mozilla/5.0 (compatible; AmberScraper/1.0; +https://example.org/)"
@@ -431,3 +431,4 @@ if __name__ == "__main__":
     except Exception as e:
         eprint(f"ERROR: {e}")
         sys.exit(1)
+
