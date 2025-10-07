@@ -4,6 +4,9 @@ from email.utils import parsedate_to_datetime
 from datetime import timezone
 from typing import Optional, Dict, List
 
+workingWithJSONFile = "amber_2020_Jan.json"
+workingWithFolderName = "amber_202001"
+
 
 def to_epoch_seconds(date_str: Optional[str]) -> int:
     """Convert an email Date header into UTC epoch seconds."""
@@ -83,7 +86,7 @@ def populateJSONFile(sortedData) -> List:
 def main():
 
     # Load Messages in List
-    with open("amber_2020_Jan.json", "r", encoding="utf-8") as f:
+    with open(workingWithJSONFile, "r", encoding="utf-8") as f:
         messages = json.load(f)
 
     # Override message_id to Epoch time and thread_id to normalized
@@ -117,18 +120,16 @@ def main():
 
     threadLevelDict = populateJSONFile(groupedThreads_sorted)
 
-    folder_name = "amber_202001"
-
-    Path(folder_name).mkdir(parents=True, exist_ok=True)
+    Path(workingWithFolderName).mkdir(parents=True, exist_ok=True)
 
     for thread in threadLevelDict:
         thread_id = thread["thread_id"]
-        file_path = Path(folder_name) / f"{thread_id}.json"
+        file_path = Path(workingWithFolderName) / f"{thread_id}.json"
 
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(thread, f, indent=2, ensure_ascii=False)
 
-    print(f"Wrote data to {folder_name}.json")
+    print(f"Wrote data to {workingWithFolderName}.json")
 
 
 main()
