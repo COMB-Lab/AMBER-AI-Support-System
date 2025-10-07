@@ -44,6 +44,10 @@ dataUrl = "http://archive.ambermd.org/"
 response = requests.get(dataUrl)
 soup = BeautifulSoup(response.text, "html.parser")
 dataDictionary = {}
+
+workingWithYear = "2020"
+workingWithMonth = "Jan"
+workingWithFileName = "amber_2020_Jan.json"
 '''
 Year: AmberObject(Year)
         self.year = year
@@ -107,13 +111,13 @@ def getData():
 
     print("Populating Messages...")
     # populateMessages()
-    getReviews(dataDictionary["2020"], "Jan")
+    getReviews(dataDictionary[workingWithYear], workingWithMonth)
     print("Success!")
 
     print("Populating Clean Data...")
 
     # Populates a single data
-    populateCleanData("2020","Jan")
+    populateCleanData(workingWithYear, workingWithMonth)
 
     '''
     # Populates ALL data
@@ -488,7 +492,7 @@ def printData():
 
 getData()
 
-export_month_to_json("2020", "Jan", "amber_2020_Jan.json")
+export_month_to_json(workingWithYear, workingWithMonth, workingWithFileName)
 
 # export_range_to_json(2022, 2025, "amber_2022_2025.json")
 

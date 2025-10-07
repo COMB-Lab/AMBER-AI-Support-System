@@ -9,6 +9,9 @@ import os
 import json
 from pathlib import Path
 
+previousMonthFile = "amber_202001"
+currentMonthFile = "amber_202002"
+
 
 def readData(folderName) -> list:
     folder_path = folderName
@@ -55,8 +58,8 @@ def writeToJSON(folder_name, threads):
 
 
 def main():
-    previousMonth = readData("amber_202001")
-    currentMonth = readData("amber_202002")
+    previousMonth = readData(previousMonthFile)
+    currentMonth = readData(currentMonthFile)
 
     compareData(previousMonth, currentMonth)
     # print(json.dumps(previousMonth, indent=2))
