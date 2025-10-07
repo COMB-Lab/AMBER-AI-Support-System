@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 from email.utils import parsedate_to_datetime
 from datetime import timezone
 from typing import Optional, Dict, List
@@ -82,7 +83,7 @@ def populateJSONFile(sortedData) -> List:
 def main():
 
     # Load Messages in List
-    with open("amber_2024_Mar.json", "r", encoding="utf-8") as f:
+    with open("amber_2020_Jan.json", "r", encoding="utf-8") as f:
         messages = json.load(f)
 
     # Override message_id to Epoch time and thread_id to normalized
@@ -116,10 +117,18 @@ def main():
 
     threadLevelDict = populateJSONFile(groupedThreads_sorted)
 
-    with open("thread_level.json", "w", encoding="utf-8") as f:
-        json.dump(threadLevelDict, f, indent=2, ensure_ascii=False)
+    folder_name = "amber_202001"
 
-    print("Wrote data to thread_level.json")
+    Path(folder_name).mkdir(parents=True, exist_ok=True)
+
+    for thread in threadLevelDict:
+        thread_id = thread["thread_id"]
+        file_path = Path(folder_name) / f"{thread_id}.json"
+
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(thread, f, indent=2, ensure_ascii=False)
+
+    print(f"Wrote data to {folder_name}.json")
 
 
 main()

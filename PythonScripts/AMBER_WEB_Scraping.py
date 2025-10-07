@@ -107,13 +107,13 @@ def getData():
 
     print("Populating Messages...")
     # populateMessages()
-    getReviews(dataDictionary["2024"], "Mar")
+    getReviews(dataDictionary["2020"], "Jan")
     print("Success!")
 
     print("Populating Clean Data...")
 
     # Populates a single data
-    populateCleanData("2022","Apr")
+    populateCleanData("2020","Jan")
 
     '''
     # Populates ALL data
@@ -488,7 +488,7 @@ def printData():
 
 getData()
 
-export_month_to_json("2022", "Apr", "amber_2022_Apr.json")
+export_month_to_json("2020", "Jan", "amber_2020_Jan.json")
 
 # export_range_to_json(2022, 2025, "amber_2022_2025.json")
 
