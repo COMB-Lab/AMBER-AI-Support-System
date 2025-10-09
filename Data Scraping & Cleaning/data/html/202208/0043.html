@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Creating rst7 file with CHARMM-GUI generated parm7 and pdb files (Charmm36 force field) from Daniel Roe via AMBER on 2022-08-08 (Amber Archive Aug 2022)</title>
+<meta name="Author" content="Daniel Roe via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Creating rst7 file with CHARMM-GUI generated parm7 and pdb files (Charmm36 force field)" />
+<meta name="Date" content="2022-08-08" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Creating rst7 file with CHARMM-GUI generated parm7 and pdb files (Charmm36 force field)</h1>
+<!-- received="Mon Aug  8 07:30:03 2022" -->
+<!-- isoreceived="20220808143003" -->
+<!-- sent="Mon, 8 Aug 2022 10:15:08 -0400" -->
+<!-- isosent="20220808141508" -->
+<!-- name="Daniel Roe via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Creating rst7 file with CHARMM-GUI generated parm7 and pdb files (Charmm36 force field)" -->
+<!-- id="CAAC0qOYV5qJxOM3xRddjJdkEd08W5GP3_waAgGpo9JZyK4u8xQ.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAH3AqM4GBizVuN-n_a-h57G0mgO5CsQSGhBUZT9QNWX3REhh9A.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0044.html" accesskey="d" title="Carlos Navarro via AMBER: &quot;[AMBER] Fwd: Extracting residue number from a given resname - Pytraj&quot;">Next message</a> ]
+[ <a href="0042.html" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Conversion NETCDF trajectory to other formats&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg43" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg43" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg43" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg43" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Creating%20rst7%20file%20with%20CHARMM-GUI%20generated%20parm7%20and%20pdb%20files%20(Charmm36%20force%20field)">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 8 Aug 2022 10:15:08 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />There are a couple of issues here.
+<br />
+<br />On Tue, Jul 26, 2022 at 10:33 AM Prathit Chatterjee via AMBER
+<br />
+&lt;amber.ambermd.org&gt; wrote:
+<br />
+<em class="quotelev1">&gt; CPPTRAJ: Trajectory Analysis. V4.25.6
+</em><br />
+<br />Please upgrade to a more recent version of cpptraj (from AmberTools 22
+<br />
+or from the GitHub site: https://github.com/Amber-MD/cpptraj). That
+<br />
+will get rid of the CMAP etc warnings.
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Error: PDB step5_prot.4_frame2.pdb: No frames read. atom=8418 expected
+</em><br />
+<em class="quotelev1">&gt; 1394424.
+</em><br />
+<br />Your topology and input trajectory have different #s of atoms. Based
+<br />
+on the file naming I'm guessing that step5_prot.4_frame2.pdb only has
+<br />
+the protein, while step3_input.parm7 has the entire system (solvent
+<br />
+etc). If the protein is all you want you can just use the PDB as your
+<br />
+topology:
+<br />
+<br />cpptraj -p  step5_prot.4_frame2.pdb -y step5_prot.4_frame2.pdb -x
+<br />
+step5_prot.4_frame2.rst7
+<br />
+<br />Note also that cpptraj can use PSF files directly as topology files.
+<br />
+<br />-Dan
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Aug 08 2022 - 07:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0044.html" title="Next message in the list">Carlos Navarro via AMBER: "[AMBER] Fwd: Extracting residue number from a given resname - Pytraj"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0042.html" title="Previous message in the list">Daniel Roe via AMBER: "Re: [AMBER] Conversion NETCDF trajectory to other formats"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg43" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg43" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg43" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg43" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

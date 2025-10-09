@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Automatic glycan bonds in tleap? from Dr. Anselm Horn via AMBER on 2022-08-26 (Amber Archive Aug 2022)</title>
+<meta name="Author" content="Dr. Anselm Horn via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Automatic glycan bonds in tleap?" />
+<meta name="Date" content="2022-08-26" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Automatic glycan bonds in tleap?</h1>
+<!-- received="Fri Aug 26 06:00:04 2022" -->
+<!-- isoreceived="20220826130004" -->
+<!-- sent="Fri, 26 Aug 2022 14:35:24 +0200" -->
+<!-- isosent="20220826123524" -->
+<!-- name="Dr. Anselm Horn via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Automatic glycan bonds in tleap?" -->
+<!-- id="a2e49ad0-3e02-b83a-d6cd-b4c26ef1fa8c.fau.de" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAFOEhSoFKaMy2vDs8WQ4L-_s2eWaLzrojQnf4xcW=j493aV9fw.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0127.html" accesskey="d" title="David A Case via AMBER: &quot;Re: [AMBER] pmemd.mpi crashes&quot;">Next message</a> ]
+[ <a href="0125.html" title="angad sharma via AMBER: &quot;[AMBER] Dumping different trajectories at time&quot;">Previous message</a> ]
+[ <a href="0125.html" title="angad sharma via AMBER: &quot;[AMBER] Dumping different trajectories at time&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0128.html" accesskey="t" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Automatic glycan bonds in tleap?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg126" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg126" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg126" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg126" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Dr. Anselm Horn via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Automatic%20glycan%20bonds%20in%20tleap%3F">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 26 Aug 2022 14:35:24 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber users and developers,
+<br />
+<br />some time ago, I tried to setup a protein system bound to a branched
+<br />
+glycan and ran into trouble with tleap.
+<br />
+<br />Following the principles described in the Amber manual section 13.7.3.2.
+<br />
+&quot;Example: Adding a branched glycan to 3RN3 (N-linked glycosylation)&quot; I
+<br />
+added TER cards between all entities (protein chains and single sugar
+<br />
+residues) in the input pdb and then tried to create all bonds between
+<br />
+the glycan system manually with explicit bond commands in tleap.
+<br />
+<br />However, tleap complained with the following error message:
+<br />
+<br />!FATAL ERROR----------------------------------------
+<br />
+!FATAL:    In file [unitio.c], line 1808
+<br />
+!FATAL:    Message: 1-4: cannot add bond 22324 22325
+<br />
+This may be caused by duplicate bond specifications;
+<br />
+for example, explicit bond commands in addition to PDB conect records.
+<br />
+!
+<br />
+!ABORTING.
+<br />
+<br />Deleting all the bond commands made the error message vanish, but left
+<br />
+my system without the correct topology, of course.
+<br />
+<br />Using the desc command, I tried to elucidate the bond situation at the
+<br />
+atoms of interest of all the sugar moieties. It seemed to me that
+<br />
+sometimes bonds between sugars were created automatically; this feature
+<br />
+were nice for linear glycans, but may be troublesome for branched ones,
+<br />
+if no information is printed out, since the situation is not as clear as
+<br />
+it is for a linear peptide sequence.
+<br />
+<br />Thus I wanted to ask, whether my observation was right and there is
+<br />
+something like an automatic linking feature for glycan residues in leap,
+<br />
+and whether there is a description about that in the manual.
+<br />
+<br />If such a feature exists, my suggestion to the developers is to add a
+<br />
+simple user info when a bond is added between atoms in sugars - it may
+<br />
+also be a nice idea to have a similar comment printed out after each
+<br />
+successfully issued bond command in tleap in general, i.e. between which
+<br />
+atoms a link was established. An alternative would be a keyword that
+<br />
+turns off automatic (glycan) residue linking, but that may be harder to
+<br />
+implement.
+<br />
+<br />However, since the system was a rather complex one, it could be that I
+<br />
+am wrong and made a mistake somewhere else or used a tleap program from
+<br />
+an earlier Amber version.
+<br />
+(In the meantime, this system has been setup correctly...)
+<br />
+<br />Best regards,
+<br />
+<br />Anselm
+<br />
+<br />Bioinformatik  |  NHR.FAU
+<br />
+Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU)
+<br />
+Germany
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Aug 26 2022 - 06:00:04 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0127.html" title="Next message in the list">David A Case via AMBER: "Re: [AMBER] pmemd.mpi crashes"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0125.html" title="Previous message in the list">angad sharma via AMBER: "[AMBER] Dumping different trajectories at time"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0125.html" title="Message to which this message replies">angad sharma via AMBER: "[AMBER] Dumping different trajectories at time"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0128.html" title="Next message in this discussion thread">Daniel Roe via AMBER: "Re: [AMBER] Automatic glycan bonds in tleap?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0128.html" title="Message sent in reply to this message">Daniel Roe via AMBER: "Re: [AMBER] Automatic glycan bonds in tleap?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg126" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg126" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg126" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg126" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

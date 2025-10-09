@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] leap hangs on dihedral in frcmod? from Kenneth Huang on 2021-02-12 (Amber Archive Feb 2021)</title>
+<meta name="Author" content="Kenneth Huang (kennethneltharion.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] leap hangs on dihedral in frcmod?" />
+<meta name="Date" content="2021-02-12" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] leap hangs on dihedral in frcmod?</h1>
+<!-- received="Fri Feb 12 14:30:03 2021" -->
+<!-- isoreceived="20210212223003" -->
+<!-- sent="Fri, 12 Feb 2021 17:09:22 -0500" -->
+<!-- isosent="20210212220922" -->
+<!-- name="Kenneth Huang" -->
+<!-- email="kennethneltharion.gmail.com" -->
+<!-- subject="Re: [AMBER] leap hangs on dihedral in frcmod?" -->
+<!-- id="CALeh7kAB2tnBQpNQNrv3ZdWPtcSPrALDqug-fPjTBEsVTya_0g.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="e31f27b8-d7c9-446d-9291-60175cfc7363.free.ipmont.lan" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0126.html" accesskey="d" title="Maria Nagan: &quot;Re: [AMBER] Using divalent ions in LEaP&quot;">Next message</a> ]
+[ <a href="0124.html" title="Sam Walsworth (Researcher): &quot;Re: [AMBER] Using divalent ions in LEaP&quot;">Previous message</a> ]
+[ <a href="0118.html" title="Matias Machado: &quot;Re: [AMBER] leap hangs on dihedral in frcmod?&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg125" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg125" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg125" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg125" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Kenneth Huang &lt;<a href="mailto:kennethneltharion.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20leap%20hangs%20on%20dihedral%20in%20frcmod%3F">kennethneltharion.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 12 Feb 2021 17:09:22 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Matias,
+<br />
+<br />Thanks for the correction- I had forgotten to attach the unmodded version
+<br />
+of the frcmod, but it turned out the problem wasn't in the frcmod itself,
+<br />
+but an issue with the connectivity in the lib file. Which may be why it was
+<br />
+managing to read and only getting stuck on the write step.
+<br />
+<br />For self-reference and in case anyone else runs into this issue, the issue
+<br />
+was in the connect array- it was reading orginally as
+<br />
+<br />!entry.IC.unit.connect array int
+<br />
+<em class="quotelev1">&gt;  1
+</em><br />
+<em class="quotelev1">&gt;  32
+</em><br />
+<em class="quotelev1">&gt; ...
+</em><br />
+<em class="quotelev1">&gt; !entry.IC.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x
+</em><br />
+<em class="quotelev1">&gt;  int c5x  int c6x
+</em><br />
+<em class="quotelev1">&gt;  1 32 0 0 0 0
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br />Since I was using the format for an internal nucleotide (eventual end
+<br />
+point) but since at this stage since it's still a nucleoside, it needed to
+<br />
+be in the nucleoside format since it isn't connected to anything yet-
+<br />
+<br />!entry.IC.unit.connect array int
+<br />
+<em class="quotelev1">&gt;  0
+</em><br />
+<em class="quotelev1">&gt;  0
+</em><br />
+<em class="quotelev1">&gt; ...
+</em><br />
+<em class="quotelev1">&gt; !entry.IC.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x
+</em><br />
+<em class="quotelev1">&gt;  int c5x  int c6x
+</em><br />
+<em class="quotelev1">&gt;  0 0 0 0 0 0
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br />Best,
+<br />
+<br />Kenneth
+<br />
+<br />On Fri, Feb 12, 2021 at 7:14 AM Matias Machado &lt;mmachado.pasteur&#46;<!--nospam-->edu.uy&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt; Dear Hung,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; First, there is no section DIHEDRAL in your frcmod file, that explains the
+</em><br />
+<em class="quotelev1">&gt; message &quot;No torsion terms for CM-N*-CA-NC&quot; and the result &quot;Parameter file
+</em><br />
+<em class="quotelev1">&gt; was not saved&quot;. I can't check the dihedral issue without dihedrals and the
+</em><br />
+<em class="quotelev1">&gt; test.off file...
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Second, your file frcmod.ic5 seems to be miss-formatted... The section
+</em><br />
+<em class="quotelev1">&gt; &quot;MASS&quot; is required, even if it is empty... that is very important for
+</em><br />
+<em class="quotelev1">&gt; properly parsing the file... then your file should read:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ic5 test
+</em><br />
+<em class="quotelev1">&gt; MASS
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; BOND
+</em><br />
+<em class="quotelev1">&gt; CA-N*  424.0    1.383       use C -N*
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ANGLE
+</em><br />
+<em class="quotelev1">&gt; CM-C -NC    70.0      114.10       use CM-C -NA
+</em><br />
+<em class="quotelev1">&gt; CM-N*-CA    70.0      121.20       use CM-N*-CT
+</em><br />
+<em class="quotelev1">&gt; N*-CA-NC    70.0      123.30       use NA-CA-NC
+</em><br />
+<em class="quotelev1">&gt; N*-CA-N2    70.0      119.30       use N2-CA-NC
+</em><br />
+<em class="quotelev1">&gt; CT-N*-CA    70.0      121.20       use CM-N*-CT
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; DIHE
+</em><br />
+<em class="quotelev1">&gt; ...
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Matías
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ------------------------------------
+</em><br />
+<em class="quotelev1">&gt; PhD.
+</em><br />
+<em class="quotelev1">&gt; Researcher at Biomolecular Simulations Lab.
+</em><br />
+<em class="quotelev1">&gt; Institut Pasteur de Montevideo | Uruguay
+</em><br />
+<em class="quotelev1">&gt; [<a href="http://pasteur.uy/en/labs/biomolecular-simulations-laboratory">http://pasteur.uy/en/labs/biomolecular-simulations-laboratory</a>]
+</em><br />
+<em class="quotelev1">&gt; [<a href="http://www.sirahff.com">http://www.sirahff.com</a>]
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ----- Mensaje original -----
+</em><br />
+<em class="quotelev1">&gt; De: &quot;Kenneth Huang&quot; &lt;kennethneltharion.gmail&#46;<!--nospam-->com&gt;
+</em><br />
+<em class="quotelev1">&gt; Para: &quot;AMBER Mailing List&quot; &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+</em><br />
+<em class="quotelev1">&gt; Enviados: Jueves, 11 de Febrero 2021 19:08:58
+</em><br />
+<em class="quotelev1">&gt; Asunto: [AMBER] leap hangs on dihedral in frcmod?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Hi all,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I'm having an odd issue where leap seems to be hanging when I try to write
+</em><br />
+<em class="quotelev1">&gt; my prmtop/inpcrd after loading in my frcmod- ie, when I run
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; source $AMBERHOME/dat/leap/cmd/oldff/leaprc.ff94
+</em><br />
+<em class="quotelev2">&gt; &gt; loadamberparams frcmod.ic5
+</em><br />
+<em class="quotelev2">&gt; &gt; loadoff test.off
+</em><br />
+<em class="quotelev2">&gt; &gt; m1 = loadpdb ic5.pdb
+</em><br />
+<em class="quotelev2">&gt; &gt; saveamberparm m1 test.prmtop test.inpcrd
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; saveamberparm m1 ic5.prmtop ic5.inpcrd
+</em><br />
+<em class="quotelev2">&gt; &gt; Checking Unit.
+</em><br />
+<em class="quotelev2">&gt; &gt; Building topology.
+</em><br />
+<em class="quotelev2">&gt; &gt; Building atom parameters.
+</em><br />
+<em class="quotelev2">&gt; &gt; Building bond parameters.
+</em><br />
+<em class="quotelev2">&gt; &gt; Building angle parameters.
+</em><br />
+<em class="quotelev2">&gt; &gt; Building proper torsion parameters.
+</em><br />
+<em class="quotelev2">&gt; &gt; Building improper torsion parameters.
+</em><br />
+<em class="quotelev2">&gt; &gt;  total 6 improper torsions applied
+</em><br />
+<em class="quotelev2">&gt; &gt; Building H-Bond parameters.
+</em><br />
+<em class="quotelev2">&gt; &gt; Incorporating Non-Bonded adjustments.
+</em><br />
+<em class="quotelev2">&gt; &gt; Not Marking per-residue atom chain types.
+</em><br />
+<em class="quotelev2">&gt; &gt; Marking per-residue atom chain types.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; It'll hang there without writing anything. I figured it seems to be tied to
+</em><br />
+<em class="quotelev1">&gt; the dihedral/improper portion in my frcmod (attached) since when I remove
+</em><br />
+<em class="quotelev1">&gt; those sections, it starts complaining
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; saveamberparm m1 ic5.prmtop ic5.inpcrd
+</em><br />
+<em class="quotelev2">&gt; &gt; Checking Unit.
+</em><br />
+<em class="quotelev2">&gt; &gt; Building topology.
+</em><br />
+<em class="quotelev2">&gt; &gt; Building atom parameters.
+</em><br />
+<em class="quotelev2">&gt; &gt; Building bond parameters.
+</em><br />
+<em class="quotelev2">&gt; &gt; Building angle parameters.
+</em><br />
+<em class="quotelev2">&gt; &gt; Building proper torsion parameters.
+</em><br />
+<em class="quotelev2">&gt; &gt;  ** No torsion terms for  CM-N*-CA-NC
+</em><br />
+<em class="quotelev2">&gt; &gt;  ** No torsion terms for  CM-N*-CA-N2
+</em><br />
+<em class="quotelev2">&gt; &gt;  ** No torsion terms for  CT-N*-CA-NC
+</em><br />
+<em class="quotelev2">&gt; &gt;  ** No torsion terms for  CT-N*-CA-N2
+</em><br />
+<em class="quotelev2">&gt; &gt; Building improper torsion parameters.
+</em><br />
+<em class="quotelev2">&gt; &gt;  ** Warning: No sp2 improper torsion term for  N*-NC-CA-N2
+</em><br />
+<em class="quotelev2">&gt; &gt;         atoms are: N1 N3 C2 N4
+</em><br />
+<em class="quotelev2">&gt; &gt;  ** Warning: No sp2 improper torsion term for  CT-CM-N*-CA
+</em><br />
+<em class="quotelev2">&gt; &gt;         atoms are: C1' C6 N1 C2
+</em><br />
+<em class="quotelev2">&gt; &gt;  total 4 improper torsions applied
+</em><br />
+<em class="quotelev2">&gt; &gt; Building H-Bond parameters.
+</em><br />
+<em class="quotelev2">&gt; &gt; Incorporating Non-Bonded adjustments.
+</em><br />
+<em class="quotelev2">&gt; &gt; Parameter file was not saved.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; So as far as I can tell, it is reading the frcmod correctly- but is stuck
+</em><br />
+<em class="quotelev1">&gt; on the writing part in some way linked to the dihedrals?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Kenneth
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; --
+</em><br />
+<em class="quotelev1">&gt; Ask yourselves, all of you, what power would hell have if those imprisoned
+</em><br />
+<em class="quotelev1">&gt; here could not dream of heaven?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br /><br /><pre>
+-- 
+Ask yourselves, all of you, what power would hell have if those imprisoned
+here could not dream of heaven?
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Fri Feb 12 2021 - 14:30:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0126.html" title="Next message in the list">Maria Nagan: "Re: [AMBER] Using divalent ions in LEaP"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0124.html" title="Previous message in the list">Sam Walsworth (Researcher): "Re: [AMBER] Using divalent ions in LEaP"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0118.html" title="Message to which this message replies">Matias Machado: "Re: [AMBER] leap hangs on dihedral in frcmod?"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg125" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg125" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg125" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg125" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

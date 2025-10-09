@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Estimating protein-protein interactions from Matthew Guberman-Pfeffer on 2021-06-30 (Amber Archive Jun 2021)</title>
+<meta name="Author" content="Matthew Guberman-Pfeffer (matthew.guberman-pfeffer.uconn.edu)" />
+<meta name="Subject" content="Re: [AMBER] Estimating protein-protein interactions" />
+<meta name="Date" content="2021-06-30" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Estimating protein-protein interactions</h1>
+<!-- received="Wed Jun 30 07:00:02 2021" -->
+<!-- isoreceived="20210630140002" -->
+<!-- sent="Wed, 30 Jun 2021 09:31:19 -0400" -->
+<!-- isosent="20210630133119" -->
+<!-- name="Matthew Guberman-Pfeffer" -->
+<!-- email="matthew.guberman-pfeffer.uconn.edu" -->
+<!-- subject="Re: [AMBER] Estimating protein-protein interactions" -->
+<!-- id="13AD5642-4E79-4B4C-912B-DC422327A27B.uconn.edu" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="20210630130129.dq3hh6it2ms3a37y.ipo3912l197.rad.rutgers.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0237.html" accesskey="d" title="Amir Zeb: &quot;[AMBER] Apply negative lateral pressure to membrane&quot;">Next message</a> ]
+[ <a href="0235.html" title="David A Case: &quot;Re: [AMBER] Amber for AMD GPUs?&quot;">Previous message</a> ]
+[ <a href="0234.html" title="David A Case: &quot;Re: [AMBER] Estimating protein-protein interactions&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg236" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg236" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg236" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg236" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Matthew Guberman-Pfeffer &lt;<a href="mailto:matthew.guberman-pfeffer.uconn.edu?Subject=Re%3A%20%5BAMBER%5D%20Estimating%20protein-protein%20interactions">matthew.guberman-pfeffer.uconn.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 30 Jun 2021 09:31:19 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello Dr. Gase, 
+<br />
+<br />I’ve tried a few different approaches to calculate inter-domain non-bonded interactions. 
+<br />
+<br />1) In cpptraj:
+<br />
+lie LIE :1-425 :426-850 out LIEanalysis_NoProt_Del4.dat cutvdw 12.0 cutelec 12.0 diel 4
+<br />
+Where the two masks correspond to all the residues in the two protein domains that are in contact.
+<br />
+<br />Or,
+<br />
+<br />2) Again in cpptraj,
+<br />
+esander XXXX out XXXX.dat parmname XXXX.parm7 cut 9999.0 igb 2 extdiel 78.5 intdiel 4.0 ntb 0 ntf 2 ntc 2
+<br />
+Where XXXX is either DM1, DM2, or DM1DM2 for domain #1, #2, or both #1 and #2. I saved separate trajectories in a prior step with one or the other or both of the domains from the original trajectory.
+<br />
+<br />(I haven’t used the “pairwise” function in cpptraj, just because my understanding is that the electrostatics are not screened by the environment in any way.)
+<br />
+<br />The output in mdout reads (for one time step):
+<br />
+<br />&nbsp;NSTEP = 18000000   TIME(PS) =   54000.000  TEMP(K) =   299.00  PRESS =     0.0
+<br />
+&nbsp;Etot   =   -444472.8967  EKtot   =    109676.4062  EPtot      =   -554149.3030
+<br />
+&nbsp;BOND   =      2571.3718  ANGLE   =      6977.2214  DIHED      =      8519.2870
+<br />
+&nbsp;1-4 NB =      2865.7846  1-4 EEL =     38657.1336  VDWAALS    =     74142.2504
+<br />
+&nbsp;EELEC  =   -687882.3518  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+<br />
+&nbsp;------------------------------------------------------------------------------
+<br />
+<br />So, even in the simulation, the VDW term is positive. This puzzles me. 
+<br />
+<br />Did this help to clarify my question? Please let me know if I should provide more information.
+<br />
+<br />Best,
+<br />
+Matthew
+<br />
+<br /><br /><br /><em class="quotelev1">&gt; On Jun 30, 2021, at 9:01 AM, David A Case &lt;david.case.rutgers&#46;<!--nospam-->edu&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; *Message sent from a system outside of UConn.*
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; On Mon, Jun 28, 2021, Matthew Guberman-Pfeffer wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; I am trying to compute how the stability of a protein-protein interface
+</em><br />
+<em class="quotelev2">&gt;&gt; changes with protonation of the acidic groups within a 10 Å distance of
+</em><br />
+<em class="quotelev2">&gt;&gt; the interface. I’ve computed the non-bonded interactions for MD snapshots
+</em><br />
+<em class="quotelev2">&gt;&gt; using either the linear interaction method with some dielectric constant
+</em><br />
+<em class="quotelev2">&gt;&gt; specified (4 or 80) or using esander. One aspect that confuses me is that
+</em><br />
+<em class="quotelev2">&gt;&gt; the VDW energies are positive. I was expecting strongly negative values. Is
+</em><br />
+<em class="quotelev2">&gt;&gt; there just a sign convention I’m missing?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; It's not clear what you are computing, or exactly how.  How do the numbers
+</em><br />
+<em class="quotelev1">&gt; you get compare to the values that are printed in the mdout file?  Are you
+</em><br />
+<em class="quotelev1">&gt; only computing a subset of the LJ interactions?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ....dac
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="https://nam10.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=04%7C01%7C%7Cd2b3944ace404d8a2da008d93bc74574%7C17f1a87e2a254eaab9df9d439034b080%7C0%7C0%7C637606549307248214%7CUnknown%7CTWFpbGZsb3d8eyJWIjoi">https://nam10.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=04%7C01%7C%7Cd2b3944ace404d8a2da008d93bc74574%7C17f1a87e2a254eaab9df9d439034b080%7C0%7C0%7C637606549307248214%7CUnknown%7CTWFpbGZsb3d8eyJWIjoi</a>MC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;amp;sdata=NhAukwOWBi0uUY6L8IWkN9ZHCNpZnSFSuRdYIu26TA4%3D&amp;amp;reserved=0
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Jun 30 2021 - 07:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0237.html" title="Next message in the list">Amir Zeb: "[AMBER] Apply negative lateral pressure to membrane"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0235.html" title="Previous message in the list">David A Case: "Re: [AMBER] Amber for AMD GPUs?"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0234.html" title="Message to which this message replies">David A Case: "Re: [AMBER] Estimating protein-protein interactions"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg236" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg236" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg236" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg236" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

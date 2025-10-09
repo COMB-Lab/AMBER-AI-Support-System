@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Question about build Amber20 with Intel compiler 2019 from Chen, Guoquan on 2021-12-14 (Amber Archive Dec 2021)</title>
+<meta name="Author" content="Chen, Guoquan (guoquan.chen.intel.com)" />
+<meta name="Subject" content="[AMBER] Question about build Amber20 with Intel compiler 2019" />
+<meta name="Date" content="2021-12-14" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Question about build Amber20 with Intel compiler 2019</h1>
+<!-- received="Tue Dec 14 12:30:02 2021" -->
+<!-- isoreceived="20211214203002" -->
+<!-- sent="Tue, 14 Dec 2021 20:26:05 +0000" -->
+<!-- isosent="20211214202605" -->
+<!-- name="Chen, Guoquan" -->
+<!-- email="guoquan.chen.intel.com" -->
+<!-- subject="[AMBER] Question about build Amber20 with Intel compiler 2019" -->
+<!-- id="BYAPR11MB3048FE4DE0594C532A7F490797759.BYAPR11MB3048.namprd11.prod.outlook.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0114.html" accesskey="d" title="Yu Chen: &quot;[AMBER] Parallel test stuck at Run.dhfr.noboxinfo&quot;">Next message</a> ]
+[ <a href="0112.html" title="Carlos Simmerling: &quot;Re: [AMBER] Old Amber Force Fields&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0131.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] Question about build Amber20 with Intel compiler 2019&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg113" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg113" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg113" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg113" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Chen, Guoquan &lt;<a href="mailto:guoquan.chen.intel.com?Subject=Re%3A%20%5BAMBER%5D%20Question%20about%20build%20Amber20%20with%20Intel%20compiler%202019">guoquan.chen.intel.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 14 Dec 2021 20:26:05 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />&nbsp;&nbsp;I used to build Amber 20 (Amber Tools, Amber) with Intel compiler 2019 successfully.  My machine is Ubuntu 21.04.
+<br />
+Now when I try to rebuild it, it always give me error while  compiling boost during Amber tools building.  (GCC building works fine, intel LLVM based ICX works fine for Amber tools (including boost), but I can't build cuda with it fpr pmemd)
+<br />
+<br />BTW, I checked my previous successful building Log with ICC 2019, and also from GCC, and found that
+<br />
+has_icu builds   is always Yes for both.
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;Thanks a lot for any help/suggestion/advice,
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gqchen
+<br />
+<br />&nbsp;&nbsp;cmake $AMBER_PREFIX/amber20_src \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber20_cuda_icc\
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DCOMPILER=INTEL -DOPENMP=FALSE \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DMPI=FALSE -DCUDA=TRUE -DINSTALL_TESTS=TRUE \
+<br />
+-DDOWNLOAD_MINICONDA=TRUE -DMINICONDA_USE_PY3=TRUE
+<br />
+<br />[ 18%] No configure step for 'boost_build'
+<br />
+[ 18%] Performing build step for 'boost_build'
+<br />
+Performing configuration checks
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;- default address-model    : 64-bit
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;- default architecture     : x86
+<br />
+<br />Building the Boost C++ Libraries.
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;- has_icu builds           : no
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;- zlib                     : yes
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;- bzip2                    : yes
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;- lzma                     : no
+<br />
+- lockfree boost::atomic_flag : no
+<br />
+<br />In file included from ./boost/config/compiler/intel.hpp(44),
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from ./boost/config.hpp(39),
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from ./boost/system/config.hpp(13),
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from ./boost/system/error_code.hpp(15),
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from libs/system/src/error_code.cpp(16):
+<br />
+./boost/config/compiler/gcc.hpp(346): error: #error directive: &quot;Compiler not configured - please reconfigure&quot;
+<br />
+&nbsp;&nbsp;#  error &quot;Compiler not configured - please reconfigure&quot;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+./boost/config/stdlib/libstdcpp3.hpp(206): error: expected an expression
+<br />
+&nbsp;&nbsp;#     if !_GLIBCXX_DEPRECATED
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+<br />In file included from ./boost/chrono/detail/system.hpp(11),
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from ./boost/chrono/system_clocks.hpp(64),
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from ./boost/chrono/chrono.hpp(13),
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from libs/timer/src/cpu_timer.cpp(17):
+<br />
+./boost/system/error_code.hpp(314): error: constexpr constructor calls non-constexpr function &quot;boost::noncopyable_::noncopyable::noncopyable()&quot;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BOOST_SYSTEM_CONSTEXPR error_category() BOOST_SYSTEM_NOEXCEPT: std_cat_( this ) {}
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+<br />compilation aborted for libs/timer/src/cpu_timer.cpp (code 2)
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&quot;/opt/intel/compilers_and_libraries_2019.5.281/linux/bin/intel64/icpc&quot; -c -xc++  -m64 -pthread -O0 -g -w1 -inline-level=0  -DBOOST_ALL_NO_LIB=1 -DBOOST_CHRON
+<br />
+O_STATIC_LINK=1 -DBOOST_SYSTEM_NO_DEPRECATED -DBOOST_SYSTEM_STATIC_LINK=1 -DBOOST_TIMER_STATIC_LINK=1 -I&quot;.&quot;   -c -o &quot;/scratch/users/guoquanc/amber20_src/build/Am
+<br />
+berTools/src/boost/build/boost/bin.v2/libs/timer/build/intel-linux-ambercmake/debug/link-static/threading-multi/cpu_timer.o&quot; &quot;libs/timer/src/cpu_timer.cpp&quot;
+<br />
+<br />...failed intel-linux.compile.c++ amber20_src/build/AmberTools/src/boost/build/boost/bin.v2/libs/timer/build/intel-linux-ambercmake/debug
+<br />
+/link-static/threading-multi/cpu_timer.o...
+<br />
+...skipped &lt;p amber20_src/build/AmberTools/src/boost/build/boost/bin.v2/libs/timer/build/intel-linux-ambercmake/debug/link-static/threadin
+<br />
+g-multi&gt;libboost_timer.a(clean) for lack of &lt;p /amber20_src/build/AmberTools/src/boost/build/boost/bin.v2/libs/timer/build/intel-linux-ambe
+<br />
+rcmake/debug/link-static/threading-multi&gt;auto_timers_construction.o...
+<br />
+...skipped &lt;p amber20_src/build/AmberTools/src/boost/build/boost/bin.v2/libs/timer/build/intel-linux-ambercmake/debug/link-static/threadin
+<br />
+g-multi&gt;libboost_timer.a for lack of &lt;p amber20_src/build/AmberTools/src/boost/build/boost/bin.v2/libs/timer/build/intel-linux-ambercmake/
+<br />
+debug/link-static/threading-multi&gt;auto_timers_construction.o...
+<br />
+...skipped &lt;p amber20_src/build/AmberTools/src/boost/stage/lib&gt;libboost_timer.a for lack of &lt;p amber20_src/build/Am
+<br />
+berTools/src/boost/build/boost/bin.v2/libs/timer/build/intel-linux-ambercmake/debug/link-static/threading-multi&gt;libboost_timer.a...
+<br />
+...failed updating 53 targets...
+<br />
+<br /><br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Dec 14 2021 - 12:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0114.html" title="Next message in the list">Yu Chen: "[AMBER] Parallel test stuck at Run.dhfr.noboxinfo"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0112.html" title="Previous message in the list">Carlos Simmerling: "Re: [AMBER] Old Amber Force Fields"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0131.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] Question about build Amber20 with Intel compiler 2019"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0131.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Question about build Amber20 with Intel compiler 2019"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg113" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg113" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg113" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg113" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

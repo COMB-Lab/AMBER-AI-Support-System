@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Help in Standardizing NEB from Christina Bergonzo via AMBER on 2022-10-21 (Amber Archive Oct 2022)</title>
+<meta name="Author" content="Christina Bergonzo via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Help in Standardizing NEB" />
+<meta name="Date" content="2022-10-21" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Help in Standardizing NEB</h1>
+<!-- received="Fri Oct 21 06:30:02 2022" -->
+<!-- isoreceived="20221021133002" -->
+<!-- sent="Fri, 21 Oct 2022 09:13:12 -0400" -->
+<!-- isosent="20221021131312" -->
+<!-- name="Christina Bergonzo via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Help in Standardizing NEB" -->
+<!-- id="CAMLwDJ0NTFZe3VTFZhB56md67vNSXNak68Jeyr5ROdwg7KVgZQ.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAJinvRdTVajO2bT=VQKQcWDH80hBsV+HDoUxcQsTtdo4+JnG+A.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0102.html" accesskey="d" title="Matthew Guberman-Pfeffer via AMBER: &quot;[AMBER] How to restraint proteins to an axis&quot;">Next message</a> ]
+[ <a href="0100.html" title="Aravind R via AMBER: &quot;[AMBER] amber-subscribe&quot;">Previous message</a> ]
+[ <a href="0099.html" title="Aravind R via AMBER: &quot;[AMBER] Help in Standardizing NEB&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0125.html" accesskey="t" title="Aravind R via AMBER: &quot;Re: [AMBER] Help in Standardizing NEB&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg101" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg101" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg101" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg101" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Christina Bergonzo via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Help%20in%20Standardizing%20NEB">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 21 Oct 2022 09:13:12 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Aravind,
+<br />
+<br />NEB is a path sampling method that's used to examine the transition between
+<br />
+two well-defined endpoints. It does not impose a barrier - the system's
+<br />
+transition over this barrier is the limiting factor in sampling the
+<br />
+open-to-close transition, and this is what/why you are trying to
+<br />
+calculate the path (and potential energy) independent of timescale.
+<br />
+<br />It seems like you're doing some stuff to try and get this working for your
+<br />
+system, like increasing/changing the number of starting images, generating
+<br />
+intermediates using TMD, etc.
+<br />
+There is no &quot;standard&quot; way to run these simulations, unfortunately. Each
+<br />
+system is different, each underlying potential energy surface is different.
+<br />
+<br />I do have a few additional suggestions, which may help:
+<br />
+-Try explicit solvent.
+<br />
+-Extend the initial 1HEAT step to be more gradual (Try 1ns? 40ps is short,
+<br />
+and might be ok for alanine dipeptide but not for everything).
+<br />
+-Add an equilibration step after the first heating step (500 ps, 1 ns?)
+<br />
+-Add images at the intermediate to try and avoid discontinuities in the
+<br />
+transition, this could help avoid those initial 'NaN' values.
+<br />
+<br />Look at Test Case 3 in this paper and change up the original inputs to
+<br />
+match what they do (a similarly large system's protocol could be more
+<br />
+relevant to your own problem):
+<br />
+<a href="https://pubs.acs.org/doi/10.1021/acs.jctc.9b00329">https://pubs.acs.org/doi/10.1021/acs.jctc.9b00329</a>
+<br />
+<br />The real struggle is getting a nice interpolating initial path. I'd
+<br />
+recommend spending time on that first, then troubleshooting any other
+<br />
+problems that arise.
+<br />
+<br />Good luck!
+<br />
+-Christina
+<br />
+<br />On Fri, Oct 21, 2022 at 2:18 AM Aravind R via AMBER &lt;amber.ambermd.org&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hi Amber  Developers/ Users,
+</em><br />
+<em class="quotelev1">&gt; I am performing NEB, moving the system from its &quot;Open&quot; structure to the
+</em><br />
+<em class="quotelev1">&gt; &quot;Close&quot; structure. This comprises of large conformational transition.
+</em><br />
+<em class="quotelev1">&gt; I had minimised the initial and final structures until convergence before
+</em><br />
+<em class="quotelev1">&gt; starting NEB.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I have played around with spring constants ( skmin/skmax ranging from 0.5
+</em><br />
+<em class="quotelev1">&gt; to 50 at various stages), temperatures (slow to fast heating &amp; slow
+</em><br />
+<em class="quotelev1">&gt; cooling) and the number of images to represent this transition (I performed
+</em><br />
+<em class="quotelev1">&gt; TMD to sample images from open to close transition. Used conformations from
+</em><br />
+<em class="quotelev1">&gt; TMD to represent the number of images I supply NEB to start with - I used 8
+</em><br />
+<em class="quotelev1">&gt; - 64 images to represent transition with just 2 to 32 conformations from
+</em><br />
+<em class="quotelev1">&gt; TMD).
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I performed implicit solvent NEB in 6 stages:
+</em><br />
+<em class="quotelev1">&gt;                                               1HEAT - spring constant
+</em><br />
+<em class="quotelev1">&gt; ranging from 0.5 - 10 for 40ps of MD with a 0.5fs time step raising temp
+</em><br />
+<em class="quotelev1">&gt; from 0 to 300K
+</em><br />
+<em class="quotelev1">&gt;                                               2ANNEAL - spring constant
+</em><br />
+<em class="quotelev1">&gt; ranging from 1 - 50 for 1ns of MD with a 1fs time step raising temp from
+</em><br />
+<em class="quotelev1">&gt; 300 to 500K
+</em><br />
+<em class="quotelev1">&gt;                                               3EQUIL - spring constant
+</em><br />
+<em class="quotelev1">&gt; ranging from 1 - 50 for 2ns of MD with a 2fs time step equilibrating at
+</em><br />
+<em class="quotelev1">&gt; 500K
+</em><br />
+<em class="quotelev1">&gt;                                               4COOL - spring constant
+</em><br />
+<em class="quotelev1">&gt; ranging from 1 - 50 for 2ns of MD with a 2fs time step decreasing temp from
+</em><br />
+<em class="quotelev1">&gt; 500 to 300K
+</em><br />
+<em class="quotelev1">&gt;                                               5EQUIL - spring constant
+</em><br />
+<em class="quotelev1">&gt; ranging from 1 - 50 for 2ns of MD with a 2fs time step equilibrating at
+</em><br />
+<em class="quotelev1">&gt; 300K
+</em><br />
+<em class="quotelev1">&gt;                                               6COOL - spring constant
+</em><br />
+<em class="quotelev1">&gt; ranging from 1 - 50 for 2ns of MD with a 2fs time step decreasing temp from
+</em><br />
+<em class="quotelev1">&gt; 300 to 0K
+</em><br />
+<em class="quotelev1">&gt;                                               6EQUIL - spring constant
+</em><br />
+<em class="quotelev1">&gt; ranging from 1 - 50 for 2ns of MD with a 2fs time step equilibrating at 0K
+</em><br />
+<em class="quotelev1">&gt; **spring constant ranging from x - y: is across different attempts not in a
+</em><br />
+<em class="quotelev1">&gt; single simulation.
+</em><br />
+<em class="quotelev1">&gt; I am having the following issues:
+</em><br />
+<em class="quotelev1">&gt;     1) Irrespective of the values I play around with, NEB constantly
+</em><br />
+<em class="quotelev1">&gt; imposes a barrier height. This leads to the unfolding of the helix in the
+</em><br />
+<em class="quotelev1">&gt; region I try to perform the tgtrmsmask in.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;     2) At the images Where the conformational transition is sampled, the
+</em><br />
+<em class="quotelev1">&gt; energies go very high and the potential energy gets to NaN (This mostly
+</em><br />
+<em class="quotelev1">&gt; happens due to the helix unfolding raising dihedral and vdw energies to
+</em><br />
+<em class="quotelev1">&gt; shoot up).
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;     3) Even though I used 32 evenly spaced conformers (sampling the
+</em><br />
+<em class="quotelev1">&gt; transition) from TMD to sample 64 images in NEB, the transition is not
+</em><br />
+<em class="quotelev1">&gt; smooth, with a sudden drop in energy for the last but one conformer. This
+</em><br />
+<em class="quotelev1">&gt; drop in energy moves towards the left as I decrease the number of
+</em><br />
+<em class="quotelev1">&gt; conformers I use to represent transition.  For eg: If I just use open and
+</em><br />
+<em class="quotelev1">&gt; closed conformers (as in the tutorial), the dip in the energy is in the
+</em><br />
+<em class="quotelev1">&gt; centre image. As I increase the Conformers from TMD the dip move towards
+</em><br />
+<em class="quotelev1">&gt; the right from the centre. To negate this I tried an unequal number of
+</em><br />
+<em class="quotelev1">&gt; images used to represent transition: the first 4 images were sampled from
+</em><br />
+<em class="quotelev1">&gt; &quot;Open&quot; and the rest from &quot;Close&quot;, and so on and so forth.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Any help is appreciated !!!
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Regards,
+</em><br />
+<em class="quotelev1">&gt; Aravind R
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br /><br /><pre>
+-- 
+-----------------------------------------------------------------
+Christina Bergonzo
+Research Chemist
+Biomolecular Measurement Division, MML, NIST
+-----------------------------------------------------------------
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Fri Oct 21 2022 - 06:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0102.html" title="Next message in the list">Matthew Guberman-Pfeffer via AMBER: "[AMBER] How to restraint proteins to an axis"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0100.html" title="Previous message in the list">Aravind R via AMBER: "[AMBER] amber-subscribe"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0099.html" title="Message to which this message replies">Aravind R via AMBER: "[AMBER] Help in Standardizing NEB"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0125.html" title="Next message in this discussion thread">Aravind R via AMBER: "Re: [AMBER] Help in Standardizing NEB"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg101" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg101" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg101" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg101" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

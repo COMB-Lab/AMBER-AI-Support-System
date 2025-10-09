@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Scripting from Carlos Simmerling on 2021-07-08 (Amber Archive Jul 2021)</title>
+<meta name="Author" content="Carlos Simmerling (carlos.simmerling.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Scripting" />
+<meta name="Date" content="2021-07-08" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Scripting</h1>
+<!-- received="Thu Jul  8 05:30:03 2021" -->
+<!-- isoreceived="20210708123003" -->
+<!-- sent="Thu, 8 Jul 2021 08:17:21 -0400" -->
+<!-- isosent="20210708121721" -->
+<!-- name="Carlos Simmerling" -->
+<!-- email="carlos.simmerling.gmail.com" -->
+<!-- subject="Re: [AMBER] Scripting" -->
+<!-- id="CAGk3s-TQ9fAbYwgXhUhXDB2fe8CtNF5UHqajNtS+2Ws2YxOApw.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAMpjJqiZp2+oOd+2zvYbHwCDX_kCX60iuE=2wbXZRO5SuuKQwQ.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0040.html" accesskey="d" title="&#29579;&#32500;: &quot;[AMBER] Stop PMEMD Terminated Aborally. Tutorial 1.7 An Amber Lipid Force Field Tutorial: Lipid14.&quot;">Next message</a> ]
+[ <a href="0038.html" title="ankita mehta: &quot;[AMBER] Scripting&quot;">Previous message</a> ]
+[ <a href="0038.html" title="ankita mehta: &quot;[AMBER] Scripting&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg39" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg39" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg39" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg39" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Carlos Simmerling &lt;<a href="mailto:carlos.simmerling.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Scripting">carlos.simmerling.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 8 Jul 2021 08:17:21 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+it's hard to give detailed suggestions without knowing more about how you
+<br />
+submit or run your jobs, but when I have multiple steps to run one after
+<br />
+another I list them in a script and then run the script or submit it to our
+<br />
+job queue. The script can look something like this example:
+<br />
+<br /># step 1: Minimize using the pmemd program (this is the CPU version).
+<br />
+pmemd -O \
+<br />
+&nbsp;-i ./min.in \
+<br />
+&nbsp;-p ./tc5b.1l2y.hmass.parm7 \
+<br />
+&nbsp;-c ./tc5b.1l2y.rst7 \
+<br />
+&nbsp;-o ./min.out \
+<br />
+&nbsp;-x ./min.crd \
+<br />
+&nbsp;-inf ./min.info \
+<br />
+&nbsp;-r ./min.rst7
+<br />
+<br /># step 2: slowly heat the system, with restraints on the protein
+<br />
+backbone to keep it from moving too far.
+<br />
+# use pmemd.cuda, which uses a GPU
+<br />
+pmemd.cuda -O \
+<br />
+&nbsp;-i ./heat.in \
+<br />
+&nbsp;-p ./tc5b.1l2y.hmass.parm7 \
+<br />
+&nbsp;-c ./min.rst7 \
+<br />
+&nbsp;-ref ./min.rst7 \
+<br />
+&nbsp;-o ./heat.out \
+<br />
+&nbsp;-x ./heat.crd \
+<br />
+&nbsp;-inf ./heat.info \
+<br />
+&nbsp;-r ./heat.rst7
+<br />
+<br /><br />On Thu, Jul 8, 2021 at 8:13 AM ankita mehta &lt;mehtaroadies.gmail.com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; *Hello all,*
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; *I am running simulation runs in a loop.*
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; *In which I want next simulation to run only when my previous run has
+</em><br />
+<em class="quotelev1">&gt; completed .*
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; *What is the way out for this?*
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; *Thanks!*
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Jul 08 2021 - 05:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0040.html" title="Next message in the list">&#29579;&#32500;: "[AMBER] Stop PMEMD Terminated Aborally. Tutorial 1.7 An Amber Lipid Force Field Tutorial: Lipid14."</a></li>
+<li><dfn>Previous message</dfn>: <a href="0038.html" title="Previous message in the list">ankita mehta: "[AMBER] Scripting"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0038.html" title="Message to which this message replies">ankita mehta: "[AMBER] Scripting"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg39" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg39" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg39" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg39" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

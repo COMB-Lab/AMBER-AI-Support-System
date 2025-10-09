@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Troubleshooting long idle times in pmemd.MPI from Kevin Keane on 2021-06-16 (Amber Archive Jun 2021)</title>
+<meta name="Author" content="Kevin Keane (kkeane.sandiego.edu)" />
+<meta name="Subject" content="Re: [AMBER] Troubleshooting long idle times in pmemd.MPI" />
+<meta name="Date" content="2021-06-16" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Troubleshooting long idle times in pmemd.MPI</h1>
+<!-- received="Wed Jun 16 22:00:02 2021" -->
+<!-- isoreceived="20210617050002" -->
+<!-- sent="Wed, 16 Jun 2021 21:45:31 -0700" -->
+<!-- isosent="20210617044531" -->
+<!-- name="Kevin Keane" -->
+<!-- email="kkeane.sandiego.edu" -->
+<!-- subject="Re: [AMBER] Troubleshooting long idle times in pmemd.MPI" -->
+<!-- id="CAG2JMfXo6BS1_q1f+T-BoCLT5bd6DiHsJYyAJpPj34vxXS+10A.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="20210502123029.75q6o4gvxuomltb4.opb-williams-l01.rad.rutgers.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0129.html" accesskey="d" title="jamal kazazi: &quot;[AMBER] compilation error&quot;">Next message</a> ]
+[ <a href="0127.html" title="Josiah Bones: &quot;[AMBER] Calculation of ligand restraints in TI&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg128" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg128" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg128" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg128" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Kevin Keane &lt;<a href="mailto:kkeane.sandiego.edu?Subject=Re%3A%20%5BAMBER%5D%20Troubleshooting%20long%20idle%20times%20in%20pmemd.MPI">kkeane.sandiego.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 16 Jun 2021 21:45:31 -0700</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Thank you for the initial help with this! In the meantime, I confirmed that
+<br />
+the problem also occurs with the non-MPI version of pmemd (from Amber 16).
+<br />
+<br />My initial assumption was wrong. The problem isn't long idle times, but
+<br />
+rather that pmemd consistently runs at approximately 6% CPU utilization
+<br />
+even though it has the whole CPU to itself.
+<br />
+<br />The storage file system is NFS with locking turned off, and access to that
+<br />
+file system is generally fast; Amber is the only application that exhibits
+<br />
+this behavior, and only since we rebuilt the cluster using RedHat 8.
+<br />
+<br />Have you seen this before, and/or any idea what may cause it?
+<br />
+<br />_______________________________________________________________________
+<br />
+Kevin Keane | Systems Architect | University of San Diego ITS |
+<br />
+kkeane.sandiego.edu
+<br />
+<br />*Pronouns: he/him/his*Maher Hall, 162 |5998 Alcalá Park | San Diego, CA
+<br />
+92110-2492 | 619.260.6859 | Text: 760-721-8339
+<br />
+<br />*REMEMBER! **No one from IT at USD will ever ask to confirm or supply your
+<br />
+password*.
+<br />
+These messages are an attempt to steal your username and password. Please
+<br />
+do not reply to, click the links within, or open the attachments of these
+<br />
+messages. Delete them!
+<br />
+<br /><br /><br /><br />On Sun, May 2, 2021 at 5:34 AM David A Case &lt;david.case.rutgers&#46;<!--nospam-->edu&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; On Sat, May 01, 2021, Kevin Keane wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;Meanwhile, is there a way to profile pmemd.MPI to see where it actually
+</em><br />
+<em class="quotelev1">&gt; may
+</em><br />
+<em class="quotelev2">&gt; &gt;be stalled?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; There are detailed parallel timings at the bottom of the mdout file, and in
+</em><br />
+<em class="quotelev1">&gt; a log file (default name is &quot;logfile&quot;, but you can change that with the
+</em><br />
+<em class="quotelev1">&gt; &quot;-l&quot;
+</em><br />
+<em class="quotelev1">&gt; command-line flag.)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I'm not sure if these will provide much insight or not.  Probably, you
+</em><br />
+<em class="quotelev1">&gt; would
+</em><br />
+<em class="quotelev1">&gt; need to compare the timings on a machine where the problem shows up and one
+</em><br />
+<em class="quotelev1">&gt; where it doesn't.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ....good luck....dac
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Jun 16 2021 - 22:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0129.html" title="Next message in the list">jamal kazazi: "[AMBER] compilation error"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0127.html" title="Previous message in the list">Josiah Bones: "[AMBER] Calculation of ligand restraints in TI"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg128" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg128" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg128" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg128" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

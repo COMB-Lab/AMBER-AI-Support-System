@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] amber 20 compilation problem from Jordi Bujons on 2020-12-01 (Amber Archive Dec 2020)</title>
+<meta name="Author" content="Jordi Bujons (jordi.bujons.iqac.csic.es)" />
+<meta name="Subject" content="[AMBER] amber 20 compilation problem" />
+<meta name="Date" content="2020-12-01" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] amber 20 compilation problem</h1>
+<!-- received="Tue Dec  1 10:30:02 2020" -->
+<!-- isoreceived="20201201183002" -->
+<!-- sent="Tue, 1 Dec 2020 19:14:23 +0100" -->
+<!-- isosent="20201201181423" -->
+<!-- name="Jordi Bujons" -->
+<!-- email="jordi.bujons.iqac.csic.es" -->
+<!-- subject="[AMBER] amber 20 compilation problem" -->
+<!-- id="015301d6c80d$cbdf7e00$639e7a00$.iqac.csic.es" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0008.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] TI electrostatic free energy]&quot;">Next message</a> ]
+[ <a href="0006.html" title="Lachele Foley: &quot;[AMBER] C++ Programmer Position&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0011.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] amber 20 compilation problem&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg7" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg7" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg7" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg7" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Jordi Bujons &lt;<a href="mailto:jordi.bujons.iqac.csic.es?Subject=Re%3A%20%5BAMBER%5D%20amber%2020%20compilation%20problem">jordi.bujons.iqac.csic.es</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 1 Dec 2020 19:14:23 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+<br />&nbsp;
+<br />
+<br />I am trying to compile amber 20 on a workstation that includes a GTX 3090
+<br />
+GPU. The workstation runs CentOS 8 with cuda 11.1 and Nvidia driver version
+<br />
+455.32.00, and amber20 has been updated with the latest updates as of
+<br />
+December 1.  The serial and parallel versions of amber 20 compiled without
+<br />
+errors and ran the corresponding test correctly. However, when I ran the
+<br />
+script &lt;run_cmake&gt; (after modifying it to set the -DCUDA=TRUE flag) to
+<br />
+compile the cuda version, I got the following error:
+<br />
+<br />&nbsp;
+<br />
+<br />$ ./run_cmake
+<br />
+<br /><pre>
+--
+**************************************************************************
+-- Starting configuration of Amber version 20.0.0...
+-- CMake Version: 3.11.4
+-- For how to use this build system, please read this wiki:
+--     <a href="http://ambermd.org/pmwiki/pmwiki.php/Main/CMake">http://ambermd.org/pmwiki/pmwiki.php/Main/CMake</a>
+-- For a list of important CMake variables, check here:
+--     <a href="http://ambermd.org/pmwiki/pmwiki.php/Main/CMake-Common-Options">http://ambermd.org/pmwiki/pmwiki.php/Main/CMake-Common-Options</a>
+--
+**************************************************************************
+-- Amber source found, building AmberTools and Amber
+-- CUDA version 11.1 detected
+CMake Error at cmake/CudaConfig.cmake:74 (message):
+  Error: Unsupported CUDA version.  AMBER requires CUDA version &gt;= 7.5 and
+&lt;= 11.0.
+ 
+                                Please upgrade your CUDA installation or
+disable building with CUDA.
+Call Stack (most recent call first):
+  CMakeLists.txt:120 (include)
+ 
+ 
+which implies that amber20 is not compatible with cuda 11.1. However in the
+amber web page there are links to benchmarks of amber 20 that were run on a
+system with cuda 11.1.
+Is there any way to compile amber20 with cuda 11.1? Any suggestions on how
+to do it will be most appreciated.
+ 
+Regards,
+ 
+Jordi
+ 
+ 
+ 
+----------------------------------------------------------------------------
+----------
+Jordi Bujons, PhD
+Dept. of Biological Chemistry (QB)
+Institute of Advanced Chemistry of Catalonia (IQAC)
+National Research Council of Spain (CSIC)
+Address: Jordi Girona 18-26, 08034 Barcelona, Spain
+Phone:  &lt;tel:%2B34%20934006100%20ext.%201291&gt; +34 934006100 ext. 1291
+FAX:  &lt;tel:%2B34%20932045904&gt; +34 932045904
+ &lt;mailto:jordi.bujons.iqac.csic.es&gt; <a href="mailto:jordi.bujons.iqac.csic.es?Subject=Re%3A%20%5BAMBER%5D%20amber%2020%20compilation%20problem">jordi.bujons.iqac.csic.es</a>
+ &lt;<a href="http://www.iqac.csic.es">http://www.iqac.csic.es</a>&gt; <a href="http://www.iqac.csic.es">http://www.iqac.csic.es</a>
+ 
+-- 
+El software de antivirus Avast ha analizado este correo electrónico en busca de virus.
+<a href="https://www.avast.com/antivirus">https://www.avast.com/antivirus</a>
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Dec 01 2020 - 10:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0008.html" title="Next message in the list">David A Case: "Re: [AMBER] TI electrostatic free energy]"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0006.html" title="Previous message in the list">Lachele Foley: "[AMBER] C++ Programmer Position"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0011.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] amber 20 compilation problem"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0011.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] amber 20 compilation problem"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg7" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg7" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg7" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg7" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Problem compiling Amber20 - undefined reference to 'plumedmain_create' from Amanda Buyan on 2020-07-22 (Amber Archive Jul 2020)</title>
+<meta name="Author" content="Amanda Buyan (Amanda.Buyan.anu.edu.au)" />
+<meta name="Subject" content="[AMBER] Problem compiling Amber20 - undefined reference to 'plumedmain_create'" />
+<meta name="Date" content="2020-07-22" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Problem compiling Amber20 - undefined reference to 'plumedmain_create'</h1>
+<!-- received="Wed Jul 22 23:30:03 2020" -->
+<!-- isoreceived="20200723063003" -->
+<!-- sent="Thu, 23 Jul 2020 06:07:39 +0000" -->
+<!-- isosent="20200723060739" -->
+<!-- name="Amanda Buyan" -->
+<!-- email="Amanda.Buyan.anu.edu.au" -->
+<!-- subject="[AMBER] Problem compiling Amber20 - undefined reference to 'plumedmain_create'" -->
+<!-- id="SYBP282MB0202832FF294B6B32A36E80CA9760.SYBP282MB0202.AUSP282.PROD.OUTLOOK.COM" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0265.html" accesskey="d" title="Casalini  Tommaso: &quot;[AMBER] Download link for AmberTools17&quot;">Next message</a> ]
+[ <a href="0263.html" title="Feng Pan: &quot;Re: [AMBER] ABMD with RMSD and RoG: ** NFE-Error ** : Cannot read &#0038;colvar namelist!&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0266.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] Problem compiling Amber20 - undefined reference to &#0039;plumedmain_create&#0039;&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg264" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg264" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg264" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg264" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Amanda Buyan &lt;<a href="mailto:Amanda.Buyan.anu.edu.au?Subject=Re%3A%20%5BAMBER%5D%20Problem%20compiling%20Amber20%20-%20undefined%20reference%20to%20'plumedmain_create'">Amanda.Buyan.anu.edu.au</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 23 Jul 2020 06:07:39 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi everyone,
+<br />
+<br />I hope you can help me with this, and I hope it is a user error - I'm attempting to compile Amber20 on our CentOS GPU cluster, and am running into some trouble even trying to compile the serial version!  The error I'm getting is
+<br />
+<br />[ 52%] Linking Fortran executable sander.LES
+<br />
+CMakeFiles/sander.LES.dir/Plumed.c.o:(.data+0x10):undefined reference to 'plumedmain_create'
+<br />
+CMakeFiles/sander.LES.dir/Plumed.c.o:(.data+0x18):undefined reference to 'plumedmain_cmd'
+<br />
+CMakeFiles/sander.LES.dir/Plumed.c.o:(.data+0x20):undefined reference to 'plumedmain_finalize'
+<br />
+collect2: error: ls returned 1 exist status
+<br />
+make[2]: *** [AmberTools/src/sander/sander.LES] Error 1
+<br />
+make[1]: *** [AmberTools/src/sander/CMakeFiles/sander.LES.dir/all] Error 2
+<br />
+make: *** [all] Error 2
+<br />
+<br />I'm installing it in /usr/local/, and have checked that the md5sum is correct.  I am then running the following commands:
+<br />
+<br />tar xvfj AmberTools20.tar.bz2
+<br />
+tar xvfj Amber20.tar.bz2
+<br />
+cd amber20_src/AmberTools/src
+<br />
+sudo tar -xvzf mpich-3.2.1.tar.gz
+<br />
+cd /usr/local/amber20_source/build
+<br />
+sudo ./run_cmake
+<br />
+sudo make install
+<br />
+<br />I also have the correct cmake installed, and we have an earlier version of Amber on the cluster, and should have everything Amber needs for installation.  If it helps, plumed is also installed on this cluster for a separate software package.  Can anyone point me to a possible reason why this should happen?
+<br />
+<br />Best wishes
+<br />
+<br />Amanda
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Jul 22 2020 - 23:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0265.html" title="Next message in the list">Casalini  Tommaso: "[AMBER] Download link for AmberTools17"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0263.html" title="Previous message in the list">Feng Pan: "Re: [AMBER] ABMD with RMSD and RoG: ** NFE-Error ** : Cannot read &#0038;colvar namelist!"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0266.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] Problem compiling Amber20 - undefined reference to &#0039;plumedmain_create&#0039;"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0266.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Problem compiling Amber20 - undefined reference to &#0039;plumedmain_create&#0039;"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg264" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg264" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg264" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg264" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

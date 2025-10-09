@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] parmed for two atom type with the same LJ parameters from Jason Swails on 2021-10-14 (Amber Archive Oct 2021)</title>
+<meta name="Author" content="Jason Swails (jason.swails.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] parmed for two atom type with the same LJ parameters" />
+<meta name="Date" content="2021-10-14" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] parmed for two atom type with the same LJ parameters</h1>
+<!-- received="Thu Oct 14 14:00:02 2021" -->
+<!-- isoreceived="20211014210002" -->
+<!-- sent="Thu, 14 Oct 2021 16:29:14 -0400" -->
+<!-- isosent="20211014202914" -->
+<!-- name="Jason Swails" -->
+<!-- email="jason.swails.gmail.com" -->
+<!-- subject="Re: [AMBER] parmed for two atom type with the same LJ parameters" -->
+<!-- id="CAEk9e3r_VT6a0pf9VwhS=4LxMH-rptemmpwC2YJn+OMQEpjXxQ.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="0A76F42B-75CB-4B0F-9671-3177023A5373.msu.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0107.html" accesskey="d" title="Brian Radak: &quot;[AMBER] Automated capping of missing loops?&quot;">Next message</a> ]
+[ <a href="0105.html" title="German P. Barletta: &quot;Re: [AMBER] FixCondaShebang persists&quot;">Previous message</a> ]
+[ <a href="0103.html" title="Song, Lin: &quot;Re: [AMBER] parmed for two atom type with the same LJ parameters&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg106" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg106" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg106" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg106" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Jason Swails &lt;<a href="mailto:jason.swails.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20parmed%20for%20two%20atom%20type%20with%20the%20same%20LJ%20parameters">jason.swails.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 14 Oct 2021 16:29:14 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Thu, Oct 14, 2021 at 11:44 AM Song, Lin &lt;songlin3.chemistry.msu.edu&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hi Qinghua,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; One thing you may try is changing one of the metal ion’s atom type to
+</em><br />
+<em class="quotelev1">&gt; something new:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; change AMBER_ATOM_TYPE :METAL_ION_2_RESID OIMD
+</em><br />
+<em class="quotelev1">&gt; addLJType .%OIMD
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; And you might need to add the polarizability of the new atom type, which
+</em><br />
+<em class="quotelev1">&gt; should have the same value of the metal ion’s atom type.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; My two cents. Please correct me if I’m wrong.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br />addLJType is precisely how you do this.  The only comment I'll add is that
+<br />
+the first command (`change AMBER_ATOM_TYPE`) is not necessary (although
+<br />
+naturally the mask in the second command will need to change accordingly).
+<br />
+<br />As the OP pointed out, Amber condenses Lennard-Jones types differently than
+<br />
+atom types (it does not use the AMBER_ATOM_TYPE designation).  As such, you
+<br />
+can actually use `addLJType` to give an atom a separate set of
+<br />
+Lennard-Jones parameters without adjusting any of the other atoms of the
+<br />
+same type.
+<br />
+<br />All the best,
+<br />
+Jason
+<br />
+<br /><pre>
+-- 
+Jason M. Swails
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd&#46;<!--nospam-->org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Thu Oct 14 2021 - 14:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0107.html" title="Next message in the list">Brian Radak: "[AMBER] Automated capping of missing loops?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0105.html" title="Previous message in the list">German P. Barletta: "Re: [AMBER] FixCondaShebang persists"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0103.html" title="Message to which this message replies">Song, Lin: "Re: [AMBER] parmed for two atom type with the same LJ parameters"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg106" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg106" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg106" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg106" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Tracking lifetime distance by closest of specific water IDs? from Kenneth Huang on 2020-07-28 (Amber Archive Jul 2020)</title>
+<meta name="Author" content="Kenneth Huang (kennethneltharion.gmail.com)" />
+<meta name="Subject" content="[AMBER] Tracking lifetime distance by closest of specific water IDs?" />
+<meta name="Date" content="2020-07-28" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Tracking lifetime distance by closest of specific water IDs?</h1>
+<!-- received="Tue Jul 28 07:30:04 2020" -->
+<!-- isoreceived="20200728143004" -->
+<!-- sent="Tue, 28 Jul 2020 10:28:51 -0400" -->
+<!-- isosent="20200728142851" -->
+<!-- name="Kenneth Huang" -->
+<!-- email="kennethneltharion.gmail.com" -->
+<!-- subject="[AMBER] Tracking lifetime distance by closest of specific water IDs?" -->
+<!-- id="CALeh7kATwbXM6_T4aRuyxX8oAmbFt8rQLUF7JZb-hczEP47NSg.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0315.html" accesskey="d" title="Pinky Mazumder: &quot;Re: [AMBER] Interaction of cellulose-hemicellulose&quot;">Next message</a> ]
+[ <a href="0313.html" title="Walton Smith: &quot;Re: [AMBER] Error building Amber&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg314" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg314" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg314" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg314" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Kenneth Huang &lt;<a href="mailto:kennethneltharion.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Tracking%20lifetime%20distance%20by%20closest%20of%20specific%20water%20IDs%3F">kennethneltharion.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 28 Jul 2020 10:28:51 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi all,
+<br />
+<br />I have an odd scenerio where I'm trying to track the full distance lifetime
+<br />
+of a subset of waters from an initial time point, ie frame 1, from a group
+<br />
+of bases over 25 ns chunks of time. I'm having an issue in tracking all the
+<br />
+waters though, in that if I use something like
+<br />
+<br />closest 17130 :8-10&amp;!(.H=) noimage first closestout closest_s2_200
+<br />
+outprefix closest_s2
+<br />
+<br />Where I have a total of 17131 waters in my box, but the problem I'm running
+<br />
+into is that a number of those waters move so far away they're the
+<br />
+furtherest water, so aren't recorded.
+<br />
+<br />I tried stripping out the all but the waters I'm interested in, but I ran
+<br />
+into two issue where I couldn't tell if it was actually leaving the right
+<br />
+waters, and my input for closest has it as N=total number of waters in the
+<br />
+box.
+<br />
+<br />If it were just one residue, I'd try something with distance to get the
+<br />
+missing distance like
+<br />
+<br />dist :WATID.O :8.CA out waterid_8ca.out
+<br />
+<br />And just take the min distance of the atoms in the group. But given there's
+<br />
+three bases, the number of atoms to the water gets large. Given that, I
+<br />
+feel like there's a simple solution that I'm just not thinking of?
+<br />
+<br />Best,
+<br />
+<br />Kenneth
+<br />
+<br /><pre>
+-- 
+Ask yourselves, all of you, what power would hell have if those imprisoned
+here could not dream of heaven?
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Jul 28 2020 - 07:30:04 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0315.html" title="Next message in the list">Pinky Mazumder: "Re: [AMBER] Interaction of cellulose-hemicellulose"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0313.html" title="Previous message in the list">Walton Smith: "Re: [AMBER] Error building Amber"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg314" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg314" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg314" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg314" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

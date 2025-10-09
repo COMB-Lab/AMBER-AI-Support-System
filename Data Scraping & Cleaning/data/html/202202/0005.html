@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI) from Michael Coleman on 2022-02-01 (Amber Archive Feb 2022)</title>
+<meta name="Author" content="Michael Coleman (mcolema5.uoregon.edu)" />
+<meta name="Subject" content="Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)" />
+<meta name="Date" content="2022-02-01" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)</h1>
+<!-- received="Tue Feb  1 17:30:02 2022" -->
+<!-- isoreceived="20220202013002" -->
+<!-- sent="Wed, 2 Feb 2022 01:04:04 +0000" -->
+<!-- isosent="20220202010404" -->
+<!-- name="Michael Coleman" -->
+<!-- email="mcolema5.uoregon.edu" -->
+<!-- subject="Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)" -->
+<!-- id="MWHPR1001MB217402457DEAC312E126DDA79A279.MWHPR1001MB2174.namprd10.prod.outlook.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20220125142207.nyvkvll6tl32lwiz.godel.fios-router.home" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0006.html" accesskey="d" title="Manuel Fernandez Merino: &quot;Re: [AMBER] Amber20 Installation run_cmake problem&quot;">Next message</a> ]
+[ <a href="0004.html" title="David A Case: &quot;Re: [AMBER] Amber20 Installation run_cmake problem&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0007.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg5" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg5" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg5" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg5" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Michael Coleman &lt;<a href="mailto:mcolema5.uoregon.edu?Subject=Re%3A%20%5BAMBER%5D%20any%20working%20singularity%20or%20docker%20recipe%3F%20(esp%20for%20CUDA%20and%20MPI)">mcolema5.uoregon.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 2 Feb 2022 01:04:04 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+David,
+<br />
+<br />Specifically, this is on RHEL 7.9, and the include file is coming from
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;readline-devel-6.2-11.el7.x86_64
+<br />
+<br />Looking again at this today, I think the problem is that Amber's CMake files are trying to compile a 'readline' test program in an invalid way.
+<br />
+<br />In particular, according to the man page, one must start a program that intends to call readline with these lines:
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;stdio.h&gt;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;readline/readline.h&gt;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;readline/history.h&gt;
+<br />
+<br />The Amber CMake file only uses the second of these three lines.
+<br />
+<br />If I patch the code as below, the compilation proceeds past this point:
+<br />
+<br />$ git diff
+<br />
+diff --git a/AmberTools/src/quick/cmake/FindReadline.cmake b/AmberTools/src/quick/cmake/FindReadline.cmake
+<br />
+index 56f7999..cf2d02b 100644
+<br />
+--- a/AmberTools/src/quick/cmake/FindReadline.cmake
+<br />
++++ b/AmberTools/src/quick/cmake/FindReadline.cmake
+<br />
+.. -44,7 +44,11 .. if(EXISTS &quot;${READLINE_LIBRARY}&quot;)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FUNCTION rl_initialize
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LIBRARIES ${READLINE_LIBRARY}
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INCLUDES ${READLINE_INCLUDE_DIR}
+<br />
+-               FUNC_DECLARATION &quot;#include &lt;readline/readline.h&gt;&quot;)
+<br />
++               FUNC_DECLARATION &quot;
+<br />
++#include &lt;stdio.h&gt;
+<br />
++#include &lt;readline/readline.h&gt;&quot;
+<br />
++#include &lt;readline/history.h&gt;&quot;
+<br />
++        )
+<br />
+&nbsp;endif()
+<br />
+<br />&nbsp;mark_as_advanced(READLINE_INCLUDE_DIR READLINE_LIBRARY READLINE_WORKS)
+<br />
+diff --git a/cmake/FindReadline.cmake b/cmake/FindReadline.cmake
+<br />
+index 56f7999..cf2d02b 100644
+<br />
+--- a/cmake/FindReadline.cmake
+<br />
++++ b/cmake/FindReadline.cmake
+<br />
+.. -44,7 +44,11 .. if(EXISTS &quot;${READLINE_LIBRARY}&quot;)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FUNCTION rl_initialize
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LIBRARIES ${READLINE_LIBRARY}
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INCLUDES ${READLINE_INCLUDE_DIR}
+<br />
+-               FUNC_DECLARATION &quot;#include &lt;readline/readline.h&gt;&quot;)
+<br />
++               FUNC_DECLARATION &quot;
+<br />
++#include &lt;stdio.h&gt;
+<br />
++#include &lt;readline/readline.h&gt;&quot;
+<br />
++#include &lt;readline/history.h&gt;&quot;
+<br />
++        )
+<br />
+&nbsp;endif()
+<br />
+<br />&nbsp;mark_as_advanced(READLINE_INCLUDE_DIR READLINE_LIBRARY READLINE_WORKS)
+<br />
+<br /><br /><br />There are then a lot of warnings and perhaps errors, which I will look further at.  The final fatal messages are:
+<br />
+<br />...
+<br />
+-- Amber will be installed to /packages/amber/amber20/
+<br />
+-- Configuring done
+<br />
+CMake Error at AmberTools/src/packmol_memgen/packmol_memgen/lib/packmol/CMakeLists.txt:6 (add_executable):
+<br />
+&nbsp;&nbsp;Cannot find source file:
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;packmol.f90
+<br />
+<br />&nbsp;&nbsp;Tried extensions .c .C .c++ .cc .cpp .cxx .cu .mpp .m .M .mm .h .hh .h++
+<br />
+&nbsp;&nbsp;.hm .hpp .hxx .in .txx .f .F .for .f77 .f90 .f95 .f03 .ispc
+<br />
+<br /><br />CMake Error at AmberTools/src/packmol_memgen/packmol_memgen/lib/packmol/CMakeLists.txt:6 (add_executable):
+<br />
+&nbsp;&nbsp;No SOURCES given to target: packmol
+<br />
+<br /><br />CMake Generate step failed.  Build files cannot be regenerated correctly.
+<br />
+...
+<br />
+<br /><br />Mike
+<br />
+<br /><br />-----Original Message-----
+<br />
+From: David A Case &lt;david.case.rutgers.edu&gt; 
+<br />
+Sent: Tuesday, January 25, 2022 6:22 AM
+<br />
+To: AMBER Mailing List &lt;amber.ambermd.org&gt;
+<br />
+Subject: Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)
+<br />
+<br />On Mon, Jan 24, 2022, Michael Coleman wrote:
+<br />
+<br /><em class="quotelev1">&gt;and then run './run_cmake' on what I believe is a clean tree.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;This fails with
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;In file included from /usr/include/readline/readline.h:35:0,
+</em><br />
+<em class="quotelev1">&gt;                 from /packages/amber/amber20_src/build/CMakeFiles/CMakeTmp/TryLinkLibrary.c:2:
+</em><br />
+<em class="quotelev1">&gt;/usr/include/readline/rltypedefs.h:64:28: error: unknown type name 'FILE'
+</em><br />
+<em class="quotelev1">&gt; typedef int rl_getc_func_t PARAMS((FILE *));
+</em><br />
+<br />Can you say (again?) what OS and version you are using?  The error is in
+<br />
+your system /usr/include/readline/readline.h file (at line 35).
+<br />
+<br /><em class="quotelev1">&gt;src.c:(.text+0x6c): undefined reference to `pthread_atfork'
+</em><br />
+<em class="quotelev1">&gt;collect2: error: ld returned 1 exit status
+</em><br />
+<em class="quotelev1">&gt;gmake[1]: *** [cmTC_ccb50] Error 1
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;I'm uncertain whether this is an actual failure or just a failed attempt to
+</em><br />
+<em class="quotelev1">&gt;find pthread in one place, perhaps followed by a second successful attempt
+</em><br />
+<em class="quotelev1">&gt;later.
+</em><br />
+<br />This doesn't look like an error.  CMake gives lots of info about what it is
+<br />
+doing, many of which can look like errors.
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Regarding the CUDA gencode options, it looks like these might be set in a
+</em><br />
+<em class="quotelev1">&gt;lot of places, and I'm not sure all of these are cross-consistent:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;$ ls -ld $(fgrep -rle compute_50 amber20_src/)
+</em><br />
+<em class="quotelev1">&gt;-rwxr-xr-x 1 mcolema5 swmgr  85502 Apr 26  2021 amber20_src/AmberTools/src/cpptraj/configure
+</em><br />
+<em class="quotelev1">&gt;-rw-r--r-- 1 mcolema5 swmgr   5646 Apr 26  2021 amber20_src/AmberTools/src/quick/cmake/CudaConfig.cmake
+</em><br />
+<em class="quotelev1">&gt;-rw-r--r-- 1 mcolema5 swmgr   7090 Apr 26  2021 amber20_src/AmberTools/src/quick/quick-cmake/QUICKCudaConfig.cmake
+</em><br />
+<em class="quotelev1">&gt;-rw-r--r-- 1 mcolema5 swmgr   5749 Apr 26  2021 amber20_src/cmake/CudaConfig.cmake
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Hard to know what to suggest, but it would be nice if there was just one
+</em><br />
+<em class="quotelev1">&gt;place where the gencode options were configured.  Certainly, guidance would
+</em><br />
+<em class="quotelev1">&gt;be handy on which options are best and are possible for each card and
+</em><br />
+<em class="quotelev1">&gt;version of CUDA.  And of course, an obvious diagnostic if this should fail.
+</em><br />
+<br />Thanks for the comment.  The file you want is the last one listed.  The
+<br />
+other files arise from the fact that the &quot;upstream&quot; versions of cpptraj and 
+<br />
+quick are actually separate from Amber, and just bundled in.  We can try to
+<br />
+make that bundling process smoother.
+<br />
+<br />As for diagnostics, this is beyond my sphere of knowledge.  We don't know at
+<br />
+compile time what GPU card will be used.  Since it's printed in the output,
+<br />
+the code knows about this, and I suspect that this happens before any Amber
+<br />
+cuda code is executed.  So, it seems possible that we could store the
+<br />
+allowed values in the executable, and try to get a better error message.
+<br />
+But it also seems like a big task.
+<br />
+<br />Thanks for the report...dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!C5qS4YX3!QhoZTbRPHBc3dLcO-2eirLjtW4uA-bNFDygt7CPK1FDQHCEKZVcXM-wsqmO8FwXBx4g">https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!C5qS4YX3!QhoZTbRPHBc3dLcO-2eirLjtW4uA-bNFDygt7CPK1FDQHCEKZVcXM-wsqmO8FwXBx4g</a>$ 
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Feb 01 2022 - 17:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0006.html" title="Next message in the list">Manuel Fernandez Merino: "Re: [AMBER] Amber20 Installation run_cmake problem"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0004.html" title="Previous message in the list">David A Case: "Re: [AMBER] Amber20 Installation run_cmake problem"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0007.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0007.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg5" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg5" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg5" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg5" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

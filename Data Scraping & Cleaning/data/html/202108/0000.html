@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Chloride ion atom type issue in tleap from Aliakbartehrani Zahra on 2021-07-31 (Amber Archive Aug 2021)</title>
+<meta name="Author" content="Aliakbartehrani Zahra (Zahra.Aliakbartehrani.ibt.cas.cz)" />
+<meta name="Subject" content="[AMBER] Chloride ion atom type issue in tleap" />
+<meta name="Date" content="2021-07-31" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Chloride ion atom type issue in tleap</h1>
+<!-- received="Sun Aug  1 00:00:02 2021" -->
+<!-- isoreceived="20210801070002" -->
+<!-- sent="Sun, 1 Aug 2021 06:48:38 +0000" -->
+<!-- isosent="20210801064838" -->
+<!-- name="Aliakbartehrani Zahra" -->
+<!-- email="Zahra.Aliakbartehrani.ibt.cas.cz" -->
+<!-- subject="[AMBER] Chloride ion atom type issue in tleap" -->
+<!-- id="VI1P190MB06243E3CA41A39D8913A09A6D1EE9.VI1P190MB0624.EURP190.PROD.OUTLOOK.COM" -->
+<!-- charset="iso-8859-1" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0001.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] Chloride ion atom type issue in tleap&quot;">Next message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0001.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] Chloride ion atom type issue in tleap&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg0" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg0" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg0" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg0" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Aliakbartehrani Zahra &lt;<a href="mailto:Zahra.Aliakbartehrani.ibt.cas.cz?Subject=Re%3A%20%5BAMBER%5D%20Chloride%20ion%20atom%20type%20issue%20in%20tleap">Zahra.Aliakbartehrani.ibt.cas.cz</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 1 Aug 2021 06:48:38 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi all,
+<br />
+<br />I would like to prepare. prmtop and. inpcrd for my ligand-Metalloprotein complex (protein + ligand+ 2*Zn/Cl/Ca ions). I have prepared .lib files for Zn2+ and Ca2+ as explained (<a href="https://ambermd.org/tutorials/advanced/tutorial20/nonbonded_model.php">https://ambermd.org/tutorials/advanced/tutorial20/nonbonded_model.php</a>) by AMBER-14. I tried loading the atomic_ions.lib and different combinations of amber residue name and corresponding atom type for a chloride ion (CL/Cl-, Cl-/ Cl- and so on) in the pdb input file, but that doesn't seem to work and still there is an issue for reading chloride ion:
+<br />
+<br />FATAL:  Atom .R&lt;Cl- 700&gt;.A&lt;CL 2&gt; does not have a type.
+<br />
+<br />Can anyone help me with this?
+<br />
+<br />I appreciate any help/suggestion
+<br />
+<br />Zahra
+<br />
+<br /><br /><br />#### load the AMBER force fields
+<br />
+<br />source leaprc.ff14SB
+<br />
+<br />source leaprc.gaff
+<br />
+<br />source leaprc.water.tip3p
+<br />
+<br />loadoff /home/zahratehrani7/atomic_zinc.lib
+<br />
+<br />loadoff /home/zahratehrani7/atomic_cal.lib
+<br />
+<br />loadoff atomic_ions.lib
+<br />
+<br />NEW_parm =  loadamberparams lig-WithH.parm
+<br />
+<br />loadamberprep lig-WithH.prep
+<br />
+<br />mol = loadpdb xray_prep.pdb
+<br />
+<br />check mol
+<br />
+<br />savepdb mol 02_complex.pdb #Save the pdb file
+<br />
+<br />saveamberparm mol 02_complex.prmtop 02_complex.inpcrd
+<br />
+<br />quit
+<br />
+<br />-----
+<br />
+<br />Upozornen�: Nen�-li v t�to zpr�ve v�slovne uvedeno jinak, m� tato e-mailov� zpr�va nebo jej� pr�lohy pouze informativn� charakter. Tato zpr�va ani jej� pr�lohy v z�dn�m ohledu Biotechnologick� �stav AV CR, v. v. i. k nicemu nezavazuj�. Text t�to zpr�vy nebo jej�ch pr�loh nen� n�vrhem na uzavren� smlouvy, ani prijet�m pr�padn�ho n�vrhu na uzavren� smlouvy, ani jin�m pr�vn�m jedn�n�m smeruj�c�m k uzavren� jak�koliv smlouvy a nezakl�d� predsmluvn� odpovednost Biotechnologick�ho �stavu AV CR, v. v. i.
+<br />
+<br />Disclaimer: If not expressly stated otherwise, this e-mail message (including any attached files) is intended purely for informational purposes and does not represent a binding agreement on the part of Institute of Biotechnology of the Czech Academy of Sciences. The text of this message and its attachments cannot be considered as a proposal to conclude a contract, nor the acceptance of a proposal to conclude a contract, nor any other legal act leading to concluding any contract, nor does it create any pre-contractual liability on the part of Institute of Biotechnology of the Czech Academy of Sciences.
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Aug 01 2021 - 00:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0001.html" title="Next message in the list">David A Case: "Re: [AMBER] Chloride ion atom type issue in tleap"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0001.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] Chloride ion atom type issue in tleap"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0001.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Chloride ion atom type issue in tleap"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg0" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg0" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg0" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg0" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

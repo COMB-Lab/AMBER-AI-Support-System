@@ -1,0 +1,1052 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] empty cein file redox potential calculations from Cruzeiro,Vinicius Wilian D on 2020-01-09 (Amber Archive Jan 2020)</title>
+<meta name="Author" content="Cruzeiro,Vinicius Wilian D (vwcruzeiro.ufl.edu)" />
+<meta name="Subject" content="Re: [AMBER] empty cein file redox potential calculations" />
+<meta name="Date" content="2020-01-09" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] empty cein file redox potential calculations</h1>
+<!-- received="Thu Jan  9 07:30:02 2020" -->
+<!-- isoreceived="20200109153002" -->
+<!-- sent="Thu, 9 Jan 2020 15:01:11 +0000" -->
+<!-- isosent="20200109150111" -->
+<!-- name="Cruzeiro,Vinicius Wilian D" -->
+<!-- email="vwcruzeiro.ufl.edu" -->
+<!-- subject="Re: [AMBER] empty cein file redox potential calculations" -->
+<!-- id="MWHPR2201MB1757088F75DE38A9581EC844D1390.MWHPR2201MB1757.namprd22.prod.outlook.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAO6-0T=v0xP_iim7pCdWFC3Rv0Bb4wKEi96_+xXTbTW3LvkRLw.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0110.html" accesskey="d" title="David Case: &quot;Re: [AMBER] MD error in Amber18: an illegal memory access was encountered launching kernel kNLSkinTest&quot;">Next message</a> ]
+[ <a href="0108.html" title="David Cerutti: &quot;Re: [AMBER] Question about addtobox&quot;">Previous message</a> ]
+[ <a href="0058.html" title="Vaibhav Dixit: &quot;Re: [AMBER] empty cein file redox potential calculations&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg109" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg109" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg109" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg109" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Cruzeiro,Vinicius Wilian D &lt;<a href="mailto:vwcruzeiro.ufl.edu?Subject=Re%3A%20%5BAMBER%5D%20empty%20cein%20file%20redox%20potential%20calculations">vwcruzeiro.ufl.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 9 Jan 2020 15:01:11 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello Vaibhav,
+<br />
+
+<br />
+Sorry for the delay.
+<br />
+
+<br />
+1) I took a look at the structure of 1W0E. I believe the description of the Heme-CYS interaction is a concern. Let me explain what I mean. When we described the heme group in NAcMP8 (<a href="https://aip.scitation.org/doi/10.1063/1.5027379">https://aip.scitation.org/doi/10.1063/1.5027379</a>) that contains two histidines as axial ligands, we literally added a bond between Fe and the deprotonated N of each histidine. Without these bonds, the force fields are likely not accurate enough to properly describe the stability of the axial ligands. Given the bonds are in place, we have added the side chains of the histidines (and also of two cysteins that also make bonds with the heme) to the same residue redox-active we called HEH. This was done so these side chains could also change their charge distribution upon a redox state change. HEH also contains the central moiety of the heme, as the heme propionates are separate residues. Now, going back to your problem with 1W0E... Should you add a bond between Fe and S of the cysteine or not? This is a tricky question. For example: I have seen cases in the literature in which the axial ligands may even change upon a redox state change, and I am not sure force fields would be capable of capturing an effect like that.
+<br />
+
+<br />
+If you decide not to place a bond, then you don't need to change anything in the CYS residue and just need to worry about the heme. If you decide to place a bond and follow what we did for NAcMP8, then you can place the side chain of the cystein as part of the redox-active residue. We have defined a residue called CYO that contains only the backbone atoms of the cystein. Check this page to see more details about how to deal with this residue, including how to reconnect CYO to the side chain: https://ambermd.org/tutorials/advanced/tutorial33/section1.htm
+<br />
+
+<br />
+Regarding the charge calculations, the charges we used for NAcMP8 were adapted from these: https://doi.org/10.1021/jp3082134 . You can find more details about the calculations there. If you wanna see the actual charges we used for HEH and the propionates, you may check here: ftp://ftp.aip.org/epaps/journ_chem_phys/E-JCPSA6-149-034899/paper_php1_SI.pdf
+<br />
+
+<br />
+2) Interesting question. It is a common practice in force fields to do charge calculations for &quot;parts&quot; of the system separately. For example: given a choice of force fields, the charges used for an alanine are always the same regardless of the environment the alanine is in. Coming back to your question... In here (https://doi.org/10.1021/jp3082134) Machuqueiro et al have replaced the propionates by CH3 groups in order to do the charge calculations. You may just do the same and then use in your simulations the residue PRN as in NAcMP8. You could consider the propionates in the charge calculations, but this will increase the complexity of your calculations. For example: the total number of charge calculations will increase because you would need to do one calculation for each propionate protonated and deprotonated and for each oxidized and reduced state of the heme.
+<br />
+
+<br />
+As a side note: in Amber20 you will be able to consider a single residue that is both pH- and redox-active. You would then be able to consider the whole heme, including the propionates, as a single residue. However, I am not sure how much advantage that would be for this specific system.
+<br />
+
+<br />
+I hope this helps,
+<br />
+All the best!
+<br />
+
+<br />
+
+<br />
+Vinícius Wilian D. Cruzeiro
+<br />
+
+<br />
+PhD Candidate
+<br />
+Department of Chemistry, Physical Chemistry Division
+<br />
+University of Florida, United States
+<br />
+
+<br />
+Voice: +1(352)846-1633
+<br />
+
+<br />
+________________________________
+<br />
+From: Vaibhav Dixit &lt;vaibhavadixit.gmail&#46;<!--nospam-->com&gt;
+<br />
+Sent: Monday, January 6, 2020 3:59 AM
+<br />
+To: Cruzeiro,Vinicius Wilian D &lt;vwcruzeiro.ufl&#46;<!--nospam-->edu&gt;
+<br />
+Cc: AMBER Mailing List &lt;amber.ambermd.org&gt;; Roitberg,Adrian E &lt;roitberg.ufl&#46;<!--nospam-->edu&gt;; marcossamaral.gmail&#46;<!--nospam-->com &lt;marcossamaral.gmail&#46;<!--nospam-->com&gt;
+<br />
+Subject: Re: [AMBER] empty cein file redox potential calculations
+<br />
+
+<br />
+[External Email]
+<br />
+Dear Cruzeiro,Vinicius, and all,
+<br />
+I now have time and resource to start work on this again.
+<br />
+But I have the following doubts about defining the Heme redox active states.
+<br />
+1) I'm thinking of running G09 jobs to find charges for oxd-red states of Heme center using b3lyp/6-31+G(d,p) and lanld2z pseudo potentials on Fe. I want to include CYS (bound to Fe) in QM calculations since there are changes in charge-spin states on S. So here Heme-CYS would become one unit for AmberTools. is this correct?  But in PDBs like 1W0E the CYS and HEM separate, so do I change atom/residue numbers for CYS in the PDB while generating prmtop?
+<br />
+2) The HEM in 1W0E has propionates (as in 1hrc amber-tutorial), these are required during G09 calculations to define charges for redox states? But then how do I separate them, for defining ionizable residues later to generate cein and cpin files and how the propionate (PRN) can become separate residues once I have used them as part of Hem while defining Hem charges? So is it possible/required to define heme charges without the propionates (this can mess-up with the expected charge-spin states, thus I'm not sure how to model this).
+<br />
+
+<br />
+Can you please suggest me on how to think about and proceed for generating parameters for CYP450s for doing ConspH-Redox MD simulations?
+<br />
+
+<br />
+Thank you very much and
+<br />
+best regards (and a very happy and prosperous new year to all).
+<br />
+
+<br />
+On Fri, May 31, 2019 at 4:29 AM Cruzeiro,Vinicius Wilian D &lt;vwcruzeiro.ufl&#46;<!--nospam-->edu&lt;mailto:vwcruzeiro.ufl&#46;<!--nospam-->edu&gt;&gt; wrote:
+<br />
+Hello Vaibhav,
+<br />
+
+<br />
+I understand your confusion. The good news is that if you have the non-standard residue force field setup and the charges for all redox states computed, then you are almost done.
+<br />
+
+<br />
+Your next step is to add the definitions for your new residue into $AMBERHOME/AmberTools/src/parmed/parmed/amber/titratable_residues.py . I suggest you to &quot;copy and paste&quot; the definitions for the HEH residue and start from that. The only information you will not have when editing this file are the reference energies (but that is fine, because you will get these later with finddgref.py). Initially you should just place random reference energy values in the titratable_residues.py file (or simply keep the values for the HEH there). Once you complete editing titratable_residues.py, you should recompile AmberTools. Then you will be able to use ceinutil.py to generate a CEIN file (with the wrong reference energies) for your reference system. With this CEIN file you will be able to use finddgref.py to find the reference energies. Once finddgref.py completes, you just need to update the correct reference energy values into titratable_residues.py and recompile AmberTools again. More information about what I am describing (and about how to use finddgref.py) can be found at the section 22.5 of the Amber18 manual.
+<br />
+
+<br />
+I hope this helps,
+<br />
+Please let me know if you have any questions further,
+<br />
+
+<br />
+
+<br />
+Vinícius Wilian D. Cruzeiro
+<br />
+
+<br />
+PhD Candidate
+<br />
+Department of Chemistry, Physical Chemistry Division
+<br />
+University of Florida, United States
+<br />
+
+<br />
+Voice: +1(352)846-1633
+<br />
+
+<br />
+________________________________
+<br />
+From: Vaibhav Dixit &lt;vaibhavadixit.gmail&#46;<!--nospam-->com&lt;mailto:vaibhavadixit.gmail&#46;<!--nospam-->com&gt;&gt;
+<br />
+Sent: Thursday, May 30, 2019 10:38 AM
+<br />
+To: AMBER Mailing List
+<br />
+Cc: Cruzeiro,Vinicius Wilian D; Roitberg,Adrian E; marcossamaral.gmail&#46;<!--nospam-->com&lt;mailto:marcossamaral.gmail&#46;<!--nospam-->com&gt;
+<br />
+Subject: Re: [AMBER] empty cein file redox potential calculations
+<br />
+
+<br />
+Dear All,
+<br />
+I'm slightly confused about the usage for ceinutil.py and finddgref.py programs.
+<br />
+ceinutil.py can't generate cein for non-standard residues and finddgref.py also requires cein file.
+<br />
+My question is how do I generate the cein file for non-standard residues assuming I have charges for oxd/red states from literature or G09 jobs.
+<br />
+Thanks in advance.
+<br />
+regards
+<br />
+
+<br />
+
+<br />
+On Thu, May 30, 2019 at 1:39 PM Marcos Serrou do Amaral &lt;marcossamaral.gmail&#46;<!--nospam-->com&lt;mailto:marcossamaral.gmail&#46;<!--nospam-->com&gt;&gt; wrote:
+<br />
+Dear Dr. Vaibhav,
+<br />
+
+<br />
+<em class="quotelev1">&gt;Does that mean that I will have to run the finddgref.py program and follow
+</em><br />
+<em class="quotelev1">&gt;instructions in the Amber18/19 manual (note copied below from tutorial)?
+</em><br />
+
+<br />
+Yes.
+<br />
+I have used finddgref.py instead of TI calculations.
+<br />
+
+<br />
+<em class="quotelev1">&gt;Does it require one or two electron redox states or it can handle any?
+</em><br />
+You need to have both redox states charges.
+<br />
+
+<br />
+<em class="quotelev1">&gt;Which one was used in the tutorial?
+</em><br />
+finddgref.py with two redox states.
+<br />
+
+<br />
+Best Regards
+<br />
+---
+<br />
+Marcos S.A.
+<br />
+
+<br />
+
+<br />
+
+<br />
+On Thu, May 30, 2019 at 8:17 AM Vaibhav Dixit &lt;vaibhavadixit.gmail&#46;<!--nospam-->com&lt;mailto:vaibhavadixit.gmail&#46;<!--nospam-->com&gt;&gt;
+<br />
+wrote:
+<br />
+
+<br />
+<em class="quotelev1">&gt; Dear Macros S.A.
+</em><br />
+<em class="quotelev1">&gt; Does that mean that I will have to run the finddgref.py program and follow
+</em><br />
+<em class="quotelev1">&gt; instructions in the Amber18/19 manual (note copied below from tutorial)?
+</em><br />
+<em class="quotelev1">&gt; Does it require one or two electron redox states or it can handle any?
+</em><br />
+<em class="quotelev1">&gt; Which one was used in the tutorial?
+</em><br />
+<em class="quotelev1">&gt; Thanks for the clarification and quick response.
+</em><br />
+<em class="quotelev1">&gt; best regards
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; *Note:* if you want to run simulations for redox-active residues that are
+</em><br />
+<em class="quotelev1">&gt; not yet parametrized, please check the section *Extending constant Redox
+</em><br />
+<em class="quotelev1">&gt; Potential to additional titratable groups* in the Amber manual
+</em><br />
+<em class="quotelev1">&gt; &lt;<a href="http://ambermd.org/Manuals.php">http://ambermd.org/Manuals.php</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__ambermd.org_Manuals.php&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=nqeR8GNt_1KqxlmehJ4Wnkd12ChMhssoqrs9arjlWds&amp;e">https://urldefense.proofpoint.com/v2/url?u=http-3A__ambermd.org_Manuals.php&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=nqeR8GNt_1KqxlmehJ4Wnkd12ChMhssoqrs9arjlWds&amp;e</a>=&gt;&gt;. The *finddgref.py* AmberTool or TI
+</em><br />
+<em class="quotelev1">&gt; calculations can be used to compute the necessary reference energies of
+</em><br />
+<em class="quotelev1">&gt; each redox state.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Thu, May 30, 2019 at 1:04 PM Marcos Serrou do Amaral &lt;
+</em><br />
+<em class="quotelev1">&gt; marcossamaral.gmail.com&lt;mailto:marcossamaral.gmail.com&gt;&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Dear Dr. Vaibhav,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; The only HEME residue implemented in Ambertools is the bis-HIS Heme
+</em><br />
+<em class="quotelev1">&gt; (HEH).
+</em><br />
+<em class="quotelev2">&gt; &gt; For CYP450, you need the CYS-HEME, right?
+</em><br />
+<em class="quotelev2">&gt; &gt; So, you need to find in the literature for CYS-HEME charges (oxidized and
+</em><br />
+<em class="quotelev2">&gt; &gt; reduced states) and implement these residues to have C(pH,E)-MD
+</em><br />
+<em class="quotelev1">&gt; simulation
+</em><br />
+<em class="quotelev2">&gt; &gt; for CYP450.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Best Regards,
+</em><br />
+<em class="quotelev2">&gt; &gt; ---
+</em><br />
+<em class="quotelev2">&gt; &gt; Marcos S.A.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; On Thu, May 30, 2019 at 7:37 AM Vaibhav Dixit &lt;vaibhavadixit.gmail&#46;<!--nospam-->com&lt;mailto:vaibhavadixit.gmail&#46;<!--nospam-->com&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Dear AMBER and ConspH/Redox tool experts
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; I have prepared a CYP450 system with details similar to those here
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; &lt;<a href="http://archive.ambermd.org/201504/0120.html">http://archive.ambermd.org/201504/0120.html</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__archive.ambermd.org_201504_0120.html&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=93i5u3wuxME3rzqLH7eIW7L26-cvk_m1uKllG_f4Ozg&amp;e">https://urldefense.proofpoint.com/v2/url?u=http-3A__archive.ambermd.org_201504_0120.html&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=93i5u3wuxME3rzqLH7eIW7L26-cvk_m1uKllG_f4Ozg&amp;e</a>=&gt;&gt;.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; While generating the cein file I'm getting a file (shown below) with no
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; charge/redox information.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; The corresponding tutorial (with different HEM) file shows charge info
+</em><br />
+<em class="quotelev2">&gt; &gt; here
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; &lt;<a href="http://ambermd.org/tutorials/advanced/tutorial33/files/mp8_is.cein">http://ambermd.org/tutorials/advanced/tutorial33/files/mp8_is.cein</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__ambermd.org_tutorials_advanced_tutorial33_files_mp8-5Fis.cein&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=e7TaORuuYCL1MnBYUlwMA">https://urldefense.proofpoint.com/v2/url?u=http-3A__ambermd.org_tutorials_advanced_tutorial33_files_mp8-5Fis.cein&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=e7TaORuuYCL1MnBYUlwMA</a>Hp4uGn_M4-GwjwsNulvqMU&amp;e=&gt;&gt;.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; A similar command for the cpin file gives meaningful output (shown
+</em><br />
+<em class="quotelev2">&gt; &gt; below).
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; (My latest post on Amber on this system is not archived yet  title:
+</em><br />
+<em class="quotelev1">&gt; error
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; with loading HEM parameters for constph redox calculations)
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Can you please suggest where is the error most likely to be; in my
+</em><br />
+<em class="quotelev1">&gt; prmtop
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; (it has info on HEH residue) or something else?
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; thanks a lot.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; PS (Dr. Roitberg, sorry if you got a duplicate copy of this email, my
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; attachment was blocked by Amber mailing list, thus resubmitting to list
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; without prmtop file).
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; The command used for cein file.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; [r11831vd.hlogin2 [csf3] 3A4]$ ceinutil.py -resnames HEH -p
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; P450-1W0E-gas2.prmtop -igb 2 -o P450-1W0E-gas.cein
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; CEIN generation complete!
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; [r11831vd.hlogin2 [csf3] 3A4]$ more P450-1W0E-gas.cein
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; &amp;CNSTE
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  CHRGDAT=
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  ELECCNT=
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  RESNAME='System: Unknown',
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  RESSTATE=
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATENE=
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  EO_CORR=
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  TRESCNT=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; /
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; [r11831vd.hlogin2 [csf3] 3A4]$ grep HEH P450-1W0E-gas2.prmtop
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; HEH GLY THR HIE SER HIE GLY LEU PHE LYS LYS LEU GLY ILE PRO GLY PRO THR
+</em><br />
+<em class="quotelev2">&gt; &gt; PRO
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; LEU
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; The command used for cpin file
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; -----------------
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; [r11831vd.hlogin2 [csf3] 3A4]$ cpinutil.py -resnames PRN TYR GL4 AS4
+</em><br />
+<em class="quotelev1">&gt; -p
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; P450-1W0E-gas2.prmtop -igb 2 -o P450-1W0E-gas.cpin
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; CPIN generation complete!
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; [r11831vd.hlogin2 [csf3] 3A4]$ more P450-1W0E-gas.cpin
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; &amp;CNSTPH
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; CHRGDAT=-0.4157,0.2719,-0.0014,0.0876,-0.0152,0.0295,0.0295,-0.0011,-0.1906,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; 0.1699,-0.2341,0.1656,0.3226,-0.5579,0.3992,-0.2341,0.1656,-0.1906,0.1699,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; 0.5973,-0.5679,-0.4157,0.2719,-0.0014,0.0876,-0.0858,0.019,0.019,-0.213,-0.103,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; 0.132,-0.498,0.132,0.777,-0.814,0.0,-0.498,0.132,-0.103,0.132,0.5973,-0.5679,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; -0.4157,0.2719,0.0145,0.0779,-0.0398,-0.0173,-0.0173,0.0136,-0.0425,-0.0425,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; 0.8054,-0.8188,-0.8188,0.0,0.5973,-0.5679,0.0,0.0,0.0,-0.4157,0.2719,0.0145,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; 0.0779,-0.0071,0.0256,0.0256,-0.0174,0.043,0.043,0.6801,-0.5838,-0.6511,0.4641,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; 0.5973,-0.5679,0.0,0.0,0.0,-0.4157,0.2719,0.0145,0.0779,-0.0071,0.0256,0.0256,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; -0.0174,0.043,0.043,0.6801,-0.5838,-0.6511,0.0,0.5973,-0.5679,0.4641,0.0,0.0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; -0.4157,0.2719,0.0145,0.0779,-0.0071,0.0256,0.0256,-0.0174,0.043,0.043,0.6801,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; -0.6511,-0.5838,0.0,0.5973,-0.5679,0.0,0.4641,0.0,-0.4157,0.2719,0.0145,0.0779,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; -0.0071,0.0256,0.0256,-0.0174,0.043,0.043,0.6801,-0.6511,-0.5838,0.0,0.5973,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; -0.5679,0.0,0.0,0.4641,-0.4157,0.2719,0.0341,0.0864,-0.1783,-0.0122,-0.0122,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; 0.7994,-0.8014,-0.8014,0.0,0.5973,-0.5679,0.0,0.0,0.0,-0.4157,0.2719,0.0341,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; 0.0864,-0.0316,0.0488,0.0488,0.6462,-0.5554,-0.6376,0.4747,0.5973,-0.5679,0.0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; 0.0,0.0,-0.4157,0.2719,0.0341,0.0864,-0.0316,0.0488,0.0488,0.6462,-0.5554,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; -0.6376,0.0,0.5973,-0.5679,0.4747,0.0,0.0,-0.4157,0.2719,0.0341,0.0864,-0.0316,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; 0.0488,0.0488,0.6462,-0.6376,-0.5554,0.0,0.5973,-0.5679,0.0,0.4747,0.0,-0.4157,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; 0.2719,0.0341,0.0864,-0.0316,0.0488,0.0488,0.6462,-0.6376,-0.5554,0.0,0.5973,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  -0.5679,0.0,0.0,0.4747,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  PROTCNT=1,0,0,1,1,1,1,0,1,1,1,1,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  RESNAME='System: Unknown','Residue: TYR 29','Residue: TYR 44',
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  'Residue: TYR 51','Residue: TYR 75','Residue: TYR 128','Residue: TYR
+</em><br />
+<em class="quotelev2">&gt; &gt; 155',
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  'Residue: TYR 283','Residue: TYR 295','Residue: TYR 323','Residue: TYR
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; 331',
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  'Residue: GL4 350','Residue: TYR 375','Residue: TYR 383','Residue: TYR
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; 406',
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  'Residue: TYR 408','Residue: AS4 417',
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  RESSTATE=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(0)%FIRST_ATOM=482, STATEINF(0)%FIRST_CHARGE=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(0)%FIRST_STATE=0, STATEINF(0)%NUM_ATOMS=21,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; STATEINF(0)%NUM_STATES=2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(1)%FIRST_ATOM=733, STATEINF(1)%FIRST_CHARGE=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(1)%FIRST_STATE=0, STATEINF(1)%NUM_ATOMS=21,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; STATEINF(1)%NUM_STATES=2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(2)%FIRST_ATOM=850, STATEINF(2)%FIRST_CHARGE=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(2)%FIRST_STATE=0, STATEINF(2)%NUM_ATOMS=21,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; STATEINF(2)%NUM_STATES=2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(3)%FIRST_ATOM=1225, STATEINF(3)%FIRST_CHARGE=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(3)%FIRST_STATE=0, STATEINF(3)%NUM_ATOMS=21,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; STATEINF(3)%NUM_STATES=2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(4)%FIRST_ATOM=2086, STATEINF(4)%FIRST_CHARGE=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(4)%FIRST_STATE=0, STATEINF(4)%NUM_ATOMS=21,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; STATEINF(4)%NUM_STATES=2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(5)%FIRST_ATOM=2515, STATEINF(5)%FIRST_CHARGE=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(5)%FIRST_STATE=0, STATEINF(5)%NUM_ATOMS=21,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; STATEINF(5)%NUM_STATES=2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(6)%FIRST_ATOM=4616, STATEINF(6)%FIRST_CHARGE=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(6)%FIRST_STATE=0, STATEINF(6)%NUM_ATOMS=21,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; STATEINF(6)%NUM_STATES=2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(7)%FIRST_ATOM=4804, STATEINF(7)%FIRST_CHARGE=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(7)%FIRST_STATE=0, STATEINF(7)%NUM_ATOMS=21,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; STATEINF(7)%NUM_STATES=2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(8)%FIRST_ATOM=5242, STATEINF(8)%FIRST_CHARGE=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(8)%FIRST_STATE=0, STATEINF(8)%NUM_ATOMS=21,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; STATEINF(8)%NUM_STATES=2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(9)%FIRST_ATOM=5373, STATEINF(9)%FIRST_CHARGE=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(9)%FIRST_STATE=0, STATEINF(9)%NUM_ATOMS=21,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; STATEINF(9)%NUM_STATES=2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(10)%FIRST_ATOM=5702, STATEINF(10)%FIRST_CHARGE=42,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(10)%FIRST_STATE=2, STATEINF(10)%NUM_ATOMS=19,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(10)%NUM_STATES=5, STATEINF(11)%FIRST_ATOM=6107,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(11)%FIRST_CHARGE=0, STATEINF(11)%FIRST_STATE=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(11)%NUM_ATOMS=21, STATEINF(11)%NUM_STATES=2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(12)%FIRST_ATOM=6246, STATEINF(12)%FIRST_CHARGE=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(12)%FIRST_STATE=0, STATEINF(12)%NUM_ATOMS=21,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(12)%NUM_STATES=2, STATEINF(13)%FIRST_ATOM=6645,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(13)%FIRST_CHARGE=0, STATEINF(13)%FIRST_STATE=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(13)%NUM_ATOMS=21, STATEINF(13)%NUM_STATES=2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(14)%FIRST_ATOM=6685, STATEINF(14)%FIRST_CHARGE=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(14)%FIRST_STATE=0, STATEINF(14)%NUM_ATOMS=21,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(14)%NUM_STATES=2, STATEINF(15)%FIRST_ATOM=6817,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(15)%FIRST_CHARGE=137, STATEINF(15)%FIRST_STATE=7,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  STATEINF(15)%NUM_ATOMS=16, STATEINF(15)%NUM_STATES=5,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; STATENE=0.000000,-65.113428,0.000000,8.405779,8.405779,8.405779,8.405779,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  0.000000,26.889458,26.889458,26.889458,26.889458,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; PKA_CORR=9.6000,0.0000,0.0000,4.4000,4.4000,4.4000,4.4000,0.0000,4.0000,4.0000,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  4.0000,4.0000,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  TRESCNT=16,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; /
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; [r11831vd.hlogin2 [csf3] 3A4]$
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; --
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Regards,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Dr. Vaibhav A. Dixit,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Visiting Scientist at the Manchester Institute of Biotechnology (MIB),
+</em><br />
+<em class="quotelev2">&gt; &gt; The
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; University of Manchester, 131 Princess Street, Manchester M1 7DN, UK.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; AND
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Assistant Professor,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Department of Pharmacy,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Birla Institute of Technology and Sciences Pilani (BITS-Pilani),
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; VidyaVihar Campus, street number 41, Pilani, Rajasthan 333031.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; India.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Phone No. +91 1596 255652, Mob. No. +91-7709129400,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Email: vaibhav.dixit.pilani.bits-pilani.ac.in&lt;mailto:vaibhav.dixit.pilani&#46;<!--nospam-->bits-pilani.ac.in&gt;, vaibhavadixit.gmail&#46;<!--nospam-->com&lt;mailto:vaibhavadixit.gmail&#46;<!--nospam-->com&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; <a href="http://www.bits-pilani.ac.in/pilani/vaibhavdixit/profile">http://www.bits-pilani.ac.in/pilani/vaibhavdixit/profile</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__www.bits-2Dpilani.ac.in_pilani_vaibhavdixit_profile&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=emsCpcDlXk7OKa_Rxle1BOaiQZtkZVm">https://urldefense.proofpoint.com/v2/url?u=http-3A__www.bits-2Dpilani.ac.in_pilani_vaibhavdixit_profile&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=emsCpcDlXk7OKa_Rxle1BOaiQZtkZVm</a>3FMUTfy5804o&amp;e=&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; <a href="https://www.linkedin.com/in/vaibhav-dixit-b1a07a39/">https://www.linkedin.com/in/vaibhav-dixit-b1a07a39/</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=https-3A__www.linkedin.com_in_vaibhav-2Ddixit-2Db1a07a39_&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=no63QhmS01Xu3jzUjHD_LJPWl_-AfqTQqX">https://urldefense.proofpoint.com/v2/url?u=https-3A__www.linkedin.com_in_vaibhav-2Ddixit-2Db1a07a39_&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=no63QhmS01Xu3jzUjHD_LJPWl_-AfqTQqX</a>Gh9Dsk5P0&amp;e=&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; ORCID ID: https://orcid.org/0000-0003-4015-2941&lt;https://urldefense.proofpoint.com/v2/url?u=https-3A__orcid.org_0000-2D0003-2D4015-2D2941&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=9WtfLgL7wGz3JFkusZmvmw17U1ezSQnQ8AqN28PoLvs&amp;e=&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; <a href="http://scholar.google.co.in/citations?user=X876BKcAAAAJ&amp;hl=en&amp;oi=sra">http://scholar.google.co.in/citations?user=X876BKcAAAAJ&amp;hl=en&amp;oi=sra</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__scholar.google.co.in_citations-3Fuser-3DX876BKcAAAAJ-26hl-3Den-26oi-3Dsra&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=vzQVwhEN">https://urldefense.proofpoint.com/v2/url?u=http-3A__scholar.google.co.in_citations-3Fuser-3DX876BKcAAAAJ-26hl-3Den-26oi-3Dsra&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=vzQVwhEN</a>_Jlh5F1nU80v1uPVxXmG31SEU8prhvTt8Zg&amp;e=&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; P Please consider the environment before printing this e-mail
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; AMBER.ambermd.org&lt;mailto:AMBER.ambermd.org&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=_bBFsa62IjVkkRpbwFvl7PYPPds6inGUYfXoyi7-U3">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=_bBFsa62IjVkkRpbwFvl7PYPPds6inGUYfXoyi7-U3</a>Q&amp;e=&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER.ambermd.org&lt;mailto:<a href="mailto:AMBER.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20empty%20cein%20file%20redox%20potential%20calculations">AMBER.ambermd.org</a>&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=_bBFsa62IjVkkRpbwFvl7PYPPds6inGUYfXoyi7-U3">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=_bBFsa62IjVkkRpbwFvl7PYPPds6inGUYfXoyi7-U3</a>Q&amp;e=&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; --
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Regards,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Dr. Vaibhav A. Dixit,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Visiting Scientist at the Manchester Institute of Biotechnology (MIB), The
+</em><br />
+<em class="quotelev1">&gt; University of Manchester, 131 Princess Street, Manchester M1 7DN, UK.
+</em><br />
+<em class="quotelev1">&gt; AND
+</em><br />
+<em class="quotelev1">&gt; Assistant Professor,
+</em><br />
+<em class="quotelev1">&gt; Department of Pharmacy,
+</em><br />
+<em class="quotelev1">&gt; ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+</em><br />
+<em class="quotelev1">&gt; Birla Institute of Technology and Sciences Pilani (BITS-Pilani),
+</em><br />
+<em class="quotelev1">&gt; VidyaVihar Campus, street number 41, Pilani, Rajasthan 333031.
+</em><br />
+<em class="quotelev1">&gt; India.
+</em><br />
+<em class="quotelev1">&gt; Phone No. +91 1596 255652, Mob. No. +91-7709129400,
+</em><br />
+<em class="quotelev1">&gt; Email: vaibhav.dixit.pilani&#46;<!--nospam-->bits-pilani.ac.in&lt;mailto:vaibhav.dixit.pilani&#46;<!--nospam-->bits-pilani.ac.in&gt;, vaibhavadixit.gmail&#46;<!--nospam-->com&lt;mailto:vaibhavadixit.gmail&#46;<!--nospam-->com&gt;
+</em><br />
+<em class="quotelev1">&gt; ​<a href="http://www.bits-pilani.ac.in/pilani/vaibhavdixit/profile">http://www.bits-pilani.ac.in/pilani/vaibhavdixit/profile</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__www.bits-2Dpilani.ac.in_pilani_vaibhavdixit_profile&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=emsCpcDlXk7OKa_Rxle1BOaiQZtkZVm">https://urldefense.proofpoint.com/v2/url?u=http-3A__www.bits-2Dpilani.ac.in_pilani_vaibhavdixit_profile&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=emsCpcDlXk7OKa_Rxle1BOaiQZtkZVm</a>3FMUTfy5804o&amp;e=&gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://www.linkedin.com/in/vaibhav-dixit-b1a07a39/">https://www.linkedin.com/in/vaibhav-dixit-b1a07a39/</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=https-3A__www.linkedin.com_in_vaibhav-2Ddixit-2Db1a07a39_&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=no63QhmS01Xu3jzUjHD_LJPWl_-AfqTQqX">https://urldefense.proofpoint.com/v2/url?u=https-3A__www.linkedin.com_in_vaibhav-2Ddixit-2Db1a07a39_&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=no63QhmS01Xu3jzUjHD_LJPWl_-AfqTQqX</a>Gh9Dsk5P0&amp;e=&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ORCID ID: https://orcid.org/0000-0003-4015-2941&lt;https://urldefense.proofpoint.com/v2/url?u=https-3A__orcid.org_0000-2D0003-2D4015-2D2941&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=9WtfLgL7wGz3JFkusZmvmw17U1ezSQnQ8AqN28PoLvs&amp;e=&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="http://scholar.google.co.in/citations?user=X876BKcAAAAJ&amp;hl=en&amp;oi=sra">http://scholar.google.co.in/citations?user=X876BKcAAAAJ&amp;hl=en&amp;oi=sra</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__scholar.google.co.in_citations-3Fuser-3DX876BKcAAAAJ-26hl-3Den-26oi-3Dsra&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=vzQVwhEN">https://urldefense.proofpoint.com/v2/url?u=http-3A__scholar.google.co.in_citations-3Fuser-3DX876BKcAAAAJ-26hl-3Den-26oi-3Dsra&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=vzQVwhEN</a>_Jlh5F1nU80v1uPVxXmG31SEU8prhvTt8Zg&amp;e=&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; P Please consider the environment before printing this e-mail
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org&lt;mailto:<a href="mailto:AMBER.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20empty%20cein%20file%20redox%20potential%20calculations">AMBER.ambermd.org</a>&gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=_bBFsa62IjVkkRpbwFvl7PYPPds6inGUYfXoyi7-U3">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=_bBFsa62IjVkkRpbwFvl7PYPPds6inGUYfXoyi7-U3</a>Q&amp;e=&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org&lt;mailto:<a href="mailto:AMBER.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20empty%20cein%20file%20redox%20potential%20calculations">AMBER.ambermd.org</a>&gt;
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=_bBFsa62IjVkkRpbwFvl7PYPPds6inGUYfXoyi7-U3">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=_bBFsa62IjVkkRpbwFvl7PYPPds6inGUYfXoyi7-U3</a>Q&amp;e=&gt;
+<br />
+
+<br />
+
+<br />
+--
+<br />
+
+<br />
+Regards,
+<br />
+
+<br />
+Dr. Vaibhav A. Dixit,
+<br />
+
+<br />
+Visiting Scientist at the Manchester Institute of Biotechnology (MIB), The University of Manchester, 131 Princess Street, Manchester M1 7DN, UK.
+<br />
+
+<br />
+AND
+<br />
+Assistant Professor,
+<br />
+Department of Pharmacy,
+<br />
+▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+<br />
+Birla Institute of Technology and Sciences Pilani (BITS-Pilani),
+<br />
+VidyaVihar Campus, street number 41, Pilani, Rajasthan 333031.
+<br />
+India.
+<br />
+Phone No. +91 1596 255652, Mob. No. +91-7709129400,
+<br />
+Email: vaibhav.dixit.pilani&#46;<!--nospam-->bits-pilani.ac.in&lt;mailto:vaibhav.dixit.pilani&#46;<!--nospam-->bits-pilani.ac.in&gt;, vaibhavadixit.gmail&#46;<!--nospam-->com&lt;mailto:vaibhavadixit.gmail&#46;<!--nospam-->com&gt;
+<br />
+​<a href="http://www.bits-pilani.ac.in/pilani/vaibhavdixit/profile">http://www.bits-pilani.ac.in/pilani/vaibhavdixit/profile</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__www.bits-2Dpilani.ac.in_pilani_vaibhavdixit_profile&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=emsCpcDlXk7OKa_Rxle1BOaiQZtkZVm">https://urldefense.proofpoint.com/v2/url?u=http-3A__www.bits-2Dpilani.ac.in_pilani_vaibhavdixit_profile&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=emsCpcDlXk7OKa_Rxle1BOaiQZtkZVm</a>3FMUTfy5804o&amp;e=&gt;
+<br />
+<a href="https://www.linkedin.com/in/vaibhav-dixit-b1a07a39/">https://www.linkedin.com/in/vaibhav-dixit-b1a07a39/</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=https-3A__www.linkedin.com_in_vaibhav-2Ddixit-2Db1a07a39_&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=no63QhmS01Xu3jzUjHD_LJPWl_-AfqTQqX">https://urldefense.proofpoint.com/v2/url?u=https-3A__www.linkedin.com_in_vaibhav-2Ddixit-2Db1a07a39_&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=no63QhmS01Xu3jzUjHD_LJPWl_-AfqTQqX</a>Gh9Dsk5P0&amp;e=&gt;
+<br />
+
+<br />
+ORCID ID: https://orcid.org/0000-0003-4015-2941&lt;https://urldefense.proofpoint.com/v2/url?u=https-3A__orcid.org_0000-2D0003-2D4015-2D2941&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=9WtfLgL7wGz3JFkusZmvmw17U1ezSQnQ8AqN28PoLvs&amp;e=&gt;
+<br />
+
+<br />
+<a href="http://scholar.google.co.in/citations?user=X876BKcAAAAJ&amp;hl=en&amp;oi=sra">http://scholar.google.co.in/citations?user=X876BKcAAAAJ&amp;hl=en&amp;oi=sra</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__scholar.google.co.in_citations-3Fuser-3DX876BKcAAAAJ-26hl-3Den-26oi-3Dsra&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=vzQVwhEN">https://urldefense.proofpoint.com/v2/url?u=http-3A__scholar.google.co.in_citations-3Fuser-3DX876BKcAAAAJ-26hl-3Den-26oi-3Dsra&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=6nuKpsZBI7w_KlDSB8gUanIYhVuUYT-Dfi6-cfvIyzo&amp;s=vzQVwhEN</a>_Jlh5F1nU80v1uPVxXmG31SEU8prhvTt8Zg&amp;e=&gt;
+<br />
+
+<br />
+• Please consider the environment before printing this e-mail
+<br />
+
+<br />
+
+<br />
+
+<br />
+--
+<br />
+
+<br />
+Regards,
+<br />
+
+<br />
+Dr. Vaibhav A. Dixit,
+<br />
+
+<br />
+Visiting Scientist at the Manchester Institute of Biotechnology (MIB), The University of Manchester, 131 Princess Street, Manchester M1 7DN, UK.
+<br />
+
+<br />
+AND
+<br />
+Assistant Professor,
+<br />
+Department of Pharmacy,
+<br />
+▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+<br />
+Birla Institute of Technology and Sciences Pilani (BITS-Pilani),
+<br />
+VidyaVihar Campus, street number 41, Pilani, Rajasthan 333031.
+<br />
+India.
+<br />
+Phone No. +91 1596 255652, Mob. No. +91-7709129400,
+<br />
+Email: vaibhav.dixit.pilani&#46;<!--nospam-->bits-pilani.ac.in&lt;mailto:vaibhav.dixit.pilani&#46;<!--nospam-->bits-pilani.ac.in&gt;, vaibhavadixit.gmail&#46;<!--nospam-->com&lt;mailto:vaibhavadixit.gmail&#46;<!--nospam-->com&gt;
+<br />
+​<a href="http://www.bits-pilani.ac.in/pilani/vaibhavdixit/profile">http://www.bits-pilani.ac.in/pilani/vaibhavdixit/profile</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__www.bits-2Dpilani.ac.in_pilani_vaibhavdixit_profile&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=GrDKmeY34fFNmBWz35wbVR7bP0C8yZshUfuTdmtG2AA&amp;s=yOrqXn8Tnt-Ns9vXDiLUFUOYfIeasJV">https://urldefense.proofpoint.com/v2/url?u=http-3A__www.bits-2Dpilani.ac.in_pilani_vaibhavdixit_profile&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=GrDKmeY34fFNmBWz35wbVR7bP0C8yZshUfuTdmtG2AA&amp;s=yOrqXn8Tnt-Ns9vXDiLUFUOYfIeasJV</a>LEJ9jV8V8DHk&amp;e=&gt;
+<br />
+<a href="https://www.linkedin.com/in/vaibhav-dixit-b1a07a39/">https://www.linkedin.com/in/vaibhav-dixit-b1a07a39/</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=https-3A__www.linkedin.com_in_vaibhav-2Ddixit-2Db1a07a39_&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=GrDKmeY34fFNmBWz35wbVR7bP0C8yZshUfuTdmtG2AA&amp;s=1qU5072_oaIOzYX9GGz0H42alekfC-u8s5">https://urldefense.proofpoint.com/v2/url?u=https-3A__www.linkedin.com_in_vaibhav-2Ddixit-2Db1a07a39_&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=GrDKmeY34fFNmBWz35wbVR7bP0C8yZshUfuTdmtG2AA&amp;s=1qU5072_oaIOzYX9GGz0H42alekfC-u8s5</a>YmbeZ6njM&amp;e=&gt;
+<br />
+
+<br />
+ORCID ID: https://orcid.org/0000-0003-4015-2941&lt;https://urldefense.proofpoint.com/v2/url?u=https-3A__orcid.org_0000-2D0003-2D4015-2D2941&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=GrDKmeY34fFNmBWz35wbVR7bP0C8yZshUfuTdmtG2AA&amp;s=OBc-a8XeqjvHI0C2xwTP59r_UnlmZemqK9QuSMP1wIE&amp;e=&gt;
+<br />
+
+<br />
+<a href="http://scholar.google.co.in/citations?user=X876BKcAAAAJ&amp;hl=en&amp;oi=sra">http://scholar.google.co.in/citations?user=X876BKcAAAAJ&amp;hl=en&amp;oi=sra</a>&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__scholar.google.co.in_citations-3Fuser-3DX876BKcAAAAJ-26hl-3Den-26oi-3Dsra&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=GrDKmeY34fFNmBWz35wbVR7bP0C8yZshUfuTdmtG2AA&amp;s=9Qcl_pKOF">https://urldefense.proofpoint.com/v2/url?u=http-3A__scholar.google.co.in_citations-3Fuser-3DX876BKcAAAAJ-26hl-3Den-26oi-3Dsra&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=GrDKmeY34fFNmBWz35wbVR7bP0C8yZshUfuTdmtG2AA&amp;s=9Qcl_pKOF</a>NevNpyeh9wAiP3XMAP9yHdMoLiOgZJmtnU&amp;e=&gt;
+<br />
+
+<br />
+• Please consider the environment before printing this e-mail
+<br />
+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Jan 09 2020 - 07:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0110.html" title="Next message in the list">David Case: "Re: [AMBER] MD error in Amber18: an illegal memory access was encountered launching kernel kNLSkinTest"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0108.html" title="Previous message in the list">David Cerutti: "Re: [AMBER] Question about addtobox"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0058.html" title="Message to which this message replies">Vaibhav Dixit: "Re: [AMBER] empty cein file redox potential calculations"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg109" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg109" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg109" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg109" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

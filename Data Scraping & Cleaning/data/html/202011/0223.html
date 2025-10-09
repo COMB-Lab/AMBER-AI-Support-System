@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] MMPBSA.py: &quot;fork()&quot; system call to create a child process from Lennart Gundelach on 2020-11-23 (Amber Archive Nov 2020)</title>
+<meta name="Author" content="Lennart Gundelach (L.Gundelach.soton.ac.uk)" />
+<meta name="Subject" content="[AMBER] MMPBSA.py: &quot;fork()&quot; system call to create a child process" />
+<meta name="Date" content="2020-11-23" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] MMPBSA.py: &quot;fork()&quot; system call to create a child process</h1>
+<!-- received="Mon Nov 23 23:30:02 2020" -->
+<!-- isoreceived="20201124073002" -->
+<!-- sent="Tue, 24 Nov 2020 07:02:44 +0000" -->
+<!-- isosent="20201124070244" -->
+<!-- name="Lennart Gundelach" -->
+<!-- email="L.Gundelach.soton.ac.uk" -->
+<!-- subject="[AMBER] MMPBSA.py: &quot;fork()&quot; system call to create a child process" -->
+<!-- id="8DEDC8F0-30E9-452F-AD83-0604687D0EB8.soton.ac.uk" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0224.html" accesskey="d" title="MYRIAN TORRES RICO: &quot;[AMBER] phi angle puckering&quot;">Next message</a> ]
+[ <a href="0222.html" title="Lennart Gundelach: &quot;[AMBER] Installing AmberTools20 compile error&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0231.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] MMPBSA.py: &#0034;fork()&#0034; system call to create a child process&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg223" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg223" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg223" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg223" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Lennart Gundelach &lt;<a href="mailto:L.Gundelach.soton.ac.uk?Subject=Re%3A%20%5BAMBER%5D%20MMPBSA.py%3A%20%22fork()%22%20system%20call%20to%20create%20a%20child%20process">L.Gundelach.soton.ac.uk</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 24 Nov 2020 07:02:44 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />I am trying to run MMPBSA.py.MPI in Amber16 and whenever I submit my job, SLURM freaks out with the following (I have asked the HPC system sysadmins and they have no idea:
+<br />
+A process has executed an operation involving a call to the
+<br />
+&quot;fork()&quot; system call to create a child process.  Open MPI is currently
+<br />
+operating in a condition that could result in memory corruption or
+<br />
+other system errors; your job may hang, crash, or produce silent
+<br />
+data corruption.  The use of fork() (or system() or other calls that
+<br />
+create child processes) is strongly discouraged.
+<br />
+<br />The process that invoked fork was:
+<br />
+<br />&nbsp;&nbsp;Local host:          [[16072,1],0] (PID 207509)
+<br />
+<br />If you are *absolutely sure* that your application will successfully
+<br />
+and correctly survive a call to fork(), you may disable this warning
+<br />
+by setting the mpi_warn_on_fork MCA parameter to 0.
+<br />
+<br />After this warning the calculation crashes with the following error:
+<br />
+File &quot;/local/software/amber/amber16/bin/MMPBSA.py.MPI&quot;, line 99, in &lt;module&gt;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;app.file_setup()
+<br />
+&nbsp;&nbsp;File &quot;/local/software/amber/amber16/lib/python2.7/site-packages/MMPBSA_mods/main.py&quot;, line 156, in file_setup
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;self.mpi_size, str(external_progs['cpptraj']), self.pre)
+<br />
+&nbsp;&nbsp;File &quot;/local/software/amber/amber16/lib/python2.7/site-packages/MMPBSA_mods/make_trajs.py&quot;, line 76, in make_trajectories
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;raise MMPBSA_Error('Must have at least as many frames as processors!')
+<br />
+MMPBSA_Error: Must have at least as many frames as processors!
+<br />
+Error occured on rank 0.
+<br />
+<br />Which to me makes no sense, given my mmpbas.in file:
+<br />
+Sample input file for GB and PB calculation
+<br />
+&amp;general
+<br />
+startframe=1, endframe=1000000, interval=1000,
+<br />
+verbose=2, keep_files=0,
+<br />
+/
+<br />
+&amp;gb
+<br />
+igb=5, saltcon=0.0,
+<br />
+/
+<br />
+&amp;pb
+<br />
+fillratio=4.0
+<br />
+/
+<br />
+&amp;nmode
+<br />
+nmstartframe=1, nmendframe=1000000, nminterval=1000
+<br />
+maxcyc=1000, drms=0.0001
+<br />
+/
+<br />
+<br />But maybe I am just missing something obvious here.
+<br />
+<br />Thanks,
+<br />
+<br />Lennart
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Nov 23 2020 - 23:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0224.html" title="Next message in the list">MYRIAN TORRES RICO: "[AMBER] phi angle puckering"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0222.html" title="Previous message in the list">Lennart Gundelach: "[AMBER] Installing AmberTools20 compile error"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0231.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] MMPBSA.py: &#0034;fork()&#0034; system call to create a child process"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0231.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] MMPBSA.py: &#0034;fork()&#0034; system call to create a child process"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg223" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg223" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg223" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg223" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

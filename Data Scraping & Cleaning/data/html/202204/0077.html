@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Barostat not working (?) from Artur Hermano on 2022-04-08 (Amber Archive Apr 2022)</title>
+<meta name="Author" content="Artur Hermano (artur.hermano.hotmail.com)" />
+<meta name="Subject" content="[AMBER] Barostat not working (?)" />
+<meta name="Date" content="2022-04-08" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Barostat not working (?)</h1>
+<!-- received="Fri Apr  8 14:00:02 2022" -->
+<!-- isoreceived="20220408210002" -->
+<!-- sent="Fri, 8 Apr 2022 20:46:41 +0000" -->
+<!-- isosent="20220408204641" -->
+<!-- name="Artur Hermano" -->
+<!-- email="artur.hermano.hotmail.com" -->
+<!-- subject="[AMBER] Barostat not working (?)" -->
+<!-- id="CPYP284MB043656E79888C560C154C334F3E99.CPYP284MB0436.BRAP284.PROD.OUTLOOK.COM" -->
+<!-- charset="iso-8859-1" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0078.html" accesskey="d" title="Carlos Simmerling: &quot;Re: [AMBER] Barostat not working (?)&quot;">Next message</a> ]
+[ <a href="0076.html" title="Hamed S. Hayatshahi: &quot;Re: [AMBER] Amber20 installation on Ubuntu 21.10&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0078.html" accesskey="t" title="Carlos Simmerling: &quot;Re: [AMBER] Barostat not working (?)&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg77" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg77" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg77" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg77" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Artur Hermano &lt;<a href="mailto:artur.hermano.hotmail.com?Subject=Re%3A%20%5BAMBER%5D%20Barostat%20not%20working%20(%3F)">artur.hermano.hotmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 8 Apr 2022 20:46:41 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello Amber team,
+<br />
+<br />I am trying to run a simulation that, after minimization goes through a NVT heating step and then through a NPT equilibration step. I am using the Berendsen barostat for the NPT step, but it seems not to be working. Despite the previous steps running fine, my equilibration stops all of a sudden with no error messages on the bottom of the equi.out file (see below). My equilibration input file is:
+<br />
+<br />Equi
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;imin=0,
+<br />
+&nbsp;&nbsp;ntx=5,
+<br />
+&nbsp;&nbsp;irest=1,
+<br />
+&nbsp;&nbsp;nstlim=50000,
+<br />
+&nbsp;&nbsp;dt=0.002,
+<br />
+&nbsp;&nbsp;ntf=2,
+<br />
+&nbsp;&nbsp;ntc=2,
+<br />
+&nbsp;&nbsp;tempi=300.0,
+<br />
+&nbsp;&nbsp;temp0=300.0,
+<br />
+&nbsp;&nbsp;ntpr=500,
+<br />
+&nbsp;&nbsp;ntwx=500,
+<br />
+&nbsp;&nbsp;cut=10.0,
+<br />
+&nbsp;&nbsp;ntb=2,
+<br />
+&nbsp;&nbsp;pres0=1.0,
+<br />
+&nbsp;&nbsp;ntp=1,
+<br />
+&nbsp;&nbsp;taup=2.0,
+<br />
+&nbsp;&nbsp;ntt=3,
+<br />
+&nbsp;&nbsp;gamma_ln=1.0,
+<br />
+&nbsp;/
+<br />
+<br />And these are the bottom lines of my equi.out file:
+<br />
+<br />NSTEP =    22500   TIME(PS) =     145.000  TEMP(K) =   300.69  PRESS =   -80.5
+<br />
+&nbsp;Etot   =   -106653.7224  EKtot   =     27528.5859  EPtot      =   -134182.3083
+<br />
+&nbsp;BOND   =      1203.8180  ANGLE   =      3190.8939  DIHED      =      5012.8786
+<br />
+&nbsp;1-4 NB =      1420.7867  1-4 EEL =     13569.6107  VDWAALS    =     14268.7934
+<br />
+&nbsp;EELEC  =   -172849.0895  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+<br />
+&nbsp;EKCMT  =     11546.7037  VIRIAL  =     12320.0722  VOLUME     =    444926.8592
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Density    =         1.0244
+<br />
+&nbsp;------------------------------------------------------------------------------
+<br />
+<br /><br />&nbsp;NSTEP =    23000   TIME(PS) =     146.000  TEMP(K) =   298.83  PRESS =    16.8
+<br />
+&nbsp;Etot   =   -106989.9082  EKtot   =     27357.8926  EPtot      =   -134347.8008
+<br />
+&nbsp;BOND   =      1195.2600  ANGLE   =      3169.3732  DIHED      =      5000.9721
+<br />
+&nbsp;1-4 NB =      1405.4871  1-4 EEL =     13560.7227  VDWAALS    =     14215.4113
+<br />
+&nbsp;EELEC  =   -172895.0271  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+<br />
+&nbsp;EKCMT  =     11520.0326  VIRIAL  =     11358.4814  VOLUME     =    444598.2344
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Density    =         1.0251
+<br />
+&nbsp;------------------------------------------------------------------------------
+<br />
+<br /><br />&nbsp;NSTEP =    23500   TIME(PS) =     147.000  TEMP(K) =   296.37  PRESS =    -3.2
+<br />
+&nbsp;Etot   =   -107084.2024  EKtot   =     27133.1016  EPtot      =   -134217.3040
+<br />
+&nbsp;BOND   =      1180.1769  ANGLE   =      3129.3570  DIHED      =      5012.9329
+<br />
+&nbsp;1-4 NB =      1429.4178  1-4 EEL =     13670.0174  VDWAALS    =     14530.8318
+<br />
+&nbsp;EELEC  =   -173170.0378  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+<br />
+&nbsp;EKCMT  =     11581.9544  VIRIAL  =     11612.9675  VOLUME     =    444105.4865
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Density    =         1.0263
+<br />
+&nbsp;------------------------------------------------------------------------------
+<br />
+<br /><br />&nbsp;NSTEP =    24000   TIME(PS) =     148.000  TEMP(K) =   300.35  PRESS =   -32.2
+<br />
+&nbsp;Etot   =   -107062.9372  EKtot   =     27496.6387  EPtot      =   -134559.5759
+<br />
+&nbsp;BOND   =      1142.9891  ANGLE   =      3215.9534  DIHED      =      4999.4223
+<br />
+&nbsp;1-4 NB =      1424.9494  1-4 EEL =     13680.1911  VDWAALS    =     14481.5016
+<br />
+&nbsp;EELEC  =   -173504.5828  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+<br />
+&nbsp;EKCMT  =     11601.6809  VIRIAL  =     11910.2262  VOLUME     =    444245.4810
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Density    =         1.0260
+<br />
+&nbsp;------------------------------------------------------------------------------
+<br />
+<br /><br />&nbsp;NSTEP =    24500   TIME(PS) =     149.000  TEMP(K) =   297.84  PRESS =   -72.4
+<br />
+&nbsp;Etot   =   -107278.1062  EKtot   =     27267.2070  EPtot      =   -134545.3133
+<br />
+&nbsp;BOND   =      1135.5286  ANGLE   =      3195.0653  DIHED      =      5006.3317
+<br />
+&nbsp;1-4 NB =      1414.9647  1-4 EEL =     13662.5592  VDWAALS    =     14327.2018
+<br />
+&nbsp;EELEC  =   -173286.9645  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+<br />
+&nbsp;EKCMT  =     11442.0238  VIRIAL  =     12135.9224  VOLUME     =    443834.8519
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Density    =         1.0269
+<br />
+&nbsp;------------------------------------------------------------------------------
+<br />
+<br />As you can see, the pressure is clearly far from constant, but I don't think it should... Am I missing something here? Any help is very much appreciated!
+<br />
+<br />Thank you so much in advance!
+<br />
+<br />Artur
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Apr 08 2022 - 14:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0078.html" title="Next message in the list">Carlos Simmerling: "Re: [AMBER] Barostat not working (?)"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0076.html" title="Previous message in the list">Hamed S. Hayatshahi: "Re: [AMBER] Amber20 installation on Ubuntu 21.10"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0078.html" title="Next message in this discussion thread">Carlos Simmerling: "Re: [AMBER] Barostat not working (?)"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0078.html" title="Message sent in reply to this message">Carlos Simmerling: "Re: [AMBER] Barostat not working (?)"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0087.html" title="Message sent in reply to this message">Artur Hermano: "Re: [AMBER] Barostat not working (?)"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg77" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg77" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg77" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg77" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] MMGBSA bad atom type error not fixed by source code edits from David A Case on 2021-07-03 (Amber Archive Jul 2021)</title>
+<meta name="Author" content="David A Case (david.case.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] MMGBSA bad atom type error not fixed by source code edits" />
+<meta name="Date" content="2021-07-03" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] MMGBSA bad atom type error not fixed by source code edits</h1>
+<!-- received="Sat Jul  3 05:30:02 2021" -->
+<!-- isoreceived="20210703123002" -->
+<!-- sent="Sat, 3 Jul 2021 08:04:07 -0400" -->
+<!-- isosent="20210703120407" -->
+<!-- name="David A Case" -->
+<!-- email="david.case.rutgers.edu" -->
+<!-- subject="Re: [AMBER] MMGBSA bad atom type error not fixed by source code edits" -->
+<!-- id="20210703120407.c3k2bsqaubcx736b.n7227-owl113-01.rad.rutgers.edu" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="09A42C8A-B399-41E4-B60A-39A1B747BE13.uconn.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0015.html" accesskey="d" title="Matthew Guberman-Pfeffer: &quot;Re: [AMBER] MMGBSA bad atom type error not fixed by source code edits&quot;">Next message</a> ]
+[ <a href="0013.html" title="Elvis A F Martis: &quot;Re: [AMBER] To build a single covalent bond in a protein-ligand complex using AMBER18.&quot;">Previous message</a> ]
+[ <a href="0010.html" title="Matthew Guberman-Pfeffer: &quot;[AMBER] MMGBSA bad atom type error not fixed by source code edits&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0015.html" accesskey="t" title="Matthew Guberman-Pfeffer: &quot;Re: [AMBER] MMGBSA bad atom type error not fixed by source code edits&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg14" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg14" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg14" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg14" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case &lt;<a href="mailto:david.case.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20MMGBSA%20bad%20atom%20type%20error%20not%20fixed%20by%20source%20code%20edits">david.case.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 3 Jul 2021 08:04:07 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Sat, Jul 03, 2021, Matthew Guberman-Pfeffer wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;I edited amber20_src/AmberTools/src/sander/mdread2.F90 to contain the
+</em><br />
+<em class="quotelev1">&gt;following blocks for Fe, as recommended in a previous post. I still get the
+</em><br />
+<em class="quotelev1">&gt;“Bad Atom Type” message after recompiling. What can I do to fix this issue?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;            else if (atype(1:1) == 'FE' .or. atype(1:1) == 'Fe' .or. atype(1:1) == 'Fe') then
+</em><br />
+<br />This if branch will never be taken.  &quot;atype(1:1)&quot; gives the first character
+<br />
+of the atype string.  It can never match a two-character constant like &quot;FE&quot;
+<br />
+or &quot;Fe&quot;.
+<br />
+<br />....dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd&#46;<!--nospam-->org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sat Jul 03 2021 - 05:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0015.html" title="Next message in the list">Matthew Guberman-Pfeffer: "Re: [AMBER] MMGBSA bad atom type error not fixed by source code edits"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0013.html" title="Previous message in the list">Elvis A F Martis: "Re: [AMBER] To build a single covalent bond in a protein-ligand complex using AMBER18."</a></li>
+<li><dfn>In reply to</dfn>: <a href="0010.html" title="Message to which this message replies">Matthew Guberman-Pfeffer: "[AMBER] MMGBSA bad atom type error not fixed by source code edits"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0015.html" title="Next message in this discussion thread">Matthew Guberman-Pfeffer: "Re: [AMBER] MMGBSA bad atom type error not fixed by source code edits"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0015.html" title="Message sent in reply to this message">Matthew Guberman-Pfeffer: "Re: [AMBER] MMGBSA bad atom type error not fixed by source code edits"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg14" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg14" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg14" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg14" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

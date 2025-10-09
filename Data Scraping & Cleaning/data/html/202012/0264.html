@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Renumbering from Gustaf Olsson on 2020-12-17 (Amber Archive Dec 2020)</title>
+<meta name="Author" content="Gustaf Olsson (gustaf.olsson.lnu.se)" />
+<meta name="Subject" content="Re: [AMBER] Renumbering" />
+<meta name="Date" content="2020-12-17" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Renumbering</h1>
+<!-- received="Thu Dec 17 10:30:02 2020" -->
+<!-- isoreceived="20201217183002" -->
+<!-- sent="Thu, 17 Dec 2020 18:07:54 +0000" -->
+<!-- isosent="20201217180754" -->
+<!-- name="Gustaf Olsson" -->
+<!-- email="gustaf.olsson.lnu.se" -->
+<!-- subject="Re: [AMBER] Renumbering" -->
+<!-- id="4752cbcdadc54c4089fb072f4bbcba23.lnu.se" -->
+<!-- charset="iso-8859-1" -->
+<!-- inreplyto="CAAC0qOaSgMxYfsOPwH0UxsaVMAG4abGbZO4UQKnhUPt-KU6UGg.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0265.html" accesskey="d" title="Sam Walsworth (Researcher): &quot;Re: [AMBER] Antechamber vs R.E.D. Server&quot;">Next message</a> ]
+[ <a href="0263.html" title="Daniel Roe: &quot;Re: [AMBER] cpptraj warnings topology flags being ignored&quot;">Previous message</a> ]
+[ <a href="0258.html" title="Daniel Roe: &quot;Re: [AMBER] Renumbering&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg264" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg264" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg264" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg264" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gustaf Olsson &lt;<a href="mailto:gustaf.olsson.lnu.se?Subject=Re%3A%20%5BAMBER%5D%20Renumbering">gustaf.olsson.lnu.se</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 17 Dec 2020 18:07:54 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Nice tip, thank you Daniel
+<br />
+<br />________________________________
+<br />
+Fr�n: Daniel Roe &lt;daniel.r.roe.gmail.com&gt;
+<br />
+Skickat: den 17 december 2020 17:58:53
+<br />
+Till: AMBER Mailing List
+<br />
+�mne: Re: [AMBER] Renumbering
+<br />
+<br />Hello,
+<br />
+<br />So I think I might have a solution for you. You don't want to mess
+<br />
+with internal residue numbering, but cpptraj also keeps track of what
+<br />
+I've for better or worse called &quot;original&quot; or &quot;pdb&quot; residue numbering.
+<br />
+You can change this at will without any effect other than changing
+<br />
+what gets printed to pdb/mol2 files in the residue number column. You
+<br />
+can use the 'change' command to change the &quot;original&quot; residue
+<br />
+numbering, then use the ':;' mask token (colon followed by semi-colon)
+<br />
+to select residues based on that. So for example, I tested changing
+<br />
+the first 3 &quot;original&quot; residue numbers of trpzip2 (one of my all-time
+<br />
+fave test systems) to 1 and it seems to work well:
+<br />
+<br />Input:
+<br />
+<br />parm tz2.parm7
+<br />
+trajin tz2.nc 1 1
+<br />
+change oresnums of :1 min 1 max 1
+<br />
+change oresnums of :2 min 1 max 1
+<br />
+change oresnums of :3 min 1 max 1
+<br />
+change oresnums of :4-13 min 2 max 11
+<br />
+resinfo :;1
+<br />
+<br />Output (some of it anyway):
+<br />
+<br />[change oresnums of :1 min 1 max 1]
+<br />
+Using topology: tz2.parm7
+<br />
+:1 selects 1 residues.
+<br />
+Original (output) res #s: 1 to 1 (1)
+<br />
+Changing original res# of residue SER:1 from 1 to 1
+<br />
+&nbsp;&nbsp;[change oresnums of :2 min 1 max 1]
+<br />
+Using topology: tz2.parm7
+<br />
+:2 selects 1 residues.
+<br />
+Original (output) res #s: 1 to 1 (1)
+<br />
+Changing original res# of residue TRP:2 from 2 to 1
+<br />
+&nbsp;&nbsp;[change oresnums of :3 min 1 max 1]
+<br />
+Using topology: tz2.parm7
+<br />
+:3 selects 1 residues.
+<br />
+Original (output) res #s: 1 to 1 (1)
+<br />
+Changing original res# of residue THR:3 from 3 to 1
+<br />
+&nbsp;&nbsp;[change oresnums of :4-13 min 2 max 11]
+<br />
+Using topology: tz2.parm7
+<br />
+:4-13 selects 10 residues.
+<br />
+Original (output) res #s: 2 to 11 (10)
+<br />
+Changing original res# of residue TRP:4 from 4 to 2
+<br />
+Changing original res# of residue GLU:5 from 5 to 3
+<br />
+Changing original res# of residue ASN:6 from 6 to 4
+<br />
+Changing original res# of residue GLY:7 from 7 to 5
+<br />
+Changing original res# of residue LYS:8 from 8 to 6
+<br />
+Changing original res# of residue TRP:9 from 9 to 7
+<br />
+Changing original res# of residue THR:10 from 10 to 8
+<br />
+Changing original res# of residue TRP:11 from 11 to 9
+<br />
+Changing original res# of residue LYS:12 from 12 to 10
+<br />
+Changing original res# of residue NME:13 from 13 to 11
+<br />
+&nbsp;&nbsp;[resinfo :;1]
+<br />
+3 residues selected.
+<br />
+#Res  Name First  Last Natom #Orig  #Mol C I
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;1 SER      1    13    13     1     1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;2 TRP     14    37    24     1     1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;3 THR     38    51    14     1     1
+<br />
+<br />Hope this helps,
+<br />
+<br />-Dan
+<br />
+<br />On Thu, Dec 17, 2020 at 5:29 AM Gustaf Olsson &lt;gustaf.olsson.lnu.se&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Would there be any obvious problem with renumbering AAs in a peptide to a single residue number?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; LEaP output for a 4 AA peptide gives residues 1-4 as one molecule. Changing this to residue 1 for all AAs, can this cause any unintended/unexpected issues?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best regards
+</em><br />
+<em class="quotelev1">&gt; // Gustaf
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Dec 17 2020 - 10:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0265.html" title="Next message in the list">Sam Walsworth (Researcher): "Re: [AMBER] Antechamber vs R.E.D. Server"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0263.html" title="Previous message in the list">Daniel Roe: "Re: [AMBER] cpptraj warnings topology flags being ignored"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0258.html" title="Message to which this message replies">Daniel Roe: "Re: [AMBER] Renumbering"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg264" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg264" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg264" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg264" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

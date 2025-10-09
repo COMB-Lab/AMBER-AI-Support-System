@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] iwrap/autoimage - analyses from Gustaf Olsson on 2020-11-10 (Amber Archive Nov 2020)</title>
+<meta name="Author" content="Gustaf Olsson (gustaf.olsson.lnu.se)" />
+<meta name="Subject" content="[AMBER] iwrap/autoimage - analyses" />
+<meta name="Date" content="2020-11-10" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] iwrap/autoimage - analyses</h1>
+<!-- received="Tue Nov 10 03:30:03 2020" -->
+<!-- isoreceived="20201110113003" -->
+<!-- sent="Tue, 10 Nov 2020 11:13:26 +0000" -->
+<!-- isosent="20201110111326" -->
+<!-- name="Gustaf Olsson" -->
+<!-- email="gustaf.olsson.lnu.se" -->
+<!-- subject="[AMBER] iwrap/autoimage - analyses" -->
+<!-- id="CBAE7C5A-C7E8-44DD-B04C-37D5F30E4E96.lnu.se" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0098.html" accesskey="d" title="Piia Kokkonen: &quot;Re: [AMBER] Amber20 and RNA simulations&quot;">Next message</a> ]
+[ <a href="0096.html" title="Ikuo KURISAKI: &quot;[AMBER] CPPTRAJ returns &#0039;Warning: Box center specified but no box information&#0039;&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0099.html" accesskey="t" title="Daniel Roe: &quot;Re: [AMBER] iwrap/autoimage - analyses&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg97" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg97" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg97" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg97" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gustaf Olsson &lt;<a href="mailto:gustaf.olsson.lnu.se?Subject=Re%3A%20%5BAMBER%5D%20iwrap%2Fautoimage%20-%20analyses">gustaf.olsson.lnu.se</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 10 Nov 2020 11:13:26 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello users/devs. Sorry in advance for a long post with lots of thoughts though switching a seemingly minor setting led me down the rabbit hole.
+<br />
+
+<br />
+I have seen running simulations without wrapping (iwrap=0) being argued in the list from time to time so I decided to follow this advice. Now I am considering the analyses of such trajectories. From previous experience, wrapping sometimes cause issues and analyses needed to be run with noimage. This led me to think that the opposite must also be true. So for some analyses, like HBOND and RDF, analysing the “unwrapped” (iwrap=0) output trajectories from sander/pmemd as compared to “wrapped” (iwrap=1) trajectories could produce different results.
+<br />
+
+<br />
+Doing some quick tests seems to show minute differences in the RDF analyses, indicating that RDF analyses might not suffer from major artefacts from unwrapped/wrapped simulations (somewhat surprising as there is a no image option for “radial”). However, the same does not seem to be true for HBOND analysis where I observe much larger deviation. Here there is an option to use “image”, which almost reproduces the output of performing autoimage before analysing.
+<br />
+
+<br />
+What would be the recommendations?
+<br />
+
+<br />
+Looking at radial/rdf
+<br />
+Analysing unwrapped, autoimaged or autoimaged with the “noimage&quot; option all produces slightly different results. There are only small differences though they are present. 
+<br />
+
+<br />
+Looking at hbond
+<br />
+Analysing unwrapped, unwrapped with the “image&quot; command or autoimaged all produces slightly different results. It here seems obvious that unwrapped is a really bad choice, so I’ll ignore this.
+<br />
+
+<br />
+1) When would it be important to use the “noimage” option for radial analyses? I see the options though not the motivation and I have not been able to generate a difference larger than 0.001 with my trial sets
+<br />
+2) Is there any preference for using autoimage before performing hbond analysis or using the image option during the analysis.
+<br />
+
+<br />
+Considering both efficiency and accuracy. Performing longer, large system simulations often produces large amounts of data. From an efficiency point of view, if there is a need to “autoimage” trajectories before analysing, the time consumption for this action and the extra disk space required may indicate using iwrap=1 during simulation being more efficient for these reasons. I have no idea regarding accuracy/performance hit of using the &quot;noimage” option with radial so I donated know if this would outweigh the benefits. 
+<br />
+
+<br />
+How would this compare to using iwrap=0 and image option in hbond with regard to speed/accuracy?
+<br />
+
+<br />
+Is there potentially any nice overview indicating which analyses could be affected by wrapping and/or recommendations for settings not listed with the particular analyses in the manual?
+<br />
+
+<br />
+Best regards
+<br />
+// Gustaf
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Nov 10 2020 - 03:30:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0098.html" title="Next message in the list">Piia Kokkonen: "Re: [AMBER] Amber20 and RNA simulations"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0096.html" title="Previous message in the list">Ikuo KURISAKI: "[AMBER] CPPTRAJ returns &#0039;Warning: Box center specified but no box information&#0039;"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0099.html" title="Next message in this discussion thread">Daniel Roe: "Re: [AMBER] iwrap/autoimage - analyses"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0099.html" title="Message sent in reply to this message">Daniel Roe: "Re: [AMBER] iwrap/autoimage - analyses"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg97" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg97" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg97" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg97" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

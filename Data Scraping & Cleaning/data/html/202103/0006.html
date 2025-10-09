@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] positional and NMR distance restraints together from Qinghua Liao on 2021-03-01 (Amber Archive Mar 2021)</title>
+<meta name="Author" content="Qinghua Liao (scorpio.liao.gmail.com)" />
+<meta name="Subject" content="[AMBER] positional and NMR distance restraints together" />
+<meta name="Date" content="2021-03-01" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] positional and NMR distance restraints together</h1>
+<!-- received="Mon Mar  1 17:30:01 2021" -->
+<!-- isoreceived="20210302013001" -->
+<!-- sent="Tue, 2 Mar 2021 02:15:31 +0100" -->
+<!-- isosent="20210302011531" -->
+<!-- name="Qinghua Liao" -->
+<!-- email="scorpio.liao.gmail.com" -->
+<!-- subject="[AMBER] positional and NMR distance restraints together" -->
+<!-- id="18e6f46b-9f0c-ca9e-8ab4-1dd1d2519b37.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0007.html" accesskey="d" title="wangjianing_mail: &quot;[AMBER] use orca in amber&quot;">Next message</a> ]
+[ <a href="0005.html" title="Adrian Roitberg: &quot;Re: [AMBER] Effect of different gamma_ln values&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0011.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] positional and NMR distance restraints together&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg6" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg6" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg6" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg6" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Qinghua Liao &lt;<a href="mailto:scorpio.liao.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20positional%20and%20NMR%20distance%20restraints%20together">scorpio.liao.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 2 Mar 2021 02:15:31 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+<br />I am using pmemd.cuda_DPFP (Amber 20) to do minimization for my system 
+<br />
+with both positional and NMR distance restraints.
+<br />
+<br />The NMR distance restraints are used to pull one residue close to the 
+<br />
+substrate during the minimization gradually (force constant gradually 
+<br />
+increased in five steps of minimizations).
+<br />
+And the positional restraints are applied to heavy atoms except for the 
+<br />
+substrate and the region where the residue locates (20 residues).
+<br />
+<br />For two almost identical systems, the input files are the same. But one 
+<br />
+works for all five steps, pmemd.cuda_DPFP can distinguish both 
+<br />
+positional and NMR distance restraints, as the output shows:
+<br />
+#
+<br />
+&nbsp;   RESTRAINT  =      705.1138 (positional restraints)
+<br />
+&nbsp;   NMR restraints: Bond =  595.904   Angle =     0.000   Torsion =     
+<br />
+0.000 (NMR distance restraints)
+<br />
+#
+<br />
+<br />While the other one failed to distinguish positional and NMR distance 
+<br />
+restraints:
+<br />
+#
+<br />
+&nbsp;   RESTRAINT  =     1175.6790
+<br />
+&nbsp;   NMR restraints: Bond = 1175.679   Angle =     0.000   Torsion =     
+<br />
+0.000
+<br />
+&nbsp; #
+<br />
+<br />For the failed system, the first step of minimization worked fine with 
+<br />
+force constant of 1 kcal/mol A2,
+<br />
+but it failed to distinguish at the second step of minimization with a 
+<br />
+force constant of 10 kcal/mol A2.
+<br />
+<br />And it seems that positional restraints are on the region where the 
+<br />
+residues locates (20 residues), though I did not turn it on,
+<br />
+leading to failure of pulling the residue close to the substrate.
+<br />
+<br />Here is my input files:
+<br />
+#
+<br />
+&amp;cntrl
+<br />
+&nbsp;   imin = 1, ntmin = 2,
+<br />
+&nbsp;   maxcyc = 25000, ncyc = 15000,
+<br />
+&nbsp;   ntpr = 100, ntwe = 100,
+<br />
+&nbsp;   ntb = 1, lj1264 = 0 , nmropt = 1 ,
+<br />
+<br />&nbsp;   ntr = 1, restraint_wt = 100,
+<br />
+&nbsp;   restraintmask=' ( :1-189 | :209-263 | :267-455 | :475-529 ) &amp; !.H= ',
+<br />
+<br />&nbsp; /
+<br />
+&nbsp; &amp;ewald
+<br />
+&nbsp; /
+<br />
+&amp;wt type='DUMPFREQ', istep1=100, /
+<br />
+&amp;wt type='END', /
+<br />
+DISANG=dists2.RST
+<br />
+DUMPAVE=dists2.dat
+<br />
+LISTIN=POUT
+<br />
+LISTOUT=POUT
+<br />
+#
+<br />
+<br /><br />I tried pmemd.cuda (single version), it worked, but the minimized 
+<br />
+structure was a little twisted, some bonds are at length around 2 angstrom).
+<br />
+I could not figure out the issue. Any comments or suggestions? Thanks a 
+<br />
+lot!
+<br />
+<br /><br />All the best,
+<br />
+Qinghua
+<br />
+<br /><br /><br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Mar 01 2021 - 17:30:01 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0007.html" title="Next message in the list">wangjianing_mail: "[AMBER] use orca in amber"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0005.html" title="Previous message in the list">Adrian Roitberg: "Re: [AMBER] Effect of different gamma_ln values"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0011.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] positional and NMR distance restraints together"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0011.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] positional and NMR distance restraints together"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg6" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg6" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg6" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg6" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Discrepancy in pb binding energy (MMPBSA.py tutorial) from Ali Saad Kusay on 2021-03-24 (Amber Archive Mar 2021)</title>
+<meta name="Author" content="Ali Saad Kusay (akus8786.uni.sydney.edu.au)" />
+<meta name="Subject" content="[AMBER] Discrepancy in pb binding energy (MMPBSA.py tutorial)" />
+<meta name="Date" content="2021-03-24" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Discrepancy in pb binding energy (MMPBSA.py tutorial)</h1>
+<!-- received="Wed Mar 24 07:00:03 2021" -->
+<!-- isoreceived="20210324140003" -->
+<!-- sent="Wed, 24 Mar 2021 13:33:10 +0000" -->
+<!-- isosent="20210324133310" -->
+<!-- name="Ali Saad Kusay" -->
+<!-- email="akus8786.uni.sydney.edu.au" -->
+<!-- subject="[AMBER] Discrepancy in pb binding energy (MMPBSA.py tutorial)" -->
+<!-- id="72B7ABE7-8372-4491-B87A-5E45DFF0C387.uni.sydney.edu.au" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0231.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] Loading Topology &#0038; Trajectory Files&quot;">Next message</a> ]
+[ <a href="0229.html" title="Renato Araujo: &quot;Re: [AMBER] erro: cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg230" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg230" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg230" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg230" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Ali Saad Kusay &lt;<a href="mailto:akus8786.uni.sydney.edu.au?Subject=Re%3A%20%5BAMBER%5D%20Discrepancy%20in%20pb%20binding%20energy%20(MMPBSA.py%20tutorial)">akus8786.uni.sydney.edu.au</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 24 Mar 2021 13:33:10 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello Amber users,
+<br />
+
+<br />
+I have attempted the MMPBSA.py tutorial and got significantly higher delta G binding energies in the Poisson Boltzmann calculation (Please see below).
+<br />
+I have downloaded and run the scripts in the tutorials, Ras-raf (Section 3.1) and Estrogen Receptor and Raloxifene (Section 3.2)
+<br />
+I am using MMPBSA.py (Version=14.0) with ambertools 20
+<br />
+
+<br />
+Some differences I have noticed between new and old MMPBSA.py:
+<br />
+1. new uses the mmpbsa_py_energy, old one used sander, (after trying it with Sander, it made no difference).
+<br />
+2. new calculates “ENPOLAR” and “EDISPER” instead of “ECAVITY” and these terms account for the greatest difference between the two calculations.
+<br />
+3. I have noticed that some settings are different, notably, that “ipb” and “inp” are set to 2 in new and 1 in old.
+<br />
+
+<br />
+For the Estrogen exercise, I tested it with “ipb” and “inp” set to 1 (there were some warning associated with inp=1) and got a result that is similar to the tutorial (see below). In this calculation EDISPER = 0 while ENPOLAR ~ ECAVITY in the old calculation.
+<br />
+
+<br />
+I would like some information on why there is such a big difference in energies and if its ok to calculate binding free energy using MMPBSA.py (Version=14.0) with the settings in the tutorial file (<a href="https://ambermd.org/tutorials/advanced/tutorial3/py_script/files/mmpbsa_2b.in">https://ambermd.org/tutorials/advanced/tutorial3/py_script/files/mmpbsa_2b.in</a>)
+<br />
+
+<br />
+Energy Component            Average              Std. Dev.   Std. Err. of Mean
+<br />
+-------------------------------------------------------------------------------
+<br />
+Ras-raf exercise:
+<br />
+
+<br />
+VDWAALS                    -66.2966                4.2751              0.6046
+<br />
+EEL                       -959.1803               34.9190              4.9383
+<br />
+EPB                        946.4251               34.5128              4.8808
+<br />
+ECAVITY                     -7.3062                0.3004              0.0425
+<br />
+
+<br />
+DELTA G gas              -1025.4769             1237.6138            175.0250
+<br />
+DELTA G solv               939.1189               34.5141              4.8810
+<br />
+
+<br />
+
+<br />
+
+<br />
+DELTA G binding =        -86.3579     +/-      8.3264                 1.1775
+<br />
+_____________________________________________________________________________
+<br />
+
+<br />
+Ras-raf, my attempt:
+<br />
+
+<br />
+VDWAALS                    -66.3039                4.2329              0.5986
+<br />
+EEL                       -959.1730               34.5550              4.8868
+<br />
+EPB                        947.1114               33.4524              4.7309
+<br />
+ENPOLAR                    -50.9787                1.8037              0.2551
+<br />
+EDISPER                    101.1385                2.6639              0.3767
+<br />
+
+<br />
+DELTA G gas              -1025.4769               34.3707              4.8607
+<br />
+DELTA G solv               997.2711               33.4305              4.7278
+<br />
+
+<br />
+DELTA TOTAL                -28.2058                8.1968              1.1592
+<br />
+_____________________________________________________________________________
+<br />
+
+<br />
+Estrogen Receptor and Raloxifene, exercise:
+<br />
+
+<br />
+VDWAALS                    -56.2934                2.9265              0.4139
+<br />
+EEL                        -38.0300                3.2114              0.4542
+<br />
+EPB                         57.6402                3.0642              0.4333
+<br />
+ECAVITY                     -5.0423                0.1683              0.0238
+<br />
+
+<br />
+DELTA G gas                -94.3234               18.8778              2.6697
+<br />
+DELTA G solv                52.5978                3.0688              0.4340
+<br />
+
+<br />
+
+<br />
+
+<br />
+DELTA G binding =        -41.7256     +/-      2.9618                 0.4189
+<br />
+_____________________________________________________________________________
+<br />
+
+<br />
+Estrogen Receptor and Raloxifene, my attempt:
+<br />
+
+<br />
+VDWAALS                    -56.2921                2.8956              0.4095
+<br />
+EEL                        -38.0301                3.1822              0.4500
+<br />
+EPB                         56.7520                3.5086              0.4962
+<br />
+ENPOLAR                    -43.4196                1.2202              0.1726
+<br />
+EDISPER                     74.2997                1.3514              0.1911
+<br />
+
+<br />
+DELTA G gas                -94.3222                3.3476              0.4734
+<br />
+DELTA G solv                87.6321                3.8310              0.5418
+<br />
+
+<br />
+DELTA TOTAL                 -6.6901                3.8563              0.5454
+<br />
+_____________________________________________________________________________
+<br />
+
+<br />
+Estrogen Receptor and Raloxifene, my attempt with ipb=1, inp=1:
+<br />
+
+<br />
+VDWAALS                    -56.2921                2.8956              0.4095
+<br />
+EEL                        -38.0301                3.1822              0.4500
+<br />
+EPB                         56.8405                2.9271              0.4140
+<br />
+ENPOLAR                     -5.5814                0.1540              0.0218
+<br />
+EDISPER                      0.0000                0.0000              0.0000
+<br />
+
+<br />
+DELTA G gas                -94.3222                3.3476              0.4734
+<br />
+DELTA G solv                51.2591                2.9325              0.4147
+<br />
+
+<br />
+DELTA TOTAL                -43.0631                2.8642              0.4051
+<br />
+
+<br />
+
+<br />
+
+<br />
+Kind regards,
+<br />
+
+<br />
+Ali Kusay
+<br />
+
+<br />
+Ali Kusay | BPharm (Hons) | PhD Candidate &amp; Pharmacist
+<br />
+The University of Sydney School of Pharmacy | Faculty of Medicine and Health
+<br />
+424, Brain and Mind Centre | The University of Sydney | NSW 2050
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Mar 24 2021 - 07:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0231.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] Loading Topology &#0038; Trajectory Files"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0229.html" title="Previous message in the list">Renato Araujo: "Re: [AMBER] erro: cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg230" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg230" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg230" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg230" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

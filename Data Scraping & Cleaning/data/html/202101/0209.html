@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Non-integer/zero charges from RESP fitting? from Kenneth Huang on 2021-01-12 (Amber Archive Jan 2021)</title>
+<meta name="Author" content="Kenneth Huang (kennethneltharion.gmail.com)" />
+<meta name="Subject" content="[AMBER] Non-integer/zero charges from RESP fitting?" />
+<meta name="Date" content="2021-01-12" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Non-integer/zero charges from RESP fitting?</h1>
+<!-- received="Tue Jan 12 11:30:01 2021" -->
+<!-- isoreceived="20210112193001" -->
+<!-- sent="Tue, 12 Jan 2021 14:18:04 -0500" -->
+<!-- isosent="20210112191804" -->
+<!-- name="Kenneth Huang" -->
+<!-- email="kennethneltharion.gmail.com" -->
+<!-- subject="[AMBER] Non-integer/zero charges from RESP fitting?" -->
+<!-- id="CALeh7kCd8Skpsb0-Qa2zuVogX00aYp7jhVbXfML3LS0saM1KAw.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0210.html" accesskey="d" title="Carlos Simmerling: &quot;Re: [AMBER] Pull group of atoms together&quot;">Next message</a> ]
+[ <a href="0208.html" title="Eugen Hruska: &quot;[AMBER] abfQMMM with Terachem&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0221.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] Non-integer/zero charges from RESP fitting?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg209" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg209" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg209" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg209" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Kenneth Huang &lt;<a href="mailto:kennethneltharion.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Non-integer%2Fzero%20charges%20from%20RESP%20fitting%3F">kennethneltharion.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 12 Jan 2021 14:18:04 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi all,
+<br />
+<br />I've noticed some odd behavior when I'm trying to fit the charges using the
+<br />
+RESP procedure for several modified nucleic acids, but I'm not sure if it's
+<br />
+just a rounding error.
+<br />
+<br />The setup I have is to feed in the ESPs for the from Gaussian in the same
+<br />
+flow Cornell et al did (ie, DMP, DGN, DAN, DCN, DTN, modified NAs) and
+<br />
+restrain the charges on the sugar except C1'/H1', O5/3', H5/3', for the
+<br />
+nucleosides with the overall charge set to 0, ie
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;1.0
+<br />
+<em class="quotelev1">&gt; inosine
+</em><br />
+<em class="quotelev1">&gt;     0   30
+</em><br />
+<em class="quotelev1">&gt;     1    0
+</em><br />
+<em class="quotelev1">&gt;     8    0
+</em><br />
+<em class="quotelev1">&gt; ...
+</em><br />
+<em class="quotelev1">&gt;     1   -1
+</em><br />
+<em class="quotelev1">&gt;     8    0
+</em><br />
+<em class="quotelev1">&gt;     1   0
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br />With restraints to make the O5'/H5' of the nucleosides and the CH3 on the
+<br />
+DMP to add up to zero so I can 'remove' them for the full nucleotide.
+<br />
+<br />The odd thing I've noticed is that while the canonical nucleosides
+<br />
+themselves add up to zero, my modified NAs are all very slightly off
+<br />
+(0.000001). My instinct is that it's a rounding error, but when I check the
+<br />
+output, it says the net charge should be 0,
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;  Reading input for molecule   6 weight:     1.000
+</em><br />
+<em class="quotelev1">&gt; inosine
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;  Total charge (ich):  0
+</em><br />
+<em class="quotelev1">&gt;  Number of centers: 30
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br />So I tried to dig around in the RESP code and I think the section
+<br />
+responsible for it is
+<br />
+<br />c
+<br />
+<em class="quotelev1">&gt; c as long as ncharge is not -99, implement the &quot;total charge&quot; constraint
+</em><br />
+<em class="quotelev1">&gt; c
+</em><br />
+<em class="quotelev1">&gt;       if( ncharge .gt. -99 ) then
+</em><br />
+<em class="quotelev1">&gt;         nlgrng= nlgrng + 1
+</em><br />
+<em class="quotelev1">&gt; c
+</em><br />
+<em class="quotelev1">&gt;         if( nlgrng .gt. maxlgr) then
+</em><br />
+<em class="quotelev1">&gt;            write(6,'(t2,a,i3,/,t2,a,i3)')
+</em><br />
+<em class="quotelev1">&gt;      .          ' Too many charge-group constraints', nlgrng,
+</em><br />
+<em class="quotelev1">&gt;      .          ' Maximum allowed: ', maxlgr
+</em><br />
+<em class="quotelev1">&gt;            stop
+</em><br />
+<em class="quotelev1">&gt;         endif
+</em><br />
+<em class="quotelev1">&gt;         grpchg(nlgrng)= float( ncharge)
+</em><br />
+<em class="quotelev1">&gt;         do  j= ifirst, ilast
+</em><br />
+<em class="quotelev1">&gt;             lgrcnt(nlgrng,j)= 1
+</em><br />
+<em class="quotelev1">&gt;         enddo
+</em><br />
+<em class="quotelev1">&gt;       endif
+</em><br />
+<em class="quotelev1">&gt;       return
+</em><br />
+<em class="quotelev1">&gt;       end
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br />Which from my limited understanding of it, looks like it should restrict
+<br />
+the charge to N decimal places (6?) which leaves me puzzled as why it'd be
+<br />
+unable to zero the charges, instead of leaving them at 0.000001? Or am I
+<br />
+missing something very obvious?
+<br />
+<br />Best,
+<br />
+<br />Kenneth
+<br />
+<br /><pre>
+-- 
+Ask yourselves, all of you, what power would hell have if those imprisoned
+here could not dream of heaven?
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Jan 12 2021 - 11:30:01 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0210.html" title="Next message in the list">Carlos Simmerling: "Re: [AMBER] Pull group of atoms together"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0208.html" title="Previous message in the list">Eugen Hruska: "[AMBER] abfQMMM with Terachem"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0221.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] Non-integer/zero charges from RESP fitting?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0221.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Non-integer/zero charges from RESP fitting?"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0234.html" title="Message sent in reply to this message">Kenneth Huang: "Re: [AMBER] Non-integer/zero charges from RESP fitting?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg209" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg209" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg209" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg209" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

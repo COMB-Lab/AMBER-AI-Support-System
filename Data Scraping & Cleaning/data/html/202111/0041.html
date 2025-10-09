@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Amber calculate RMSF from ������ on 2021-11-04 (Amber Archive Nov 2021)</title>
+<meta name="Author" content="������ (18xdwu.stu.edu.cn)" />
+<meta name="Subject" content="[AMBER] Amber calculate RMSF" />
+<meta name="Date" content="2021-11-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Amber calculate RMSF</h1>
+<!-- received="Thu Nov  4 18:00:02 2021" -->
+<!-- isoreceived="20211105010002" -->
+<!-- sent="Fri, 5 Nov 2021 00:29:51 +0000" -->
+<!-- isosent="20211105002951" -->
+<!-- name="������" -->
+<!-- email="18xdwu.stu.edu.cn" -->
+<!-- subject="[AMBER] Amber calculate RMSF" -->
+<!-- id="BJSPR01MB0802967504EDFA207004AC51E68E9.BJSPR01MB0802.CHNPR01.prod.partner.outlook.cn" -->
+<!-- charset="gb2312" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0042.html" accesskey="d" title="Rafa&#0322; Madaj: &quot;Re: [AMBER] Error upon start of nfe-abmd&quot;">Next message</a> ]
+[ <a href="0040.html" title="David A Case: &quot;Re: [AMBER] CUDA INSTALLATION FAILED (Error: Symbol &#8216;atompositions_fce&#8217; at (1) has no IMPLICIT type)&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0043.html" accesskey="t" title="Carlos Simmerling: &quot;Re: [AMBER] Amber calculate RMSF&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg41" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg41" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg41" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg41" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: ������ &lt;<a href="mailto:18xdwu.stu.edu.cn?Subject=Re%3A%20%5BAMBER%5D%20Amber%20calculate%20RMSF">18xdwu.stu.edu.cn</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 5 Nov 2021 00:29:51 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear all,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I have a protein system that runs CMD in a water box with PBC. In this simulation, I looked at the trajectory file. The protein remained stable in the water box during the simulation process and did not run out of the water box. After running MD simulation, I want to analyze RMSF.  I use the following input file to run with cpptraj.
+<br />
+#rmsf.in
+<br />
+parm prmtop
+<br />
+trajin S38D.nc
+<br />
+rms first
+<br />
+average crdset MyAvg
+<br />
+run
+<br />
+rms ref MyAvg
+<br />
+atomicfluct byres out S38D-old.rmsf :1-486.C,CA,N
+<br />
+
+<br />
+Then, I want to see how RMSF will change if the protein is moved to the center of the water box. I wrote a wrap. In file and put the protein back in the center of the water box.
+<br />
+#wrap.in
+<br />
+parm prmtop
+<br />
+trajin S38D.nc
+<br />
+trajout wrap-S38D trajectory
+<br />
+image origin center familiar com :132
+<br />
+go
+<br />
+
+<br />
+Based on the generated trajectory, I run the RMSF calculation again.
+<br />
+#rmsf-new.in
+<br />
+parm prmtop
+<br />
+trajin wrap-S38D
+<br />
+rms first
+<br />
+average crdset MyAvg
+<br />
+run
+<br />
+rms ref MyAvg
+<br />
+atomicfluct byres out S38D-old.rmsf :1-486.C,CA,N
+<br />
+
+<br />
+It is puzzling that the protein is always in the water box whether it is moved to the center of the water box or not. So, I think the calculated RMSF should be consistent. However, the results of RMSF under these two conditions are very different. I don't know why?
+<br />
+The results are as follows��
+<br />
+��No moving protein��
+<br />
+#Res        AtomicFlx
+<br />
+&nbsp;&nbsp;&nbsp;1.000       3.1073
+<br />
+&nbsp;&nbsp;&nbsp;2.000       2.9562
+<br />
+&nbsp;&nbsp;&nbsp;3.000       2.8570
+<br />
+&nbsp;&nbsp;&nbsp;4.000       2.9493
+<br />
+&nbsp;&nbsp;&nbsp;5.000       2.9838
+<br />
+&nbsp;&nbsp;&nbsp;6.000       3.0734
+<br />
+&nbsp;&nbsp;&nbsp;7.000       3.1263
+<br />
+&nbsp;&nbsp;&nbsp;8.000       3.1998
+<br />
+&nbsp;&nbsp;&nbsp;9.000       3.2446
+<br />
+&nbsp;&nbsp;10.000       3.2964
+<br />
+&nbsp;&nbsp;11.000       3.3608
+<br />
+&nbsp;&nbsp;12.000       3.4335
+<br />
+&nbsp;&nbsp;13.000       3.5786
+<br />
+&nbsp;&nbsp;14.000       3.5121
+<br />
+&nbsp;&nbsp;15.000       3.5382
+<br />
+&nbsp;&nbsp;16.000       3.5242
+<br />
+&nbsp;&nbsp;17.000       3.5047
+<br />
+&nbsp;&nbsp;18.000       3.6473
+<br />
+&nbsp;&nbsp;19.000       3.7766
+<br />
+&nbsp;&nbsp;20.000       3.9167
+<br />
+&nbsp;&nbsp;21.000       4.0491
+<br />
+&nbsp;&nbsp;22.000       4.2176
+<br />
+&nbsp;&nbsp;23.000       4.2456
+<br />
+&nbsp;&nbsp;24.000       4.0436
+<br />
+
+<br />
+��Moving protein��
+<br />
+#Res        AtomicFlx
+<br />
+&nbsp;&nbsp;&nbsp;1.000       1.7617
+<br />
+&nbsp;&nbsp;&nbsp;2.000       1.4648
+<br />
+&nbsp;&nbsp;&nbsp;3.000       1.1541
+<br />
+&nbsp;&nbsp;&nbsp;4.000       1.1855
+<br />
+&nbsp;&nbsp;&nbsp;5.000       1.0084
+<br />
+&nbsp;&nbsp;&nbsp;6.000       0.9336
+<br />
+&nbsp;&nbsp;&nbsp;7.000       0.9189
+<br />
+&nbsp;&nbsp;&nbsp;8.000       0.9765
+<br />
+&nbsp;&nbsp;&nbsp;9.000       1.0182
+<br />
+&nbsp;&nbsp;10.000       1.1047
+<br />
+&nbsp;&nbsp;11.000       1.2287
+<br />
+&nbsp;&nbsp;12.000       1.4049
+<br />
+&nbsp;&nbsp;13.000       1.4985
+<br />
+&nbsp;&nbsp;14.000       1.3945
+<br />
+&nbsp;&nbsp;15.000       1.3098
+<br />
+&nbsp;&nbsp;16.000       1.2191
+<br />
+&nbsp;&nbsp;17.000       1.1698
+<br />
+&nbsp;&nbsp;18.000       1.2880
+<br />
+&nbsp;&nbsp;19.000       1.4401
+<br />
+&nbsp;&nbsp;20.000       1.6805
+<br />
+&nbsp;&nbsp;21.000       1.9415
+<br />
+&nbsp;&nbsp;22.000       1.9977
+<br />
+&nbsp;&nbsp;23.000       1.9622
+<br />
+&nbsp;&nbsp;24.000       1.7602
+<br />
+
+<br />
+It can be seen that the results are quite different, but I don't know why? In addition, can amber automatically handle periodic boundary conditions when calculating RMSF? When some residues of the protein run out of the water box, should I move the protein back to the center of the water box?
+<br />
+
+<br />
+I really hope to get an answer.
+<br />
+
+<br />
+Best,
+<br />
+Xiaodong
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Nov 04 2021 - 18:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0042.html" title="Next message in the list">Rafa&#0322; Madaj: "Re: [AMBER] Error upon start of nfe-abmd"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0040.html" title="Previous message in the list">David A Case: "Re: [AMBER] CUDA INSTALLATION FAILED (Error: Symbol &#8216;atompositions_fce&#8217; at (1) has no IMPLICIT type)"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0043.html" title="Next message in this discussion thread">Carlos Simmerling: "Re: [AMBER] Amber calculate RMSF"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0043.html" title="Message sent in reply to this message">Carlos Simmerling: "Re: [AMBER] Amber calculate RMSF"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg41" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg41" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg41" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg41" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

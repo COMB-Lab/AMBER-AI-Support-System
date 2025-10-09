@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Installation Ambertools20 Mac M1 (arm64) from Mailing list on 2021-03-14 (Amber Archive Mar 2021)</title>
+<meta name="Author" content="Mailing list (mailinglist.nachon.net)" />
+<meta name="Subject" content="[AMBER] Installation Ambertools20 Mac M1 (arm64)" />
+<meta name="Date" content="2021-03-14" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Installation Ambertools20 Mac M1 (arm64)</h1>
+<!-- received="Sun Mar 14 06:00:04 2021" -->
+<!-- isoreceived="20210314130004" -->
+<!-- sent="Sun, 14 Mar 2021 13:59:40 +0100" -->
+<!-- isosent="20210314125940" -->
+<!-- name="Mailing list" -->
+<!-- email="mailinglist.nachon.net" -->
+<!-- subject="[AMBER] Installation Ambertools20 Mac M1 (arm64)" -->
+<!-- id="025A849A-437E-4301-A4F5-93F75544C492.nachon.net" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0129.html" accesskey="d" title="Charo del Genio: &quot;Re: [AMBER] AmberTools20 fails to compile with gcc10 (with workaround)&quot;">Next message</a> ]
+[ <a href="0127.html" title="David A Case: &quot;Re: [AMBER] Energy minimization problem&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0133.html" accesskey="t" title="Gould, Ian R: &quot;Re: [AMBER] Installation Ambertools20 Mac M1 (arm64)&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg128" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg128" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg128" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg128" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Mailing list &lt;<a href="mailto:mailinglist.nachon.net?Subject=Re%3A%20%5BAMBER%5D%20Installation%20Ambertools20%20Mac%20M1%20(arm64)">mailinglist.nachon.net</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 14 Mar 2021 13:59:40 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+<br />I just received my new MacBook Pro M1 (arm64), and I have some (expected) troubles to install ambertools20 on it.
+<br />
+<br />Apple does not provide any fortran compiler so I used gcc (gfortran-10) installed with homebrew (modified run_cmake accordingly).
+<br />
+<br />I’ve seen that there are some compatibility issues with gfortran 10, but there are no earlier version (gfortran 8 or 9) for the arm64 Macs. So no other choice that to use gfortran 10.
+<br />
+<br />So far, cmake runs ok.
+<br />
+<br />Then I got some errors during compilation that are solved adding the argument '-fallow-argument-mismatch’ to the fortran compiler flags (in compilerflags)
+<br />
+<br />Now I get a linking error for cifparse:
+<br />
+<br />[ 11%] Building C object AmberTools/src/cifparse/CMakeFiles/cifparse.dir/cifparse.c.o
+<br />
+[ 11%] Building C object AmberTools/src/cifparse/CMakeFiles/cifparse.dir/lex.cif.c.o
+<br />
+[ 11%] Building C object AmberTools/src/cifparse/CMakeFiles/cifparse.dir/cifp.tab.c.o
+<br />
+[ 11%] Linking C shared library libcifparse.dylib
+<br />
+duplicate symbol '_cifpin' in:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CMakeFiles/cifparse.dir/cifparse.c.o
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CMakeFiles/cifparse.dir/lex.cif.c.o
+<br />
+ld: 1 duplicate symbol for architecture arm64
+<br />
+collect2: error: ld returned 1 exit status
+<br />
+make[2]: *** [AmberTools/src/cifparse/libcifparse.dylib] Error 1
+<br />
+make[1]: *** [AmberTools/src/cifparse/CMakeFiles/cifparse.dir/all] Error 2
+<br />
+make: *** [all] Error 2
+<br />
+<br />I do not know how to solve this (I’m no programmer :).
+<br />
+<br />Any chance that someone managed to install ambertools on an ARM Mac and explain how?
+<br />
+<br />Meanwhile I can use an X86_64 version of Ambertools19 with rosetta 2 (works ok)
+<br />
+<br />My best
+<br />
+<br />—
+<br />
+Florian
+<br />
+<br /><br /><br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Mar 14 2021 - 06:00:04 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0129.html" title="Next message in the list">Charo del Genio: "Re: [AMBER] AmberTools20 fails to compile with gcc10 (with workaround)"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0127.html" title="Previous message in the list">David A Case: "Re: [AMBER] Energy minimization problem"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0133.html" title="Next message in this discussion thread">Gould, Ian R: "Re: [AMBER] Installation Ambertools20 Mac M1 (arm64)"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0133.html" title="Message sent in reply to this message">Gould, Ian R: "Re: [AMBER] Installation Ambertools20 Mac M1 (arm64)"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg128" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg128" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg128" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg128" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

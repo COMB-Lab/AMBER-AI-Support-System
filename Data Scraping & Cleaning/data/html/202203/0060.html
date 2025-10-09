@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] CUDART lib not found during install from Daniel Roe on 2022-03-11 (Amber Archive Mar 2022)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] CUDART lib not found during install" />
+<meta name="Date" content="2022-03-11" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] CUDART lib not found during install</h1>
+<!-- received="Fri Mar 11 12:30:02 2022" -->
+<!-- isoreceived="20220311203002" -->
+<!-- sent="Fri, 11 Mar 2022 15:06:27 -0500" -->
+<!-- isosent="20220311200627" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] CUDART lib not found during install" -->
+<!-- id="CAAC0qOaLvFxZbmXrbUyQdUyO9=GsYf_NmdUSN=-acgABcj1p1Q.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAN5NB=GFgY3udUR-BO843=Db3QQ-B-+JWSGd3mbtNr5yxwy4CA.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0061.html" accesskey="d" title="Ming Tang: &quot;Re: [AMBER] calculate entropy using MMPBSA.py&quot;">Next message</a> ]
+[ <a href="0059.html" title="russ.brown.yahoo.com: &quot;[AMBER] Request help modifying a force field&quot;">Previous message</a> ]
+[ <a href="0043.html" title="Charlotta Lebedenko: &quot;Re: [AMBER] CUDART lib not found during install&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg60" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg60" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg60" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg60" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20CUDART%20lib%20not%20found%20during%20install">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 11 Mar 2022 15:06:27 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+OK, so your CUDA installation does work, and you're using CUDA
+<br />
+installed through Ubuntu. That latter part is the one difference
+<br />
+between your setup and the one I've been testing with. I can recommend
+<br />
+two things to try:
+<br />
+<br />1) Install your own CUDA to a local directory. Something like:
+<br />
+<br />/bin/bash cuda_11.4.4_470.82.01_linux.run  --installpath=&lt;local install path&gt;
+<br />
+<br />You may need to point the script to a new temporary directory if it
+<br />
+complains about not enough space (with --tmpdir=&lt;temp dir name&gt;). Then
+<br />
+set CUDA_HOME to &lt;local install path&gt; and ensure $CUDA_HOME/bin is in
+<br />
+PATH and LD_LIBRARY_PATH contains $CUDA_HOME/lib64. Then try cmake
+<br />
+again.
+<br />
+<br />2) Although the configure script is soon-to-be-deprecated, it may be
+<br />
+worth a shot. With CUDA_HOME properly set try:
+<br />
+<br />./configure -cuda --skip-python gnu
+<br />
+make install
+<br />
+<br />See if that works. If you only want pmemd.cuda you can do 'make pmemd'
+<br />
+instead I think.
+<br />
+<br />Hope this helps,
+<br />
+<br />-Dan
+<br />
+<br />On Thu, Mar 10, 2022 at 6:23 PM Charlotta Lebedenko
+<br />
+&lt;clebedenko.fordham.edu&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Hi Dan,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I was able to build and run deviceQuery. I had to build as sudo as cuda is
+</em><br />
+<em class="quotelev1">&gt; installed as root. I noticed that CUDART library was statically linked. The
+</em><br />
+<em class="quotelev1">&gt; cmake error for amber install is still about CUDART library missing. Here
+</em><br />
+<em class="quotelev1">&gt; is the test output:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; banipsita.MSI:/usr/local/cuda-11.4/samples/1_Utilities/deviceQuery$ sudo
+</em><br />
+<em class="quotelev1">&gt; CUDA_PATH=$CUDA_HOME make
+</em><br />
+<em class="quotelev1">&gt; [sudo] password for banipsita:
+</em><br />
+<em class="quotelev1">&gt; /usr/local/cuda-11.4/bin/nvcc -ccbin g++ -I../../common/inc  -m64
+</em><br />
+<em class="quotelev1">&gt;  --threads 0 -gencode arch=compute_35,code=sm_35 -gencode
+</em><br />
+<em class="quotelev1">&gt; arch=compute_37,code=sm_37 -gencode arch=compute_50,code=sm_50 -gencode
+</em><br />
+<em class="quotelev1">&gt; arch=compute_52,code=sm_52 -gencode arch=compute_60,code=sm_60 -gencode
+</em><br />
+<em class="quotelev1">&gt; arch=compute_61,code=sm_61 -gencode arch=compute_70,code=sm_70 -gencode
+</em><br />
+<em class="quotelev1">&gt; arch=compute_75,code=sm_75 -gencode arch=compute_80,code=sm_80 -gencode
+</em><br />
+<em class="quotelev1">&gt; arch=compute_86,code=sm_86 -gencode arch=compute_86,code=compute_86 -o
+</em><br />
+<em class="quotelev1">&gt; deviceQuery.o -c deviceQuery.cpp
+</em><br />
+<em class="quotelev1">&gt; nvcc warning : The 'compute_35', 'compute_37', 'compute_50', 'sm_35',
+</em><br />
+<em class="quotelev1">&gt; 'sm_37' and 'sm_50' architectures are deprecated, and may be removed in a
+</em><br />
+<em class="quotelev1">&gt; future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+</em><br />
+<em class="quotelev1">&gt; /usr/local/cuda-11.4/bin/nvcc -ccbin g++   -m64      -gencode
+</em><br />
+<em class="quotelev1">&gt; arch=compute_35,code=sm_35 -gencode arch=compute_37,code=sm_37 -gencode
+</em><br />
+<em class="quotelev1">&gt; arch=compute_50,code=sm_50 -gencode arch=compute_52,code=sm_52 -gencode
+</em><br />
+<em class="quotelev1">&gt; arch=compute_60,code=sm_60 -gencode arch=compute_61,code=sm_61 -gencode
+</em><br />
+<em class="quotelev1">&gt; arch=compute_70,code=sm_70 -gencode arch=compute_75,code=sm_75 -gencode
+</em><br />
+<em class="quotelev1">&gt; arch=compute_80,code=sm_80 -gencode arch=compute_86,code=sm_86 -gencode
+</em><br />
+<em class="quotelev1">&gt; arch=compute_86,code=compute_86 -o deviceQuery deviceQuery.o
+</em><br />
+<em class="quotelev1">&gt; nvcc warning : The 'compute_35', 'compute_37', 'compute_50', 'sm_35',
+</em><br />
+<em class="quotelev1">&gt; 'sm_37' and 'sm_50' architectures are deprecated, and may be removed in a
+</em><br />
+<em class="quotelev1">&gt; future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+</em><br />
+<em class="quotelev1">&gt; mkdir -p ../../bin/x86_64/linux/release
+</em><br />
+<em class="quotelev1">&gt; cp deviceQuery ../../bin/x86_64/linux/release
+</em><br />
+<em class="quotelev1">&gt; banipsita.MSI:/usr/local/cuda-11.4/samples/1_Utilities/deviceQuery$
+</em><br />
+<em class="quotelev1">&gt; ./deviceQuery
+</em><br />
+<em class="quotelev1">&gt; ./deviceQuery Starting...
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;  CUDA Device Query (Runtime API) version (CUDART static linking)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Detected 1 CUDA Capable device(s)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Device 0: &quot;NVIDIA GeForce RTX 3070 Laptop GPU&quot;
+</em><br />
+<em class="quotelev1">&gt;   CUDA Driver Version / Runtime Version          11.6 / 11.4
+</em><br />
+<em class="quotelev1">&gt;   CUDA Capability Major/Minor version number:    8.6
+</em><br />
+<em class="quotelev1">&gt;   Total amount of global memory:                 8192 MBytes (8589410304
+</em><br />
+<em class="quotelev1">&gt; bytes)
+</em><br />
+<em class="quotelev1">&gt;   (040) Multiprocessors, (128) CUDA Cores/MP:    5120 CUDA Cores
+</em><br />
+<em class="quotelev1">&gt;   GPU Max Clock rate:                            1620 MHz (1.62 GHz)
+</em><br />
+<em class="quotelev1">&gt;   Memory Clock rate:                             7001 Mhz
+</em><br />
+<em class="quotelev1">&gt;   Memory Bus Width:                              256-bit
+</em><br />
+<em class="quotelev1">&gt;   L2 Cache Size:                                 4194304 bytes
+</em><br />
+<em class="quotelev1">&gt;   Maximum Texture Dimension Size (x,y,z)         1D=(131072), 2D=(131072,
+</em><br />
+<em class="quotelev1">&gt; 65536), 3D=(16384, 16384, 16384)
+</em><br />
+<em class="quotelev1">&gt;   Maximum Layered 1D Texture Size, (num) layers  1D=(32768), 2048 layers
+</em><br />
+<em class="quotelev1">&gt;   Maximum Layered 2D Texture Size, (num) layers  2D=(32768, 32768), 2048
+</em><br />
+<em class="quotelev1">&gt; layers
+</em><br />
+<em class="quotelev1">&gt;   Total amount of constant memory:               65536 bytes
+</em><br />
+<em class="quotelev1">&gt;   Total amount of shared memory per block:       49152 bytes
+</em><br />
+<em class="quotelev1">&gt;   Total shared memory per multiprocessor:        102400 bytes
+</em><br />
+<em class="quotelev1">&gt;   Total number of registers available per block: 65536
+</em><br />
+<em class="quotelev1">&gt;   Warp size:                                     32
+</em><br />
+<em class="quotelev1">&gt;   Maximum number of threads per multiprocessor:  1536
+</em><br />
+<em class="quotelev1">&gt;   Maximum number of threads per block:           1024
+</em><br />
+<em class="quotelev1">&gt;   Max dimension size of a thread block (x,y,z): (1024, 1024, 64)
+</em><br />
+<em class="quotelev1">&gt;   Max dimension size of a grid size    (x,y,z): (2147483647, 65535, 65535)
+</em><br />
+<em class="quotelev1">&gt;   Maximum memory pitch:                          2147483647 bytes
+</em><br />
+<em class="quotelev1">&gt;   Texture alignment:                             512 bytes
+</em><br />
+<em class="quotelev1">&gt;   Concurrent copy and kernel execution:          Yes with 5 copy engine(s)
+</em><br />
+<em class="quotelev1">&gt;   Run time limit on kernels:                     Yes
+</em><br />
+<em class="quotelev1">&gt;   Integrated GPU sharing Host Memory:            No
+</em><br />
+<em class="quotelev1">&gt;   Support host page-locked memory mapping:       Yes
+</em><br />
+<em class="quotelev1">&gt;   Alignment requirement for Surfaces:            Yes
+</em><br />
+<em class="quotelev1">&gt;   Device has ECC support:                        Disabled
+</em><br />
+<em class="quotelev1">&gt;   Device supports Unified Addressing (UVA):      Yes
+</em><br />
+<em class="quotelev1">&gt;   Device supports Managed Memory:                Yes
+</em><br />
+<em class="quotelev1">&gt;   Device supports Compute Preemption:            Yes
+</em><br />
+<em class="quotelev1">&gt;   Supports Cooperative Kernel Launch:            Yes
+</em><br />
+<em class="quotelev1">&gt;   Supports MultiDevice Co-op Kernel Launch:      No
+</em><br />
+<em class="quotelev1">&gt;   Device PCI Domain ID / Bus ID / location ID:   0 / 1 / 0
+</em><br />
+<em class="quotelev1">&gt;   Compute Mode:
+</em><br />
+<em class="quotelev1">&gt;      &lt; Default (multiple host threads can use ::cudaSetDevice() with device
+</em><br />
+<em class="quotelev1">&gt; simultaneously) &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; deviceQuery, CUDA Driver = CUDART, CUDA Driver Version = 11.6, CUDA Runtime
+</em><br />
+<em class="quotelev1">&gt; Version = 11.4, NumDevs = 1
+</em><br />
+<em class="quotelev1">&gt; Result = PASS
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thank you for your help,
+</em><br />
+<em class="quotelev1">&gt; Charlotta Lebedenko
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Mon, Mar 7, 2022 at 6:38 PM Daniel Roe &lt;daniel.r.roe.gmail&#46;<!--nospam-->com&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; On Mon, Mar 7, 2022 at 6:49 AM Daniel Roe &lt;daniel.r.roe.gmail&#46;<!--nospam-->com&gt; wrote:
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; &#64;Charlotta, are you able to compile/run any cuda code at all? Maybe the
+</em><br />
+<em class="quotelev2">&gt; &gt; devicequery sample from cuda?
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Specifically, try the following.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Change to the directory &lt;cuda samples&gt;//1_Utilities/deviceQuery
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Build it (assuming CUDA_HOME is pointing to your CUDA install):
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; CUDA_PATH=$CUDA_HOME make
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Run deviceQuery
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; You should hopefully get a Result = PASS at the end. If not, something
+</em><br />
+<em class="quotelev2">&gt; &gt; is wrong with the CUDA install.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; -Dan
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; -Dan
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; CUDA in Windows since it runs
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; with a DOS system. If you want to have CUDA support, you can opt to dual
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; boot your computer with Ubuntu or any Linux OS. There are installation
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; guidelines on the internet.
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; I hope this helps.
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; Cheers,
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; Alexis
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; On Mon, Mar 7, 2022 at 2:47 AM Charlotta Lebedenko &lt;
+</em><br />
+<em class="quotelev2">&gt; &gt; clebedenko.fordham&#46;<!--nospam-->edu&gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; wrote:
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; Hello,
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; Unfortunately I am still facing this problem with amber installation
+</em><br />
+<em class="quotelev2">&gt; &gt; on
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; windows. I am not sure how to resolve it. Does anyone have any advice
+</em><br />
+<em class="quotelev2">&gt; &gt; about
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; cmake and cuda?
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; Thank you,
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; Charlotta Lebedenko
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt; On Mar 3, 2022, at 15:30, Charlotta Lebedenko &lt;
+</em><br />
+<em class="quotelev2">&gt; &gt; clebedenko.fordham.edu&gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt; ﻿
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt; Hello,
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt; Thank you for the advice. We tried these steps and we are still
+</em><br />
+<em class="quotelev2">&gt; &gt; getting
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; the same error. We are doing this on Windows 10, not Windows 11. So
+</em><br />
+<em class="quotelev2">&gt; &gt; maybe
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; there is a problem there.
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt; We set -DCUDA_TOOLKIT_ROOT_DIR and CUDA_HOME to cuda home
+</em><br />
+<em class="quotelev2">&gt; &gt; directory. We
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; probably need help from someone who understands Cmake.
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt; Here is the error again:
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt; -- Amber source found, building AmberTools and Amber
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt; -- Could NOT find CUDA (missing: CUDA_CUDART_LIBRARY) (found version
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &quot;11.4&quot;)
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt; CMake Error at cmake/CudaConfig.cmake:15 (message):
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;   You turned on CUDA, but it was not found.  Please set the
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;   CUDA_TOOLKIT_ROOT_DIR option to your CUDA install directory.
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt; Call Stack (most recent call first):
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;   CMakeLists.txt:120 (include)
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt; We also set:
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; -DCUDA_CUDART_LIBRARY=/usr/local/cuda-11.4/targets/x86_64-linux/lib/libcudart.so.11.4.43
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt; Our cmake command is:
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;  cmake $AMBER_PREFIX/amber20_src \
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;     -DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber20 \
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;     -DCOMPILER=GNU -DBUILD_QUICK=TRUE \
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;     -DMPI=FALSE -DCUDA=TRUE
+</em><br />
+<em class="quotelev2">&gt; &gt; -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-11.4
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; -DCUDA_CUDART_LIBRARY=/usr/local/cuda-11.4/targets/x86_64-linux/lib/libcudart.so.11.4.43
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; -DINSTALL_TESTS=TRUE \
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;     -DDOWNLOAD_MINICONDA=TRUE -DMINICONDA_USE_PY3=TRUE \
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;     2&gt;&amp;1 | tee  cmake.log
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt; Thank you,
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt; Charlotta Lebedenko
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; On Thu, Mar 3, 2022 at 9:32 AM Daniel Roe &lt;daniel.r.roe.gmail&#46;<!--nospam-->com&gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; wrote:
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; Hi,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; I've been able to install Amber on Windows11/WSL2 with CUDA with no
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; issue.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; The only different is that I installed CUDA manually (
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="https://urldefense.proofpoint.com/v2/url?u=https-3A__developer.nvidia.com_cuda-2D11-2D4-2D4-2Ddownload-2Darchive-3Ftarget-5Fos-3DLinux-26target-5Farch-3Dx86-5F64-26Distribution-3DWSL-2DUbuntu-26target-5Fversion-3D2.0-26target-5Ftype-3Drunfile-5Flocal&amp;d=DwIGaQ&amp;c=a">https://urldefense.proofpoint.com/v2/url?u=https-3A__developer.nvidia.com_cuda-2D11-2D4-2D4-2Ddownload-2Darchive-3Ftarget-5Fos-3DLinux-26target-5Farch-3Dx86-5F64-26Distribution-3DWSL-2DUbuntu-26target-5Fversion-3D2.0-26target-5Ftype-3Drunfile-5Flocal&amp;d=DwIGaQ&amp;c=a</a>qMfXOEvEJQh2iQMCb7Wy8l0sPnURkcqADc2guUW8IM&amp;r=jOIeI-lTF_2GutlqJUB8jwla6pUZ7k5EeNYDA2RM36A&amp;m=LxDU4uEY3ByKgpRHV5eDbVEPCIZYsLumYeEsQtFAup467V5dapkwob69zo1tel2k&amp;s=iswwSnDzYx_pohoZpVrttYR7-lmM39JF1-6fEZHyMwc&amp;e=
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; )
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; into a subdirectory of my home directory and set the environment
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; variables
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; CUDA_HOME, PATH, and LD_LIBRARY_PATH, e.g.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; export CUDA_HOME=&lt;path_to_cuda&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; export LD_LIBRARY_PATH=&lt;path_to_cuda&gt;/lib64:$LD_LIBRARY_PATH
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; export PATH=&lt;path_to_cuda&gt;/bin:$PATH
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; With those set all I had to do is pass -DCUDA=TRUE to cmake and it
+</em><br />
+<em class="quotelev2">&gt; &gt; was
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; picked up just fine.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; -Dan
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; On Wed, Mar 2, 2022 at 4:28 PM Charlotta Lebedenko &lt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; clebedenko.fordham&#46;<!--nospam-->edu&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; wrote:
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; Hello,
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; I am still struggling with this same issue during installation.
+</em><br />
+<em class="quotelev2">&gt; &gt; I was
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; hoping someone who has installed Amber with CUDA support on
+</em><br />
+<em class="quotelev2">&gt; &gt; Windows
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; before
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; using WSL2 could offer some advice?
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; Thank you,
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; Charlotta Lebedenko
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; On Feb 28, 2022, at 13:04, Charlotta Lebedenko &lt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; clebedenko.fordham.edu&gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; ﻿
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; Dear Amber support,
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; We are trying to install Amber20 and Ambertools21 with CUDA
+</em><br />
+<em class="quotelev2">&gt; &gt; support
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; on
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; Windows 10 21H2 using WSL2 with ubuntu. We see this cmake error:
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; -- Could NOT find CUDA (missing: CUDA_CUDART_LIBRARY) (found
+</em><br />
+<em class="quotelev2">&gt; &gt; version
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &quot;11.4&quot;)
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; CMake Error at cmake/CudaConfig.cmake:15 (message):
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt;   You turned on CUDA, but it was not found.  Please set the
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt;   CUDA_TOOLKIT_ROOT_DIR option to your CUDA install directory.
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; Call Stack (most recent call first):
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt;   CMakeLists.txt:120 (include)
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; nvcc is installed at: /usr/local/cuda-11.4/bin/nvcc
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; CUDA toolkit is installed into a standard location
+</em><br />
+<em class="quotelev2">&gt; &gt; /usr/local/cuda:
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt;  ls -l /usr/local
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; total 36
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; drwxrwxr-x  2 root root 4096 Feb 28 11:49 bin
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; lrwxrwxrwx  1 root root   22 Feb 28 11:49 cuda -&gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; /etc/alternatives/cuda
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; lrwxrwxrwx  1 root root   25 Feb 28 11:49 cuda-11 -&gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; /etc/alternatives/cuda-11
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; drwxr-xr-x 17 root root 4096 Feb 28 11:49 cuda-11.4
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt;  ls -l  /etc/alternatives
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; lrwxrwxrwx 1 root root  20 Feb 28 11:49 cuda -&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; /usr/local/cuda-11.4
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; lrwxrwxrwx 1 root root  20 Feb 28 11:49 cuda-11 -&gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; /usr/local/cuda-11.4
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; We set export CUDA_HOME=/usr/local/cuda-11.4
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; We added this to run_cmake to point to CUDA toolkit and cudart
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; library:
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; -DCUDA=TRUE -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-11.4
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; -DCUDA_CUDART_LIBRARY=/usr/local/cuda-11.4/targets/x86_64-linux/lib/libcudart.so
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; We still see the error above. What else can we try?
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; We installed CUDA driver and toolkit following these
+</em><br />
+<em class="quotelev2">&gt; &gt; instructions:
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; CUDA on WSL :: CUDA Toolkit Documentation (nvidia.com)
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; Thank you,
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; &gt; Charlotta Lebedenko
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=aqMfXOEvEJQh2iQMCb7Wy8l0sPnURkcqADc2guUW8IM&amp;r=jOIeI-lTF_2GutlqJUB8jwla6pUZ7k5EeNYDA2RM36A&amp;m=LxDU4uEY3ByKgpRHV5eDbVEPCIZYsLumYeEsQtFAup467V5dapkwob69zo1tel2k&amp;s">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=aqMfXOEvEJQh2iQMCb7Wy8l0sPnURkcqADc2guUW8IM&amp;r=jOIeI-lTF_2GutlqJUB8jwla6pUZ7k5EeNYDA2RM36A&amp;m=LxDU4uEY3ByKgpRHV5eDbVEPCIZYsLumYeEsQtFAup467V5dapkwob69zo1tel2k&amp;s</a>=Qt2CnTbykcS2KFNj_kieGCGm35YDQhDwppdlYm1Vya0&amp;e=
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt; AMBER.ambermd&#46;<!--nospam-->org
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=aqMfXOEvEJQh2iQMCb7Wy8l0sPnURkcqADc2guUW8IM&amp;r=jOIeI-lTF_2GutlqJUB8jwla6pUZ7k5EeNYDA2RM36A&amp;m=LxDU4uEY3ByKgpRHV5eDbVEPCIZYsLumYeEsQtFAup467V5dapkwob69zo1tel2k&amp;s">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=aqMfXOEvEJQh2iQMCb7Wy8l0sPnURkcqADc2guUW8IM&amp;r=jOIeI-lTF_2GutlqJUB8jwla6pUZ7k5EeNYDA2RM36A&amp;m=LxDU4uEY3ByKgpRHV5eDbVEPCIZYsLumYeEsQtFAup467V5dapkwob69zo1tel2k&amp;s</a>=Qt2CnTbykcS2KFNj_kieGCGm35YDQhDwppdlYm1Vya0&amp;e=
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=aqMfXOEvEJQh2iQMCb7Wy8l0sPnURkcqADc2guUW8IM&amp;r=jOIeI-lTF_2GutlqJUB8jwla6pUZ7k5EeNYDA2RM36A&amp;m=dDmUDpfZ7phpbAWIypFSiJAtCWKxJ7zE2Q1TrJhbpIjM9dsufD1FExOOQAFtRt-L&amp;s">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=aqMfXOEvEJQh2iQMCb7Wy8l0sPnURkcqADc2guUW8IM&amp;r=jOIeI-lTF_2GutlqJUB8jwla6pUZ7k5EeNYDA2RM36A&amp;m=dDmUDpfZ7phpbAWIypFSiJAtCWKxJ7zE2Q1TrJhbpIjM9dsufD1FExOOQAFtRt-L&amp;s</a>=5YzJQJDkjA4b8YF82kXSTxmQLemTlmCmOzIzts35fPI&amp;e=
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; --
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; Alexis Azucena
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; Instructor
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; School of Technology | University of the Philippines Visayas
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; +639175841130
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; agazucena.up.edu.ph
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt;&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=aqMfXOEvEJQh2iQMCb7Wy8l0sPnURkcqADc2guUW8IM&amp;r=jOIeI-lTF_2GutlqJUB8jwla6pUZ7k5EeNYDA2RM36A&amp;m=dDmUDpfZ7phpbAWIypFSiJAtCWKxJ7zE2Q1TrJhbpIjM9dsufD1FExOOQAFtRt-L&amp;s">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=aqMfXOEvEJQh2iQMCb7Wy8l0sPnURkcqADc2guUW8IM&amp;r=jOIeI-lTF_2GutlqJUB8jwla6pUZ7k5EeNYDA2RM36A&amp;m=dDmUDpfZ7phpbAWIypFSiJAtCWKxJ7zE2Q1TrJhbpIjM9dsufD1FExOOQAFtRt-L&amp;s</a>=5YzJQJDkjA4b8YF82kXSTxmQLemTlmCmOzIzts35fPI&amp;e=
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER.ambermd&#46;<!--nospam-->org
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=aqMfXOEvEJQh2iQMCb7Wy8l0sPnURkcqADc2guUW8IM&amp;r=jOIeI-lTF_2GutlqJUB8jwla6pUZ7k5EeNYDA2RM36A&amp;m=dDmUDpfZ7phpbAWIypFSiJAtCWKxJ7zE2Q1TrJhbpIjM9dsufD1FExOOQAFtRt-L&amp;s">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=aqMfXOEvEJQh2iQMCb7Wy8l0sPnURkcqADc2guUW8IM&amp;r=jOIeI-lTF_2GutlqJUB8jwla6pUZ7k5EeNYDA2RM36A&amp;m=dDmUDpfZ7phpbAWIypFSiJAtCWKxJ7zE2Q1TrJhbpIjM9dsufD1FExOOQAFtRt-L&amp;s</a>=5YzJQJDkjA4b8YF82kXSTxmQLemTlmCmOzIzts35fPI&amp;e=
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Mar 11 2022 - 12:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0061.html" title="Next message in the list">Ming Tang: "Re: [AMBER] calculate entropy using MMPBSA.py"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0059.html" title="Previous message in the list">russ.brown.yahoo.com: "[AMBER] Request help modifying a force field"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0043.html" title="Message to which this message replies">Charlotta Lebedenko: "Re: [AMBER] CUDART lib not found during install"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg60" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg60" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg60" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg60" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

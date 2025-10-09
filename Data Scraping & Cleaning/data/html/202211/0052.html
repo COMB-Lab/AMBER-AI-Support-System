@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Metal center created with MCPB.py collapses on MD start? from Gustavo Seabra via AMBER on 2022-11-08 (Amber Archive Nov 2022)</title>
+<meta name="Author" content="Gustavo Seabra via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Metal center created with MCPB.py collapses on MD start?" />
+<meta name="Date" content="2022-11-08" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Metal center created with MCPB.py collapses on MD start?</h1>
+<!-- received="Tue Nov  8 12:30:02 2022" -->
+<!-- isoreceived="20221108203002" -->
+<!-- sent="Tue, 8 Nov 2022 15:03:39 -0500" -->
+<!-- isosent="20221108200339" -->
+<!-- name="Gustavo Seabra via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Metal center created with MCPB.py collapses on MD start?" -->
+<!-- id="CAO4guEL7fhp_3PmU7O=-K42GaVkrSshAXeRSqbx5ju3Xv9Kw1A.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAHZ8n16T9JznbFGps5-LVCV4fAaksSJw84Nsd+84Uz674w2rbQ.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0053.html" accesskey="d" title="Prithviraj Nandigrami via AMBER: &quot;Re: [AMBER] AMBER20 GPU error&quot;">Next message</a> ]
+[ <a href="0051.html" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Autoimage cannot find topology information&quot;">Previous message</a> ]
+[ <a href="0048.html" title="Clorice Reinhardt via AMBER: &quot;Re: [AMBER] Metal center created with MCPB.py collapses on MD start?&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg52" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg52" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg52" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg52" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gustavo Seabra via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Metal%20center%20created%20with%20MCPB.py%20collapses%20on%20MD%20start%3F">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 8 Nov 2022 15:03:39 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Clorice,
+<br />
+<br />Thank you so much, this worked!
+<br />
+<br />For future reference, here's what I did, following the instructions in the
+<br />
+end of the tutorial here
+<br />
+&lt;<a href="http://ambermd.org/tutorials/advanced/tutorial20/mcpbpy.htm">http://ambermd.org/tutorials/advanced/tutorial20/mcpbpy.htm</a>&gt;, and the
+<br />
+tutorial for restrained nonbonded model here
+<br />
+&lt;<a href="http://ambermd.org/tutorials/advanced/tutorial20/rnb.htm">http://ambermd.org/tutorials/advanced/tutorial20/rnb.htm</a>&gt;.
+<br />
+<br />Starting with the files created by MCPB.py for the cluster model,
+<br />
+1) use `parmed` to figure out the bond parameters between the water and Fe
+<br />
+2) Prepare the restraint file with those parameters
+<br />
+3) Modify the tleap input file created by MCPB.py, to remove the bond
+<br />
+between Fe and OW
+<br />
+4) Use this file to create new inpcrd/parmtop
+<br />
+5) Run the simulations with the restraint created.
+<br />
+<br />In the end, this will give a &quot;hybrid&quot; model, where the protein residues are
+<br />
+bonded to the Fe ion, and the water with be just restrained to it.
+<br />
+<br />So, far, the simulations are running well.
+<br />
+<br />Thank you!
+<br />
+<pre>
+--
+Gustavo Seabra.
+On Tue, Nov 8, 2022 at 9:38 AM Clorice Reinhardt &lt;clorice.reinhardt.yale.edu&gt;
+wrote:
+&gt; Hi Gustavo,
+&gt;
+&gt; Are you using a bonded model for the water oxygen? You should try using a
+&gt; non-bonded model, as i've run into this before, and using nonbonded
+&gt; approach for the waters worked wonderfully and Pengfei detailed the
+&gt; solution and cause to this problem in the tutorial (see bottom of the page)
+&gt;
+&gt; <a href="http://ambermd.org/tutorials/advanced/tutorial20/mcpbpy.htm">http://ambermd.org/tutorials/advanced/tutorial20/mcpbpy.htm</a>
+&gt;
+&gt; All the best,
+&gt; Clorice
+&gt;
+&gt; On Fri, Nov 4, 2022 at 10:07 PM Gustavo Seabra via AMBER &lt;
+&gt; amber.ambermd.org&gt; wrote:
+&gt;
+&gt;&gt; Hi everyone,
+&gt;&gt;
+&gt;&gt; I'd really appreciate some help figuring out what I'm doing wrong here.
+&gt;&gt;
+&gt;&gt; TLDR: I created a system using MCPB.py, and as soon as MD simulation
+&gt;&gt; starts, one water molecule collapses with another residue in the metal
+&gt;&gt; center, and the simulation blows up. I appreciate any help I can get to
+&gt;&gt; solve this problem. Thanks!
+&gt;&gt;
+&gt;&gt; Details:
+&gt;&gt; I have a metalloprotein in which the Fe(II) center coordinates to 2 HID, 1
+&gt;&gt; ASP and 1 water, and I used MCPB.y to create the parameters for MD. The
+&gt;&gt; procedure I followed was:
+&gt;&gt;
+&gt;&gt; Starting from an apo-protein prepared in Maestro, the treated with
+&gt;&gt; pdb4amber,
+&gt;&gt; $ grep FE apo-protein_pdb4amber.pdb &gt; FE.pdb
+&gt;&gt; $ grep WAT apo-protein_pdb4amber.pdb &gt; WAT.pdb
+&gt;&gt; $ metalpdb2mol2.py -i FE.pdb -o FE.mol2 -c 2
+&gt;&gt;
+&gt;&gt; # Create parameters for the water:
+&gt;&gt; $ antechamber -i WAT.pdb -fi pdb -o gaussian_WAT.com -fo gcrt -gv 1 -ge
+&gt;&gt; WAT.gesp -eq 2 -rn WAT -pf Y
+&gt;&gt; (Run g09. Note: I use Gaussian09 because the files from Antechamber were
+&gt;&gt; prepared for it.)
+&gt;&gt; $ antechamber -i WAT.gesp -fi gesp -o WAT_resp.mol2 -fo mol2 -c resp -eq 2
+&gt;&gt; -rn WAT -at amber -pf y
+&gt;&gt; $ ln -s WAT_resp.mol2 ./WAT.mol2
+&gt;&gt; $ cp $AMBERHOME/dat/leap/parm/frcmod.opc .
+&gt;&gt;
+&gt;&gt; # Now, run MCPB.py
+&gt;&gt; $ MCPB.py -i MCPB.in -s 1 2&gt;&amp;1 | tee mcpb_s1.log
+&gt;&gt; (Run g16 calculations for the complexes as created by MCPB.py
+&gt;&gt;  Note: I here use Gaussian16, and just alter the SCF algorithm to SCF=YQC,
+&gt;&gt; which is a newer method suitable for large systems.)
+&gt;&gt; $ MCPB.py -i MCPB.in -s 2 2&gt;&amp;1 | tee mcpb_s2.log
+&gt;&gt; $ MCPB.py -i MCPB.in -s 3 2&gt;&amp;1 | tee mcpb_s3.log
+&gt;&gt; $ MCPB.py -i MCPB.in -s 4 2&gt;&amp;1 | tee mcpb_s4.log
+&gt;&gt;
+&gt;&gt; # Modify protein-FE_tleap.in file to
+&gt;&gt; 1. Use solvateOct with 15A buffer,
+&gt;&gt; 2. Add `check mol` to get the charges
+&gt;&gt; 3. Stop after adding waters, so we can calculate the
+&gt;&gt;    number of ions to add.
+&gt;&gt; 4. Add 'verbosity 2' after sourcing force fields
+&gt;&gt; 5. Change save commands to save NetCDF files and extensions
+&gt;&gt;    `.ncrst` and `.parm7`
+&gt;&gt;
+&gt;&gt; The charge was +7.0, and 24,718 waters were added. So,
+&gt;&gt; add the following line to protein-FE_tleap.in:
+&gt;&gt; `addIonsRand mol NA 63 CL 70`
+&gt;&gt; Now, run it fully to create the system.
+&gt;&gt;
+&gt;&gt; # Finally, create the parameters with LEaP
+&gt;&gt; $ tleap -s -f protein-FE_tleap.in 2&gt;&amp;1 | tee protein-FE_tleap.log
+&gt;&gt;
+&gt;&gt; LEaP creates the files with some warnings, but no errors. With those last
+&gt;&gt; files, I starting an MD protocol where I first run a sequence of
+&gt;&gt; minimizations where I start with the protein and metal center (including
+&gt;&gt; the coordinated water) restrained with a constant of 100 kcal/(mol.A)^2,
+&gt;&gt; then I remove the restraints gradually in a series of minimizations, to
+&gt;&gt; finally run a small 100 K  MD and then start heating the system.
+&gt;&gt;
+&gt;&gt; The problem is that as soon as the restraints are weak enough, the system
+&gt;&gt; collapses. One hydrogen of the coordinated water just sinks into one ASP
+&gt;&gt; oxygen, and the simulation blows up.
+&gt;&gt;
+&gt;&gt; I suppose I must be doing something wrong here, but I really can't figure
+&gt;&gt; out what is wrong. Does anyone here see what I'm missing? I really
+&gt;&gt; appreciate any help. I attached here the input I'm using for MCPB.py. I'll
+&gt;&gt; be happy to provide more information if anyone needs it.
+&gt;&gt;
+&gt;&gt; Thanks a lot!
+&gt;&gt; --
+&gt;&gt; Gustavo Seabra.
+&gt;&gt; _______________________________________________
+&gt;&gt; AMBER mailing list
+&gt;&gt; AMBER.ambermd.org
+&gt;&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+&gt;&gt;
+&gt;
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Nov 08 2022 - 12:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0053.html" title="Next message in the list">Prithviraj Nandigrami via AMBER: "Re: [AMBER] AMBER20 GPU error"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0051.html" title="Previous message in the list">Daniel Roe via AMBER: "Re: [AMBER] Autoimage cannot find topology information"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0048.html" title="Message to which this message replies">Clorice Reinhardt via AMBER: "Re: [AMBER] Metal center created with MCPB.py collapses on MD start?"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg52" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg52" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg52" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg52" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

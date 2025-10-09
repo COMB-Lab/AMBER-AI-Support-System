@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] tleap solvate box problems from Daniel Roe on 2021-04-16 (Amber Archive Apr 2021)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] tleap solvate box problems" />
+<meta name="Date" content="2021-04-16" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] tleap solvate box problems</h1>
+<!-- received="Fri Apr 16 07:30:02 2021" -->
+<!-- isoreceived="20210416143002" -->
+<!-- sent="Fri, 16 Apr 2021 10:09:44 -0400" -->
+<!-- isosent="20210416140944" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] tleap solvate box problems" -->
+<!-- id="CAAC0qOYPTkfbHRSAcKByxQ5Jp3nYke0m_F61RAeoVpyc8q_f1g.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="LO2P265MB00324163E392DF4F65F34910D04C9.LO2P265MB0032.GBRP265.PROD.OUTLOOK.COM" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0123.html" accesskey="d" title="Roberts, Amy L2: &quot;Re: [AMBER] .rst file not produced during production run&quot;">Next message</a> ]
+[ <a href="0121.html" title="Daniel Roe: &quot;Re: [AMBER] RMSIP&quot;">Previous message</a> ]
+[ <a href="0119.html" title="Gabriel Titchiner: &quot;[AMBER] tleap solvate box problems&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg122" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg122" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg122" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg122" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20tleap%20solvate%20box%20problems">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 16 Apr 2021 10:09:44 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />Maybe I'm missing something, but why are you using 'setbox' after
+<br />
+'solvatebox'? I recommend removing the 'setbox' command ('solvatebox'
+<br />
+creates an orthogonal unit cell for you), and using 'addionsrand'
+<br />
+instead of 'addions'; the former tends to be much faster and to be
+<br />
+honest I've never really come across an instance where 'addions' is
+<br />
+demonstrably better (maybe others on the list can correct me). In
+<br />
+addition, you're first neutralizing with Cl-, but then trying to
+<br />
+neutralize with Na+, so one of your 'addions' command is going to do
+<br />
+nothing I think. If you are going to add both cations and anions you
+<br />
+should have specific numbers of each in mind. Otherwise, just add ions
+<br />
+of the proper charge to neutralize your system. Also,
+<br />
+'leaprc.water.tip3p' already loads ions - you shouldn't need to load
+<br />
+the FRCMOD files yourself. So, try something like this:
+<br />
+<br />source leaprc.protein.ff14SB
+<br />
+source leaprc.gaff
+<br />
+source leaprc.water.tip3p
+<br />
+mol = loadpdb PA0254_Apo_Dimer_Open_Clean_U.pdb
+<br />
+solvatebox mol TIP3PBOX 30 iso
+<br />
+addionsrand mol Cl- &lt;# Cl-&gt; Na+ &lt;#Na+&gt;
+<br />
+saveamberparm mol PA0254_ADOU_30.prmtop PA0254_ADOU_30.inpcrd
+<br />
+savepdb mol PA0254_ADOU_30.pdb
+<br />
+quit
+<br />
+<br />Hope this helps,
+<br />
+<br />-Dan
+<br />
+<br />On Fri, Apr 16, 2021 at 4:02 AM Gabriel Titchiner
+<br />
+&lt;gabriel.titchiner.manchester.ac.uk&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Hi there,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I've been trying to set up the initial simulation conditions for some MD work using tleap and the following parameters:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; source leaprc.protein.ff14SB #Source leaprc file for ff14SB protein force field
+</em><br />
+<em class="quotelev1">&gt; source leaprc.gaff #Source leaprc file for gaff
+</em><br />
+<em class="quotelev1">&gt; source leaprc.water.tip3p #source TIP3P water
+</em><br />
+<em class="quotelev1">&gt; loadamberparams frcmod.ionsjc_tip3p #source TIP3P ions
+</em><br />
+<em class="quotelev1">&gt; loadamberparams frcmod.ions234lm_126_tip3p #source TIP3P ions
+</em><br />
+<em class="quotelev1">&gt; mol = loadpdb PA0254_Apo_Dimer_Open_Clean_U.pdb #Load PDB file for protein
+</em><br />
+<em class="quotelev1">&gt; solvatebox mol TIP3PBOX 30 iso #Solvate the complex with a cubic water box 30 angstroms from complex
+</em><br />
+<em class="quotelev1">&gt; addions mol Cl- 0 #add Cl ions to neutralize the system
+</em><br />
+<em class="quotelev1">&gt; addions mol Na+ 0 #Add Na ions to neutralize the system
+</em><br />
+<em class="quotelev1">&gt; setBox mol vdw #Create Periodic Box
+</em><br />
+<em class="quotelev1">&gt; saveamberparm mol PA0254_ADOU_30.prmtop PA0254_ADOU_30.inpcrd #Save AMBER topology and coordinate files
+</em><br />
+<em class="quotelev1">&gt; savepdb mol PA0254_ADOU_30.pdb #Save resulting solvated box as pdb
+</em><br />
+<em class="quotelev1">&gt; quit #Quit tleap programme
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; tleap runs and outputs files, but when I check the output PDB I find that water and ion molecules are only present in about 60% of the box, with the central protein complex positioned at one face of it, and a few long oblong areas of water molecules protruding perpendicular from the face of the correctly generated solvent. I'm not seeing anything in the tleap log files that suggest an error with solvatebox, and when I've run this with a smaller box size (13 angstroms rather than 30) I get no problems. I'm using amber version 18 with ambertools 19.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks and all the best,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Gabe
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Apr 16 2021 - 07:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0123.html" title="Next message in the list">Roberts, Amy L2: "Re: [AMBER] .rst file not produced during production run"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0121.html" title="Previous message in the list">Daniel Roe: "Re: [AMBER] RMSIP"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0119.html" title="Message to which this message replies">Gabriel Titchiner: "[AMBER] tleap solvate box problems"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg122" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg122" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg122" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg122" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

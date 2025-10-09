@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] ff14SBonlysc + OPC3 from Daniel Roe on 2020-06-29 (Amber Archive Jun 2020)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] ff14SBonlysc + OPC3" />
+<meta name="Date" content="2020-06-29" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] ff14SBonlysc + OPC3</h1>
+<!-- received="Mon Jun 29 08:30:06 2020" -->
+<!-- isoreceived="20200629153006" -->
+<!-- sent="Mon, 29 Jun 2020 11:25:38 -0400" -->
+<!-- isosent="20200629152538" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] ff14SBonlysc + OPC3" -->
+<!-- id="CAAC0qOa0NOp55ee1_A3zL6S=phGub6Vixm3Jm7NhXf2REeO34Q.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="D9EC8795-6C61-496F-9F78-CF4B9C3F586A.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0312.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] Is there a method that can calculate the angle between two planes?&quot;">Next message</a> ]
+[ <a href="0310.html" title="Daniel Roe: &quot;Re: [AMBER] CPPTRAJ: Time Correlation Function (TCF)&quot;">Previous message</a> ]
+[ <a href="0301.html" title="Fabian Glaser: &quot;[AMBER] ff14SBonlysc + OPC3&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0319.html" accesskey="t" title="Matias Machado: &quot;Re: [AMBER] ff14SBonlysc + OPC3&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg311" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg311" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg311" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg311" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20ff14SBonlysc%20%2B%20OPC3">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 29 Jun 2020 11:25:38 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />Not really - the parameters for OPC3 are in frcmod.opc3 - just loading
+<br />
+the OPC3BOX won't do it. I just checked and it seems that there is no
+<br />
+leaprc.water.OPC3 in $AMBERHOME/dat/leaprc/cmd, which seems like an
+<br />
+oversight. However, if you check leaprc.water.OPC and
+<br />
+leaprc.water.tip3p, they give you clues to how you would load opc3
+<br />
+parameters.
+<br />
+<br />Here's what I would do, but full disclaimer: I've never tested this,
+<br />
+so others who are smarter may have better recommendations. I would use
+<br />
+leaprc.water.OPC as a template (copy to a new file), replace
+<br />
+frcmod.opc with frcmod.opc3, and use the ions from the tip3p file,
+<br />
+e.g.:
+<br />
+<br />loadOff atomic_ions.lib
+<br />
+loadOff solvents.lib
+<br />
+HOH = OPC
+<br />
+WAT = OPC
+<br />
+loadAmberParams frcmod.opc3
+<br />
+loadAmberParams frcmod.ions1lm_126_tip3p
+<br />
+loadAmberParams frcmod.ionsjc_tip3p
+<br />
+loadAmberParams frcmod.ions234lm_126_tip3p
+<br />
+<br />Hope this helps,
+<br />
+<br />-Dan
+<br />
+<br />On Mon, Jun 29, 2020 at 8:40 AM Fabian Glaser &lt;fabian.glaser.gmail&#46;<!--nospam-->com&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Dear community,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I am a little confused on the usage of OPC3 water model. I am trying to update my tleap files to use ff14SBonlysc + OPC3BOX water forcefields for my runs, but I am not sure how to source everything correctly. This is the leap input I wrote, which works, but if I don’t include source leaprc.water.tip3p, it doesn’t. As shown below I am loading the tip3p model, with a OPC3 box, is that correct?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I tried with a leaprc.water.opc3 command but it gives an error. Also If I add the loadAmberParams frcmod.opc3 to the input file, again it works, but I am not sure I am doing the right thing.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Can anybody please enlighten me?
+</em><br />
+<em class="quotelev1">&gt; I read the manual, but it is really a little tricky.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks!!
+</em><br />
+<em class="quotelev1">&gt; Fabian
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ==== tleap input ===
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; source leaprc.protein.ff14SBonlysc
+</em><br />
+<em class="quotelev1">&gt; source leaprc.water.tip3p
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; loadAmberParams frcmod.ionsjc_tip3p
+</em><br />
+<em class="quotelev1">&gt; set default PBradii mbondi3
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; MOL1 = loadpdb 6HD5.TU.scwrl4.molprobity.clean.pdb
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; savepdb MOL1 com.nata.YEAST.6HD5.20A.opc3.dry.pdb
+</em><br />
+<em class="quotelev1">&gt; saveamberparm MOL1 com.nata.YEAST.6HD5.20A.opc3.dry.prmtop com.nata.YEAST.6HD5.20A.opc3.dry.rst7
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; solvateoct MOL1 OPC3BOX 20
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; addions MOL1 Na+ 0
+</em><br />
+<em class="quotelev1">&gt; addions MOL1 Cl- 0
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; savepdb MOL1 com.nata.YEAST.6HD5.20A.solv.pdb
+</em><br />
+<em class="quotelev1">&gt; saveamberparm MOL1 com.nata.YEAST.6HD5.20A.solv.prmtop com.nata.YEAST.6HD5.20A.solv.rst7
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; quit
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Fabian
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Fabian Glaser PhD
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Bioinformatics Knowledge Unit - BKU
+</em><br />
+<em class="quotelev1">&gt; The Lorry I. Lokey Center for Life Sciences and Engineering
+</em><br />
+<em class="quotelev1">&gt; Technion - Israel Institute of Technology, Haifa, Israel
+</em><br />
+<em class="quotelev1">&gt; Web <a href="https://lokey.technion.ac.il/bioinformatic-knowledge-unit/">https://lokey.technion.ac.il/bioinformatic-knowledge-unit/</a>
+</em><br />
+<em class="quotelev1">&gt; Tel +972 (0) 4 8293701
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jun 29 2020 - 08:30:06 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0312.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] Is there a method that can calculate the angle between two planes?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0310.html" title="Previous message in the list">Daniel Roe: "Re: [AMBER] CPPTRAJ: Time Correlation Function (TCF)"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0301.html" title="Message to which this message replies">Fabian Glaser: "[AMBER] ff14SBonlysc + OPC3"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0319.html" title="Next message in this discussion thread">Matias Machado: "Re: [AMBER] ff14SBonlysc + OPC3"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0319.html" title="Message sent in reply to this message">Matias Machado: "Re: [AMBER] ff14SBonlysc + OPC3"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg311" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg311" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg311" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg311" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

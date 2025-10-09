@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Autocorrelation time from He, Amy via AMBER on 2022-09-11 (Amber Archive Sep 2022)</title>
+<meta name="Author" content="He, Amy via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Autocorrelation time" />
+<meta name="Date" content="2022-09-11" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Autocorrelation time</h1>
+<!-- received="Sun Sep 11 14:30:03 2022" -->
+<!-- isoreceived="20220911213003" -->
+<!-- sent="Sun, 11 Sep 2022 21:19:55 +0000" -->
+<!-- isosent="20220911211955" -->
+<!-- name="He, Amy via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Autocorrelation time" -->
+<!-- id="CH0PR01MB70201A10F35D5B273B2208C8A3459.CH0PR01MB7020.prod.exchangelabs.com" -->
+<!-- charset="windows-1252" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0060.html" accesskey="d" title="Charo del Genio via AMBER: &quot;Re: [AMBER] Autocorrelation time&quot;">Next message</a> ]
+[ <a href="0058.html" title="accuratefreeenergy--- via AMBER: &quot;Re: [AMBER] [amber.ambermd.org: Fwd: Failed TI heating simulation (RBFE) using Amber22]&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0060.html" accesskey="t" title="Charo del Genio via AMBER: &quot;Re: [AMBER] Autocorrelation time&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg59" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg59" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg59" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg59" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: He, Amy via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Autocorrelation%20time">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 11 Sep 2022 21:19:55 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber community,
+<br />
+<br />I have a question about time series analysis. I�m doing an autocorrelation analysis of a time series I obtained from MD trajectories. Following the definition of autocorrelation function (ACF), I was able to calculate ACF with respect to different lags. However, I was a bit confused about how to calculate the characteristic time of ACF (also referred to as �autocorrelation time�).
+<br />
+<br />My question is:
+<br />
+<br />What is the most widely accepted definition of autocorrelation time, for discrete time series data such as MD trajectories?
+<br />
+<br />What I have tried:
+<br />
+(1)
+<br />
+I found the definition of the autocorrelation time on a paper:
+<br />
+John D. Chodera, William C. Swope, Jed W. Pitera, Chaok Seok, and Ken A. Dill Journal of Chemical Theory and Computation 2007 3 (1), 26-41 DOI: 10.1021/ct0502864
+<br />
+Per se equation 19, the autocorrelation time is calculated as the sum of (1-t/N)*Ct, where Ct is the ACF with respect to the lag t.
+<br />
+I tried that on my data and some mock data, and I found the result always converged to 0.5, regardless of the input data � I think others found the same issue with possibly the same equation, as discussed in this post&lt;<a href="https://mattermodeling.stackexchange.com/questions/7061/what-is-autocorrelation-time">https://mattermodeling.stackexchange.com/questions/7061/what-is-autocorrelation-time</a>&gt; on StackExchange.
+<br />
+<br />(2)
+<br />
+I also viewed the answer to that StackExchange post, which suggested the autocorrelation time as 1+2*sum(Ct). That did not work for me because my Ct at longer lags (larger t) is very noisy... Summing up all Ct can either return a large positive or negative value, and I don�t think the result is a good estimator for autocorrelation time.
+<br />
+<br />(3)
+<br />
+If we assume the decay of ACF is exponential, we can approximate the decay rate and the characteristic time by curve fitting. The fitting can be very poor in some cases, and again it�s due to the noise at longer lags as well as the rapid decay at shorter lags, which suggests my data appear to be uncorrelated already at shorter lags.
+<br />
+<br />My thought:
+<br />
+I think it makes more sense to estimate the autocorrelation time with only the first a few Ct, assuming that Ct at longer lags is swinging above and below 0 but eventually cancel. Although that sounds like a very sleazy way to estimate the autocorrelation time :�)
+<br />
+<br />Has anyone calculated the autocorrelation time for any kind of MD data, and how did you do that? Any comments &amp; suggestions would be greatly appreciated.
+<br />
+<br /><br />Many Thanks,
+<br />
+Amy
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Sep 11 2022 - 14:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0060.html" title="Next message in the list">Charo del Genio via AMBER: "Re: [AMBER] Autocorrelation time"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0058.html" title="Previous message in the list">accuratefreeenergy--- via AMBER: "Re: [AMBER] [amber.ambermd.org: Fwd: Failed TI heating simulation (RBFE) using Amber22]"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0060.html" title="Next message in this discussion thread">Charo del Genio via AMBER: "Re: [AMBER] Autocorrelation time"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0060.html" title="Message sent in reply to this message">Charo del Genio via AMBER: "Re: [AMBER] Autocorrelation time"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg59" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg59" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg59" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg59" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

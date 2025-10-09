@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Running the TI code on a single residue results in NaN electrostatics from Miroslav Suruzhon via AMBER on 2022-10-04 (Amber Archive Oct 2022)</title>
+<meta name="Author" content="Miroslav Suruzhon via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Running the TI code on a single residue results in NaN electrostatics" />
+<meta name="Date" content="2022-10-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Running the TI code on a single residue results in NaN electrostatics</h1>
+<!-- received="Tue Oct  4 07:30:02 2022" -->
+<!-- isoreceived="20221004143002" -->
+<!-- sent="Tue, 4 Oct 2022 15:00:02 +0100" -->
+<!-- isosent="20221004140002" -->
+<!-- name="Miroslav Suruzhon via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Running the TI code on a single residue results in NaN electrostatics" -->
+<!-- id="A4C81A54-80AB-41A1-B43C-727283445AF5.exscientia.co.uk" -->
+<!-- charset="UTF-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0011.html" accesskey="d" title="SATYAJIT KHATUA via AMBER: &quot;Re: [AMBER] AMBER22 installation on Linux&quot;">Next message</a> ]
+[ <a href="0009.html" title="Enrico Martinez via AMBER: &quot;[AMBER] bar-graph of the hydrogen bonds fraction using xm-grace&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0014.html" accesskey="t" title="David A Case via AMBER: &quot;Re: [AMBER] Running the TI code on a single residue results in NaN electrostatics&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg10" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg10" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg10" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg10" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Miroslav Suruzhon via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Running%20the%20TI%20code%20on%20a%20single%20residue%20results%20in%20NaN%20electrostatics">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 4 Oct 2022 15:00:02 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber users,
+<br />
+<br />I have been trying to use AMBER to perform a residue perturbation using the TI code. As far as I understand, if one is working with e.g. a tripeptide such as (using one-letter amino acid codes) PTG and wants to perturb it to PYG, the correct way to do it in AMBER is to generate a composite residue (which we will call MUT), which results in P-MUT-G, where MUT contains atoms from both T and Y. Then one sets the TI masks to be all the corresponding atoms from the MUT residue, and the SC masks define the dummy atoms as usual.
+<br />
+<br />However, if I try to do that with a very simple test input of this tripeptide in vacuum, I get NaNs in the non-1-4 electrostatic part of the calculation. However, the van der Waals interactions are finite, which means that the problem is not a clash. Even more strangely, if one sets all charges to 0, the NaNs are still there, which is completely unexpected. On the other hand, if one removes the periodic boundary conditions (i.e. set ntb=0), the simulation runs fine, indicating that these infinities stem from the PME part of the code.
+<br />
+<br />I am attaching an input parm7, rst7 and mdin file which reproduce the error. Does anyone have any clue as to what might be going wrong? Any help would be much appreciated.
+<br />
+<br />Kind regards,
+<br />
+Miro
+<br />
+<br />Miroslav Suruzhon MSc PhD
+<br />
+Molecular Dynamics Research Scientist
+<br />
++44 (0) 7719 025700 
+<br />
+Exscientia 
+<br />
+<br />The Schrödinger Building, Heatley Road, Oxford Science Park, Oxford, OX4 4GE
+<br />
+<br /><br /><pre>
+-- 
+*Please note that this email communication and any attachments to it may 
+contain confidential or privileged information and so circulation should be 
+restricted to the addressee’s organisation. If you are not the addressee, 
+please let us know by return email, then delete all copies of this email. 
+**
+Personal data that you share with us will be stored and used in 
+accordance with our Privacy Policy which can be accessed on our website.*
+*
+Exscientia plc is a company incorporated in England and Wales with 
+registered number 13483814 and its registered office at The Schrodinger 
+Building, Oxford Science Park, Oxford, Oxfordshire, United Kingdom, OX4 
+4GE*
+
+</pre>
+<br />
+<br /><br />
+<br /><br />
+<br /><br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>application/octet-stream attachment: <a href="att-0010/amber.mdin">amber.mdin</a></li>
+</ul>
+<!-- attachment="amber.mdin" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0010/amber.out">amber.out</a></li>
+</ul>
+<!-- attachment="amber.out" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0010/amber.parm7">amber.parm7</a></li>
+</ul>
+<!-- attachment="amber.parm7" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0010/amber.rst7">amber.rst7</a></li>
+</ul>
+<!-- attachment="amber.rst7" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Tue Oct 04 2022 - 07:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0011.html" title="Next message in the list">SATYAJIT KHATUA via AMBER: "Re: [AMBER] AMBER22 installation on Linux"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0009.html" title="Previous message in the list">Enrico Martinez via AMBER: "[AMBER] bar-graph of the hydrogen bonds fraction using xm-grace"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0014.html" title="Next message in this discussion thread">David A Case via AMBER: "Re: [AMBER] Running the TI code on a single residue results in NaN electrostatics"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0014.html" title="Message sent in reply to this message">David A Case via AMBER: "Re: [AMBER] Running the TI code on a single residue results in NaN electrostatics"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg10" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg10" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg10" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg10" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

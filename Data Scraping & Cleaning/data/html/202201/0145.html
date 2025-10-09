@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Need help with SMD from natalia francisca rodriguez cabello on 2022-01-17 (Amber Archive Jan 2022)</title>
+<meta name="Author" content="natalia francisca rodriguez cabello (nrodriguez13.alumnos.utalca.cl)" />
+<meta name="Subject" content="[AMBER] Need help with SMD" />
+<meta name="Date" content="2022-01-17" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Need help with SMD</h1>
+<!-- received="Mon Jan 17 09:00:02 2022" -->
+<!-- isoreceived="20220117170002" -->
+<!-- sent="Mon, 17 Jan 2022 16:33:31 +0000" -->
+<!-- isosent="20220117163331" -->
+<!-- name="natalia francisca rodriguez cabello" -->
+<!-- email="nrodriguez13.alumnos.utalca.cl" -->
+<!-- subject="[AMBER] Need help with SMD" -->
+<!-- id="CY4PR1301MB2088000F61BE493EC7784CA19F579.CY4PR1301MB2088.namprd13.prod.outlook.com" -->
+<!-- charset="iso-8859-1" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0146.html" accesskey="d" title="Carlos Simmerling: &quot;Re: [AMBER] Need help with SMD&quot;">Next message</a> ]
+[ <a href="0144.html" title="Antonio Frances Monerris: &quot;[AMBER] Distorted water molecules in QM partition (possible bug)&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0146.html" accesskey="t" title="Carlos Simmerling: &quot;Re: [AMBER] Need help with SMD&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg145" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg145" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg145" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg145" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: natalia francisca rodriguez cabello &lt;<a href="mailto:nrodriguez13.alumnos.utalca.cl?Subject=Re%3A%20%5BAMBER%5D%20Need%20help%20with%20SMD">nrodriguez13.alumnos.utalca.cl</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 17 Jan 2022 16:33:31 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+&nbsp;I must perform SMD. Previously I had done the calculation in GPU and it failed, I tried a small calculation in CPU and it worked but now it crashes again. (I already did minimization and DM for the system finishing fine). I also tried modifying imin=0,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;irest=1,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntx=5 Unsuccessfully.
+<br />
+<br /><br />The output is as follows:
+<br />
+<br />&nbsp;Here is the input file:
+<br />
+<br />A NPT simulation for common production-level simulations
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;imin=0,        ! No minimization
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;irest=0,       ! This IS a restart of an old MD simulation
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntx=1,         ! So our inpcrd file has velocities
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;! Temperature control
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntt=3,         ! Langevin dynamics
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gamma_ln=1.0,  ! Friction coefficient (ps^-1)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;temp0=310,   ! Target temperature
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;! Potential energy control
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;cut=12.0,      ! nonbonded cutoff, in Angstroms
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;fswitch=10.0,  ! Force-based switching
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;! MD settings
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;nstlim=1625000, ! 500K steps, 1 ns total
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;dt=0.002,      ! time step (ps)
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;! SHAKE
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntc=2,         ! Constrain bonds containing hydrogen
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntf=2,         ! Do not calculate forces of bonds containing hydrogen
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;! Control how often information is printed
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntpr=1000,     ! Print energies every 1000 steps
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntwx=1000,    ! Print coordinates every 50000 steps to the trajectory
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntwr=1000,    ! Print a restart file every 10K steps (can be less frequent)
+<br />
+!   ntwv=-1,       ! Uncomment to also print velocities to trajectory
+<br />
+!   ntwf=-1,       ! Uncomment to also print forces to trajectory
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntxo=2,        ! Write NetCDF format
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ioutfm=1,      ! Write NetCDF format (always do this!)
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;! Wrap coordinates when printing them to the same unit cell
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;iwrap=1,
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;! Constant pressure control.
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;barostat=2,    ! MC barostat... change to 1 for Berendsen
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntp=1,         ! 1=isotropic, 2=anisotropic, 3=semi-isotropic w/ surften
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;pres0=1.0,     ! Target external pressure, in bar
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;nmropt=1,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;jar=1,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ig=-1,
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;! Set water atom/residue names for SETTLE recognition
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;watnam='WAT',  ! Water residues are named WAT
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;owtnm='O',     ! Water oxygens are named O
+<br />
+&nbsp;/
+<br />
+&nbsp;&amp;wt type='DUMPFREQ', istep1=1000 /
+<br />
+&nbsp;&amp;wt type='END', /
+<br />
+DISANG=COM_PULL.RST
+<br />
+DUMPAVE=Pull_dist.dat
+<br />
+LISTIN=POUT
+<br />
+LISTOUT=POUT
+<br />
+/
+<br />
+&nbsp;/
+<br />
+&nbsp;&amp;ewald
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;vdwmeth = 0,
+<br />
+&nbsp;/
+<br />
+<br /><br />Note: ig = -1. Setting random seed to   292388 based on wallclock time in
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;microseconds.
+<br />
+| irandom = 1, using AMBER's internal random number generator (default).
+<br />
+<br /><br />| Conditional Compilation Defines Used:
+<br />
+| PUBFFT
+<br />
+| BINTRAJ
+<br />
+| EMIL
+<br />
+<br />| Largest sphere to fit in unit cell has radius =    52.076
+<br />
+<br />| New format PARM file being parsed.
+<br />
+| Version =    1.000 Date = 01/11/22 Time = 10:59:15
+<br />
+| Force field information read from topology file:
+<br />
+|                                                                       CHARMM:
+<br />
+|
+<br />
+|CHARMM: CHARMM force field in use.
+<br />
+<br />| Note: 1-4 EEL scale factors are being read from the topology file.
+<br />
+<br />| Note: 1-4 VDW scale factors are being read from the topology file.
+<br />
+| INFO: Off Diagonal (NBFIX) LJ terms found in prmtop file.
+<br />
+|       The prmtop file has been modified to support atom
+<br />
+|       type based pairwise Lennard-Jones terms.
+<br />
+| Duplicated    0 dihedrals
+<br />
+<br />| Duplicated    0 dihedrals
+<br />
+<br />--------------------------------------------------------------------------------
+<br />
+&nbsp;&nbsp;&nbsp;1.  RESOURCE   USE:
+<br />
+--------------------------------------------------------------------------------
+<br />
+<br />&nbsp;getting box info from netcdf restart file
+<br />
+&nbsp;NATOM  =  118212 NTYPES =      27 NBONH =  117448 MBONA  =     514
+<br />
+&nbsp;NTHETH =   40488 MTHETA =     614 NPHIH =    2330 MPHIA  =    1084
+<br />
+&nbsp;NHPARM =       0 NPARM  =       0 NNB   =  162387 NRES   =   39244
+<br />
+&nbsp;NBONA  =     514 NTHETA =     614 NPHIA =    1084 NUMBND =      33
+<br />
+&nbsp;NUMANG =      60 NPTRA  =     101 NATYP =       1 NPHB   =       0
+<br />
+&nbsp;IFBOX  =       1 NMXRS  =      46 IFCAP =       0 NEXTRA =       0
+<br />
+&nbsp;NCOPY  =       0
+<br />
+<br />| Coordinate Index Table dimensions:    16   16   16
+<br />
+| Direct force subcell size =     6.6155    6.5095    6.7052
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BOX TYPE: RECTILINEAR
+<br />
+<br />--------------------------------------------------------------------------------
+<br />
+&nbsp;&nbsp;&nbsp;2.  CONTROL  DATA  FOR  THE  RUN
+<br />
+--------------------------------------------------------------------------------
+<br />
+<br /><br /><br />General flags:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imin    =       0, nmropt  =       1
+<br />
+<br />Nature and format of input:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntx     =       1, irest   =       0, ntrx    =       1
+<br />
+<br />Nature and format of output:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntxo    =       2, ntpr    =    1000, ntrx    =       1, ntwr    =    1000
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iwrap   =       1, ntwx    =    1000, ntwv    =       0, ntwe    =       0
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ioutfm  =       1, ntwprt  =       0, idecomp =       0, rbornstat=      0
+<br />
+<br />Potential function:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntf     =       2, ntb     =       2, igb     =       0, nsnb    =      25
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipol    =       0, gbsa    =       0, iesp    =       0
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dielc   =   1.00000, cut     =  12.00000, intdiel =   1.00000
+<br />
+<br />Frozen or restrained atoms:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ibelly  =       0, ntr     =       0
+<br />
+<br />Molecular dynamics:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nstlim  =   1625000, nscm    =      1000, nrespa  =         1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t       =   0.00000, dt      =   0.00200, vlimit  =  20.00000
+<br />
+<br />Langevin dynamics temperature regulation:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ig      =  292388
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temp0   = 310.00000, tempi   =   0.00000, gamma_ln=   1.00000
+<br />
+<br />Pressure regulation:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntp     =       1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pres0   =   1.00000, comp    =  44.60000, taup    =   1.00000
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Monte-Carlo Barostat:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mcbarint  =     100
+<br />
+<br />SHAKE:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntc     =       2, jfastw  =       0
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tol     =   0.00001
+<br />
+<br />NMR refinement options:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iscale  =       0, noeskp  =       1, ipnlty  =       1, mxsub   =       1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scalm   = 100.00000, pencut  =   0.10000, tausw   =   0.10000
+<br />
+<br />| Intermolecular bonds treatment:
+<br />
+|     no_intermolecular_bonds =       1
+<br />
+<br />| Energy averages sample interval:
+<br />
+|     ene_avg_sampling =    1000
+<br />
+<br />Ewald parameters:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verbose =       0, ew_type =       0, nbflag  =       1, use_pme =       1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vdwmeth =       0, eedmeth =       1, netfrc  =       1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Box X =  105.848   Box Y =  104.152   Box Z =  107.283
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alpha =   90.000   Beta  =   90.000   Gamma =   90.000
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NFFT1 =  108       NFFT2 =  108       NFFT3 =  108
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cutoff=   12.000   Tol   =0.100E-04
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ewald Coefficient =  0.22664
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interpolation order =    4
+<br />
+| MONTE CARLO BAROSTAT IMPORTANT NOTE:
+<br />
+|   The Monte-Carlo barostat does not require the virial to adjust the system volume.
+<br />
+|   Since it is an expensive calculation, it is skipped for efficiency. A side-effect
+<br />
+|   is that the reported pressure is always 0 because it is not calculated.
+<br />
+<br />--------------------------------------------------------------------------------
+<br />
+&nbsp;&nbsp;&nbsp;3.  ATOMIC COORDINATES AND VELOCITIES
+<br />
+--------------------------------------------------------------------------------
+<br />
+<br /><br />&nbsp;begin time read from input coords =  1000.000 ps
+<br />
+<br /><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Begin reading energy term weight changes/NMR restraints
+<br />
+&nbsp;WEIGHT CHANGES:
+<br />
+&nbsp;DUMPFREQ   1000      0    0.000000    0.000000      0      0
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;** No weight changes given **
+<br />
+<br />&nbsp;RESTRAINTS:
+<br />
+&nbsp;Requested file redirections:
+<br />
+&nbsp;&nbsp;DISANG    = COM_PULL.RST
+<br />
+&nbsp;&nbsp;DUMPAVE   = Pull_dist.dat
+<br />
+&nbsp;&nbsp;LISTIN    = POUT
+<br />
+&nbsp;&nbsp;LISTOUT   = POUT
+<br />
+&nbsp;Restraints will be read from file: COM_PULL.RST
+<br />
+Here are comments from the DISANG input file:
+<br />
+<br />jar option running
+<br />
+******
+<br />
+&nbsp;COM (   -1)-COM (   -1)                            NSTEP1=     0 NSTEP2=******
+<br />
+&nbsp;Atom ranges defining Center of Mass Group in the first position:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 -&gt;     1/     4 -&gt;     5/     8 -&gt;     8/
+<br />
+&nbsp;Atom ranges defining Center of Mass Group in the second position:
+<br />
+&nbsp;&nbsp;1125 -&gt;  1150/  1152 -&gt;  1153/
+<br />
+R1 = -87.000 R2 =  13.000 R3 =  13.000 R4 = 113.000 RK2 =  10.000 RK3 =   10.000
+<br />
+R1A= -99.000 R2A=   1.000 R3A=   1.000 R4A= 101.000 RK2A=  10.000 RK3A=   10.000
+<br />
+&nbsp;Rcurr:  138.302  Rcurr-(R2+R3)/2:  125.302  MIN(Rcurr-R2,Rcurr-R3):  125.302
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of restraints read =     1
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Done reading weight changes/NMR restraints
+<br />
+<br /><br /><br />&nbsp;Number of triangulated 3-point waters found:    38930
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sum of charges from parm topology file =   0.00009600
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Forcing neutrality...
+<br />
+<br />| Dynamic Memory, Types Used:
+<br />
+| Reals             4779736
+<br />
+| Integers          3530762
+<br />
+<br />| Nonbonded Pairs Initial Allocation:    58789782
+<br />
+<br />--------------------------------------------------------------------------------
+<br />
+&nbsp;&nbsp;&nbsp;4.  RESULTS
+<br />
+--------------------------------------------------------------------------------
+<br />
+<br />&nbsp;---------------------------------------------------
+<br />
+&nbsp;APPROXIMATING switch and d/dx switch using CUBIC SPLINE INTERPOLATION
+<br />
+&nbsp;using   5000.0 points per unit in tabled values
+<br />
+&nbsp;TESTING RELATIVE ERROR over r ranging from 0.0 to cutoff
+<br />
+| CHECK switch(x): max rel err =   0.2738E-14   at   2.422500
+<br />
+| CHECK d/dx switch(x): max rel err =   0.7967E-11   at   2.716640
+<br />
+&nbsp;---------------------------------------------------
+<br />
+|---------------------------------------------------
+<br />
+| APPROXIMATING direct energy using CUBIC SPLINE INTERPOLATION
+<br />
+|  with   50.0 points per unit in tabled values
+<br />
+| Relative Error Limit not exceeded for r .gt.   2.27
+<br />
+| APPROXIMATING direct force using CUBIC SPLINE INTERPOLATION
+<br />
+|  with   50.0 points per unit in tabled values
+<br />
+| Relative Error Limit not exceeded for r .gt.   2.78
+<br />
+|---------------------------------------------------
+<br />
+<br />&nbsp;NSTEP =        0   TIME(PS) =       0.000  TEMP(K) =     0.00  PRESS =     0.0
+<br />
+&nbsp;Etot   =   -250215.7880  EKtot   =         0.0000  EPtot      =   -250215.7880
+<br />
+&nbsp;BOND   =       193.6469  ANGLE   =       551.6633  DIHED      =       303.8936
+<br />
+&nbsp;UB     =        97.2722  IMP     =        17.5798  CMAP       =         0.0000
+<br />
+&nbsp;1-4 NB =       135.8752  1-4 EEL =       267.0181  VDWAALS    =     41700.5301
+<br />
+&nbsp;EELEC  =   -444086.6313  EHBOND  =         0.0000  RESTRAINT  =    150603.3642
+<br />
+&nbsp;EAMBER (non-restraint)  =   -400819.1521
+<br />
+&nbsp;EKCMT  =         0.0000  VIRIAL  =         0.0000  VOLUME     =   1182720.8629
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Density    =         1.0056
+<br />
+&nbsp;Ewald error estimate:   0.3686E-04
+<br />
+&nbsp;------------------------------------------------------------------------------
+<br />
+<br />&nbsp;NMR restraints: Bond =*********   Angle =     0.000   Torsion =     0.000
+<br />
+===============================================================================
+<br />
+vlimit exceeded for step      9; vmax =    56.5618
+<br />
+vlimit exceeded for step     10; vmax =    27.1689
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coordinate resetting cannot be accomplished,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deviation is too large
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iter_cnt, my_bond_idx, i and j are :       3      22      40      41
+<br />
+<br />----------------------------------------
+<br />
+Francisca Rodr�guez Cabello
+<br />
+Estudiante Ingenier�a Civil en Bioinform�tica
+<br />
+Universidad de Talca, Chile
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jan 17 2022 - 09:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0146.html" title="Next message in the list">Carlos Simmerling: "Re: [AMBER] Need help with SMD"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0144.html" title="Previous message in the list">Antonio Frances Monerris: "[AMBER] Distorted water molecules in QM partition (possible bug)"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0146.html" title="Next message in this discussion thread">Carlos Simmerling: "Re: [AMBER] Need help with SMD"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0146.html" title="Message sent in reply to this message">Carlos Simmerling: "Re: [AMBER] Need help with SMD"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg145" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg145" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg145" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg145" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

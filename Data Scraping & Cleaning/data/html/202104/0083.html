@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] help with cpptraj error (segmentation fault) from Daniel Roe on 2021-04-13 (Amber Archive Apr 2021)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] help with cpptraj error (segmentation fault)" />
+<meta name="Date" content="2021-04-13" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] help with cpptraj error (segmentation fault)</h1>
+<!-- received="Tue Apr 13 06:30:02 2021" -->
+<!-- isoreceived="20210413133002" -->
+<!-- sent="Tue, 13 Apr 2021 09:09:09 -0400" -->
+<!-- isosent="20210413130909" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] help with cpptraj error (segmentation fault)" -->
+<!-- id="CAAC0qOb42Dk-P7VcM-DSPMwUDtUo5aiVCTK50AtK+oQLfcQMsQ.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="SN6PR05MB40307D47A8C7453F4BB7C90CDE9E9.SN6PR05MB4030.namprd05.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0084.html" accesskey="d" title="&#30707;&#35895;&#27777;: &quot;[AMBER] &#31572;&#22797;: [ambermd.org&#20195;&#21457;]Re:  &#31572;&#22797;: Problems when installing AMBER20 on CentOS 7: multiple definition of &#0039;cifpin&#0039;&quot;">Next message</a> ]
+[ <a href="0082.html" title="David A Case: &quot;Re: [AMBER] &#31572;&#22797;: Problems when installing AMBER20 on CentOS 7: multiple definition of &#0039;cifpin&#0039;&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg83" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg83" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg83" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg83" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20help%20with%20cpptraj%20error%20(segmentation%20fault)">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 13 Apr 2021 09:09:09 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+<br />Sorry for the long delay on this. I started working on this problem
+<br />
+with some people off-list and forgot to reply to the mailing list when
+<br />
+it was sorted out.
+<br />
+<br />It turns out the cmake build of Amber does not properly link the
+<br />
+readline library for cpptraj; cpptraj uses readline for its
+<br />
+interactive mode. This should be fixed in the next release of
+<br />
+AmberTools.
+<br />
+<br />If you want a fully functional cpptraj (with interactive support) with
+<br />
+AmberTools 20 you will need to build it separately, either inside the
+<br />
+Amber source tree or using the GitHub version
+<br />
+(<a href="https://github.com/Amber-MD/cpptraj">https://github.com/Amber-MD/cpptraj</a>). So for example, to build
+<br />
+cpptraj inside the Amber source tree:
+<br />
+<br /># Ensure Amber environment is set up
+<br />
+source $AMBERHOME/amber.sh
+<br />
+# Change to the cpptraj directory
+<br />
+cd $AMBERHOME/AmberTools/src/cpptraj
+<br />
+# Configure cpptraj; replace 'gnu' with whichever compilers you used
+<br />
+to build Amber
+<br />
+./configure --prefix=$AMBERHOME -amberlib gnu
+<br />
+# Build and install
+<br />
+make -j2 install
+<br />
+<br />This should result in a functioning cpptraj being installed to your
+<br />
+$AMBERHOME/bin directory. If you want OpenMP or MPI, specify the
+<br />
+'-openmp' or '-mpi' flags to cpptraj's configure script. Hope this
+<br />
+helps,
+<br />
+<br />-Dan
+<br />
+<br />On Thu, Feb 25, 2021 at 1:12 PM Cato, Lee &lt;michael.lee.cato.emory.edu&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I am having an issue with Amber20 installation. I have applied all patches, all tests have passed, and simulations as well as programs such as antechamber work fine. However, when I try to use cpptraj, I get this output:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; CPPTRAJ: Trajectory Analysis. V4.25.6
+</em><br />
+<em class="quotelev1">&gt;     ___  ___  ___  ___
+</em><br />
+<em class="quotelev1">&gt;      | \/ | \/ | \/ |
+</em><br />
+<em class="quotelev1">&gt;     _|_/\_|_/\_|_/\_|_
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; | Date/time: 02/25/21 13:00:05
+</em><br />
+<em class="quotelev1">&gt; | Available memory: 977.785 MB
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Loading previous history from log 'cpptraj.log'
+</em><br />
+<em class="quotelev1">&gt; Segmentation fault (core dumped)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I have tried everything from reinstalling without update2 (cpptraj patch), reinstalling with all patches, and I have tried to debug the file with no avail.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Note that if I move the executable cpptraj file from a previous build (amber16), I am able to run cpptraj fine.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Can you please help with this????
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt; Cato
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; --
+</em><br />
+<em class="quotelev1">&gt; Ph.D. Candidate
+</em><br />
+<em class="quotelev1">&gt; Biochemistry, Cell, and Developmental Biology Program
+</em><br />
+<em class="quotelev1">&gt; Ortlund Lab
+</em><br />
+<em class="quotelev1">&gt; Emory University
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ________________________________
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; This e-mail message (including any attachments) is for the sole use of
+</em><br />
+<em class="quotelev1">&gt; the intended recipient(s) and may contain confidential and privileged
+</em><br />
+<em class="quotelev1">&gt; information. If the reader of this message is not the intended
+</em><br />
+<em class="quotelev1">&gt; recipient, you are hereby notified that any dissemination, distribution
+</em><br />
+<em class="quotelev1">&gt; or copying of this message (including any attachments) is strictly
+</em><br />
+<em class="quotelev1">&gt; prohibited.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; If you have received this message in error, please contact
+</em><br />
+<em class="quotelev1">&gt; the sender by reply e-mail message and destroy all copies of the
+</em><br />
+<em class="quotelev1">&gt; original message (including attachments).
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Apr 13 2021 - 06:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0084.html" title="Next message in the list">&#30707;&#35895;&#27777;: "[AMBER] &#31572;&#22797;: [ambermd.org&#20195;&#21457;]Re:  &#31572;&#22797;: Problems when installing AMBER20 on CentOS 7: multiple definition of &#0039;cifpin&#0039;"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0082.html" title="Previous message in the list">David A Case: "Re: [AMBER] &#31572;&#22797;: Problems when installing AMBER20 on CentOS 7: multiple definition of &#0039;cifpin&#0039;"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg83" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg83" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg83" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg83" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

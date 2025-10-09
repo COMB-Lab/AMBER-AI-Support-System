@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] In development of dihedral angle parameters; negative PK and negative PHASE values from Cenk Andac on 2022-02-07 (Amber Archive Feb 2022)</title>
+<meta name="Author" content="Cenk Andac (cenkandac.gmail.com)" />
+<meta name="Subject" content="[AMBER] In development of dihedral angle parameters; negative PK and negative PHASE values" />
+<meta name="Date" content="2022-02-07" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] In development of dihedral angle parameters; negative PK and negative PHASE values</h1>
+<!-- received="Mon Feb  7 13:30:02 2022" -->
+<!-- isoreceived="20220207213002" -->
+<!-- sent="Tue, 8 Feb 2022 00:27:40 +0300" -->
+<!-- isosent="20220207212740" -->
+<!-- name="Cenk Andac" -->
+<!-- email="cenkandac.gmail.com" -->
+<!-- subject="[AMBER] In development of dihedral angle parameters; negative PK and negative PHASE values" -->
+<!-- id="CAHO7KVcqKcyDHm8f25zTjdVfCO3m-kUSFiv-yX0GgDY+GpdqJA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0066.html" accesskey="d" title="Carlos Simmerling: &quot;Re: [AMBER] In development of dihedral angle parameters; negative PK and negative PHASE values&quot;">Next message</a> ]
+[ <a href="0064.html" title="David A Case: &quot;Re: [AMBER] mpi4py Problem&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0066.html" accesskey="t" title="Carlos Simmerling: &quot;Re: [AMBER] In development of dihedral angle parameters; negative PK and negative PHASE values&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg65" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg65" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg65" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg65" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Cenk Andac &lt;<a href="mailto:cenkandac.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20In%20development%20of%20dihedral%20angle%20parameters%3B%20negative%20PK%20and%20negative%20PHASE%20values">cenkandac.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 8 Feb 2022 00:27:40 +0300</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber Community,
+<br />
+<br />I have been working on amber parameterization of a specific dihedral angle
+<br />
+(IDIVF=1) in a residue. I have initially determined RESP charges for the
+<br />
+small molecule. Then I determined PES about the torsion of interest by QM
+<br />
+(at MP2 level) and MM (for non-bonded potentials in gas phase). I replotted
+<br />
+the PES curves by referencing to their lowest minimum points (that is,
+<br />
+zeroed the lowest minimum points). I then substracted the plots (Eqm -
+<br />
+Emm). I also zeroed the lowest minimum point in the resulting plot, which
+<br />
+gave rise to four energy barriers (PN=4).
+<br />
+Using a Fourier series with a single cosine term I determined PHASE angles
+<br />
+for each energy barriers. Well, I did not deconvolute the difference PES
+<br />
+curve. Instead, I took half the max potential-energies at the barriers and
+<br />
+divided them by 6 (that is possible # of torsions about the torsion of
+<br />
+interest. Hope I did this right ! )
+<br />
+Here are the values I came up with:
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDIVF    PK/6        PHASE         PN
+<br />
+O-CT-N-C   1    0.382890    108.00           -1.
+<br />
+O-CT-N-C   1    2.767235     33.27            -2.
+<br />
+O-CT-N-C   1    4.160948   -250.41           -3.
+<br />
+O-CT-N-C   1    1.325341     78.46             4.
+<br />
+<br />My questions are :
+<br />
+1) It has been more than 10 years since I last parameterized a torsion
+<br />
+angle right. To refresh my memory, Can an amber expert possibly confirm the
+<br />
+general steps (outlined above) I took to derive the dihedral parameters.
+<br />
+<br />2) In line of PN = -3, PHASE = -250.41, a negative PHASE value,  does not
+<br />
+sound right to me?  Can it be replaced with (360 - 250.41 =) 109.59 ?
+<br />
+3) I have checked some amber FF parameters and I noticed some negative PK
+<br />
+values. What is the rationale for negative PK values as energy barriers
+<br />
+possess positive energies in difference PES curves after zeroing the lowest
+<br />
+minimum energy point?
+<br />
+<br />Thanks in advance for enlightening me.
+<br />
+<br />Best,
+<br />
+<br />Cenk Andac
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Feb 07 2022 - 13:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0066.html" title="Next message in the list">Carlos Simmerling: "Re: [AMBER] In development of dihedral angle parameters; negative PK and negative PHASE values"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0064.html" title="Previous message in the list">David A Case: "Re: [AMBER] mpi4py Problem"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0066.html" title="Next message in this discussion thread">Carlos Simmerling: "Re: [AMBER] In development of dihedral angle parameters; negative PK and negative PHASE values"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0066.html" title="Message sent in reply to this message">Carlos Simmerling: "Re: [AMBER] In development of dihedral angle parameters; negative PK and negative PHASE values"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg65" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg65" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg65" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg65" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

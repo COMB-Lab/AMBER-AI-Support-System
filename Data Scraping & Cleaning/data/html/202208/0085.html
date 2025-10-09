@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Amber22 incompatible CUDA version - how to solve this? from Markowska on 2022-08-18 (Amber Archive Aug 2022)</title>
+<meta name="Author" content="Markowska (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Amber22 incompatible CUDA version - how to solve this?" />
+<meta name="Date" content="2022-08-18" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Amber22 incompatible CUDA version - how to solve this?</h1>
+<!-- received="Thu Aug 18 04:30:05 2022" -->
+<!-- isoreceived="20220818113005" -->
+<!-- sent="Thu, 18 Aug 2022 13:06:07 +0200" -->
+<!-- isosent="20220818110607" -->
+<!-- name="Markowska" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Amber22 incompatible CUDA version - how to solve this?" -->
+<!-- id="CAF9hONxRXV-B-NXfgTCMbHYCJUphemF40Z_015ExL635+vtH5w.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0086.html" accesskey="d" title="Dulal Mondal via AMBER: &quot;[AMBER] Query about Constant pH MD simulation&quot;">Next message</a> ]
+[ <a href="0084.html" title="Enrico Martinez via AMBER: &quot;Re: [AMBER] Questions about MMPBSA.py&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg85" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg85" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg85" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg85" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Markowska &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Amber22%20incompatible%20CUDA%20version%20-%20how%20to%20solve%20this%3F">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 18 Aug 2022 13:06:07 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber community,
+<br />
+<br />I'm trying to install Amber22 on a machine with 3 Titan Blacks, with cuda
+<br />
+10.1 and I'm having some problems. I do not have problems when I try to
+<br />
+install Amber without cuda.
+<br />
+<br />So I downloaded and extracted the tar files, and then I edited the
+<br />
+run_cmake file to something like
+<br />
+....
+<br />
+&nbsp;&nbsp;cmake $AMBER_PREFIX/amber22_src \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber22 \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DCOMPILER=GNU  \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DMPI=TRUE -DOPENMP=TRUE -DCUDA=FALSE -DINSTALL_TESTS=TRUE \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DCUDA_TOOLKIT_ROOT_DIR=/usr/lib/cuda/  \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DDOWNLOAD_MINICONDA=TRUE \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;2&gt;&amp;1 | tee  cmake.log
+<br />
+....
+<br />
+When I run bash run_cmake everything went smooth and I was able to install
+<br />
+Amber.
+<br />
+<br />But I want to use my GPUs and I got the error about incompatible CUDA
+<br />
+version. So now some details about my system:
+<br />
+nvidia-smi
+<br />
+Wed Aug 17 17:01:49 2022
+<br />
++-----------------------------------------------------------------------------+
+<br />
+| NVIDIA-SMI 470.141.03   Driver Version: 470.141.03   CUDA Version: 11.4
+<br />
+&nbsp;&nbsp;|
+<br />
+|-------------------------------+----------------------+----------------------+
+<br />
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr.
+<br />
+ECC |
+<br />
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute
+<br />
+M. |
+<br />
+|                               |                      |               MIG
+<br />
+M. |
+<br />
+|===============================+======================+======================|
+<br />
+|   0  NVIDIA GeForce ...  Off  | 00000000:02:00.0 Off |
+<br />
+&nbsp;N/A |
+<br />
+| 26%   40C    P8    14W / 250W |     12MiB /  6083MiB |      0%
+<br />
+&nbsp;Default |
+<br />
+|                               |                      |
+<br />
+&nbsp;N/A |
+<br />
++-------------------------------+----------------------+----------------------+
+<br />
+|   1  NVIDIA GeForce ...  Off  | 00000000:05:00.0 Off |
+<br />
+&nbsp;N/A |
+<br />
+| 28%   43C    P8    27W / 189W |    166MiB /  6080MiB |      0%
+<br />
+&nbsp;Default |
+<br />
+|                               |                      |
+<br />
+&nbsp;N/A |
+<br />
++-------------------------------+----------------------+----------------------+
+<br />
+|   2  NVIDIA GeForce ...  Off  | 00000000:06:00.0 Off |
+<br />
+&nbsp;N/A |
+<br />
+| 28%   43C    P8    32W / 189W |     10MiB /  6083MiB |      0%
+<br />
+&nbsp;Default |
+<br />
+|                               |                      |
+<br />
+&nbsp;N/A |
+<br />
++-------------------------------+----------------------+----------------------+
+<br />
+<br /><br />+-----------------------------------------------------------------------------+
+<br />
+| Processes:
+<br />
+&nbsp;&nbsp;&nbsp;|
+<br />
+|  GPU   GI   CI        PID   Type   Process name                  GPU
+<br />
+Memory |
+<br />
+|        ID   ID                                                   Usage
+<br />
+&nbsp;&nbsp;&nbsp;|
+<br />
+|=============================================================================|
+<br />
+|    0   N/A  N/A      2441      G   /usr/lib/xorg/Xorg
+<br />
+&nbsp;4MiB |
+<br />
+|    0   N/A  N/A      3057      G   /usr/lib/xorg/Xorg
+<br />
+&nbsp;4MiB |
+<br />
+|    1   N/A  N/A      2441      G   /usr/lib/xorg/Xorg
+<br />
+30MiB |
+<br />
+|    1   N/A  N/A      3057      G   /usr/lib/xorg/Xorg
+<br />
+58MiB |
+<br />
+|    1   N/A  N/A      3197      G   /usr/bin/gnome-shell
+<br />
+63MiB |
+<br />
+|    2   N/A  N/A      2441      G   /usr/lib/xorg/Xorg
+<br />
+&nbsp;4MiB |
+<br />
+|    2   N/A  N/A      3057      G   /usr/lib/xorg/Xorg
+<br />
+&nbsp;4MiB |
+<br />
++-----------------------------------------------------------------------------+
+<br />
+<br />nvcc --version
+<br />
+nvcc: NVIDIA (R) Cuda compiler driver
+<br />
+Copyright (c) 2005-2019 NVIDIA Corporation
+<br />
+Built on Sun_Jul_28_19:07:16_PDT_2019
+<br />
+Cuda compilation tools, release 10.1, V10.1.243
+<br />
+<br />gcc --version
+<br />
+gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+<br />
+<br />In my /usr/lib/cuda/bin I got the soft links for lower version of gcc
+<br />
+compilers
+<br />
+ls -l /usr/lib/cuda/bin/
+<br />
+total 0
+<br />
+lrwxrwxrwx 1 root root 14 sie 17 16:48 g++-8 -&gt; /usr/bin/g++-8
+<br />
+lrwxrwxrwx 1 root root 14 sie 17 16:48 gcc-8 -&gt; /usr/bin/gcc-8
+<br />
+lrwxrwxrwx 1 root root 13 lis 22  2018 nvcc -&gt; /usr/bin/nvcc
+<br />
+<br />I also tried adding -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_CXX_COMPILER=g++-8 to
+<br />
+the run_cmake file but that didn't work. I got the following error and when
+<br />
+I rerun it I got more errors:
+<br />
+Error: Incompatible CUDA and GNU versions
+<br />
+&nbsp;9.4.0
+<br />
+<br />See
+<br />
+<a href="https://stackoverflow.com/questions/6622454/cuda-incompatible-with-my-gcc-version">https://stackoverflow.com/questions/6622454/cuda-incompatible-with-my-gcc-version</a>
+<br />
+************************************************************
+<br />
+<pre>
+--
+CMake Error at cmake/CudaConfig.cmake:125 (message):
+Call Stack (most recent call first):
+  CMakeLists.txt:120 (include)
+-- Configuring incomplete, errors occurred!
+See also &quot;/usr/local/src/amber22_src/build/CMakeFiles/CMakeOutput.log&quot;.
+See also &quot;/usr/local/src/amber22_src/build/CMakeFiles/CMakeError.log&quot;.
+You have changed variables that require your cache to be deleted.
+Configure will be re-run and you may have to reset some variables.
+The following variables have changed:
+CMAKE_C_COMPILER= gcc-8
+CMAKE_CXX_COMPILER= g++-8
+-- Generating done
+CMake Warning:
+  Manually-specified variables were not used by the project:
+    DOWNLOAD_MINICONDA
+CMake Generate step failed.  Build files cannot be regenerated correctly.
+If the cmake build report looks OK, you should now do the following:
+    make install
+    source /usr/local/src/amber22/amber.sh
+Consider adding the last line to your login startup script, e.g. ~/.bashrc
+So for now I'm stuck. Can someone help me?
+Looking forward to some tips :)
+Best regards,
+Karolina Mitusińska
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Thu Aug 18 2022 - 04:30:05 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0086.html" title="Next message in the list">Dulal Mondal via AMBER: "[AMBER] Query about Constant pH MD simulation"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0084.html" title="Previous message in the list">Enrico Martinez via AMBER: "Re: [AMBER] Questions about MMPBSA.py"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg85" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg85" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg85" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg85" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

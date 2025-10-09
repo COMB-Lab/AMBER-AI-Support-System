@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Error with Zn ion Coordination from Aravind R on 2021-12-11 (Amber Archive Dec 2021)</title>
+<meta name="Author" content="Aravind R (aradrive1.gmail.com)" />
+<meta name="Subject" content="[AMBER] Error with Zn ion Coordination" />
+<meta name="Date" content="2021-12-11" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Error with Zn ion Coordination</h1>
+<!-- received="Sat Dec 11 02:30:02 2021" -->
+<!-- isoreceived="20211211103002" -->
+<!-- sent="Sat, 11 Dec 2021 15:51:02 +0530" -->
+<!-- isosent="20211211102102" -->
+<!-- name="Aravind R" -->
+<!-- email="aradrive1.gmail.com" -->
+<!-- subject="[AMBER] Error with Zn ion Coordination" -->
+<!-- id="CAJinvRciC381TyhL4SQUmOQp1s5HcyCvT9CnvgaqpSKXfAjWhQ.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0088.html" accesskey="d" title="King Wu: &quot;[AMBER] README script from CHARMM-GUI to run PMEDE.CUDA&quot;">Next message</a> ]
+[ <a href="0086.html" title="Ali Morshedi: &quot;[AMBER] Electrostatic energy in TI at lambda=1 for a toy system&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0091.html" accesskey="t" title="Maria Nagan: &quot;Re: [AMBER] Error with Zn ion Coordination&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg87" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg87" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg87" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg87" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Aravind R &lt;<a href="mailto:aradrive1.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Error%20with%20Zn%20ion%20Coordination">aradrive1.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 11 Dec 2021 15:51:02 +0530</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber Users,
+<br />
+&nbsp;I am trying to model a protein with two Zn ions (One coordinated with 4
+<br />
+CYS whereas the other coordinated with 2 CYS and 2 HIS (one in HIE and one
+<br />
+in HID protonation states)). I saw that Zn with 4 CYS can be modelled using
+<br />
+Center ID 1 from ZAFF. The closest I can find for other Zn is  Center ID 4.
+<br />
+when I model the system, tleap throws, lengths, angles &amp; torsions are
+<br />
+missing for interactions containing two Zn.
+<br />
+TLEAP SCRIPT:
+<br />
+<br />tleap -s
+<br />
+source leaprc.protein.ff14SB
+<br />
+addAtomTypes { { &quot;ZN&quot; &quot;Zn&quot; &quot;sp3&quot; } { &quot;S3&quot; &quot;S&quot; &quot;sp3&quot; } { &quot;N2&quot; &quot;N&quot; &quot;sp3&quot; } }
+<br />
+loadoff atomic_ions.lib
+<br />
+source leaprc.water.tip3p
+<br />
+loadamberprep ZAFF.prep
+<br />
+loadamberparams ZAFF.frcmod
+<br />
+x = loadpdb prepped_zaff_named.pdb
+<br />
+bond x.45.ZN x.3.SG
+<br />
+bond x.45.ZN x.6.SG
+<br />
+bond x.45.ZN x.26.SG
+<br />
+bond x.45.ZN x.29.SG
+<br />
+bond x.46.ZN x.17.SG
+<br />
+bond x.46.ZN x.20.SG
+<br />
+bond x.46.ZN x.35.NE2
+<br />
+bond x.46.ZN x.38.ND1
+<br />
+solvatebox x TIP3PBOX 12.0
+<br />
+addions x NA 0
+<br />
+savepdb x try_solv.pdb
+<br />
+saveamberparm x protein.prmtop protein.inpcrd
+<br />
+quit
+<br />
+<br />ERROR :
+<br />
+Error: Could not find bond parameter for: ZN - ZN
+<br />
+Building angle parameters.
+<br />
+<br />Error: Could not find angle parameter: S1 - ZN - ZN
+<br />
+<br />Error: Could not find angle parameter: S1 - ZN - ZN
+<br />
+<br />Error: Could not find angle parameter: S4 - ZN - ZN
+<br />
+<br />Error: Could not find angle parameter: S4 - ZN - N7
+<br />
+<br />Error: Could not find angle parameter: S4 - ZN - ZN
+<br />
+<br />Error: Could not find angle parameter: S4 - ZN - N7
+<br />
+<br />Error: Could not find angle parameter: S1 - ZN - ZN
+<br />
+<br />Error: Could not find angle parameter: S1 - ZN - ZN
+<br />
+<br />Error: Could not find angle parameter: N3 - ZN - ZN
+<br />
+<br />Error: Could not find angle parameter: N3 - ZN - N7
+<br />
+<br />Error: Could not find angle parameter: N7 - ZN - ZN
+<br />
+Building proper torsion parameters.
+<br />
+<br />Error:  ** No torsion terms for  S1-ZN-ZN-S4
+<br />
+<br />Error:  ** No torsion terms for  S1-ZN-ZN-S4
+<br />
+<br />Error:  ** No torsion terms for  S1-ZN-ZN-N3
+<br />
+<br />Error:  ** No torsion terms for  S1-ZN-ZN-N7
+<br />
+<br />Error:  ** No torsion terms for  CT-S1-ZN-ZN
+<br />
+<br />Error:  ** No torsion terms for  S1-ZN-ZN-S4
+<br />
+<br />Error:  ** No torsion terms for  S1-ZN-ZN-S4
+<br />
+<br />Error:  ** No torsion terms for  S1-ZN-ZN-N3
+<br />
+<br />Error:  ** No torsion terms for  S1-ZN-ZN-N7
+<br />
+<br />Error:  ** No torsion terms for  CT-S1-ZN-ZN
+<br />
+<br />Error:  ** No torsion terms for  S4-ZN-ZN-S1
+<br />
+<br />Error:  ** No torsion terms for  S4-ZN-ZN-S1
+<br />
+<br />Error:  ** No torsion terms for  S4-ZN-N7-CC
+<br />
+<br />Error:  ** No torsion terms for  S4-ZN-N7-CR
+<br />
+<br />Error:  ** No torsion terms for  CT-S4-ZN-ZN
+<br />
+<br />Error:  ** No torsion terms for  CT-S4-ZN-N7
+<br />
+<br />Error:  ** No torsion terms for  S4-ZN-ZN-S1
+<br />
+<br />Error:  ** No torsion terms for  S4-ZN-ZN-S1
+<br />
+<br />Error:  ** No torsion terms for  S4-ZN-N7-CC
+<br />
+<br />Error:  ** No torsion terms for  S4-ZN-N7-CR
+<br />
+<br />Error:  ** No torsion terms for  CT-S4-ZN-ZN
+<br />
+<br />Error:  ** No torsion terms for  CT-S4-ZN-N7
+<br />
+<br />Error:  ** No torsion terms for  S1-ZN-ZN-N3
+<br />
+<br />Error:  ** No torsion terms for  S1-ZN-ZN-N7
+<br />
+<br />Error:  ** No torsion terms for  CT-S1-ZN-ZN
+<br />
+<br />Error:  ** No torsion terms for  S1-ZN-ZN-N3
+<br />
+<br />Error:  ** No torsion terms for  S1-ZN-ZN-N7
+<br />
+<br />Error:  ** No torsion terms for  CT-S1-ZN-ZN
+<br />
+<br />Error:  ** No torsion terms for  CV-N3-ZN-ZN
+<br />
+<br />Error:  ** No torsion terms for  CV-N3-ZN-N7
+<br />
+<br />Error:  ** No torsion terms for  N3-ZN-N7-CC
+<br />
+<br />Error:  ** No torsion terms for  N3-ZN-N7-CR
+<br />
+<br />Error:  ** No torsion terms for  CR-N3-ZN-ZN
+<br />
+<br />Error:  ** No torsion terms for  CR-N3-ZN-N7
+<br />
+<br />Error:  ** No torsion terms for  CR-N7-ZN-ZN
+<br />
+<br />Error:  ** No torsion terms for  CC-N7-ZN-ZN
+<br />
+<br />I two Zn are away and are not bonded. Why is tleap asking for these bonded
+<br />
+parameters?
+<br />
+What is the best way to model this system?
+<br />
+Any help is appreciated.
+<br />
+Regards,
+<br />
+Aravind R
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sat Dec 11 2021 - 02:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0088.html" title="Next message in the list">King Wu: "[AMBER] README script from CHARMM-GUI to run PMEDE.CUDA"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0086.html" title="Previous message in the list">Ali Morshedi: "[AMBER] Electrostatic energy in TI at lambda=1 for a toy system"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0091.html" title="Next message in this discussion thread">Maria Nagan: "Re: [AMBER] Error with Zn ion Coordination"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0091.html" title="Message sent in reply to this message">Maria Nagan: "Re: [AMBER] Error with Zn ion Coordination"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg87" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg87" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg87" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg87" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

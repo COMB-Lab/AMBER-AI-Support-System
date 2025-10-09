@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Can I use paramfit for MM scan? from David Cerutti on 2020-04-15 (Amber Archive Apr 2020)</title>
+<meta name="Author" content="David Cerutti (dscerutti.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Can I use paramfit for MM scan?" />
+<meta name="Date" content="2020-04-15" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Can I use paramfit for MM scan?</h1>
+<!-- received="Wed Apr 15 15:00:02 2020" -->
+<!-- isoreceived="20200415220002" -->
+<!-- sent="Wed, 15 Apr 2020 17:44:04 -0400" -->
+<!-- isosent="20200415214404" -->
+<!-- name="David Cerutti" -->
+<!-- email="dscerutti.gmail.com" -->
+<!-- subject="Re: [AMBER] Can I use paramfit for MM scan?" -->
+<!-- id="CAEmzWj0QBpaPKut-toFOnZrHwe4N86UT7+wAXfLKWp0pW4Ziew.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAC1EcEq9MiS8jcK9GEfZyO2BnLC7x3yZX82drxCAJWLb44rs2g.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0170.html" accesskey="d" title="Souvik Dey: &quot;[AMBER] Generating an asymmetric box for Steered MD&quot;">Next message</a> ]
+[ <a href="0168.html" title="Erdem Yeler: &quot;Re: [AMBER] Can I use paramfit for MM scan?&quot;">Previous message</a> ]
+[ <a href="0168.html" title="Erdem Yeler: &quot;Re: [AMBER] Can I use paramfit for MM scan?&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg169" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg169" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg169" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg169" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David Cerutti &lt;<a href="mailto:dscerutti.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Can%20I%20use%20paramfit%20for%20MM%20scan%3F">dscerutti.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 15 Apr 2020 17:44:04 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+From the looks of it, you do not have the right ambmasks for your atoms.
+<br />
+There is only one residue in the topology, called &quot;RES.&quot; The atoms you want
+<br />
+in it are :1.O1 :1.B1 :1.O1D :1.C1D (or go for the B branch instead)&#46;<!--nospam-->  The
+<br />
+(:) means &quot;residue&quot; and &#64; &quot;atom&quot; in ambmask syntax&#46;<!--nospam-->  I confess I didn't
+<br />
+anticipate this use case, so the error message is a little misleading when
+<br />
+it does not find any atoms.  But, this is an ambmask syntax issue, not a
+<br />
+familiarity with mdgx issue yet.  From what it appears you are trying to
+<br />
+do, you are catching along fine.
+<br />
+<br />Dave
+<br />
+<br /><br />On Wed, Apr 15, 2020 at 5:26 PM Erdem Yeler &lt;erdemyeler.gmail&#46;<!--nospam-->com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    Dear David,
+</em><br />
+<em class="quotelev1">&gt;    I tried to run here is my input file:
+</em><br />
+<em class="quotelev1">&gt;    &amp;files
+</em><br />
+<em class="quotelev1">&gt;    Â  -pÂ  Â  x.prmtop
+</em><br />
+<em class="quotelev1">&gt;    Â  -cÂ  Â  x.inpcrd
+</em><br />
+<em class="quotelev1">&gt;    Â  -oÂ  Â  x.out
+</em><br />
+<em class="quotelev1">&gt;    &amp;end
+</em><br />
+<em class="quotelev1">&gt;    &amp;configs
+</em><br />
+<em class="quotelev1">&gt;    Â  % Backbone phi and psi sampling
+</em><br />
+<em class="quotelev1">&gt;    Â   Â  GridSampleÂ  :7.OÂ  :1.BÂ  :6.O :8.CÂ  { -180&#46;<!--nospam-->0 180.0 }Â  fbhwÂ
+</em><br />
+<em class="quotelev1">&gt;    10.0Â  Krst 64.0,
+</em><br />
+<em class="quotelev1">&gt;    Â  % General minimization instructions
+</em><br />
+<em class="quotelev1">&gt;    Â  count = 64,
+</em><br />
+<em class="quotelev1">&gt;    Â  verbose 1,
+</em><br />
+<em class="quotelev1">&gt;    Â  maxcyc = 5000,
+</em><br />
+<em class="quotelev1">&gt;    Â  strainlim = 20.0,
+</em><br />
+<em class="quotelev1">&gt;    Â  bstrain = 10.0,
+</em><br />
+<em class="quotelev1">&gt;    Â  astrain = 10.0,
+</em><br />
+<em class="quotelev1">&gt;    Â  % Reshuffling conformations to best achieve each minimum
+</em><br />
+<em class="quotelev1">&gt;    Â  nshuffle = 2,
+</em><br />
+<em class="quotelev1">&gt;    Â  shuffle bootstrap,
+</em><br />
+<em class="quotelev1">&gt;    Â  % Output controls
+</em><br />
+<em class="quotelev1">&gt;    Â  outbase 'Conf', 'Conf',
+</em><br />
+<em class="quotelev1">&gt;    Â  writeÂ  Â 'cdf',Â  'pdb',
+</em><br />
+<em class="quotelev1">&gt;    Â  outsuff 'cdf',Â  'pdb',
+</em><br />
+<em class="quotelev1">&gt;    &amp;end
+</em><br />
+<em class="quotelev1">&gt;    and I attached my prmtop and crd files.
+</em><br />
+<em class="quotelev1">&gt;    But I got this error:
+</em><br />
+<em class="quotelev1">&gt;    SeekManipulator &gt;&gt; Error.Â  Manipulator command contains too many atom
+</em><br />
+<em class="quotelev1">&gt;    names:
+</em><br />
+<em class="quotelev1">&gt;    Â ridSample :7.O :1.B :6.O :8.C { -180&#46;<!--nospam-->0 180.0 } fbhw 10.0 Krst 64.0
+</em><br />
+<em class="quotelev1">&gt;    I am very new using mdgx. Could you help me? Where is my mistake?
+</em><br />
+<em class="quotelev1">&gt;    I want to scanÂ  O-B-O-C dihedral from -180 to 180
+</em><br />
+<em class="quotelev1">&gt;    Thank you.
+</em><br />
+<em class="quotelev1">&gt;    image.png
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    Erdem Yeler &lt;[1]erdemyeler.gmail&#46;<!--nospam-->com&gt;, 13 Nis 2020 Pzt, 14:37
+</em><br />
+<em class="quotelev1">&gt; tarihinde Åunu
+</em><br />
+<em class="quotelev1">&gt;    yazdÄ±:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    Thank you sooo much Dave. I am testing right now :)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    David Cerutti &lt;[2]dscerutti.gmail&#46;<!--nospam-->com&gt;, 13 Nis 2020 Pzt, 09:20
+</em><br />
+<em class="quotelev1">&gt; tarihinde
+</em><br />
+<em class="quotelev1">&gt;    Åunu yazdÄ±:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;      Absolutely you can use it for angle and bond scans.Â  Enter three
+</em><br />
+<em class="quotelev1">&gt; ambmask
+</em><br />
+<em class="quotelev1">&gt;      atom names for angles and specify the range in degrees.Â  For bonds,
+</em><br />
+<em class="quotelev1">&gt; enter
+</em><br />
+<em class="quotelev1">&gt;      two ambmasks and specify the range in Angstroms.
+</em><br />
+<em class="quotelev1">&gt;      Good luck,
+</em><br />
+<em class="quotelev1">&gt;      Dave
+</em><br />
+<em class="quotelev1">&gt;      On Sun, Apr 12, 2020 at 12:35 AM Erdem Yeler &lt;[3]erdemyeler.gmail&#46;<!--nospam-->com
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt;      wrote:
+</em><br />
+<em class="quotelev2">&gt;      &gt; Dear David,
+</em><br />
+<em class="quotelev2">&gt;      &gt; can we use this for scanning angles and bonds too?Â  Thank you
+</em><br />
+<em class="quotelev2">&gt;      &gt; Dear Elif,
+</em><br />
+<em class="quotelev2">&gt;      &gt; I used paramfitÂ  for MM scan but when PES scan has a problem for
+</em><br />
+<em class="quotelev2">&gt;      &gt; non-standart atoms, paramfit reflects this.Â  ;For example:Â  I
+</em><br />
+<em class="quotelev1">&gt; obtained
+</em><br />
+<em class="quotelev1">&gt;      mol2
+</em><br />
+<em class="quotelev2">&gt;      &gt; files from problematic PES scan. I did this because tleap's impose
+</em><br />
+<em class="quotelev1">&gt;      command
+</em><br />
+<em class="quotelev2">&gt;      &gt; didn't run for boron atoms so I had to obtain different dihedral
+</em><br />
+<em class="quotelev1">&gt; angles
+</em><br />
+<em class="quotelev1">&gt;      via
+</em><br />
+<em class="quotelev2">&gt;      &gt; PES scan.. and because of the some structure are wrong I saw &quot;a
+</em><br />
+<em class="quotelev1">&gt; jump&quot; in
+</em><br />
+<em class="quotelev1">&gt;      MM
+</em><br />
+<em class="quotelev2">&gt;      &gt; scan which should not be there.
+</em><br />
+<em class="quotelev2">&gt;      &gt; Erdoniko
+</em><br />
+<em class="quotelev2">&gt;      &gt;
+</em><br />
+<em class="quotelev2">&gt;      &gt; David Cerutti &lt;[4]dscerutti.gmail&#46;<!--nospam-->com&gt;, 11 Nis 2020 Cmt, 13:53
+</em><br />
+<em class="quotelev1">&gt; tarihinde
+</em><br />
+<em class="quotelev1">&gt;      Åunu
+</em><br />
+<em class="quotelev2">&gt;      &gt; yazdÄ±:
+</em><br />
+<em class="quotelev2">&gt;      &gt;
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; The mdgx program will do what you want: see this tutorial on
+</em><br />
+<em class="quotelev2">&gt;      &gt; conformational
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; searching:
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; [5]<a href="http://ambermd.org/tutorials/basic/tutorial6/index.php">http://ambermd.org/tutorials/basic/tutorial6/index.php</a>
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; Pretty much all you'll need is a topology, a starting coordinates
+</em><br />
+<em class="quotelev1">&gt;      file,
+</em><br />
+<em class="quotelev2">&gt;      &gt; and
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; a simple input file where you give it the atom names in ambmasks
+</em><br />
+<em class="quotelev1">&gt; (i.e.
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; :1.CA,
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; or :2.OG).Â  It will infer what type of restraint you want based
+</em><br />
+<em class="quotelev1">&gt; on
+</em><br />
+<em class="quotelev1">&gt;      how
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; many
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; atoms you tell it are part of the restraint (two for bonds, three
+</em><br />
+<em class="quotelev1">&gt; for
+</em><br />
+<em class="quotelev2">&gt;      &gt; angle
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; restraints, etc.).
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt;      &gt;  &gt; It can provide regular or randomized sampling over a specified
+</em><br />
+<em class="quotelev1">&gt;      interval.
+</em><br />
+<em class="quotelev3">&gt;      &gt;  &gt;  The  conformation sampling feeds into force field development
+</em><br />
+<em class="quotelev1">&gt;      protocols:
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; [6]<a href="http://ambermd.org/tutorials/advanced/tutorial32/index.php">http://ambermd.org/tutorials/advanced/tutorial32/index.php</a>
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; Dave
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; On Fri, Apr 10, 2020 at 9:31 PM Elif ÃiÄdem Calvin &lt;
+</em><br />
+<em class="quotelev2">&gt;      &gt; [7]elifcigdem82.gmail.com
+</em><br />
+<em class="quotelev4">&gt;      &gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; wrote:
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt;
+</em><br />
+<em class="quotelev4">&gt;      &gt; &gt; &gt; Hello,
+</em><br />
+<em class="quotelev4">&gt;      &gt; &gt; &gt; in paramfit tutuorial, dihedral angles are changing randomly
+</em><br />
+<em class="quotelev1">&gt; with an
+</em><br />
+<em class="quotelev2">&gt;      &gt; *.sh
+</em><br />
+<em class="quotelev4">&gt;      &gt; &gt; &gt; file then single point energy calculation performes via this
+</em><br />
+<em class="quotelev1">&gt; angles
+</em><br />
+<em class="quotelev1">&gt;      (
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; Imean
+</em><br />
+<em class="quotelev4">&gt;      &gt; &gt; &gt; structures).
+</em><br />
+<em class="quotelev4">&gt;      &gt; &gt; &gt; I wonder what if I change dihedral angles regularly (for
+</em><br />
+<em class="quotelev1">&gt; example 5
+</em><br />
+<em class="quotelev2">&gt;      &gt; degree
+</em><br />
+<em class="quotelev4">&gt;      &gt; &gt; &gt; step : 5-10-15-20 ...180 exc..) and then I calculate single
+</em><br />
+<em class="quotelev1">&gt; point
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; energies
+</em><br />
+<em class="quotelev4">&gt;      &gt; &gt; &gt; and I prepare quantum_a.dat file with this data; can I obtain MM
+</em><br />
+<em class="quotelev1">&gt;      scan
+</em><br />
+<em class="quotelev2">&gt;      &gt; in
+</em><br />
+<em class="quotelev4">&gt;      &gt; &gt; &gt; the fit_output_energy.dat as (AMber +K) value? or is it wrong
+</em><br />
+<em class="quotelev1">&gt; to use
+</em><br />
+<em class="quotelev2">&gt;      &gt; this
+</em><br />
+<em class="quotelev4">&gt;      &gt; &gt; &gt; way to calculate MM scan for a dihedral?
+</em><br />
+<em class="quotelev4">&gt;      &gt; &gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev4">&gt;      &gt; &gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev4">&gt;      &gt; &gt; &gt; [8]AMBER.ambermd.org
+</em><br />
+<em class="quotelev4">&gt;      &gt; &gt; &gt; [9]<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev4">&gt;      &gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; [10]AMBER.ambermd&#46;<!--nospam-->org
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt; [11]<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev3">&gt;      &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt;      &gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt;      &gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt;      &gt; [12]AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt;      &gt; [13]<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt;      &gt;
+</em><br />
+<em class="quotelev1">&gt;      _______________________________________________
+</em><br />
+<em class="quotelev1">&gt;      AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt;      [14]AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt;      [15]<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; References
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    1. mailto:erdemyeler.gmail.com
+</em><br />
+<em class="quotelev1">&gt;    2. mailto:dscerutti.gmail.com
+</em><br />
+<em class="quotelev1">&gt;    3. mailto:<a href="mailto:erdemyeler.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Can%20I%20use%20paramfit%20for%20MM%20scan%3F">erdemyeler.gmail.com</a>
+</em><br />
+<em class="quotelev1">&gt;    4. mailto:dscerutti.gmail.com
+</em><br />
+<em class="quotelev1">&gt;    5. <a href="http://ambermd.org/tutorials/basic/tutorial6/index.php">http://ambermd.org/tutorials/basic/tutorial6/index.php</a>
+</em><br />
+<em class="quotelev1">&gt;    6. <a href="http://ambermd.org/tutorials/advanced/tutorial32/index.php">http://ambermd.org/tutorials/advanced/tutorial32/index.php</a>
+</em><br />
+<em class="quotelev1">&gt;    7. mailto:elifcigdem82.gmail.com
+</em><br />
+<em class="quotelev1">&gt;    8. mailto:<a href="mailto:AMBER.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Can%20I%20use%20paramfit%20for%20MM%20scan%3F">AMBER.ambermd.org</a>
+</em><br />
+<em class="quotelev1">&gt;    9. <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;   10. mailto:AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt;   11. <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;   12. mailto:<a href="mailto:AMBER.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Can%20I%20use%20paramfit%20for%20MM%20scan%3F">AMBER.ambermd.org</a>
+</em><br />
+<em class="quotelev1">&gt;   13. <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;   14. mailto:AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt;   15. <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Apr 15 2020 - 15:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0170.html" title="Next message in the list">Souvik Dey: "[AMBER] Generating an asymmetric box for Steered MD"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0168.html" title="Previous message in the list">Erdem Yeler: "Re: [AMBER] Can I use paramfit for MM scan?"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0168.html" title="Message to which this message replies">Erdem Yeler: "Re: [AMBER] Can I use paramfit for MM scan?"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg169" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg169" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg169" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg169" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

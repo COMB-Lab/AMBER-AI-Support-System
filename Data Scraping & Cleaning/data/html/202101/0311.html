@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] The long and winding STSM from Luis Simon on 2021-01-20 (Amber Archive Jan 2021)</title>
+<meta name="Author" content="Luis Simon (lsimon.usal.es)" />
+<meta name="Subject" content="[AMBER] The long and winding STSM" />
+<meta name="Date" content="2021-01-20" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] The long and winding STSM</h1>
+<!-- received="Wed Jan 20 08:30:03 2021" -->
+<!-- isoreceived="20210120163003" -->
+<!-- sent="Wed, 20 Jan 2021 16:56:33 +0100" -->
+<!-- isosent="20210120155633" -->
+<!-- name="Luis Simon" -->
+<!-- email="lsimon.usal.es" -->
+<!-- subject="[AMBER] The long and winding STSM" -->
+<!-- id="6C343ED1-632D-4B0B-AC9F-0B09290C609C.usal.es" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0312.html" accesskey="d" title="Dr. Anselm Horn: &quot;Re: [AMBER] combining crashed trajectories&quot;">Next message</a> ]
+[ <a href="0310.html" title="Nicy yadav: &quot;Re: [AMBER] Creating input files using tleap&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0385.html" accesskey="t" title="Feng Pan: &quot;Re: [AMBER] The long and winding STSM&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg311" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg311" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg311" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg311" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Luis Simon &lt;<a href="mailto:lsimon.usal.es?Subject=Re%3A%20%5BAMBER%5D%20The%20long%20and%20winding%20STSM">lsimon.usal.es</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 20 Jan 2021 16:56:33 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi all,
+<br />
+<br />I have tried to run STSM calculation for obtaining the MFEP for the change of two backbone dihedral angles in a RNA hairpin, and I wonder if my results have some logic. I attach some pictures that hopefully will be shown in the mailing list, but just in case I will briefly describe them.
+<br />
+<br />I set up the calculation including 20 different images and 20 repeats. In each STSM calculation, equilibration run for 980 steps and release for 20 steps. I set nstlim to 2000000 steps (dt=0.002, shake ON), although the calculations were not finished (however, the problems, or what I do identify as a problem, arose earlier than it stoped). I run it in both explicit solvent (around 18000 atoms)  and GB implicit solvent (igb=1, 838 atoms). For obtaining the initial geometries I set up steered calculations in which the restraints were moved from their values in one image to the value in the next. 
+<br />
+<br />The first thing that surprised me was that the final images were not as close to the final point (epsilon=-180; theta=-30) as some other intermediate image (particularly, image number 16 seems very close to this final point. Why did STSM keep on “pushing” to more negative values of “theta”? Did I use a too large number of images?. Is it ok to obtain the PMF using umbrella-sampling with the first 16 images, ignoring the last 4 wandering images.
+<br />
+<br /><br />Another surprise was that the path, instead of “converging”, started to diverge towards  less smooth lines as the number of iterations increased. That was particularly so in the case of the calculations with the explicit solvent. The implicit calculation seemed more consistent, but there are also some “artefacts”.
+<br />
+<br />I wonder if my settings were appropriate for this kind of simulations. Maybe the equilibration and(or release run for too low number of steps. Are 20 repeats/20 images a reasonable number for this kind of calculation?  
+<br />
+<br />Thanks
+<br />
+<br />Luis
+<br />
+<br />PS-&gt; The graphs show the torsion angles in degrees, but the calculations and covars were setup in radians. Also, I show the results for the “reparametrized centers”; “smooth” and “drift” centers look nearly the same.  
+<br />
+<br /><br /><br /><br /><br /><br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>application/pkcs7-signature attachment: <a href="att-0311/smime.p7s">smime.p7s</a></li>
+</ul>
+<!-- attachment="smime.p7s" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Wed Jan 20 2021 - 08:30:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0312.html" title="Next message in the list">Dr. Anselm Horn: "Re: [AMBER] combining crashed trajectories"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0310.html" title="Previous message in the list">Nicy yadav: "Re: [AMBER] Creating input files using tleap"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0385.html" title="Next message in this discussion thread">Feng Pan: "Re: [AMBER] The long and winding STSM"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0385.html" title="Message sent in reply to this message">Feng Pan: "Re: [AMBER] The long and winding STSM"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg311" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg311" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg311" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg311" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

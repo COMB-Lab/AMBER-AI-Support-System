@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Using the rep.C0.pdb as a reference structure in RMSD analysis from Soheila Shokrollahzade on 2020-11-24 (Amber Archive Nov 2020)</title>
+<meta name="Author" content="Soheila Shokrollahzade (soheilashokrollahzade.gmail.com)" />
+<meta name="Subject" content="[AMBER] Using the rep.C0.pdb as a reference structure in RMSD analysis" />
+<meta name="Date" content="2020-11-24" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Using the rep.C0.pdb as a reference structure in RMSD analysis</h1>
+<!-- received="Tue Nov 24 08:00:02 2020" -->
+<!-- isoreceived="20201124160002" -->
+<!-- sent="Tue, 24 Nov 2020 10:56:42 -0500" -->
+<!-- isosent="20201124155642" -->
+<!-- name="Soheila Shokrollahzade" -->
+<!-- email="soheilashokrollahzade.gmail.com" -->
+<!-- subject="[AMBER] Using the rep.C0.pdb as a reference structure in RMSD analysis" -->
+<!-- id="CAEiC9_AkbgMtJehT3o7T8DA1WOXzmnBF52sXitP_FMovLvjqBQ.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0233.html" accesskey="d" title="Delwakkada Liyanage, Senal Dinuka: &quot;[AMBER] Help in amber TI automation script&quot;">Next message</a> ]
+[ <a href="0231.html" title="David A Case: &quot;Re: [AMBER] MMPBSA.py: &#0034;fork()&#0034; system call to create a child process&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0238.html" accesskey="t" title="Daniel Roe: &quot;Re: [AMBER] Using the rep.C0.pdb as a reference structure in RMSD analysis&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg232" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg232" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg232" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg232" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Soheila Shokrollahzade &lt;<a href="mailto:soheilashokrollahzade.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Using%20the%20rep.C0.pdb%20as%20a%20reference%20structure%20in%20RMSD%20analysis">soheilashokrollahzade.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 24 Nov 2020 10:56:42 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Daniel,
+<br />
+<br />I ran MD simulation of wild type insulin at first and then I muted one of
+<br />
+the residues and ran MD on the new structure calling it model1. So we have
+<br />
+wild type (WT) and model 1 (mod1). I ran dbscan clustering on WT using an
+<br />
+epsilon of 1 Å. After finishing the analysis I have rep.c0.pdb as the most
+<br />
+dominant cluster of WT. I wanted to use rep.c0.pdb as a reference structure
+<br />
+on which mod1 can be fitted when running RMSD. I ran the following script
+<br />
+but it seems like that it doesn’t take rep.c0.pdb. Would you please help me
+<br />
+figure out how can I fit  the trajectory of model 1 on the most dominant
+<br />
+cluster of WT?
+<br />
+<br /><br />parm out.top
+<br />
+trajin mode-1.nc
+<br />
+reference rep.c0.pdb [c0]
+<br />
+rms RMSD ref [c0]
+<br />
+rms RMSD .CA,C,N,O out c0.txt
+<br />
+rms FIT &#64;CA,C,N,O to-reference&#46;<!--nospam-->txt
+<br />
+quit
+<br />
+<br /><br />Thank you,
+<br />
+Soheila
+<br />
+<br /><pre>
+-- 
+*PhD student of Biomedical Engineering, Garton lab
+&lt;<a href="http://www.gartonlab.org/">http://www.gartonlab.org/</a>&gt;*
+*Institute of Biomedical Engineering (BME) *
+*University of Toronto*
+*Room 422, Rosebrugh building, 164 College Street, Toronto, ON, M5S 3E2*
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Nov 24 2020 - 08:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0233.html" title="Next message in the list">Delwakkada Liyanage, Senal Dinuka: "[AMBER] Help in amber TI automation script"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0231.html" title="Previous message in the list">David A Case: "Re: [AMBER] MMPBSA.py: &#0034;fork()&#0034; system call to create a child process"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0238.html" title="Next message in this discussion thread">Daniel Roe: "Re: [AMBER] Using the rep.C0.pdb as a reference structure in RMSD analysis"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0238.html" title="Message sent in reply to this message">Daniel Roe: "Re: [AMBER] Using the rep.C0.pdb as a reference structure in RMSD analysis"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg232" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg232" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg232" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg232" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Loading R.E.D server parameters into xleap from Emmett Leddin on 2020-10-16 (Amber Archive Oct 2020)</title>
+<meta name="Author" content="Emmett Leddin (drtigger13.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Loading R.E.D server parameters into xleap" />
+<meta name="Date" content="2020-10-16" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Loading R.E.D server parameters into xleap</h1>
+<!-- received="Fri Oct 16 05:30:03 2020" -->
+<!-- isoreceived="20201016123003" -->
+<!-- sent="Fri, 16 Oct 2020 07:05:09 -0500" -->
+<!-- isosent="20201016120509" -->
+<!-- name="Emmett Leddin" -->
+<!-- email="drtigger13.gmail.com" -->
+<!-- subject="Re: [AMBER] Loading R.E.D server parameters into xleap" -->
+<!-- id="6ECB5E7A-6779-4A90-8520-509362A5B06B.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="[AMBER] Loading R.E.D server parameters into xleap" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0196.html" accesskey="d" title="Wu Xu: &quot;Re: [AMBER] VMD 1.9.4 could not read AMBER16 .mdcrd&quot;">Next message</a> ]
+[ <a href="0194.html" title="David A Case: &quot;Re: [AMBER] Fwd: AMBER Digest, Vol 3153, Issue 1&quot;">Previous message</a> ]
+[ <a href="0191.html" title="Sruthi Sudhakar: &quot;[AMBER] Loading R.E.D server parameters into xleap&quot;">Maybe in reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0197.html" accesskey="t" title="Sruthi Sudhakar: &quot;Re: [AMBER] Loading R.E.D server parameters into xleap&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg195" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg195" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg195" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg195" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Emmett Leddin &lt;<a href="mailto:drtigger13.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Loading%20R.E.D%20server%20parameters%20into%20xleap">drtigger13.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 16 Oct 2020 07:05:09 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+﻿
+<br />
+﻿
+<br />
+Hi Sruthi,
+<br />
+<br />I’m not 100% sure about that leaprc.q4mddft script.
+<br />
+<br />The frcmod file with everything pyRED could find parameters for is in Data-R.E.D.Server/Data-Default-Proj/frcmod.known . The parameters that are missing (if any) are in (project folder/) Data-R.E.D.Server/Data-Default-Proj/frcmod.unknown . The INTER folder should have a few mol2 files (since you used DMP, the one you want will likely be named Mol-sm_m1-c1.mol2, but you should obviously confirm that it looks right). If you used any 4-letter atom types, you likely have to rename them to 3-letter types.
+<br />
+<br />If there were missing parameters, you can either search the literature or use parmchk2 to attempt to find them.
+<br />
+parmchk2 -i Mol-sm_m1-c1.mol2 -f mol2 -o my_new_residue.frcmod
+<br />
+Then, copy the ones you need back into frcmod.known. 
+<br />
+<br />From there, you can continue like you would with any non-standard, wrangling it into the formats you want to use. Personally, I verify the mol2 looks as expected in VMD, and then use VMD to write it as a PDB. At this stage I do a quick test in xleap/tleap to make sure it doesn’t complain about anything. [Note: there’s a tendency to have issues with inter-residue connectivity for nucleic acids that usually won’t show up in a one-off test. There’s a lot of good discussion in the archives on that.]
+<br />
+<br />Good luck!
+<br />
+<br />Sincerely,
+<br />
+<br />Emmett Leddin
+<br />
+<br />Pronouns: he/him
+<br />
+Chemistry PhD Candidate
+<br />
+<br /><em class="quotelev2">&gt;&gt; On Oct 16, 2020, at 04:50, Sruthi Sudhakar &lt;sruthisudhakarraji.gmail&#46;<!--nospam-->com&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; ﻿Dear all,
+</em><br />
+<em class="quotelev1">&gt; I have generated forcefield parameters for a modified DNA base using RED
+</em><br />
+<em class="quotelev1">&gt; server. Following the tutorial, I made 2 pdb files, one of
+</em><br />
+<em class="quotelev1">&gt; dimethylphosphate and second of the modified DNA base. I have obtained the
+</em><br />
+<em class="quotelev1">&gt; output data and now confused regarding how to proceed forward. I have the
+</em><br />
+<em class="quotelev1">&gt; leaprc.q4mddft script. Could someone explain the procedure of including the
+</em><br />
+<em class="quotelev1">&gt; R.E.D server parameters into xleap?Do we need to modify the leaprc.q4mddft
+</em><br />
+<em class="quotelev1">&gt; file? Also how could I combine my molecules and place them inside a duplex?
+</em><br />
+<em class="quotelev1">&gt; Is there any tutorial available for this.?
+</em><br />
+<em class="quotelev1">&gt; Thanking in advance.
+</em><br />
+<em class="quotelev1">&gt; Regards,
+</em><br />
+<em class="quotelev1">&gt; Sruthi Sudhakar
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Oct 16 2020 - 05:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0196.html" title="Next message in the list">Wu Xu: "Re: [AMBER] VMD 1.9.4 could not read AMBER16 .mdcrd"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0194.html" title="Previous message in the list">David A Case: "Re: [AMBER] Fwd: AMBER Digest, Vol 3153, Issue 1"</a></li>
+<li><dfn>Maybe in reply to</dfn>: <a href="0191.html" title="Message to which this message replies">Sruthi Sudhakar: "[AMBER] Loading R.E.D server parameters into xleap"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0197.html" title="Next message in this discussion thread">Sruthi Sudhakar: "Re: [AMBER] Loading R.E.D server parameters into xleap"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0197.html" title="Message sent in reply to this message">Sruthi Sudhakar: "Re: [AMBER] Loading R.E.D server parameters into xleap"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg195" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg195" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg195" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg195" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] pmemd.cuda unstable with ff19SB+OPC and HMassRepartition from Tucker Burgin on 2021-03-10 (Amber Archive Mar 2021)</title>
+<meta name="Author" content="Tucker Burgin (tburgin.uw.edu)" />
+<meta name="Subject" content="[AMBER] pmemd.cuda unstable with ff19SB+OPC and HMassRepartition" />
+<meta name="Date" content="2021-03-10" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] pmemd.cuda unstable with ff19SB+OPC and HMassRepartition</h1>
+<!-- received="Wed Mar 10 11:30:02 2021" -->
+<!-- isoreceived="20210310193002" -->
+<!-- sent="Wed, 10 Mar 2021 14:25:22 -0500" -->
+<!-- isosent="20210310192522" -->
+<!-- name="Tucker Burgin" -->
+<!-- email="tburgin.uw.edu" -->
+<!-- subject="[AMBER] pmemd.cuda unstable with ff19SB+OPC and HMassRepartition" -->
+<!-- id="CANqJOHTNC+0ifBJjucEU7xYh6E2DYJhqB6kz+O9kscbLXDig+A.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0085.html" accesskey="d" title="Carlos Simmerling: &quot;Re: [AMBER] pmemd.cuda unstable with ff19SB+OPC and HMassRepartition&quot;">Next message</a> ]
+[ <a href="0083.html" title="Alejandro Gil Ley: &quot;[AMBER] Problem with CG minimization in implicit solvent&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0085.html" accesskey="t" title="Carlos Simmerling: &quot;Re: [AMBER] pmemd.cuda unstable with ff19SB+OPC and HMassRepartition&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg84" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg84" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg84" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg84" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Tucker Burgin &lt;<a href="mailto:tburgin.uw.edu?Subject=Re%3A%20%5BAMBER%5D%20pmemd.cuda%20unstable%20with%20ff19SB%2BOPC%20and%20HMassRepartition">tburgin.uw.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 10 Mar 2021 14:25:22 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Amber users,
+<br />
+<br />I'm trying to develop a workflow for high-throughput simulations of
+<br />
+proteins. I've got an enzyme-substrate complex parameterized with ff19SB in
+<br />
+a box of OPC waters, to which I've applied hydrogen mass repartitioning
+<br />
+using ParmEd with the default settings. I minimized, heated from 100 to 300
+<br />
+K, and equilibrated for 1 ns using pmemd.MPI, and all that is very
+<br />
+well-behaved.
+<br />
+<br />Now I'm trying to run longer simulations with the equilibrated structure
+<br />
+using pmemd.cuda, but whenever I try to run a simulation with a timestep
+<br />
+longer than 2 fs, it runs for a while (anywhere from a few hundred ps to
+<br />
+several ns) before crashing with a generic error message:
+<br />
+<br />cudaMemcpy GpuBuffer::Download failed an illegal memory access was
+<br />
+encountered
+<br />
+<br />This happens very consistently. I do *not *have this problem if I reduce
+<br />
+the timestep to 2 fs, but I don't understand why. I have confirmed that the
+<br />
+hydrogen mass repartitioning is correctly reflected in the topology file,
+<br />
+and SHAKE is turned on. I have tried manually restarting the crashed
+<br />
+simulation many times thinking that it maybe just needed more
+<br />
+equilibration, but after several restarts I'm seeing no improvement. Here's
+<br />
+my input file:
+<br />
+<br />&nbsp;&amp;cntrl
+<br />
+<br />&nbsp;&nbsp;imin=0,
+<br />
+<br />&nbsp;&nbsp;ioutfm=1,
+<br />
+<br />&nbsp;&nbsp;ntx=1,
+<br />
+<br />&nbsp;&nbsp;ntxo=1,
+<br />
+<br />&nbsp;&nbsp;nstlim=2500000,
+<br />
+<br />&nbsp;&nbsp;dt=0.004,
+<br />
+<br />&nbsp;&nbsp;ntf=2,
+<br />
+<br />&nbsp;&nbsp;ntc=2,
+<br />
+<br />&nbsp;&nbsp;tempi=300.0,
+<br />
+<br />&nbsp;&nbsp;temp0=300.0,
+<br />
+<br />&nbsp;&nbsp;ntpr=25000,
+<br />
+<br />&nbsp;&nbsp;ntwx=25000,
+<br />
+<br />&nbsp;&nbsp;cut=8.0,
+<br />
+<br />&nbsp;&nbsp;ntb=2,
+<br />
+<br />&nbsp;&nbsp;ntp=1,
+<br />
+<br />&nbsp;&nbsp;ntt=2,
+<br />
+<br />&nbsp;&nbsp;vrand=10000,
+<br />
+<br />&nbsp;&nbsp;ig=-1,
+<br />
+<br />&nbsp;&nbsp;taup=2,
+<br />
+<br />&nbsp;&amp;end
+<br />
+<br />As a further test, I have tried removing the substrate from the model
+<br />
+altogether, leaving only a protein consisting entirely of standard
+<br />
+residues, a single sodium ion, and the OPC water molecules, and still the
+<br />
+problem persists.
+<br />
+<br />The output files look fine, with reasonable values for the temperature, all
+<br />
+the energy terms, and the density. The only indication I have of anything
+<br />
+weird in the output files is that the temperature at the 0th step is always
+<br />
+about 436 K (even though tempi is 300 K and the system has been
+<br />
+equilibrated at that temperature), but it returns to about 300 K by the
+<br />
+next write to the output file. Here's an example output line from step 0:
+<br />
+<br />&nbsp;NSTEP =        0   TIME(PS) =       0.000  TEMP(K) =   436.04  PRESS =
+<br />
+-19.0
+<br />
+<br />&nbsp;Etot   =   -151011.7523  EKtot   =     47799.7254  EPtot      =
+<br />
+-198811.4778
+<br />
+<br />&nbsp;BOND   =      1683.1249  ANGLE   =      4073.2499  DIHED      =
+<br />
+2465.2522
+<br />
+<br />&nbsp;UB     =         0.0000  IMP     =         0.0000  CMAP       =
+<br />
+381.8329
+<br />
+<br />&nbsp;1-4 NB =      1689.6414  1-4 EEL =     19887.1333  VDWAALS    =
+<br />
+21224.1537
+<br />
+<br />&nbsp;EELEC  =   -250215.8661  EHBOND  =         0.0000  RESTRAINT  =
+<br />
+0.0000
+<br />
+<br />&nbsp;EKCMT  =     13861.9920  VIRIAL  =     14078.6721  VOLUME     =
+<br />
+527955.5220
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Density    =
+<br />
+1.0336
+<br />
+<br />There's nothing obviously weird to my eye going on in the simulation
+<br />
+trajectory. I'm using Amber 20. Since I can't find anything wrong with the
+<br />
+simulations I'm considering just writing a script to automatically restart
+<br />
+my simulations whenever they crash, but I'd feel a lot more comfortable if
+<br />
+I knew for sure what the problem was. Anyone have any ideas or suggestions?
+<br />
+Please let me know if there's any more information I can provide.
+<br />
+<br />Thanks!
+<br />
+-Tucker Burgin
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Mar 10 2021 - 11:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0085.html" title="Next message in the list">Carlos Simmerling: "Re: [AMBER] pmemd.cuda unstable with ff19SB+OPC and HMassRepartition"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0083.html" title="Previous message in the list">Alejandro Gil Ley: "[AMBER] Problem with CG minimization in implicit solvent"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0085.html" title="Next message in this discussion thread">Carlos Simmerling: "Re: [AMBER] pmemd.cuda unstable with ff19SB+OPC and HMassRepartition"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0085.html" title="Message sent in reply to this message">Carlos Simmerling: "Re: [AMBER] pmemd.cuda unstable with ff19SB+OPC and HMassRepartition"</a></li>
+<li><dfn>Reply</dfn>: <a href="0089.html" title="Message sent in reply to this message">Gerald Monard: "Re: [AMBER] pmemd.cuda unstable with ff19SB+OPC and HMassRepartition"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0208.html" title="Message sent in reply to this message">Tucker Burgin: "Re: [AMBER] pmemd.cuda unstable with ff19SB+OPC and HMassRepartition"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg84" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg84" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg84" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg84" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

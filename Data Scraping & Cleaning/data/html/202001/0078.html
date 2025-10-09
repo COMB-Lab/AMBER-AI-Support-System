@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] P2 correlation functions questions from erik zuiderweg on 2020-01-07 (Amber Archive Jan 2020)</title>
+<meta name="Author" content="erik zuiderweg (erikzuiderweg.gmail.com)" />
+<meta name="Subject" content="[AMBER] P2 correlation functions questions" />
+<meta name="Date" content="2020-01-07" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] P2 correlation functions questions</h1>
+<!-- received="Tue Jan  7 09:30:03 2020" -->
+<!-- isoreceived="20200107173003" -->
+<!-- sent="Tue, 7 Jan 2020 18:08:28 +0100" -->
+<!-- isosent="20200107170828" -->
+<!-- name="erik zuiderweg" -->
+<!-- email="erikzuiderweg.gmail.com" -->
+<!-- subject="[AMBER] P2 correlation functions questions" -->
+<!-- id="7B9A0E56-CED4-4318-A195-720DFBA63F1E.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0079.html" accesskey="d" title="Billiot, Eugene: &quot;Re: [AMBER] Amber 18 installation error&quot;">Next message</a> ]
+[ <a href="0077.html" title="Debarati DasGupta: &quot;[AMBER] TI data collection of DU/Dlambda at constant volume&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0082.html" accesskey="t" title="David Case: &quot;Re: [AMBER] P2 correlation functions questions&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg78" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg78" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg78" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg78" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: erik zuiderweg &lt;<a href="mailto:erikzuiderweg.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20P2%20correlation%20functions%20questions">erikzuiderweg.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 7 Jan 2020 18:08:28 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+I am using Amber16, and try to compute N-H P2 correlation functions from a protein MD run, to compare with NMR relaxation data.
+<br />
+<br />this is my CPPTRAJ script
+<br />
+<br />cpptraj ../BETA_APO.top &lt;&lt; EOF 
+<br />
+trajin ../BETA_APO_MIN_HEAT_EQUIL_MD.x 1 800
+<br />
+vector v2 :2.H  :2.N 
+<br />
+analyze timecorr vec1 v2 out corr_2_NH
+<br />
+EOF
+<br />
+<br /><br />The output file corr_2_NH contains 800 entries.
+<br />
+I find this strange — how can one get a correlation between entries that are 800 part from just 800 files? — the last one is an average of 1!
+<br />
+I guess I should just trust the first quarter or so? 
+<br />
+<br />Second question concerns the entire concept of P2 correlation functions fom MD trajectories.
+<br />
+<br />In real life, the P2 is taken between the direction of the NH vector and the magnetic field. 
+<br />
+So one approach could be to take the PDB Z-direction as the reference vector. 
+<br />
+But why not X, or. Y?
+<br />
+And, a wiggle in the XY plane does not change the angle with Z.
+<br />
+In real life of course, all this does not matter so much — for most proteins the molecular frame tumbles more or less isotropicaly so all reference directions become more or less equivalent. 
+<br />
+<br />But with an MD  ensemble that is rotationally static, the  “magnetic field “  axis choice should  matter. 
+<br />
+<br />I figure a good reference vector for the P2 calculation may be the average direction of the N-H vector. Than one should not miss any wiggles in any direction.
+<br />
+Thus programming that in ancient Fortran, I find normalized NH  correlation  functions for residue 2 which comes down to an  “order parameter plateau” of 0.95 or so,  while the ptraj goes down to 0.7 …
+<br />
+Now I could very well make a mistake in programming, but I wonder how these reference axis issues are dealt with in CPPTRAJ?
+<br />
+<br /><br /><br /><br /><br />Erik R.P. Zuiderweg
+<br />
+Professor Emeritus
+<br />
+Department of  Biological Chemistry
+<br />
+University of Michigan Medical School
+<br />
+Ann Arbor, MI, USA
+<br />
+Guest Professor, Institute for Molecules and Materials,
+<br />
+Radboud University, Nijmegen, 
+<br />
+The Netherlands
+<br />
+zuiderwe.umich.edu
+<br />
+(+31) 611154835
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Jan 07 2020 - 09:30:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0079.html" title="Next message in the list">Billiot, Eugene: "Re: [AMBER] Amber 18 installation error"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0077.html" title="Previous message in the list">Debarati DasGupta: "[AMBER] TI data collection of DU/Dlambda at constant volume"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0082.html" title="Next message in this discussion thread">David Case: "Re: [AMBER] P2 correlation functions questions"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0082.html" title="Message sent in reply to this message">David Case: "Re: [AMBER] P2 correlation functions questions"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg78" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg78" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg78" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg78" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

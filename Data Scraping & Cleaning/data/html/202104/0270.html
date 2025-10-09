@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] cpptraj energy using 2 masks from Daniel Roe on 2021-04-30 (Amber Archive Apr 2021)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] cpptraj energy using 2 masks" />
+<meta name="Date" content="2021-04-30" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] cpptraj energy using 2 masks</h1>
+<!-- received="Fri Apr 30 09:00:03 2021" -->
+<!-- isoreceived="20210430160003" -->
+<!-- sent="Fri, 30 Apr 2021 11:32:09 -0400" -->
+<!-- isosent="20210430153209" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] cpptraj energy using 2 masks" -->
+<!-- id="CAAC0qOZggbENz9N48r5xYn=P6GmRhNqbX3F+F9P6cUctbxBGog.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAJo28majJB5FPaOQ6Uikved8zSphPoGCBCJvosNw0oAbYMhygg.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0271.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] About cpptraj (v18) extracting temperature trajectory from REMD trajectory&quot;">Next message</a> ]
+[ <a href="0269.html" title="Qinghua Liao: &quot;[AMBER] installation of AmberTools 21&quot;">Previous message</a> ]
+[ <a href="0251.html" title="German P. Barletta: &quot;[AMBER] cpptraj energy using 2 masks&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0274.html" accesskey="t" title="German P. Barletta: &quot;Re: [AMBER] cpptraj energy using 2 masks&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg270" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg270" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg270" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg270" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20cpptraj%20energy%20using%202%20masks">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 30 Apr 2021 11:32:09 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />You could just do 2 extra energy calculations and subtract them out:
+<br />
+<br />energy Eligand :164
+<br />
+energy Ereceptor :1-163
+<br />
+energy Etotal :1-164
+<br />
+run
+<br />
+Einteraction = Etotal - Ereceptor - Eligand
+<br />
+writedata Einteraction.dat Einteraction
+<br />
+<br />Hope this helps,
+<br />
+<br />-Dan
+<br />
+<br />On Thu, Apr 29, 2021 at 2:01 PM German P. Barletta &lt;pbarletta.gmail.com&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Dear amber users and developers,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I'd like to calculate the nonbonded (LJ + Coulombic) energy terms for the
+</em><br />
+<em class="quotelev1">&gt; interaction between a ligand (residue 164) and a protein (residues 1-163)
+</em><br />
+<em class="quotelev1">&gt; but if I use the mask &quot;:1-164&quot;, cpptraj will also include the interactions
+</em><br />
+<em class="quotelev1">&gt; of the protein and the ligand with themselves.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; gromacs tutorials
+</em><br />
+<em class="quotelev1">&gt; &lt;<a href="http://www.mdtutorials.com/gmx/complex/09_analysis.html">http://www.mdtutorials.com/gmx/complex/09_analysis.html</a>&gt; show
+</em><br />
+<em class="quotelev1">&gt; a convenient way to do this, but how can I do the same with cpptraj?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks!
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Apr 30 2021 - 09:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0271.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] About cpptraj (v18) extracting temperature trajectory from REMD trajectory"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0269.html" title="Previous message in the list">Qinghua Liao: "[AMBER] installation of AmberTools 21"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0251.html" title="Message to which this message replies">German P. Barletta: "[AMBER] cpptraj energy using 2 masks"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0274.html" title="Next message in this discussion thread">German P. Barletta: "Re: [AMBER] cpptraj energy using 2 masks"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg270" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg270" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg270" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg270" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

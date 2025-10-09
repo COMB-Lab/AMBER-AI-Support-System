@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] problem with MMPBSA.py (and/or ante-MMPBSA.py) from Artur Hermano via AMBER on 2022-10-04 (Amber Archive Oct 2022)</title>
+<meta name="Author" content="Artur Hermano via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] problem with MMPBSA.py (and/or ante-MMPBSA.py)" />
+<meta name="Date" content="2022-10-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] problem with MMPBSA.py (and/or ante-MMPBSA.py)</h1>
+<!-- received="Tue Oct  4 06:30:03 2022" -->
+<!-- isoreceived="20221004133003" -->
+<!-- sent="Tue, 4 Oct 2022 12:55:34 +0000" -->
+<!-- isosent="20221004125534" -->
+<!-- name="Artur Hermano via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] problem with MMPBSA.py (and/or ante-MMPBSA.py)" -->
+<!-- id="CP5P284MB1663C49AFA9AF28780D032E6F35A9.CP5P284MB1663.BRAP284.PROD.OUTLOOK.COM" -->
+<!-- charset="iso-8859-1" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0009.html" accesskey="d" title="Enrico Martinez via AMBER: &quot;[AMBER] bar-graph of the hydrogen bonds fraction using xm-grace&quot;">Next message</a> ]
+[ <a href="0007.html" title="Daniel Roe via AMBER: &quot;Re: [AMBER] How to concatenate long trajs in a decent time&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg8" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg8" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg8" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg8" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Artur Hermano via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20problem%20with%20MMPBSA.py%20(and%2For%20ante-MMPBSA.py)">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 4 Oct 2022 12:55:34 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber users,
+<br />
+<br />I am trying to use run free energy calculations using ante-MMPBSA.py + MMPBSA.py in a system consisting of protein+calcium ion+glycan bound to small peptide+water+counterions(Na and Cl). I want to estimate the free energy of binding between the protein and the ligand (glycan+peptide), but there are a few odd things happening that make me think I must be missing something:
+<br />
+<br />&nbsp;&nbsp;1.
+<br />
+when I use ante-MMPBSA.py, my command line is: ante-MMPBSA.py -p sys.prmtop -c complexWT.prmtop -r receptorWT.prmtop -l ligandWT.prmtop -s .8988-37750 -m :1-562, where
+<br />
+&nbsp;atoms 8988 to 37750 are waters, sodium and chloride ions, and none of them is actually removed, because all .prmtop files generated have SOD, CLA and many O H1 H2 which correspond to waters... the only way to truly remove them is to do: ante-MMPBSA.py -p sys.prmtop -c complexWT.prmtop -r receptorWT.prmtop -l ligandWT.prmtop -s :WAT,:SOD,:CLA -m :1-562, and then I do not see any SOD, CLA or O H1 H2 in the generated .prmtop files, but...
+<br />
+<br />&nbsp;&nbsp;2.
+<br />
+when I run MMPBSA.py with those .prmtop files, my run crashes within 6 minutes with the following error message: &quot;CalcError: /opt/software/RI/apps/Amber/20.12-iomkl-2020.02-AmberTools-21.12/bin/sander failed with prmtop complexWT.prmtop!&quot; and the three PDB files generated (_MMPBSA_ligand.pdb, _MMPBSA_receptor.pdb and _MMPBSA_complex.pdb)
+<br />
+&nbsp;&nbsp;3.
+<br />
+all contain CLA and SOD ions!! How come they were not present in the .prmtop files, but still somehow managed to be present in the PDB files? I believe the error in my calculation arises from the fact that I am not supposed to have counterions in any of these structures... Can someone please help me figure out what is happening?
+<br />
+<br />Below is my code and the input file for MMPBSA:
+<br />
+<br />module purge
+<br />
+module load amber/20.12-iomkl-2020.02-ambertools-21.12
+<br />
+<br />mpirun $AMBERHOME/bin/MMPBSA.py.MPI -O -i pbsa.in -o resultsPBSA_calnexWT.dat -sp sys.prmtop -cp complexWT.prmtop -rp receptorWT.prmtop -lp ligandWT.prmtop -y prodallWT.nc
+<br />
+<br />pbsa.in
+<br />
+Input file for running PB and GB
+<br />
+&amp;general
+<br />
+&nbsp;&nbsp;&nbsp;startframe=1,endframe=10000, verbose=1,
+<br />
+&nbsp;&nbsp;&nbsp;keep_files=0,entropy=1
+<br />
+/
+<br />
+&amp;gb
+<br />
+&nbsp;igb=5,
+<br />
+&nbsp;saltcon=0.15
+<br />
+/
+<br />
+&amp;pb
+<br />
+&nbsp;istrng=0.15
+<br />
+/
+<br />
+&amp;decomp
+<br />
+&nbsp;&nbsp;csv_format=1,dec_verbose=3,
+<br />
+&nbsp;&nbsp;idecomp=4,
+<br />
+/
+<br />
+<br />Thank you very much in advance!!
+<br />
+<br />Kind regards,
+<br />
+Artur
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Oct 04 2022 - 06:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0009.html" title="Next message in the list">Enrico Martinez via AMBER: "[AMBER] bar-graph of the hydrogen bonds fraction using xm-grace"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0007.html" title="Previous message in the list">Daniel Roe via AMBER: "Re: [AMBER] How to concatenate long trajs in a decent time"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg8" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg8" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg8" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg8" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

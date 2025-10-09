@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Absolute Binding Free Energy of Protein+Ligand Complex in AMBER20 - Boresch restraints, Smoothstep from Dickson, Callum on 2021-06-18 (Amber Archive Jun 2021)</title>
+<meta name="Author" content="Dickson, Callum (callum.dickson.novartis.com)" />
+<meta name="Subject" content="Re: [AMBER] Absolute Binding Free Energy of Protein+Ligand Complex in AMBER20 - Boresch restraints, Smoothstep" />
+<meta name="Date" content="2021-06-18" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Absolute Binding Free Energy of Protein+Ligand Complex in AMBER20 - Boresch restraints, Smoothstep</h1>
+<!-- received="Fri Jun 18 08:00:03 2021" -->
+<!-- isoreceived="20210618150003" -->
+<!-- sent="Fri, 18 Jun 2021 14:48:02 +0000" -->
+<!-- isosent="20210618144802" -->
+<!-- name="Dickson, Callum" -->
+<!-- email="callum.dickson.novartis.com" -->
+<!-- subject="Re: [AMBER] Absolute Binding Free Energy of Protein+Ligand Complex in AMBER20 - Boresch restraints, Smoothstep" -->
+<!-- id="SA0P171MB010753E6E267A5C7D7C44B36FC0D9.SA0P171MB0107.NAMP171.PROD.OUTLOOK.COM" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="SY4P282MB1676CE2D9C9B174E29BCF483AD0D9.SY4P282MB1676.AUSP282.PROD.OUTLOOK.COM" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0155.html" accesskey="d" title="Sruthi Sudhakar: &quot;Re: [AMBER] Error in pca analysis&quot;">Next message</a> ]
+[ <a href="0153.html" title="Vaibhav Dixit: &quot;Re: [AMBER] error with solvate.sh at remove command tleap&quot;">Previous message</a> ]
+[ <a href="0146.html" title="Josiah Bones: &quot;[AMBER] Absolute Binding Free Energy of Protein+Ligand Complex in AMBER20 - Boresch restraints, Smoothstep&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg154" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg154" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg154" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg154" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Dickson, Callum &lt;<a href="mailto:callum.dickson.novartis.com?Subject=Re%3A%20%5BAMBER%5D%20Absolute%20Binding%20Free%20Energy%20of%20Protein%2BLigand%20Complex%20in%20AMBER20%20-%20Boresch%20restraints%2C%20Smoothstep">callum.dickson.novartis.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 18 Jun 2021 14:48:02 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Josiah,
+<br />
+<br />I've only done a few ABFE runs with Amber on neutral molecules, so I can't claim to be expert - interested to hear input from others on the list. Here is my protocol; values for T4 Lysozyme were sensible.
+<br />
+<br />Complex+Ligand
+<br />
+<br />- restraint leg: transform one identical copy of your molecule without restraints into a second copy that does have Boresch restraints. So you need to set up a prmtop with two identical copies of your ligand. Then collect DV/DL values as you normally would. Here is the TI portion of my input (ligands are residue 1 and 2 respectively, with restraints on residue 2 only):
+<br />
+<br />&nbsp;&nbsp;&nbsp;nmropt=1,
+<br />
+&nbsp;&nbsp;&nbsp;gti_add_sc = 1,
+<br />
+&nbsp;&nbsp;&nbsp;gti_lam_sch = 1,
+<br />
+&nbsp;&nbsp;&nbsp;tishake=1, noshakemask=':1,2', ntc=2, ntf=1,
+<br />
+&nbsp;&nbsp;&nbsp;icfe = 1, clambda = 0.00922, scalpha = 0.2, scbeta = 50.0,
+<br />
+&nbsp;&nbsp;&nbsp;logdvdl = 1, 
+<br />
+&nbsp;&nbsp;&nbsp;ifmbar=1,
+<br />
+&nbsp;&nbsp;&nbsp;mbar_states = 12,
+<br />
+&nbsp;&nbsp;&nbsp;mbar_lambda = 0.00922 0.04794 0.11505 0.20634 0.31608 0.43738 0.56262 0.68392 0.79366 0.88495 0.95206 0.99078 ,
+<br />
+&nbsp;&nbsp;&nbsp;ifsc = 0, 
+<br />
+&nbsp;&nbsp;&nbsp;crgmask = ''
+<br />
+&nbsp;&nbsp;&nbsp;timask1 = ':1', timask2 = ':2',
+<br />
+&nbsp;&nbsp;&nbsp;scmask1 = '', scmask2 = '' 
+<br />
+<br />&nbsp;/
+<br />
+&nbsp;&amp;ewald
+<br />
+&nbsp;/ 
+<br />
+&amp;wt
+<br />
+&nbsp;&nbsp;type='END',
+<br />
+&nbsp;&amp;end
+<br />
+DISANG=disang.RST
+<br />
+<br /><br />- decouple leg: I used the one-step protocol to decouple electrostatics and vdW in a single step, with the same Boresch restraints applied to ligand (residue 1), now you have a prmtop with only the single ligand of interest. Note, I have to modify disang.RST file since prmtops are different between restraint and decouple step. You could split this up to separately remove electrostatics first followed by vdW.
+<br />
+<br />&nbsp;&nbsp;&nbsp;nmropt=1,
+<br />
+&nbsp;&nbsp;&nbsp;gti_add_sc = 1,
+<br />
+&nbsp;&nbsp;&nbsp;gti_lam_sch = 1,
+<br />
+&nbsp;&nbsp;&nbsp;tishake=1, noshakemask=':1', ntc=2, ntf=1,
+<br />
+&nbsp;&nbsp;&nbsp;icfe = 1, clambda = 0.00922, scalpha = 0.2, scbeta = 50.0,
+<br />
+&nbsp;&nbsp;&nbsp;logdvdl = 1, 
+<br />
+&nbsp;&nbsp;&nbsp;ifmbar=1,
+<br />
+&nbsp;&nbsp;&nbsp;mbar_states = 12,
+<br />
+&nbsp;&nbsp;&nbsp;mbar_lambda = 0.00922 0.04794 0.11505 0.20634 0.31608 0.43738 0.56262 0.68392 0.79366 0.88495 0.95206 0.99078 ,
+<br />
+&nbsp;&nbsp;&nbsp;ifsc = 1, 
+<br />
+&nbsp;&nbsp;&nbsp;crgmask = ''
+<br />
+&nbsp;&nbsp;&nbsp;timask1 = ':1', timask2 = '',
+<br />
+&nbsp;&nbsp;&nbsp;scmask1 = ':1', scmask2 = '' 
+<br />
+<br />&nbsp;/
+<br />
+&nbsp;&amp;ewald
+<br />
+&nbsp;/ 
+<br />
+&amp;wt
+<br />
+&nbsp;&nbsp;type='END',
+<br />
+&nbsp;&amp;end
+<br />
+DISANG=disang.RST
+<br />
+<br /><br />Solvent+Ligand
+<br />
+<br />-decouple leg: settings as with the complex decouple leg but no restraints applied
+<br />
+-restraint term: calculate analytically
+<br />
+<br /><br />All the best,
+<br />
+Callum
+<br />
+<br /><br />-----Original Message-----
+<br />
+From: Josiah Bones &lt;josiah.bones.anu.edu.au&gt; 
+<br />
+Sent: Friday, June 18, 2021 2:30 AM
+<br />
+To: amber.ambermd.org
+<br />
+Subject: [AMBER] Absolute Binding Free Energy of Protein+Ligand Complex in AMBER20 - Boresch restraints, Smoothstep
+<br />
+<br />This Message is from an External Sender. Do not click links or open attachments unless you trust the sender.
+<br />
+<br />Hi there,
+<br />
+<br />I asked a question about some parts of this elsewhere, but I realised I needed to simplify my previous question into something a bit more basic and address some issues in a single location that I can't find mentioned in any tutorials.
+<br />
+<br />I am wondering how to successfully complete what I believe is a fairly standard ABFE simulation in the context of AMBER20 on GPU. The goal is to capture the absolute binding of a ligand to a protein from a high-quality crystal structure.
+<br />
+<br />I believe I need 3x simulation phases +1 post simulation calculation to correctly capture the dG.
+<br />
+<br /><br />&nbsp;&nbsp;1.  Complex+Ligand: Simulate turning on Boresch restraints.
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*   I have defined these restraints in a DISANG file based on a high quality crystal structure using general recommendations mentioned elsewhere, but can't find any clue as to the correct way to simulate this leg anywhere, and how the .mdin file/s should look.
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*   Is this done without softcore potentials?
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*   What do the lambda windows look like, and how should this change with reference to the restraint file?
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*   Does the restraint file change between windows?
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*   What is V0 and V1 in this context?
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*   What other key .mdin toggles need attention beyond the defaults? Is dvdl_norest significant here, despite being deprecated?
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*   I would be absolutely thrilled to get commentary in particularly for this step, as it is completely elusive to me, and I have no idea how to solve it. Comments in a recent 2020 paper of TI changes in Amber made me assume that this was now essentially automated in Step 2 below, but I am not clear on this.
+<br />
+&nbsp;&nbsp;2.  Complex+Ligand: Simulate decoupling of the restrained ligand in the protein complex.
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*   This I intend to do with SC potentials, in particular, the new Smoothstep default settings as published recently.
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*   Is there special attention I need to give to the lambda scheduling given the context of my calculation, or are default settings likely reasonable?
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*   Given I am decoupling a whole ligand with no shared common atoms, am I safe to use SHAKE in this context? Or is SHAKE a big no-no the moment SC is involved, requiring me to use the noshakemask setting for the ligand?
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*   Are there key default .mdin toggles that need my attention in this situation?
+<br />
+<br />&nbsp;&nbsp;1.  Ligand+Water: Essentially the same as Step 2, although in just water+ions and without any restraints.
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*   Same generic questions as Step 2.
+<br />
+&nbsp;&nbsp;2.  Solve the equation relating to the Boresch restraints as they apply to my specific system.
+<br />
+<br />In the context of a charged ligand, I believe I could condense steps 2 and 3 into a single step where the ligand is &quot;recoupled&quot; in bulk water in a single leg of the cycle, and is held a decent distance from the protein with COM restraints. Would this require any further attention in capturing the correct dG (despite the likely requirement for increased sampling given the larger overall perturbation)?
+<br />
+<br />Any feedback on this process in the context of AMBER20 would be most appreciated.
+<br />
+<br />Thank you kindly,
+<br />
+<br />Josiah
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwICAg&amp;c=ZbgFmJjg4pdtrnL2HUJUDw&amp;r=HwsFjSfOtLupDR-NuCP430rdz1DD2LkJxNM3BsKSjrw&amp;m=WwGH4_77-S6VPUjHRAHLjOgYytcMJb0gaGkVXFOXBQI&amp;s=CMfUrFd4iGUAR0JDDc68h3KqRbR-IzfFPvHdeq1K45">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwICAg&amp;c=ZbgFmJjg4pdtrnL2HUJUDw&amp;r=HwsFjSfOtLupDR-NuCP430rdz1DD2LkJxNM3BsKSjrw&amp;m=WwGH4_77-S6VPUjHRAHLjOgYytcMJb0gaGkVXFOXBQI&amp;s=CMfUrFd4iGUAR0JDDc68h3KqRbR-IzfFPvHdeq1K45</a>o&amp;e=
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Jun 18 2021 - 08:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0155.html" title="Next message in the list">Sruthi Sudhakar: "Re: [AMBER] Error in pca analysis"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0153.html" title="Previous message in the list">Vaibhav Dixit: "Re: [AMBER] error with solvate.sh at remove command tleap"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0146.html" title="Message to which this message replies">Josiah Bones: "[AMBER] Absolute Binding Free Energy of Protein+Ligand Complex in AMBER20 - Boresch restraints, Smoothstep"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg154" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg154" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg154" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg154" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] AMBER GPU version: Segfault error with 12-6-4 parameters from Jafari, Majid via AMBER on 2022-10-20 (Amber Archive Oct 2022)</title>
+<meta name="Author" content="Jafari, Majid via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] AMBER GPU version: Segfault error with 12-6-4 parameters" />
+<meta name="Date" content="2022-10-20" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] AMBER GPU version: Segfault error with 12-6-4 parameters</h1>
+<!-- received="Thu Oct 20 12:00:03 2022" -->
+<!-- isoreceived="20221020190003" -->
+<!-- sent="Thu, 20 Oct 2022 18:41:07 +0000" -->
+<!-- isosent="20221020184107" -->
+<!-- name="Jafari, Majid via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] AMBER GPU version: Segfault error with 12-6-4 parameters" -->
+<!-- id="DS7PR12MB621378D9E0D7767832A13BFFD02A9.DS7PR12MB6213.namprd12.prod.outlook.com" -->
+<!-- charset="iso-8859-1" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0099.html" accesskey="d" title="Aravind R via AMBER: &quot;[AMBER] Help in Standardizing NEB&quot;">Next message</a> ]
+[ <a href="0097.html" title="Adrian Roitberg via AMBER: &quot;Re: [AMBER] Abrupt temperature rise carrying out Transition path sampling&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg98" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg98" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg98" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg98" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Jafari, Majid via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20AMBER%20GPU%20version%3A%20Segfault%20error%20with%2012-6-4%20parameters">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 20 Oct 2022 18:41:07 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello AMBER developers,
+<br />
+I made a simulation system containing protein and copper ions using the CHARMM-GUI server. I used the ff19SB and Lipid17 force fields and the 12-6-4 parameters to make the system topology file. The water model was TIP3P, and the salt concentration was 0.15 M. When I run the system on the CPU version, it seems fine, but when I try to run it on the GPU version, I get the following segfault error:
+<br />
+<br />&quot;
+<br />
+Program received signal SIGSEGV: Segmentation fault - invalid memory reference.
+<br />
+<br />Backtrace for this error:
+<br />
+#0  0x2b21126ec3ff in ???
+<br />
+#1  0x62cd3c in ???
+<br />
+#2  0x4b8009 in ???
+<br />
+#3  0x51bd67 in ???
+<br />
+#4  0x4f919d in ???
+<br />
+#5  0x44ca1c in ???
+<br />
+#6  0x2b21126d8554 in ???
+<br />
+#7  0x45c23d in ???
+<br />
+#8  0xffffffffffffffff in ???
+<br />
+/var/lib/slurmd/job63704945/slurm_script: line 18: 47392 Segmentation fault      (core dumped) pmemd.cuda -O -i step5_production.mdin -p step3_input.parm7 -c step4.5_equilibration.rst7 -o prod_1.mdout -r prod_1.rst7 -inf prod_1.mdinfo -ref step3_input.rst7 -x prod_1.nc
+<br />
+&quot;
+<br />
+Plus, when I make a system without the 12-6-4 parameters, the system keeps running without error. There has to be something wrong with the 12-6-4 parameters and the GPU version of the software. All the input files can be found here:
+<br />
+<a href="https://urldefense.com/v3/__https://www.dropbox.com/s/yaqyqtsdwesgqhr/protein.tar?dl=0__;!!HXCxUKc!z2Y-DFhqFfBLBz9FrVPrp8l10posRKGttfKBLpV14znHX5yzLUx-W_xF2LGRFtmHR4F0btBf-76PJEDdNXXcmnA">https://urldefense.com/v3/__https://www.dropbox.com/s/yaqyqtsdwesgqhr/protein.tar?dl=0__;!!HXCxUKc!z2Y-DFhqFfBLBz9FrVPrp8l10posRKGttfKBLpV14znHX5yzLUx-W_xF2LGRFtmHR4F0btBf-76PJEDdNXXcmnA</a>$
+<br />
+<br />I used the gcc-10.2.0 and nvcc-11.1.1 compilers; the GPU card was NVIDIA-A100.
+<br />
+I would be grateful if you could help me with this.
+<br />
+Best regards,
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Oct 20 2022 - 12:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0099.html" title="Next message in the list">Aravind R via AMBER: "[AMBER] Help in Standardizing NEB"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0097.html" title="Previous message in the list">Adrian Roitberg via AMBER: "Re: [AMBER] Abrupt temperature rise carrying out Transition path sampling"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg98" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg98" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg98" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg98" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

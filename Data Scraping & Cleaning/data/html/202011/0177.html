@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Amber 20 on AMD ryzen + Nvidia 30XX from Jason Swails on 2020-11-19 (Amber Archive Nov 2020)</title>
+<meta name="Author" content="Jason Swails (jason.swails.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Amber 20 on AMD ryzen + Nvidia 30XX" />
+<meta name="Date" content="2020-11-19" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Amber 20 on AMD ryzen + Nvidia 30XX</h1>
+<!-- received="Thu Nov 19 17:00:02 2020" -->
+<!-- isoreceived="20201120010002" -->
+<!-- sent="Thu, 19 Nov 2020 19:34:20 -0500" -->
+<!-- isosent="20201120003420" -->
+<!-- name="Jason Swails" -->
+<!-- email="jason.swails.gmail.com" -->
+<!-- subject="Re: [AMBER] Amber 20 on AMD ryzen + Nvidia 30XX" -->
+<!-- id="CAEk9e3qka2_5_JmteVEhtnvR1NGuFeCBHYhzs8+1No8MfgOuZw.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="01ac01d6b831$2c6c6d60$85454820$.iqac.csic.es" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0178.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] Unsupported Cuda Version on Amber 20 Installation&quot;">Next message</a> ]
+[ <a href="0176.html" title="Setyanto Md: &quot;Re: [AMBER] Unsupported Cuda Version on Amber 20 Installation&quot;">Previous message</a> ]
+[ <a href="0112.html" title="Jordi Bujons: &quot;Re: [AMBER] Amber 20 on AMD ryzen + Nvidia 30XX&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg177" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg177" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg177" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg177" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Jason Swails &lt;<a href="mailto:jason.swails.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Amber%2020%20on%20AMD%20ryzen%20%2B%20Nvidia%2030XX">jason.swails.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 19 Nov 2020 19:34:20 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Wed, Nov 11, 2020 at 8:47 AM Jordi Bujons &lt;jordi.bujons.iqac.csic.es&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; &quot;On AMD Ryzen 3000 series CPUs, the hardware random number generator
+</em><br />
+<em class="quotelev1">&gt; (RDRAND) can behave incorrectly, always returning -1 (0xFFFFFFFF). When
+</em><br />
+<em class="quotelev1">&gt; this
+</em><br />
+<em class="quotelev1">&gt; hardware bug is detected at runtime, GROMACS will switch to its
+</em><br />
+<em class="quotelev1">&gt; software-based pseudo-random number generator instead.&quot;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I wonder if this might also affect AMBER, or if AMD has already solved this
+</em><br />
+<em class="quotelev1">&gt; bug and it is not a problem now. Do you know anything about this?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br />Amber uses a software-based PRNG seeded, by default, from the system
+<br />
+clock.  Hardware RNGs that draw from system entropy are great for
+<br />
+cryptographic applications where true randomness is an essential ingredient
+<br />
+for cybersecurity, but the Amber approach has proven sufficient for
+<br />
+generating distinct streams for separate simulations over years of use even
+<br />
+in situations with batch job submission.  Even though there are possibly
+<br />
+common scenarios that would result in replicate random streams, in practice
+<br />
+I've never seen it happen.
+<br />
+<br />All the best,
+<br />
+Jason
+<br />
+<br /><pre>
+-- 
+Jason M. Swails
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Thu Nov 19 2020 - 17:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0178.html" title="Next message in the list">David A Case: "Re: [AMBER] Unsupported Cuda Version on Amber 20 Installation"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0176.html" title="Previous message in the list">Setyanto Md: "Re: [AMBER] Unsupported Cuda Version on Amber 20 Installation"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0112.html" title="Message to which this message replies">Jordi Bujons: "Re: [AMBER] Amber 20 on AMD ryzen + Nvidia 30XX"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg177" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg177" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg177" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg177" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

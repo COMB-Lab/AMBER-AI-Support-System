@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Script starts  but then stops w/o error message from erik zuiderweg on 2022-04-10 (Amber Archive Apr 2022)</title>
+<meta name="Author" content="erik zuiderweg (zuiderwe.umich.edu)" />
+<meta name="Subject" content="[AMBER] Script starts  but then stops w/o error message" />
+<meta name="Date" content="2022-04-10" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Script starts  but then stops w/o error message</h1>
+<!-- received="Sun Apr 10 14:00:02 2022" -->
+<!-- isoreceived="20220410210002" -->
+<!-- sent="Sun, 10 Apr 2022 22:35:21 +0200" -->
+<!-- isosent="20220410203521" -->
+<!-- name="erik zuiderweg" -->
+<!-- email="zuiderwe.umich.edu" -->
+<!-- subject="[AMBER] Script starts  but then stops w/o error message" -->
+<!-- id="AEC3E999-BD6E-48AF-95B0-5EA7828A6A00.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0089.html" accesskey="d" title="rsaha.icredd.hokudai.ac.jp: &quot;[AMBER]  Amber force field for polymers&quot;">Next message</a> ]
+[ <a href="0087.html" title="Artur Hermano: &quot;Re: [AMBER] Barostat not working (?)&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0091.html" accesskey="t" title="Carlos Simmerling: &quot;Re: [AMBER] Script starts but then stops w/o error message&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg88" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg88" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg88" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg88" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: erik zuiderweg &lt;<a href="mailto:zuiderwe.umich.edu?Subject=Re%3A%20%5BAMBER%5D%20Script%20starts%20%20but%20then%20stops%20w%2Fo%20error%20message">zuiderwe.umich.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 10 Apr 2022 22:35:21 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Amber 20 / AmberTools21. on MacOS 11.6
+<br />
+<br />The following script works fine 
+<br />
+<br />cat &lt;&lt;eof &gt; mdin
+<br />
+&nbsp;&nbsp;minimize structure 
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;&nbsp;imin=1, maxcyc=10000,ntmin=2,
+<br />
+&nbsp;&nbsp;&nbsp;cut=300.0, igb=0,
+<br />
+&nbsp;&nbsp;&nbsp;ntpr=10, ntx=1, ntb=0,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntr=1, restraintmask='.1-22810',  
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;restraint_wt=0.1,
+<br />
+&nbsp;&amp;end
+<br />
+&nbsp;
+<br />
+eof
+<br />
+sander   -O -i mdin \
+<br />
+-c 2qmt.crd  -p 2qmt.parm7 -ref 2qmt.crd -o 2QMT_MIN.out -r 2QMT_MIN.rst
+<br />
+<br /><br /><br />BUT:
+<br />
+<br />The following script starts  but then stops w/o error message
+<br />
+<br />cat&lt;&lt;EOF &gt; mdin
+<br />
+md for gb1/opc
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;imin=0, maxcyc=500, ntmin=2, nscm=20000,
+<br />
+&nbsp;&nbsp;ntpr=10000, ntwx=1000, ntwprt=846, ntwr=1000000, cut=9., ioutfm=1, ntxo=2,
+<br />
+&nbsp;&nbsp;ntx=1, irest=0, tempi=0., temp0=274.,
+<br />
+&nbsp;&nbsp;ntt=0, gamma_ln=0.,
+<br />
+&nbsp;&nbsp;ntb=1, ntp=0, ntc=2, ntf=2,  tol=0.0000001, barostat=2,
+<br />
+&nbsp;&nbsp;nstlim=5000000, dt=.001, ig=-1, ntave=0,
+<br />
+&nbsp;&nbsp;ntr=1, restraint_wt=0.1,  restraintmask=&quot;!:NA,CL,WAT&amp;!.H=&quot;,
+<br />
+&nbsp;/
+<br />
+&nbsp;&amp;ewald
+<br />
+&nbsp;&nbsp;&nbsp;dsum_tol=0.000001,
+<br />
+&nbsp;/
+<br />
+EOF
+<br />
+<br />sander   -O -i mdin \
+<br />
+-p ../2qmt.parm7 -c ../2QMT_MIN.rst   -ref 2QMT_MIN.rst -o 2QMT_MIN_MD1.out -r 2QMT_MIN_MD1.rst
+<br />
+<br /><br /><br /><br /><br /><br />Any ideas?
+<br />
+Erik  Zuiderweg
+<br />
+Gelrestraat 17b
+<br />
+6585XW Mook, Nederland
+<br />
+0611154835
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Apr 10 2022 - 14:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0089.html" title="Next message in the list">rsaha.icredd.hokudai.ac.jp: "[AMBER]  Amber force field for polymers"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0087.html" title="Previous message in the list">Artur Hermano: "Re: [AMBER] Barostat not working (?)"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0091.html" title="Next message in this discussion thread">Carlos Simmerling: "Re: [AMBER] Script starts but then stops w/o error message"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0091.html" title="Message sent in reply to this message">Carlos Simmerling: "Re: [AMBER] Script starts but then stops w/o error message"</a></li>
+<li><dfn>Reply</dfn>: <a href="0093.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Script starts  but then stops w/o error message"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg88" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg88" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg88" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg88" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

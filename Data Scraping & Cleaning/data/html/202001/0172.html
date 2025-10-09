@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Harmless bug in Lipid11-17 residue libraries causing tleap to split fragments in saved PDB from Matias Machado on 2020-01-15 (Amber Archive Jan 2020)</title>
+<meta name="Author" content="Matias Machado (mmachado.pasteur.edu.uy)" />
+<meta name="Subject" content="[AMBER] Harmless bug in Lipid11-17 residue libraries causing tleap to split fragments in saved PDB" />
+<meta name="Date" content="2020-01-15" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Harmless bug in Lipid11-17 residue libraries causing tleap to split fragments in saved PDB</h1>
+<!-- received="Wed Jan 15 09:00:02 2020" -->
+<!-- isoreceived="20200115170002" -->
+<!-- sent="Wed, 15 Jan 2020 13:32:38 -0300 (UYT)" -->
+<!-- isosent="20200115163238" -->
+<!-- name="Matias Machado" -->
+<!-- email="mmachado.pasteur.edu.uy" -->
+<!-- subject="[AMBER] Harmless bug in Lipid11-17 residue libraries causing tleap to split fragments in saved PDB" -->
+<!-- id="c05ae126-4ffa-4976-a547-7b8308f11649.free.ipmont.lan" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="f59fa7e3-1c9f-4c81-aacd-49bc74339a5b.free.ipmont.lan" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0173.html" accesskey="d" title="Matias Machado: &quot;Re: [AMBER] How to use polarizable water model in Amber 18?&quot;">Next message</a> ]
+[ <a href="0171.html" title="David Case: &quot;Re: [AMBER] modeling a Schiff base with GAFF atom types&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg172" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg172" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg172" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg172" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Matias Machado &lt;<a href="mailto:mmachado.pasteur.edu.uy?Subject=Re%3A%20%5BAMBER%5D%20Harmless%20bug%20in%20Lipid11-17%20residue%20libraries%20causing%20tleap%20to%20split%20fragments%20in%20saved%20PDB">mmachado.pasteur.edu.uy</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 15 Jan 2020 13:32:38 -0300 (UYT)</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber developers,
+<br />
+<br />We've just found a possible &quot;harmless&quot; bug in Lipid11-17 libraries causing tleap to split lipid's head and tail fragments by TER statements when saving a PDB file. 
+<br />
+<br />The issue was previously reported in these threads:
+<br />
+<br />+ [<a href="http://archive.ambermd.org/201905/0138.html">http://archive.ambermd.org/201905/0138.html</a>] ... [<a href="http://archive.ambermd.org/201905/0197.html">http://archive.ambermd.org/201905/0197.html</a>]
+<br />
++ [<a href="http://archive.ambermd.org/201610/0143.html">http://archive.ambermd.org/201610/0143.html</a>]
+<br />
+<br />A simple way to show the issue is executing the following lines in tleap (the same is obtained by loading a PDB):
+<br />
+<br />&nbsp;&nbsp;source leaprc.lipid17
+<br />
+&nbsp;&nbsp;popc = sequence {PA PC OL}
+<br />
+&nbsp;&nbsp;savepdb popc popc.pdb
+<br />
+&nbsp;&nbsp;saveamberparm popc popc.prmtop popc.rst7
+<br />
+&nbsp;&nbsp;quit
+<br />
+<br />Head and tail fragments of POPC (PA, PC and OL) are split by TER statements in the output &quot;popc.pdb&quot; file despite belonging to the same chain. The connectivity is correctly set in popc.prmtop.
+<br />
+<br />I've found that the field &quot;!entry.*.unit.residueconnect&quot; (where * = any fragment) in lipid17.lib was set to &quot; 0 0 0 0 0 &quot;, the same happens in lipid11.lib and lipid14.lib.
+<br />
+<br />Setting this entry to the same atom index in &quot;!entry.*.unit.connect&quot; fix the problem:
+<br />
+<br />!entry.OL.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
+<br />
+&nbsp;1 1 0 0 0 0
+<br />
+<br />!entry.PA.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
+<br />
+&nbsp;44 44 0 0 0 0
+<br />
+<br />!entry.PC.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
+<br />
+&nbsp;1 37 0 0 0 0
+<br />
+<br />It's not very clear to me the practical function of that entry, but the fix modifies the TREE_CHAIN_CLASSIFICATION section of the prmtop from &quot;BLA BLA BLA BLA...&quot; to something that makes more sense &quot;3   E   E   E   3   E   E ... M ... B ...&quot;
+<br />
+<br />Although this isn't a dramatic issue, neither the simulation nor the analysis with cpptraj is affected, it may constitute a pitfall in the AMBER's pipeline, as the output PDB file from leap can't be properly used again as a new input for leap.
+<br />
+<br />Best regards,
+<br />
+<br />Matias Machado
+<br />
+<br />------------------------------------
+<br />
+PhD.
+<br />
+Researcher at Biomolecular Simulations Lab.
+<br />
+Institut Pasteur de Montevideo | Uruguay
+<br />
+[<a href="http://pasteur.uy/en/labs/biomolecular-simulations-laboratory">http://pasteur.uy/en/labs/biomolecular-simulations-laboratory</a>]
+<br />
+[<a href="http://www.sirahff.com">http://www.sirahff.com</a>]
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Jan 15 2020 - 09:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0173.html" title="Next message in the list">Matias Machado: "Re: [AMBER] How to use polarizable water model in Amber 18?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0171.html" title="Previous message in the list">David Case: "Re: [AMBER] modeling a Schiff base with GAFF atom types"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg172" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg172" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg172" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg172" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

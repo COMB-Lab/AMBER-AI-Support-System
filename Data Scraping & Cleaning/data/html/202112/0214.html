@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Advice on Simulated Annealing from David A Case on 2021-12-29 (Amber Archive Dec 2021)</title>
+<meta name="Author" content="David A Case (david.case.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] Advice on Simulated Annealing" />
+<meta name="Date" content="2021-12-29" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Advice on Simulated Annealing</h1>
+<!-- received="Wed Dec 29 19:00:02 2021" -->
+<!-- isoreceived="20211230030002" -->
+<!-- sent="Wed, 29 Dec 2021 21:59:09 -0500" -->
+<!-- isosent="20211230025909" -->
+<!-- name="David A Case" -->
+<!-- email="david.case.rutgers.edu" -->
+<!-- subject="Re: [AMBER] Advice on Simulated Annealing" -->
+<!-- id="20211230025909.ohtq5g2ts5sh6zph.nbofacg.rad.rutgers.edu" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="223989E1-35B2-43FC-88DE-B891A4E7F74D.uconn.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0215.html" accesskey="d" title="Fabian Glaser: &quot;[AMBER] A10 cards&quot;">Next message</a> ]
+[ <a href="0213.html" title="David A Case: &quot;Re: [AMBER] &#12304;Error on testing benz_water_md.reaxff and openMPI&#12305;&quot;">Previous message</a> ]
+[ <a href="0211.html" title="Matthew Guberman-Pfeffer: &quot;[AMBER] Advice on Simulated Annealing&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0217.html" accesskey="t" title="Matthew Guberman-Pfeffer: &quot;Re: [AMBER] Advice on Simulated Annealing&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg214" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg214" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg214" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg214" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case &lt;<a href="mailto:david.case.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20Advice%20on%20Simulated%20Annealing">david.case.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 29 Dec 2021 21:59:09 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Wed, Dec 29, 2021, Matthew Guberman-Pfeffer wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;I’m wondering if advice can be offered on how to select the maximum
+</em><br />
+<em class="quotelev1">&gt;temperature and heating/cooling schedules for simulated annealing.
+</em><br />
+<br />If you don't have restraints on a protein, you probably need to keep the
+<br />
+maximum temperature pretty low (e.g. 300K): if your protein starts to unfold
+<br />
+(even locally) during the run, cooling is unlikely to bring it back to
+<br />
+a good structure.
+<br />
+<br />If you can afford it, I'd suggest starting with something like 10 ns: say
+<br />
+run at 300K for 5 ns, and cool to zero over another 5 ns.  Then see if you
+<br />
+get better/differnt results by doubling the time.  (I use nmropt=1 to slowly
+<br />
+change TEMP0 from 300 to 0 during the second half of the run.
+<br />
+<br />If you know where the strain is (e.g. between the porphyrin rings), you
+<br />
+could restrain parts of the system away from the problem area.  Then you
+<br />
+could probably accommodate a higher maximum temperature.  (You might want to
+<br />
+always restrain things that are far from the added porphyrins, on the
+<br />
+hypothesis that alphafold generally knows what it's doing.)
+<br />
+<br />These are all guesses, based on limited experience, and others may
+<br />
+have their own anecdotes, or know of more systematic explorations.  And
+<br />
+there are certainly many other accelerated sampling approaches that could be
+<br />
+used.  But just letting the system rattle around for a while with MD will
+<br />
+often do wonders for localized strain.
+<br />
+<br />....dac
+<br />
+<br />Caveat: when I suggest protocols like the above to my students, it's pretty
+<br />
+common to find out that my advice wasn't very good.
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Dec 29 2021 - 19:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0215.html" title="Next message in the list">Fabian Glaser: "[AMBER] A10 cards"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0213.html" title="Previous message in the list">David A Case: "Re: [AMBER] &#12304;Error on testing benz_water_md.reaxff and openMPI&#12305;"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0211.html" title="Message to which this message replies">Matthew Guberman-Pfeffer: "[AMBER] Advice on Simulated Annealing"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0217.html" title="Next message in this discussion thread">Matthew Guberman-Pfeffer: "Re: [AMBER] Advice on Simulated Annealing"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0217.html" title="Message sent in reply to this message">Matthew Guberman-Pfeffer: "Re: [AMBER] Advice on Simulated Annealing"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg214" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg214" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg214" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg214" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

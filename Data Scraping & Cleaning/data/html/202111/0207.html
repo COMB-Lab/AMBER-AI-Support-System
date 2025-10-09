@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Summit compile and &quot;Attempted to read inpcrd as a NetCDF restart file, but failed&quot; from Derek M Shore on 2021-11-19 (Amber Archive Nov 2021)</title>
+<meta name="Author" content="Derek M Shore (des2037.med.cornell.edu)" />
+<meta name="Subject" content="[AMBER] Summit compile and &quot;Attempted to read inpcrd as a NetCDF restart file, but failed&quot;" />
+<meta name="Date" content="2021-11-19" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Summit compile and &quot;Attempted to read inpcrd as a NetCDF restart file, but failed&quot;</h1>
+<!-- received="Fri Nov 19 16:00:02 2021" -->
+<!-- isoreceived="20211120000002" -->
+<!-- sent="Fri, 19 Nov 2021 23:56:21 +0000" -->
+<!-- isosent="20211119235621" -->
+<!-- name="Derek M Shore" -->
+<!-- email="des2037.med.cornell.edu" -->
+<!-- subject="[AMBER] Summit compile and &quot;Attempted to read inpcrd as a NetCDF restart file, but failed&quot;" -->
+<!-- id="51DC618F-CB3C-4E0E-9F9C-316BDC36D3FC.med.cornell.edu" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0208.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] xLEaP Keyboard?&quot;">Next message</a> ]
+[ <a href="0206.html" title="Venkatareddy Dadireddy: &quot;Re: [AMBER] S-adenosyl-L-methionine (SAM) ff parameters&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0209.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] Summit compile and &#0034;Attempted to read inpcrd as a NetCDF restart file, but failed&#0034;&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg207" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg207" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg207" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg207" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Derek M Shore &lt;<a href="mailto:des2037.med.cornell.edu?Subject=Re%3A%20%5BAMBER%5D%20Summit%20compile%20and%20%22Attempted%20to%20read%20inpcrd%20as%20a%20NetCDF%20restart%20file%2C%20but%20failed%22">des2037.med.cornell.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 19 Nov 2021 23:56:21 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+
+<br />
+I am trying to compile/test Amber20 (tools + GPU-accelerated MD), on Summit at ORNL (IBM POWER9, NVIDIA V100s). The compile seems to run without a problem. When I `make test.serial`, most of the tests pass, but I see several errors similar to this one:
+<br />
+*/amber20/AmberTools/test/mdgx/1p7e$ ./Test.1p7e
+<br />
+ReadRst &gt;&gt; Attempted to read inpcrd as a NetCDF
+<br />
+ReadRst &gt;&gt; restart file, but failed.
+<br />
+grep: gb30.out: No such file or directory
+<br />
+grep: gb30.out: No such file or directory
+<br />
+grep: gb30.out: No such file or directory
+<br />
+diffing energy.dat.save with energy.dat
+<br />
+possible FAILURE:  check energy.dat.dif
+<br />
+
+<br />
+The part that is common to many of my errors is:
+<br />
+ReadRst &gt;&gt; Attempted to read inpcrd as a NetCDF
+<br />
+ReadRst &gt;&gt; restart file, but failed.
+<br />
+
+<br />
+To try and resolve, I compiled allowing Amber to build NetCDF itself (rather than using the NetCDF provided by modules), but this did not help.
+<br />
+
+<br />
+Does anyone have any thoughts as to why I would see multiple ReadRst/NetCDF errors? (or, if anyone has a cmake ‘recipe’ that works on Summit that would be awesome!)
+<br />
+
+<br />
+When I run the compile/test, these are the modules I have loaded:
+<br />
+Currently Loaded Modules:
+<br />
+1) gcc/9.1.0
+<br />
+2) nsight-compute/2021.2.1
+<br />
+3) nsight-systems/2021.3.1.54
+<br />
+4) cuda/11.0.3
+<br />
+5) cmake/3.21.3
+<br />
+6) netlib-lapack/3.9.1
+<br />
+7) fftw/3.3.9
+<br />
+8) flex/2.6.4
+<br />
+9) bison/3.7.6
+<br />
+10) git/2.31.1
+<br />
+
+<br />
+I’m using conda to manage python dependencies (I also tried letting Amber use miniconda, but this didn’t resolve the problem either).
+<br />
+
+<br />
+Any assistance/advice here is greatly appreciated!
+<br />
+
+<br />
+Thanks,
+<br />
+Derek
+<br />
+
+<br />
+Derek M. Shore, Ph.D.
+<br />
+Scientific Computing Technology Engineer
+<br />
+Institute for Computational Biomedicine
+<br />
+Department of Physiology and Biophysics
+<br />
+
+<br />
+Weill Cornell Medicine
+<br />
+Department of Physiology and Biophysics
+<br />
+1300 York Avenue, Room LC501A
+<br />
+New York, NY 10065
+<br />
+T: 212-746-6386
+<br />
+des2037.med.cornell.edu&lt;mailto:<a href="mailto:des2037.med.cornell.edu?Subject=Re%3A%20%5BAMBER%5D%20Summit%20compile%20and%20%22Attempted%20to%20read%20inpcrd%20as%20a%20NetCDF%20restart%20file%2C%20but%20failed%22">des2037.med.cornell.edu</a>&gt;
+<br />
+
+<br />
+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Nov 19 2021 - 16:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0208.html" title="Next message in the list">David A Case: "Re: [AMBER] xLEaP Keyboard?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0206.html" title="Previous message in the list">Venkatareddy Dadireddy: "Re: [AMBER] S-adenosyl-L-methionine (SAM) ff parameters"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0209.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] Summit compile and &#0034;Attempted to read inpcrd as a NetCDF restart file, but failed&#0034;"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0209.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Summit compile and &#0034;Attempted to read inpcrd as a NetCDF restart file, but failed&#0034;"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg207" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg207" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg207" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg207" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

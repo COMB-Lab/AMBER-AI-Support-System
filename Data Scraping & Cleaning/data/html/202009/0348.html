@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] MMPBSA.py error for mismatch NATOMS from Jason Swails on 2020-09-26 (Amber Archive Sep 2020)</title>
+<meta name="Author" content="Jason Swails (jason.swails.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] MMPBSA.py error for mismatch NATOMS" />
+<meta name="Date" content="2020-09-26" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] MMPBSA.py error for mismatch NATOMS</h1>
+<!-- received="Sat Sep 26 12:00:03 2020" -->
+<!-- isoreceived="20200926190003" -->
+<!-- sent="Sat, 26 Sep 2020 14:50:12 -0400" -->
+<!-- isosent="20200926185012" -->
+<!-- name="Jason Swails" -->
+<!-- email="jason.swails.gmail.com" -->
+<!-- subject="Re: [AMBER] MMPBSA.py error for mismatch NATOMS" -->
+<!-- id="CAEk9e3rye3ARb9mE7MhC4aJTLYaHCF80DS1RfLMN80EBLJ4-SA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="39213058.177097.1600928890535.mail.yahoo.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0349.html" accesskey="d" title="Jenny 148: &quot;[AMBER] Netcdf trajectory in pymol?&quot;">Next message</a> ]
+[ <a href="0347.html" title="David A Case: &quot;Re: [AMBER] Fwd:  RESTARTED DUE TO LINMIN FAILURE&quot;">Previous message</a> ]
+[ <a href="0318.html" title="Asmi Mahmood: &quot;[AMBER] MMPBSA.py error for mismatch NATOMS&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg348" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg348" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg348" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg348" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Jason Swails &lt;<a href="mailto:jason.swails.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20MMPBSA.py%20error%20for%20mismatch%20NATOMS">jason.swails.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 26 Sep 2020 14:50:12 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+The error message suggests that the number of atoms specified in the
+<br />
+coordinate/trajectory file for the complex is different than the number of
+<br />
+atoms in the resulting trajectory.
+<br />
+<br />By default, the `strip_mask` variable in the MMPBSA.py input file will
+<br />
+strip out all of the metal atoms from the trajectory.  You need to override
+<br />
+this value to *not* strip out the metal atom in your complex that you would
+<br />
+like to keep.
+<br />
+<br />HTH,
+<br />
+Jason
+<br />
+<br />On Thu, Sep 24, 2020 at 2:28 AM Asmi Mahmood &lt;asmi_mahmood.yahoo.com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hi I'm using AMBER mmpbsa.py for energy calculation of my system. In my
+</em><br />
+<em class="quotelev1">&gt; protein- ligand system there is also a metal atom Nickle in the binding
+</em><br />
+<em class="quotelev1">&gt; site. I used charmm-gui for PSF generation and ran simulations using
+</em><br />
+<em class="quotelev1">&gt; NAMD. For MMPbsa, I used ambertools20. Converted all PSF and crd files into
+</em><br />
+<em class="quotelev1">&gt; prmtop using commands in parmed of chamber: Chamber -top top.rtf -param
+</em><br />
+<em class="quotelev1">&gt; file.prm - str file.str -psf file.psf -crd file .PDB
+</em><br />
+<em class="quotelev1">&gt; Followed by outparm file.prmtop and inpcrd.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; All files generated successfully without any error. But when I ran MMPbsa
+</em><br />
+<em class="quotelev1">&gt; command it gives error just after initializing GB calculation Calerr:
+</em><br />
+<em class="quotelev1">&gt; complex.prmtop
+</em><br />
+<em class="quotelev1">&gt; Detail of error in gb.out file is FATAL: mismatch NATOM in coordinate and
+</em><br />
+<em class="quotelev1">&gt; topology file.
+</em><br />
+<em class="quotelev1">&gt; For troubleshooting, I ran tutorial files it ran well. In addition I also
+</em><br />
+<em class="quotelev1">&gt; ran an other NAMD simulated protein. It also ran without any error.
+</em><br />
+<em class="quotelev1">&gt; I am confused how to sort it out.I checked number of atoms in complex PSF
+</em><br />
+<em class="quotelev1">&gt; and PDB files atoms are same. I generted PSF files both by charmm-gui and
+</em><br />
+<em class="quotelev1">&gt; also by vmd. Even then same error.My gut feel says it's something about the
+</em><br />
+<em class="quotelev1">&gt; metal ion in the binding site.
+</em><br />
+<em class="quotelev1">&gt; Plz guide me. Thanks in advance
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br /><br /><pre>
+-- 
+Jason M. Swails
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Sat Sep 26 2020 - 12:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0349.html" title="Next message in the list">Jenny 148: "[AMBER] Netcdf trajectory in pymol?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0347.html" title="Previous message in the list">David A Case: "Re: [AMBER] Fwd:  RESTARTED DUE TO LINMIN FAILURE"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0318.html" title="Message to which this message replies">Asmi Mahmood: "[AMBER] MMPBSA.py error for mismatch NATOMS"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg348" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg348" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg348" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg348" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

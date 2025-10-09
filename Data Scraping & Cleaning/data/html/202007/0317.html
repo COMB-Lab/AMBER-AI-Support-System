@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Issue heating system in equilibration step from Samuel A. Ratliff on 2020-07-28 (Amber Archive Jul 2020)</title>
+<meta name="Author" content="Samuel A. Ratliff (Samuel.Ratliff17.kzoo.edu)" />
+<meta name="Subject" content="[AMBER] Issue heating system in equilibration step" />
+<meta name="Date" content="2020-07-28" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Issue heating system in equilibration step</h1>
+<!-- received="Tue Jul 28 10:30:02 2020" -->
+<!-- isoreceived="20200728173002" -->
+<!-- sent="Tue, 28 Jul 2020 17:05:00 +0000" -->
+<!-- isosent="20200728170500" -->
+<!-- name="Samuel A. Ratliff" -->
+<!-- email="Samuel.Ratliff17.kzoo.edu" -->
+<!-- subject="[AMBER] Issue heating system in equilibration step" -->
+<!-- id="1595955900987.99794.kzoo.edu" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0318.html" accesskey="d" title="Lod King: &quot;[AMBER] AMD parameter: protein residue should count ligand or not&quot;">Next message</a> ]
+[ <a href="0316.html" title="Adrian Roitberg: &quot;Re: [AMBER] ASMD equil4 not producing output files&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0351.html" accesskey="t" title="Samuel A. Ratliff: &quot;Re: [AMBER] Issue heating system in equilibration step&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg317" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg317" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg317" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg317" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Samuel A. Ratliff &lt;<a href="mailto:Samuel.Ratliff17.kzoo.edu?Subject=Re%3A%20%5BAMBER%5D%20Issue%20heating%20system%20in%20equilibration%20step">Samuel.Ratliff17.kzoo.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 28 Jul 2020 17:05:00 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello all,
+<br />
+<br /><br />I've been trying to equilibrate a protein embedded in a lipid bilayer and have been having some issues. So far, I've been roughly using the AMBER lipid tutorial at
+<br />
+<br /><a href="http://ambermd.org/tutorials/advanced/tutorial16/index.html">http://ambermd.org/tutorials/advanced/tutorial16/index.html</a> as a guide. I've been able to minimize the system in three phases, minimizing the waters, then the waters and the lipids, then minimizing the whole system. However, when I attempt to heat the system, pmemd.cuda dumps core with the following message:
+<br />
+<br /><br />*** Error in `pmemd.cuda': double free or corruption (out): 0x000000000448df70 ***
+<br />
+<br />In the heat.out file where AMBER writes its output, the last line is &quot;LOADING THE CONSTRAINED ATOMS AS GROUPS&quot;. AMBER also writes a NetCDF trajectory file, but when I view it in VMD, there are no atoms and the size of the NetCDF file is significantly smaller than I expect. I've opened the min_system.rst file that the heating step starts from in VMD and it seems to be fine. I've also been able to minimize the min_system.rst file again, so it doesn't seem like the restart file is the problem. From a conceptual standpoint, I was also unsure if when heating the system, I should restrain only the protein (resids 1-498) or the protein and the lipids (resids 1-1215). I've also tried removing the constraints on the system and it dumps core at the same place, though doesn't print &quot;LOADING THE CONSTRAINED ATOMS AS GROUPS&quot; and instead prints a line of dashes like the file was going to go on to the next section of the output.
+<br />
+<br /><br />Below is my heat.out file. (Note: I know that AMBER16 is not particularly current, but my lab has custom code written for AMBER16 that necessitates its use.) Any suggestions to fix this issue or insights into what is going wrong are welcome. Thanks!
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------------------------
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Amber 16 PMEMD                              2016
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------------------------
+<br />
+<br />| PMEMD implementation of SANDER, Release 16
+<br />
+<br />| Run on 07/28/2020 at 12:39:48
+<br />
+<br />|   Executable path: pmemd.cuda
+<br />
+| Working directory: /media/furgelab/Store/archive/sam_ratliff/simulations/lipid/1_lipid/2019.08.13_1/eq
+<br />
+|          Hostname: Unknown
+<br />
+&nbsp;&nbsp;[-O]verwriting output
+<br />
+<br />File Assignments:
+<br />
+|   MDIN: /home/furgelab/scripts/MD/inputs//heat_lipid.in
+<br />
+|  MDOUT: heat/heat.out
+<br />
+| INPCRD: minimization/min_system.rst
+<br />
+|   PARM: ../build/system/1_lipid.prmtop
+<br />
+| RESTRT: heat/heat.rst
+<br />
+|   REFC: minimization/min_system.rst
+<br />
+|  MDVEL: mdvel
+<br />
+|   MDEN: mden
+<br />
+|  MDCRD: heat/heat.nc
+<br />
+| MDINFO: heat/heat.mdinfo
+<br />
+|  MDFRC: mdfrc
+<br />
+<br /><br />&nbsp;Here is the input file:
+<br />
+<br />Heating up the system equilibration  stage 1
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;imin=0, irest=0,
+<br />
+&nbsp;&nbsp;ntx=1, ig=-1,
+<br />
+&nbsp;&nbsp;nstlim=25000,
+<br />
+&nbsp;&nbsp;dt=0.002,
+<br />
+&nbsp;&nbsp;ntpr=7, ntwr=7, ntwx=7,
+<br />
+&nbsp;&nbsp;tempi=0.0, temp0=310.0,
+<br />
+&nbsp;&nbsp;ntt=3, gamma_ln=5, ntb=1, ntp=0,
+<br />
+&nbsp;&nbsp;ntc=2, ntf=2, nmropt = 1,
+<br />
+&nbsp;&nbsp;cut=9, ntr=1,
+<br />
+&nbsp;&nbsp;restraintmask='(:1-498.CA,C,N)', !was :1-1215
+<br />
+&nbsp;&nbsp;restraint_wt=4.0,
+<br />
+&nbsp;&nbsp;ioutfm=1,
+<br />
+&nbsp;&nbsp;iwrap=1,
+<br />
+&nbsp;&amp;end
+<br />
+&nbsp;&amp;wt TYPE='TEMP0', istep1=0, istep2=125000,
+<br />
+&nbsp;&nbsp;value1=0.0, value2=310.0, /
+<br />
+&nbsp;&amp;wt TYPE='END' /
+<br />
+<br /><br />Note: ig = -1. Setting random seed to    78217 based on wallclock time in
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;microseconds.
+<br />
+<br />|--------------------- INFORMATION ----------------------
+<br />
+| GPU (CUDA) Version of PMEMD in use: NVIDIA GPU IN USE.
+<br />
+|                    Version 16.0.0
+<br />
+|
+<br />
+|                      02/25/2016
+<br />
+|
+<br />
+| Implementation by:
+<br />
+|                    Ross C. Walker     (SDSC)
+<br />
+|                    Scott Le Grand     (nVIDIA)
+<br />
+|
+<br />
+| Precision model in use:
+<br />
+|      [SPFP] - Single Precision Forces, 64-bit Fixed Point
+<br />
+|               Accumulation. (Default)
+<br />
+|
+<br />
+|--------------------------------------------------------
+<br />
+<br />|----------------- CITATION INFORMATION -----------------
+<br />
+|
+<br />
+|    When publishing work that utilized the CUDA version
+<br />
+|    of AMBER, please cite the following in addition to
+<br />
+|    the regular AMBER citations:
+<br />
+|
+<br />
+|  - Romelia Salomon-Ferrer; Andreas W. Goetz; Duncan
+<br />
+|    Poole; Scott Le Grand; Ross C. Walker &quot;Routine
+<br />
+|    microsecond molecular dynamics simulations with
+<br />
+|    AMBER - Part II: Particle Mesh Ewald&quot;, J. Chem.
+<br />
+|    Theory Comput., 2013, 9 (9), pp3878-3888,
+<br />
+|    DOI: 10.1021/ct400314y.
+<br />
+|
+<br />
+|  - Andreas W. Goetz; Mark J. Williamson; Dong Xu;
+<br />
+|    Duncan Poole; Scott Le Grand; Ross C. Walker
+<br />
+|    &quot;Routine microsecond molecular dynamics simulations
+<br />
+|    with AMBER - Part I: Generalized Born&quot;, J. Chem.
+<br />
+|    Theory Comput., 2012, 8 (5), pp1542-1555.
+<br />
+|
+<br />
+|  - Scott Le Grand; Andreas W. Goetz; Ross C. Walker
+<br />
+|    &quot;SPFP: Speed without compromise - a mixed precision
+<br />
+|    model for GPU accelerated molecular dynamics
+<br />
+|    simulations.&quot;, Comp. Phys. Comm., 2013, 184
+<br />
+|    pp374-380, DOI: 10.1016/j.cpc.2012.09.022
+<br />
+|
+<br />
+|--------------------------------------------------------
+<br />
+<br />|------------------- GPU DEVICE INFO --------------------
+<br />
+|
+<br />
+|            CUDA_VISIBLE_DEVICES: not set
+<br />
+|   CUDA Capable Devices Detected:      3
+<br />
+|           CUDA Device ID in use:      0
+<br />
+|                CUDA Device Name: GeForce GTX 980 Ti
+<br />
+|     CUDA Device Global Mem Size:   6078 MB
+<br />
+| CUDA Device Num Multiprocessors:     22
+<br />
+|           CUDA Device Core Freq:   1.29 GHz
+<br />
+|
+<br />
+|--------------------------------------------------------
+<br />
+<br /><br />| Conditional Compilation Defines Used:
+<br />
+| PUBFFT
+<br />
+| BINTRAJ
+<br />
+| CUDA
+<br />
+| EMIL
+<br />
+<br />| Largest sphere to fit in unit cell has radius =    53.247
+<br />
+<br />| New format PARM file being parsed.
+<br />
+| Version =    1.000 Date = 08/13/19 Time = 12:46:28
+<br />
+<br />| Note: 1-4 EEL scale factors are being read from the topology file.
+<br />
+<br />| Note: 1-4 VDW scale factors are being read from the topology file.
+<br />
+| Duplicated    0 dihedrals
+<br />
+<br />| Duplicated    0 dihedrals
+<br />
+<br />--------------------------------------------------------------------------------
+<br />
+&nbsp;&nbsp;&nbsp;1.  RESOURCE   USE:
+<br />
+--------------------------------------------------------------------------------
+<br />
+<br />&nbsp;getting box info from netcdf restart file
+<br />
+&nbsp;NATOM  =   69270 NTYPES =      32 NBONH =   52859 MBONA  =   16283
+<br />
+&nbsp;NTHETH =   56126 MTHETA =   19684 NPHIH =   94026 MPHIA  =   61862
+<br />
+&nbsp;NHPARM =       0 NPARM  =       0 NNB   =  261952 NRES   =   10976
+<br />
+&nbsp;NBONA  =   16283 NTHETA =   19684 NPHIA =   61862 NUMBND =     106
+<br />
+&nbsp;NUMANG =     233 NPTRA  =     258 NATYP =      63 NPHB   =       1
+<br />
+&nbsp;IFBOX  =       1 NMXRS  =      73 IFCAP =       0 NEXTRA =       0
+<br />
+&nbsp;NCOPY  =       0
+<br />
+<br />| Coordinate Index Table dimensions:    21   24   26
+<br />
+| Direct force subcell size =     5.0711    5.0986    5.1183
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BOX TYPE: RECTILINEAR
+<br />
+<br />--------------------------------------------------------------------------------
+<br />
+&nbsp;&nbsp;&nbsp;2.  CONTROL  DATA  FOR  THE  RUN
+<br />
+--------------------------------------------------------------------------------
+<br />
+<br />default_name
+<br />
+<br />General flags:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imin    =       0, nmropt  =       1
+<br />
+<br />Nature and format of input:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntx     =       1, irest   =       0, ntrx    =       1
+<br />
+<br />Nature and format of output:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntxo    =       2, ntpr    =       7, ntrx    =       1, ntwr    =       7
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iwrap   =       1, ntwx    =       7, ntwv    =       0, ntwe    =       0
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ioutfm  =       1, ntwprt  =       0, idecomp =       0, rbornstat=      0
+<br />
+<br />Potential function:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntf     =       2, ntb     =       1, igb     =       0, nsnb    =      25
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipol    =       0, gbsa    =       0, iesp    =       0
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dielc   =   1.00000, cut     =   9.00000, intdiel =   1.00000
+<br />
+<br />Frozen or restrained atoms:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ibelly  =       0, ntr     =       1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;restraint_wt =   4.00000
+<br />
+<br />Molecular dynamics:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nstlim  =     25000, nscm    =         0, nrespa  =         1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t       =   0.00000, dt      =   0.00200, vlimit  =  -1.00000
+<br />
+<br />Langevin dynamics temperature regulation:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ig      =   78217
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temp0   = 310.00000, tempi   =   0.00000, gamma_ln=   5.00000
+<br />
+<br />SHAKE:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntc     =       2, jfastw  =       0
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tol     =   0.00001
+<br />
+<br />NMR refinement options:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iscale  =       0, noeskp  =       1, ipnlty  =       1, mxsub   =       1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scalm   = 100.00000, pencut  =   0.10000, tausw   =   0.10000
+<br />
+<br />| Intermolecular bonds treatment:
+<br />
+|     no_intermolecular_bonds =       1
+<br />
+<br />| Energy averages sample interval:
+<br />
+|     ene_avg_sampling =       7
+<br />
+<br />Ewald parameters:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verbose =       0, ew_type =       0, nbflag  =       1, use_pme =       1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vdwmeth =       1, eedmeth =       1, netfrc  =       1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Box X =  106.494   Box Y =  122.367   Box Z =  133.077
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alpha =   90.000   Beta  =   90.000   Gamma =   90.000
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NFFT1 =  108       NFFT2 =  128       NFFT3 =  128
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cutoff=    9.000   Tol   =0.100E-04
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ewald Coefficient =  0.30768
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interpolation order =    4
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;LOADING THE CONSTRAINED ATOMS AS GROUPS
+<br />
+<br /><br />Thanks,
+<br />
+<br />Sam Ratliff
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Jul 28 2020 - 10:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0318.html" title="Next message in the list">Lod King: "[AMBER] AMD parameter: protein residue should count ligand or not"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0316.html" title="Previous message in the list">Adrian Roitberg: "Re: [AMBER] ASMD equil4 not producing output files"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0351.html" title="Next message in this discussion thread">Samuel A. Ratliff: "Re: [AMBER] Issue heating system in equilibration step"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0351.html" title="Message sent in reply to this message">Samuel A. Ratliff: "Re: [AMBER] Issue heating system in equilibration step"</a></li>
+<li><dfn>Reply</dfn>: <a href="0355.html" title="Message sent in reply to this message">Carlos Simmerling: "Re: [AMBER] Issue heating system in equilibration step"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg317" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg317" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg317" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg317" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

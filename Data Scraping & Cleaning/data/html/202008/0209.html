@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber from Matias Machado on 2020-08-26 (Amber Archive Aug 2020)</title>
+<meta name="Author" content="Matias Machado (mmachado.pasteur.edu.uy)" />
+<meta name="Subject" content="Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber" />
+<meta name="Date" content="2020-08-26" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber</h1>
+<!-- received="Wed Aug 26 08:30:02 2020" -->
+<!-- isoreceived="20200826153002" -->
+<!-- sent="Wed, 26 Aug 2020 12:27:43 -0300 (UYT)" -->
+<!-- isosent="20200826152743" -->
+<!-- name="Matias Machado" -->
+<!-- email="mmachado.pasteur.edu.uy" -->
+<!-- subject="Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber" -->
+<!-- id="94ff21aa-4df7-4ac4-a732-81058acb1434.free.ipmont.lan" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="1d7dcead-b121-beb8-47c4-9a038d3eea33.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0210.html" accesskey="d" title="Charo del Genio: &quot;Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber&quot;">Next message</a> ]
+[ <a href="0208.html" title="Charo del Genio: &quot;Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber&quot;">Previous message</a> ]
+[ <a href="0208.html" title="Charo del Genio: &quot;Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0210.html" accesskey="t" title="Charo del Genio: &quot;Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg209" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg209" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg209" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg209" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Matias Machado &lt;<a href="mailto:mmachado.pasteur.edu.uy?Subject=Re%3A%20%5BAMBER%5D%20Questions%20(and%20a%20small%20bug%20report)%20about%20SIRAH%20in%20Amber">mmachado.pasteur.edu.uy</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 26 Aug 2020 12:27:43 -0300 (UYT)</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Charo,
+<br />
+<br />Some of this questions are answered in the SIRAH FAQs (check the web under menu &quot;TUTORIALS&quot;, or in the package at sirah.amber/tutorial/SIRAH_FAQs.pdf)
+<br />
+<br />You can equilibrate in NVT or NPT... the reason for choosing the later rather than the former is due to the initial solvent density of the box... be aware that using small pre-equilibrated solvent boxes to solvate the whole system is a fast but not perfect method... indeed, owing to the algorithm to add water constituents and PBC conditions, several molecules are removed from both the surface of the solute and the image boundaries... that leads to a decrease in the expected water density for any computational box... that issue is magnified in case of coarse-grained system as removing one molecule implies removing a lot of water... hence, we equilibrate in NPT to fix that issue, otherwise you will see vacuum bubbles during equilibration, which may o may not affect your system at production...
+<br />
+<br />Regarding thermostats...
+<br />
+<br />The parameters for the Langevin thermostat are optimized for SIRAH and its integration time step, take into account that other &quot;common&quot; values are for all-atoms and not coarse-graned. We can't grant you the same results if you play with that... 
+<br />
+<br />The same goes for V-rescale, I don't know which values are you using or why you prefer this thermostat over the other... We haven't tested it yet, because it's new in AMBER, but in any case, I would start by using the same values we use in GROMACS simulations... those are tau_t = 1.0 for equilibration and 2.0 for production...
+<br />
+<br />Regarding the softness of the equilibration protocol...
+<br />
+<br />That may certainly depend on the system... the step-wise protocol provided by us was proved to work in many systems, however it's not perfect and neither is SIRAH... so it isn't unlike to fail...
+<br />
+<br />Best,
+<br />
+<br />Matias
+<br />
+<br />----- Mensaje original -----
+<br />
+De: &quot;Charo del Genio&quot; &lt;the.paraw.gmail&#46;<!--nospam-->com&gt;
+<br />
+Para: &quot;Matias Machado&quot; &lt;mmachado.pasteur&#46;<!--nospam-->edu.uy&gt;
+<br />
+CC: &quot;AMBER Mailing List&quot; &lt;amber.ambermd.org&gt;, &quot;david case&quot; &lt;david.case.rutgers&#46;<!--nospam-->edu&gt;
+<br />
+Enviados: Miércoles, 26 de Agosto 2020 10:57:38
+<br />
+Asunto: Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber
+<br />
+<br />On 26/08/2020 14:07, Matias Machado wrote:
+<br />
+<em class="quotelev1">&gt; Dear Charo,
+</em><br />
+<em class="quotelev1">&gt; Thanks to David and Scott's help we advanced a lot in debugging the issue...
+</em><br />
+<em class="quotelev1">&gt; This problem only shows up in cmake builds of AMBER Tools, while legacy builds work just fine...
+</em><br />
+<em class="quotelev1">&gt; Scott was observing the same odd things you are pointing in the code.
+</em><br />
+<em class="quotelev1">&gt; I did some tests and in fact comment lines stating with '#' are the only ones generating the buffer overflow.
+</em><br />
+<em class="quotelev1">&gt; This bug is not only restricted to SIRAH as the same issue will happen in AMBER ports of CUFIX.
+</em><br />
+<em class="quotelev1">&gt; On the other hand, comments after the parameter definition are not giving any problem, as they don't in other AMBER files.
+</em><br />
+<em class="quotelev1">&gt; Some fixes have been committed at both AMBER and SIRAH sides.
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt; Matías
+</em><br />
+<em class="quotelev1">&gt; PS: While ago, I sent to the mailing list a reference topology based on Tutorial 5 as a control to check the correct loading of LJoff.frcmod. But I guess it got stuck awaiting for a moderator due to the file size :-(
+</em><br />
+<br />Dear Matias,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I checked the 1CRN example/reference, and removing the comments as I did before produces a prmtop file that is identical to the one you sent. I guess this confirms the whole discussion.
+<br />
+<br />However, this also seems to suggest that the instabilities I'm observing are due to something else. Up to when I wrote to the mailing list, I was following more or less the example protocols given on 
+<br />
+the SIRAH web site. So, after minimizing the system, I went directly for an equilibration at the final temperature (22 °C) at constant pressure. Normally, I would have first heated the system at 
+<br />
+constant volume over some period of time starting from 0 K, and then switched to constant pressure. Do you reckon this may remove the instabilities? (In fact, I may just try and check).
+<br />
+<br />Or maybe should I try to equilibrate the system even more gently? Note that the main problem seems to be due to the waters, because if I impose extreme restraints (500 kcal/mol Å²) on every atom 
+<br />
+except the solvent, still vlimit is exceeded from step 2. Again, this only happens if I use the Bussi (v-rescaling) thermostat, or Langevin with a more common gamma_ln such as 2; using Langevin with 
+<br />
+gamma_ln=50 stabilizes the system.
+<br />
+<br /><br />Cheers,
+<br />
+<br />Charo
+<br />
+<br /><br /><br /><br /><pre>
+-- 
+Dr. Charo I. del Genio
+Senior Lecturer in Statistical Physics
+Applied Mathematics Research Centre (AMRC)
+Design Hub
+Coventry University Technology Park
+Coventry CV1 5FB
+UK
+<a href="https://charodelgenio.weebly.com">https://charodelgenio.weebly.com</a>
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Wed Aug 26 2020 - 08:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0210.html" title="Next message in the list">Charo del Genio: "Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0208.html" title="Previous message in the list">Charo del Genio: "Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0208.html" title="Message to which this message replies">Charo del Genio: "Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0210.html" title="Next message in this discussion thread">Charo del Genio: "Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0210.html" title="Message sent in reply to this message">Charo del Genio: "Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg209" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg209" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg209" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg209" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

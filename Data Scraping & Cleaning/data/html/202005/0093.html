@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] How to merge GLYCAM06 and lipid17 to generate force field for simple g; ycolipids? from Vijay Achari on 2020-05-07 (Amber Archive May 2020)</title>
+<meta name="Author" content="Vijay Achari (glycoamber.gmail.com)" />
+<meta name="Subject" content="[AMBER] How to merge GLYCAM06 and lipid17 to generate force field for simple g; ycolipids?" />
+<meta name="Date" content="2020-05-07" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] How to merge GLYCAM06 and lipid17 to generate force field for simple g; ycolipids?</h1>
+<!-- received="Thu May  7 02:00:03 2020" -->
+<!-- isoreceived="20200507090003" -->
+<!-- sent="Thu, 7 May 2020 16:30:37 +0800" -->
+<!-- isosent="20200507083037" -->
+<!-- name="Vijay Achari" -->
+<!-- email="glycoamber.gmail.com" -->
+<!-- subject="[AMBER] How to merge GLYCAM06 and lipid17 to generate force field for simple g; ycolipids?" -->
+<!-- id="CA+-itZj9qDHPGNwn_4Eb4D3kPsRTF1+HwRQ6TDLbvEdVm0CAXA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0094.html" accesskey="d" title="Serena Vittorio: &quot;Re: [AMBER] [BULK] Re:  [BULK] Re:  MM-PBSA calculation error&quot;">Next message</a> ]
+[ <a href="0092.html" title="Martin Mielke: &quot;Re: [AMBER] Minimum recommended hardware specs for AmberTools20 and Amber20&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0128.html" accesskey="t" title="Lachele Foley: &quot;Re: [AMBER] How to merge GLYCAM06 and lipid17 to generate force field for simple g; ycolipids?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg93" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg93" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg93" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg93" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Vijay Achari &lt;<a href="mailto:glycoamber.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20How%20to%20merge%20GLYCAM06%20and%20lipid17%20to%20generate%20force%20field%20for%20simple%20g%3B%20ycolipids%3F">glycoamber.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 7 May 2020 16:30:37 +0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear AMBER experts,
+<br />
+<br />I am trying to develop AMBER topology file for a simple glycolipid (glucose
+<br />
+attached with alkyl chain)
+<br />
+<br />1) I modelled the glycolipid.
+<br />
+<br />2) I used antechamber to get prepin file using below command
+<br />
+antechamber -fi pdb -fo prepi -i glycoglu.pdb -o glycoglu.prepi -rn GLU -c
+<br />
+bcc -pf y -s 2
+<br />
+<br />&nbsp;Below I shared a fraction of the prepin file I get . .
+<br />
+___________________________________________________
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;0    0    2
+<br />
+<br />This is a remark line
+<br />
+molecule.res
+<br />
+GLU   INT  0
+<br />
+CORRECT     OMIT DU   BEG
+<br />
+&nbsp;&nbsp;0.0000
+<br />
+&nbsp;&nbsp;&nbsp;1  DUMM  DU    M    0  -1  -2     0.000      .0        .0      .00000
+<br />
+&nbsp;&nbsp;&nbsp;2  DUMM  DU    M    1   0  -1     1.449      .0        .0      .00000
+<br />
+&nbsp;&nbsp;&nbsp;3  DUMM  DU    M    2   1   0     1.523   111.21       .0      .00000
+<br />
+&nbsp;&nbsp;&nbsp;4  O16   oh    M    3   2   1     1.540   111.208  -180.000 -0.603800
+<br />
+&nbsp;&nbsp;&nbsp;5  H22   ho    E    4   3   2     0.981    52.492    99.995  0.424000
+<br />
+&nbsp;&nbsp;&nbsp;6  C07   c3    M    4   3   2     1.438    87.250   -13.485  0.088100
+<br />
+&nbsp;&nbsp;&nbsp;7  H12   h1    E    6   4   3     1.094   109.205    -3.410  0.078700
+<br />
+&nbsp;&nbsp;&nbsp;8  C06   c3    M    6   4   3     1.555   109.011  -122.325  0.109100
+<br />
+&nbsp;&nbsp;&nbsp;9  H11   h1    E    8   6   4     1.094   109.351   -54.466  0.061700
+<br />
+&nbsp;&nbsp;10  O15   oh    S    8   6   4     1.438   110.511    65.548 -0.603800
+<br />
+&nbsp;&nbsp;11  H21   ho    E   10   8   6     0.980   106.655   -66.557  0.426000
+<br />
+&nbsp;&nbsp;12  C05   c3    M    8   6   4     1.555   110.222  -173.930  0.120100
+<br />
+&nbsp;&nbsp;13  O02   oh    S   12   8   6     1.438   110.276   171.603 -0.596800
+<br />
+&nbsp;&nbsp;14  H01   ho    E   13  12   8     0.981   106.683    65.702  0.426000
+<br />
+&nbsp;&nbsp;15  H10   h1    E   12   8   6     1.094   108.988   -68.508  0.078700
+<br />
+&nbsp;&nbsp;16  C04   c3    M   12   8   6     1.558   110.107    51.145  0.110100
+<br />
+&nbsp;&nbsp;17  H09   h1    E   16  12   8     1.094   109.248    65.203  0.060700
+<br />
+&nbsp;&nbsp;18  C14   c3    3   16  12   8     1.552   111.553  -175.655  0.140400
+<br />
+&nbsp;&nbsp;19  H18   h1    E   18  16  12     1.092   109.706   -59.527  0.061700
+<br />
+&nbsp;&nbsp;20  O19   oh    S   18  16  12     1.435   110.668    61.594 -0.596800
+<br />
+&nbsp;&nbsp;21  H23   ho    E   20  18  16     0.981   105.874  -179.601  0.414000
+<br />
+&nbsp;&nbsp;22  H20   h1    E   18  16  12     1.092   109.013  -178.348  0.061700
+<br />
+&nbsp;&nbsp;23  O03   os    M   16  12   8     1.442   110.854   -55.492 -0.451600
+<br />
+&nbsp;&nbsp;24  C08   c3    M   23  16  12     1.442   111.775    62.596  0.308900
+<br />
+&nbsp;&nbsp;25  H17   h2    E   24  23  16     1.093   110.442    56.456  0.052700
+<br />
+&nbsp;&nbsp;26  O13   os    M   24  23  16     1.442   109.096   176.981 -0.424600
+<br />
+&nbsp;&nbsp;27  C24   c3    M   26  24  23     1.439   111.620   -70.286  0.135400
+<br />
+&nbsp;&nbsp;28  H33   h1    E   27  26  24     1.092   109.921   -57.841  0.038700
+<br />
+&nbsp;&nbsp;29  H34   h1    E   27  26  24     1.092   110.275    62.805  0.038700
+<br />
+&nbsp;&nbsp;30  C25   c3    M   27  26  24     1.549   108.841  -177.256 -0.085400
+<br />
+&nbsp;&nbsp;31  H35   hc    E   30  27  26     1.092   109.024   -63.337  0.055200
+<br />
+&nbsp;&nbsp;32  H36   hc    E   30  27  26     1.093   108.729    55.126  0.055200
+<br />
+.
+<br />
+.
+<br />
+_____________________________________________________
+<br />
+<br />3) I used GLYCAM_06j-1.prep,  GLYCAM_06j.dat and lipid17.dat to re-name the
+<br />
+atomtypes in my current prepin file.
+<br />
+<br />&nbsp;Below I share the fraction of the prepin file that I renamed the atomtypes.
+<br />
+______________________________________________________
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;0    0    2
+<br />
+<br />This is a remark line
+<br />
+molecule.res
+<br />
+GLU   INT  0
+<br />
+CORRECT     OMIT DU   BEG
+<br />
+&nbsp;&nbsp;0.0000
+<br />
+&nbsp;&nbsp;&nbsp;1  DUMM  DU    M    0  -1  -2     0.000      .0        .0      .00000
+<br />
+&nbsp;&nbsp;&nbsp;2  DUMM  DU    M    1   0  -1     1.449      .0        .0      .00000
+<br />
+&nbsp;&nbsp;&nbsp;3  DUMM  DU    M    2   1   0     1.523   111.21       .0      .00000
+<br />
+&nbsp;&nbsp;&nbsp;4  O16   Oh    M    3   2   1     1.540   111.208  -180.000 -0.603800
+<br />
+&nbsp;&nbsp;&nbsp;5  H22   Ho    E    4   3   2     0.981    52.492    99.995  0.424000
+<br />
+&nbsp;&nbsp;&nbsp;6  C07   Cg    M    4   3   2     1.438    87.250   -13.485  0.088100
+<br />
+&nbsp;&nbsp;&nbsp;7  H12   H1    E    6   4   3     1.094   109.205    -3.410  0.078700
+<br />
+&nbsp;&nbsp;&nbsp;8  C06   Cg    M    6   4   3     1.555   109.011  -122.325  0.109100
+<br />
+&nbsp;&nbsp;&nbsp;9  H11   H1    E    8   6   4     1.094   109.351   -54.466  0.061700
+<br />
+&nbsp;&nbsp;10  O15   Oh    S    8   6   4     1.438   110.511    65.548 -0.603800
+<br />
+&nbsp;&nbsp;11  H21   Ho    E   10   8   6     0.980   106.655   -66.557  0.426000
+<br />
+&nbsp;&nbsp;12  C05   Cg    M    8   6   4     1.555   110.222  -173.930  0.120100
+<br />
+&nbsp;&nbsp;13  O02   Oh    S   12   8   6     1.438   110.276   171.603 -0.596800
+<br />
+&nbsp;&nbsp;14  H01   Ho    E   13  12   8     0.981   106.683    65.702  0.426000
+<br />
+&nbsp;&nbsp;15  H10   H1    E   12   8   6     1.094   108.988   -68.508  0.078700
+<br />
+&nbsp;&nbsp;16  C04   Cg    M   12   8   6     1.558   110.107    51.145  0.110100
+<br />
+&nbsp;&nbsp;17  H09   H1    E   16  12   8     1.094   109.248    65.203  0.060700
+<br />
+&nbsp;&nbsp;18  C14   Cg    3   16  12   8     1.552   111.553  -175.655  0.140400
+<br />
+&nbsp;&nbsp;19  H18   H1    E   18  16  12     1.092   109.706   -59.527  0.061700
+<br />
+&nbsp;&nbsp;20  O19   Oh    S   18  16  12     1.435   110.668    61.594 -0.596800
+<br />
+&nbsp;&nbsp;21  H23   Ho    E   20  18  16     0.981   105.874  -179.601  0.414000
+<br />
+&nbsp;&nbsp;22  H20   H1    E   18  16  12     1.092   109.013  -178.348  0.061700
+<br />
+&nbsp;&nbsp;23  O03   Os    M   16  12   8     1.442   110.854   -55.492 -0.451600
+<br />
+&nbsp;&nbsp;24  C08   Cg    M   23  16  12     1.442   111.775    62.596  0.308900
+<br />
+&nbsp;&nbsp;25  H17   H2    E   24  23  16     1.093   110.442    56.456  0.052700
+<br />
+&nbsp;&nbsp;26  O13   Os    M   24  23  16     1.442   109.096   176.981 -0.420600
+<br />
+&nbsp;&nbsp;27  C24   cA    M   26  24  23     1.439   111.620   -70.286  0.135400
+<br />
+&nbsp;&nbsp;28  H33   hA    E   27  26  24     1.092   109.921   -57.841  0.038700
+<br />
+&nbsp;&nbsp;29  H34   hA    E   27  26  24     1.092   110.275    62.805  0.038700
+<br />
+&nbsp;&nbsp;30  C25   cA    M   27  26  24     1.549   108.841  -177.256 -0.085400
+<br />
+&nbsp;&nbsp;31  H35   hA    E   30  27  26     1.092   109.024   -63.337  0.055200
+<br />
+&nbsp;&nbsp;32  H36   hA    E   30  27  26     1.093   108.729    55.126  0.055200
+<br />
+.
+<br />
+.
+<br />
+________________________________________________________-
+<br />
+<br />4) When I run parmcheck I get warning and no frcmod file generated
+<br />
+<br />Below is the output I get....( I showed only the fraction of it..)
+<br />
+<br />&nbsp;parmchk2 -f prepi -i glycoglu.prepi -o glu.frcmod
+<br />
+Warning: Atom type (Oh) is not in PARMCHK.DAT; using default values
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for improper_flag [0], group_id [0], and equivalent_flag [0].
+<br />
+Warning: No mass information for atom type (Oh); set to 0.0.
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It is recommended to add the new atom type (Oh) to PARMCHK.DAT.
+<br />
+Warning: Atom type (Ho) is not in PARMCHK.DAT; using default values
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for improper_flag [0], group_id [0], and equivalent_flag [0].
+<br />
+Warning: No mass information for atom type (Ho); set to 0.0.
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It is recommended to add the new atom type (Ho) to PARMCHK.DAT.
+<br />
+Warning: Atom type (Cg) is not in PARMCHK.DAT; using default values
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for improper_flag [0], group_id [0], and equivalent_flag [0].
+<br />
+Warning: No mass information for atom type (Cg); set to 0.0.
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It is recommended to add the new atom type (Cg) to PARMCHK.DAT.
+<br />
+Warning: Atom type (Os) is not in PARMCHK.DAT; using default values
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for improper_flag [0], group_id [0], and equivalent_flag [0].
+<br />
+Warning: No mass information for atom type (Os); set to 0.0.
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It is recommended to add the new atom type (Os) to PARMCHK.DAT.
+<br />
+<br /><br />5) When I load the my pdb in xleap using below commands..
+<br />
+<br />source leaprc.gaff
+<br />
+source leaprc.water.tip3p
+<br />
+source leaprc.GLYCAM_06j-1
+<br />
+source leaprc.lipid17
+<br />
+loadamberprep glycoglu.prepi
+<br />
+loadamberparams glu.frcmod
+<br />
+<br />6) In the xleap, unit checking, I get message as below..
+<br />
+<br />________________________________________________________
+<br />
+Welcome to LEaP!
+<br />
+Sourcing: ./amber_source.dat
+<br />
+----- Source: /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.gaff
+<br />
+----- Source of /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.gaff done
+<br />
+Log file: ./leap.log
+<br />
+Loading parameters: /usr/local/INSTALL/amber18/dat/leap/parm/gaff.dat
+<br />
+Reading title:
+<br />
+AMBER General Force Field for organic molecules (Version 1.81, May 2017)
+<br />
+----- Source: /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.GLYCAM_06j-1
+<br />
+----- Source of /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.GLYCAM_06j-1
+<br />
+done
+<br />
+Loading parameters: /usr/local/INSTALL/amber18/dat/leap/parm/GLYCAM_06j.dat
+<br />
+Reading title:
+<br />
+GLYCAM_06_H PARAMETERS (FOR AMBER 11.0, RESP 0.010), COPYRIGHT CCRC 2011
+<br />
+Loading Prep file:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/prep/GLYCAM_06j-1.prep
+<br />
+Loading library:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/lib/GLYCAM_amino_06j_12SB.lib
+<br />
+Loading library:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/lib/GLYCAM_aminoct_06j_12SB.lib
+<br />
+Loading library:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/lib/GLYCAM_aminont_06j_12SB.lib
+<br />
+Loading library: /usr/local/INSTALL/amber18/dat/leap/lib/solvents.lib
+<br />
+Loading library: /usr/local/INSTALL/amber18/dat/leap/lib/atomic_ions.lib
+<br />
+Loading parameters:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/parm/frcmod.ionsjc_tip3p
+<br />
+Reading force field modification type file (frcmod)
+<br />
+Reading title:
+<br />
+Monovalent ion parameters for Ewald and TIP3P water from Joung &amp; Cheatham
+<br />
+JPCB (2008)
+<br />
+Loading Prep file: ./start00_glu.prepin
+<br />
+Loading parameters: ./glu.frcmod
+<br />
+Reading title:
+<br />
+<em class="quotelev1">&gt; ll =loadpdb start00_glu.pdb
+</em><br />
+Loading PDB file: ./start00_glu.pdb
+<br />
+&nbsp;&nbsp;total atoms in file: 48
+<br />
+<em class="quotelev1">&gt; check ll
+</em><br />
+Checking 'll'....
+<br />
+Checking parameters for unit 'll'.
+<br />
+Checking for bond parameters.
+<br />
+<br />Error: Could not find bond parameter for: Os - c3
+<br />
+<br />Error: Could not find bond parameter for: C3 - H2
+<br />
+<br />Error: Could not find bond parameter for: C3 - Os
+<br />
+<br />Error: Could not find bond parameter for: Os - C3
+<br />
+<br />Error: Could not find bond parameter for: Cg - C3
+<br />
+Checking for angle parameters.
+<br />
+<br />Error: Could not find angle parameter: Os - c3 - h1
+<br />
+<br />Error: Could not find angle parameter: Os - c3 - h1
+<br />
+<br />Error: Could not find angle parameter: Os - c3 - c3
+<br />
+<br />Error: Could not find angle parameter: H2 - C3 - Os
+<br />
+<br />Error: Could not find angle parameter: C3 - Os - c3
+<br />
+<br />Error: Could not find angle parameter: Os - C3 - H2
+<br />
+<br />Error: Could not find angle parameter: Os - C3 - Os
+<br />
+<br />Error: Could not find angle parameter: Cg - Os - C3
+<br />
+<br />Error: Could not find angle parameter: Cg - Cg - C3
+<br />
+<br />Error: Could not find angle parameter: H1 - Cg - C3
+<br />
+<br />Error: Could not find angle parameter: Cg - C3 - Os
+<br />
+<br />Error: Could not find angle parameter: Cg - C3 - H2
+<br />
+<br />Error: Could not find angle parameter: Cg - C3 - Os
+<br />
+<br />Error: Could not find angle parameter: Oh - Cg - C3
+<br />
+<br />Warning: There are missing parameters.
+<br />
+Unit is OK.
+<br />
+_____________________________________________-
+<br />
+<br />7)  I than built a frcmod file with the bond length and angle parameters
+<br />
+taken from GLYCAM06j.dat and lipid17.dat. I generated the frcmod file with
+<br />
+the contents as below:
+<br />
+<br />Remark line goes here
+<br />
+MASS
+<br />
+Os 16.000        0.000
+<br />
+cA 12.010        0.000
+<br />
+Cg 12.010        0.000
+<br />
+hA 1.008         0.000
+<br />
+<br />BOND
+<br />
+Os-cA  320.00   1.410
+<br />
+<br />ANGLE
+<br />
+hA-cA-Os   50.800     109.780   same as h1-c3-os, penalty score=  0.0
+<br />
+cA-cA-Os   68.000     107.970   same as c3-c3-os, penalty score=  0.0
+<br />
+Cg-Os-cA   38.0       107.0
+<br />
+<br />DIHE
+<br />
+Os-cA-cA-hA   1    0.1600        0.00            3.00
+<br />
+Os-cA-cA-cA   1    0.1800        0.00           -3.00
+<br />
+<br />IMPROPER
+<br />
+<br />NONBON
+<br />
+IMPROPER
+<br />
+<br />NONBON
+<br />
+<br />__________________________________________________________
+<br />
+<br />I get error as below
+<br />
+<br />Welcome to LEaP!
+<br />
+Sourcing: ./amber_source.dat
+<br />
+----- Source: /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.water.tip3p
+<br />
+----- Source of /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.water.tip3p
+<br />
+done
+<br />
+Loading library: /usr/local/INSTALL/amber18/dat/leap/lib/atomic_ions.lib
+<br />
+Loading library: /usr/local/INSTALL/amber18/dat/leap/lib/solvents.lib
+<br />
+Loading parameters: /usr/local/INSTALL/amber18/dat/leap/parm/frcmod.tip3p
+<br />
+Reading force field modification type file (frcmod)
+<br />
+Reading title:
+<br />
+This is the additional/replacement parameter set for TIP3P water
+<br />
+Loading parameters:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/parm/frcmod.ionsjc_tip3p
+<br />
+Reading force field modification type file (frcmod)
+<br />
+Reading title:
+<br />
+Monovalent ion parameters for Ewald and TIP3P water from Joung &amp; Cheatham
+<br />
+JPCB (2008)
+<br />
+Loading parameters:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/parm/frcmod.ions234lm_126_tip3p
+<br />
+Reading force field modification type file (frcmod)
+<br />
+Reading title:
+<br />
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water
+<br />
+model (12-6 normal usage set)
+<br />
+----- Source: /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.GLYCAM_06j-1
+<br />
+----- Source of /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.GLYCAM_06j-1
+<br />
+done
+<br />
+Loading parameters: /usr/local/INSTALL/amber18/dat/leap/parm/GLYCAM_06j.dat
+<br />
+Reading title:
+<br />
+GLYCAM_06_H PARAMETERS (FOR AMBER 11.0, RESP 0.010), COPYRIGHT CCRC 2011
+<br />
+Loading Prep file:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/prep/GLYCAM_06j-1.prep
+<br />
+Loading library:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/lib/GLYCAM_amino_06j_12SB.lib
+<br />
+Loading library:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/lib/GLYCAM_aminoct_06j_12SB.lib
+<br />
+Loading library:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/lib/GLYCAM_aminont_06j_12SB.lib
+<br />
+Loading library: /usr/local/INSTALL/amber18/dat/leap/lib/solvents.lib
+<br />
+Loading library: /usr/local/INSTALL/amber18/dat/leap/lib/atomic_ions.lib
+<br />
+Loading parameters:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/parm/frcmod.ionsjc_tip3p
+<br />
+Reading force field modification type file (frcmod)
+<br />
+Reading title:
+<br />
+Monovalent ion parameters for Ewald and TIP3P water from Joung &amp; Cheatham
+<br />
+JPCB (2008)
+<br />
+----- Source: /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.lipid17
+<br />
+----- Source of /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.lipid17 done
+<br />
+Log file: ./leap.log
+<br />
+Loading parameters: /usr/local/INSTALL/amber18/dat/leap/parm/lipid17.dat
+<br />
+Reading title:
+<br />
+AMBER Lipid17 v1.1 Force Field, A. Skjevik, C. Dickson, B. Madej, I.R.
+<br />
+Gould, R.C. Walker*
+<br />
+Loading library: /usr/local/INSTALL/amber18/dat/leap/lib/lipid17.lib
+<br />
+Loading parameters: ./start00_glu.frcmod2
+<br />
+Reading force field modification type file (frcmod)
+<br />
+Reading title:
+<br />
+Remark line goes here
+<br />
+!FATAL ERROR----------------------------------------
+<br />
+!FATAL:    In file [varArray.c], line 182
+<br />
+!FATAL:    Message: Realloc: Cannot allocate memory!
+<br />
+!ABORTING.
+<br />
+<br />8) If i delete the DIHE lines from frcmod nad load again in xleap I get as
+<br />
+bellow:
+<br />
+<br />Welcome to LEaP!
+<br />
+Sourcing: ./amber_source.dat
+<br />
+----- Source: /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.water.tip3p
+<br />
+----- Source of /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.water.tip3p
+<br />
+done
+<br />
+Loading library: /usr/local/INSTALL/amber18/dat/leap/lib/atomic_ions.lib
+<br />
+Loading library: /usr/local/INSTALL/amber18/dat/leap/lib/solvents.lib
+<br />
+Loading parameters: /usr/local/INSTALL/amber18/dat/leap/parm/frcmod.tip3p
+<br />
+Reading force field modification type file (frcmod)
+<br />
+Reading title:
+<br />
+This is the additional/replacement parameter set for TIP3P water
+<br />
+Loading parameters:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/parm/frcmod.ionsjc_tip3p
+<br />
+Reading force field modification type file (frcmod)
+<br />
+Reading title:
+<br />
+Monovalent ion parameters for Ewald and TIP3P water from Joung &amp; Cheatham
+<br />
+JPCB (2008)
+<br />
+Loading parameters:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/parm/frcmod.ions234lm_126_tip3p
+<br />
+Reading force field modification type file (frcmod)
+<br />
+Reading title:
+<br />
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water
+<br />
+model (12-6 normal usage set)
+<br />
+----- Source: /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.GLYCAM_06j-1
+<br />
+----- Source of /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.GLYCAM_06j-1
+<br />
+done
+<br />
+Loading parameters: /usr/local/INSTALL/amber18/dat/leap/parm/GLYCAM_06j.dat
+<br />
+Reading title:
+<br />
+GLYCAM_06_H PARAMETERS (FOR AMBER 11.0, RESP 0.010), COPYRIGHT CCRC 2011
+<br />
+Loading Prep file:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/prep/GLYCAM_06j-1.prep
+<br />
+Loading library:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/lib/GLYCAM_amino_06j_12SB.lib
+<br />
+Loading library:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/lib/GLYCAM_aminoct_06j_12SB.lib
+<br />
+Loading library:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/lib/GLYCAM_aminont_06j_12SB.lib
+<br />
+Loading library: /usr/local/INSTALL/amber18/dat/leap/lib/solvents.lib
+<br />
+Loading library: /usr/local/INSTALL/amber18/dat/leap/lib/atomic_ions.lib
+<br />
+Loading parameters:
+<br />
+/usr/local/INSTALL/amber18/dat/leap/parm/frcmod.ionsjc_tip3p
+<br />
+Reading force field modification type file (frcmod)
+<br />
+Reading title:
+<br />
+Monovalent ion parameters for Ewald and TIP3P water from Joung &amp; Cheatham
+<br />
+JPCB (2008)
+<br />
+----- Source: /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.lipid17
+<br />
+----- Source of /usr/local/INSTALL/amber18/dat/leap/cmd/leaprc.lipid17 done
+<br />
+Log file: ./leap.log
+<br />
+Loading parameters: /usr/local/INSTALL/amber18/dat/leap/parm/lipid17.dat
+<br />
+Reading title:
+<br />
+AMBER Lipid17 v1.1 Force Field, A. Skjevik, C. Dickson, B. Madej, I.R.
+<br />
+Gould, R.C. Walker*
+<br />
+Loading library: /usr/local/INSTALL/amber18/dat/leap/lib/lipid17.lib
+<br />
+Loading parameters: ./start00_glu.frcmod4
+<br />
+Reading force field modification type file (frcmod)
+<br />
+Reading title:
+<br />
+Remark line goes here
+<br />
+Loading Prep file: ./start00_glu.prepin2
+<br />
+<em class="quotelev1">&gt; ll = loadpdb start00_glu.pdb
+</em><br />
+Loading PDB file: ./start00_glu.pdb
+<br />
+&nbsp;&nbsp;total atoms in file: 48
+<br />
+<em class="quotelev1">&gt; check ll
+</em><br />
+Checking 'll'....
+<br />
+Checking parameters for unit 'll'.
+<br />
+Checking for bond parameters.
+<br />
+Checking for angle parameters.
+<br />
+Unit is OK.
+<br />
+<em class="quotelev1">&gt; saveamberparm ll xxx.top xxx.crd
+</em><br />
+Checking Unit.
+<br />
+Building topology.
+<br />
+Building atom parameters.
+<br />
+Building bond parameters.
+<br />
+Building angle parameters.
+<br />
+Building proper torsion parameters.
+<br />
+<br />Error:  ** No torsion terms for  Os-cA-cA-hA
+<br />
+Error:  ** No torsion terms for  Os-cA-cA-hA
+<br />
+Error:  ** No torsion terms for  Os-cA-cA-cA
+<br />
+Error:  ** No torsion terms for  H2-Cg-Os-cA
+<br />
+Error:  ** No torsion terms for  Cg-Os-cA-hA
+<br />
+Error:  ** No torsion terms for  Cg-Os-cA-hA
+<br />
+Error:  ** No torsion terms for  Cg-Os-cA-cA
+<br />
+Error:  ** No torsion terms for  Os-Cg-Os-cA
+<br />
+Error:  ** No torsion terms for  Cg-Cg-Os-cA
+<br />
+Building improper torsion parameters.
+<br />
+old PREP-specified impropers:
+<br />
+&nbsp;total 0 improper torsions applied
+<br />
+&nbsp;0 improper torsions in old prep form
+<br />
+Building H-Bond parameters.
+<br />
+Incorporating Non-Bonded adjustments.
+<br />
+<br />Warning: Parameter file was not saved.
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+_________________________________________________-
+<br />
+<br /><br />My questions are relating to #7 and #8.
+<br />
+<br />Why I get FATAL error in #7 even though I used all given parameters ? I
+<br />
+even adjusted the format of frcmod file
+<br />
+<br />How to combine GLYCAM06j.dat and lipid17.dat files to generate useful
+<br />
+frcmod file?
+<br />
+<br />You help is much appreciated..
+<br />
+<br />Vijayan
+<br />
+University Malaya.
+<br />
+Malaysia.
+<br />
+vijay.ramana.um.edu.my
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu May 07 2020 - 02:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0094.html" title="Next message in the list">Serena Vittorio: "Re: [AMBER] [BULK] Re:  [BULK] Re:  MM-PBSA calculation error"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0092.html" title="Previous message in the list">Martin Mielke: "Re: [AMBER] Minimum recommended hardware specs for AmberTools20 and Amber20"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0128.html" title="Next message in this discussion thread">Lachele Foley: "Re: [AMBER] How to merge GLYCAM06 and lipid17 to generate force field for simple g; ycolipids?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0128.html" title="Message sent in reply to this message">Lachele Foley: "Re: [AMBER] How to merge GLYCAM06 and lipid17 to generate force field for simple g; ycolipids?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg93" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg93" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg93" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg93" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Regarding RMSD calculation and Clustering from Daniel Roe on 2020-08-04 (Amber Archive Aug 2020)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Regarding RMSD calculation and Clustering" />
+<meta name="Date" content="2020-08-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Regarding RMSD calculation and Clustering</h1>
+<!-- received="Tue Aug  4 08:00:03 2020" -->
+<!-- isoreceived="20200804150003" -->
+<!-- sent="Tue, 4 Aug 2020 10:54:54 -0400" -->
+<!-- isosent="20200804145454" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] Regarding RMSD calculation and Clustering" -->
+<!-- id="CAAC0qOb8WaGeQqJT7+N3kwn78tFRg=uxsZ0hc2y6jjCiTdfA0Q.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAJz5302-H8suRh4jiYFmsbjMruYeQvJy-B3syQ1Xio_dw2BXAw.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0026.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] Usage of the Density Peaks Algorithm.&quot;">Next message</a> ]
+[ <a href="0024.html" title="Ayesha Fatima: &quot;[AMBER] open valence problem&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg25" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg25" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg25" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg25" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Regarding%20RMSD%20calculation%20and%20Clustering">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 4 Aug 2020 10:54:54 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />On Sun, Feb 9, 2020 at 12:10 AM Manish Kumar Mohanty
+<br />
+&lt;mkmohanty.iiserb.ac.in&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Now, if I want to do rmsd calculation for the DNA 12-mer, will the data
+</em><br />
+<em class="quotelev1">&gt; present in nowater.nc be fine?  Or should I use this and proceed?
+</em><br />
+<em class="quotelev1">&gt; * rms ToFirst :1-24&amp;!.H  *
+</em><br />
+<br />So the coordinates in the nowater.nc trajectory file 1) have been
+<br />
+imaged, 2) have been stripped of all WAT residues, 3) have been
+<br />
+RMS-best fit to the first frame (default behavior when no reference is
+<br />
+specified) using atoms in residues 1-24. I'm not sure what you mean by
+<br />
+&quot;fine&quot; here. The 'rms ToFirst :1-24&amp;!.H' will calculate the best-fit
+<br />
+RMSD to the first structure, but not because of 'ToFirst' - the
+<br />
+resulting data set will be named 'ToFirst'; you haven't specified a
+<br />
+reference structure, so the command will default to the first frame.
+<br />
+This will be clear in the output from the command. Also, you probably
+<br />
+want :1-24&amp;!.H= (notice the equals sign, which is equivalent to an
+<br />
+asterisk wildcard); .H would just exclude atoms named 'H'. You could
+<br />
+also do ./H to exclude all H elements.
+<br />
+<br /><em class="quotelev1">&gt; If possible, can someone clarify the difference between *rms fit* and* rms
+</em><br />
+<em class="quotelev1">&gt; ToFirst* command?
+</em><br />
+<br />No difference; &quot;fit&quot; and &quot;ToFirst&quot; aren't keywords for the 'rms'
+<br />
+command. I highly recommend reading the manual entry for the 'rms'
+<br />
+command, or at least running cpptraj interactively and typing 'help
+<br />
+rms' to see recognized keywords.
+<br />
+<br /><em class="quotelev1">&gt; *2- *I have a single trajectory of 1 μsec long DNA duplex simulation. Is it
+</em><br />
+<em class="quotelev1">&gt; reliable to do clustering for the same after RMSD calculation to sample all
+</em><br />
+<em class="quotelev1">&gt; the possible conformations or should clustering be done for multiple
+</em><br />
+<em class="quotelev1">&gt; trajectories using different starting structures only? Then is it ok to do
+</em><br />
+<em class="quotelev1">&gt; Markov State Modelling using the clusters obtained?
+</em><br />
+<br />Cluster analysis of an entire microsecond trajectory is likely too
+<br />
+many frames to complete in a reasonable amount of time (there may be
+<br />
+memory issues as well if the pairwise cache is stored in memory which
+<br />
+is the default behavior). You'll likely want to do some sieving (via
+<br />
+'sieve &lt;#&gt;'); I recommend using 'random' in conjunction with 'sieve'
+<br />
+since regular sieving could be problematic if there are underlying
+<br />
+periodic motions in your molecule. Also, you'll probably want to
+<br />
+repeat the cluster analysis a few times with different settings for
+<br />
+your algorithm and see what gives you the &quot;best&quot; clusters (high
+<br />
+pseudo-F, low DBI, etc). Once you're confident you have reasonable
+<br />
+looking clusters, I think it's fine to use them in Markov State
+<br />
+modeling (I think that this is often what's done, although there are
+<br />
+other approaches to grouping for Markov state modeling; there's tons
+<br />
+of literature out there, see e.g. work by Chodera et al). No matter
+<br />
+what you do, before you do a lot of clustering I urge you to read the
+<br />
+manual entry, check out a tutorial (e.g.
+<br />
+<a href="https://amberhub.chpc.utah.edu/clustering-a-protein-trajectory/">https://amberhub.chpc.utah.edu/clustering-a-protein-trajectory/</a>), and
+<br />
+try to cluster a small subset of your trajectory (no more than a
+<br />
+couple hundred frames tops) so you can get familiar with things before
+<br />
+you go all out. If you have a multi-core machine, you may want to use
+<br />
+OpenMP-enabled cpptraj (cpptraj.OMP) since the pairwise calculation
+<br />
+will be faster. Finally, I always recommend people read the wonderful
+<br />
+cluster analysis paper from Shao &amp; Cheatham et al. - it's a classic:
+<br />
+<a href="https://doi.org/10.1021/ct700119m">https://doi.org/10.1021/ct700119m</a>
+<br />
+<br />Hope this helps,
+<br />
+<br />-Dan
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks
+</em><br />
+<em class="quotelev1">&gt; Manish
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Aug 04 2020 - 08:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0026.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] Usage of the Density Peaks Algorithm."</a></li>
+<li><dfn>Previous message</dfn>: <a href="0024.html" title="Previous message in the list">Ayesha Fatima: "[AMBER] open valence problem"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg25" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg25" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg25" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg25" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

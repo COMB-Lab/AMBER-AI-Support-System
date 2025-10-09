@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Restraints with replica exchange MD from Juliette Newell via AMBER on 2022-08-04 (Amber Archive Aug 2022)</title>
+<meta name="Author" content="Juliette Newell via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Restraints with replica exchange MD" />
+<meta name="Date" content="2022-08-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Restraints with replica exchange MD</h1>
+<!-- received="Thu Aug  4 13:38:08 2022" -->
+<!-- isoreceived="20220804203808" -->
+<!-- sent="Thu, 4 Aug 2022 14:14:37 +0000" -->
+<!-- isosent="20220804141437" -->
+<!-- name="Juliette Newell via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Restraints with replica exchange MD" -->
+<!-- id="CWXP265MB24537E5795E70BDC6B395AF6F19F9.CWXP265MB2453.GBRP265.PROD.OUTLOOK.COM" -->
+<!-- charset="iso-8859-1" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0019.html" accesskey="d" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] Restraints with replica exchange MD&quot;">Next message</a> ]
+[ <a href="0017.html" title="Enrico Martinez via AMBER: &quot;Re: [AMBER] installing CUDA driver with ubuntu 20.04&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0019.html" accesskey="t" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] Restraints with replica exchange MD&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg18" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg18" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg18" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg18" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Juliette Newell via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Restraints%20with%20replica%20exchange%20MD">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 4 Aug 2022 14:14:37 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber users,
+<br />
+<br />I am looking at using tREMD simulations to study the aggregation of small molecules.  Initially, when running tREMD simulations in implicit solvent, the molecules disperse, whereas in standard MD they aggregate.  To overcome this I though I could use some restraints and have been using a restraint file which has pairs of restraints between all molecules (e.g. below for 4 residues).
+<br />
+<br />However when applied to larger systems with multiple replicas I tend to get a coordinate resetting error for some of the replicas.
+<br />
+<br />Is there anyway to overcome this?
+<br />
+<br />Juliette
+<br />
+<br />&amp;rst  iat =-1,-1,  igr1 = 1,40,  igr2 = 41,80,
+<br />
+&nbsp;r1 = 0.01,  r2 = 25,  r3 = 25,  r4 = 35,  rk2 = 0.01,  rk3 = 6,
+<br />
+&nbsp;r1a = 0  r2a = 25,  r3a = 25,  r4a = 35,  rk2a = 0.01,  rk3a = 6,
+<br />
+/
+<br />
+&amp;rst  iat =-1,-1,  igr1 = 1,40,  igr2 = 81,120,
+<br />
+&nbsp;r1 = 0.01,  r2 = 25,  r3 = 25,  r4 = 35,  rk2 = 0.01,  rk3 = 6,
+<br />
+&nbsp;r1a = 0  r2a = 25,  r3a = 25,  r4a = 35,  rk2a = 0.01,  rk3a = 6,
+<br />
+/
+<br />
+&amp;rst  iat =-1,-1,  igr1 = 41,80,  igr2 = 81,120,
+<br />
+&nbsp;r1 = 0.01,  r2 = 25,  r3 = 25,  r4 = 35,  rk2 = 0.01,  rk3 = 6,
+<br />
+&nbsp;r1a = 0  r2a = 25,  r3a = 25,  r4a = 35,  rk2a = 0.01,  rk3a = 6,
+<br />
+/
+<br />
+&amp;rst  iat =-1,-1,  igr1 = 1,40,  igr2 = 121,160,
+<br />
+&nbsp;r1 = 0.01,  r2 = 25,  r3 = 25,  r4 = 35,  rk2 = 0.01,  rk3 = 6,
+<br />
+&nbsp;r1a = 0  r2a = 25,  r3a = 25,  r4a = 35,  rk2a = 0.01,  rk3a = 6,
+<br />
+/
+<br />
+&amp;rst  iat =-1,-1,  igr1 = 41,80,  igr2 = 121,160,
+<br />
+&nbsp;r1 = 0.01,  r2 = 25,  r3 = 25,  r4 = 35,  rk2 = 0.01,  rk3 = 6,
+<br />
+&nbsp;r1a = 0  r2a = 25,  r3a = 25,  r4a = 35,  rk2a = 0.01,  rk3a = 6,
+<br />
+/
+<br />
+&amp;rst  iat =-1,-1,  igr1 = 81,120,  igr2 = 121,160,
+<br />
+&nbsp;r1 = 0.01,  r2 = 25,  r3 = 25,  r4 = 35,  rk2 = 0.01,  rk3 = 6,
+<br />
+&nbsp;r1a = 0  r2a = 25,  r3a = 25,  r4a = 35,  rk2a = 0.01,  rk3a = 6,
+<br />
+/
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Aug 04 2022 - 13:38:08 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0019.html" title="Next message in the list">Carlos Simmerling via AMBER: "Re: [AMBER] Restraints with replica exchange MD"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0017.html" title="Previous message in the list">Enrico Martinez via AMBER: "Re: [AMBER] installing CUDA driver with ubuntu 20.04"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0019.html" title="Next message in this discussion thread">Carlos Simmerling via AMBER: "Re: [AMBER] Restraints with replica exchange MD"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0019.html" title="Message sent in reply to this message">Carlos Simmerling via AMBER: "Re: [AMBER] Restraints with replica exchange MD"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg18" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg18" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg18" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg18" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

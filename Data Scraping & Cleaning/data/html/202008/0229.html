@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] &quot;Atom does not have a type&quot; despite adding .frcmod parameters from Erika Davidoff on 2020-08-27 (Amber Archive Aug 2020)</title>
+<meta name="Author" content="Erika Davidoff (erikadavidoff.gmail.com)" />
+<meta name="Subject" content="[AMBER] &quot;Atom does not have a type&quot; despite adding .frcmod parameters" />
+<meta name="Date" content="2020-08-27" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] &quot;Atom does not have a type&quot; despite adding .frcmod parameters</h1>
+<!-- received="Thu Aug 27 13:30:02 2020" -->
+<!-- isoreceived="20200827203002" -->
+<!-- sent="Thu, 27 Aug 2020 15:56:25 -0400" -->
+<!-- isosent="20200827195625" -->
+<!-- name="Erika Davidoff" -->
+<!-- email="erikadavidoff.gmail.com" -->
+<!-- subject="[AMBER] &quot;Atom does not have a type&quot; despite adding .frcmod parameters" -->
+<!-- id="CAAEpP60u0Zk+U02YyGFxoyoWeXsEku6VSU0=nEGmyGxvPco2OA.mail.gmail.com" -->
+<!-- charset="UTF-8" -->
+<!-- inreplyto="mailman.564017.1598557282.3381.amber.ambermd.org" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0230.html" accesskey="d" title="Scott Brozell: &quot;Re: [AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files&quot;">Next message</a> ]
+[ <a href="0228.html" title="An Ta: &quot;[AMBER]  Stripping Protocol in Cpptraj&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0231.html" accesskey="t" title="Ayesha Fatima: &quot;Re: [AMBER] &#0034;Atom does not have a type&#0034; despite adding .frcmod parameters&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg229" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg229" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg229" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg229" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Erika Davidoff &lt;<a href="mailto:erikadavidoff.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20%22Atom%20does%20not%20have%20a%20type%22%20despite%20adding%20.frcmod%20parameters">erikadavidoff.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 27 Aug 2020 15:56:25 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber users,
+<br />
+<br />I am new to computational modeling and have an issue I've been trying to
+<br />
+solve. I am working with a PDB of a protein that has mostly standard
+<br />
+residues and one non-standard HETATM called PCA that contains 8 atoms. To
+<br />
+get the parameters for this non-standard residue, I made a separate PDB
+<br />
+with the one residue, added hydrogens to it and used antechamber to
+<br />
+generate a mol2 file:
+<br />
+<br />antechamber -i ccl2_fragH.pdb -fi pdb -o ccl2_fragH.mol2 -fo mol2 -at amber
+<br />
+-c bcc
+<br />
+<br /><br />Then I used parmchk2 to generate a modified force field parameters file
+<br />
+that has a lot of parameters:
+<br />
+<br />parmchk2 -i ccl2_fragH.mol2 -f mol2 -o ccl2.frcmod
+<br />
+<br /><br />Then I have a tleap script that includes the lines
+<br />
+<br />loadamberparams ccl2.frcmod
+<br />
+<br />ccl2 = loadPdb ccl2.pdb
+<br />
+<br /><br />and proceeds to add a peptide to the system and solvate it. When I run
+<br />
+this, I get errors for all eight atoms in the non-standard residue:
+<br />
+<br />Unknown residue: PCA   number: 0   type: Terminal/beginning
+<br />
+<br />..relaxing end constraints to try for a dbase match
+<br />
+<br />&nbsp;&nbsp;-no luck
+<br />
+<br />Creating new UNIT for residue: PCA sequence: 1
+<br />
+<br />Created a new atom named: N within residue: .R&lt;PCA 1&gt;
+<br />
+<br />Created a new atom named: CA within residue: .R&lt;PCA 1&gt;
+<br />
+<br />Created a new atom named: CB within residue: .R&lt;PCA 1&gt;
+<br />
+<br />Created a new atom named: CG within residue: .R&lt;PCA 1&gt;
+<br />
+<br />Created a new atom named: CD within residue: .R&lt;PCA 1&gt;
+<br />
+<br />Created a new atom named: OE within residue: .R&lt;PCA 1&gt;
+<br />
+<br />Created a new atom named: C within residue: .R&lt;PCA 1&gt;
+<br />
+<br />Created a new atom named: O within residue: .R&lt;PCA 1&gt;
+<br />
+<br />...
+<br />
+<br />FATAL:  Atom .R&lt;PCA 9&gt;.A&lt;O 8&gt; does not have a type.
+<br />
+<br />FATAL:  Atom .R&lt;PCA 9&gt;.A&lt;C 7&gt; does not have a type.
+<br />
+<br />FATAL:  Atom .R&lt;PCA 9&gt;.A&lt;OE 6&gt; does not have a type.
+<br />
+<br />FATAL:  Atom .R&lt;PCA 9&gt;.A&lt;CD 5&gt; does not have a type.
+<br />
+<br />FATAL:  Atom .R&lt;PCA 9&gt;.A&lt;CG 4&gt; does not have a type.
+<br />
+<br />FATAL:  Atom .R&lt;PCA 9&gt;.A&lt;CB 3&gt; does not have a type.
+<br />
+<br />FATAL:  Atom .R&lt;PCA 9&gt;.A&lt;CA 2&gt; does not have a type.
+<br />
+<br />FATAL:  Atom .R&lt;PCA 9&gt;.A&lt;N 1&gt; does not have a type.
+<br />
+<br /><br />I have attached: ccl2.pdb, the original protein file (straight from the
+<br />
+database); ccl2_fragH.pdb, the file with the one residue; ccl2.frcmod; and
+<br />
+my tleap script.
+<br />
+<br />Thank you for your help!
+<br />
+<br />Best,
+<br />
+Erika
+<br />
+<br />*Erika J. Davidoff *
+<br />
+*Rutgers University*
+<br />
+Department of Biomedical Engineering
+<br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>application/octet-stream attachment: <a href="att-0229/ccl2_fragH.pdb">ccl2_fragH.pdb</a></li>
+</ul>
+<!-- attachment="ccl2_fragH.pdb" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0229/tleap_initialsetup.in">tleap_initialsetup.in</a></li>
+</ul>
+<!-- attachment="tleap_initialsetup.in" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0229/ccl2.pdb">ccl2.pdb</a></li>
+</ul>
+<!-- attachment="ccl2.pdb" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0229/ccl2.frcmod">ccl2.frcmod</a></li>
+</ul>
+<!-- attachment="ccl2.frcmod" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Thu Aug 27 2020 - 13:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0230.html" title="Next message in the list">Scott Brozell: "Re: [AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0228.html" title="Previous message in the list">An Ta: "[AMBER]  Stripping Protocol in Cpptraj"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0231.html" title="Next message in this discussion thread">Ayesha Fatima: "Re: [AMBER] &#0034;Atom does not have a type&#0034; despite adding .frcmod parameters"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0231.html" title="Message sent in reply to this message">Ayesha Fatima: "Re: [AMBER] &#0034;Atom does not have a type&#0034; despite adding .frcmod parameters"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg229" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg229" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg229" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg229" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

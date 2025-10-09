@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Single-Molecule Mixing of Force Fields from Nathan Black on 2022-02-21 (Amber Archive Feb 2022)</title>
+<meta name="Author" content="Nathan Black (nathanblack262.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Single-Molecule Mixing of Force Fields" />
+<meta name="Date" content="2022-02-21" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Single-Molecule Mixing of Force Fields</h1>
+<!-- received="Mon Feb 21 10:00:02 2022" -->
+<!-- isoreceived="20220221180002" -->
+<!-- sent="Mon, 21 Feb 2022 11:54:32 -0600" -->
+<!-- isosent="20220221175432" -->
+<!-- name="Nathan Black" -->
+<!-- email="nathanblack262.gmail.com" -->
+<!-- subject="Re: [AMBER] Single-Molecule Mixing of Force Fields" -->
+<!-- id="CACfZsgj0N3jzKRoA_4viL1To24mPXmi_yD=_SY1eg3Dzuq+Utw.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="d904a507-224f-1b76-f024-3b85a4e4ad87.fau.de" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0198.html" accesskey="d" title="Carlos Simmerling: &quot;Re: [AMBER] Single-Molecule Mixing of Force Fields&quot;">Next message</a> ]
+[ <a href="0196.html" title="Dr. Anselm Horn: &quot;Re: [AMBER] Single-Molecule Mixing of Force Fields&quot;">Previous message</a> ]
+[ <a href="0196.html" title="Dr. Anselm Horn: &quot;Re: [AMBER] Single-Molecule Mixing of Force Fields&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0198.html" accesskey="t" title="Carlos Simmerling: &quot;Re: [AMBER] Single-Molecule Mixing of Force Fields&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg197" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg197" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg197" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg197" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Nathan Black &lt;<a href="mailto:nathanblack262.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Single-Molecule%20Mixing%20of%20Force%20Fields">nathanblack262.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 21 Feb 2022 11:54:32 -0600</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dr. Horn and Other AMBER Users,
+<br />
+<br />I would like to provide more context with regard to my methodology and
+<br />
+overarching research purpose. After describing my methodology in detail, I
+<br />
+will address the errors I have run into. My immediate goal is to simulate
+<br />
+interactions between polymerized micelles and organic ligands. At the
+<br />
+moment, my methodology begins with processing a .cif file corresponding to
+<br />
+the modified undecylenic acid-based tail, then adding the amino acid
+<br />
+residues in LEaP following the sequence {} command.
+<br />
+<br />The process of the input .cif file begins with the use of *antechamber* to
+<br />
+perform charge assignments using the AM1-BCC method (-c bcc) and define
+<br />
+atom types by GAFF2 (-at gaff2), giving a .ac file output. From looking at
+<br />
+past files on my research computer, the (-at amber) command was given,
+<br />
+which as I understand corresponds to PARM data types rather than GAFF2.
+<br />
+<br />Then, I used *prepgen* to omit hydrogen atoms as needed for polymerization
+<br />
+and addition of amino acid residues; the tail atom was defined (the head is
+<br />
+null) to facilitate the addition of amino acid headgroups. This gave a
+<br />
+.prepin file output.
+<br />
+<br />After this, *parmchk2 *was used to generate force field modifications for
+<br />
+the surfactant tail, using the gaff2.dat force field parameter file as an
+<br />
+input (-p $AMBERHOME/dat/leap/parm/gaff2.dat). I will designate this
+<br />
+tail-based .frcmod file as *tail.frcmod.*
+<br />
+<br />These force field modifications were loaded into LEaP, and the surfactants
+<br />
+are generated using the sequence {TAL AMR ... CAMR} command, where &quot;TAL&quot;
+<br />
+corresponds to the processed tail, and &quot;AMR&quot; corresponds to amino acid
+<br />
+residues; this command is performed after loading the leaprc.protein.ff19SB
+<br />
+force field.
+<br />
+<br />Then, *parmchk2 *is run again on each combined surfactant residue, this
+<br />
+time using the parm19.dat force field parameter file as an input. I will
+<br />
+designate the output files as *surfactant.frcmod *files.
+<br />
+<br />This concludes my process of surfactant generation in AMBER, other than
+<br />
+saving the result of the sequence {} command. As for the issues I have run
+<br />
+into, I have found that the *surfactant.frcmod *files have several &quot;ATTN,
+<br />
+need revision&quot; lines when following the above procedure. I have found that
+<br />
+when the same atom type and force field modification input (either GAFF2 or
+<br />
+PARM) is used for all *antechamber *and *parmchk2 *commands, there are
+<br />
+minimal &quot;ATTN, need revision&quot; lines.
+<br />
+<br />In my potentially naive view, shouldn't I use *gaff2 *for the *antechamber* and
+<br />
+first *parmchk2 *step (as these steps correspond to the tail in the absence
+<br />
+of amino acid residues), followed by *parm19 *for the final *parmchk2 *
+<br />
+step?
+<br />
+<br />Also, how would I go about manually determining inputs for any parameters
+<br />
+that *parmchk2 *is not able to determine? Are there recommendations given
+<br />
+for this in the AMBER manual?
+<br />
+<br />Greatly appreciative,
+<br />
+NDB
+<br />
+<br />On Mon, Feb 21, 2022 at 10:31 AM Dr. Anselm Horn &lt;anselm.horn.fau&#46;<!--nospam-->de&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Nathan,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; parameterization is IMHO not the ideal task for getting started with MD,
+</em><br />
+<em class="quotelev1">&gt; especially if you intend to use the new ff19SB force field.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; In principle, one can mix parameters of different force fields;
+</em><br />
+<em class="quotelev1">&gt; recommendations about that are given in the manuals: e.g. gaff(2) is
+</em><br />
+<em class="quotelev1">&gt; generally considered to be well suited to work with ff14SB.
+</em><br />
+<em class="quotelev1">&gt; However, if you use different force fields within the same residue
+</em><br />
+<em class="quotelev1">&gt; (protein + organic), you end up with different sets of atom types, i.e.
+</em><br />
+<em class="quotelev1">&gt; uppercase (protein) and lowercase (gaff), which requires special, mostly
+</em><br />
+<em class="quotelev1">&gt; manually defined cross-terms with mixed atom types (e.g. torsions); the
+</em><br />
+<em class="quotelev1">&gt; respective parameters may, however, be obtained from already existing
+</em><br />
+<em class="quotelev1">&gt; parameter lists.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Alternatively, one could use/add specialized protein atom types and just
+</em><br />
+<em class="quotelev1">&gt; import the then missing parameters from the other force field.
+</em><br />
+<em class="quotelev1">&gt; In your case, you had to decide whether your total system is more like a
+</em><br />
+<em class="quotelev1">&gt; protein with some non-standard amino acid residues, or like an organic
+</em><br />
+<em class="quotelev1">&gt; compound which has some similarity to a protein. Then you could choose
+</em><br />
+<em class="quotelev1">&gt; your 'main' force field accordingly.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; In any case, you'd need to somehow validate your parameter assignment
+</em><br />
+<em class="quotelev1">&gt; via MD simulations to see whether they work as expected.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; In my (limited) experience, many parameterizations or parameter
+</em><br />
+<em class="quotelev1">&gt; assignments involve manual steps and decisions that are not easily
+</em><br />
+<em class="quotelev1">&gt; performed automagically. It depends on your system and your research
+</em><br />
+<em class="quotelev1">&gt; question.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; But others may chime in here and provide more helpful comments...
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; All the best
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Anselm
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Bioinformatik  |  NHR.FAU
+</em><br />
+<em class="quotelev1">&gt; Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU)
+</em><br />
+<em class="quotelev1">&gt; Germany
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On 02/19/2022 08:04 PM, Nathan Black wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt; Hello AMBER Users,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I am a new graduate student that is relatively unacquainted with AMBER.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; As part of my research, I am attempting to simulate anionic surfactants
+</em><br />
+<em class="quotelev2">&gt; &gt; whose head(s) are standard amino acid residues, and whose tails are based
+</em><br />
+<em class="quotelev2">&gt; &gt; upon undecylenic acid (general organic domain). As such, I am hoping that
+</em><br />
+<em class="quotelev2">&gt; &gt; there is a way to model each surfactant such that the tail parameters are
+</em><br />
+<em class="quotelev2">&gt; &gt; defined by GAFF2, while the head parameters are defined by ff19SB.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; It was my initial impression that the parmchk2 program could be used to
+</em><br />
+<em class="quotelev2">&gt; &gt; accomplish this, but the more I read through the Amber 20 manual, the
+</em><br />
+<em class="quotelev1">&gt; less
+</em><br />
+<em class="quotelev2">&gt; &gt; confident I am that parmchk2 can &quot;satisfy&quot; missing parameters at the
+</em><br />
+<em class="quotelev2">&gt; &gt; surfactant head-tail boundary. It seems that parmchk2 is intended for use
+</em><br />
+<em class="quotelev2">&gt; &gt; in molecules with nonstandard residues but will still be described by a
+</em><br />
+<em class="quotelev2">&gt; &gt; single force field.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Is there any software or some other methodology that would allow me to
+</em><br />
+<em class="quotelev2">&gt; &gt; successfully implement this mixing of force fields without compromising
+</em><br />
+<em class="quotelev1">&gt; the
+</em><br />
+<em class="quotelev2">&gt; &gt; integrity of any subsequent MD simulations? Any help/advice is much
+</em><br />
+<em class="quotelev2">&gt; &gt; appreciated!
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; -NDB
+</em><br />
+<em class="quotelev2">&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Feb 21 2022 - 10:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0198.html" title="Next message in the list">Carlos Simmerling: "Re: [AMBER] Single-Molecule Mixing of Force Fields"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0196.html" title="Previous message in the list">Dr. Anselm Horn: "Re: [AMBER] Single-Molecule Mixing of Force Fields"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0196.html" title="Message to which this message replies">Dr. Anselm Horn: "Re: [AMBER] Single-Molecule Mixing of Force Fields"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0198.html" title="Next message in this discussion thread">Carlos Simmerling: "Re: [AMBER] Single-Molecule Mixing of Force Fields"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0198.html" title="Message sent in reply to this message">Carlos Simmerling: "Re: [AMBER] Single-Molecule Mixing of Force Fields"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg197" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg197" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg197" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg197" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

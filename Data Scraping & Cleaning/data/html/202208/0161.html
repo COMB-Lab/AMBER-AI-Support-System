@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] {SPAM?} Re: timask vs. scmask question from Ali Morshedifard via AMBER on 2022-08-30 (Amber Archive Aug 2022)</title>
+<meta name="Author" content="Ali Morshedifard via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] {SPAM?} Re: timask vs. scmask question" />
+<meta name="Date" content="2022-08-30" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] {SPAM?} Re: timask vs. scmask question</h1>
+<!-- received="Tue Aug 30 15:30:03 2022" -->
+<!-- isoreceived="20220830223003" -->
+<!-- sent="Tue, 30 Aug 2022 15:05:59 -0700" -->
+<!-- isosent="20220830220559" -->
+<!-- name="Ali Morshedifard via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] {SPAM?} Re: timask vs. scmask question" -->
+<!-- id="8462f177-35b0-8356-8d82-5321d5fd1edb.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="20220830210951.6enrjyhp7j6itpbx.gsappa305l01.rad.rutgers.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0162.html" accesskey="d" title="Qinsi Xiong via AMBER: &quot;Re: [AMBER] Question about NAB package usage in AMBER&quot;">Next message</a> ]
+[ <a href="0160.html" title="David A Case via AMBER: &quot;Re: [AMBER] makeANG_RST&quot;">Previous message</a> ]
+[ <a href="0159.html" title="David A Case via AMBER: &quot;Re: [AMBER] {SPAM?} Re:  timask vs. scmask question&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg161" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg161" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg161" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg161" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Ali Morshedifard via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20%7BSPAM%3F%7D%20Re%3A%20timask%20vs.%20scmask%20question">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 30 Aug 2022 15:05:59 -0700</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Matthew,
+<br />
+<br />I'm not sure, but here's how I'd do it:
+<br />
+<br />tiMerge ('mask for protein', 'mask for mutated protein', 'mask for Glu', 
+<br />
+'mask for Lys')
+<br />
+<br />The result here is that some of the atoms in Lys and Glu will have the 
+<br />
+same coordinate (common atoms). Now in amber, you can set timask1='mask 
+<br />
+for Glu', timask2='mask for Lys', scmask1='unique atoms in Glu', 
+<br />
+scmask2='unique atoms in Lys'. This way, the common atoms among Glu and 
+<br />
+Lys will be linearly transformed and the rest will be softcore. I may be 
+<br />
+wrong, but it seems to me that &quot;softcore&quot; in tiMerge has the same 
+<br />
+meaning as &quot;timask&quot; in amber.
+<br />
+<br />Hope this helps,
+<br />
+<br />Ali
+<br />
+<br />On 8/30/2022 2:09 PM, David A Case via AMBER wrote:
+<br />
+<em class="quotelev1">&gt; On Mon, Aug 29, 2022, Matthew Guberman-Pfeffer wrote:
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; Let’s say I’m mutating Glu to Lys and I only want the CD and beyond 
+</em><br />
+<em class="quotelev2">&gt;&gt; atoms in the SC region. So, my timask and scmasks would look like the 
+</em><br />
+<em class="quotelev2">&gt;&gt; below
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; timask1=‘.3632,3633,3634,3635,3636,3637,3638,3639,3640,3641,3642,3643,3644,3645,3646’ 
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; scmask1=‘.3644,3645,3646’
+</em><br />
+<em class="quotelev2">&gt;&gt; timask2='.8795,8796,8797,8798,8799,8800,8801,8802,8803,8804,8805,8806,8807,8808,8809,8810,8811,8812,8813,8814,8815,8816' 
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; scmask2='.807,8808,8809,8810,8811,8812,8813,8814,8815,8816'
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; The common non-softcore atoms that need their charges transformed are
+</em><br />
+<em class="quotelev2">&gt;&gt; .3632,3633,3634,3635,3636,3637,3638,3639,3640,3641,3642,3643
+</em><br />
+<em class="quotelev2">&gt;&gt; .8795,8796,8797,8798,8799,8800,8801,8802,8803,8804,8805,8806
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; My question is: If you use TiMerge, it will discard the &#64;8795-8806 
+</em><br />
+<em class="quotelev2">&gt;&gt; set of
+</em><br />
+<em class="quotelev2">&gt;&gt; atoms as duplicates. Does that also throw away the final-state charges?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; You have reached the end of my knowledge of the innards of TiMerge.  
+</em><br />
+<em class="quotelev1">&gt; I'm not
+</em><br />
+<em class="quotelev1">&gt; sure that the phrase &quot;discard atoms as duplicates&quot; is accurate, and the
+</em><br />
+<em class="quotelev1">&gt; end-state charges must be preserved in the prmtop file.  But others on 
+</em><br />
+<em class="quotelev1">&gt; the
+</em><br />
+<em class="quotelev1">&gt; list will have to chime in with implementation details here.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ....dac
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Aug 30 2022 - 15:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0162.html" title="Next message in the list">Qinsi Xiong via AMBER: "Re: [AMBER] Question about NAB package usage in AMBER"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0160.html" title="Previous message in the list">David A Case via AMBER: "Re: [AMBER] makeANG_RST"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0159.html" title="Message to which this message replies">David A Case via AMBER: "Re: [AMBER] {SPAM?} Re:  timask vs. scmask question"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg161" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg161" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg161" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg161" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

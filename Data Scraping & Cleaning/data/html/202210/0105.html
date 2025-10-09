@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] co-alchemical ion from Pietro Vidossich via AMBER on 2022-10-23 (Amber Archive Oct 2022)</title>
+<meta name="Author" content="Pietro Vidossich via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] co-alchemical ion" />
+<meta name="Date" content="2022-10-23" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] co-alchemical ion</h1>
+<!-- received="Sun Oct 23 01:30:02 2022" -->
+<!-- isoreceived="20221023083002" -->
+<!-- sent="Sun, 23 Oct 2022 08:24:12 +0000" -->
+<!-- isosent="20221023082412" -->
+<!-- name="Pietro Vidossich via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] co-alchemical ion" -->
+<!-- id="1625576e2a9249afb4a092b024e4a47c.iit.it" -->
+<!-- charset="windows-1252" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0106.html" accesskey="d" title="Matthew Guberman-Pfeffer via AMBER: &quot;[AMBER] MCPB: How to make a larger &#0034;small model&#0034;&quot;">Next message</a> ]
+[ <a href="0104.html" title="filip fratev via AMBER: &quot;Re: [AMBER] RTX4090 Benchmarks&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0112.html" accesskey="t" title="David A Case via AMBER: &quot;Re: [AMBER] co-alchemical ion&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg105" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg105" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg105" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg105" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Pietro Vidossich via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20co-alchemical%20ion">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 23 Oct 2022 08:24:12 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber developers and users,
+<br />
+<br /><br />we are facing unstable simulations while trying to alchemically transform a neutral peptide into a (negatively) charged one, coupled to the transformation of an ion (chloride) into a water molecule (the co-alchemical ion approach from the literature). The simulation shows huge spikes in temperature and in the forces acting on chloride and the coupled water molecule, eventually resulting in out of scale energy components (e.g. EPtot = **************). What is puzzling us is that the problem shows up only when the two transformations are simultaneously performed: independent simulations (one to transform the peptide and another to transform the ion) complete with no issues. We have being playing with the setup with unfortunately no success (different lambda values, different water models, �). I copy below leap, parmed and pmemd input files to run a simulation on a minimal system (in this system I�m transforming a serine into a serine, such that the transformation can also be run without softcore potentials on the peptide, just on the water molecule, showing that in this case the simulation behaves properly). In case, I can provide all files required to run the simulation and also a figure showing the temperature profile and the force on the chloride ion during the simulation.
+<br />
+<br /><br />Any suggestion or advice from the community on how to properly perform the coupled transformation is highly appreciated.
+<br />
+<br /><br />Thank you for your time.
+<br />
+<br /><br />Best regards,
+<br />
+<br /><br />Pietro Vidossich
+<br />
+<br />Laboratory of Molecular Modelling and Drug Discovery
+<br />
+<br />Istituto Italiano di Tecnologia
+<br />
+<br />Genova, Italy
+<br />
+<br /><br /><br />LEAP.IN file:
+<br />
+<br />source leaprc.protein.ff14SB
+<br />
+<br />source leaprc.water.spce
+<br />
+<br />WAT = SPF
+<br />
+<br />loadAmberParams frcmod.spcfw
+<br />
+<br />set default FlexibleWater on
+<br />
+<br />wt = sequence {ACE GLY SER GLY NME}
+<br />
+<br />mut = sequence {ACE GLY SER GLY NME}
+<br />
+<br />model = combine {wt mut Cl- SPF}
+<br />
+<br />setbox model centers {20. 20. 20.}
+<br />
+<br />charge model
+<br />
+<br />saveamberparm model tripep.top tripep.rst
+<br />
+<br />quit
+<br />
+<br /><br />PARMED.IN file:
+<br />
+<br />setOverwrite True
+<br />
+<br />parm tripep.top
+<br />
+<br />loadRestrt tripep.rst
+<br />
+<br />tiMerge :1-5 :6-10 :3 :8
+<br />
+<br />outparm tripep_ti.top tripep_ti.rst
+<br />
+<br />quit
+<br />
+<br /><br />PMEMD.IN file:
+<br />
+<br />co-alchemical ion
+<br />
+<br />&amp;cntrl
+<br />
+<br />imin=0,
+<br />
+<br />ntx=1, irest=0,
+<br />
+<br />ntxo=2, ntpr=1, ntwr=1000, ntwx=1, ntwv=1, ntwf=1, ntwe=1, ioutfm=0,
+<br />
+<br />nstlim=100000, dt=0.001,
+<br />
+<br />ntt=3, temp0=310, ig=-1, tempi=310, gamma_ln=2.0,
+<br />
+<br />ntc=1, nsnb=10,
+<br />
+<br />ntf=1, ntb=1, cut=10.,
+<br />
+<br />clambda=0.00922,
+<br />
+<br />icfe=1, ifsc=1, logdvdl=1,
+<br />
+<br />timask1=':3,7',
+<br />
+<br />timask2=':6,8',
+<br />
+<br />scmask1='.19-22',
+<br />
+<br />scmask2='.43-46,51,52',
+<br />
+<br />/
+<br />
+<br />&amp;ewald
+<br />
+<br />ew_type=0, use_pme=1,
+<br />
+<br />/
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Oct 23 2022 - 01:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0106.html" title="Next message in the list">Matthew Guberman-Pfeffer via AMBER: "[AMBER] MCPB: How to make a larger &#0034;small model&#0034;"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0104.html" title="Previous message in the list">filip fratev via AMBER: "Re: [AMBER] RTX4090 Benchmarks"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0112.html" title="Next message in this discussion thread">David A Case via AMBER: "Re: [AMBER] co-alchemical ion"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0112.html" title="Message sent in reply to this message">David A Case via AMBER: "Re: [AMBER] co-alchemical ion"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg105" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg105" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg105" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg105" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

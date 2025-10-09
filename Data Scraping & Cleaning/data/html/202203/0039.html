@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Unit cell size changed and coords overlap problems from Dr. Anselm Horn on 2022-03-10 (Amber Archive Mar 2022)</title>
+<meta name="Author" content="Dr. Anselm Horn (anselm.horn.fau.de)" />
+<meta name="Subject" content="Re: [AMBER] Unit cell size changed and coords overlap problems" />
+<meta name="Date" content="2022-03-10" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Unit cell size changed and coords overlap problems</h1>
+<!-- received="Thu Mar 10 01:00:02 2022" -->
+<!-- isoreceived="20220310090002" -->
+<!-- sent="Thu, 10 Mar 2022 09:45:42 +0100" -->
+<!-- isosent="20220310084542" -->
+<!-- name="Dr. Anselm Horn" -->
+<!-- email="anselm.horn.fau.de" -->
+<!-- subject="Re: [AMBER] Unit cell size changed and coords overlap problems" -->
+<!-- id="28c5eb61-8f27-38cb-6e3c-2e20c203b7dd.fau.de" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="4af2f47a.121b.17f72ca5afa.Coremail.chanyann06.stu.scu.edu.cn" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0040.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] [Amber]Not able to generate eq_density.cpptraj file while doing QM/MM calculations&quot;">Next message</a> ]
+[ <a href="0038.html" title="chanyann06.stu.scu.edu.cn: &quot;[AMBER] Unit cell size changed and coords overlap problems&quot;">Previous message</a> ]
+[ <a href="0038.html" title="chanyann06.stu.scu.edu.cn: &quot;[AMBER] Unit cell size changed and coords overlap problems&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0041.html" accesskey="t" title="Daniel Roe: &quot;Re: [AMBER] Unit cell size changed and coords overlap problems&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg39" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg39" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg39" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg39" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Dr. Anselm Horn &lt;<a href="mailto:anselm.horn.fau.de?Subject=Re%3A%20%5BAMBER%5D%20Unit%20cell%20size%20changed%20and%20coords%20overlap%20problems">anselm.horn.fau.de</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 10 Mar 2022 09:45:42 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Just a first remark (more experience users and cpptraj specialists may
+<br />
+chime in here):
+<br />
+<br />Perhaps cpptraj gets confused with the trajectory manipulation and the
+<br />
+analysis commands; you could try to separate these steps by using two
+<br />
+cpptraj-runs with two input files: in the first, you create a trajectory
+<br />
+with just the sytem your are interested in (and which is also easier to
+<br />
+inspect visually, including the respective distance), i.e. the centered
+<br />
+and imaged protein only; the the second, you do the actual distance
+<br />
+analysis.
+<br />
+<br />For the first step, I'd also recommend to move all the strip commands in
+<br />
+your input file before the center and (more important) image commands;
+<br />
+this should considerably speed up execution.
+<br />
+<br />In addition, if the image command fails for some reason - I guess you
+<br />
+have multiple chains in your system that &quot;leave the box&quot; during
+<br />
+simulation - and you used iwrap=1 in your MD input: you could try the
+<br />
+command unwrap in the first cpptraj run (-&gt; strip, unwrap, center).
+<br />
+<br />Maybe this helps.
+<br />
+<br />Best regards,
+<br />
+<br />Anselm
+<br />
+<br />Bioinformatik  |  NHR.FAU
+<br />
+Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU)
+<br />
+Germany
+<br />
+<br /><br /><br />Am 10.03.2022 um 08:45 schrieb chanyann06.stu&#46;<!--nospam-->scu.edu.cn:
+<br />
+<em class="quotelev1">&gt; Dear Amber Users，
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;  I  carried out 2us GaMD of protein, which is composed of ten 200ns-MD trajectories. However, in the second trajectory, when I calculated distance between two residues, I got warnings as followed:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ----- GaMDprod_02.nc (1-40000, 1) -----
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;  0% 10% 20% 30% Warning: Frame 14529 imaging failed, box lengths are zero.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Warning: Frame 14530 coords 1 &amp; 2 overlap at origin; may be corrupt.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Warning: Frame 14530 imaging failed, box lengths are zero.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ……
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ……
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ……
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Warning: Frame 25099 coords 1 &amp; 2 overlap at origin; may be corrupt.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Warning: Frame 25099 imaging failed, box lengths are zero.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 70% 80% 90% 100% Complete.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Here is my .in file used to run the simulation:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; GaMD production
+</em><br />
+<em class="quotelev1">&gt;  &amp;cntrl                              
+</em><br />
+<em class="quotelev1">&gt;   imin = 0,                           
+</em><br />
+<em class="quotelev1">&gt;   irest = 0,                          
+</em><br />
+<em class="quotelev1">&gt;   ntx = 1,                            
+</em><br />
+<em class="quotelev1">&gt;   ioutfm = 1,                         
+</em><br />
+<em class="quotelev1">&gt;   nstlim = 100000000,                  
+</em><br />
+<em class="quotelev1">&gt;   dt = 0.002,                         
+</em><br />
+<em class="quotelev1">&gt;   ntt = 3,                            
+</em><br />
+<em class="quotelev1">&gt;   gamma_ln = 5.0,                     
+</em><br />
+<em class="quotelev1">&gt;   ig = -1,                            
+</em><br />
+<em class="quotelev1">&gt;   tempi = 310.0,                      
+</em><br />
+<em class="quotelev1">&gt;   temp0 = 310.0,                      
+</em><br />
+<em class="quotelev1">&gt;   ntp = 0,                            
+</em><br />
+<em class="quotelev1">&gt;   ntb = 1,                            
+</em><br />
+<em class="quotelev1">&gt;   ntc = 2,                            
+</em><br />
+<em class="quotelev1">&gt;   ntf = 2,                            
+</em><br />
+<em class="quotelev1">&gt;   cut = 12,                           
+</em><br />
+<em class="quotelev1">&gt;   ntwr = 2500,                         
+</em><br />
+<em class="quotelev1">&gt;   ntpr = 2500,                          
+</em><br />
+<em class="quotelev1">&gt;   ntwx = 2500,                          
+</em><br />
+<em class="quotelev1">&gt;   ntwe = 2500,                         
+</em><br />
+<em class="quotelev1">&gt;   iwrap = 1,                          
+</em><br />
+<em class="quotelev1">&gt;   ntr = 0,                            
+</em><br />
+<em class="quotelev1">&gt;   ntwprt = 0,                      
+</em><br />
+<em class="quotelev1">&gt;                                      
+</em><br />
+<em class="quotelev1">&gt;   igamd = 3, iE = 1, irest_gamd = 1,  
+</em><br />
+<em class="quotelev1">&gt;   ntcmd = 0, nteb = 0, ntave = 600000,
+</em><br />
+<em class="quotelev1">&gt;   ntcmdprep = 0, ntebprep = 0,        
+</em><br />
+<em class="quotelev1">&gt;   sigma0P = 6.0, sigma0D = 6.0,       
+</em><br />
+<em class="quotelev1">&gt;   &amp;end
+</em><br />
+<em class="quotelev1">&gt;  /
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Here is the .in file I used to calculate the distance:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; parm step5_input.parm7
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; trajin /home/xmpu233/cx/DAM128paraneo/GaMDprod_02.nc 1 last
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; center origin :296-583
+</em><br />
+<em class="quotelev1">&gt; image origin center
+</em><br />
+<em class="quotelev1">&gt; strip :POPC
+</em><br />
+<em class="quotelev1">&gt; strip :CHL1
+</em><br />
+<em class="quotelev1">&gt; strip :SOD
+</em><br />
+<em class="quotelev1">&gt; strip :CLA
+</em><br />
+<em class="quotelev1">&gt; strip :WAT
+</em><br />
+<em class="quotelev1">&gt; reference /home/xmpu233/cx/DAM128paraneo/step5_input.rst7
+</em><br />
+<em class="quotelev1">&gt; distance :396.CA,C,O,N,H :510.CA,C,O,N,H out dis2.dat
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I have extracted a warning frame and found that all atom coordinates changes to zero, like this:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; CRYST1    0.000    0.000    0.000   0.00   0.00   0.00               1
+</em><br />
+<em class="quotelev1">&gt; ATOM      1  N   ARG     1       0.000   0.000   0.000  1.00  0.00           N  
+</em><br />
+<em class="quotelev1">&gt; ATOM      2  HT1 ARG     1       0.000   0.000   0.000  1.00  0.00           H  
+</em><br />
+<em class="quotelev1">&gt; ATOM      3  HT2 ARG     1       0.000   0.000   0.000  1.00  0.00           H  
+</em><br />
+<em class="quotelev1">&gt; ATOM      4  HT3 ARG     1       0.000   0.000   0.000  1.00  0.00           H  
+</em><br />
+<em class="quotelev1">&gt; ATOM      5  CA  ARG     1       0.000   0.000   0.000  1.00  0.00           C  
+</em><br />
+<em class="quotelev1">&gt; ATOM      6  HA  ARG     1       0.000   0.000   0.000  1.00  0.00           H  
+</em><br />
+<em class="quotelev1">&gt; ATOM      7  CB  ARG     1       0.000   0.000   0.000  1.00  0.00           C  
+</em><br />
+<em class="quotelev1">&gt; ATOM      8  HB1 ARG     1       0.000   0.000   0.000  1.00  0.00           H  
+</em><br />
+<em class="quotelev1">&gt; ATOM      9  HB2 ARG     1       0.000   0.000   0.000  1.00  0.00           H  
+</em><br />
+<em class="quotelev1">&gt; ATOM     10  CG  ARG     1       0.000   0.000   0.000  1.00  0.00           C  
+</em><br />
+<em class="quotelev1">&gt; ATOM     11  HG1 ARG     1       0.000   0.000   0.000  1.00  0.00           H  
+</em><br />
+<em class="quotelev1">&gt; ATOM     12  HG2 ARG     1       0.000   0.000   0.000  1.00  0.00           H  
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; &quot;check&quot; has been used in cpptraj to check the frame and I got this message:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Warning: Unit cell size has changed so much that grid must be recalculated.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Warning: Old sizes= {84, 84, 77}  New sizes= {1, 1, 1}
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Warning: X cell offset reset to 1
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Warning: Y cell offset reset to 1
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Warning: Z cell offset reset to 1
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;   Total Grid memory: 0.208 kB
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; terminate called after throwing an instance of 'std::bad_alloc'
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;   what():  std::bad_alloc
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; It is confusing that the frames before and after the warning frames (14530-25099 frames report warnings) seem normal.  Can the frame 14529 ( the one before warning) and frame 25100 (the one after warning) be continuous? What would cause this warning?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;  I've check similar problems in amber mailing list but could not sovle it.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Looking forward to your help and thanks a lot!
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd&#46;<!--nospam-->org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Mar 10 2022 - 01:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0040.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] [Amber]Not able to generate eq_density.cpptraj file while doing QM/MM calculations"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0038.html" title="Previous message in the list">chanyann06.stu.scu.edu.cn: "[AMBER] Unit cell size changed and coords overlap problems"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0038.html" title="Message to which this message replies">chanyann06.stu.scu.edu.cn: "[AMBER] Unit cell size changed and coords overlap problems"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0041.html" title="Next message in this discussion thread">Daniel Roe: "Re: [AMBER] Unit cell size changed and coords overlap problems"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg39" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg39" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg39" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg39" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

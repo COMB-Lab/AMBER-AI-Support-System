@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Questions about PCA from Kat G on 2020-05-14 (Amber Archive May 2020)</title>
+<meta name="Author" content="Kat G (katwin86.gmail.com)" />
+<meta name="Subject" content="[AMBER] Questions about PCA" />
+<meta name="Date" content="2020-05-14" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Questions about PCA</h1>
+<!-- received="Thu May 14 21:30:02 2020" -->
+<!-- isoreceived="20200515043002" -->
+<!-- sent="Thu, 14 May 2020 23:27:24 -0500" -->
+<!-- isosent="20200515042724" -->
+<!-- name="Kat G" -->
+<!-- email="katwin86.gmail.com" -->
+<!-- subject="[AMBER] Questions about PCA" -->
+<!-- id="CAAoPRXXs7WZq16eg8Q1BvuSJLwYOGEqh-o=Jf3GUxwEuqhBTgQ.mail.gmail.com" -->
+<!-- charset="UTF-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0185.html" accesskey="d" title="Gustaf Olsson: &quot;Re: [AMBER] Fwd: Fw: Amber18 - MPI version error on HPC Cluster&quot;">Next message</a> ]
+[ <a href="0183.html" title="Sivanandam Magudeeswaran: &quot;[AMBER] Fwd: Fw: Amber18 - MPI version error on HPC Cluster&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0244.html" accesskey="t" title="Daniel Roe: &quot;Re: [AMBER] Questions about PCA&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg184" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg184" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg184" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg184" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Kat G &lt;<a href="mailto:katwin86.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Questions%20about%20PCA">katwin86.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 14 May 2020 23:27:24 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi All,
+<br />
+<br />I am trying to do PCA for the combining of 3 trajectories of a protein with
+<br />
+3 different ligands. Could you please help me to clarify the below points?
+<br />
+<br />1. From the output modes.dat (calculate eigenvalues for all eigenvectors),
+<br />
+my first eigenvector only accounts for 14% of the total motion. It requires
+<br />
+65 eigenvectors to describe 80% of the total motion. Do you think the
+<br />
+results are not good? I suppose that the first PC should contribute more
+<br />
+than 50% and it requires only a few PCs to represent the most dynamic modes
+<br />
+of the concatenating 3 trajectories.
+<br />
+<br />2. I am trying to define pcmin and pcmax to generate the pseudo-trajectory
+<br />
+by checking the histogram of PC projection. I notice that the projection of
+<br />
+the first 3 PCs does not distribute evenly around 0, especially PC1. (png
+<br />
+files are attached). Since I did center my data before diagonalizing the
+<br />
+covariance matrix, I suppose 0 should be the center of all PC projections
+<br />
+from each trajectory. Please correct me if I am wrong.
+<br />
+<br />Below is the script I used based on the PCA tutorial on Amber.
+<br />
+<br />parm topo.prmtop
+<br />
+<br />trajin traj1.nc 500 2000 1
+<br />
+trajin traj2.nc 500 2000 1
+<br />
+trajin traj3.nc 500 2000 1
+<br />
+<br />rms first :1-309.CA
+<br />
+average crdset avg
+<br />
+createcrd avg-traj
+<br />
+run
+<br />
+crdaction avg-traj rms ref avg :1-309.CA
+<br />
+crdaction avg-traj matrix covar :1-309.CA name covar-matrix
+<br />
+<br />runanalysis diagmatrix covar-matrix out evecs.dat vecs 927
+<br />
+<br />crdaction avg-traj projection traj1 modes evecs.dat beg 1 end 927 :1-309.CA
+<br />
+crdframes 1,1501 out traj1-projection.dat
+<br />
+crdaction avg-traj projection traj2 modes evecs.dat beg 1 end 927 :1-309.CA
+<br />
+crdframes 1502,3002 out traj2-projection.dat
+<br />
+crdaction avg-traj projection traj3 modes evecs.dat beg 1 end 927 :1-309.CA
+<br />
+crdframes 3003,last out traj3-projection.dat
+<br />
+<br />hist traj1:1 bins 100 out hist-traj1.agr norm name traj1-pc1
+<br />
+hist traj1:2 bins 100 out hist-traj1.agr norm name traj1-pc2
+<br />
+hist traj1:3 bins 100 out hist-traj1.agr norm name traj1-pc3
+<br />
+<br />hist traj2:1 bins 100 out hist-traj2.agr norm name traj2-pc1
+<br />
+hist traj2:2 bins 100 out hist-traj2.agr norm name traj2-pc2
+<br />
+hist traj2:3 bins 100 out hist-traj2.agr norm name traj2-pc3
+<br />
+<br />hist traj3:1 bins 100 out hist-traj3.agr norm name traj3-pc1
+<br />
+hist traj3:2 bins 100 out hist-traj3.agr norm name traj3-pc2
+<br />
+hist traj3:3 bins 100 out hist-traj3.agr norm name traj3-pc3
+<br />
+run
+<br />
+<br />readdata evecs.dat name Evecs
+<br />
+runanalysis modes name Evecs trajout PC1.pdb pcmin -20 pcmax 20 tmode 1
+<br />
+trajoutmask :1-309.CA trajoutfmt pdb
+<br />
+runanalysis modes name Evecs trajout PC2.pdb pcmin -20 pcmax 20 tmode 2
+<br />
+trajoutmask :1-309.CA trajoutfmt pdb
+<br />
+runanalysis modes name Evecs trajout PC3.pdb pcmin -20 pcmax 20 tmode 3
+<br />
+trajoutmask :1-309.CA trajoutfmt pdb
+<br />
+<br />runanalysis modes name Evecs eigenval out modes.dat
+<br />
+run
+<br />
+<br />3. I would like to filter the motions along PC1/PC2 from the individual
+<br />
+trajectory. Is it the appropriate script to do?
+<br />
+parm topo.prmtop
+<br />
+trajin traj1.nc 500 2000 1
+<br />
+rms first :1-303.CA
+<br />
+average crdset avg
+<br />
+createcrd avg-traj
+<br />
+run
+<br />
+readdata evecs.dat
+<br />
+reaction avg-traj projection myprojection modes evecs.dat out myproject.txt
+<br />
+beg 1 end 3 :1-303.CA
+<br />
+filter myprojection:1 min 0 max 4 out filter.dat
+<br />
+trajout filter-traj1-pc1.pdb
+<br />
+<br />Again, since the histogram of PC1 projection from traj1 is not center at 0,
+<br />
+can I set my min and max as 0 and 4, respectively?
+<br />
+<br />Thank you for your help
+<br />
+Kat
+<br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<p><img src="att-0184/traj1-proj.png" alt="traj1-proj.png" />
+<br />
+(image/png attachment: <a href="att-0184/traj1-proj.png">traj1-proj.png</a>)</p>
+<!-- attachment="traj1-proj.png" -->
+<p><img src="att-0184/traj2-proj.png" alt="traj2-proj.png" />
+<br />
+(image/png attachment: <a href="att-0184/traj2-proj.png">traj2-proj.png</a>)</p>
+<!-- attachment="traj2-proj.png" -->
+<p><img src="att-0184/traj3-proj.png" alt="traj3-proj.png" />
+<br />
+(image/png attachment: <a href="att-0184/traj3-proj.png">traj3-proj.png</a>)</p>
+<!-- attachment="traj3-proj.png" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Thu May 14 2020 - 21:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0185.html" title="Next message in the list">Gustaf Olsson: "Re: [AMBER] Fwd: Fw: Amber18 - MPI version error on HPC Cluster"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0183.html" title="Previous message in the list">Sivanandam Magudeeswaran: "[AMBER] Fwd: Fw: Amber18 - MPI version error on HPC Cluster"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0244.html" title="Next message in this discussion thread">Daniel Roe: "Re: [AMBER] Questions about PCA"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0244.html" title="Message sent in reply to this message">Daniel Roe: "Re: [AMBER] Questions about PCA"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg184" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg184" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg184" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg184" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

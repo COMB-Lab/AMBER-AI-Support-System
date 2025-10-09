@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Problem with topology file generation from Tanmoy Paul via AMBER on 2022-11-04 (Amber Archive Nov 2022)</title>
+<meta name="Author" content="Tanmoy Paul via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Problem with topology file generation" />
+<meta name="Date" content="2022-11-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Problem with topology file generation</h1>
+<!-- received="Fri Nov  4 20:30:02 2022" -->
+<!-- isoreceived="20221105033002" -->
+<!-- sent="Fri, 4 Nov 2022 23:19:16 -0400" -->
+<!-- isosent="20221105031916" -->
+<!-- name="Tanmoy Paul via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Problem with topology file generation" -->
+<!-- id="CAD1GXrp5xxkNt=fezSdn5ovpMvHdingGurLAqy=mOszxK7zd2Q.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0028.html" accesskey="d" title="Scott Brozell via AMBER: &quot;Re: [AMBER] compile AMBER 22 with non-default gcc&quot;">Next message</a> ]
+[ <a href="0026.html" title="Gustavo Seabra via AMBER: &quot;[AMBER] Metal center created with MCPB.py collapses on MD start?&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0029.html" accesskey="t" title="Gustavo Seabra via AMBER: &quot;Re: [AMBER] Problem with topology file generation&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg27" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg27" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg27" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg27" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Tanmoy Paul via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Problem%20with%20topology%20file%20generation">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 4 Nov 2022 23:19:16 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber users,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I am Tanmoy from Georgia State University.
+<br />
+I am trying to generate topology and inpcrd files for a system that
+<br />
+contains around 400,000 atoms. Upon solvating, the atom number becomes
+<br />
+around 5,000,000. I used tleap to generate topology and inpcrd files. The
+<br />
+leap.log file did not have any error messages. But while loading them to
+<br />
+VMD, I am getting the following error:
+<br />
+<br />*PARM7: error reading bond number 4015670*
+<br />
+<br />Initially, we thought that it was an issue of visualization. But while
+<br />
+trying to run minimization in NAMD we again encountered the same error. We
+<br />
+were able to generate topology and inpcrd files without the solvent and
+<br />
+ions successfully. It was loaded to vmd without any errors or strange
+<br />
+connections. I checked the prmtop to the best of my ability and found a
+<br />
+strange thing. Under the %FLAG BONDS_INC_HYDROGEN, I can see atom numbers
+<br />
+that are larger than the total number of atoms I have (5530618).
+<br />
+<br />16591827     1161659183316591830     1171659183916591836     11616591842
+<br />
+16591836
+<br />
+<br />I do not know how this is even possible. Can anyone please help?
+<br />
+<br />Here is the script we used :
+<br />
+<br />source leaprc.protein.ff14SB
+<br />
+source leaprc.DNA.bsc1
+<br />
+source leaprc.water.tip3p
+<br />
+loadamberparams /usr/local/amber16/dat/leap/parm/frcmod.ionsjc_tip3p
+<br />
+<br />loadamberprep   mg.prep
+<br />
+loadamberparams mg.frcmod
+<br />
+<br />loadoff FeS-nCYS.lib
+<br />
+loadoff CYF.lib
+<br />
+loadamberparams FeS.frcmod
+<br />
+<br />mol = loadpdb model.pdb
+<br />
+desc mol.CYF
+<br />
+desc mol.SF4
+<br />
+bond mol.116.SG mol.761.FE1 #first CYF
+<br />
+bond mol.134.SG mol.761.FE3
+<br />
+bond mol.155.SG mol.761.FE2
+<br />
+bond mol.190.SG mol.761.FE4
+<br />
+bond mol.761.FE1 mol.761.S2
+<br />
+bond mol.761.FE1 mol.761.S3
+<br />
+bond mol.761.FE1 mol.761.S4
+<br />
+bond mol.761.FE2 mol.761.S1
+<br />
+bond mol.761.FE2 mol.761.S3
+<br />
+bond mol.761.FE2 mol.761.S4
+<br />
+bond mol.761.FE3 mol.761.S1
+<br />
+bond mol.761.FE3 mol.761.S2
+<br />
+bond mol.761.FE3 mol.761.S4
+<br />
+bond mol.761.FE4 mol.761.S1
+<br />
+bond mol.761.FE4 mol.761.S2
+<br />
+bond mol.761.FE4 mol.761.S3
+<br />
+<br />solvatebox mol TIP3PBOX 12.0
+<br />
+charge mol
+<br />
+addIonsRand mol Na+ 5660 Cl- 5406
+<br />
+check mol
+<br />
+saveamberparm mol model.prmtop model.inpcrd
+<br />
+quit
+<br />
+<pre>
+-- 
+With regards,
+Tanmoy
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Fri Nov 04 2022 - 20:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0028.html" title="Next message in the list">Scott Brozell via AMBER: "Re: [AMBER] compile AMBER 22 with non-default gcc"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0026.html" title="Previous message in the list">Gustavo Seabra via AMBER: "[AMBER] Metal center created with MCPB.py collapses on MD start?"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0029.html" title="Next message in this discussion thread">Gustavo Seabra via AMBER: "Re: [AMBER] Problem with topology file generation"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0029.html" title="Message sent in reply to this message">Gustavo Seabra via AMBER: "Re: [AMBER] Problem with topology file generation"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0033.html" title="Message sent in reply to this message">Tanmoy Paul via AMBER: "Re: [AMBER] Problem with topology file generation"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg27" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg27" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg27" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg27" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

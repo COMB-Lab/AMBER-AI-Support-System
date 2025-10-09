@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] gti_cut vs. gti_cut_sc from accuratefreeenergy--- via AMBER on 2022-11-28 (Amber Archive Nov 2022)</title>
+<meta name="Author" content="accuratefreeenergy--- via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] gti_cut vs. gti_cut_sc" />
+<meta name="Date" content="2022-11-28" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] gti_cut vs. gti_cut_sc</h1>
+<!-- received="Mon Nov 28 07:00:02 2022" -->
+<!-- isoreceived="20221128150002" -->
+<!-- sent="Mon, 28 Nov 2022 09:53:31 -0500" -->
+<!-- isosent="20221128145331" -->
+<!-- name="accuratefreeenergy&ndash;&ndash;&ndash; via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] gti_cut vs. gti_cut_sc" -->
+<!-- id="000001d90339$2ed1c960$8c755c20$.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="EA5B4D8D-3360-4C71-9DDC-58A6D9B66A3C.uconn.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0183.html" accesskey="d" title="accuratefreeenergy--- via AMBER: &quot;Re: [AMBER] {SPAM?}  scbeta, wrong default?&quot;">Next message</a> ]
+[ <a href="0181.html" title="David A Case via AMBER: &quot;Re: [AMBER] Inconsistent GPU Results&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg182" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg182" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg182" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg182" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: accuratefreeenergy--- via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20gti_cut%20vs.%20gti_cut_sc">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 28 Nov 2022 09:53:31 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Matthew,
+<br />
+<br />&nbsp;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;non-bonding cutoff is NOT the softcore potential cutoff point—it is used to determine whether to include the non-bond interaction for a pair or not.  gti_cut should be set to 1 so that all pairs within the entire TI region will not be ignored.  This is required to get consistent lambda scaling for the electrostatic interactions.
+<br />
+<br />&nbsp;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gti_cut_sc=2 will make the tail smoothly go to zero, otherwise NB interactions would have a small value at the cutoff boundary.  Such errors usually are ignored and might not be big issues but could cause energy conservation problems in NVE simulations.
+<br />
+<br />&nbsp;
+<br />
+<br />(If there is no cutoff for the softcore potential, how can it smoothly go to zero at the cutoff?): When gti_cut_sc=2 and gti_cut=1, it means all pairs will be considered and the SC potentials will smoothly go to zero at the cutoff distance.  gti_cut =1 will not make the cutoff value disappear.
+<br />
+<br />&nbsp;
+<br />
+<br />&nbsp;
+<br />
+<br />Best,
+<br />
+<br />&nbsp;
+<br />
+<br />Taisung  
+<br />
+<br />&nbsp;
+<br />
+<br />From: Matthew Guberman-Pfeffer &lt;matthew.guberman-pfeffer.uconn&#46;<!--nospam-->edu&gt; 
+<br />
+Sent: Friday, November 25, 2022 5:03 PM
+<br />
+To: accuratefreeenergy.gmail&#46;<!--nospam-->com; AMBER Mailing List &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+Subject: gti_cut vs. gti_cut_sc
+<br />
+<br />&nbsp;
+<br />
+<br />Dear AMBER community,
+<br />
+<br />&nbsp;
+<br />
+<br />For TI simulations, the manual recommends gti_cut=1 so that the non-bond cutoff is not applied to the internal softcore non-bonded terms. At the same time, it seems sensible to use gti_cut_sc=2 so that the tail of the softcore potential smoothly goes to zero at the non-bonding cutoff. To specify gti_cut_sc=2, must gti_cut = 0? (If there is no cutoff for the softcore potential, how can it smoothly go to zero at the cutoff?) Or, do I not understand what these options do?
+<br />
+<br /><br /><br /><br /><br />If I must choose either gti_cut=1 or gti_cut_sc=2, what would you recommend? Even just some pros/cons would be helpful.
+<br />
+<br />&nbsp;
+<br />
+<br />Thank you so much for the help!
+<br />
+<br />&nbsp;
+<br />
+<br />Best,
+<br />
+<br />Matthew
+<br />
+<br />&nbsp;
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd&#46;<!--nospam-->org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Nov 28 2022 - 07:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0183.html" title="Next message in the list">accuratefreeenergy--- via AMBER: "Re: [AMBER] {SPAM?}  scbeta, wrong default?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0181.html" title="Previous message in the list">David A Case via AMBER: "Re: [AMBER] Inconsistent GPU Results"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg182" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg182" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg182" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg182" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

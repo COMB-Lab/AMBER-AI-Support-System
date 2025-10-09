@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] pmemd from aishen on 2020-10-01 (Amber Archive Oct 2020)</title>
+<meta name="Author" content="aishen (aishen.free.fr)" />
+<meta name="Subject" content="[AMBER] pmemd" />
+<meta name="Date" content="2020-10-01" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] pmemd</h1>
+<!-- received="Thu Oct  1 14:00:03 2020" -->
+<!-- isoreceived="20201001210003" -->
+<!-- sent="Thu, 1 Oct 2020 22:50:45 +0200" -->
+<!-- isosent="20201001205045" -->
+<!-- name="aishen" -->
+<!-- email="aishen.free.fr" -->
+<!-- subject="[AMBER] pmemd" -->
+<!-- id="a1b881dc-2d02-0992-2bdc-00ea3a432356.free.fr" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="d4897712-456b-6468-6658-4758a869b2e7.free.fr" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0012.html" accesskey="d" title="&#1587;&#1740;&#1583; &#1581;&#1575;&#1605;&#1583; &#1587;&#1575;&#1583;&#1575;&#1578; &#1581;&#1740;&#1575;&#1578;&#1588;&#1575;&#1607;&#1740;: &quot;[AMBER] MMPBSA.py TypeError: a bytes-like object is required, not &#0039;str&#0039;&quot;">Next message</a> ]
+[ <a href="0010.html" title="David A Case: &quot;Re: [AMBER] Error: Failed to generate parameters&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0018.html" accesskey="t" title="Dr. Anselm Horn: &quot;Re: [AMBER] pmemd&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg11" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg11" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg11" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg11" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: aishen &lt;<a href="mailto:aishen.free.fr?Subject=Re%3A%20%5BAMBER%5D%20pmemd">aishen.free.fr</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 1 Oct 2020 22:50:45 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Here are my command, I think they aren't right ?
+<br />
+<br />In fact it doesn't do any error but don't produce the expected files ...
+<br />
+<br />sander -O  -i mini.in -o mini.out -p dna.prmtop -c dna.rst7 -r mini.rst 
+<br />
+-ref dna.rst7
+<br />
+sander -O -i heat.in -o heat.out -p dna.prmtop -c mini.rst -r heat.rst 
+<br />
+-x heat.mdcrd -ref mini.rst
+<br />
+sander -O -i eq.in -o eq.out -p dna.prmtop -c heat.rst -r eq.rst -x 
+<br />
+eq.mdcrd -ref heat.rst
+<br />
+sander -O -i md.in -o md.out -p dna.prmtop -c eq.rst -r md.rst7 -x md.nc 
+<br />
+-inf mdinfo
+<br />
+<br />and all the files i have in the directory :
+<br />
+<br />A-dna.pdb  dna.prmtop  dna.rst7  eq.in    eq.out    heat.in heat.out  
+<br />
+leap.log  md.in  md.out  mini.in  mini.out
+<br />
+<br />But it should generate md.rst7 and a md.nc (obviously not created )
+<br />
+<br />Best regards
+<br />
+<br />Henri
+<br />
+<br />On 01/10/2020 19:29, Elvis Martis wrote:
+<br />
+<em class="quotelev1">&gt; You could use sander instead of pmemd.
+</em><br />
+<em class="quotelev1">&gt; But sander won't run on GPUs
+</em><br />
+<em class="quotelev1">&gt; Best Regards
+</em><br />
+<em class="quotelev1">&gt; Elvis
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Thu, 1 Oct 2020 at 22:45, aishen &lt;aishen.free&#46;<!--nospam-->fr 
+</em><br />
+<em class="quotelev1">&gt; &lt;mailto:aishen.free.fr&gt;&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;     I compiled amber20_src then you are saying I don't have pmemd,
+</em><br />
+<em class="quotelev1">&gt;     very strange ... I think I won't use any more this soft
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;     Best regards and thank you for the answer
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;     Henri
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;     On 01/10/2020 19:02, Elvis Martis wrote:
+</em><br />
+<em class="quotelev2">&gt;&gt;     If you did not build amber then you will not find pmemd.
+</em><br />
+<em class="quotelev2">&gt;&gt;     pmemd is paid code of amber.
+</em><br />
+<em class="quotelev2">&gt;&gt;     Best Regards
+</em><br />
+<em class="quotelev2">&gt;&gt;     Elvis
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;     On Thu, 1 Oct 2020 at 22:30, aishen &lt;aishen.free.fr
+</em><br />
+<em class="quotelev2">&gt;&gt;     &lt;mailto:aishen.free.fr&gt;&gt; wrote:
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;         I thaught too but it's not maybe it wasn't build ? could it be ?
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;         On 01/10/2020 18:49, Elvis Martis wrote:
+</em><br />
+<em class="quotelev3">&gt;&gt;         &gt; Typing &quot;which pmemd&quot; should echo its path.
+</em><br />
+<em class="quotelev3">&gt;&gt;         &gt; It is general in $AMBERHOME/bin
+</em><br />
+<em class="quotelev3">&gt;&gt;         &gt; Best Regards
+</em><br />
+<em class="quotelev3">&gt;&gt;         &gt; Elvis
+</em><br />
+<em class="quotelev3">&gt;&gt;         &gt;
+</em><br />
+<em class="quotelev3">&gt;&gt;         &gt;
+</em><br />
+<em class="quotelev3">&gt;&gt;         &gt;
+</em><br />
+<em class="quotelev3">&gt;&gt;         &gt; On Thu, 1 Oct 2020 at 22:18, aishen &lt;aishen.free&#46;<!--nospam-->fr
+</em><br />
+<em class="quotelev2">&gt;&gt;         &lt;mailto:<a href="mailto:aishen.free.fr?Subject=Re%3A%20%5BAMBER%5D%20pmemd">aishen.free.fr</a>&gt;&gt; wrote:
+</em><br />
+<em class="quotelev3">&gt;&gt;         &gt;
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt; Hi,
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt; I am trying to do this tutorial but I can't find pmemd
+</em><br />
+<em class="quotelev2">&gt;&gt;         where is this
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt; programm from ?
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;         <a href="https://amberhub.chpc.utah.edu/analisis-of-nucleic-acid-simulation/">https://amberhub.chpc.utah.edu/analisis-of-nucleic-acid-simulation/</a>
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt; Any help
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt; Regards
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt; Henri
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt;
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt; AMBER.ambermd.org &lt;mailto:<a href="mailto:AMBER.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20pmemd">AMBER.ambermd.org</a>&gt;
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev4">&gt;&gt;         &gt;&gt;
+</em><br />
+<em class="quotelev3">&gt;&gt;         &gt; _______________________________________________
+</em><br />
+<em class="quotelev3">&gt;&gt;         &gt; AMBER mailing list
+</em><br />
+<em class="quotelev3">&gt;&gt;         &gt; AMBER.ambermd.org &lt;mailto:<a href="mailto:AMBER.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20pmemd">AMBER.ambermd.org</a>&gt;
+</em><br />
+<em class="quotelev3">&gt;&gt;         &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Oct 01 2020 - 14:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0012.html" title="Next message in the list">&#1587;&#1740;&#1583; &#1581;&#1575;&#1605;&#1583; &#1587;&#1575;&#1583;&#1575;&#1578; &#1581;&#1740;&#1575;&#1578;&#1588;&#1575;&#1607;&#1740;: "[AMBER] MMPBSA.py TypeError: a bytes-like object is required, not &#0039;str&#0039;"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0010.html" title="Previous message in the list">David A Case: "Re: [AMBER] Error: Failed to generate parameters"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0018.html" title="Next message in this discussion thread">Dr. Anselm Horn: "Re: [AMBER] pmemd"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0018.html" title="Message sent in reply to this message">Dr. Anselm Horn: "Re: [AMBER] pmemd"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg11" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg11" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg11" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg11" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

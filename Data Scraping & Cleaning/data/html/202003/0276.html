@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] AmberTools19 update.8 fails to install from mark.bergman.uphs.upenn.edu on 2020-03-27 (Amber Archive Mar 2020)</title>
+<meta name="Author" content="mark.bergman.uphs.upenn.edu (mark.bergman.uphs.upenn.edu)" />
+<meta name="Subject" content="[AMBER] AmberTools19 update.8 fails to install" />
+<meta name="Date" content="2020-03-27" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] AmberTools19 update.8 fails to install</h1>
+<!-- received="Fri Mar 27 15:00:02 2020" -->
+<!-- isoreceived="20200327220002" -->
+<!-- sent="Fri, 27 Mar 2020 17:49:04 -0400" -->
+<!-- isosent="20200327214904" -->
+<!-- name="mark.bergman.uphs.upenn.edu" -->
+<!-- email="mark.bergman.uphs.upenn.edu" -->
+<!-- subject="[AMBER] AmberTools19 update.8 fails to install" -->
+<!-- id="7317-1585345744.490749.lerf.ZuVQ.BQ4s" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0277.html" accesskey="d" title="Pengfei Li: &quot;Re: [AMBER] &#0034;Error of reading the .dat file&#0034; in MCPB.py step 2&quot;">Next message</a> ]
+[ <a href="0275.html" title="Pengfei Li: &quot;Re: [AMBER] KeyError: &#0039;MG&#0039;&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0285.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] AmberTools19 update.8 fails to install&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg276" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg276" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg276" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg276" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: &lt;<a href="mailto:mark.bergman.uphs.upenn.edu?Subject=Re%3A%20%5BAMBER%5D%20AmberTools19%20update.8%20fails%20to%20install">mark.bergman.uphs.upenn.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 27 Mar 2020 17:49:04 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+I'm attempting to update a new install of Amber18/AmberTools19 under CentOS7.
+<br />
+<br />The configure step fails to apply patch update.8 (and successive patches are skipped).
+<br />
+<br />The package builds and 'make test' succeeds with patches 1-7 applied.
+<br />
+<br />Please see below for details:
+<br />
+<br />---------------------------------------------
+<br />
+<br />[bergman.cubic-login2 18]$ patch -p0 -N --verbose --debug 2 --dry-run &lt; .patches/AmberTools19_Unapplied_Patches/update.8
+<br />
+Hmm...  Looks like a unified diff to me...
+<br />
+The text leading up to this was:
+<br />
+--------------------------
+<br />
+|*******&gt; update.8
+<br />
+|
+<br />
+|Author: David Case
+<br />
+|
+<br />
+|Date: August 30, 2019
+<br />
+|
+<br />
+|Programs: sander.MPI
+<br />
+|
+<br />
+|Description: Changes the way that softcore 14 interactions are handled.
+<br />
+|             See <a href="http://ambermd.org/SC14_explanation.php">http://ambermd.org/SC14_explanation.php</a>
+<br />
+|
+<br />
+|--------------------------------------------------------------------------------
+<br />
+| AmberTools/src/sander/extra_pts.F90                |     8 +-
+<br />
+| test/cnste_remd/Explicit_EREM/Run.Eremd            |     2 +-
+<br />
+| test/cnstph_remd/Explicit_pHREM/Run.pHremd         |     2 +-
+<br />
+| test/middle-scheme/QMMM_Constr_ALA_Methol/Run.qmmm |     2 +-
+<br />
+| .../QMMM_Constr_ALA_Methol/Run.qmmm.MPI            |     2 +-
+<br />
+| test/middle-scheme/QMMM_Constr_ALA_Methol/qmmm.rst |   Bin 117616 -&gt; 0 bytes
+<br />
+| test/pmemdTI/softcore/complex/out.save             |   355 +-
+<br />
+| test/pmemdTI/softcore/complex/restrt.save          | 55220 +++++------
+<br />
+| test/qmmm2/adqmmm_na+28water/Run.adqmmm            |     2 +-
+<br />
+| test/softcore/complex/out.0.save                   |   259 +-
+<br />
+| test/softcore/complex/out.1.save                   |   257 +-
+<br />
+| test/softcore/complex/restrt.0.save                | 55602 +++++------
+<br />
+| test/softcore/complex/restrt.1.save                | 55648 +++++------
+<br />
+| test/ti_decomp/ti_sc_decomp_1.out.save             | 25226 ++---
+<br />
+| test/ti_decomp/ti_sc_decomp_2.out.save             |   278 +-
+<br />
+| 15 files changed, 404289 insertions(+), 98404 deletions(-)
+<br />
+|
+<br />
+|diff --git AmberTools/src/sander/extra_pts.F90 AmberTools/src/sander/extra_pts.F90
+<br />
+|index df46bcf611..eef2bf4894 100644
+<br />
+|--- AmberTools/src/sander/extra_pts.F90
+<br />
+|+++ AmberTools/src/sander/extra_pts.F90
+<br />
+--------------------------
+<br />
+checking file AmberTools/src/sander/extra_pts.F90
+<br />
+Using Plan A...
+<br />
+0 * 1587,9
+<br />
+1   |#ifdef MPI /* SOFT CORE */
+<br />
+2   |      ! For dual-topology softcore runs, 1-4 interactions involving sc atoms are modified here
+<br />
+3   |         if (ifsc /= 0) then
+<br />
+4 - |            ! Check if a softcore atom is involved in this interaction
+<br />
+5 - |            if ((nsc(i) == 1 .or. nsc(j) == 1) .and. emil_sc .eq. 0) then
+<br />
+6 - |               ! This interactions need to 
+<br />
+7   |               ! a) get their energies removed from the 1-4 energies
+<br />
+8   |               ! b) get their force scaled up by 1/weight
+<br />
+9   |               ! This means reversing the work done above, but keeps the code simple
+<br />
+10 = 1587,9
+<br />
+11   |#ifdef MPI /* SOFT CORE */
+<br />
+12   |      ! For dual-topology softcore runs, 1-4 interactions involving sc atoms are modified here
+<br />
+13   |         if (ifsc /= 0) then
+<br />
+14 + |            ! Check if both i and j are softcore atoms
+<br />
+15 + |            if ((nsc(i) == 1 .and. nsc(j) == 1) .and. emil_sc .eq. 0) then
+<br />
+16 + |               ! These interactions need to 
+<br />
+17   |               ! a) get their energies removed from the 1-4 energies
+<br />
+18   |               ! b) get their force scaled up by 1/weight
+<br />
+19   |               ! This means reversing the work done above, but keeps the code simple
+<br />
+20 ^
+<br />
+Hunk #1 succeeded at 1587.
+<br />
+0 * 1614,7
+<br />
+1   |               call decpair(2,i,j,scee0*g/(nstlim/ntpr))
+<br />
+2   |               call decpair(3,i,j,scnb0*(f12 - f6)/(nstlim/ntpr))
+<br />
+3   |            endif
+<br />
+4 - |         else if( nsc(i) /= 1 .and. nsc(j) /= 1 ) then
+<br />
+5   |            if(decpr .and. idecomp == 1) then
+<br />
+6   |               call decpair(4,i,j,scee0*g/(nstlim/ntpr))
+<br />
+7   |               call decpair(4,i,j,scnb0*(f12 - f6)/(nstlim/ntpr))
+<br />
+8 = 1614,7
+<br />
+9   |               call decpair(2,i,j,scee0*g/(nstlim/ntpr))
+<br />
+10   |               call decpair(3,i,j,scnb0*(f12 - f6)/(nstlim/ntpr))
+<br />
+11   |            endif
+<br />
+12 + |         else if( nsc(i) /= 1 .or. nsc(j) /= 1 ) then
+<br />
+13   |            if(decpr .and. idecomp == 1) then
+<br />
+14   |               call decpair(4,i,j,scee0*g/(nstlim/ntpr))
+<br />
+15   |               call decpair(4,i,j,scnb0*(f12 - f6)/(nstlim/ntpr))
+<br />
+16 ^
+<br />
+Hunk #2 succeeded at 1614.
+<br />
+Hmm...  The next patch looks like a unified diff to me...
+<br />
+The text leading up to this was:
+<br />
+--------------------------
+<br />
+|diff --git test/cnste_remd/Explicit_EREM/Run.Eremd test/cnste_remd/Explicit_EREM/Run.Eremd
+<br />
+|index d81c29b2a9..800735ac80 100755
+<br />
+|--- test/cnste_remd/Explicit_EREM/Run.Eremd
+<br />
+|+++ test/cnste_remd/Explicit_EREM/Run.Eremd
+<br />
+--------------------------
+<br />
+checking file test/cnste_remd/Explicit_EREM/Run.Eremd
+<br />
+Using Plan A...
+<br />
+0 * 17,7
+<br />
+1   |
+<br />
+2   |numprocs=`$DO_PARALLEL ../../numprocs`
+<br />
+3   |
+<br />
+4 - |if [ -z `which python` || ! -x `which python` ]; then
+<br />
+5   |  python=`which python3`
+<br />
+6   |else
+<br />
+7   |  python=`which python`
+<br />
+8 = 17,7
+<br />
+9   |
+<br />
+10   |numprocs=`$DO_PARALLEL ../../numprocs`
+<br />
+11   |
+<br />
+12 + |if [ -z &quot;`which python`&quot; -o ! -x &quot;`which python`&quot; ]; then
+<br />
+13   |  python=`which python3`
+<br />
+14   |else
+<br />
+15   |  python=`which python`
+<br />
+16 ^
+<br />
+Hunk #1 FAILED at 17.
+<br />
+1 out of 1 hunk FAILED
+<br />
+Hmm...  The next patch looks like a unified diff to me...
+<br />
+The text leading up to this was:
+<br />
+--------------------------
+<br />
+|diff --git test/cnstph_remd/Explicit_pHREM/Run.pHremd test/cnstph_remd/Explicit_pHREM/Run.pHremd
+<br />
+|index 3c9b1ed10f..11347bfb41 100755
+<br />
+|--- test/cnstph_remd/Explicit_pHREM/Run.pHremd
+<br />
+|+++ test/cnstph_remd/Explicit_pHREM/Run.pHremd
+<br />
+--------------------------
+<br />
+checking file test/cnstph_remd/Explicit_pHREM/Run.pHremd
+<br />
+Using Plan A...
+<br />
+0 * 17,7
+<br />
+1   |
+<br />
+2   |numprocs=`$DO_PARALLEL ../../numprocs`
+<br />
+3   |
+<br />
+4 - |if [ -z `which python` || ! -x `which python` ]; then
+<br />
+5   |  python=`which python3`
+<br />
+6   |else
+<br />
+7   |  python=`which python`
+<br />
+8 = 17,7
+<br />
+9   |
+<br />
+10   |numprocs=`$DO_PARALLEL ../../numprocs`
+<br />
+11   |
+<br />
+12 + |if [ -z &quot;`which python`&quot; -o ! -x &quot;`which python`&quot; ]; then
+<br />
+13   |  python=`which python3`
+<br />
+14   |else
+<br />
+15   |  python=`which python`
+<br />
+16 ^
+<br />
+Hunk #1 FAILED at 17.
+<br />
+1 out of 1 hunk FAILED
+<br />
+Hmm...  The next patch looks like a unified diff to me...
+<br />
+The text leading up to this was:
+<br />
+--------------------------
+<br />
+|diff --git test/middle-scheme/QMMM_Constr_ALA_Methol/Run.qmmm test/middle-scheme/QMMM_Constr_ALA_Methol/Run.qmmm
+<br />
+|index 415bd0d4e1..e4dd6166aa 100755
+<br />
+|--- test/middle-scheme/QMMM_Constr_ALA_Methol/Run.qmmm
+<br />
+|+++ test/middle-scheme/QMMM_Constr_ALA_Methol/Run.qmmm
+<br />
+--------------------------
+<br />
+checking file test/middle-scheme/QMMM_Constr_ALA_Methol/Run.qmmm
+<br />
+Using Plan A...
+<br />
+0 * 31,7
+<br />
+1   |          -inf qmmm.info \
+<br />
+2   |    || goto error
+<br />
+3   |  $AMBERHOME/bin/dacdif qmmm.out.save qmmm.out
+<br />
+4 - |  rm qmmm.mdcrd qmmm.info
+<br />
+5   |
+<br />
+6   |exit 0 
+<br />
+7   |
+<br />
+8 = 31,7
+<br />
+9   |          -inf qmmm.info \
+<br />
+10   |    || goto error
+<br />
+11   |  $AMBERHOME/bin/dacdif qmmm.out.save qmmm.out
+<br />
+12 + |  rm qmmm.mdcrd qmmm.info qmmm.rst
+<br />
+13   |
+<br />
+14   |exit 0 
+<br />
+15   |
+<br />
+16 ^
+<br />
+Hunk #1 succeeded at 31.
+<br />
+-----------------------------------------------------------------------------
+<br />
+<br />All other hunks in update.8 pass.
+<br />
+<br />Here's info about the file that seems to cause the patch to fail:
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bergman.cubic-login2 18]$ md5sum test/cnste_remd/Explicit_EREM/Run.Eremd
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b7441d8d3eecec87eaa2a05041e20095  test/cnste_remd/Explicit_EREM/Run.Eremd
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[bergman.cubic-login2 18]$ ls -l !$
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls -l test/cnste_remd/Explicit_EREM/Run.Eremd
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-rwxr-xr-x. 1 bergman user 1780 Dec  5  2018 test/cnste_remd/Explicit_EREM/Run.Eremd*
+<br />
+<br /><pre>
+-- 
+Mark Bergman                                           voice: 215-746-4061       
+mark.bergman.pennmedicine.upenn.edu                      fax: 215-614-0266
+<a href="http://www.med.upenn.edu/cbica/">http://www.med.upenn.edu/cbica/</a>
+IT Technical Director, Center for Biomedical Image Computing and Analytics
+Department of Radiology                         University of Pennsylvania
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Fri Mar 27 2020 - 15:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0277.html" title="Next message in the list">Pengfei Li: "Re: [AMBER] &#0034;Error of reading the .dat file&#0034; in MCPB.py step 2"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0275.html" title="Previous message in the list">Pengfei Li: "Re: [AMBER] KeyError: &#0039;MG&#0039;"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0285.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] AmberTools19 update.8 fails to install"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0285.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] AmberTools19 update.8 fails to install"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg276" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg276" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg276" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg276" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

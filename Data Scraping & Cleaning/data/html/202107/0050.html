@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] MCPB.py tutorial issues from Gustaf Olsson on 2021-07-09 (Amber Archive Jul 2021)</title>
+<meta name="Author" content="Gustaf Olsson (gustaf.olsson.lnu.se)" />
+<meta name="Subject" content="[AMBER] MCPB.py tutorial issues" />
+<meta name="Date" content="2021-07-09" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] MCPB.py tutorial issues</h1>
+<!-- received="Fri Jul  9 02:00:02 2021" -->
+<!-- isoreceived="20210709090002" -->
+<!-- sent="Fri, 9 Jul 2021 08:45:14 +0000" -->
+<!-- isosent="20210709084514" -->
+<!-- name="Gustaf Olsson" -->
+<!-- email="gustaf.olsson.lnu.se" -->
+<!-- subject="[AMBER] MCPB.py tutorial issues" -->
+<!-- id="195E9D23-1EA5-4241-9388-5FD3204DB0FB.lnu.se" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="D00B371B-7E86-428E-BA5F-E5969B6DF33F.lnu.se" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0051.html" accesskey="d" title="Vaibhav Dixit: &quot;Re: [AMBER] MCPB.py tutorial issues&quot;">Next message</a> ]
+[ <a href="0049.html" title="&#29579;&#32500;: &quot;Re: [AMBER] Stop PMEMD Terminated Aborally. Tutorial 1.7 An Amber Lipid Force Field Tutorial: Lipid14.&quot;">Previous message</a> ]
+[ <a href="0037.html" title="Gustaf Olsson: &quot;[AMBER] Ferrocene simulation&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0051.html" accesskey="t" title="Vaibhav Dixit: &quot;Re: [AMBER] MCPB.py tutorial issues&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg50" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg50" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg50" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg50" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gustaf Olsson &lt;<a href="mailto:gustaf.olsson.lnu.se?Subject=Re%3A%20%5BAMBER%5D%20MCPB.py%20tutorial%20issues">gustaf.olsson.lnu.se</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 9 Jul 2021 08:45:14 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Apparently my question regarding ferrocene simulations may not have been of great general interest :)
+<br />
+
+<br />
+I did try and fail to construct a ferrocene terminated ligand from PDB according to the “examples” in &quot;PCPB.py: A Python Based Metal Center” and as CSD was down, I could not check if the example presented would have worked either.
+<br />
+
+<br />
+I proceeded to try the tutorial to see if I could get anything to work and found some issues:
+<br />
+
+<br />
+-&gt; metalpdb2mol2.py -i ZN.pdb -o mol2 ZN.mol2 -c 2
+<br />
+should be:
+<br />
+&lt;- metalpdb2mol2.py -i ZN.pdb -o ZN.mol2 -c 2
+<br />
+
+<br />
+-&gt; cat 1OKL_Hpp_fixed.pdb ZN.pdb MNS_H_fixed.pdb &gt; 1OKL_H.pdb
+<br />
+should be:
+<br />
+&lt;- cat 1OKL_Hpp_fixed.pdb ZN.pdb MNS_fixed_H.pdb &gt; 1OKL_H.pdb
+<br />
+
+<br />
+Running 
+<br />
+
+<br />
+pdb4amber -i 1OKL_H.pdb -o 1OKL_fixed_H.pdb
+<br />
+
+<br />
+Caused an error:
+<br />
+
+<br />
+Summary of pdb4amber for: 1OKL_H.pdb
+<br />
+===================================================
+<br />
+Traceback (most recent call last):
+<br />
+&nbsp;File &quot;/Users/guolaa/SOFTWARE/amber20/bin/pdb4amber&quot;, line 33, in &lt;module&gt;
+<br />
+&nbsp;&nbsp;&nbsp;sys.exit(load_entry_point('pdb4amber==20.1', 'console_scripts', 'pdb4amber')())
+<br />
+&nbsp;File &quot;/Users/guolaa/SOFTWARE/amber20/lib/python3.8/site-packages/./pdb4amber-20.1-py3.8.egg/pdb4amber/pdb4amber.py&quot;, line 816, in main
+<br />
+&nbsp;&nbsp;&nbsp;run(
+<br />
+&nbsp;File &quot;/Users/guolaa/SOFTWARE/amber20/lib/python3.8/site-packages/./pdb4amber-20.1-py3.8.egg/pdb4amber/pdb4amber.py&quot;, line 520, in run
+<br />
+&nbsp;&nbsp;&nbsp;pdbfixer._write_renum(base_filename)
+<br />
+&nbsp;File &quot;/Users/guolaa/SOFTWARE/amber20/lib/python3.8/site-packages/./pdb4amber-20.1-py3.8.egg/pdb4amber/pdb4amber.py&quot;, line 388, in _write_renum
+<br />
+&nbsp;&nbsp;&nbsp;fh.write(&quot;%3s %c %5s    %3s %5s\n&quot; %
+<br />
+TypeError: %c requires int or char
+<br />
+
+<br />
+Turns out that the provided 1OKL_Hpp_fixed.pdb file was the problem, there is no chain information (“A”) which seems to have been stripped by H++
+<br />
+
+<br />
+-&gt; ATOM      1  N   TRP     1       8.305  -0.472  10.466  1.00  0.00           N  
+<br />
+should be:
+<br />
+&lt;- ATOM      1  N   TRP A   1       8.305  -0.472  10.466  1.00  0.00           N  
+<br />
+
+<br />
+Adding the “A” back for every residue made the reference file work with pdb4amber.
+<br />
+
+<br />
+I am now considering using resources to perform the QM calculations, I see no estimate regarding the time needed to be invested in this step, or just use reference files to see what happens.
+<br />
+
+<br />
+// Gustaf
+<br />
+
+<br />
+<em class="quotelev1">&gt; On 8 Jul 2021, at 10:52, Gustaf Olsson &lt;gustaf.olsson.lnu&#46;<!--nospam-->se&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Like Christmas in July the good news arrived, I need a ferrocene containing/terminated monomer for MD simulations
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Like so many times before, metal-organic compounds is not my normal area of interest and rather then trying to reinvent the wheel, I thought I’d ask the the community.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Are there any recommendations/best practices regarding how to get up and running quickly?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I am really looking for the path of least resistance, preferably something with a written tutorial or at least well documented workflow if possible.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I’ve seen MCPB.py mentioned a bunch of times. Could this be a reasonable approach for some sort of ferrocene terminated alkene/carboxyl/acetyl structure. From the tutorials I saw the non bonder and dummy atom models as well.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Thank you in advance and best regards
+</em><br />
+<em class="quotelev1">&gt; // Gustaf
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Jul 09 2021 - 02:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0051.html" title="Next message in the list">Vaibhav Dixit: "Re: [AMBER] MCPB.py tutorial issues"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0049.html" title="Previous message in the list">&#29579;&#32500;: "Re: [AMBER] Stop PMEMD Terminated Aborally. Tutorial 1.7 An Amber Lipid Force Field Tutorial: Lipid14."</a></li>
+<li><dfn>In reply to</dfn>: <a href="0037.html" title="Message to which this message replies">Gustaf Olsson: "[AMBER] Ferrocene simulation"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0051.html" title="Next message in this discussion thread">Vaibhav Dixit: "Re: [AMBER] MCPB.py tutorial issues"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0051.html" title="Message sent in reply to this message">Vaibhav Dixit: "Re: [AMBER] MCPB.py tutorial issues"</a></li>
+<li><dfn>Reply</dfn>: <a href="0095.html" title="Message sent in reply to this message">Pengfei Li: "Re: [AMBER] MCPB.py tutorial issues"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg50" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg50" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg50" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg50" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

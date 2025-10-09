@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Disparities between dG solv from GB and PB Models from mish on 2021-02-13 (Amber Archive Feb 2021)</title>
+<meta name="Author" content="mish (smncbr.gmail.com)" />
+<meta name="Subject" content="[AMBER] Disparities between dG solv from GB and PB Models" />
+<meta name="Date" content="2021-02-13" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Disparities between dG solv from GB and PB Models</h1>
+<!-- received="Sat Feb 13 14:00:02 2021" -->
+<!-- isoreceived="20210213220002" -->
+<!-- sent="Sat, 13 Feb 2021 15:55:33 -0600" -->
+<!-- isosent="20210213215533" -->
+<!-- name="mish" -->
+<!-- email="smncbr.gmail.com" -->
+<!-- subject="[AMBER] Disparities between dG solv from GB and PB Models" -->
+<!-- id="CAFxStkL=tWbzsjkt7qxGteZApLioWY162mRsQOM9Bd9p-O3ixA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0137.html" accesskey="d" title="Ray Luo: &quot;Re: [AMBER] Disparities between dG solv from GB and PB Models&quot;">Next message</a> ]
+[ <a href="0135.html" title="Cavender, Chapin: &quot;Re: [AMBER] OPC monovalent ion parameters&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0137.html" accesskey="t" title="Ray Luo: &quot;Re: [AMBER] Disparities between dG solv from GB and PB Models&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg136" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg136" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg136" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg136" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: mish &lt;<a href="mailto:smncbr.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Disparities%20between%20dG%20solv%20from%20GB%20and%20PB%20Models">smncbr.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 13 Feb 2021 15:55:33 -0600</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear all,
+<br />
+<br />I am trying to calculate the binding free-energy of hydrophobic molecules
+<br />
+with a protein using MM/GBSA, and MM/PBSA approaches. I did enthalpy
+<br />
+calculations using igb 1, 2, 5, 7, and 8 separately with appropriate VDW
+<br />
+radii sets mentioned in the Amber20 manual. This all looked fine (obtained
+<br />
+binding energies in the range of -50 to -70 kcal/mol) until I did MM/PBSA
+<br />
+calculations on the same system. While doing MM/PBSA, I get +ve binding
+<br />
+free energy, and a difference of about +70 kcal/mol is caused by large
+<br />
+positive dE_SA (ENPLOAR + EDISPER) values in MM/PBSA (~ +40 kcal/mol). I
+<br />
+used radiopt=0, cavity_surften-0.378, cavity_offset=-0.5692 with all four
+<br />
+vdW radii sets (bondi, mbondi, mbondi2, mbondi3)  and I am getting exactly
+<br />
+same dE_SA values.
+<br />
+<br />I wonder what could be the source of such a different discrepancy between
+<br />
+MM/GBSA and MM/PBSA entropy values. I am worried that something might be
+<br />
+technically wrong as the MD simulations were run using CHARMM forcefield,
+<br />
+and I am convertingCHARMM topology file into Amber topology using parmed. I
+<br />
+believe it is still using CHARMM forcefield parameters in the calculations
+<br />
+(other than vdW radii sets that I changed using --radii option in the
+<br />
+ante-MMPBSA.py script. Can someone help understand why dE_SA (ENPLOAR +
+<br />
+EDISPER) is positive and different from dE_SA (ESURF) from MM/GBSA?
+<br />
+<br />Thanks,
+<br />
+Mish
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sat Feb 13 2021 - 14:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0137.html" title="Next message in the list">Ray Luo: "Re: [AMBER] Disparities between dG solv from GB and PB Models"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0135.html" title="Previous message in the list">Cavender, Chapin: "Re: [AMBER] OPC monovalent ion parameters"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0137.html" title="Next message in this discussion thread">Ray Luo: "Re: [AMBER] Disparities between dG solv from GB and PB Models"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0137.html" title="Message sent in reply to this message">Ray Luo: "Re: [AMBER] Disparities between dG solv from GB and PB Models"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg136" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg136" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg136" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg136" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Bug in mmpbsa.py internal energy when idecomp is 3 or 4 from Jason Swails on 2022-02-22 (Amber Archive Feb 2022)</title>
+<meta name="Author" content="Jason Swails (jason.swails.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Bug in mmpbsa.py internal energy when idecomp is 3 or 4" />
+<meta name="Date" content="2022-02-22" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Bug in mmpbsa.py internal energy when idecomp is 3 or 4</h1>
+<!-- received="Tue Feb 22 09:30:03 2022" -->
+<!-- isoreceived="20220222173003" -->
+<!-- sent="Tue, 22 Feb 2022 12:23:36 -0500" -->
+<!-- isosent="20220222172336" -->
+<!-- name="Jason Swails" -->
+<!-- email="jason.swails.gmail.com" -->
+<!-- subject="Re: [AMBER] Bug in mmpbsa.py internal energy when idecomp is 3 or 4" -->
+<!-- id="CAEk9e3pwKWRxWU6HvhynPeUnN-iLA+QGaCBv+y3Y9Xt6T-K6=Q.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAOQL4=Siuqzn5-42Y0G1C9cyqK4ePnAoTnh1t6B605rkxutYyQ.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0205.html" accesskey="d" title="spss4.iacs.res.in: &quot;Re: [AMBER] Ambrtool16 make install error&quot;">Next message</a> ]
+[ <a href="0203.html" title="Nathan Black: &quot;Re: [AMBER] Single-Molecule Mixing of Force Fields&quot;">Previous message</a> ]
+[ <a href="0185.html" title="Tue Boesen: &quot;Re: [AMBER] Bug in mmpbsa.py internal energy when idecomp is 3 or 4&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg204" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg204" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg204" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg204" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Jason Swails &lt;<a href="mailto:jason.swails.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Bug%20in%20mmpbsa.py%20internal%20energy%20when%20idecomp%20is%203%20or%204">jason.swails.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 22 Feb 2022 12:23:36 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Fri, Feb 18, 2022 at 5:38 PM Tue Boesen &lt;alyflex.gmail.com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hi Jason,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I appreciate the insight!
+</em><br />
+<em class="quotelev1">&gt; However, I would still classify this as a bug or at least as a somewhat
+</em><br />
+<em class="quotelev1">&gt; poor design choice for several reasons:
+</em><br />
+<br /><br /><em class="quotelev1">&gt; 1)
+</em><br />
+<em class="quotelev1">&gt; The fact that the total energies no longer add up to the actual total
+</em><br />
+<em class="quotelev1">&gt; energy seems wrong.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br />There are many things you would find surprising about the pairwise
+<br />
+numbers.  For instance, if you deleted all residues except residues 2 and
+<br />
+3, you would naively expect the pairwise interaction between the two of
+<br />
+them to remain unchanged.  While this will be true for some of the terms
+<br />
+(like lennard-jones), it will not be true for the solvation terms which are
+<br />
+themselves many-body terms.
+<br />
+<br />2)
+<br />
+<em class="quotelev1">&gt; When you run the code with idecomp 3,4 you get no internal energy at all,
+</em><br />
+<em class="quotelev1">&gt; so if you still want internal energy (even if you can only get it per
+</em><br />
+<em class="quotelev1">&gt; residue, the only option you have for this is to run mmpbsa with both
+</em><br />
+<em class="quotelev1">&gt; idecomp 1-2 and 3-4, and then read in results from several different output
+</em><br />
+<em class="quotelev1">&gt; files and merge these.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br />But that *is* an option., meaning there's a viable workaround for those
+<br />
+instances where the decomposed internal energy contributions are either
+<br />
+qualitatively or quantitatively useful (I can't think of any situation
+<br />
+where those values would be useful outside of satisfying this sanity check).
+<br />
+<br />If the internal energy does not make much sense decomposing for pairwise
+<br />
+<em class="quotelev1">&gt; residues, then I would be fine with it just being displayed as a single per
+</em><br />
+<em class="quotelev1">&gt; residue term in the pairwise decomposition (so the internal energy would be
+</em><br />
+<em class="quotelev1">&gt; zero for all residue pairs (i,j), except when i=j in which case it would
+</em><br />
+<em class="quotelev1">&gt; show the per residue internal energy for residue i. In that case the
+</em><br />
+<em class="quotelev1">&gt; internal energy would still be available, and the total energy would be
+</em><br />
+<em class="quotelev1">&gt; computed consistently.
+</em><br />
+<br /><br />Consistently only in a narrow sense (per-res internal with pairwise
+<br />
+nonbonded does not sound consistent to me).  Correctly, arguably not.
+<br />
+Residues are often bonded to each other, and residues connected to each
+<br />
+other shouldn't have non-zero pairwise internal energy contributions if you
+<br />
+claim to be computing such contributions.  I don't actually this proposal
+<br />
+as an improvement over the current behavior (outside of the internal energy
+<br />
+omissions being undocumented right now).
+<br />
+<br />Whether
+<br />
+<br />(Though as you also mentioned the bonded term should
+<br />
+<em class="quotelev1">&gt; be a pairwise term, so I would expect that one to be somewhat easily and
+</em><br />
+<em class="quotelev1">&gt; sensible to decompose for pairwise residues.)
+</em><br />
+<br /><br />But angles and torsions are not, and those are more numerous (and
+<br />
+important) than bonds.  If you only did bonds, the totals would still not
+<br />
+add up because angles and torsions would be omitted.  If you did pairwise
+<br />
+bonds, but per-residue angles and torsions, what would those values even
+<br />
+mean?
+<br />
+<br />I quibble here to point out that any proposal on how to perform pairwise
+<br />
+decomposition on a potential energy function that is not pairwise
+<br />
+decomposable is impossible to define in a way that most people would agree
+<br />
+is correct.
+<br />
+<br />I definitely agree that the implemented behavior should be documented (and
+<br />
+once documented, it becomes a feature :-D).  I will add these notes.
+<br />
+<br />Thanks,
+<br />
+Jason
+<br />
+<br /><pre>
+-- 
+Jason M. Swails
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Feb 22 2022 - 09:30:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0205.html" title="Next message in the list">spss4.iacs.res.in: "Re: [AMBER] Ambrtool16 make install error"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0203.html" title="Previous message in the list">Nathan Black: "Re: [AMBER] Single-Molecule Mixing of Force Fields"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0185.html" title="Message to which this message replies">Tue Boesen: "Re: [AMBER] Bug in mmpbsa.py internal energy when idecomp is 3 or 4"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg204" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg204" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg204" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg204" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

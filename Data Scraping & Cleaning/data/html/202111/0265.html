@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Problems with RMSD of different proteins. from Seibold, Steve Allan on 2021-11-28 (Amber Archive Nov 2021)</title>
+<meta name="Author" content="Seibold, Steve Allan (stevesei.ku.edu)" />
+<meta name="Subject" content="[AMBER] Problems with RMSD of different proteins." />
+<meta name="Date" content="2021-11-28" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Problems with RMSD of different proteins.</h1>
+<!-- received="Sun Nov 28 08:00:02 2021" -->
+<!-- isoreceived="20211128160002" -->
+<!-- sent="Sun, 28 Nov 2021 15:47:10 +0000" -->
+<!-- isosent="20211128154710" -->
+<!-- name="Seibold, Steve Allan" -->
+<!-- email="stevesei.ku.edu" -->
+<!-- subject="[AMBER] Problems with RMSD of different proteins." -->
+<!-- id="SN6PR01MB5309B9F3CC27F8D954799157B0659.SN6PR01MB5309.prod.exchangelabs.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0266.html" accesskey="d" title="Huimin Tian: &quot;[AMBER] &#12304;tleap&#12305; How to add water(TIP3P) to the right place in the protein&#65311;&quot;">Next message</a> ]
+[ <a href="0264.html" title="Seibold, Steve Allan: &quot;[AMBER] RMSD of different protein PDBs&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0273.html" accesskey="t" title="Carlos Simmerling: &quot;Re: [AMBER] Problems with RMSD of different proteins.&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg265" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg265" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg265" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg265" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Seibold, Steve Allan &lt;<a href="mailto:stevesei.ku.edu?Subject=Re%3A%20%5BAMBER%5D%20Problems%20with%20RMSD%20of%20different%20proteins.">stevesei.ku.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 28 Nov 2021 15:47:10 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello Amber
+<br />
+Thanks Carlos for your response. I tried to address your reply by ensuring that the proteins are the same length. So, again, I have been attempting to get an RMSD of two different proteins now the same length. I have taken both of them and generated separate amber pdb files using &quot;pdb4amber&quot;.
+<br />
+<br />This produced two proteins with the same numbering (i.e. 1-684) of amino acids. I used these to produce a prmtop and inpcrd files for each protein. I made sure that cpptraj could open up both pdb files using their respective prmtop files.
+<br />
+<br />I then attempted to generate a RMSD between the two amber generated pdb files using the cpptraj input:
+<br />
+<br />parm HADHR.prmtop
+<br />
+trajin HADHR_amber.pdb
+<br />
+reference HADHN_amber.pdb
+<br />
+rmsd reference :1-684.CA,C,N,O perres perresout HR_HN_residue.dat perresmask :1-684.CA,C,N,O perresavg HR_HN_avg.dat
+<br />
+run
+<br />
+quit
+<br />
+<br />The cpptraj trajin could not read the HADHR_amber.pdb which was made using pdb4amber. I got the following error printout:
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reading 'HADHR.prmtop' as Amber Topology
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Radius Set: modified Bondi radii (mbondi)
+<br />
+<em class="quotelev1">&gt; trajin HADHR_amber.pdb
+</em><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reading 'HADHR_amber.pdb' as PDB
+<br />
+Error: PDB HADHR_amber.pdb: No frames read. atom=5265 expected 10544.
+<br />
+Error: Could not set up 'HADHR_amber.pdb' for reading.
+<br />
+Error: Could not set up input trajectory 'HADHR_amber.pdb'.
+<br />
+<br />I must be doing something incorrect.
+<br />
+<br />Thanks for your help...
+<br />
+Steve
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Nov 28 2021 - 08:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0266.html" title="Next message in the list">Huimin Tian: "[AMBER] &#12304;tleap&#12305; How to add water(TIP3P) to the right place in the protein&#65311;"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0264.html" title="Previous message in the list">Seibold, Steve Allan: "[AMBER] RMSD of different protein PDBs"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0273.html" title="Next message in this discussion thread">Carlos Simmerling: "Re: [AMBER] Problems with RMSD of different proteins."</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0273.html" title="Message sent in reply to this message">Carlos Simmerling: "Re: [AMBER] Problems with RMSD of different proteins."</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg265" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg265" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg265" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg265" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

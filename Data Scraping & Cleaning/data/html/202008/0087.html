@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="koi8-r"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Amber20 with PLUMED not working with multiple CPUs from Amanda Buyan on 2020-08-10 (Amber Archive Aug 2020)</title>
+<meta name="Author" content="Amanda Buyan (Amanda.Buyan.anu.edu.au)" />
+<meta name="Subject" content="Re: [AMBER] Amber20 with PLUMED not working with multiple CPUs" />
+<meta name="Date" content="2020-08-10" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Amber20 with PLUMED not working with multiple CPUs</h1>
+<!-- received="Mon Aug 10 21:30:02 2020" -->
+<!-- isoreceived="20200811043002" -->
+<!-- sent="Tue, 11 Aug 2020 04:23:23 +0000" -->
+<!-- isosent="20200811042323" -->
+<!-- name="Amanda Buyan" -->
+<!-- email="Amanda.Buyan.anu.edu.au" -->
+<!-- subject="Re: [AMBER] Amber20 with PLUMED not working with multiple CPUs" -->
+<!-- id="SYBP282MB0202944A5A64B3F23DC81802A9450.SYBP282MB0202.AUSP282.PROD.OUTLOOK.COM" -->
+<!-- charset="koi8-r" -->
+<!-- inreplyto="CA+X1N16sRULHbKeFFFw_dif5vU_PBZN+T=wypXG7QaAh7JBKdQ.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0088.html" accesskey="d" title="viktor drobot: &quot;Re: [AMBER] Amber20 with PLUMED not working with multiple CPUs&quot;">Next message</a> ]
+[ <a href="0086.html" title="David A Case: &quot;Re: [AMBER] Assigning new velocities from Maxwell-Boltzmann distribution (ntx = 1)&quot;">Previous message</a> ]
+[ <a href="0084.html" title="viktor drobot: &quot;Re: [AMBER] Amber20 with PLUMED not working with multiple CPUs&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0088.html" accesskey="t" title="viktor drobot: &quot;Re: [AMBER] Amber20 with PLUMED not working with multiple CPUs&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg87" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg87" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg87" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg87" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Amanda Buyan &lt;<a href="mailto:Amanda.Buyan.anu.edu.au?Subject=Re%3A%20%5BAMBER%5D%20Amber20%20with%20PLUMED%20not%20working%20with%20multiple%20CPUs">Amanda.Buyan.anu.edu.au</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 11 Aug 2020 04:23:23 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Viktor,
+<br />
+<br />Thanks for the advice!  I've tried compiling PLUMED2.5 with MPI support on one of our GPU clusters.  The install recipe I have done is
+<br />
+<br />./configure --prefix=/usr --enable-mpi --program-suffix=MPI
+<br />
+make -j 4
+<br />
+make install
+<br />
+<br />I've done what you've suggested, in that I add the following line to my .bashrc file:
+<br />
+<br />export PLUMED_KERNEL=/usr/lib/libplumedMPIKernel.so
+<br />
+<br />However, I still get the same error where it says that plumed has been compiled without MPI support.  Do you have any ideas or other flags I can try to rectify this?
+<br />
+<br />Best wishes
+<br />
+<br />Amanda
+<br />
+<br /><br /><br />________________________________
+<br />
+From: viktor drobot &lt;linux776.gmail.com&gt;
+<br />
+Sent: 10 August 2020 17:25
+<br />
+To: AMBER Mailing List &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+Subject: Re: [AMBER] Amber20 with PLUMED not working with multiple CPUs
+<br />
+<br />Hello. Be sure that you have compiler PLUMED with MPI support. Usually all
+<br />
+that you need is to specify --enable-mpi flag during configure. To have
+<br />
+both serial and MPI versions of PLUMED installed on your system you can use
+<br />
+--program-suffix option.
+<br />
+So when you need to run *.MPI versions of sander/pmemd you should export
+<br />
+path of MPI-versioned PLUMED kernel like this:
+<br />
+export PLUMED_KERNEL=/usr/lib/libplumed-mpiKernel.so (your will be
+<br />
+different)
+<br />
+and for serial versions please export path of no-MPI PLUMED kernel:
+<br />
+export PLUMED_KERNEL=/usr/lib/libplumedKernel.so
+<br />
+<br />73, Viktor
+<br />
+<br />��, 10 ���. 2020 �., 2:25 Amanda Buyan &lt;Amanda.Buyan.anu&#46;<!--nospam-->edu.au&gt;:
+<br />
+<br /><em class="quotelev1">&gt; Hi everyone,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I'm unsure if the last email I got went through, and I'm still having
+</em><br />
+<em class="quotelev1">&gt; trouble with the same problem.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I've managed to compile Amber20 on our GPU cluster, and am running
+</em><br />
+<em class="quotelev1">&gt; equilibration simulations.  When I minimize using sander, running with
+</em><br />
+<em class="quotelev1">&gt; PLUMED works just fine.  However, when I try to run an equilibrium
+</em><br />
+<em class="quotelev1">&gt; simulation using pmemd.MPI, the program asks me to specify the PLUMED
+</em><br />
+<em class="quotelev1">&gt; kernel.  When I do, it then says that PLUMED isn't available for MPI.  Has
+</em><br />
+<em class="quotelev1">&gt; anyone had this particular error before?  How would I go about fixing it?
+</em><br />
+<em class="quotelev1">&gt; I've tried both enabling and disabling the PLUMED library when I compile
+</em><br />
+<em class="quotelev1">&gt; pmemd.MPI, but that doesn't seem to do anything either....
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Any advice would be very helpful!
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best wishes
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Amanda
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Aug 10 2020 - 21:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0088.html" title="Next message in the list">viktor drobot: "Re: [AMBER] Amber20 with PLUMED not working with multiple CPUs"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0086.html" title="Previous message in the list">David A Case: "Re: [AMBER] Assigning new velocities from Maxwell-Boltzmann distribution (ntx = 1)"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0084.html" title="Message to which this message replies">viktor drobot: "Re: [AMBER] Amber20 with PLUMED not working with multiple CPUs"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0088.html" title="Next message in this discussion thread">viktor drobot: "Re: [AMBER] Amber20 with PLUMED not working with multiple CPUs"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0088.html" title="Message sent in reply to this message">viktor drobot: "Re: [AMBER] Amber20 with PLUMED not working with multiple CPUs"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg87" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg87" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg87" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg87" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] How to make pass extra argument &quot;--bind-to none&quot; to mpirun for ORCA when running QMMM from sander? from Francesca L�nstad Bleken on 2020-07-31 (Amber Archive Jul 2020)</title>
+<meta name="Author" content="Francesca L�nstad Bleken (francesca.l.bleken.sintef.no)" />
+<meta name="Subject" content="[AMBER] How to make pass extra argument &quot;--bind-to none&quot; to mpirun for ORCA when running QMMM from sander?" />
+<meta name="Date" content="2020-07-31" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] How to make pass extra argument &quot;--bind-to none&quot; to mpirun for ORCA when running QMMM from sander?</h1>
+<!-- received="Fri Jul 31 03:00:02 2020" -->
+<!-- isoreceived="20200731100002" -->
+<!-- sent="Fri, 31 Jul 2020 09:42:32 +0000" -->
+<!-- isosent="20200731094232" -->
+<!-- name="Francesca L�nstad Bleken" -->
+<!-- email="francesca.l.bleken.sintef.no" -->
+<!-- subject="[AMBER] How to make pass extra argument &quot;&ndash;&ndash;bind&ndash;to none&quot; to mpirun for ORCA when running QMMM from sander?" -->
+<!-- id="OL1P279MB0050D027AA8BA12D2662DD5CDD4E0.OL1P279MB0050.NORP279.PROD.OUTLOOK.COM" -->
+<!-- charset="iso-8859-1" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0344.html" accesskey="d" title="Goetz, Andreas: &quot;Re: [AMBER] How to make pass extra argument &#0034;--bind-to none&#0034; to mpirun for ORCA when running QMMM from sander?&quot;">Next message</a> ]
+[ <a href="0342.html" title="&#36763;&#24535;&#23439;: &quot;Re: [AMBER] Issue about &#0034;... . RESTARTED DUE TO LINMIN	FAILURE...&#0034;&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0344.html" accesskey="t" title="Goetz, Andreas: &quot;Re: [AMBER] How to make pass extra argument &#0034;--bind-to none&#0034; to mpirun for ORCA when running QMMM from sander?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg343" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg343" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg343" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg343" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Francesca L�nstad Bleken &lt;<a href="mailto:francesca.l.bleken.sintef.no?Subject=Re%3A%20%5BAMBER%5D%20How%20to%20make%20pass%20extra%20argument%20%22--bind-to%20none%22%20to%20mpirun%20for%20ORCA%20when%20running%20QMMM%20from%20sander%3F">francesca.l.bleken.sintef.no</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 31 Jul 2020 09:42:32 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />I wish to run ORCA in parallel with by doing QMMM from sander.
+<br />
+In order to run ORCA successfully on our cluster with several tasks on the node I need to add &quot;-bind-to none&quot; when calling orca
+<br />
+as ths: $orcadir/orca jobname.inp &quot;--bind-to none&quot; &gt;&gt; jobname.out
+<br />
+<br /><br />Now, when I run the QMMM with one task there is no problem (except speed),
+<br />
+but when I try using 20 tasks I get:
+<br />
+&quot;SANDER BOMB in subroutine read_results....&quot;  for obvious reasons, since
+<br />
+orca fails with:
+<br />
+ORCA fisnihed by error termination in GTOInt
+<br />
+Calling Command: mpirun -np 20 /full/path/to/orca:gtoint_mpi orc_job.int.tmp orc_job
+<br />
+<br />I have a hope that this can be solved by adding &quot; --bind-to none&quot; when sander calls orca, but I do not understand how this may be done.
+<br />
+<br />I hope there is someone who can help with this!
+<br />
+<br />Best regards,
+<br />
+Francesca
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Jul 31 2020 - 03:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0344.html" title="Next message in the list">Goetz, Andreas: "Re: [AMBER] How to make pass extra argument &#0034;--bind-to none&#0034; to mpirun for ORCA when running QMMM from sander?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0342.html" title="Previous message in the list">&#36763;&#24535;&#23439;: "Re: [AMBER] Issue about &#0034;... . RESTARTED DUE TO LINMIN	FAILURE...&#0034;"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0344.html" title="Next message in this discussion thread">Goetz, Andreas: "Re: [AMBER] How to make pass extra argument &#0034;--bind-to none&#0034; to mpirun for ORCA when running QMMM from sander?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0344.html" title="Message sent in reply to this message">Goetz, Andreas: "Re: [AMBER] How to make pass extra argument &#0034;--bind-to none&#0034; to mpirun for ORCA when running QMMM from sander?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg343" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg343" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg343" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg343" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

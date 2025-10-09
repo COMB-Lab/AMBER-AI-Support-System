@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Identifying the equilibrated production region of a MD simulation trajectory from Thomas Cheatham on 2020-12-05 (Amber Archive Dec 2020)</title>
+<meta name="Author" content="Thomas Cheatham (tec3.utah.edu)" />
+<meta name="Subject" content="Re: [AMBER] Identifying the equilibrated production region of a MD simulation trajectory" />
+<meta name="Date" content="2020-12-05" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Identifying the equilibrated production region of a MD simulation trajectory</h1>
+<!-- received="Sat Dec  5 22:00:02 2020" -->
+<!-- isoreceived="20201206060002" -->
+<!-- sent="Sun, 6 Dec 2020 05:52:07 +0000" -->
+<!-- isosent="20201206055207" -->
+<!-- name="Thomas Cheatham" -->
+<!-- email="tec3.utah.edu" -->
+<!-- subject="Re: [AMBER] Identifying the equilibrated production region of a MD simulation trajectory" -->
+<!-- id="c836986220154f28a169dc3b47140195.utah.edu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAGk3s-QkEsxg2V0Hc2eeN6q1U4wiRNi1T-dCGZ4DEmAjCWMFow.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0086.html" accesskey="d" title="Sharif Nada: &quot;[AMBER] Effects of scalpha in softcore runs&quot;">Next message</a> ]
+[ <a href="0084.html" title="Carlos Simmerling: &quot;Re: [AMBER] Identifying the equilibrated production region of a MD simulation trajectory&quot;">Previous message</a> ]
+[ <a href="0084.html" title="Carlos Simmerling: &quot;Re: [AMBER] Identifying the equilibrated production region of a MD simulation trajectory&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg85" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg85" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg85" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg85" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Thomas Cheatham &lt;<a href="mailto:tec3.utah.edu?Subject=Re%3A%20%5BAMBER%5D%20Identifying%20the%20equilibrated%20production%20region%20of%20a%20MD%20simulation%20trajectory">tec3.utah.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 6 Dec 2020 05:52:07 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Adding to what Carlos remarked, &quot;equilibration&quot; vs. &quot;production&quot; depends on what you are looking at. There is no clear delineation, like a sudden green light that you've entered the production phase. This reminds me of our earlier Shao / Cheatham clustering paper. There are many ways to cluster - which one is best? There is not a best way unless that way helps partition the data as best fits your hypothesis and experiment. So try consensus of multiple approaches and know that partitioning is an art and not a rule - it is gray. It is not simply the case that our transitions between structures are 2-state; the transitions are smooth so where you make the cut in one state to another makes a difference in the result.
+<br />
+<br />Knowing &quot;equilibration&quot; vs &quot;production&quot; depends on you knowing the answer up front. i.e. when are you out of range versus in-range for your measurable.
+<br />
+<br />I can give a concrete example in terms of our DNA duplex simulations. We ran DNA simulations for years, thought them &quot;production&quot;. Then we starting seeing base pair fraying on the termini. Were we &quot;production&quot; before we saw the base pair fraying? We thought so. Then fraying into two to three base pairs from the termini was observed. We again thought we were &quot;converged&quot;, but what about low population Hoogsteen base pairs? Missed it. Now with longer simulations we see do internal base pair opening.and these low population Hoogsteen pairs. Would I say we are converged / production -- getting closer :-)
+<br />
+<br />The key is not equilibration versus production, but are you sampling sufficiently to see the process of interest. If you are looking for a particular event (terminal base pair fraying and reforming, folding vs. unfolding, or drug binding / unbinding) normally you need to sample ~10 events (Nyquist) to accurately sample.
+<br />
+<br />Our lab rule is run multiple sets of the simulations (with slightly different initial conditions aka ISEED, or different ion distributions, or different initial structures) and look for consensus. CPPTRAJ has great capabilities for combining and comparing independent runs and we puts scripts into the SI of our papers to help or see amberhub.chpc.utah.edu for tutorials (although I notice it is down again tonight, will fix).
+<br />
+<br />tec3
+<br />
+<br />________________________________________
+<br />
+From: Carlos Simmerling &lt;carlos.simmerling.gmail.com&gt;
+<br />
+Sent: Saturday, December 5, 2020 7:51:47 PM
+<br />
+To: AMBER Mailing List
+<br />
+Subject: Re: [AMBER] Identifying the equilibrated production region of a MD simulation trajectory
+<br />
+<br />it's older, but this is a classic reference
+<br />
+<a href="https://pubmed.ncbi.nlm.nih.gov/12112673/">https://pubmed.ncbi.nlm.nih.gov/12112673/</a>
+<br />
+<br />basically, the period when you are &quot;equilibrated&quot; depends on what you are
+<br />
+looking at.. energies etc plateau quickly, while reaching a converged
+<br />
+ensemble of course take much longer. many things are in between.
+<br />
+<br />On Sat, Dec 5, 2020 at 2:41 AM Leena Aggarwal &lt;leena.hrc.gmail.com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Dear AMBER Users
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Can anyone suggest a way for identifying the equilibrated production region
+</em><br />
+<em class="quotelev1">&gt; in the MD simulation trajectory generated through AMBER?
+</em><br />
+<em class="quotelev1">&gt; I want to do this using time series module of pymbar through
+</em><br />
+<em class="quotelev1">&gt; detectEquilibration method. Is there any way to convert AMBER output to
+</em><br />
+<em class="quotelev1">&gt; pymbar input?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; From
+</em><br />
+<em class="quotelev1">&gt; Leena Aggarwal
+</em><br />
+<em class="quotelev1">&gt; Department of Chemistry
+</em><br />
+<em class="quotelev1">&gt; University of Delhi
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sat Dec 05 2020 - 22:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0086.html" title="Next message in the list">Sharif Nada: "[AMBER] Effects of scalpha in softcore runs"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0084.html" title="Previous message in the list">Carlos Simmerling: "Re: [AMBER] Identifying the equilibrated production region of a MD simulation trajectory"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0084.html" title="Message to which this message replies">Carlos Simmerling: "Re: [AMBER] Identifying the equilibrated production region of a MD simulation trajectory"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg85" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg85" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg85" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg85" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

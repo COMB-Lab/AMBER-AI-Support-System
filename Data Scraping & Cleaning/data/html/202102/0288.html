@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Calculating forces from Click, Timothy Howard on 2021-02-26 (Amber Archive Feb 2021)</title>
+<meta name="Author" content="Click, Timothy Howard (tclick.alumni.ou.edu)" />
+<meta name="Subject" content="Re: [AMBER] Calculating forces" />
+<meta name="Date" content="2021-02-26" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Calculating forces</h1>
+<!-- received="Fri Feb 26 07:30:01 2021" -->
+<!-- isoreceived="20210226153001" -->
+<!-- sent="Fri, 26 Feb 2021 15:27:20 +0000" -->
+<!-- isosent="20210226152720" -->
+<!-- name="Click, Timothy Howard" -->
+<!-- email="tclick.alumni.ou.edu" -->
+<!-- subject="Re: [AMBER] Calculating forces" -->
+<!-- id="SA0PR19MB425396583BA59674F3521E1A9C9D9.SA0PR19MB4253.namprd19.prod.outlook.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAAC0qOZ+=e8J6pY0VdUwWf4Bj0+qF8WAjSNmwdqMoOS762JUpw.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0289.html" accesskey="d" title="Pinky Mazumder: &quot;Re: [AMBER] Steered MD&quot;">Next message</a> ]
+[ <a href="0287.html" title="Daniel Roe: &quot;Re: [AMBER] Molecule volume in cpptraj?&quot;">Previous message</a> ]
+[ <a href="0254.html" title="Daniel Roe: &quot;Re: [AMBER] Calculating forces&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg288" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg288" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg288" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg288" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Click, Timothy Howard &lt;<a href="mailto:tclick.alumni.ou.edu?Subject=Re%3A%20%5BAMBER%5D%20Calculating%20forces">tclick.alumni.ou.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 26 Feb 2021 15:27:20 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Thanks for the reply.  I removed the align command, and I still have the same forces in cpptraj as before. When I compare this with Python where I used the following definitions:
+<br />
+
+<br />
+vdwf = (12 * A / np.power(distance, 13)) - (6 * B / np.power(distance, 7))
+<br />
+elecf = q1 * q2 / (EPS * np.square(distance))
+<br />
+totalf = (vdwf + elecf) * dx / distance	# dx = x_Cl- - x_Na+
+<br />
+
+<br />
+I get the following forces for the first frame:
+<br />
+
+<br />
+array([[ 0.03740528 -0.08097233 -0.01522982],
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[-0.03740528  0.08097233  0.01522982]], dtype=float32)
+<br />
+
+<br />
+In all three cases, it appears that my forces are close but rotated differently. I accept that my Python code may affect this, but I am still curious as to why cpptraj and sander (or pmemd) have this rotational difference.
+<br />
+
+<br />
+Thanks again for the help.
+<br />
+——
+<br />
+Cordially,
+<br />
+柯明 Timothy H. Click, Ph.D.
+<br />
+College of Veterinary Medicine
+<br />
+107 Math Sciences
+<br />
+Oklahoma State University
+<br />
+Stillwater, OK 74078
+<br />
+
+<br />
+
+<br />
+
+<br />
+From: Daniel Roe &lt;daniel.r.roe.gmail&#46;<!--nospam-->com&gt;
+<br />
+Date: Thursday, February 25, 2021 at 04:33
+<br />
+To: AMBER Mailing List &lt;amber.ambermd.org&gt;
+<br />
+Subject: Re: [AMBER] Calculating forces
+<br />
+Hi,
+<br />
+
+<br />
+The 'align' command is rotating the coordinates, which affects how the
+<br />
+force vectors are pointing. I'm guessing if you take away the 'align'
+<br />
+command the forces will match.
+<br />
+
+<br />
+-Dan
+<br />
+
+<br />
+On Wed, Feb 24, 2021 at 7:10 PM Click, Timothy Howard
+<br />
+&lt;tclick.alumni&#46;<!--nospam-->ou.edu&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Salutations. I am attempting to calculate the forces between two atoms (Na+ and Cl-) in vacuo, and when I ran sander on a production run, I output forces. I also opted to postprocess using cpptraj
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; parm nacl.parm7
+</em><br />
+<em class="quotelev1">&gt; trajin production.nc
+</em><br />
+<em class="quotelev1">&gt; align mass first
+</em><br />
+<em class="quotelev1">&gt; esander production out forces.csv saveforces igb 6
+</em><br />
+<em class="quotelev1">&gt; trajout forces.trj mdfrc
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; However, the values differ
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; sander:
+</em><br />
+<em class="quotelev1">&gt; array([[ 0.0828545 , -0.18094742, -0.03403379],
+</em><br />
+<em class="quotelev1">&gt;        [-0.0828545 ,  0.18094742,  0.03403379]], dtype=float32)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; cpptraj:
+</em><br />
+<em class="quotelev1">&gt; array([[-0.037,  0.081,  0.015],
+</em><br />
+<em class="quotelev1">&gt;        [ 0.037, -0.081, -0.015]], dtype=float32)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I am also attempting to calculate the values manually using Python. The energies are identical (sander output file == cpptraj == Python). In Python, I used the basic energy equation as noted in the seminal paper (Cornell, 1995). I have attempted to look in the code ($AMBERHOME/AmberTools/src/mdgx/NBOnlyLJ.c and ($AMBERHOME/AmberTools/src/mdgx/NBLoop.c), but I am still confused on the calculations.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks for your help.
+</em><br />
+<em class="quotelev1">&gt; ——
+</em><br />
+<em class="quotelev1">&gt; Cordially,
+</em><br />
+<em class="quotelev1">&gt; 柯明 Timothy H. Click, Ph.D.
+</em><br />
+<em class="quotelev1">&gt; College of Veterinary Medicine
+</em><br />
+<em class="quotelev1">&gt; 107 Math Sciences
+</em><br />
+<em class="quotelev1">&gt; Oklahoma State University
+</em><br />
+<em class="quotelev1">&gt; Stillwater, OK 74078
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Feb 26 2021 - 07:30:01 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0289.html" title="Next message in the list">Pinky Mazumder: "Re: [AMBER] Steered MD"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0287.html" title="Previous message in the list">Daniel Roe: "Re: [AMBER] Molecule volume in cpptraj?"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0254.html" title="Message to which this message replies">Daniel Roe: "Re: [AMBER] Calculating forces"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg288" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg288" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg288" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg288" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

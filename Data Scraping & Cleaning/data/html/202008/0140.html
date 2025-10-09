@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="iso-8859-2"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files from Marek Maly on 2020-08-20 (Amber Archive Aug 2020)</title>
+<meta name="Author" content="Marek Maly (marek.maly.ujep.cz)" />
+<meta name="Subject" content="[AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files" />
+<meta name="Date" content="2020-08-20" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files</h1>
+<!-- received="Thu Aug 20 03:30:02 2020" -->
+<!-- isoreceived="20200820103002" -->
+<!-- sent="Thu, 20 Aug 2020 12:21:08 +0200" -->
+<!-- isosent="20200820102108" -->
+<!-- name="Marek Maly" -->
+<!-- email="marek.maly.ujep.cz" -->
+<!-- subject="[AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files" -->
+<!-- id="op.0pm8diq9lc8gdf.kfy-336.ujep.cz" -->
+<!-- charset="iso-8859-2" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0141.html" accesskey="d" title="Lod King: &quot;[AMBER] converting prmtop to psf with improper and cross-term info stripped off&quot;">Next message</a> ]
+[ <a href="0139.html" title="Gustaf Olsson: &quot;Re: [AMBER] Amber20 install problem &#65288;Geng Dong&#65289;&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0142.html" accesskey="t" title="Scott Brozell: &quot;Re: [AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg140" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg140" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg140" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg140" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Marek Maly &lt;<a href="mailto:marek.maly.ujep.cz?Subject=Re%3A%20%5BAMBER%5D%20Antechamber%20and%20parmchk2%20problem%20in%20case%20of%20processing%20mol2%20input%20files">marek.maly.ujep.cz</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 20 Aug 2020 12:21:08 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+<br />I would like to draw attention to a problem regarding the specific use of  
+<br />
+the antechamber and parmchk / parmchk2 programs, starting with the  
+<br />
+AmberTools17 version. It is the use of these routines to create mol2 and  
+<br />
+frcmod outputs from the mol2 input, where the only operation required is  
+<br />
+to add gaff atom types to the mol2 output file and eventually to create  
+<br />
+also the appropriate frcmod file. The input mol2 file is in my case  
+<br />
+obtained as the output from R.E.D. IV program, used for calculation of  
+<br />
+partial charges using RESP method. At first I thought that the problem  
+<br />
+with this relatively simple action, which the antechamber and parmchk  
+<br />
+programs handled easily until version 16, is due to the presence of the  
+<br />
+foreign chemical element &quot;Si&quot; (atom no. 80) in my residues, but as it  
+<br />
+turned out (after the Si - substitution Si - &gt; C in the input mol2 file)  
+<br />
+this problem is more general in nature. Unfortunately, the problem  
+<br />
+persists even after this substitution and even after disabling the  
+<br />
+acdoctor routine (running antechamber with &quot;-dr no&quot;) and possibly  
+<br />
+&quot;freezing&quot; non-standard bonds in the input mol2 file with &quot;f&quot;. In the best  
+<br />
+(AT19) case, all key Amber files are created:
+<br />
+<br />ANTECHAMBER_AC.AC
+<br />
+ANTECHAMBER_AC.AC0
+<br />
+ANTECHAMBER_BOND_TYPE.AC
+<br />
+ANTECHAMBER_BOND_TYPE.AC0
+<br />
+ATOMTYPE.INF
+<br />
+<br />which are moreover identical (except for the letter &quot;f&quot; for frozen bonds)  
+<br />
+to the same files produced by AmberTools16.
+<br />
+<br />However, my calculation script in AmberTools19 case still ends with an  
+<br />
+absurd error:
+<br />
+<br />&quot;Unable to find charges in file (Mol_m1-o1-sm.mol2)&quot;
+<br />
+<br />where Mol_m1-o1-sm.mol2 is the input mol2 file. This is of course  
+<br />
+nonsense, considering the existence of all the Amber files mentioned  
+<br />
+above. So in spite the perfect creation of  all *.AC, *.AC0 and INF files  
+<br />
+neither the output mol2 file nor the frcmod file is created.
+<br />
+<br />I would be very grateful for advice on how to get such great output with  
+<br />
+AmberTools19 or later (mol2 file with added atom types and possibly frcmod  
+<br />
+file - it is clear to me that in the case of a foreign chemical element,  
+<br />
+the frcmod file will not contain concrete bond / nonbond values  
+<br />
+parameters) as could be obtained using antechamber and parmchk in  
+<br />
+AmberTools16 and older versions. This functionality is key for my work and  
+<br />
+I hope there exists a more elegant solution than  maintaining an  
+<br />
+alternative old version of AmberTools16 just for this specific need.
+<br />
+<br />The inputs and outputs for one specific residue are available in the  
+<br />
+attached file, namely:
+<br />
+<br />#1 AmberTools16
+<br />
+a) using parmchk
+<br />
+b) using parmchk2
+<br />
+There are identical mol2 outputs but different frcmod outputs (in case b)  
+<br />
+is this file empty)
+<br />
+<br />#2 AmberTools19
+<br />
+a) using parmchk2 (without modifying the input mol2 script and without  
+<br />
+adding the &quot;-dr no&quot; parameter to the antechamer command)
+<br />
+<br />b) using parmchk2 (unusual &quot;Si-x&quot; bonds are frozen with &quot;f&quot; and the  
+<br />
+antechamber is started with the parameter &quot;-dr no&quot;)
+<br />
+<br />You may easily try/check also the case, were the &quot;Si&quot; atom (number 80) is  
+<br />
+substituted with &quot;C&quot; atom, and &quot;-dr no&quot; + &quot;f&quot; are eventually used.
+<br />
+<br />FILES
+<br />
+<br />input mol2 file: Mol_m1-o1-sm.mol2
+<br />
+calculation script: MakePREPandCHECK_MOL2_TO_MOL2.sh
+<br />
+output mol2 file: Mol_m1-o1-sm_withAT.mol2 (created just in AT16 case)
+<br />
+output frcmod file: Mol_m1-o1-sm.frcmod (created just in AT16 case, please  
+<br />
+notice the difference between parmchk ans parmchk2 case).
+<br />
+<br />Then there are the usual Amber outputs and StdOut and ErrOut files  
+<br />
+(SCREEN_OUTPUT_ATxy.txt, ERR_ATxy.txt) with informations/errs reported by  
+<br />
+antechamber/parmchk/2 programs on the screen.
+<br />
+<br />Thank you very much in advance for any useful comments!
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Best wishes,
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marek
+<br />
+<br /><br /><pre>
+-- 
+Vytvo�eno po�tovn� aplikac� Opery: http://www.opera.com/mail/
+
+
+</pre>
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>application/zip attachment: <a href="att-0140/ANTECHAMBER_PARMCHK_PROBLEM.zip">ANTECHAMBER_PARMCHK_PROBLEM.zip</a></li>
+</ul>
+<!-- attachment="ANTECHAMBER_PARMCHK_PROBLEM.zip" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Thu Aug 20 2020 - 03:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0141.html" title="Next message in the list">Lod King: "[AMBER] converting prmtop to psf with improper and cross-term info stripped off"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0139.html" title="Previous message in the list">Gustaf Olsson: "Re: [AMBER] Amber20 install problem &#65288;Geng Dong&#65289;"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0142.html" title="Next message in this discussion thread">Scott Brozell: "Re: [AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0142.html" title="Message sent in reply to this message">Scott Brozell: "Re: [AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg140" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg140" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg140" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg140" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

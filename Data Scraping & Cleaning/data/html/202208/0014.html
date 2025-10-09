@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] running pmemd.cuda with 2 GPUs from Enrico Martinez via AMBER on 2022-08-04 (Amber Archive Aug 2022)</title>
+<meta name="Author" content="Enrico Martinez via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] running pmemd.cuda with 2 GPUs" />
+<meta name="Date" content="2022-08-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] running pmemd.cuda with 2 GPUs</h1>
+<!-- received="Thu Aug  4 13:38:05 2022" -->
+<!-- isoreceived="20220804203805" -->
+<!-- sent="Thu, 4 Aug 2022 12:10:51 +0200" -->
+<!-- isosent="20220804101051" -->
+<!-- name="Enrico Martinez via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] running pmemd.cuda with 2 GPUs" -->
+<!-- id="CAALQopzgynu7J6cqrGantj8yA14GfSY543+SF+nP7_uaQcMdDA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0015.html" accesskey="d" title="Enrico Martinez via AMBER: &quot;Re: [AMBER] running pmemd.cuda with 2 GPUs&quot;">Next message</a> ]
+[ <a href="0013.html" title="Juan Torras Costa via AMBER: &quot;[AMBER] Software announcement: Release of PUPIL 4.0&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0015.html" accesskey="t" title="Enrico Martinez via AMBER: &quot;Re: [AMBER] running pmemd.cuda with 2 GPUs&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg14" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg14" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg14" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg14" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Enrico Martinez via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20running%20pmemd.cuda%20with%202%20GPUs">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 4 Aug 2022 12:10:51 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+I've just been able to install amber with CUDA on my 2 gpus work-station.
+<br />
+<br />In order to run job I use the following script :
+<br />
+<br />#!/bin/bash
+<br />
+pmemd.cuda -O -i ./in/md_production_330K.in -o prod.out -p
+<br />
+protein.prmtop -c equil1p.rst -ref equil1p.rst -r prod.rst -x
+<br />
+prod.netcdf
+<br />
+<br /><br />1) What should I add to define which GPU will be used?
+<br />
+<br />I checked nvidia-smi and found that pmemd uses the gpu 0
+<br />
+<br />|    0   N/A  N/A      2162      G   /usr/lib/xorg/Xorg                  4MiB |
+<br />
+|    0   N/A  N/A      2783      G   /usr/lib/xorg/Xorg                  4MiB |
+<br />
+|    0   N/A  N/A      6465      C   pmemd.cuda                        913MiB |
+<br />
+|    1   N/A  N/A      2162      G   /usr/lib/xorg/Xorg                110MiB |
+<br />
+|    1   N/A  N/A      2783      G   /usr/lib/xorg/Xorg                213MiB |
+<br />
+|    1   N/A  N/A      3656      G   /usr/bin/gnome-shell              163MiB |
+<br />
+|    1   N/A  N/A      5985      G   /usr/bin/nvidia-settings            0MiB |
+<br />
+|    1   N/A  N/A      6063      G   ...RendererForSitePerProcess       63MiB |
+<br />
+|    1   N/A  N/A      6720      G   ...692524829162169360,131072       97MiB
+<br />
+<br />However,  in the nvidia X server I see that the GPU 1 is being heated
+<br />
+(86 C), although the fan of GPU 0 (55 C) is working very extensively.
+<br />
+<br />2) May I run several (e.g. 10 jobs) using 2 gpus (5 jobs on each gpu?)
+<br />
+If so how should I parametrize the script?
+<br />
+Many thanks in advance
+<br />
+Cheers
+<br />
+Enrico
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Aug 04 2022 - 13:38:05 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0015.html" title="Next message in the list">Enrico Martinez via AMBER: "Re: [AMBER] running pmemd.cuda with 2 GPUs"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0013.html" title="Previous message in the list">Juan Torras Costa via AMBER: "[AMBER] Software announcement: Release of PUPIL 4.0"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0015.html" title="Next message in this discussion thread">Enrico Martinez via AMBER: "Re: [AMBER] running pmemd.cuda with 2 GPUs"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0015.html" title="Message sent in reply to this message">Enrico Martinez via AMBER: "Re: [AMBER] running pmemd.cuda with 2 GPUs"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg14" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg14" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg14" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg14" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Bug in the Mol2 format: space converted into a new oxygen atom from liu junjun on 2021-02-04 (Amber Archive Feb 2021)</title>
+<meta name="Author" content="liu junjun (ljjlp03.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Bug in the Mol2 format: space converted into a new oxygen atom" />
+<meta name="Date" content="2021-02-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Bug in the Mol2 format: space converted into a new oxygen atom</h1>
+<!-- received="Thu Feb  4 12:30:02 2021" -->
+<!-- isoreceived="20210204203002" -->
+<!-- sent="Fri, 5 Feb 2021 04:22:25 +0800" -->
+<!-- isosent="20210204202225" -->
+<!-- name="liu junjun" -->
+<!-- email="ljjlp03.gmail.com" -->
+<!-- subject="Re: [AMBER] Bug in the Mol2 format: space converted into a new oxygen atom" -->
+<!-- id="CAPFkgRk=QWPdhQ+d==0B5je2gWqrvGAGg1FL3SDwPJE70Vwfgw.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20210108150131.4rqjg6jtlskqb2qr.ufa33kbc232al.rad.rutgers.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0041.html" accesskey="d" title="Nisha Amarnath Jonniya: &quot;[AMBER] decompose running error&quot;">Next message</a> ]
+[ <a href="0039.html" title="Vitor Rabelo: &quot;[AMBER] MMPBSA.py Error: Could not import Amber Python modules&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0076.html" accesskey="t" title="Junmei Wang: &quot;Re: [AMBER] Bug in the Mol2 format: space converted into a new oxygen atom&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg40" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg40" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg40" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg40" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: liu junjun &lt;<a href="mailto:ljjlp03.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Bug%20in%20the%20Mol2%20format%3A%20space%20converted%20into%20a%20new%20oxygen%20atom">ljjlp03.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 5 Feb 2021 04:22:25 +0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+I am currently having a similar problem. But instead of the blank lines, my
+<br />
+MOL2 file has .&lt;TRIPOS&gt;UNITY_ATOM_ATTR section between the ATOM and BOND
+<br />
+sections. This causes antechamber to make the coordinates of the last atom
+<br />
+repeated multiple times. I did the following changes on mol2.c and it works
+<br />
+for me (but should not work for the blank line problem).
+<br />
+-----
+<br />
+.. -53,6 +53,9 ..
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (strcmp(&quot;.&lt;TRIPOS&gt;BOND&quot;, tmpchar1) == 0) {
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bondrecord = 1;
+<br />
++            continue;
+<br />
++        }
+<br />
++        if (atomrecord == 1 &amp;&amp; strncmp(&quot;.&lt;TRIPOS&gt;&quot;, tmpchar1, 9) == 0) {
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* end of atoms */
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atomrecord = 0;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />
+<br />All the best,
+<br />
+<br />Junjun
+<br />
+-----
+<br />
+<br />On Fri, Jan 8, 2021 at 11:01 PM David A Case &lt;david.case.rutgers.edu&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; On Wed, Jan 06, 2021, Mateusz Bieniek wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;I could use a bit of help with a strange situation with the .mol2 format.
+</em><br />
+<em class="quotelev2">&gt; &gt;There is an empty line in my .mol2 file just before the &quot;.&lt;TRIPOS&gt;BOND&quot;
+</em><br />
+<em class="quotelev2">&gt; &gt;section. This is a file generated by another package.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;It seems to me that the mol2 format defined Blank Line which is ignored by
+</em><br />
+<em class="quotelev2">&gt; &gt;the MOL2 command (<a href="http://chemyang.ccnu.edu.cn/ccb/server/AIMMS/mol2.pdf">http://chemyang.ccnu.edu.cn/ccb/server/AIMMS/mol2.pdf</a>,
+</em><br />
+<em class="quotelev2">&gt; &gt;page 3).
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;However, to my surprise, when I use antechamber
+</em><br />
+<em class="quotelev2">&gt; &gt;antechamber -i test.mol2 -fi mol2 -o out.mol2 -fo mol2 -dr no
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;It generates an extra atom in my file in the ATOM section.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks for your report.  I'm cc-ing to Scott and Junmei, who are probably
+</em><br />
+<em class="quotelev1">&gt; in
+</em><br />
+<em class="quotelev1">&gt; the best position to make sure that antechamber is ignoring blank lines in
+</em><br />
+<em class="quotelev1">&gt; mol2 files.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ....dac
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Feb 04 2021 - 12:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0041.html" title="Next message in the list">Nisha Amarnath Jonniya: "[AMBER] decompose running error"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0039.html" title="Previous message in the list">Vitor Rabelo: "[AMBER] MMPBSA.py Error: Could not import Amber Python modules"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0076.html" title="Next message in this discussion thread">Junmei Wang: "Re: [AMBER] Bug in the Mol2 format: space converted into a new oxygen atom"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Maybe reply</dfn>: <a href="0076.html" title="Message sent in reply to this message">Junmei Wang: "Re: [AMBER] Bug in the Mol2 format: space converted into a new oxygen atom"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg40" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg40" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg40" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg40" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

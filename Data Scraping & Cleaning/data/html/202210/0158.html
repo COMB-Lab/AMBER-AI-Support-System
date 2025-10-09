@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Thermostat Question from Matthew Guberman-Pfeffer via AMBER on 2022-10-31 (Amber Archive Oct 2022)</title>
+<meta name="Author" content="Matthew Guberman-Pfeffer via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Thermostat Question" />
+<meta name="Date" content="2022-10-31" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Thermostat Question</h1>
+<!-- received="Mon Oct 31 11:00:03 2022" -->
+<!-- isoreceived="20221031180003" -->
+<!-- sent="Mon, 31 Oct 2022 13:54:10 -0400" -->
+<!-- isosent="20221031175410" -->
+<!-- name="Matthew Guberman-Pfeffer via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Thermostat Question" -->
+<!-- id="BDE7C180-984C-4086-BC11-8262DE42A7A8.uconn.edu" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0159.html" accesskey="d" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] Thermostat Question&quot;">Next message</a> ]
+[ <a href="0157.html" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] I implore you to fix the problem regarding MMPBSA analysis&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0159.html" accesskey="t" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] Thermostat Question&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg158" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg158" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg158" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg158" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Matthew Guberman-Pfeffer via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Thermostat%20Question">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 31 Oct 2022 13:54:10 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear AMBER Community,
+<br />
+<br />Is it normal for a system to take ~3 ps to reach the target temperate when generating anew the velocities? 
+<br />
+<br />I normally don’t print out every ps, but for a fast-growth or morphing thermodynamic integration (TI) simulation, that’s exactly what I did last night. I noticed the temperature rose from 0 to 300 K over the first 3 ps. The same behavior occurred in just an NPT simulation without changing the lambda variable (clambda) from zero. 
+<br />
+<br />Below is my input if it helps. (I’m very obsessive about knowing keywords!)
+<br />
+<br />&amp;cntrl
+<br />
+&nbsp;&nbsp;ig=-1,              ! Random seed (=-1, get a number from current date and time)
+<br />
+<br />&nbsp;&nbsp;irest=0,            ! Flag to restart the simulation
+<br />
+&nbsp;&nbsp;ntx=1,              ! Initial condition (=1, read coord. but not veloc. from inpcrd file)
+<br />
+&nbsp;&nbsp;dt=0.001,           ! The time step in picoseconds
+<br />
+&nbsp;&nbsp;nstlim=20000,       ! Number of MD steps to be performed
+<br />
+<br />&nbsp;&nbsp;ntt=3,              ! Temperature scaling (=3, Langevin dynamics)
+<br />
+&nbsp;&nbsp;gamma_ln=2.0,       ! Collision frequency of the Langevin dynamics in ps-1
+<br />
+&nbsp;&nbsp;temp0=300.0,        ! Reference temperature
+<br />
+<br />&nbsp;&nbsp;ntp=1,              ! Constant pressure dynamics (=1, isotropic position scaling)
+<br />
+&nbsp;&nbsp;barostat=2,         ! Barostat to control the pressure (=2, Monte Carlo)A
+<br />
+&nbsp;&nbsp;pres0=1.0,          ! Target pressure (1 bar)
+<br />
+&nbsp;&nbsp;taup=1.0,           ! Pressure relaxation time in ps
+<br />
+<br />&nbsp;&nbsp;ntb=2,              ! Boundaries (=2, constant pressure)
+<br />
+&nbsp;&nbsp;igb=0,              ! GB model (=0, explicit solvent)
+<br />
+&nbsp;&nbsp;cut=10.0,           ! Cutoff
+<br />
+<br />&nbsp;&nbsp;ntc=2,              ! SHAKE constraints (=2, hydrogen bond lengths constrained)
+<br />
+&nbsp;&nbsp;ntf=1,              ! Force evaluation (=2, hydrogen bond interactions omitted)
+<br />
+&nbsp;&nbsp;ntr=0,              ! no positional restraints
+<br />
+&nbsp;&nbsp;nmropt=1,           ! To vary target temperature below
+<br />
+<br />&nbsp;&nbsp;icfe=1,             ! Turn on free energy calcs
+<br />
+&nbsp;&nbsp;ifsc=1,             ! Use softcore potentials
+<br />
+&nbsp;&nbsp;scalpha=0.5,        ! alpha parmaeter in vdW decoupling
+<br />
+&nbsp;&nbsp;scbeta=12,          ! Å^2; scaling parmaeter for softcore electorstatics
+<br />
+&nbsp;&nbsp;gti_cut=1,          ! Normal non-bonded cuttoff not applied among softcore
+<br />
+&nbsp;&nbsp;gti_chg_keep=1,     ! Do not neutralize charges on softcore atoms
+<br />
+&nbsp;&nbsp;gti_lam_sch=0,      ! Do not use lambda scheduling
+<br />
+&nbsp;&nbsp;gti_ele_sc=0,       ! Do not use smoothstep function for electrostatics
+<br />
+&nbsp;&nbsp;gti_vdw_sc=0,       ! Do not use smoothstep function for vdW interactions
+<br />
+&nbsp;&nbsp;gti_add_sc=1,       ! Scale 1-4 non-bonded terms between common and softcore by lambda
+<br />
+&nbsp;&nbsp;gti_bat_sc=0,       ! Do not scale bonded terms between common and softcore by lambda
+<br />
+&nbsp;&nbsp;gti_output=0,       ! Default output
+<br />
+&nbsp;&nbsp;gti_cpu_output=1,   ! Combine and output lambda-derivative terms for all TI regions
+<br />
+&nbsp;&nbsp;clambda=0.0,        ! Value! Value of perturbation parameter
+<br />
+&nbsp;&nbsp;dynlmb=0,           ! Increment clambda every ntave steps in single morphing simulation
+<br />
+&nbsp;&nbsp;ntave=100,          ! Number of steps for each clambda in single morphing simulation
+<br />
+&nbsp;&nbsp;klambda=1,          ! Exponent in perturbed potential function
+<br />
+&nbsp;&nbsp;tishake=1,          ! Normal use of SHAKE
+<br />
+&nbsp;&nbsp;noshakemask='.3630-3644,8047-8068,4389-4410,8813-8827',
+<br />
+&nbsp;&nbsp;timask1='.3630-3644,8047-8068',
+<br />
+&nbsp;&nbsp;timask2='.4389-4410,8813-8827',
+<br />
+&nbsp;&nbsp;scmask1='.3630-3644,8047-8068',
+<br />
+&nbsp;&nbsp;scmask2='.4389-4410,8813-8827',
+<br />
+&nbsp;&nbsp;crgmask= ,          ! Set to zerggo charges on mask
+<br />
+&nbsp;&nbsp;ti_vdw_mask= ,      ! Set to zero vdW for mask
+<br />
+&nbsp;&nbsp;logdvdl=0,          ! Print dv/dl info
+<br />
+<br />&nbsp;&nbsp;ntwr=50,            ! Restart file written every ntwr steps
+<br />
+&nbsp;&nbsp;ntwx=50,            ! Trajectory file written every ntwx steps
+<br />
+&nbsp;&nbsp;ntpr=1,             ! The mdout and mdinfo files written every ntpr steps
+<br />
+&nbsp;&nbsp;ntxo=2,             ! Write NetCDF coordinate file
+<br />
+&nbsp;&nbsp;ioutfm=1,           ! Trajectory file format (=1, Binary NetCDF)
+<br />
+&nbsp;&nbsp;iwrap=0,            ! Translate water molecules into the original simulation box
+<br />
+/
+<br />
+&amp;wt type='DUMPFREQ', istep1=100 /
+<br />
+&amp;wt type='END' /
+<br />
+DISANG=InterSubunitRestraints.rst
+<br />
+DUMPAVE=InterSubunitRestraints_TIprep.dat
+<br />
+<br /><br />Best,
+<br />
+Matthew
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Oct 31 2022 - 11:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0159.html" title="Next message in the list">Carlos Simmerling via AMBER: "Re: [AMBER] Thermostat Question"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0157.html" title="Previous message in the list">Carlos Simmerling via AMBER: "Re: [AMBER] I implore you to fix the problem regarding MMPBSA analysis"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0159.html" title="Next message in this discussion thread">Carlos Simmerling via AMBER: "Re: [AMBER] Thermostat Question"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0159.html" title="Message sent in reply to this message">Carlos Simmerling via AMBER: "Re: [AMBER] Thermostat Question"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg158" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg158" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg158" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg158" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

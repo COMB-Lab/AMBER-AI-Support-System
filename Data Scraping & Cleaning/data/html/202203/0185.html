@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Toluene solvent box equilibration from Pedro Miguel Reis Figueiredo on 2022-03-30 (Amber Archive Mar 2022)</title>
+<meta name="Author" content="Pedro Miguel Reis Figueiredo (pmrfigueiredo.cnc.uc.pt)" />
+<meta name="Subject" content="[AMBER] Toluene solvent box equilibration" />
+<meta name="Date" content="2022-03-30" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Toluene solvent box equilibration</h1>
+<!-- received="Wed Mar 30 13:30:03 2022" -->
+<!-- isoreceived="20220330203003" -->
+<!-- sent="Wed, 30 Mar 2022 21:17:02 +0100" -->
+<!-- isosent="20220330201702" -->
+<!-- name="Pedro Miguel Reis Figueiredo" -->
+<!-- email="pmrfigueiredo.cnc.uc.pt" -->
+<!-- subject="[AMBER] Toluene solvent box equilibration" -->
+<!-- id="d3da382bdb11a06a3fe79853f2735f1e.cnc.uc.pt" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="36c23a9e826e760313b8e66625a18eae.cnc.uc.pt" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0186.html" accesskey="d" title="Matthew Guberman-Pfeffer: &quot;Re: [AMBER] CPPTRAJ, Counting Per Residue Pair H-Bonding&quot;">Next message</a> ]
+[ <a href="0184.html" title="Daniel Roe: &quot;Re: [AMBER] CPPTRAJ, Counting Per Residue Pair H-Bonding&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0200.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] Toluene solvent box equilibration&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg185" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg185" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg185" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg185" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Pedro Miguel Reis Figueiredo &lt;<a href="mailto:pmrfigueiredo.cnc.uc.pt?Subject=Re%3A%20%5BAMBER%5D%20Toluene%20solvent%20box%20equilibration">pmrfigueiredo.cnc.uc.pt</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 30 Mar 2022 21:17:02 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber Users, 
+<br />
+<br />I am trying to equilibrate a cubic box of toluene, but I am facing some
+<br />
+troubles. 
+<br />
+<br />I have followed the tutorial &quot;A room-temperature ionic liquid
+<br />
+(ambermd.org [1])&quot;, where I have substituted the ACN, BMIM and BF4 units
+<br />
+with toluene molecules only. I have successfully created the mol2 and
+<br />
+frcmod files for toluene and created a box of 150A3 with 19640 molecules
+<br />
+(corresponding to the toluene's density of 0.87g/cm3). 
+<br />
+<br />Using the following LEaP input, I have created the topology and
+<br />
+coordinate files:
+<br />
+<br /><em class="quotelev1">&gt; _source leaprc.protein.ff14SB_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _loadamberparams tol.frcmod_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ _ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _TOL = loadmol2 toluene.mol2_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _BOX = loadpdb BOX.pdb_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ _ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _setbox BOX centers_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _saveamberparm BOX boxtol.prmtop boxtol.rst7_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _quit_
+</em><br />
+<br />Then I ran the minimization (min.in [2]) and equilibration (eq.in [3])
+<br />
+simulations, but my system exploded during the equilibration step
+<br />
+without any apparent reason. 
+<br />
+<br />min.in [2]:
+<br />
+<br /><em class="quotelev1">&gt; _minimization_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ &amp;cntrl_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ imin=1, ntpr=100, ntwx=100, maxcyc=10000,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ ntb=1,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ &amp;end_
+</em><br />
+<br />eq.in [3]:
+<br />
+<br /><em class="quotelev1">&gt; _3ns equilibration box_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _&amp;cntrl_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ imin=0, ntpr=3000, ntwx=3000,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ ntx=1, irest=0,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ tempi=293., temp0=293., ntt=3,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ gamma_ln=5., ntb=2, ntp=1, taup=1.0, ioutfm=1, nstlim=3000000,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ ntwr=1000, dt=.001, ig=-1,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _/_
+</em><br />
+<br />Trying to solve this, I have tested the inputs I use for protein MD
+<br />
+simulation: 
+<br />
+<br />min1.in:
+<br />
+<br /><em class="quotelev1">&gt; _initial minimization of the whole system_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ &amp;cntrl_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  imin   = 1,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  maxcyc = 5000,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  ncyc   = 2000,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  ntb    = 1,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  ntr    = 0,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  cut    = 10.0_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ /_
+</em><br />
+<br />heat.in:
+<br />
+<br /><em class="quotelev1">&gt; _500ps MD equilibration_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ &amp;cntrl_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  imin   = 0,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  irest  = 0,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  ntx    = 1,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  ntb    = 1,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  cut    = 10.0,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  ntr    = 0,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  ntc    = 2,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  ntf    = 2,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  tempi  = 0.0,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  temp0  = 293.15,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  ntt    = 3,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  gamma_ln = 1.0,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  nstlim = 250000, dt = 0.002_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  ntpr = 5000, ntwx = 5000, ntwr = 1000_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ /_
+</em><br />
+<br />In this step, the output print a lot of ***** (not sure if this is
+<br />
+normal, since I have not a solute):
+<br />
+<br /><em class="quotelev1">&gt; NSTEP =    95000   TIME(PS) =     190.000  TEMP(K) =*********  PRESS =     0.0 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Etot   = **************  EKtot   = **************  EPtot      = ************** 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; BOND   =        -0.0001  ANGLE   =  27449525.5430  DIHED      =   1805073.3845 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 1-4 NB =         0.0000  1-4 EEL =         0.0014  VDWAALS    = ************** 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; EELEC  =    -10309.6839  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+</em><br />
+<br />prod.in
+<br />
+<br /><em class="quotelev1">&gt; _1ns MD_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ &amp;cntrl_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  imin = 0, irest = 1, ntx = 7,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  ntb = 2, pres0 = 1.0, ntp = 1,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  taup = 2.0,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  cut = 10.0, ntr = 0,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  ntc = 2, ntf = 2,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  tempi = 293.15, temp0 = 293.15,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  ntt = 3, gamma_ln = 1.0,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  nstlim = 500000, dt = 0.002,_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _  ntpr = 2500, ntwx = 2500, ntwr = 10000_ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _ /_
+</em><br />
+<br />&nbsp;In the production simulation, the system explode presenting this
+<br />
+message:
+<br />
+<br /><em class="quotelev1">&gt; ERROR: Calculation halted.  Periodic box dimensions have changed too much from their initial values. Your system density has likely changed by a large amount, probably from starting the simulation from a structure a long way from equilibrium. 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; [Although this error can also occur if the simulation has blown up for some reason] 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; The GPU code does not automatically reorganize grid cells and thus you will need to restart the calculation from the previous restart file. This will generate new grid cells and allow the calculation to continue. It may be necessary to repeat this restarting multiple times if your system is a long way from an equilibrated density. Alternatively you can run with the CPU code until the density has converged and then switch back to the GPU code.
+</em><br />
+<br />Running with CPU or limiting the GPU code with the flag vlimit does not
+<br />
+resolve this. I have observed high shifts in systems' pressure and the
+<br />
+density increase from 0.8 to 1.0:
+<br />
+<br /><em class="quotelev1">&gt; NSTEP =    42500   TIME(PS) =     585.000  TEMP(K) =*********  PRESS = 31224.2 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Etot   = **************  EKtot   = **************  EPtot      = ************** 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; BOND   =        -0.0001  ANGLE   =  28900440.0113  DIHED      =   1802556.7630 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 1-4 NB =         0.0000  1-4 EEL =         0.0004  VDWAALS    = ************** 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; EELEC  =     -3284.3515  EHBOND  =         0.0000  RESTRAINT  =         0.0000 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; EKCMT  =        -0.0000  VIRIAL  =  -2527617.1317  VOLUME     =   3749235.0471       Density    =         0.8014 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ------------------------------------------------------------------------------ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; NSTEP =    45000   TIME(PS) =     590.000  TEMP(K) =*********  PRESS = 17159.0 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Etot   = **************  EKtot   = **************  EPtot      = ************** 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; BOND   =        -0.0001  ANGLE   =  28883760.4779  DIHED      =   1803516.5749 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 1-4 NB =         0.0000  1-4 EEL =         0.0004  VDWAALS    = ************** 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; EELEC  =    -13758.8548  EHBOND  =         0.0000  RESTRAINT  =         0.0000 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; EKCMT  =        -0.0000  VIRIAL  =  -1151566.2531  VOLUME     =   3108273.3687      Density    =         0.9667 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ------------------------------------------------------------------------------ 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; NSTEP =    47500   TIME(PS) =     595.000  TEMP(K) =*********  PRESS =-77840.8 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Etot   = **************  EKtot   = **************  EPtot      = ************** 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; BOND   =        -0.0001  ANGLE   =  28812866.2413  DIHED      =   1802867.7596 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 1-4 NB =         0.0000  1-4 EEL =         0.0004  VDWAALS    = ************** 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; EELEC  =    -18520.2184  EHBOND  =         0.0000  RESTRAINT  =         0.0000 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; EKCMT  =        -0.0000  VIRIAL  =   4602393.4852  VOLUME     =   2738409.5564       Density    =         1.0973
+</em><br />
+<br />Any thoughts on what I am doing wrong? 
+<br />
+<br />Thank you in advance! 
+<br />
+<br />Kind regards, 
+<br />
+<br />Pedro 
+<br />
+<br />Links:
+<br />
+------
+<br />
+[1] <a href="http://ambermd.org">http://ambermd.org</a>
+<br />
+[2] <a href="http://min.in">http://min.in</a>
+<br />
+[3] <a href="http://eq.in">http://eq.in</a>
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Mar 30 2022 - 13:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0186.html" title="Next message in the list">Matthew Guberman-Pfeffer: "Re: [AMBER] CPPTRAJ, Counting Per Residue Pair H-Bonding"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0184.html" title="Previous message in the list">Daniel Roe: "Re: [AMBER] CPPTRAJ, Counting Per Residue Pair H-Bonding"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0200.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] Toluene solvent box equilibration"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0200.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Toluene solvent box equilibration"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg185" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg185" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg185" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg185" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

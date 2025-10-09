@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Running Paramfit with 300 + structures from Robin Betz on 2020-08-14 (Amber Archive Aug 2020)</title>
+<meta name="Author" content="Robin Betz (robin.robinbetz.com)" />
+<meta name="Subject" content="Re: [AMBER] Running Paramfit with 300 + structures" />
+<meta name="Date" content="2020-08-14" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Running Paramfit with 300 + structures</h1>
+<!-- received="Fri Aug 14 15:30:03 2020" -->
+<!-- isoreceived="20200814223003" -->
+<!-- sent="Fri, 14 Aug 2020 15:12:12 -0700" -->
+<!-- isosent="20200814221212" -->
+<!-- name="Robin Betz" -->
+<!-- email="robin.robinbetz.com" -->
+<!-- subject="Re: [AMBER] Running Paramfit with 300 + structures" -->
+<!-- id="CAL9_cpfm71swbGb2z+OuyOvPd3B1J7EgBehsjbzAW0-L2EzqeA.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="28238548-0450-4284-9A83-2FE787929C02.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0111.html" accesskey="d" title="David Cerutti: &quot;Re: [AMBER] Running Paramfit with 300 + structures&quot;">Next message</a> ]
+[ <a href="0109.html" title="Samuel Himes: &quot;[AMBER] Running Paramfit with 300 + structures&quot;">Previous message</a> ]
+[ <a href="0109.html" title="Samuel Himes: &quot;[AMBER] Running Paramfit with 300 + structures&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0111.html" accesskey="t" title="David Cerutti: &quot;Re: [AMBER] Running Paramfit with 300 + structures&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg110" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg110" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg110" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg110" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Robin Betz &lt;<a href="mailto:robin.robinbetz.com?Subject=Re%3A%20%5BAMBER%5D%20Running%20Paramfit%20with%20300%20%2B%20structures">robin.robinbetz.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 14 Aug 2020 15:12:12 -0700</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Samuel,
+<br />
+<br />You're correct that there shouldn't be a difference in how you use Paramfit
+<br />
+with more or fewer structures.
+<br />
+The problems you're seeing are coming from the operating system and your
+<br />
+script.
+<br />
+<br />The &quot;Killed&quot; message is the out-of-memory (OOM) killer killing Paramfit as
+<br />
+there isn't enough memory available. If you're running on a compute
+<br />
+cluster, you can increase the memory available to the job. If you're
+<br />
+running on your own machine, you can adjust the nice-ness of the process,
+<br />
+use swap, killing other memory-intensive processes, etc.
+<br />
+<br />The &quot;syntax error&quot; message seems to be coming from bash, so I'm guessing
+<br />
+you're using a script to call paramfit and somehow it's trying to execute
+<br />
+the output of Paramfit, which gives syntax errors. If you attach your run
+<br />
+script I can tell you more specifically.
+<br />
+<br />Hope this helps,
+<br />
+Robin
+<br />
+<br />On Fri, Aug 14, 2020 at 2:58 PM Samuel Himes &lt;sam.himes92.gmail&#46;<!--nospam-->com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hello Amber Users,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I am attempting to use Paramfit to generate parameters for molecules of
+</em><br />
+<em class="quotelev1">&gt; interest. In my initial trial I was able to run paramfit from start to
+</em><br />
+<em class="quotelev1">&gt; finish with 20 structures. I wanted to repeat the process but this time
+</em><br />
+<em class="quotelev1">&gt; with about 350 structures. This time I can only complete the first step to
+</em><br />
+<em class="quotelev1">&gt; fit K with that many structures. After that I use the following job control
+</em><br />
+<em class="quotelev1">&gt; file.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; # Run a fit to energies using the parameters defined earlier
+</em><br />
+<em class="quotelev1">&gt; RUNTYPE=FIT
+</em><br />
+<em class="quotelev1">&gt; COORDINATE_FORMAT=TRAJECTORY
+</em><br />
+<em class="quotelev1">&gt; NSTRUCTURES=364
+</em><br />
+<em class="quotelev1">&gt; K=-292501548281.682251
+</em><br />
+<em class="quotelev1">&gt; PARAMETERS_TO_FIT=LOAD
+</em><br />
+<em class="quotelev1">&gt; PARAMETER_FILE_NAME=prms.in
+</em><br />
+<em class="quotelev1">&gt; FUNC_TO_FIT=SUM_SQUARES_AMBER_STANDARD
+</em><br />
+<em class="quotelev1">&gt; QM_ENERGY_UNITS=HARTREE
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; # Use the genetic algorithm with the following settings
+</em><br />
+<em class="quotelev1">&gt; ALGORITHM=GENETIC
+</em><br />
+<em class="quotelev1">&gt; OPTIMIZATIONS=50
+</em><br />
+<em class="quotelev1">&gt; MAX_GENERATIONS=10000
+</em><br />
+<em class="quotelev1">&gt; GENERATIONS_TO_CONV=20
+</em><br />
+<em class="quotelev1">&gt; GENERATIONS_TO_SIMPLEX=5
+</em><br />
+<em class="quotelev1">&gt; GENERATIONS_WITHOUT_SIMPLEX=5
+</em><br />
+<em class="quotelev1">&gt; MUTATION_RATE=0.100000
+</em><br />
+<em class="quotelev1">&gt; PARENT_PERCENT=0.250000
+</em><br />
+<em class="quotelev1">&gt; SEARCH_SPACE=-1.000000
+</em><br />
+<em class="quotelev1">&gt; SORT_MDCRDS=OFF
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; # Output files for later analysis
+</em><br />
+<em class="quotelev1">&gt; WRITE_ENERGY=fit_output_energy.dat
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Every time I run it says “Killed” after about 30-40 minutes. Additionally
+</em><br />
+<em class="quotelev1">&gt; it throws these errors.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$ -350.1297 kcal/mol,  Np = 2.0000,  Phase = 180.0001 Deg
+</em><br />
+<em class="quotelev1">&gt; bash: -350.1297: command not found...
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$        (n -c3-nh-ce)*Kp = 351.1492 kcal/mol,  Np = 2.0000,
+</em><br />
+<em class="quotelev1">&gt; Phase =   0.0000 Deg
+</em><br />
+<em class="quotelev1">&gt; -bash: syntax error near unexpected token `*Kp'
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$        (n -c3-nh-c3)*Kp = -23.1425 kcal/mol,  Np = 2.0000,
+</em><br />
+<em class="quotelev1">&gt; Phase =   0.0000 Deg
+</em><br />
+<em class="quotelev1">&gt; -bash: syntax error near unexpected token `*Kp'
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$        (n -c -c3-nh)*Kp =  93.5440 kcal/mol,  Np = 2.0000,
+</em><br />
+<em class="quotelev1">&gt; Phase = 180.0001 Deg
+</em><br />
+<em class="quotelev1">&gt; -bash: syntax error near unexpected token `*Kp'
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$        (n -c -c3-c3)*Kp = -73.0671 kcal/mol,  Np = 2.0000,
+</em><br />
+<em class="quotelev1">&gt; Phase = 180.0001 Deg
+</em><br />
+<em class="quotelev1">&gt; -bash: syntax error near unexpected token `*Kp'
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$        (n -c -c3-c3)*Kp =  23.1595 kcal/mol,  Np = 4.0000,
+</em><br />
+<em class="quotelev1">&gt; Phase = 180.0001 Deg
+</em><br />
+<em class="quotelev1">&gt; -bash: syntax error near unexpected token `*Kp'
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$        (nh-ce-ce-c2)*Kp = -219.8412 kcal/mol,  Np = 2.0000,
+</em><br />
+<em class="quotelev1">&gt; Phase = 180.0001 Deg
+</em><br />
+<em class="quotelev1">&gt; -bash: syntax error near unexpected token `*Kp'
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$        (nh-c3-n -c3)*Kp = 146.5671 kcal/mol,  Np = 2.0000,
+</em><br />
+<em class="quotelev1">&gt; Phase =   0.0000 Deg
+</em><br />
+<em class="quotelev1">&gt; -bash: syntax error near unexpected token `*Kp'
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$        (nh-c3-n -c )*Kp =  60.3180 kcal/mol,  Np = 2.0000,
+</em><br />
+<em class="quotelev1">&gt; Phase =   0.0000 Deg
+</em><br />
+<em class="quotelev1">&gt; -bash: syntax error near unexpected token `*Kp'
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$        (nh-c3-c -o )*Kp = -14.6946 kcal/mol,  Np = 2.0000,
+</em><br />
+<em class="quotelev1">&gt; Phase = 180.0001 Deg
+</em><br />
+<em class="quotelev1">&gt; -bash: syntax error near unexpected token `*Kp'
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$        (nh-c3-c3-ca)*Kp = 896.3533 kcal/mol,  Np = 3.0000,
+</em><br />
+<em class="quotelev1">&gt; Phase =   0.0000 Deg
+</em><br />
+<em class="quotelev1">&gt; -bash: syntax error near unexpected token `*Kp'
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$        (c3-c3-nh-ce)*Kp = 843.2682 kcal/mol,  Np = 2.0000,
+</em><br />
+<em class="quotelev1">&gt; Phase =   0.0000 Deg
+</em><br />
+<em class="quotelev1">&gt; -bash: syntax error near unexpected token `*Kp'
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$        (c3-c3-n -c3)*Kp = -24.0452 kcal/mol,  Np = 2.0000,
+</em><br />
+<em class="quotelev1">&gt; Phase =   0.0000 Deg
+</em><br />
+<em class="quotelev1">&gt; -bash: syntax error near unexpected token `*Kp'
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$        (c3-c3-n -c )*Kp =  77.9657 kcal/mol,  Np = 1.0000,
+</em><br />
+<em class="quotelev1">&gt; Phase = 180.0001 Deg
+</em><br />
+<em class="quotelev1">&gt; -bash: syntax error near unexpected token `*Kp'
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$        (c3-c3-n -c )*Kp =  28.4979 kcal/mol,  Np = 3.0000,
+</em><br />
+<em class="quotelev1">&gt; Phase =   0.0000 Deg
+</em><br />
+<em class="quotelev1">&gt; -bash: syntax error near unexpected token `*Kp'
+</em><br />
+<em class="quotelev1">&gt; -bash-4.2$        (c3-c3-n -c )*Kp =  32.4247 kcal/mol,  Np = 4.
+</em><br />
+<em class="quotelev1">&gt; -bash: syntax error near unexpected token `*Kp’
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The parameters that I’m setting to fit about 64 dihedral angles using the
+</em><br />
+<em class="quotelev1">&gt; KP setting.
+</em><br />
+<em class="quotelev1">&gt; Has anyone encountered a problem similar to this? Is it that I am simply
+</em><br />
+<em class="quotelev1">&gt; using too many structures, or is there a different problem? If the problem
+</em><br />
+<em class="quotelev1">&gt; has to do with the amount of structures how many structures are usually
+</em><br />
+<em class="quotelev1">&gt; necessary to create good parameters?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks in advance for the help.
+</em><br />
+<em class="quotelev1">&gt; -Sam
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Aug 14 2020 - 15:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0111.html" title="Next message in the list">David Cerutti: "Re: [AMBER] Running Paramfit with 300 + structures"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0109.html" title="Previous message in the list">Samuel Himes: "[AMBER] Running Paramfit with 300 + structures"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0109.html" title="Message to which this message replies">Samuel Himes: "[AMBER] Running Paramfit with 300 + structures"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0111.html" title="Next message in this discussion thread">David Cerutti: "Re: [AMBER] Running Paramfit with 300 + structures"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0111.html" title="Message sent in reply to this message">David Cerutti: "Re: [AMBER] Running Paramfit with 300 + structures"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg110" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg110" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg110" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg110" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

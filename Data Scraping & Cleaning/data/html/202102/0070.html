@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] CPPTRAJ cannot open RXSGLD trajectories out of the box from Daniel Roe on 2021-02-07 (Amber Archive Feb 2021)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] CPPTRAJ cannot open RXSGLD trajectories out of the box" />
+<meta name="Date" content="2021-02-07" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] CPPTRAJ cannot open RXSGLD trajectories out of the box</h1>
+<!-- received="Sun Feb  7 07:00:02 2021" -->
+<!-- isoreceived="20210207150002" -->
+<!-- sent="Sun, 7 Feb 2021 09:38:11 -0500" -->
+<!-- isosent="20210207143811" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] CPPTRAJ cannot open RXSGLD trajectories out of the box" -->
+<!-- id="CAAC0qOZYgFN9C52KhBpt-q+99gwR1MHmiUcOY3yQqqFhJ3bHgw.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="aa579258-75f7-fd94-a5b0-c07c6ebe2121.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0071.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] polarizable FF in amber18 or 20&quot;">Next message</a> ]
+[ <a href="0069.html" title="Charo del Genio: &quot;[AMBER] CPPTRAJ cannot open RXSGLD trajectories out of the box&quot;">Previous message</a> ]
+[ <a href="0069.html" title="Charo del Genio: &quot;[AMBER] CPPTRAJ cannot open RXSGLD trajectories out of the box&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg70" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg70" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg70" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg70" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20CPPTRAJ%20cannot%20open%20RXSGLD%20trajectories%20out%20of%20the%20box">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 7 Feb 2021 09:38:11 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />On Sun, Feb 7, 2021 at 9:00 AM Charo del Genio &lt;the.paraw.gmail.com&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Dear all,
+</em><br />
+<em class="quotelev1">&gt;         it appears that CPPTRAJ is unable to open RXSGLD trajectories, as it does not recognize rxsgldtraj and rxsgldid as valid keywords. It does work, however, if I replace the keywords with remdtraj and
+</em><br />
+<em class="quotelev1">&gt; remtrajidx, respectively, effectively treating the trajectories as if they were T-REMD. Is this intended behaviour? If so, the manual should perhaps be updated. If not, are there any unintended
+</em><br />
+<em class="quotelev1">&gt; consequences in doing so?
+</em><br />
+<br />Indeed, rxsgldtraj and rxsglid are not valid keywords for 'trajin',
+<br />
+which is why cpptraj does not recognize them. The 'remdtraj' keyword
+<br />
+is not in fact specific to T-REMD (although it started that way a long
+<br />
+time ago in ptraj). From the manual:
+<br />
+<br />&quot;[remdtraj] Read &lt;filename&gt; as the first replica in a group of replica
+<br />
+trajectories&quot;
+<br />
+<br />So to sum up, 'remdtraj' and 'remdtrajidx' should work for
+<br />
+trajectories from any type of REMD. Let me know if you see otherwise.
+<br />
+<br />Hope this helps,
+<br />
+<br />-Dan
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Cheers
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Charo
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; --
+</em><br />
+<em class="quotelev1">&gt; Dr. Charo I. del Genio
+</em><br />
+<em class="quotelev1">&gt; Senior Lecturer in Statistical Physics
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Applied Mathematics Research Centre (AMRC)
+</em><br />
+<em class="quotelev1">&gt; Design Hub
+</em><br />
+<em class="quotelev1">&gt; Coventry University Technology Park
+</em><br />
+<em class="quotelev1">&gt; Coventry CV1 5FB
+</em><br />
+<em class="quotelev1">&gt; UK
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://charodelgenio.weebly.com">https://charodelgenio.weebly.com</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Feb 07 2021 - 07:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0071.html" title="Next message in the list">David A Case: "Re: [AMBER] polarizable FF in amber18 or 20"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0069.html" title="Previous message in the list">Charo del Genio: "[AMBER] CPPTRAJ cannot open RXSGLD trajectories out of the box"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0069.html" title="Message to which this message replies">Charo del Genio: "[AMBER] CPPTRAJ cannot open RXSGLD trajectories out of the box"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg70" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg70" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg70" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg70" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

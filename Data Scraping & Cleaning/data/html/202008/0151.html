@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Questions (and a small bug report) about SIRAH in Amber from Charo del Genio on 2020-08-21 (Amber Archive Aug 2020)</title>
+<meta name="Author" content="Charo del Genio (the.paraw.gmail.com)" />
+<meta name="Subject" content="[AMBER] Questions (and a small bug report) about SIRAH in Amber" />
+<meta name="Date" content="2020-08-21" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Questions (and a small bug report) about SIRAH in Amber</h1>
+<!-- received="Fri Aug 21 14:00:03 2020" -->
+<!-- isoreceived="20200821210003" -->
+<!-- sent="Fri, 21 Aug 2020 21:43:18 +0100" -->
+<!-- isosent="20200821204318" -->
+<!-- name="Charo del Genio" -->
+<!-- email="the.paraw.gmail.com" -->
+<!-- subject="[AMBER] Questions (and a small bug report) about SIRAH in Amber" -->
+<!-- id="911c595f-fc24-943d-c01b-ffa0851c951f.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0152.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] converting prmtop to psf with improper and cross-term info stripped off&quot;">Next message</a> ]
+[ <a href="0150.html" title="David A Case: &quot;Re: [AMBER] trouble with pdb4amber&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0154.html" accesskey="t" title="Scott Brozell: &quot;Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg151" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg151" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg151" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg151" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Charo del Genio &lt;<a href="mailto:the.paraw.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Questions%20(and%20a%20small%20bug%20report)%20about%20SIRAH%20in%20Amber">the.paraw.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 21 Aug 2020 21:43:18 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear all,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I have a few question and a bug to report concerning SIRAH in Amber. I am not sure whether the bug is more properly in leap o in the SIRAH files, so I'm CCing Matias Machado onto this email.
+<br />
+<br />Anyway, the first question is: the Amber20 manual talks about SIRAH, and even specifies where it should be found, i.e., in ${AMBERHOME}/dat/SIRAH. However... it isn't there, and in fact it isn't even 
+<br />
+in the source tarball. Is it intended to be so?
+<br />
+<br />Second, upon downloading SIRAH and installing it in the above-mentioned location, leap dies with a buffer overflow when sourcing leaprc.sirah. The reason seems to be the presence of comment lines 
+<br />
+within LJoff.frcmod, in the SIRAH directory. In fact, the problem disappears upon removing all such lines except the very first one (the title line). As I mentioned before, I don't know whether this 
+<br />
+is a bug in leap or whether the frcmod file is not supposed to have comment lines except the title one. Anyway, the workaround is easy.
+<br />
+<br />Finally, what is perhaps the actually interesting question: can SIRAH deal with organic ligands? I ask because if I try to simulate a coarse-grained protein with a bound ligand, I am completely unable 
+<br />
+to have any stability. In the very first few steps after minimization everything just falls apart with vlimit exceeded every step. Conversely, if I remove the ligand, the simulation proceeds seemingly 
+<br />
+without problems. Note that the FG simulation of protein with ligand has no problems.
+<br />
+<br />On a related note, I also found that if I use the Bussi thermostat, I end up with a similar situation, namely the protein falling apart, regardless of the presence of a ligand. However, the simulation 
+<br />
+is stable if using a Langevin thermostat with a huge gamma_ln constant of 50. Is that normal behaviour for the CG field?
+<br />
+<br /><br />Thank you,
+<br />
+<br />Charo
+<br />
+<br /><br /><br /><br /><pre>
+-- 
+Dr. Charo I. del Genio
+Senior Lecturer in Statistical Physics
+Applied Mathematics Research Centre (AMRC)
+Design Hub
+Coventry University Technology Park
+Coventry CV1 5FB
+UK
+<a href="https://charodelgenio.weebly.com">https://charodelgenio.weebly.com</a>
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Fri Aug 21 2020 - 14:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0152.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] converting prmtop to psf with improper and cross-term info stripped off"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0150.html" title="Previous message in the list">David A Case: "Re: [AMBER] trouble with pdb4amber"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0154.html" title="Next message in this discussion thread">Scott Brozell: "Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0154.html" title="Message sent in reply to this message">Scott Brozell: "Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber"</a></li>
+<li><dfn>Reply</dfn>: <a href="0155.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg151" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg151" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg151" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg151" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] installing CUDA driver with ubuntu 20.04 from Enrico Martinez via AMBER on 2022-08-03 (Amber Archive Aug 2022)</title>
+<meta name="Author" content="Enrico Martinez via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] installing CUDA driver with ubuntu 20.04" />
+<meta name="Date" content="2022-08-03" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] installing CUDA driver with ubuntu 20.04</h1>
+<!-- received="Thu Aug  4 13:37:56 2022" -->
+<!-- isoreceived="20220804203756" -->
+<!-- sent="Wed, 3 Aug 2022 18:05:02 +0200" -->
+<!-- isosent="20220803160502" -->
+<!-- name="Enrico Martinez via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] installing CUDA driver with ubuntu 20.04" -->
+<!-- id="CAALQopy97XwFL8Mt__r=ie+-ZG3iVOLn=_4cUS76x1YdgEVYeQ.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20220720143129.hfrw2av7hpyk4st4.41grscansl04.rad.rutgers.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0007.html" accesskey="d" title="David A Case via AMBER: &quot;Re: [AMBER] installing CUDA driver with ubuntu 20.04&quot;">Next message</a> ]
+[ <a href="0005.html" title="tluchko via AMBER: &quot;Re: [AMBER] Amber21: rism3d.periodic/1ahoa test fails for number of CPUs &#0062; 2&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0007.html" accesskey="t" title="David A Case via AMBER: &quot;Re: [AMBER] installing CUDA driver with ubuntu 20.04&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg6" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg6" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg6" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg6" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Enrico Martinez via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20installing%20CUDA%20driver%20with%20ubuntu%2020.04">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 3 Aug 2022 18:05:02 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear David,
+<br />
+I've just tried to install amber-22 on my ubuntu machine with cuda
+<br />
+11.7 and Driver Version: 515.43.04.
+<br />
+First, as you indicated below, I edited cmake/CudaConfig.cmake
+<br />
+indicating the version 11.7 of the cuda driver.
+<br />
+<br />then I untar amber-tools and amber to the same directory and run cmake
+<br />
+indicating cuda driver:
+<br />
+<br />cd amber22_src/build
+<br />
+./run_cmake -DCUDA=TRUE -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-11.7
+<br />
+<br /><br />that correctly detected cuda 11.7 at the beginning of the compilation
+<br />
+however in the end, cmake reported that cuda has not been detected:
+<br />
+<br />--                                Features:
+<br />
+-- MPI:                     OFF
+<br />
+-- OpenMP:                  OFF
+<br />
+-- CUDA:                    OFF
+<br />
+-- Build Shared Libraries:  ON
+<br />
+-- Build GUI Interfaces:    ON
+<br />
+-- Build Python Programs:   ON
+<br />
+--  -Python Interpreter:    Internal Miniconda (version 3.9)
+<br />
+-- Build Perl Programs:     ON
+<br />
+-- Build configuration:     RELEASE
+<br />
+-- Target Processor:        x86_64
+<br />
+-- Build Documentation:     OFF
+<br />
+-- Sander Variants:         normal LES API LES-API
+<br />
+-- Install location:        /home/enrico/amber22/
+<br />
+-- Installation of Tests:   ON
+<br />
+<br />--                               Compilers:
+<br />
+--         C: GNU 9.4.0 (/usr/bin/gcc)
+<br />
+--       CXX: GNU 9.4.0 (/usr/bin/g++)
+<br />
+--   Fortran: GNU 9.4.0 (/usr/bin/gfortran)
+<br />
+<br />--                              Building Tools:
+<br />
+-- addles amberlite ambpdb antechamber cifparse cphstats cpptraj emil
+<br />
+etc few gbnsr6 gem.pmemd kmmd leap lib mdgx mm_pbsa mmpbsa_py moft nab
+<br />
+ndiff-2.00 nfe-umbrella-slice nmode nmr_aux packmol_memgen paramfit
+<br />
+parmed pbsa pdb4amber pmemd pymsmt pysander pytraj reduce rism sander
+<br />
+saxs sebomd sff sqm xray xtalutil
+<br />
+<br />--                            NOT Building Tools:
+<br />
+-- quick - BUILD_QUICK is not enabled
+<br />
+-- tcpb-cpp - BUILD_TCPB is not enabled
+<br />
+-- tcpb-cpp/pytcpb - BUILD_TCPB is not enabled
+<br />
+-- reaxff_puremd - BUILD_REAXFF_PUREMD is not enabled
+<br />
+-- gpu_utils - Requires CUDA
+<br />
+<br />May you suggest some solution in order that I could use GPUs with
+<br />
+pmemd ? Do I need to additionally activate the mpi option for the
+<br />
+compilation assuming that I do not plan to use both GPUs together?
+<br />
+Many thanks in advance
+<br />
+Cheers,
+<br />
+Enrico
+<br />
+<br />Il giorno mer 20 lug 2022 alle ore 16:31 David A Case
+<br />
+&lt;david.case.rutgers.edu&gt; ha scritto:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Tue, Jul 19, 2022, Enrico Martinez via AMBER wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;nvcc --version
+</em><br />
+<em class="quotelev2">&gt; &gt;nvcc: NVIDIA (R) Cuda compiler driver
+</em><br />
+<em class="quotelev2">&gt; &gt;Copyright (c) 2005-2022 NVIDIA Corporation
+</em><br />
+<em class="quotelev2">&gt; &gt;Built on Tue_May__3_18:49:52_PDT_2022
+</em><br />
+<em class="quotelev2">&gt; &gt;Cuda compilation tools, release 11.7, V11.7.64
+</em><br />
+<em class="quotelev2">&gt; &gt;Build cuda_11.7.r11.7/compiler.31294372_0
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; To use Cuda 11.7, you will need to edit cmake/CudaConfig.cmake and change
+</em><br />
+<em class="quotelev1">&gt; references to &quot;11.6&quot; to &quot;11.7&quot;.  An update to do this is in the works, but
+</em><br />
+<em class="quotelev1">&gt; it's quite a simple change.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ...good luck...dac
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Aug 04 2022 - 13:37:56 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0007.html" title="Next message in the list">David A Case via AMBER: "Re: [AMBER] installing CUDA driver with ubuntu 20.04"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0005.html" title="Previous message in the list">tluchko via AMBER: "Re: [AMBER] Amber21: rism3d.periodic/1ahoa test fails for number of CPUs &#0062; 2"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0007.html" title="Next message in this discussion thread">David A Case via AMBER: "Re: [AMBER] installing CUDA driver with ubuntu 20.04"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0007.html" title="Message sent in reply to this message">David A Case via AMBER: "Re: [AMBER] installing CUDA driver with ubuntu 20.04"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0030.html" title="Message sent in reply to this message">Enrico Martinez via AMBER: "Re: [AMBER] installing CUDA driver with ubuntu 20.04"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0031.html" title="Message sent in reply to this message">Enrico Martinez via AMBER: "Re: [AMBER] installing CUDA driver with ubuntu 20.04"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg6" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg6" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg6" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg6" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

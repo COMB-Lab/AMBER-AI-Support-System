@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Cyclic Peptides: leap keeps adding missing atoms from Dr. Anselm Horn on 2021-04-15 (Amber Archive Apr 2021)</title>
+<meta name="Author" content="Dr. Anselm Horn (anselm.horn.fau.de)" />
+<meta name="Subject" content="Re: [AMBER] Cyclic Peptides: leap keeps adding missing atoms" />
+<meta name="Date" content="2021-04-15" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Cyclic Peptides: leap keeps adding missing atoms</h1>
+<!-- received="Thu Apr 15 17:30:02 2021" -->
+<!-- isoreceived="20210416003002" -->
+<!-- sent="Fri, 16 Apr 2021 02:08:48 +0200" -->
+<!-- isosent="20210416000848" -->
+<!-- name="Dr. Anselm Horn" -->
+<!-- email="anselm.horn.fau.de" -->
+<!-- subject="Re: [AMBER] Cyclic Peptides: leap keeps adding missing atoms" -->
+<!-- id="ba79b755-3e79-ab9a-9c3a-01ccf1dbbf08.fau.de" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="VI1PR0102MB30560D0DF3F1D181FB016232B24D9.VI1PR0102MB3056.eurprd01.prod.exchangelabs.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0111.html" accesskey="d" title="Ojet: &quot;[AMBER] About REMD extracting temperature trajectory&quot;">Next message</a> ]
+[ <a href="0109.html" title="Thomas Cheatham: &quot;Re: [AMBER] Questions about Principle Component Analysis&quot;">Previous message</a> ]
+[ <a href="0105.html" title="Tainah Dorina Marforio: &quot;[AMBER] Cyclic Peptides: leap keeps adding missing atoms&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0147.html" accesskey="t" title="Tainah Dorina Marforio: &quot;[AMBER] R:  Cyclic Peptides: leap keeps adding missing atoms&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg110" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg110" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg110" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg110" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Dr. Anselm Horn &lt;<a href="mailto:anselm.horn.fau.de?Subject=Re%3A%20%5BAMBER%5D%20Cyclic%20Peptides%3A%20leap%20keeps%20adding%20missing%20atoms">anselm.horn.fau.de</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 16 Apr 2021 02:08:48 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Tainah,
+<br />
+<br />you may try the command loadPdbUsingSeq in tleap (cf page 233 Amber
+<br />
+manual): If the sequence you define your peptide with lacks the explicit
+<br />
+terminal residue names like NALA or CGLY, all peptide residues are
+<br />
+defined as mid-chain residues, i.e. the terminal ones are not
+<br />
+automatically converted to the standard terminal species (NH3+ or COO-).
+<br />
+After that, you manually add a bond between the first N and the last
+<br />
+C(=O), (bond command in tleap) and you are done.
+<br />
+Since the bond command simply depends on the length of the peptide, the
+<br />
+tleap input could be created via an external script.
+<br />
+<br />(This general approach for cyclic peptides worked for me in earlier
+<br />
+Amber versions; I did not test it explicitely in Amber20, though.)
+<br />
+<br />In your case, where you also have an additional ligand in your pdb file,
+<br />
+I'm not sure about the tleap logic: if you simply add your ligand's
+<br />
+residue name to the sequence list, tleap might try to form a bond
+<br />
+between the last residue (being a &quot;mid-chain&quot; still) and your ligand,
+<br />
+which won't work and is not what you want, of course. But maybe tleap
+<br />
+recognizes the missing valency in the ligand and does not try to form a
+<br />
+bond there.
+<br />
+<br />Alternatively, you could read in your peptide from one file and your
+<br />
+ligand into a second UNIT from a second pdb file via loadPdb, and then
+<br />
+use tleap's combine command to create a new unit, which may be saved.
+<br />
+<br />Maybe that helps...
+<br />
+<br />Best Regards,
+<br />
+<br />Anselm
+<br />
+<br />[NHR.FAU]
+<br />
+<br /><br />On 04/15/2021 12:34 PM, Tainah Dorina Marforio wrote:
+<br />
+<em class="quotelev1">&gt; Hello!
+</em><br />
+<em class="quotelev1">&gt; I'm working on complexes made of a cyclic peptide (the receptor) &amp; a ligand.
+</em><br />
+<em class="quotelev1">&gt; To obtain the receptor, I create the amino acid sequence with tleap and I make the bond between N and C. Then I save the parm7 &amp; rst7 and run a minimization. Everything works fine. Then I take the cyclic minimized structure and create a pdb with ambpdb (let's call it min.pdb) I manually create the complex on min.pdb, obtaining the complex.pdb (with TER and END in the right places).
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; To obtain the parm7 &amp; rst7 of the complex, on leap I call the forcefields that I need (ff14SB, gaff, water.tip3p) and load the frcmod/prepi for the ligand. As soon as I load the complex.pdb, leap adds the hydrogens to the nitrogen (to make the NH3+) and OXT (for COO-).
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Is there any way to avoid leap adding these &quot;missing atoms&quot; to standard residues?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;   *   Since I have loooots of cyclic peptides to work with, I would like to avoid passing trhough xleap and do edit, delete/draw bond, and especially, I would like to avoid to modify manually the atom type/name in the xleap table.
+</em><br />
+<em class="quotelev1">&gt; Also, I would like to avoid to parameterize all the cyclic peptides as non-standard residues.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Thank you
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Tainah
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Tainah D. Marforio
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Post-Doc Fellow
+</em><br />
+<em class="quotelev1">&gt; &lt;<a href="http://www.site.unibo.it/nanobio-interface-lab/en">http://www.site.unibo.it/nanobio-interface-lab/en</a>&gt;Dipartimento di Chimica &quot;Giacomo Ciamician&quot;
+</em><br />
+<em class="quotelev1">&gt; Alma Mater Studiorum - Università di Bologna
+</em><br />
+<em class="quotelev1">&gt; Via Selmi 2, 40126 Bologna - Italy
+</em><br />
+<em class="quotelev1">&gt; www.unibo.it/sitoweb/tainah.marforio2&lt;<a href="http://www.unibo.it/sitoweb/tainah.marforio2">http://www.unibo.it/sitoweb/tainah.marforio2</a>&gt;
+</em><br />
+<em class="quotelev1">&gt; www.site.unibo.it/nanobio-interface-lab/en&lt;<a href="http://www.site.unibo.it/nanobio-interface-lab/en">http://www.site.unibo.it/nanobio-interface-lab/en</a>&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Apr 15 2021 - 17:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0111.html" title="Next message in the list">Ojet: "[AMBER] About REMD extracting temperature trajectory"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0109.html" title="Previous message in the list">Thomas Cheatham: "Re: [AMBER] Questions about Principle Component Analysis"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0105.html" title="Message to which this message replies">Tainah Dorina Marforio: "[AMBER] Cyclic Peptides: leap keeps adding missing atoms"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0147.html" title="Next message in this discussion thread">Tainah Dorina Marforio: "[AMBER] R:  Cyclic Peptides: leap keeps adding missing atoms"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0147.html" title="Message sent in reply to this message">Tainah Dorina Marforio: "[AMBER] R:  Cyclic Peptides: leap keeps adding missing atoms"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg110" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg110" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg110" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg110" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

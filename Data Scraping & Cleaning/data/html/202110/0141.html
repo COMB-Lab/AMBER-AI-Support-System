@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Parameters for non-standard residues from Carlos Simmerling on 2021-10-18 (Amber Archive Oct 2021)</title>
+<meta name="Author" content="Carlos Simmerling (carlos.simmerling.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Parameters for non-standard residues" />
+<meta name="Date" content="2021-10-18" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Parameters for non-standard residues</h1>
+<!-- received="Mon Oct 18 14:00:02 2021" -->
+<!-- isoreceived="20211018210002" -->
+<!-- sent="Mon, 18 Oct 2021 16:51:40 -0400" -->
+<!-- isosent="20211018205140" -->
+<!-- name="Carlos Simmerling" -->
+<!-- email="carlos.simmerling.gmail.com" -->
+<!-- subject="Re: [AMBER] Parameters for non-standard residues" -->
+<!-- id="CAGk3s-SXRPpKgy3US4ENbKLz+gywB8t8i-GxJDMxGtOFG4LKrw.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="BY3PR01MB6785385687A2205C34DBC53EA7BC9.BY3PR01MB6785.prod.exchangelabs.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0142.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] Parameters for non-standard residues&quot;">Next message</a> ]
+[ <a href="0140.html" title="David A Case: &quot;Re: [AMBER] Automated capping of missing loops?&quot;">Previous message</a> ]
+[ <a href="0139.html" title="Nagar, Hemant: &quot;[AMBER] Parameters for non-standard residues&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0142.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] Parameters for non-standard residues&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg141" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg141" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg141" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg141" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Carlos Simmerling &lt;<a href="mailto:carlos.simmerling.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Parameters%20for%20non-standard%20residues">carlos.simmerling.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 18 Oct 2021 16:51:40 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+DAL isn't a different ligand, it's just different coordinates. You can use
+<br />
+ALA parameters for it as long as your input coordinates properly have it
+<br />
+set to the D isomer. See for example
+<br />
+<br />Experimental and Computational Analysis of Protein Stabilization by
+<br />
+Gly-to-D-Ala Substitution: A Convolution of Native State and Unfolded State
+<br />
+Effects. Zou, J., Song, B., Simmerling, C., Raleigh, D., Journal of the
+<br />
+American Chemical Society, 2016, 138 (48), 15682–15689
+<br />
+<br />I'm not aware of any existing ACB parameters. I would suggest capping it to
+<br />
+the dipeptide (acetylate and amidate) and using that to generate partial
+<br />
+charges. From there you can treat it as a ligand, but if you end up using
+<br />
+GAFF atom types then you need the cross terms between GAFF and the protein
+<br />
+force field in order to model the backbone. Also, GAFF types for the
+<br />
+backbone would not use the existing protein parameters, which have been
+<br />
+highly optimized over the years. I think you'd be better off using the
+<br />
+standard protein atom types for the backbone, perhaps adapting GAFF for the
+<br />
+side chain. It's small enough that following the ff14SB protocol to
+<br />
+optimize the side chain rotational profiles wouldn't be that difficult. Not
+<br />
+a trivial exercise, though. Maybe someone else here knows of automated
+<br />
+tools for this.
+<br />
+<br />On Mon, Oct 18, 2021 at 4:07 PM Nagar, Hemant &lt;hn533621.ohio&#46;<!--nospam-->edu&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hi All,
+</em><br />
+<em class="quotelev1">&gt; I want to generate force field parameters for nonstandard residues .
+</em><br />
+<em class="quotelev1">&gt; Currently, I am taking out the particular fragment from the pdb file and
+</em><br />
+<em class="quotelev1">&gt; saving it to different file. After that I am generating the parameter using
+</em><br />
+<em class="quotelev1">&gt; antechamber. Do I need to cap the terminals of fragments before running it
+</em><br />
+<em class="quotelev1">&gt; to antechamber or Is there any particular procedure for generating FF
+</em><br />
+<em class="quotelev1">&gt; parameters? Here is the some portion of my pdb file for reference purpose.
+</em><br />
+<em class="quotelev1">&gt; I want to generate parameters for DAL and ACB residue.
+</em><br />
+<em class="quotelev1">&gt; ATOM      1  N   DAL A   1       7.379   3.883   3.167  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    N
+</em><br />
+<em class="quotelev1">&gt; ATOM      2  CA  DAL A   1       8.241   3.023   2.496  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM      3  CB  DAL A   1       8.563   3.385   1.040  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM      4  C   DAL A   1       8.174   1.567   2.779  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM      5  O   DAL A   1       8.741   0.695   2.148  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    O
+</em><br />
+<em class="quotelev1">&gt; ATOM      6  H1  DAL A   1       6.578   3.469   3.618  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM      7  HA  DAL A   1       9.296   2.919   2.206  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM      8  HB1 DAL A   1       8.948   2.559   0.423  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM      9  HB2 DAL A   1       9.239   4.246   0.927  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     10  HB3 DAL A   1       7.638   3.690   0.546  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     11  N   LEU A   2       7.402   1.250   3.848  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    N
+</em><br />
+<em class="quotelev1">&gt; ATOM     12  CA  LEU A   2       7.176  -0.043   4.325  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM     13  C   LEU A   2       6.362  -0.988   3.499  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM     14  O   LEU A   2       6.128  -2.151   3.766  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    O
+</em><br />
+<em class="quotelev1">&gt; ATOM     15  CB  LEU A   2       7.066  -0.290   5.819  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM     16  CG  LEU A   2       8.074   0.521   6.677  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM     17  CD1 LEU A   2       7.768   0.327   8.178  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM     18  CD2 LEU A   2       9.532   0.107   6.376  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM     19  H   LEU A   2       7.094   2.017   4.429  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     20  HA  LEU A   2       7.834  -0.925   4.279  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     21  HB2 LEU A   2       6.055  -0.025   6.134  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     22  HB3 LEU A   2       7.176  -1.352   6.066  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     23  HG  LEU A   2       7.964   1.585   6.455  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     24 HD11 LEU A   2       6.751   0.653   8.408  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     25 HD12 LEU A   2       7.866  -0.723   8.464  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     26 HD13 LEU A   2       8.456   0.916   8.789  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     27 HD21 LEU A   2       9.787   0.300   5.332  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     28 HD22 LEU A   2      10.227   0.676   6.999  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     29 HD23 LEU A   2       9.685  -0.956   6.577  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     30  C   ACB A   3       4.131  -2.031   1.537  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM     31  O   ACB A   3       3.732  -2.524   2.571  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    O
+</em><br />
+<em class="quotelev1">&gt; ATOM     32  OXT ACB A   3       3.537  -2.348   0.412  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    O
+</em><br />
+<em class="quotelev1">&gt; ATOM     33  CA  ACB A   3       4.944  -0.791   1.420  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM     34  N   ACB A   3       5.819  -0.372   2.421  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    N
+</em><br />
+<em class="quotelev1">&gt; ATOM     35  CB  ACB A   3       4.537   0.266   0.500  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM     36  CG  ACB A   3       3.178   0.883   0.618  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM     37  C4  ACB A   3       5.557   1.343   0.130  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM     38  OD2 ACB A   3       2.727   1.777  -0.078  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    O
+</em><br />
+<em class="quotelev1">&gt; ATOM     39  HA  ACB A   3       5.395  -0.923   0.426  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     40  H   ACB A   3       6.182   0.559   2.282  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     41  HB3 ACB A   3       4.206   0.247  -0.554  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     42  H41 ACB A   3       5.286   1.916  -0.763  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     43  H42 ACB A   3       6.545   0.913  -0.055  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     44  H43 ACB A   3       5.661   2.061   0.946  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    H
+</em><br />
+<em class="quotelev1">&gt; ATOM     45  N   ARG A   4       2.504   0.459   1.718  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    N
+</em><br />
+<em class="quotelev1">&gt; ATOM     46  CA  ARG A   4       1.279   0.889   2.229  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM     47  C   ARG A   4       0.833   0.383   3.549  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM     48  O   ARG A   4      -0.145   0.799   4.137  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    O
+</em><br />
+<em class="quotelev1">&gt; ATOM     49  CB  ARG A   4       0.097   1.223   1.299  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt; ATOM     50  CG  ARG A   4      -0.495  -0.035   0.615  1.00  0.00
+</em><br />
+<em class="quotelev1">&gt;    C
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Regards,
+</em><br />
+<em class="quotelev1">&gt; Hemant Nagar
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Oct 18 2021 - 14:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0142.html" title="Next message in the list">David A Case: "Re: [AMBER] Parameters for non-standard residues"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0140.html" title="Previous message in the list">David A Case: "Re: [AMBER] Automated capping of missing loops?"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0139.html" title="Message to which this message replies">Nagar, Hemant: "[AMBER] Parameters for non-standard residues"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0142.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] Parameters for non-standard residues"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg141" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg141" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg141" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg141" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] replica exchange with GPU from Carlos Simmerling on 2020-02-28 (Amber Archive Feb 2020)</title>
+<meta name="Author" content="Carlos Simmerling (carlos.simmerling.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] replica exchange with GPU" />
+<meta name="Date" content="2020-02-28" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] replica exchange with GPU</h1>
+<!-- received="Fri Feb 28 04:30:03 2020" -->
+<!-- isoreceived="20200228123003" -->
+<!-- sent="Fri, 28 Feb 2020 07:22:05 -0500" -->
+<!-- isosent="20200228122205" -->
+<!-- name="Carlos Simmerling" -->
+<!-- email="carlos.simmerling.gmail.com" -->
+<!-- subject="Re: [AMBER] replica exchange with GPU" -->
+<!-- id="CAGk3s-TNXOQKbCbG=T96POW=DFigne4SJvnNKPZHc1yLr74LQA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20200228151459.Horde.UYe-n-QDD19R-R-mO5YJ-oy.webmail.itu.edu.tr" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0272.html" accesskey="d" title="Nicolas Feldman: &quot;[AMBER] Tutorial A08&quot;">Next message</a> ]
+[ <a href="0270.html" title="bbalta.itu.edu.tr: &quot;[AMBER] replica exchange with GPU&quot;">Previous message</a> ]
+[ <a href="0270.html" title="bbalta.itu.edu.tr: &quot;[AMBER] replica exchange with GPU&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg271" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg271" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg271" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg271" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Carlos Simmerling &lt;<a href="mailto:carlos.simmerling.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20replica%20exchange%20with%20GPU">carlos.simmerling.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 28 Feb 2020 07:22:05 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+does this work if you test it on CPUs only instead of GPUs? It might help
+<br />
+you check if all of the components of your script, groupfile and mdin are
+<br />
+correct.
+<br />
+also, have you run GPU standard MD using these same inputs (no REMD, just a
+<br />
+single MD from one of these prmtop/inpcrd and same mdin)
+<br />
+<br />On Fri, Feb 28, 2020 at 7:15 AM &lt;bbalta.itu.edu.tr&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hello,
+</em><br />
+<em class="quotelev1">&gt; We are trying to run a replica exchange simulation using
+</em><br />
+<em class="quotelev1">&gt; pmemd.cuda.MPI in Amber 16. The cluster we use is composed of machines
+</em><br />
+<em class="quotelev1">&gt; with the following properties: 2 x NVIDIA Tesla P100 GPU, 384 GB
+</em><br />
+<em class="quotelev1">&gt; ECC2600 MHz RAM, 2x 20 core Intel Xeon Scalable 6148 CPUs.
+</em><br />
+<em class="quotelev1">&gt; We tried different number of replicas. The groupfile (for initial
+</em><br />
+<em class="quotelev1">&gt; equilibration) and slurm job submission script we used for 10 replicas
+</em><br />
+<em class="quotelev1">&gt; are as follows:
+</em><br />
+<em class="quotelev1">&gt; -O -rem 0 -i eq.in.001 -o eq.out.001 -c
+</em><br />
+<em class="quotelev1">&gt; baslakcross344.7K_5thns_eq.incrd -r eq.rst.001 -x eq.mdcrd.001 -inf
+</em><br />
+<em class="quotelev1">&gt; eq.mdinfo.001 -p 1-388_stripped.top
+</em><br />
+<em class="quotelev1">&gt; -O -rem 0 -i eq.in.002 -o eq.out.002 -c
+</em><br />
+<em class="quotelev1">&gt; baslakcross344.7K_100thns_eq.incrd -r eq.rst.002 -x eq.mdcrd.002 -inf
+</em><br />
+<em class="quotelev1">&gt; eq.mdinfo.002 -p 1-388_stripped.top
+</em><br />
+<em class="quotelev1">&gt; -O -rem 0 -i eq.in.003 -o eq.out.003 -c
+</em><br />
+<em class="quotelev1">&gt; baslakcross344.7K_180thns_eq.incrd -r eq.rst.003 -x eq.mdcrd.003 -inf
+</em><br />
+<em class="quotelev1">&gt; eq.mdinfo.003 -p 1-388_stripped.top
+</em><br />
+<em class="quotelev1">&gt; -O -rem 0 -i eq.in.004 -o eq.out.004 -c
+</em><br />
+<em class="quotelev1">&gt; baslakcross344.7K_225thns_eq.incrd -r eq.rst.004 -x eq.mdcrd.004 -inf
+</em><br />
+<em class="quotelev1">&gt; eq.mdinfo.004 -p 1-388_stripped.top
+</em><br />
+<em class="quotelev1">&gt; -O -rem 0 -i eq.in.005 -o eq.out.005 -c
+</em><br />
+<em class="quotelev1">&gt; baslakcross344.7K_495thns_eq.incrd -r eq.rst.005 -x eq.mdcrd.005 -inf
+</em><br />
+<em class="quotelev1">&gt; eq.mdinfo.005 -p 1-388_stripped.top
+</em><br />
+<em class="quotelev1">&gt; -O -rem 0 -i eq.in.006 -o eq.out.006 -c
+</em><br />
+<em class="quotelev1">&gt; baslakcross344.7K_650thns_eq.incrd -r eq.rst.006 -x eq.mdcrd.006 -inf
+</em><br />
+<em class="quotelev1">&gt; eq.mdinfo.006 -p 1-388_stripped.top
+</em><br />
+<em class="quotelev1">&gt; -O -rem 0 -i eq.in.007 -o eq.out.007 -c baslakcross344.7K_c0_eq.incrd
+</em><br />
+<em class="quotelev1">&gt; -r eq.rst.007 -x eq.mdcrd.007 -inf eq.mdinfo.007 -p 1-388_stripped.top
+</em><br />
+<em class="quotelev1">&gt; -O -rem 0 -i eq.in.008 -o eq.out.008 -c baslakcross344.7K_c1_eq.incrd
+</em><br />
+<em class="quotelev1">&gt; -r eq.rst.008 -x eq.mdcrd.008 -inf eq.mdinfo.008 -p 1-388_stripped.top
+</em><br />
+<em class="quotelev1">&gt; -O -rem 0 -i eq.in.009 -o eq.out.009 -c baslakcross344.7K_c2_eq.incrd
+</em><br />
+<em class="quotelev1">&gt; -r eq.rst.009 -x eq.mdcrd.009 -inf eq.mdinfo.009 -p 1-388_stripped.top
+</em><br />
+<em class="quotelev1">&gt; -O -rem 0 -i eq.in.010 -o eq.out.010 -c baslakcross344.7K_c3_eq.incrd
+</em><br />
+<em class="quotelev1">&gt; -r eq.rst.010 -x eq.mdcrd.010 -inf eq.mdinfo.010 -p 1-388_stripped.top
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; #!/bin/bash
+</em><br />
+<em class="quotelev1">&gt; #SBATCH -p barbun-cuda
+</em><br />
+<em class="quotelev1">&gt; #SBATCH -A uucar
+</em><br />
+<em class="quotelev1">&gt; #SBATCH -J 1-388remd201
+</em><br />
+<em class="quotelev1">&gt; #SBATCH -N 1
+</em><br />
+<em class="quotelev1">&gt; #SBATCH -n 20
+</em><br />
+<em class="quotelev1">&gt; #SBATCH --gres=gpu:2
+</em><br />
+<em class="quotelev1">&gt; #SBATCH --time=1-00:00:00
+</em><br />
+<em class="quotelev1">&gt; #SBATCH --output=slurm-%j.out
+</em><br />
+<em class="quotelev1">&gt; #SBATCH --error=slurm-%j.err
+</em><br />
+<em class="quotelev1">&gt; #SBATCH -D
+</em><br />
+<em class="quotelev1">&gt; /truba_scratch/uucar/hsp70_amber/REMD_NUCLEOTIDE_FREE_201PR/NEW_TEMP/1-388
+</em><br />
+<em class="quotelev1">&gt; export
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; WORKDIR=/truba_scratch/uucar/hsp70_amber/REMD_NUCLEOTIDE_FREE_201PR/NEW_TEMP/1-388
+</em><br />
+<em class="quotelev1">&gt; cd $WORKDIR
+</em><br />
+<em class="quotelev1">&gt; module load centos7.3/lib/openmpi/1.8.8-gcc-4.8.5
+</em><br />
+<em class="quotelev1">&gt; module load centos7.3/lib/cuda/9.0
+</em><br />
+<em class="quotelev1">&gt; echo &quot;SLURM_NODELIST $SLURM_NODELIST&quot;
+</em><br />
+<em class="quotelev1">&gt; echo &quot;NUMBER OF CORES $SLURM_NTASKS&quot;
+</em><br />
+<em class="quotelev1">&gt; mpirun $AMBER_DIR/bin/pmemd.cuda.MPI -ng 10 -groupfile deneme_eq.groupfile
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Amber produced an output file but the output terminated after writing
+</em><br />
+<em class="quotelev1">&gt; the result of the 0th step:
+</em><br />
+<em class="quotelev1">&gt;   NSTEP =        0   TIME(PS) =       0.000  TEMP(K) =     0.00  PRESS
+</em><br />
+<em class="quotelev1">&gt; =     0.0
+</em><br />
+<em class="quotelev1">&gt;   Etot   =   -134342.6908  EKtot   =         0.0000  EPtot      =
+</em><br />
+<em class="quotelev1">&gt; -134342.6908
+</em><br />
+<em class="quotelev1">&gt;   BOND   =     19102.2338  ANGLE   =      3092.7537  DIHED      =
+</em><br />
+<em class="quotelev1">&gt; 4080.3001
+</em><br />
+<em class="quotelev1">&gt;   1-4 NB =      1347.0833  1-4 EEL =     17091.3523  VDWAALS    =
+</em><br />
+<em class="quotelev1">&gt; 17272.2203
+</em><br />
+<em class="quotelev1">&gt;   EELEC  =   -196328.6342  EHBOND  =         0.0000  RESTRAINT  =
+</em><br />
+<em class="quotelev1">&gt;     0.0000
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ------------------------------------------------------------------------------
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The error message given by the system is:
+</em><br />
+<em class="quotelev1">&gt; SLURM_NODELIST barbun122
+</em><br />
+<em class="quotelev1">&gt; NUMBER OF CORES 20
+</em><br />
+<em class="quotelev1">&gt;   Running multipmemd version of pmemd Amber16
+</em><br />
+<em class="quotelev1">&gt;      Total processors =    20
+</em><br />
+<em class="quotelev1">&gt;      Number of groups =    10
+</em><br />
+<em class="quotelev1">&gt; gpu_allreduce cudaDeviceSynchronize failed an illegal memory access
+</em><br />
+<em class="quotelev1">&gt; was encountered
+</em><br />
+<em class="quotelev1">&gt; gpu_allreduce cudaDeviceSynchronize failed an illegal memory access
+</em><br />
+<em class="quotelev1">&gt; was encountered
+</em><br />
+<em class="quotelev1">&gt; gpu_allreduce cudaDeviceSynchronize failed an illegal memory access
+</em><br />
+<em class="quotelev1">&gt; was encountered
+</em><br />
+<em class="quotelev1">&gt; gpu_allreduce cudaDeviceSynchronize failed an illegal memory access
+</em><br />
+<em class="quotelev1">&gt; was encountered
+</em><br />
+<em class="quotelev1">&gt; gpu_allreduce cudaDeviceSynchronize failed an illegal memory access
+</em><br />
+<em class="quotelev1">&gt; was encountered
+</em><br />
+<em class="quotelev1">&gt; gpu_allreduce cudaDeviceSynchronize failed an illegal memory access
+</em><br />
+<em class="quotelev1">&gt; was encountered
+</em><br />
+<em class="quotelev1">&gt; gpu_allreduce cudaDeviceSynchronize failed an illegal memory access
+</em><br />
+<em class="quotelev1">&gt; was encountered
+</em><br />
+<em class="quotelev1">&gt; gpu_allreduce cudaDeviceSynchronize failed an illegal memory access
+</em><br />
+<em class="quotelev1">&gt; was encountered
+</em><br />
+<em class="quotelev1">&gt; gpu_allreduce cudaDeviceSynchronize failed an illegal memory access
+</em><br />
+<em class="quotelev1">&gt; was encountered
+</em><br />
+<em class="quotelev1">&gt; gpu_allreduce cudaDeviceSynchronize failed an illegal memory access
+</em><br />
+<em class="quotelev1">&gt; was encountered
+</em><br />
+<em class="quotelev1">&gt; -------------------------------------------------------
+</em><br />
+<em class="quotelev1">&gt; Primary job  terminated normally, but 1 process returned
+</em><br />
+<em class="quotelev1">&gt; a non-zero exit code.. Per user-direction, the job has been aborted.
+</em><br />
+<em class="quotelev1">&gt; -------------------------------------------------------
+</em><br />
+<em class="quotelev1">&gt; --------------------------------------------------------------------------
+</em><br />
+<em class="quotelev1">&gt; mpirun detected that one or more processes exited with non-zero
+</em><br />
+<em class="quotelev1">&gt; status, thus causing
+</em><br />
+<em class="quotelev1">&gt; the job to be terminated. The first process to do so was:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    Process name: [[13854,1],12]
+</em><br />
+<em class="quotelev1">&gt;    Exit code:    255
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; We also tried with 40 replicas, different number of CPUs (up to 80), 3
+</em><br />
+<em class="quotelev1">&gt; GPUs on 2 different machines, single GPU with pmemd.cuda (without
+</em><br />
+<em class="quotelev1">&gt; MPI). But none of them worked. With 40 replicas and 80 CPUs we
+</em><br />
+<em class="quotelev1">&gt; obtained the following eeror in addition to the ones mentioned above:
+</em><br />
+<em class="quotelev1">&gt; cudaMalloc GpuBuffer::Allocate failed out of memory
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; It seems from the manual and mailing list that Amber 16 supports REMD
+</em><br />
+<em class="quotelev1">&gt; on GPUs. So probably we make a mistake at some point. Any help will be
+</em><br />
+<em class="quotelev1">&gt; greatly appreciated.
+</em><br />
+<em class="quotelev1">&gt; Thank you.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Feb 28 2020 - 04:30:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0272.html" title="Next message in the list">Nicolas Feldman: "[AMBER] Tutorial A08"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0270.html" title="Previous message in the list">bbalta.itu.edu.tr: "[AMBER] replica exchange with GPU"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0270.html" title="Message to which this message replies">bbalta.itu.edu.tr: "[AMBER] replica exchange with GPU"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg271" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg271" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg271" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg271" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

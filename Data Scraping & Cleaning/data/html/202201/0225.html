@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] dihedral restraints slowing down simulation from Richard Kullmann on 2022-01-26 (Amber Archive Jan 2022)</title>
+<meta name="Author" content="Richard Kullmann (Richard.Kullmann.mpikg.mpg.de)" />
+<meta name="Subject" content="[AMBER] dihedral restraints slowing down simulation" />
+<meta name="Date" content="2022-01-26" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] dihedral restraints slowing down simulation</h1>
+<!-- received="Wed Jan 26 06:30:02 2022" -->
+<!-- isoreceived="20220126143002" -->
+<!-- sent="Wed, 26 Jan 2022 15:22:50 +0100" -->
+<!-- isosent="20220126142250" -->
+<!-- name="Richard Kullmann" -->
+<!-- email="Richard.Kullmann.mpikg.mpg.de" -->
+<!-- subject="[AMBER] dihedral restraints slowing down simulation" -->
+<!-- id="a5489b51-bf55-44d8-c3a3-ec5ef950be5a.mpikg.mpg.de" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0226.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] Negative DIHEDRAL_PERIODICITY in prmtop for amber20-benchmark FactorIX benchmark&quot;">Next message</a> ]
+[ <a href="0224.html" title="Dr. Anselm Horn: &quot;Re: [AMBER] Negative DIHEDRAL_PERIODICITY in prmtop for amber20-benchmark FactorIX benchmark&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0227.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] dihedral restraints slowing down simulation&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg225" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg225" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg225" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg225" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Richard Kullmann &lt;<a href="mailto:Richard.Kullmann.mpikg.mpg.de?Subject=Re%3A%20%5BAMBER%5D%20dihedral%20restraints%20slowing%20down%20simulation">Richard.Kullmann.mpikg.mpg.de</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 26 Jan 2022 15:22:50 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+<br />I am doing regular MD simulations of 4 identical sugar chains. Each of 
+<br />
+these chains should have the C1-C2-C3-C4 dihedral angle in one of the 
+<br />
+sugars restrained. The contents of the restraints file are therefore:
+<br />
+<br />&nbsp;&nbsp;&amp;rst     iat =   3,   18,   16,   13,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r1 =  -58, r2 =  -57, r3 =  -37, r4 =  -36,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rk2 =  32.0, rk3 =  32.0,				&amp;end
+<br />
+&nbsp;&nbsp;&amp;rst     iat =   201,   216,   214,   211,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r1 =  -58, r2 =  -57, r3 =  -37, r4 =  -36,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;end
+<br />
+&nbsp;&nbsp;&amp;rst     iat =   399,   414,   412,   409,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r1 =  -58, r2 =  -57, r3 =  -37, r4 =  -36,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;end
+<br />
+&nbsp;&nbsp;&amp;rst     iat =   597,   612,   610,   607,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r1 =  -58, r2 =  -57, r3 =  -37, r4 =  -36,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;end
+<br />
+<br />If now run these simulations and compare with simulations without 
+<br />
+restraints, I get a difference by a factor of 3. The input file is just 
+<br />
+standard in my opinion:
+<br />
+<br />&nbsp;&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;&nbsp;imin=0,
+<br />
+&nbsp;&nbsp;&nbsp;ntx=5,
+<br />
+&nbsp;&nbsp;&nbsp;irest=1,
+<br />
+&nbsp;&nbsp;&nbsp;nstlim=250000000,
+<br />
+&nbsp;&nbsp;&nbsp;dt=0.004,
+<br />
+&nbsp;&nbsp;&nbsp;ntf=2,
+<br />
+&nbsp;&nbsp;&nbsp;ntc=2,
+<br />
+&nbsp;&nbsp;&nbsp;temp0=300.0,
+<br />
+&nbsp;&nbsp;&nbsp;ntpr=25000,
+<br />
+&nbsp;&nbsp;&nbsp;ntwx=25000,
+<br />
+&nbsp;&nbsp;&nbsp;cut=10.0,
+<br />
+&nbsp;&nbsp;&nbsp;ntb=2,
+<br />
+&nbsp;&nbsp;&nbsp;ntp=1,
+<br />
+&nbsp;&nbsp;&nbsp;barostat=2,
+<br />
+&nbsp;&nbsp;&nbsp;ntt=3,
+<br />
+&nbsp;&nbsp;&nbsp;gamma_ln=1.0,
+<br />
+&nbsp;&nbsp;&nbsp;nmropt=1,
+<br />
+&nbsp;&nbsp;&nbsp;ig=-1,
+<br />
+&nbsp;&nbsp;/
+<br />
+&nbsp;&nbsp;&amp;wt type='END' /
+<br />
+DISANG=rst.pucker
+<br />
+<br />Has anybody seen this before? Where could be the issue?
+<br />
+<br />Best regards and thank you in advance,
+<br />
+<br />Richard
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Jan 26 2022 - 06:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0226.html" title="Next message in the list">David A Case: "Re: [AMBER] Negative DIHEDRAL_PERIODICITY in prmtop for amber20-benchmark FactorIX benchmark"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0224.html" title="Previous message in the list">Dr. Anselm Horn: "Re: [AMBER] Negative DIHEDRAL_PERIODICITY in prmtop for amber20-benchmark FactorIX benchmark"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0227.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] dihedral restraints slowing down simulation"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0227.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] dihedral restraints slowing down simulation"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg225" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg225" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg225" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg225" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

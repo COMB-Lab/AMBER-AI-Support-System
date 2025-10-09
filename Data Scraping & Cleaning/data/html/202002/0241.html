@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Clustering logistics from Debarati DasGupta on 2020-02-24 (Amber Archive Feb 2020)</title>
+<meta name="Author" content="Debarati DasGupta (debarati_dasgupta.hotmail.com)" />
+<meta name="Subject" content="[AMBER] Clustering logistics" />
+<meta name="Date" content="2020-02-24" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Clustering logistics</h1>
+<!-- received="Mon Feb 24 09:30:02 2020" -->
+<!-- isoreceived="20200224173002" -->
+<!-- sent="Mon, 24 Feb 2020 17:27:01 +0000" -->
+<!-- isosent="20200224172701" -->
+<!-- name="Debarati DasGupta" -->
+<!-- email="debarati_dasgupta.hotmail.com" -->
+<!-- subject="[AMBER] Clustering logistics" -->
+<!-- id="DM6PR20MB2571F141069633FA0293BD5A9DEC0.DM6PR20MB2571.namprd20.prod.outlook.com" -->
+<!-- charset="windows-1252" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0242.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] Clustering logistics&quot;">Next message</a> ]
+[ <a href="0240.html" title="Fabian Glaser: &quot;[AMBER] frcmod.urea Parameters for urea (or urea-water mixtures).&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0242.html" accesskey="t" title="Daniel Roe: &quot;Re: [AMBER] Clustering logistics&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg241" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg241" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg241" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg241" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Debarati DasGupta &lt;<a href="mailto:debarati_dasgupta.hotmail.com?Subject=Re%3A%20%5BAMBER%5D%20Clustering%20logistics">debarati_dasgupta.hotmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 24 Feb 2020 17:27:01 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber users,
+<br />
+I have been trying to understand the flexibility of transcription mediator protein and I have an NMR ensemble structure downloaded from RCSB. There are 10 conformers in the .pdb file and I have run normal MD simulations (NPT) 100 ns each for each model.
+<br />
+Now I want to perform clustering of each of my 10 runs (run 1 is model1.pdb, run2 is model2.pdb, so on.. till run 10..model10.pdb) , so that I can get an idea of whether the structures are all converging to an approximate structure or not, and finally calculate RMSDs between the most populated clusters
+<br />
+**I have not done extensive clustering in AMBER18** so please forgive me if there are errors in my input file
+<br />
+This is my input file:
+<br />
+All I need to know is what are the results I am expecting once I do a cpptraj command line on my input file. I do not want to run it as a black box. ( I have opted DBSCAN just randomly, please suggest if its not appropriate and any specific algorithms I may be needing to use)
+<br />
+Thank you all.
+<br />
+<br /><br />parm 2XXX_solvated.prmtop
+<br />
+trajin 2XXX_prod1.mdcrd 1 100000 10
+<br />
+###we are worried about protein conformations, and hence we don�t need to bother about solvents and ions during the clustering procedure!
+<br />
+strip :Cl-,Na+,WAT
+<br />
+center mass origin :1-152
+<br />
+image origin center
+<br />
+#Align trajectory to reference structure by minimizing RMSD
+<br />
+reference 2XXX_imaged_run1.pdb
+<br />
+rms reference mass out RMSD_CA.txt :2-151.CA,C,N
+<br />
+cluster cluster_out dbscan minpoints 20 epsilon 1 rms :2-151.CA,C,N out combined.dat summary summary.out info data_run1_water_cluster singlerepout clusters.pdb singlerepfmt pdb
+<br />
+go
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Feb 24 2020 - 09:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0242.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] Clustering logistics"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0240.html" title="Previous message in the list">Fabian Glaser: "[AMBER] frcmod.urea Parameters for urea (or urea-water mixtures)."</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0242.html" title="Next message in this discussion thread">Daniel Roe: "Re: [AMBER] Clustering logistics"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0242.html" title="Message sent in reply to this message">Daniel Roe: "Re: [AMBER] Clustering logistics"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg241" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg241" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg241" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg241" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

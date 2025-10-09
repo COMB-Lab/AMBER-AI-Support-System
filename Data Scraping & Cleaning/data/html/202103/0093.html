@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] sander/orca/xtb ：Low parallel efficiency from Adrian Roitberg on 2021-03-11 (Amber Archive Mar 2021)</title>
+<meta name="Author" content="Adrian Roitberg (roitberg.ufl.edu)" />
+<meta name="Subject" content="Re: [AMBER] sander/orca/xtb ：Low parallel efficiency" />
+<meta name="Date" content="2021-03-11" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] sander/orca/xtb ：Low parallel efficiency</h1>
+<!-- received="Thu Mar 11 06:30:02 2021" -->
+<!-- isoreceived="20210311143002" -->
+<!-- sent="Thu, 11 Mar 2021 09:11:30 -0500" -->
+<!-- isosent="20210311141130" -->
+<!-- name="Adrian Roitberg" -->
+<!-- email="roitberg.ufl.edu" -->
+<!-- subject="Re: [AMBER] sander/orca/xtb ：Low parallel efficiency" -->
+<!-- id="725a028e-b018-28b4-7498-984be650c9f3.ufl.edu" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="4b8b8d12.5eff.1781f7cd77e.Coremail.wangjianing_mail.163.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0094.html" accesskey="d" title="Adrian Roitberg: &quot;Re: [AMBER] Problem with CG minimization in implicit solvent&quot;">Next message</a> ]
+[ <a href="0092.html" title="David A Case: &quot;Re: [AMBER] GPU installation error amber18&quot;">Previous message</a> ]
+[ <a href="0088.html" title="wangjianing_mail: &quot;[AMBER] sander/orca/xtb &#65306;Low parallel efficiency&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg93" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg93" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg93" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg93" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Adrian Roitberg &lt;<a href="mailto:roitberg.ufl.edu?Subject=Re%3A%20%5BAMBER%5D%20sander%2Forca%2Fxtb%20�%FF%FFLow%20parallel%20efficiency">roitberg.ufl.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 11 Mar 2021 09:11:30 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+You should first try to run gfn-xtb alone and see if that parallelizes 
+<br />
+for a system like yours, specially the size.
+<br />
+<br />I doubt that gfn-xtb would really parallelize over many cores, unless 
+<br />
+you have a pretty large QM system.
+<br />
+<br />Adrian
+<br />
+<br /><br />On 3/10/21 11:12 PM, wangjianing_mail wrote:
+<br />
+<em class="quotelev1">&gt; [External Email]
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Dear Amber user:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I successfully used the gfn-xTB in amber QM/MM, by modifying sander/qm2_extern_orc_module.F90, but low parallel efficiency problem appeared.
+</em><br />
+<em class="quotelev1">&gt; However both 'num_threads=12'  in orc namelist of amber input file 、'%pal NPROCS 12 end' in orc_job.tpl and 'export OMP/MVK_NUM_THREADS'  can not be efficiently parallel.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Both  scheme can only increase the speed by up to about 10% than 1 core scheme, and even reduce the computational efficiency, I think this is abnormal. Can someone give me any help here?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; #SI
+</em><br />
+<em class="quotelev1">&gt; software: Amber18(gnu openmpi) openmpi 3.1.4 orca 4.2.1  gcc 4.8.5 openMP 201107
+</em><br />
+<em class="quotelev1">&gt; test reslut
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; method orc-num_threadsxtb-pal NPORCS  OPENMP ps/d
+</em><br />
+<em class="quotelev1">&gt; xtb  1    1  164
+</em><br />
+<em class="quotelev1">&gt; xtb  1    1  1267
+</em><br />
+<em class="quotelev1">&gt; xtb  12    1  163
+</em><br />
+<em class="quotelev1">&gt; xtb     1    12  121.8
+</em><br />
+<em class="quotelev1">&gt; b3lyp  1    1  /0.17
+</em><br />
+<em class="quotelev1">&gt; b3lyp  20    1  /0.17
+</em><br />
+<em class="quotelev1">&gt; b3lyp 1    20  /     1.83
+</em><br />
+<em class="quotelev1">&gt; Regards,
+</em><br />
+<em class="quotelev1">&gt; Jia-Ning Wang
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd&#46;<!--nospam-->org
+</em><br />
+<em class="quotelev1">&gt; <a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=dl7Zd5Rzbdvo14I2ndQf4w&amp;m=AX_ABIfBhiiYzwGOFDhkxoZ_N8okXK-aFFx3wquDzdk&amp;s=itffsZJOpkp9uRYcdcdJrphwzK_q76zPJ4K2kqYm7LU&amp;e">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=dl7Zd5Rzbdvo14I2ndQf4w&amp;m=AX_ABIfBhiiYzwGOFDhkxoZ_N8okXK-aFFx3wquDzdk&amp;s=itffsZJOpkp9uRYcdcdJrphwzK_q76zPJ4K2kqYm7LU&amp;e</a>=
+</em><br />
+<br /><pre>
+-- 
+Dr. Adrian E. Roitberg
+V.T. and Louise Jackson Professor in Chemistry
+Department of Chemistry
+University of Florida
+roitberg.ufl.edu
+352-392-6972
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Thu Mar 11 2021 - 06:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0094.html" title="Next message in the list">Adrian Roitberg: "Re: [AMBER] Problem with CG minimization in implicit solvent"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0092.html" title="Previous message in the list">David A Case: "Re: [AMBER] GPU installation error amber18"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0088.html" title="Message to which this message replies">wangjianing_mail: "[AMBER] sander/orca/xtb &#65306;Low parallel efficiency"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg93" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg93" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg93" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg93" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

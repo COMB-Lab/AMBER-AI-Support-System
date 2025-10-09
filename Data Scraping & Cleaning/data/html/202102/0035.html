@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] GPU power usage drop for igb = 8 compared to igb = 2 from Demian Riccardi on 2021-02-03 (Amber Archive Feb 2021)</title>
+<meta name="Author" content="Demian Riccardi (demianriccardi.gmail.com)" />
+<meta name="Subject" content="[AMBER] GPU power usage drop for igb = 8 compared to igb = 2" />
+<meta name="Date" content="2021-02-03" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] GPU power usage drop for igb = 8 compared to igb = 2</h1>
+<!-- received="Wed Feb  3 15:00:02 2021" -->
+<!-- isoreceived="20210203230002" -->
+<!-- sent="Wed, 3 Feb 2021 15:48:45 -0700" -->
+<!-- isosent="20210203224845" -->
+<!-- name="Demian Riccardi" -->
+<!-- email="demianriccardi.gmail.com" -->
+<!-- subject="[AMBER] GPU power usage drop for igb = 8 compared to igb = 2" -->
+<!-- id="CACaGo3Mfk+5r-Le7dBvGQgsVS6cAZtX3YHzCb46y2YJ_9+==Vg.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0036.html" accesskey="d" title="Carlos Simmerling: &quot;Re: [AMBER] GPU power usage drop for igb = 8 compared to igb = 2&quot;">Next message</a> ]
+[ <a href="0034.html" title="Carlos Simmerling: &quot;Re: [AMBER] Nudged Elastic Band solvent choice and initial heating problem&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0036.html" accesskey="t" title="Carlos Simmerling: &quot;Re: [AMBER] GPU power usage drop for igb = 8 compared to igb = 2&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg35" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg35" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg35" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg35" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Demian Riccardi &lt;<a href="mailto:demianriccardi.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20GPU%20power%20usage%20drop%20for%20igb%20%3D%208%20compared%20to%20igb%20%3D%202">demianriccardi.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 3 Feb 2021 15:48:45 -0700</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+<br />In running GB on a node with four V100 gpus (I am using one gpu at a time),
+<br />
+I noticed a large dropoff in production for my system (300 ns/day for igb=2
+<br />
+down to 90 ns/day for igb = 8).  The system is the same size for both,
+<br />
+stemming from the same pdb branching on independent tleap/min/heat/equil.
+<br />
+Looking into it, the power usage is noticeably less for the igb = 8
+<br />
+simulations (see output of nvidia-smi below).  Simulations run manually on
+<br />
+each gpu in-turn, verified that it is the igb switch and not the gpu
+<br />
+itself.  Is there something else I can look into?
+<br />
+<br />Thanks!
+<br />
+<br />Demian
+<br />
+<br />Amber20 with gcc + CUDA (10.1 via nvidia-smi, and release 9.1 via nvcc
+<br />
+-version )
+<br />
+<br />here is the output from nvidia-smi (top two are igb = 2 and bottom two are
+<br />
+igb =8):
+<br />
+<br />Wed Feb  3 17:20:30 2021
+<br />
++-----------------------------------------------------------------------------+
+<br />
+| NVIDIA-SMI 418.152.00   Driver Version: 418.152.00   CUDA Version: 10.1
+<br />
+&nbsp;&nbsp;|
+<br />
+|-------------------------------+----------------------+----------------------+
+<br />
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr.
+<br />
+ECC |
+<br />
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute
+<br />
+M. |
+<br />
+|===============================+======================+======================|
+<br />
+|   0  Tesla V100-PCIE...  Off  | 00000000:3B:00.0 Off |
+<br />
+&nbsp;0 |
+<br />
+| N/A   74C    P0   242W / 250W |    394MiB / 16130MiB |     98%
+<br />
+&nbsp;Default |
+<br />
++-------------------------------+----------------------+----------------------+
+<br />
+|   1  Tesla V100-PCIE...  Off  | 00000000:5E:00.0 Off |
+<br />
+&nbsp;0 |
+<br />
+| N/A   66C    P0   243W / 250W |    394MiB / 16130MiB |     99%
+<br />
+&nbsp;Default |
+<br />
++-------------------------------+----------------------+----------------------+
+<br />
+|   2  Tesla V100-PCIE...  Off  | 00000000:86:00.0 Off |
+<br />
+&nbsp;0 |
+<br />
+| N/A   40C    P0   100W / 250W |    394MiB / 16130MiB |    100%
+<br />
+&nbsp;Default |
+<br />
++-------------------------------+----------------------+----------------------+
+<br />
+|   3  Tesla V100-PCIE...  Off  | 00000000:AF:00.0 Off |
+<br />
+&nbsp;0 |
+<br />
+| N/A   39C    P0   100W / 250W |    394MiB / 16130MiB |     99%
+<br />
+&nbsp;Default |
+<br />
++-------------------------------+----------------------+----------------------+
+<br />
+<br /><br />+-----------------------------------------------------------------------------+
+<br />
+| Processes:                                                       GPU
+<br />
+Memory |
+<br />
+|  GPU       PID   Type   Process name                             Usage
+<br />
+&nbsp;&nbsp;&nbsp;|
+<br />
+|=============================================================================|
+<br />
+|    0     16977      C   pmemd.cuda
+<br />
+383MiB |
+<br />
+|    1     17197      C   pmemd.cuda
+<br />
+383MiB |
+<br />
+|    2     17582      C   pmemd.cuda
+<br />
+383MiB |
+<br />
+|    3     17581      C   pmemd.cuda
+<br />
+383MiB |
+<br />
++-----------------------------------------------------------------------------+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Feb 03 2021 - 15:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0036.html" title="Next message in the list">Carlos Simmerling: "Re: [AMBER] GPU power usage drop for igb = 8 compared to igb = 2"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0034.html" title="Previous message in the list">Carlos Simmerling: "Re: [AMBER] Nudged Elastic Band solvent choice and initial heating problem"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0036.html" title="Next message in this discussion thread">Carlos Simmerling: "Re: [AMBER] GPU power usage drop for igb = 8 compared to igb = 2"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0036.html" title="Message sent in reply to this message">Carlos Simmerling: "Re: [AMBER] GPU power usage drop for igb = 8 compared to igb = 2"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg35" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg35" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg35" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg35" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

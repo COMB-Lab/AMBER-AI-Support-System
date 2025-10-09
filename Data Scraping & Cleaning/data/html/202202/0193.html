@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Problems of sander.quick.cuda from xmgign.126.com on 2022-02-20 (Amber Archive Feb 2022)</title>
+<meta name="Author" content="xmgign.126.com (xmgign.126.com)" />
+<meta name="Subject" content="[AMBER] Problems of sander.quick.cuda" />
+<meta name="Date" content="2022-02-20" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Problems of sander.quick.cuda</h1>
+<!-- received="Sun Feb 20 17:30:02 2022" -->
+<!-- isoreceived="20220221013002" -->
+<!-- sent="Mon, 21 Feb 2022 09:12:13 +0800" -->
+<!-- isosent="20220221011213" -->
+<!-- name="xmgign.126.com" -->
+<!-- email="xmgign.126.com" -->
+<!-- subject="[AMBER] Problems of sander.quick.cuda" -->
+<!-- id="2022022109121247856992.126.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0194.html" accesskey="d" title="Vinicius Wilian Cruzeiro: &quot;Re: [AMBER] Problems of sander.quick.cuda&quot;">Next message</a> ]
+[ <a href="0192.html" title="Ravi Abrol: &quot;Re: [AMBER] MMPBSA.py for membrane proteins with per-residue decomposition&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0194.html" accesskey="t" title="Vinicius Wilian Cruzeiro: &quot;Re: [AMBER] Problems of sander.quick.cuda&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg193" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg193" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg193" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg193" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: &lt;<a href="mailto:xmgign.126.com?Subject=Re%3A%20%5BAMBER%5D%20Problems%20of%20sander.quick.cuda">xmgign.126.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 21 Feb 2022 09:12:13 +0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear all,
+<br />
+I'm using quick for QM/MM calculations and I had some problems.
+<br />
+1. My hardware is Tesla V100, but the speed of sander.quick.cuda is very slow. The number of atoms in the QM region is 46, and the overall number of atoms is 51956. The calculation speed can only run less than 0.25 ps/day.
+<br />
+2. The simulation broke down, but there is no error message. Is there any problem in my input file or the structure?
+<br />
+Here is the input:
+<br />
+qmmm md
+<br />
+&amp;cntrl
+<br />
+imin=0,
+<br />
+dt=0.0005,
+<br />
+cut=8.0,
+<br />
+ntb=1,
+<br />
+ntt=0,
+<br />
+ntpr=1, ntwx=50, ntwr=200, nstlim=2000,
+<br />
+nscm=0, jfastw=4, ioutfm=1, ifqnt=1,
+<br />
+/
+<br />
+&amp;qmmm
+<br />
+qmmask='.1-27,3110-3114,6743-6753,29597-29599,',
+<br />
+qmcharge=0,
+<br />
+qm_theory='quick',
+<br />
+qm_ewald=0,
+<br />
+qmmm_int=1,
+<br />
+/
+<br />
+&amp;quick
+<br />
+method='B3LYP',
+<br />
+basis='6-31G*',
+<br />
+/
+<br />
+<br />Best regards,
+<br />
+Qiao
+<br />
+<br /><br />xmgign.126.com
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Feb 20 2022 - 17:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0194.html" title="Next message in the list">Vinicius Wilian Cruzeiro: "Re: [AMBER] Problems of sander.quick.cuda"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0192.html" title="Previous message in the list">Ravi Abrol: "Re: [AMBER] MMPBSA.py for membrane proteins with per-residue decomposition"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0194.html" title="Next message in this discussion thread">Vinicius Wilian Cruzeiro: "Re: [AMBER] Problems of sander.quick.cuda"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0194.html" title="Message sent in reply to this message">Vinicius Wilian Cruzeiro: "Re: [AMBER] Problems of sander.quick.cuda"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0220.html" title="Message sent in reply to this message">aa: "Re: [AMBER] Problems of sander.quick.cuda"</a></li>
+<li><dfn>Reply</dfn>: <a href="0225.html" title="Message sent in reply to this message">Jason Swails: "Re: [AMBER] Problems of sander.quick.cuda"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg193" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg193" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg193" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg193" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

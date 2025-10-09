@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] MAXPR error in sander sp job from David A Case on 2021-02-20 (Amber Archive Feb 2021)</title>
+<meta name="Author" content="David A Case (david.case.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] MAXPR error in sander sp job" />
+<meta name="Date" content="2021-02-20" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] MAXPR error in sander sp job</h1>
+<!-- received="Sat Feb 20 06:30:04 2021" -->
+<!-- isoreceived="20210220143004" -->
+<!-- sent="Sat, 20 Feb 2021 09:16:08 -0500" -->
+<!-- isosent="20210220141608" -->
+<!-- name="David A Case" -->
+<!-- email="david.case.rutgers.edu" -->
+<!-- subject="Re: [AMBER] MAXPR error in sander sp job" -->
+<!-- id="20210220141608.44eiuc47pwvg53zh.mas1035-7052l1.rad.rutgers.edu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAO6-0TmJfRCkmbLhJ0LHh2YWZF03xz3GFPBYvs-sRCMXKkGr+g.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0177.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] Interaction energy by MM-PBSA for a superantigen with important Zn(II) center&quot;">Next message</a> ]
+[ <a href="0175.html" title="Vaibhav Dixit: &quot;Re: [AMBER] MAXPR error in sander sp job&quot;">Previous message</a> ]
+[ <a href="0173.html" title="Vaibhav Dixit: &quot;[AMBER] MAXPR error in sander sp job&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0178.html" accesskey="t" title="Vaibhav Dixit: &quot;Re: [AMBER] MAXPR error in sander sp job&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg176" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg176" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg176" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg176" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case &lt;<a href="mailto:david.case.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20MAXPR%20error%20in%20sander%20sp%20job">david.case.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 20 Feb 2021 09:16:08 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Sat, Feb 20, 2021, Vaibhav Dixit wrote:
+<br />
+<br /><em class="quotelev1">&gt;I ran MD with 10, 15 and 30A TIP3PBOX to understand the effect of box size
+</em><br />
+<em class="quotelev1">&gt;on relative FF energies between two systems.
+</em><br />
+<em class="quotelev1">&gt;The calculations when well with 10 and 15A box size.
+</em><br />
+<em class="quotelev1">&gt;But I'm getting the following error in mdout file with the system setup
+</em><br />
+<em class="quotelev1">&gt;with 30A TIP3PBOX.
+</em><br />
+<br />It looks like you set up tleap for a periodic system, but then set ntb=0
+<br />
+in your MD input.   But it's not clear what you are trying to compute here:
+<br />
+do you just want a single-point energy as a function of amount of solvent?
+<br />
+<br />Also, remember that tleap's solvate options only create a starting point for
+<br />
+further simulation.  For example, the starting density is far from 1.0.
+<br />
+<br />Here's one idea, if I am reading your intent correctly: run a periodic
+<br />
+simulation in the usual way, and get each system equilibrated to its final
+<br />
+temperature and density.  Then use the &quot;closest&quot; command in cpptraj to
+<br />
+get various sizes of water box.  For each of these, do a non-periodic
+<br />
+calculations (cpptraj can help you get the prmtop files), and use igb=6
+<br />
+to carry out the single point calculations.
+<br />
+<br />...good luck...dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sat Feb 20 2021 - 06:30:04 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0177.html" title="Next message in the list">David A Case: "Re: [AMBER] Interaction energy by MM-PBSA for a superantigen with important Zn(II) center"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0175.html" title="Previous message in the list">Vaibhav Dixit: "Re: [AMBER] MAXPR error in sander sp job"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0173.html" title="Message to which this message replies">Vaibhav Dixit: "[AMBER] MAXPR error in sander sp job"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0178.html" title="Next message in this discussion thread">Vaibhav Dixit: "Re: [AMBER] MAXPR error in sander sp job"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0178.html" title="Message sent in reply to this message">Vaibhav Dixit: "Re: [AMBER] MAXPR error in sander sp job"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg176" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg176" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg176" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg176" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

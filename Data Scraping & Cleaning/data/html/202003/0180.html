@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Boron compunds with &quot;pdb&quot; file with novel frcmod file from Erdem Yeler on 2020-03-17 (Amber Archive Mar 2020)</title>
+<meta name="Author" content="Erdem Yeler (erdemyeler.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Boron compunds with &quot;pdb&quot; file with novel frcmod file" />
+<meta name="Date" content="2020-03-17" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Boron compunds with &quot;pdb&quot; file with novel frcmod file</h1>
+<!-- received="Tue Mar 17 06:00:03 2020" -->
+<!-- isoreceived="20200317130003" -->
+<!-- sent="Tue, 17 Mar 2020 15:56:31 +0300" -->
+<!-- isosent="20200317125631" -->
+<!-- name="Erdem Yeler" -->
+<!-- email="erdemyeler.gmail.com" -->
+<!-- subject="Re: [AMBER] Boron compunds with &quot;pdb&quot; file with novel frcmod file" -->
+<!-- id="CAC1EcEqOrB9ZTbee3bm6+8nC8GbF-901E31tUsj7fXUjqA-R2w.mail.gmail.com" -->
+<!-- charset="UTF-8" -->
+<!-- inreplyto="20200315164126.3jris6bfwuwyufid.David-Case-MBP.fios-router.home" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0181.html" accesskey="d" title="Ana Ziad: &quot;[AMBER] issue while installing AMBER tools on windows10 Linux subsystem&quot;">Next message</a> ]
+[ <a href="0179.html" title="Carlos Simmerling: &quot;Re: [AMBER] If a non-standard force field is used for proteins, how would you approach parameterization of lipids and ligands?&quot;">Previous message</a> ]
+[ <a href="0174.html" title="David A Case: &quot;Re: [AMBER] Boron compunds with &#0034;pdb&#0034; file with novel frcmod file&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg180" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg180" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg180" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg180" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Erdem Yeler &lt;<a href="mailto:erdemyeler.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Boron%20compunds%20with%20%22pdb%22%20file%20with%20novel%20frcmod%20file">erdemyeler.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 17 Mar 2020 15:56:31 +0300</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear dac,
+<br />
+Thanks for your answer.
+<br />
+I will  try to go with a new example with the files to make my expression
+<br />
+clear: (By the way I obtained my DNA-ligand complex with autodock4.0 but
+<br />
+this time I will go on only ligand )
+<br />
+<br />1) Here is my mol2 ligand file with resp charges :
+<br />
+<br />resp.mol2 (attached)
+<br />
+<br />I also change some &quot;os&quot; atoms to &quot;ob&quot; (ob: oxygen atom connec to B3)
+<br />
+<br />2) I created my library with my frcmod file and gaff2:
+<br />
+<br />source leaprc.gaff2
+<br />
+loadamberparams bor.frcmod
+<br />
+SUS =loadmol2 resp.mol2
+<br />
+saveoff SUS sus.lib
+<br />
+<br />3) now I am testing sus.lib with pdb file here is resp.pdb
+<br />
+<br />file: resp.pdb  (attached)
+<br />
+<br />source leaprc.gaff2
+<br />
+loadamberparams bor.frcmod
+<br />
+loadoff sus.lib
+<br />
+#once kutuphaneleri yukledik
+<br />
+a =loadpdb resp.pdb
+<br />
+saveamberparm a x.prmtop x.inpcrd
+<br />
+<pre>
+----
+test:
+sander -O -i min.in -o min.out -p x.prmtop -c x.inpcrd -r min1.ncrst
+ambpdb -p x.prmtop -c min1.ncrst &gt; pdb.pdb
+------------
+until now, everything is OK. no problem. But now, I should use ligand2.pdb
+from docking result. Because this resp.pdb file was just optimized geometry
+it is not inside &quot;DNA&quot;. ligand2.pdb file is part of DNA-ligand complex.
+Now, I extracted ligand2.pdb file from docking result, autodock's pdb file
+format is a little bit different so, I converted this file into pdb again
+in Discovery Studio Visuliaser  and her is my ligand2.pdb file (extraced
+from docking DNA complex):
+ligand2.pdb (attached, if you look at inside, I changed residue names as
+&quot;SUS&quot; as I described)
+then I run tleap:
+source leaprc.gaff2
+loadamberparams bor.frcmod
+loadoff sus.lib
+#once kutuphaneleri yukledik
+a =loadpdb ligand2.pdb
+I got these warnings and tleap aborted (I shortened error message):
+error.png
+[image: error.png]
+Created a new atom named: H40 within residue: .R&lt;MOL 0&gt;
+Bond: Maximum coordination exceeded on .R&lt;MOL 0&gt;.A&lt;H34 34&gt;
+      -- setting atoms pert=true overrides default limits
+ATOMS NOT BONDED: .R&lt;MOL 0&gt;.A&lt;C6 6&gt; .R&lt;MOL 0&gt;.A&lt;H34 34&gt;
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [atom.c], line 445
+!FATAL:    Message: bondAtomProblem found
+!
+!ABORTING.
+Actually I can change coordinates one by one in resp.pdb file:
+putting coordinates from ligand2.pdb into resp.pdb so I can obtain my
+ligand2.pdb but there are 20 files as this. The order of atoms in these
+files are different from each other and doing this could take too long thus
+I am searching the shortest way. I did some mistakes somewhere but I
+couldn't  find it.
+Thank you so much
+David A Case &lt;david.case.rutgers.edu&gt;, 15 Mar 2020 Paz, 19:41 tarihinde
+şunu yazdı:
+&gt; On Sat, Mar 14, 2020, Erdem Yeler wrote:
+&gt;
+&gt; &gt;I parameterized boron and I created my *.frcmod file, for mol2 files,
+&gt; &gt;everything was OK. I heated my molecule, calculated RMSD, minimized and
+&gt; &gt;found very very close X-ray structure, I also calculated resp charges
+&gt; &gt;exc.... exc...  But yesterday I tried to run MMPSA for DNA-boron compund
+&gt; &gt;complex.
+&gt;
+&gt; It's hard to reply here, but I'll try to be as clear as possible.  It
+&gt; doesn't look like your problems are related to boron, but rather to
+&gt; combining a small molecule with DNA.
+&gt;
+&gt; It appears that you can run MD simualtions on the small molecule, but
+&gt; are having troubles with the DNA-boron complex.
+&gt;
+&gt; &gt;1) I had to  turn my bor.mol2 file to bor.pdb pdb file because  I had to
+&gt; &gt;use DNA.OL15 force filed too
+&gt;
+&gt; You will need to create a combined PDB file with the DNA and the small
+&gt; molecule placed in the correct place, that is docked into place.  Many
+&gt; programs convert a mol2 file to pdb, including antehchamber:
+&gt;
+&gt;    antechamber -fi mol2 -i resp.mol2 -fo pdb -o ligand.pdb
+&gt;
+&gt; You can create the combined pdb file either with a docking program or
+&gt; with a visualization program; or maybe(?) you already have a starting
+&gt; structure of the DNA + ligand that you can use.
+&gt; &gt;
+&gt; &gt; sander -O -i min.in -o min.out -p x.prmtop -c x.inpcrd -r min1.ncrst
+&gt;
+&gt; As best I can tell from your email (and maybe I missed something here),
+&gt; the &quot;x.prtmop&quot; file just has the small molecule.  That is, I didn't see
+&gt; anything that involved tell tleap about the DNA.  But you've already
+&gt; said that you were successful in running the small molecule by itself,
+&gt; which leads to my confusion.
+&gt;
+&gt; &gt;
+&gt; &gt;I didn't get any error message but mdin file said:&quot;nothing&quot; :)
+&gt;
+&gt; I don't follow you here.
+&gt;
+&gt; &gt;
+&gt; &gt;So I checked what happened and here is what I got  :
+&gt; &gt;
+&gt; &gt;ambpdb -p x.prmtop -c min1.ncrst &gt; pdb.pdb
+&gt;
+&gt; It sounds like there is indeed a problem with the x.prmtop file, but see
+&gt; above for things you might look for.  If the &quot;resp.pdb&quot; file that you
+&gt; loaded indeed has DNA in it, be sure that there is a TER card between
+&gt; each DNA chain, and between DNA and ligand.
+&gt;
+&gt; Basically we need to know what is in the PDB file you loaded into tleap.
+&gt;
+&gt; ....dac
+&gt;
+&gt;
+&gt; _______________________________________________
+&gt; AMBER mailing list
+&gt; AMBER.ambermd.org
+&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+&gt;
+
+
+
+
+
+</pre>
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<p><img src="att-0180/error.png" alt="error.png" />
+<br />
+(image/png attachment: <a href="att-0180/error.png">error.png</a>)</p>
+<!-- attachment="error.png" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0180/resp.mol2">resp.mol2</a></li>
+</ul>
+<!-- attachment="resp.mol2" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0180/resp.pdb">resp.pdb</a></li>
+</ul>
+<!-- attachment="resp.pdb" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0180/ligand2.pdb">ligand2.pdb</a></li>
+</ul>
+<!-- attachment="ligand2.pdb" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Tue Mar 17 2020 - 06:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0181.html" title="Next message in the list">Ana Ziad: "[AMBER] issue while installing AMBER tools on windows10 Linux subsystem"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0179.html" title="Previous message in the list">Carlos Simmerling: "Re: [AMBER] If a non-standard force field is used for proteins, how would you approach parameterization of lipids and ligands?"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0174.html" title="Message to which this message replies">David A Case: "Re: [AMBER] Boron compunds with &#0034;pdb&#0034; file with novel frcmod file"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg180" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg180" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg180" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg180" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

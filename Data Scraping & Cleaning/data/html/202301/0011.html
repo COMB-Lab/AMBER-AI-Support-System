@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] CPPTRAJ native contact analysis output from Prithviraj Nandigrami via AMBER on 2023-01-03 (Amber Archive Jan 2023)</title>
+<meta name="Author" content="Prithviraj Nandigrami via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] CPPTRAJ native contact analysis output" />
+<meta name="Date" content="2023-01-03" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] CPPTRAJ native contact analysis output</h1>
+<!-- received="Tue Jan  3 11:30:02 2023" -->
+<!-- isoreceived="20230103193002" -->
+<!-- sent="Tue, 3 Jan 2023 14:16:02 -0500" -->
+<!-- isosent="20230103191602" -->
+<!-- name="Prithviraj Nandigrami via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] CPPTRAJ native contact analysis output" -->
+<!-- id="CABh86xMDLAwpiYwbxrTy3rN+syD8MtDogP3MpuH2i-nBrcrqCA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0012.html" accesskey="d" title="Md Fulbabu Sk via AMBER: &quot;[AMBER] amber20 installation error in ROCKY 8.5 with RTX A6000 GPU&quot;">Next message</a> ]
+[ <a href="0010.html" title="Dr. Vaibhav Anil Dixit via AMBER: &quot;Re: [AMBER] Announcement about upcoming changes to Amber license fees&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0056.html" accesskey="t" title="Prithviraj Nandigrami via AMBER: &quot;Re: [AMBER] CPPTRAJ native contact analysis output&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg11" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg11" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg11" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg11" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Prithviraj Nandigrami via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20CPPTRAJ%20native%20contact%20analysis%20output">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 3 Jan 2023 14:16:02 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />I am trying to use the native contacts analysis script implemented in
+<br />
+CPPTRAJ as follows:
+<br />
+<br />*Without specifying a reference*
+<br />
+<br />parm step3_input.strip.parm7
+<br />
+trajin combined.nc
+<br />
+nativecontacts name NC1 :1-67&amp;!.H= \
+<br />
+&nbsp;&nbsp;&nbsp;writecontacts native-contacts.dat \
+<br />
+&nbsp;&nbsp;&nbsp;resout resout.dat \
+<br />
+&nbsp;&nbsp;&nbsp;distance 4.0 \
+<br />
+&nbsp;&nbsp;&nbsp;byresidue out all-residues.dat mindist maxdist \
+<br />
+&nbsp;&nbsp;&nbsp;map mapout gnu \
+<br />
+&nbsp;&nbsp;&nbsp;contactpdb contactspdb.pdb \
+<br />
+&nbsp;&nbsp;&nbsp;series seriesout native-contacts-series.dat
+<br />
+run
+<br />
+lifetime NC1[NC] out lifetime.dat
+<br />
+run
+<br />
+<br />*By specifying a reference*
+<br />
+<br />parm step3_input.strip.parm7
+<br />
+trajin combined.nc
+<br />
+reference ../step3_input.pdb
+<br />
+nativecontacts name NC1 :1-67&amp;!.H= \
+<br />
+&nbsp;&nbsp;&nbsp;byresidue out nc.all.res.dat mindist maxdist \
+<br />
+&nbsp;&nbsp;&nbsp;distance 3.0 reference map mapout resmap.gnu \
+<br />
+&nbsp;&nbsp;&nbsp;contactpdb native-contacts.pdb \
+<br />
+&nbsp;&nbsp;&nbsp;series seriesout native.dat
+<br />
+run
+<br />
+<br /><br />My question is: what do the columns in lifetime.dat, native.gnu,
+<br />
+nonnative.gnu represent? I understand the residue indices in these files
+<br />
+but do not understand the fractional values reported. Here is an example
+<br />
+for native.gnu:
+<br />
+<br />&nbsp;&nbsp;&nbsp;1.000    1.000       0.0000
+<br />
+&nbsp;&nbsp;&nbsp;1.000    2.000      16.6333
+<br />
+&nbsp;&nbsp;&nbsp;1.000    3.000       0.0000
+<br />
+&nbsp;&nbsp;&nbsp;1.000    4.000       0.0000
+<br />
+&nbsp;&nbsp;&nbsp;1.000    5.000       0.0000
+<br />
+&nbsp;&nbsp;&nbsp;1.000    6.000       0.0000
+<br />
+&nbsp;&nbsp;&nbsp;1.000    7.000       0.0000
+<br />
+&nbsp;&nbsp;&nbsp;1.000    8.000       0.0000
+<br />
+&nbsp;&nbsp;&nbsp;1.000    9.000       0.0000
+<br />
+&nbsp;&nbsp;&nbsp;1.000   10.000       0.0000
+<br />
+<br />and for nonnative.gnu:
+<br />
+<br />&nbsp;&nbsp;1.000    1.000       0.0000
+<br />
+&nbsp;&nbsp;&nbsp;1.000    2.000       8.8826
+<br />
+&nbsp;&nbsp;&nbsp;1.000    3.000       0.9303
+<br />
+&nbsp;&nbsp;&nbsp;1.000    4.000       0.1229
+<br />
+&nbsp;&nbsp;&nbsp;1.000    5.000       0.0129
+<br />
+&nbsp;&nbsp;&nbsp;1.000    6.000       0.0060
+<br />
+&nbsp;&nbsp;&nbsp;1.000    7.000       0.0102
+<br />
+&nbsp;&nbsp;&nbsp;1.000    8.000       0.0004
+<br />
+&nbsp;&nbsp;&nbsp;1.000    9.000       0.0029
+<br />
+&nbsp;&nbsp;&nbsp;1.000   10.000       0.0012
+<br />
+&nbsp;&nbsp;&nbsp;1.000   11.000       0.0053
+<br />
+&nbsp;&nbsp;&nbsp;1.000   12.000       0.0024
+<br />
+&nbsp;&nbsp;&nbsp;1.000   13.000       0.0787
+<br />
+<br /><br />What does the third column represent in these files?
+<br />
+<br />Thank you for your help and guidance!
+<br />
+P.N.
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Jan 03 2023 - 11:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0012.html" title="Next message in the list">Md Fulbabu Sk via AMBER: "[AMBER] amber20 installation error in ROCKY 8.5 with RTX A6000 GPU"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0010.html" title="Previous message in the list">Dr. Vaibhav Anil Dixit via AMBER: "Re: [AMBER] Announcement about upcoming changes to Amber license fees"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0056.html" title="Next message in this discussion thread">Prithviraj Nandigrami via AMBER: "Re: [AMBER] CPPTRAJ native contact analysis output"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0056.html" title="Message sent in reply to this message">Prithviraj Nandigrami via AMBER: "Re: [AMBER] CPPTRAJ native contact analysis output"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg11" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg11" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg11" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg11" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

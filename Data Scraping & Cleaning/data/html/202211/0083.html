@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] AMBER20 GPU error from Prithviraj Nandigrami via AMBER on 2022-11-11 (Amber Archive Nov 2022)</title>
+<meta name="Author" content="Prithviraj Nandigrami via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] AMBER20 GPU error" />
+<meta name="Date" content="2022-11-11" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] AMBER20 GPU error</h1>
+<!-- received="Fri Nov 11 09:30:02 2022" -->
+<!-- isoreceived="20221111173002" -->
+<!-- sent="Fri, 11 Nov 2022 11:55:11 -0500" -->
+<!-- isosent="20221111165511" -->
+<!-- name="Prithviraj Nandigrami via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] AMBER20 GPU error" -->
+<!-- id="CABh86xOjU0qGi3y7gtFV4j=7OCkuiuJ3OaCvfYZHTe1QkgZDhA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="353ca4a9-2338-7630-7876-34eb48de58.utah.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0084.html" accesskey="d" title="Suchetana Gupta via AMBER: &quot;Re: [AMBER] Simulating a Protein - cyclic peptide complex - question&quot;">Next message</a> ]
+[ <a href="0082.html" title="David A Case via AMBER: &quot;Re: [AMBER] Simulating a Protein - cyclic peptide complex - question&quot;">Previous message</a> ]
+[ <a href="0061.html" title="Thomas Cheatham via AMBER: &quot;Re: [AMBER] AMBER20 GPU error&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0086.html" accesskey="t" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] AMBER20 GPU error&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg83" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg83" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg83" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg83" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Prithviraj Nandigrami via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20AMBER20%20GPU%20error">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 11 Nov 2022 11:55:11 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Thank you for the helpful information. Looking into the mdout files, it
+<br />
+looks like the first step (minimization) does not run properly on the GPU
+<br />
+and the error propagates downstream - the energy at successive steps of the
+<br />
+minimization run remains the same. In contrast, on a CPU, the energy
+<br />
+decreases during the course of the minimization. So, I think this is one of
+<br />
+the main sources of the problem. Below is the input file for
+<br />
+minimization used:
+<br />
+<br />minimization 01 - implicit solvent
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;imin = 1, maxcyc = 1000, ncyc = 100,
+<br />
+&nbsp;&nbsp;ntx = 1, ntc = 1, ntf = 1,
+<br />
+&nbsp;&nbsp;ntb = 0, ntp = 0, ntxo = 1, ioutfm = 1,
+<br />
+&nbsp;&nbsp;ntwx = 100, ntwe = 0, ntpr = 100,
+<br />
+&nbsp;&nbsp;igb = 1,
+<br />
+&nbsp;&nbsp;ntr=1,
+<br />
+&nbsp;&nbsp;restraintmask = ':1-X_LASTREC_RESIDNO_X &amp; !.H= | :X_LIG_RESIDNO_X.CG',
+<br />
+restraint_wt=2.0,
+<br />
+&amp;end
+<br />
+END
+<br />
+<br /><br />Any suggestions on what flags (if any) could be changed for single
+<br />
+precision runs on GPU? Or is the only way to tackle this problem, is to run
+<br />
+minimization on CPU first and then run the production on GPU?
+<br />
+<br />Thank you for your help.
+<br />
+<br /><br /><br /><br />On Wed, Nov 9, 2022 at 11:24 PM Thomas Cheatham &lt;tec3.utah.edu&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I tried to run the same simulation using double precision on the GPU and
+</em><br />
+<em class="quotelev1">&gt; the output seems to be fine, whereas the
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Probably you mean CPU...
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; single precision seems to throw a bunch of errors (coordinate overflow
+</em><br />
+<em class="quotelev1">&gt; etc.). Of course, the simulations with
+</em><br />
+<em class="quotelev2">&gt; &gt; double precision pmemd implementation runs a lot slower than what we
+</em><br />
+<em class="quotelev1">&gt; would expect a GB simulation to run. Is there
+</em><br />
+<em class="quotelev2">&gt; &gt; a way/combination of parameters in the MD input file that could be run
+</em><br />
+<em class="quotelev1">&gt; for the single precision implementation of
+</em><br />
+<em class="quotelev2">&gt; &gt; pmemd?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; No, and echoing what DAC said, often instabilities at the beginning of a
+</em><br />
+<em class="quotelev1">&gt; simulation are due to a poor initial structure (which can be relaxed on
+</em><br />
+<em class="quotelev1">&gt; CPU first). Another possibility that comes to mind is that it is possible
+</em><br />
+<em class="quotelev1">&gt; to compile up different versions of the GPU code, for example the DPFP
+</em><br />
+<em class="quotelev1">&gt; (double precision / fixed precision) which is slower but can handle the
+</em><br />
+<em class="quotelev1">&gt; larger force variance better (likely, unless the initial structures are
+</em><br />
+<em class="quotelev1">&gt; really poor).
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Regarding poor initial structures, we have seen peptides threaded through
+</em><br />
+<em class="quotelev1">&gt; aromatic rings post initial relaxation and other distortions that lead to
+</em><br />
+<em class="quotelev1">&gt; vdw overlap that is difficult to resolve. As per past posts, I often try
+</em><br />
+<em class="quotelev1">&gt; initial minimization with electrostatics turned off to relax vdw (although
+</em><br />
+<em class="quotelev1">&gt; this will not prevent a chain threaded through a ring).
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="http://archive.ambermd.org/202101/0058.html">http://archive.ambermd.org/202101/0058.html</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; --tec3
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; p.s. delayed sending this since I wanted to send picture of peptide
+</em><br />
+<em class="quotelev1">&gt; threaded through an aromatic from my lab, however we are not onsite that
+</em><br />
+<em class="quotelev1">&gt; often
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Nov 11 2022 - 09:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0084.html" title="Next message in the list">Suchetana Gupta via AMBER: "Re: [AMBER] Simulating a Protein - cyclic peptide complex - question"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0082.html" title="Previous message in the list">David A Case via AMBER: "Re: [AMBER] Simulating a Protein - cyclic peptide complex - question"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0061.html" title="Message to which this message replies">Thomas Cheatham via AMBER: "Re: [AMBER] AMBER20 GPU error"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0086.html" title="Next message in this discussion thread">Carlos Simmerling via AMBER: "Re: [AMBER] AMBER20 GPU error"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0086.html" title="Message sent in reply to this message">Carlos Simmerling via AMBER: "Re: [AMBER] AMBER20 GPU error"</a></li>
+<li><dfn>Reply</dfn>: <a href="0092.html" title="Message sent in reply to this message">David A Case via AMBER: "Re: [AMBER] AMBER20 GPU error"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg83" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg83" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg83" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg83" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

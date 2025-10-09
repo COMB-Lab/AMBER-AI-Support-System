@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber from Matias Machado on 2020-08-26 (Amber Archive Aug 2020)</title>
+<meta name="Author" content="Matias Machado (mmachado.pasteur.edu.uy)" />
+<meta name="Subject" content="Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber" />
+<meta name="Date" content="2020-08-26" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber</h1>
+<!-- received="Wed Aug 26 06:30:04 2020" -->
+<!-- isoreceived="20200826133004" -->
+<!-- sent="Wed, 26 Aug 2020 10:07:09 -0300 (UYT)" -->
+<!-- isosent="20200826130709" -->
+<!-- name="Matias Machado" -->
+<!-- email="mmachado.pasteur.edu.uy" -->
+<!-- subject="Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber" -->
+<!-- id="d585bfcc-dce7-4bf4-860a-e95c04b0a2ad.free.ipmont.lan" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="31e7da75-7a1b-edea-9121-109604604aba.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0207.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] Time numbering problem with constant-pH simulations&quot;">Next message</a> ]
+[ <a href="0205.html" title="Jonee Lillard: &quot;Re: [AMBER] Time numbering problem with constant-pH simulations&quot;">Previous message</a> ]
+[ <a href="0204.html" title="Charo del Genio: &quot;Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0208.html" accesskey="t" title="Charo del Genio: &quot;Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg206" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg206" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg206" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg206" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Matias Machado &lt;<a href="mailto:mmachado.pasteur.edu.uy?Subject=Re%3A%20%5BAMBER%5D%20Questions%20(and%20a%20small%20bug%20report)%20about%20SIRAH%20in%20Amber">mmachado.pasteur.edu.uy</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 26 Aug 2020 10:07:09 -0300 (UYT)</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Charo,
+<br />
+<br />Thanks to David and Scott's help we advanced a lot in debugging the issue...
+<br />
+<br />This problem only shows up in cmake builds of AMBER Tools, while legacy builds work just fine...
+<br />
+<br />Scott was observing the same odd things you are pointing in the code.
+<br />
+<br />I did some tests and in fact comment lines stating with '#' are the only ones generating the buffer overflow.
+<br />
+<br />This bug is not only restricted to SIRAH as the same issue will happen in AMBER ports of CUFIX.
+<br />
+<br />On the other hand, comments after the parameter definition are not giving any problem, as they don't in other AMBER files.
+<br />
+<br />Some fixes have been committed at both AMBER and SIRAH sides.
+<br />
+<br />Best,
+<br />
+<br />Matías
+<br />
+<br />PS: While ago, I sent to the mailing list a reference topology based on Tutorial 5 as a control to check the correct loading of LJoff.frcmod. But I guess it got stuck awaiting for a moderator due to the file size :-(
+<br />
+<br />----- Mensaje original -----
+<br />
+De: &quot;Charo del Genio&quot; &lt;the.paraw.gmail.com&gt;
+<br />
+Para: &quot;AMBER Mailing List&quot; &lt;amber.ambermd&#46;<!--nospam-->org&gt;, &quot;Matias Machado&quot; &lt;mmachado.pasteur&#46;<!--nospam-->edu.uy&gt;, &quot;david case&quot; &lt;david.case.rutgers&#46;<!--nospam-->edu&gt;
+<br />
+Enviados: Miércoles, 26 de Agosto 2020 6:22:59
+<br />
+Asunto: Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber
+<br />
+<br />On 24/08/2020 15:26, Matias Machado wrote:
+<br />
+<em class="quotelev1">&gt; 3) THE FOLLOWING IS EXTREMELY IMPORTANT!
+</em><br />
+<em class="quotelev1">&gt; We are aware of the bug you mention about &quot;LJoff.frcmod&quot;... so far we have only seen the issue in some MacOS, which may be your case... We are digging to fix it, I have some leads pointing either to the OS version (probably Catalina) or to the environment (perhaps Python)... but it's being hard to reproduce the error...
+</em><br />
+<em class="quotelev1">&gt; In any case DELETING THE FIRST LINES IN LJOFF ISN'T THE SOLUTION!!!
+</em><br />
+<em class="quotelev1">&gt; I'm witting in capitals because it seems to work (no error message is reported by leap), but no LJ corrections are applied!!!
+</em><br />
+<em class="quotelev1">&gt; So the generated prmtop is wrong and useless because SIRAH depends on those interactions to properly work. That explains the instabilities you see during the simulations.
+</em><br />
+<em class="quotelev1">&gt; There are some technical things about leap and the frcmod format, which I won't go into detail now, but the number of blank lines is important to properly read each section... I have a workaround but it needs more testing...
+</em><br />
+<em class="quotelev1">&gt; Hence, my STRONG advice at the moment is creating the topology files in Linux or in a MacOS that doesn't give any error.
+</em><br />
+<br />Dear Matias,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I've had a look at the source code, and it seems that the relevant lines that read the LJEDIT section are
+<br />
+<br /><br />while (segfound == 1) {
+<br />
+&nbsp;&nbsp;&nbsp;if (fgets( sLINE, MAXSTRINGLENGTH, fIn ) == NULL) {
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+<br />
+&nbsp;&nbsp;&nbsp;}
+<br />
+&nbsp;&nbsp;&nbsp;iRead = sscanf( sLine, &quot;%s %s %lf %lf %lf %lf&quot;, saStr[0], saStr[1],
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;dRI, &amp;dEI, &amp;dRJ, &amp;dEJ );
+<br />
+&nbsp;&nbsp;&nbsp;if ( iRead &lt;= 0 ) break;
+<br />
+&nbsp;&nbsp;&nbsp;MESSAGE(( &quot;Read: %s\n&quot;, sLine ));
+<br />
+&nbsp;&nbsp;&nbsp;iParmSetAddNBEdit( psParms, saStr[0]. saStr[1]. dEI, dEJ, dRI, dRJ, &quot;&quot; );
+<br />
+&nbsp;&nbsp;&nbsp;}
+<br />
+}
+<br />
+<br /><br />which are in src/leap/src/leap/amber.c
+<br />
+<br />Now, looking at the LJoff.frcmod file, it seems that what happens is that leap recognizes the LJEDIT card. Then, it passes to scan the next line. The sscanf first tries to read two strings, which, in 
+<br />
+this case, will be &quot;#&quot; and &quot;SIRAH&quot;, because it stops at the first blank character after each of them. Then it fails to read any numbers. The code doesn't break (and in fact it shouldn't) because 
+<br />
+sscanf reads 2 objects. However, when going to set the non-bonded parameter pair changes via iParmSetAddNBEdit it crashes, because the strings read don't make sense.
+<br />
+<br />So, first of all, it seems to me that eliminating these comment lines after LJEDIT is the start of a solution. However, there is another problem. Even if one eliminates all the comment lines after 
+<br />
+LJEDIT (that is, all the &quot;# Metallic interactions&quot; and similar ones), some data lines still contain spurious characters. For example, the first line of the Electrolytic interactions contains two 
+<br />
+strings (&quot;ClW&quot; and &quot;X7&quot;), four numbers, and then &quot;# ClW  - C7Nk&quot;. This will likely confuse the sscanf above, also because after that there is no function that tells leap to read to the end of the line 
+<br />
+and disregard everything.
+<br />
+<br />Thus, I believe that getting rid of all the comment lines after LJEDIT, *and of all the comments that occasionally end some lines* should actually do the job.
+<br />
+Alternatively, the code of leap can be changed to disregard any comment line and anything after that sscanf to the end of the line.
+<br />
+<br />Does this make sense to you?
+<br />
+<br /><br />Cheers,
+<br />
+<br />Charo
+<br />
+<br /><br /><br /><br /><pre>
+-- 
+Dr. Charo I. del Genio
+Senior Lecturer in Statistical Physics
+Applied Mathematics Research Centre (AMRC)
+Design Hub
+Coventry University Technology Park
+Coventry CV1 5FB
+UK
+<a href="https://charodelgenio.weebly.com">https://charodelgenio.weebly.com</a>
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Wed Aug 26 2020 - 06:30:04 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0207.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] Time numbering problem with constant-pH simulations"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0205.html" title="Previous message in the list">Jonee Lillard: "Re: [AMBER] Time numbering problem with constant-pH simulations"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0204.html" title="Message to which this message replies">Charo del Genio: "Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0208.html" title="Next message in this discussion thread">Charo del Genio: "Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0208.html" title="Message sent in reply to this message">Charo del Genio: "Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg206" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg206" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg206" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg206" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

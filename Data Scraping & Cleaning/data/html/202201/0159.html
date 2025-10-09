@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] how to obtain index of atoms based on residue and atom masks from Dr. Anselm Horn on 2022-01-19 (Amber Archive Jan 2022)</title>
+<meta name="Author" content="Dr. Anselm Horn (anselm.horn.fau.de)" />
+<meta name="Subject" content="Re: [AMBER] how to obtain index of atoms based on residue and atom masks" />
+<meta name="Date" content="2022-01-19" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] how to obtain index of atoms based on residue and atom masks</h1>
+<!-- received="Wed Jan 19 02:30:02 2022" -->
+<!-- isoreceived="20220119103002" -->
+<!-- sent="Wed, 19 Jan 2022 11:23:28 +0100" -->
+<!-- isosent="20220119102328" -->
+<!-- name="Dr. Anselm Horn" -->
+<!-- email="anselm.horn.fau.de" -->
+<!-- subject="Re: [AMBER] how to obtain index of atoms based on residue and atom masks" -->
+<!-- id="6ff3a84d-6435-95ea-05ed-1d449c5ee2db.fau.de" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="791EC21B-B731-4A10-AC3E-4337583764AB.uconn.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0160.html" accesskey="d" title="Daniel Fowles: &quot;[AMBER] Converting %FLAG XVV array found in .xvv file into a readable format similar to other .*vv files&quot;">Next message</a> ]
+[ <a href="0158.html" title="Matthew Guberman-Pfeffer: &quot;Re: [AMBER] how to obtain index of atoms based on residue and atom masks&quot;">Previous message</a> ]
+[ <a href="0158.html" title="Matthew Guberman-Pfeffer: &quot;Re: [AMBER] how to obtain index of atoms based on residue and atom masks&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0164.html" accesskey="t" title="Hai Nguyen: &quot;Re: [AMBER] how to obtain index of atoms based on residue and atom masks&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg159" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg159" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg159" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg159" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Dr. Anselm Horn &lt;<a href="mailto:anselm.horn.fau.de?Subject=Re%3A%20%5BAMBER%5D%20how%20to%20obtain%20index%20of%20atoms%20based%20on%20residue%20and%20atom%20masks">anselm.horn.fau.de</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 19 Jan 2022 11:23:28 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Tammy,
+<br />
+<br />adding to Matthew's idea:
+<br />
+<br />If you have the pdb-tools for the command line installed on your system
+<br />
+(pip install pdb-tools ; cf <a href="http://www.bonvinlab.org/pdb-tools/">http://www.bonvinlab.org/pdb-tools/</a>), a pdb
+<br />
+file of your system at hand, and a simple residue mask, then a single
+<br />
+command line may also yield almost all you want, provided that you just
+<br />
+select standard residues:
+<br />
+<br />pdb_selres -&lt;res_first:res_last&gt; &lt;your.pdb&gt; | grep &quot;^ATOM&quot; | awk
+<br />
+'{printf &quot;%1d,&quot;, $2} '; echo
+<br />
+<br />Note that the last index is followed by a comma, too.
+<br />
+(The selection mask for pdb_selres also allows for more than just one
+<br />
+residue range.)
+<br />
+<br />For advanced masks, however, it is certainly better to use cpptraj for
+<br />
+preprocessing, as Matthew suggested.
+<br />
+<br />Best regards,
+<br />
+<br />Anselm
+<br />
+<br />Bioinformatik  |  NHR.FAU
+<br />
+Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU)
+<br />
+Germany
+<br />
+<br /><br />Am 19.01.2022 um 04:12 schrieb Matthew Guberman-Pfeffer:
+<br />
+<em class="quotelev1">&gt; Hello Tammy,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; One thought is that you can use the mask keyword in cpptraj to generate a file. This file, call it mask.txt, will list the atom numbers in the second column. You then can process this file with a bash script to get a comma separated list, something like the following:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; idx=0
+</em><br />
+<em class="quotelev1">&gt; while IFS= read -r F1 &lt;&amp;2;do
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;   if [ $idx != 0 ];then
+</em><br />
+<em class="quotelev1">&gt;     atnum=$(echo $F1 | awk '{print $2}')
+</em><br />
+<em class="quotelev1">&gt;     echo -n “${atnum},&quot;;
+</em><br />
+<em class="quotelev1">&gt;   fi
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;   idx=$((idx+1))
+</em><br />
+<em class="quotelev1">&gt; done 2&lt; mask.txt
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Note that the line indexing (idx) is to skip the “AtomNum” header in mask.txt.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Hope this work-around helps.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt; Matthew
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;  
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; On Jan 18, 2022, at 8:01 PM, Ming Tang &lt;m21.tang.qut&#46;<!--nospam-->edu.au&gt; wrote:
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; *Message sent from a system outside of UConn.*
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; Dear list,
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; Is there a command to print out atom indexes (separated by comma) for a large number of residues? I want to use them as cv_i in ABMD.
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; Thanks,
+</em><br />
+<em class="quotelev2">&gt;&gt; Tammy
+</em><br />
+<em class="quotelev2">&gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER.ambermd&#46;<!--nospam-->org
+</em><br />
+<em class="quotelev2">&gt;&gt; <a href="https://nam10.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=04%7C01%7C%7Ca3db9972ee9c4966acc508d9dae759ff%7C17f1a87e2a254eaab9df9d439034b080%7C0%7C0%7C637781509453316189%7CUnknown%7CTWFpbGZsb3d8eyJWIjoi">https://nam10.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=04%7C01%7C%7Ca3db9972ee9c4966acc508d9dae759ff%7C17f1a87e2a254eaab9df9d439034b080%7C0%7C0%7C637781509453316189%7CUnknown%7CTWFpbGZsb3d8eyJWIjoi</a>MC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C2000&amp;amp;sdata=o3k7Hiee%2BYZzNqzGNTdf1m25ArVSsRCTXDG9VnQvBiI%3D&amp;amp;reserved=0
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Jan 19 2022 - 02:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0160.html" title="Next message in the list">Daniel Fowles: "[AMBER] Converting %FLAG XVV array found in .xvv file into a readable format similar to other .*vv files"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0158.html" title="Previous message in the list">Matthew Guberman-Pfeffer: "Re: [AMBER] how to obtain index of atoms based on residue and atom masks"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0158.html" title="Message to which this message replies">Matthew Guberman-Pfeffer: "Re: [AMBER] how to obtain index of atoms based on residue and atom masks"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0164.html" title="Next message in this discussion thread">Hai Nguyen: "Re: [AMBER] how to obtain index of atoms based on residue and atom masks"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0164.html" title="Message sent in reply to this message">Hai Nguyen: "Re: [AMBER] how to obtain index of atoms based on residue and atom masks"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg159" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg159" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg159" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg159" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

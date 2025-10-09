@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] AMBER 18 cuda installation: error: redefinition of ???simulationConst cSim??? from David Cerutti on 2020-04-04 (Amber Archive Apr 2020)</title>
+<meta name="Author" content="David Cerutti (dscerutti.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] AMBER 18 cuda installation: error: redefinition of ???simulationConst cSim???" />
+<meta name="Date" content="2020-04-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] AMBER 18 cuda installation: error: redefinition of ???simulationConst cSim???</h1>
+<!-- received="Sat Apr  4 21:00:01 2020" -->
+<!-- isoreceived="20200405040001" -->
+<!-- sent="Sat, 4 Apr 2020 23:54:23 -0400" -->
+<!-- isosent="20200405035423" -->
+<!-- name="David Cerutti" -->
+<!-- email="dscerutti.gmail.com" -->
+<!-- subject="Re: [AMBER] AMBER 18 cuda installation: error: redefinition of ???simulationConst cSim???" -->
+<!-- id="CAEmzWj2kgFe4EzfqxnTH7g52y+yO0pMWBTk05u-eCei33VT71Q.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20200405010942.GD29570.casegroup5.rutgers.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0045.html" accesskey="d" title="Pinky Mazumder: &quot;[AMBER]  Help for the sequence of residue name&quot;">Next message</a> ]
+[ <a href="0043.html" title="Sunita Patel: &quot;Re: [AMBER] NPT equilibration is crashing&quot;">Previous message</a> ]
+[ <a href="0041.html" title="Scott Brozell: &quot;Re: [AMBER] AMBER 18 cuda installation: error: redefinition of ???simulationConst cSim???&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg44" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg44" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg44" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg44" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David Cerutti &lt;<a href="mailto:dscerutti.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20AMBER%2018%20cuda%20installation%3A%20error%3A%20redefinition%20of%20%3F%3F%3FsimulationConst%20cSim%3F%3F%3F">dscerutti.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 4 Apr 2020 23:54:23 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+If you have the line &quot;__constant__ simulationConst cSim;&quot; uncommented, that
+<br />
+probably means you are working outside the default GTI branch.  The
+<br />
+nomenclature around this is pretty tricky, and involves a lot of aliasing
+<br />
+to switch between the new code paths (Amber18, which brings more C++
+<br />
+functionality into the layer between the original Fortran and the CUDA
+<br />
+kernels) and the old code paths (Amber16).  Not sure what to tell you,
+<br />
+other than perhaps download the source anew and try re-installing.
+<br />
+<br />Dave
+<br />
+<br /><br /><br />On Sat, Apr 4, 2020 at 9:10 PM Scott Brozell &lt;sbrozell.iqb.rutgers.edu&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hi,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; FWIW, i am able to build with
+</em><br />
+<em class="quotelev1">&gt; gcc version 4.8.5 (GCC)
+</em><br />
+<em class="quotelev1">&gt; Cuda compilation tools, release 9.0, V9.0.176
+</em><br />
+<em class="quotelev1">&gt; but i am not using the canonical Amber18.  And the one i have
+</em><br />
+<em class="quotelev1">&gt; has that line commented out in simulationConst.h, ie:
+</em><br />
+<em class="quotelev1">&gt; //__constant__ simulationConst cSim;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; If you have further issues then send verbose and verbatim details
+</em><br />
+<em class="quotelev1">&gt; including:
+</em><br />
+<em class="quotelev1">&gt; ./update_amber --show-applied-patches
+</em><br />
+<em class="quotelev1">&gt; nvcc -V
+</em><br />
+<em class="quotelev1">&gt; gcc -v
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; scott
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Thu, Apr 02, 2020 at 10:58:23AM -0700, Sapna Shedge wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt; I am trying to do amber18 installation with Cuda-9.0
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I am getting following error
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; *gti_global.cu:7:24:* *error: *redefinition of ???*simulationConst
+</em><br />
+<em class="quotelev1">&gt; cSim*???
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;  __constant__ simulationConst cSim;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; *                        ^*
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; *simulationConst.h:12:24:* *error: *???*simulationConst cSim*???
+</em><br />
+<em class="quotelev1">&gt; previously
+</em><br />
+<em class="quotelev2">&gt; &gt; declared here
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;  extern __constant__ simulationConst cSim;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; *                        ^*
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; make[5]: *** [gti_global.o] Error 1
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; make[5]: *** Waiting for unfinished jobs....
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I saw that one person also got the same error and he was asked to provide
+</em><br />
+<em class="quotelev2">&gt; &gt; content of simulationConst.h file. Here is content of this file
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; ifndef _CUDA_SIMULATION
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; #define _CUDA_SIMULATION
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; #include &quot;base_simulationConst.h&quot;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     #ifdef GTI
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; #include &quot;gti_simulationConst.h&quot;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; typedef gti_simulationConst simulationConst;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     #else
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; typedef base_simulationConst simulationConst;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     #endif
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; extern __constant__ simulationConst cSim;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; #endif /* _CUDA_SIMULATION */
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sat Apr 04 2020 - 21:00:01 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0045.html" title="Next message in the list">Pinky Mazumder: "[AMBER]  Help for the sequence of residue name"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0043.html" title="Previous message in the list">Sunita Patel: "Re: [AMBER] NPT equilibration is crashing"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0041.html" title="Message to which this message replies">Scott Brozell: "Re: [AMBER] AMBER 18 cuda installation: error: redefinition of ???simulationConst cSim???"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg44" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg44" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg44" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg44" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

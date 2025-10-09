@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Cpptraj segfaults on single REMD trajectories? from Daniel Roe on 2021-05-14 (Amber Archive May 2021)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Cpptraj segfaults on single REMD trajectories?" />
+<meta name="Date" content="2021-05-14" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Cpptraj segfaults on single REMD trajectories?</h1>
+<!-- received="Fri May 14 09:00:02 2021" -->
+<!-- isoreceived="20210514160002" -->
+<!-- sent="Fri, 14 May 2021 11:32:20 -0400" -->
+<!-- isosent="20210514153220" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] Cpptraj segfaults on single REMD trajectories?" -->
+<!-- id="CAAC0qOYvahtrGKQzcw8gB43HOb1YU=pxWuajQUY1m8ohpD0-mg.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CABqZBC5RosX9tXt2Qv1Jx8bHzohBSsAxXyS=GXSRkgxcOKyDmw.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0136.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] understanding DSSP outout&quot;">Next message</a> ]
+[ <a href="0134.html" title="Brian Radak: &quot;[AMBER] Cpptraj segfaults on single REMD trajectories?&quot;">Previous message</a> ]
+[ <a href="0134.html" title="Brian Radak: &quot;[AMBER] Cpptraj segfaults on single REMD trajectories?&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0140.html" accesskey="t" title="Brian Radak: &quot;Re: [AMBER] Cpptraj segfaults on single REMD trajectories?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg135" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg135" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg135" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg135" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Cpptraj%20segfaults%20on%20single%20REMD%20trajectories%3F">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 14 May 2021 11:32:20 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />What version of cpptraj are you using?
+<br />
+<br />-Dan
+<br />
+<br />On Fri, May 14, 2021 at 11:20 AM Brian Radak &lt;brian.radak.gmail.com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; I've recently been running a lot of one-dimensional HREMD (-rem 3) with
+</em><br />
+<em class="quotelev1">&gt; PMEMDGTI. I started to notice certain analysis scripts failing and traced
+</em><br />
+<em class="quotelev1">&gt; it back to a cpptraj segfault whenever one (and only one) REMD trajectory
+</em><br />
+<em class="quotelev1">&gt; is read in - literally
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; $ cpptraj -p prmtop -y mdcrd
+</em><br />
+<em class="quotelev1">&gt; Segmentation fault (core dumped)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I added -debug 999 and it looks like the trajectory is actually
+</em><br />
+<em class="quotelev1">&gt; successfully read and closed and _then_ the segfaults occurs.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;  Suggestions? Is this bc of some automatic response to REMD annotations? Is
+</em><br />
+<em class="quotelev1">&gt; there a way to suppress that response? My only goal here is to do basic
+</em><br />
+<em class="quotelev1">&gt; imaging and centering before extracting a frame. I don't actually have
+</em><br />
+<em class="quotelev1">&gt; interest in the REMD data itself.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Cheers,
+</em><br />
+<em class="quotelev1">&gt; Brian
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri May 14 2021 - 09:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0136.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] understanding DSSP outout"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0134.html" title="Previous message in the list">Brian Radak: "[AMBER] Cpptraj segfaults on single REMD trajectories?"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0134.html" title="Message to which this message replies">Brian Radak: "[AMBER] Cpptraj segfaults on single REMD trajectories?"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0140.html" title="Next message in this discussion thread">Brian Radak: "Re: [AMBER] Cpptraj segfaults on single REMD trajectories?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0140.html" title="Message sent in reply to this message">Brian Radak: "Re: [AMBER] Cpptraj segfaults on single REMD trajectories?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg135" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg135" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg135" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg135" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

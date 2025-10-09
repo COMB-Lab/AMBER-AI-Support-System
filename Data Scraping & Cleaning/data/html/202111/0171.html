@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Bug Encountered When sourcing GAFF in leap.in from David A Case on 2021-11-16 (Amber Archive Nov 2021)</title>
+<meta name="Author" content="David A Case (david.case.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] Bug Encountered When sourcing GAFF in leap.in" />
+<meta name="Date" content="2021-11-16" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Bug Encountered When sourcing GAFF in leap.in</h1>
+<!-- received="Tue Nov 16 09:00:03 2021" -->
+<!-- isoreceived="20211116170003" -->
+<!-- sent="Tue, 16 Nov 2021 11:56:14 -0500" -->
+<!-- isosent="20211116165614" -->
+<!-- name="David A Case" -->
+<!-- email="david.case.rutgers.edu" -->
+<!-- subject="Re: [AMBER] Bug Encountered When sourcing GAFF in leap.in" -->
+<!-- id="20211116165614.lngzkzhczx3ykhxh.pop-os.localdomain" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="d625880a6ab643a4b8b2122293ce1f75.tum.de" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0172.html" accesskey="d" title="ABEL Stephane: &quot;Re: [AMBER] Can Parmed convert AMBER files to GROMACS made with the AMBER19SB ?&quot;">Next message</a> ]
+[ <a href="0170.html" title="Vollmers, Luis: &quot;[AMBER] Bug Encountered When sourcing GAFF in leap.in&quot;">Previous message</a> ]
+[ <a href="0170.html" title="Vollmers, Luis: &quot;[AMBER] Bug Encountered When sourcing GAFF in leap.in&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg171" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg171" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg171" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg171" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case &lt;<a href="mailto:david.case.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20Bug%20Encountered%20When%20sourcing%20GAFF%20in%20leap.in">david.case.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 16 Nov 2021 11:56:14 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Tue, Nov 16, 2021, Vollmers, Luis wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;I encountered strange behaviour of my system whose source of error
+</em><br />
+<em class="quotelev1">&gt;seems to be the 'source leaprc.gaff' command line. The system is a
+</em><br />
+<em class="quotelev1">&gt;DNA-Polymerase-DNA-Complex with OPC water and some Ions (T=314K). Sourcing
+</em><br />
+<em class="quotelev1">&gt;gaff resulted in a very rigid trajectory that looked almost frozen. Even
+</em><br />
+<em class="quotelev1">&gt;the water molecules do not diffuse but merely vibrate around their initial
+</em><br />
+<em class="quotelev1">&gt;positions.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Not sourcing gaff fixes the problem and the diffusive behaviour returns to
+</em><br />
+<em class="quotelev1">&gt;'normal'. Upon comparing the MDOUT files it became apparent that the VDW
+</em><br />
+<em class="quotelev1">&gt;and electrostatics were unphysical for the gaff-sourced system and upon
+</em><br />
+<em class="quotelev1">&gt;comparing the PRMTOP created by tleap it became apparent that the NTYPES
+</em><br />
+<em class="quotelev1">&gt;are different and therefore different parameters were assigned.
+</em><br />
+<br />Can you at least post your leap inpput script?  It's possible that the order
+<br />
+in which leaprc.gaff is loaded might lead to some weird behavior with OPC.
+<br />
+Reading between the lines, it looks like your system doesn't need GAFF
+<br />
+parameters -- is that correct?
+<br />
+<br />That said, what is reported is odd: leaprc.gaff only loads parameters that
+<br />
+have lower-case atom types, so it should not interfere with other things.
+<br />
+But &quot;bugs&quot; often don't obey the rules they are supposed to follow  :-)
+<br />
+<br />....dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Nov 16 2021 - 09:00:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0172.html" title="Next message in the list">ABEL Stephane: "Re: [AMBER] Can Parmed convert AMBER files to GROMACS made with the AMBER19SB ?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0170.html" title="Previous message in the list">Vollmers, Luis: "[AMBER] Bug Encountered When sourcing GAFF in leap.in"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0170.html" title="Message to which this message replies">Vollmers, Luis: "[AMBER] Bug Encountered When sourcing GAFF in leap.in"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg171" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg171" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg171" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg171" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

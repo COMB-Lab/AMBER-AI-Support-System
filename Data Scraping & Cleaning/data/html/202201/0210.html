@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI) from Michael Coleman on 2022-01-24 (Amber Archive Jan 2022)</title>
+<meta name="Author" content="Michael Coleman (mcolema5.uoregon.edu)" />
+<meta name="Subject" content="Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)" />
+<meta name="Date" content="2022-01-24" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)</h1>
+<!-- received="Mon Jan 24 16:00:02 2022" -->
+<!-- isoreceived="20220125000002" -->
+<!-- sent="Mon, 24 Jan 2022 23:51:36 +0000" -->
+<!-- isosent="20220124235136" -->
+<!-- name="Michael Coleman" -->
+<!-- email="mcolema5.uoregon.edu" -->
+<!-- subject="Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)" -->
+<!-- id="MWHPR1001MB217473AD03B99F7599EC8D839A5E9.MWHPR1001MB2174.namprd10.prod.outlook.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20220124142700.2q5bxswxy3qw7xiq.pop-os.localdomain" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0211.html" accesskey="d" title="Pranabesh Mandal (PhD, Bioinformatics August-2019): &quot;[AMBER] Regarding targeted md&quot;">Next message</a> ]
+[ <a href="0209.html" title="Prithviraj Nandigrami: &quot;Re: [AMBER] Restraint file for amber20 with pmemd.cuda implementation&quot;">Previous message</a> ]
+[ <a href="0198.html" title="David A Case: &quot;Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0214.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg210" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg210" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg210" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg210" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Michael Coleman &lt;<a href="mailto:mcolema5.uoregon.edu?Subject=Re%3A%20%5BAMBER%5D%20any%20working%20singularity%20or%20docker%20recipe%3F%20(esp%20for%20CUDA%20and%20MPI)">mcolema5.uoregon.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 24 Jan 2022 23:51:36 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />First, please note that I'm merely a happy user of Spack--the glory goes to others, and especially those making recent updates to the Amber recipe.
+<br />
+<br />Looking again at a non-Spack build, I start with this (again, on RHEL 7.9)
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;spack load --first 'cmake.3.20.3' 'cuda.10.2.89'
+<br />
+<br />and then run './run_cmake' on what I believe is a clean tree.
+<br />
+<br />This fails with
+<br />
+<br />-- Updater done.  If you want to install updates, then set the APPLY_UPDATES variable to true.
+<br />
+-- Checking whether to use built-in libraries...
+<br />
+-- Looking for complex.h
+<br />
+-- Looking for complex.h - found
+<br />
+-- Looking for rl_initialize in libreadline.so
+<br />
+-- Looking for rl_initialize in libreadline.so - not found
+<br />
+-- Detailed information about why this check failed can be found in /packages/amber/amber20_src/build/CMakeFiles/CMakeError.log
+<br />
+-- Could NOT find Readline (missing: READLINE_WORKS)
+<br />
+CMake Error at cmake/3rdPartyTools.cmake:84 (message):
+<br />
+&nbsp;&nbsp;3rd party program readline is not bundled and cannot be built inside Amber.
+<br />
+Call Stack (most recent call first):
+<br />
+&nbsp;&nbsp;cmake/3rdPartyTools.cmake:189 (set_3rdparty)
+<br />
+&nbsp;&nbsp;CMakeLists.txt:190 (include)
+<br />
+<br />These diagnostics aren't really correct.  Looking in CMakeError.log, there seem to be two issues.
+<br />
+<br />The latter is this
+<br />
+<br />Determining if the function rl_initialize exists in the library  failed with the following output:
+<br />
+Change Dir: /packages/amber/amber20_src/build/CMakeFiles/CMakeTmp
+<br />
+<br />Run Build Command(s):/bin/gmake -f Makefile cmTC_83ce1/fast &amp;&amp; /bin/gmake  -f CMakeFiles/cmTC_83ce1.dir/build.make CMakeFiles/cmTC_83ce1.dir/build
+<br />
+gmake[1]: Entering directory `/gpfs/packages/amber/amber20_src/build/CMakeFiles/CMakeTmp'
+<br />
+Building C object CMakeFiles/cmTC_83ce1.dir/TryLinkLibrary.c.o
+<br />
+/bin/gcc   -fPIE -std=gnu99 -o CMakeFiles/cmTC_83ce1.dir/TryLinkLibrary.c.o -c /packages/amber/amber20_src/build/CMakeFiles/CMakeTmp/TryLinkLibrary.c
+<br />
+In file included from /usr/include/readline/readline.h:35:0,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from /packages/amber/amber20_src/build/CMakeFiles/CMakeTmp/TryLinkLibrary.c:2:
+<br />
+/usr/include/readline/rltypedefs.h:64:28: error: unknown type name 'FILE'
+<br />
+&nbsp;typedef int rl_getc_func_t PARAMS((FILE *));
+<br />
+<br />I'm inclined to agree with this comment that this is actually a bug in readline.
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://stackoverflow.com/questions/28008167/errors-when-trying-to-build-in-cygwin#comment55924212_29013068">https://stackoverflow.com/questions/28008167/errors-when-trying-to-build-in-cygwin#comment55924212_29013068</a>
+<br />
+<br /><br />There was also an earlier error
+<br />
+<br />Run Build Command(s):/bin/gmake -f Makefile cmTC_ccb50/fast &amp;&amp; /bin/gmake  -f CMakeFiles/cmTC_ccb50.dir/build.make CMakeFiles/cmTC_ccb50.dir/build
+<br />
+gmake[1]: Entering directory `/gpfs/packages/amber/amber20_src/build/CMakeFiles/CMakeTmp'
+<br />
+Building C object CMakeFiles/cmTC_ccb50.dir/src.c.o
+<br />
+/bin/gcc -DCMAKE_HAVE_LIBC_PTHREAD  -fPIC  -std=gnu99 -o CMakeFiles/cmTC_ccb50.dir/src.c.o -c /packages/amber/amber20_src/build/CMakeFiles/CMakeTmp/src.c
+<br />
+Linking C executable cmTC_ccb50
+<br />
+/gpfs/packages/spack/spack/opt/spack/linux-rhel7-broadwell/gcc-8.2.0/cmake-3.20.3-elxnmcva6scgvkhjgci4yfkhnjqkdj4a/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ccb50.dir/link.txt --verbose=1
+<br />
+/bin/gcc -fPIC  CMakeFiles/cmTC_ccb50.dir/src.c.o -o cmTC_ccb50
+<br />
+CMakeFiles/cmTC_ccb50.dir/src.c.o: In function `main':
+<br />
+src.c:(.text+0x2f): undefined reference to `pthread_create'
+<br />
+src.c:(.text+0x3b): undefined reference to `pthread_detach'
+<br />
+src.c:(.text+0x47): undefined reference to `pthread_cancel'
+<br />
+src.c:(.text+0x58): undefined reference to `pthread_join'
+<br />
+src.c:(.text+0x6c): undefined reference to `pthread_atfork'
+<br />
+collect2: error: ld returned 1 exit status
+<br />
+gmake[1]: *** [cmTC_ccb50] Error 1
+<br />
+gmake[1]: Leaving directory `/gpfs/packages/amber/amber20_src/build/CMakeFiles/CMakeTmp'
+<br />
+gmake: *** [cmTC_ccb50/fast] Error 2
+<br />
+<br />I'm uncertain whether this is an actual failure or just a failed attempt to find pthread in one place, perhaps followed by a second successful attempt later.
+<br />
+<br />I briefly tried loading Spack 'readline', but this doesn't immediately work.  In general, Spack libraries don't export CPATH/LIBRARY_PATH/etc, and I doubt 'cmake' will attend to them anyway.
+<br />
+<br />Hence the next step, which is to retry the Spack amber recipe, which has improved since I last tried it a few months ago.
+<br />
+<br /><br />Regarding the CUDA gencode options, it looks like these might be set in a lot of places, and I'm not sure all of these are cross-consistent:
+<br />
+<br />$ ls -ld $(fgrep -rle compute_50 amber20_src/)
+<br />
+-rwxr-xr-x 1 mcolema5 swmgr 164819 Apr 27  2021 amber20_src/AmberTools/src/configure2
+<br />
+-rwxr-xr-x 1 mcolema5 swmgr  85502 Apr 26  2021 amber20_src/AmberTools/src/cpptraj/configure
+<br />
+-rw-r--r-- 1 mcolema5 swmgr  19559 Aug  1  2019 amber20_src/AmberTools/src/cusplibrary-cuda9/testing/vs_tester/device_cuda_tester/device_cuda_tester.vcxproj
+<br />
+-rw-r--r-- 1 mcolema5 swmgr   5646 Apr 26  2021 amber20_src/AmberTools/src/quick/cmake/CudaConfig.cmake
+<br />
+-rwxr-xr-x 1 mcolema5 swmgr  43857 Apr 26  2021 amber20_src/AmberTools/src/quick/configure
+<br />
+-rw-r--r-- 1 mcolema5 swmgr   7090 Apr 26  2021 amber20_src/AmberTools/src/quick/quick-cmake/QUICKCudaConfig.cmake
+<br />
+-rw-r--r-- 1 mcolema5 swmgr   5749 Apr 26  2021 amber20_src/cmake/CudaConfig.cmake
+<br />
+<br />Hard to know what to suggest, but it would be nice if there was just one place where the gencode options were configured.  Certainly, guidance would be handy on which options are best and are possible for each card and version of CUDA.  And of course, an obvious diagnostic if this should fail.
+<br />
+<br />Regards,
+<br />
+Mike
+<br />
+<br /><br />-----Original Message-----
+<br />
+From: David A Case &lt;david.case.rutgers.edu&gt; 
+<br />
+Sent: Monday, January 24, 2022 6:27 AM
+<br />
+To: AMBER Mailing List &lt;amber.ambermd.org&gt;
+<br />
+Subject: Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)
+<br />
+<br />On Sun, Jan 23, 2022, Michael Coleman wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;The documented Amber build procedure isn't working for us
+</em><br />
+<br />It would be great (if you have the time) to see what is going wrong with
+<br />
+the regular build procedure.  Is it this problem?
+<br />
+<br /><em class="quotelev1">&gt;The 'cuda.10.2.89' works around an exasperating undocumented behavior of
+</em><br />
+<em class="quotelev1">&gt;the Amber build, which is that GPU code is generated or not generated for
+</em><br />
+<em class="quotelev1">&gt;different cards depending on the CUDA version number.  In particular, K80
+</em><br />
+<em class="quotelev1">&gt;code is not generated for CUDA 11, even though CUDA 11 supports K80s.  The
+</em><br />
+<em class="quotelev1">&gt;Amber code doesn't fail obviously for lack of this code, but rather one
+</em><br />
+<em class="quotelev1">&gt;gets an obscure diagnostic.
+</em><br />
+<br />For Amber developers: is there a reason that support for SM3.0 is turned
+<br />
+off for Cuda 11 (in CudaConfig.cmake)?  Note that (officially?) the K80
+<br />
+card is supposed to use SM3.7, but there is a comment (outdated?) in
+<br />
+CudaConfig.cmake that SM3.0 &quot;may be better&quot;.  But then we turn off SM3.0 for
+<br />
+Cuda 11, and never use SM3.
+<br />
+<br />For Mike:  if the above is the problem, you might try just editing
+<br />
+CudaConfig.cmake for your installation to allow either SM3.0 or SM3.7 code
+<br />
+to be generated.  And if other things are problematic, it would good to know
+<br />
+about them.  In any event, thanks for your work on this, including on spack.
+<br />
+<br />....dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!C5qS4YX3!UpMAKAb3rwhBqwoehq1ICeHu5j6DYheRagOWjvbbuXdlSxGNZVJ4Q1Ivu9W1TJH0pwE">https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!C5qS4YX3!UpMAKAb3rwhBqwoehq1ICeHu5j6DYheRagOWjvbbuXdlSxGNZVJ4Q1Ivu9W1TJH0pwE</a>$ 
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jan 24 2022 - 16:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0211.html" title="Next message in the list">Pranabesh Mandal (PhD, Bioinformatics August-2019): "[AMBER] Regarding targeted md"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0209.html" title="Previous message in the list">Prithviraj Nandigrami: "Re: [AMBER] Restraint file for amber20 with pmemd.cuda implementation"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0198.html" title="Message to which this message replies">David A Case: "Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0214.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0214.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg210" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg210" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg210" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg210" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

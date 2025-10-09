@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results? from David Cerutti on 2020-03-06 (Amber Archive Mar 2020)</title>
+<meta name="Author" content="David Cerutti (dscerutti.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?" />
+<meta name="Date" content="2020-03-06" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?</h1>
+<!-- received="Fri Mar  6 11:30:02 2020" -->
+<!-- isoreceived="20200306193002" -->
+<!-- sent="Fri, 6 Mar 2020 14:10:49 -0500" -->
+<!-- isosent="20200306191049" -->
+<!-- name="David Cerutti" -->
+<!-- email="dscerutti.gmail.com" -->
+<!-- subject="Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?" -->
+<!-- id="CAEmzWj0znWDLoNVD23VNrumRWj5SE8jZP0TSCqGMR7uwVwzHYg.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAC1EcEqhuKPZJHdHAK5eCKv9iWg4je=EjK3zMGCAz3mkn4qy7Q.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0068.html" accesskey="d" title="Robin Betz: &quot;Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?&quot;">Next message</a> ]
+[ <a href="0066.html" title="Adrian Roitberg: &quot;Re: [AMBER] linear interaction energy tool in AMBER&quot;">Previous message</a> ]
+[ <a href="0057.html" title="Erdem Yeler: &quot;[AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0068.html" accesskey="t" title="Robin Betz: &quot;Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg67" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg67" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg67" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg67" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David Cerutti &lt;<a href="mailto:dscerutti.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20When%20I%20use%20fitted%20parameters%20as%20initial%20parameters%20in%20paramfit%2C%20I%20am%20getting%20different%20results%3F">dscerutti.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 6 Mar 2020 14:10:49 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+I can't advise on what exactly ParamFit is doing, but your hunch about the
+<br />
+&quot;K&quot; parameter that raises and lowers the waterline for all energies sounds
+<br />
+right.  Let me take this opportunity, if you are just getting started with
+<br />
+your project in ParamFit, to point you to mdgx.  There is another tutorial
+<br />
+on developing parameters with mdgx here:
+<br />
+<br /><a href="http://ambermd.org/tutorials/advanced/tutorial32/index.php">http://ambermd.org/tutorials/advanced/tutorial32/index.php</a>
+<br />
+<br />This is the program that we will support going forward, and which will be
+<br />
+receiving updates in Amber20 and beyond.  You don't need to do the IPolQ
+<br />
+charges to use the bonded parameter fitting module--whatever you think the
+<br />
+charges should be, it'll take that electrostatic surface as part of its MM
+<br />
+energy estimates.
+<br />
+<br />The mdgx development cycle MIGHT also give you different answers if you
+<br />
+start from different parameter settings.  This will be the case if you are
+<br />
+using certain types of regularization (the fitted parameters are tethered
+<br />
+towards an absolute value like zero, or towards the values in the initial
+<br />
+guess).  The mdgx cycle is designed to have parameters evolve by adding
+<br />
+more and more fitting data to the training set, a learning process whereby
+<br />
+we apply each successive model to manipulate molecules via energy
+<br />
+minimization and then test whether the true QM energy surface is reflected
+<br />
+in the results.
+<br />
+<br />The first  advantage you'll find with mdgx is that you don't have to
+<br />
+hand-prune each of your structures.  It creates things that are by
+<br />
+definition energy minima on the  MM surface of the initial guess model
+<br />
+(i.e. an antechamber-interpolated GAFF residue prepi file), and
+<br />
+automatically prunes things that fail to meet certain sanity checks.  The
+<br />
+tutorial above uses the &amp;configs module to do this, but a more detailed
+<br />
+tutorial on that one module is here:
+<br />
+<br /><a href="http://ambermd.org/tutorials/basic/tutorial6/index.php">http://ambermd.org/tutorials/basic/tutorial6/index.php</a>
+<br />
+<br />The second clear advantage is that mdgx doesn't bother you with fitting the
+<br />
+K parameter--it has the same kind of math, but it's all folded into the
+<br />
+least squares problem so you automatically get the best possible K for
+<br />
+every molecule in your training set.  It tells you what those were in the
+<br />
+output, if you're interested, but there's not much to read in the tea
+<br />
+leaves.  I've agonized over the math and I'm certain that it is the correct
+<br />
+way to go about this.  Paramfit has the right idea--other modeling
+<br />
+workflows miss it entirely--but with mdgx you have peace of mind that there
+<br />
+is no better way to make the relative MM energies match the QM surface.
+<br />
+<br />As always, parameter fitting will take as long as you give it.  mdgx is
+<br />
+written to smooth out a lot of the process, and there's more I can do, but
+<br />
+this is all geared towards making it easier to manipulate a large amount of
+<br />
+data and synthesize it into a coherent MM model.  You will have to decide
+<br />
+at what point you are satisfied with the convergence.  In my own work, I'm
+<br />
+starting to ask fundamental questions like whether it is possible to get
+<br />
+better MM models with customized partial charges on one chemical group in
+<br />
+different contexts (e.g. the natural amino acids' backbone), or whether
+<br />
+such improvements are just a mirage.  With 64 or more conformations of each
+<br />
+amino acid in the training data and proper care to avoid undesirable
+<br />
+features like hydrogen bonding between side chain and backbone atoms in the
+<br />
+structures, it's becoming apparent that unique sets of charges for each
+<br />
+amino acid are a negligible benefit relative to a single, consensus charge
+<br />
+set.  Plus, the consensus charge set makes it easier to get torsion
+<br />
+parameters (a la ParamFit, mdgx &amp;param module) to put the keystone into the
+<br />
+overall energy surface.
+<br />
+<br />Dave
+<br />
+<br /><br /><br />On Fri, Mar 6, 2020 at 7:12 AM Erdem Yeler &lt;erdemyeler.gmail.com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hello amberers,
+</em><br />
+<em class="quotelev1">&gt; Let's say I am optimizing X dihedral by using paramfit. After running
+</em><br />
+<em class="quotelev1">&gt; paramfit I obtained fitted.frcmod. And fit_output_energy.out file shows
+</em><br />
+<em class="quotelev1">&gt;  that: molecular mechanic energies obtained by using &quot;fitted.frcmod&quot; file
+</em><br />
+<em class="quotelev1">&gt; are, very close to  quantum mechanic calculations. No problem so far,
+</em><br />
+<em class="quotelev1">&gt; everything happened as we expected.
+</em><br />
+<em class="quotelev1">&gt; But, when I use fitted.frcmod file as initial parameters and running
+</em><br />
+<em class="quotelev1">&gt; paramfit with these parameters (quantum_A.dat, prmtop and mdcrd files exc..
+</em><br />
+<em class="quotelev1">&gt; are the same, only inital frcmod file was changed), this time
+</em><br />
+<em class="quotelev1">&gt; fit(2)_output_energy.out file says that : my &quot;initial parameters&quot; are very
+</em><br />
+<em class="quotelev1">&gt; far away from quantum mechanic calculations (even if I referenced &quot;relative
+</em><br />
+<em class="quotelev1">&gt; energies&quot; (relative energy on the chart = energy-minimum energy, so there
+</em><br />
+<em class="quotelev1">&gt; is no need to be use Ka)). But how can this happen?  Paramfit found some
+</em><br />
+<em class="quotelev1">&gt; parameters and it says these parameters are good but when I re-use them as
+</em><br />
+<em class="quotelev1">&gt; initial, this time how can exactly the same parameters could be &quot;bad
+</em><br />
+<em class="quotelev1">&gt; parameters&quot; as initial? I am really confused. Am I doing something wrong?
+</em><br />
+<em class="quotelev1">&gt; or this result is normal? (I tested many many times).
+</em><br />
+<em class="quotelev1">&gt; Thank you so much...
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Mar 06 2020 - 11:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0068.html" title="Next message in the list">Robin Betz: "Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0066.html" title="Previous message in the list">Adrian Roitberg: "Re: [AMBER] linear interaction energy tool in AMBER"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0057.html" title="Message to which this message replies">Erdem Yeler: "[AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0068.html" title="Next message in this discussion thread">Robin Betz: "Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg67" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg67" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg67" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg67" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

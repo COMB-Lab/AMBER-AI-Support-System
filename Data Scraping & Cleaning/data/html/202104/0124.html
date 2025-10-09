@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] RMSIP from Daniel Roe on 2021-04-16 (Amber Archive Apr 2021)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] RMSIP" />
+<meta name="Date" content="2021-04-16" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] RMSIP</h1>
+<!-- received="Fri Apr 16 12:30:03 2021" -->
+<!-- isoreceived="20210416193003" -->
+<!-- sent="Fri, 16 Apr 2021 15:08:31 -0400" -->
+<!-- isosent="20210416190831" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] RMSIP" -->
+<!-- id="CAAC0qOZG621JHgNe4JMNiToYznic4xSUGubMPoE1HeX3gN+DoA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="963701267.4605748.1618586591848.mail.yahoo.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0125.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] .rst file not produced during production run&quot;">Next message</a> ]
+[ <a href="0123.html" title="Roberts, Amy L2: &quot;Re: [AMBER] .rst file not produced during production run&quot;">Previous message</a> ]
+[ <a href="0115.html" title="waleed zalloum: &quot;[AMBER] RMSIP&quot;">Maybe in reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg124" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg124" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg124" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg124" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20RMSIP">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 16 Apr 2021 15:08:31 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />On Fri, Apr 16, 2021 at 11:23 AM waleed zalloum
+<br />
+&lt;waleed_zalloum.yahoo.com&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; readdata evecs-ca.dat name pc1
+</em><br />
+<em class="quotelev1">&gt; readdata evecs-ca.dat name pc2
+</em><br />
+<br />Did this give an error? You didn't specify. Assuming there is indeed
+<br />
+&quot;modes&quot; data in evecs-ca.dat you should see a message like:
+<br />
+<br />Reading 'evecs-ca.dat' as Evecs file with name 'pc1'
+<br />
+<br />Also, you don't need to specify the same file twice. By default
+<br />
+cpptraj will read all modes from the file.
+<br />
+<br /><em class="quotelev1">&gt; runanalysis modes rmsip name pc1 name2 pc2 beg 1 end 1 out rmsip
+</em><br />
+<br />You're doing the RMSIP of eigenvector 1 to 1 which is not very useful.
+<br />
+Try 'beg 1 end 2' instead.
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Also, I projected the trajectory coordinates along pcs and got a file for this process (pca12-ca). I tried to read it instead of evecs-ca.dat in the above comman but it gave me the following error:
+</em><br />
+<br />No, this won't work. Projections are not the same as &quot;modes&quot; (i.e.
+<br />
+eigenvectors). You can use eigenvectors to get projections, but you
+<br />
+can't feed the projection values back in place of modes.
+<br />
+<br />Hope this helps,
+<br />
+<br />-Dan
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; INPUT: Reading Input from file pcin-emsip
+</em><br />
+<em class="quotelev1">&gt;   [readdata pca12-ca name pc1 ]
+</em><br />
+<em class="quotelev1">&gt;         Reading 'pca12-ca' as Standard Data File with name 'pc1'
+</em><br />
+<em class="quotelev1">&gt;         DataFile pca12-ca has 4 columns, 62501 lines.
+</em><br />
+<em class="quotelev1">&gt;         DataFile contains labels:
+</em><br />
+<em class="quotelev1">&gt;   1: Frame
+</em><br />
+<em class="quotelev1">&gt;   2: Mode1
+</em><br />
+<em class="quotelev1">&gt;   3: Mode2
+</em><br />
+<em class="quotelev1">&gt;   4: Mode3
+</em><br />
+<em class="quotelev1">&gt;         Index column is 1
+</em><br />
+<em class="quotelev1">&gt;   [readdata pca12-ca name pc2]
+</em><br />
+<em class="quotelev1">&gt;         Reading 'pca12-ca' as Standard Data File with name 'pc2'
+</em><br />
+<em class="quotelev1">&gt;         DataFile pca12-ca has 4 columns, 62501 lines.
+</em><br />
+<em class="quotelev1">&gt;         DataFile contains labels:
+</em><br />
+<em class="quotelev1">&gt;   1: Frame
+</em><br />
+<em class="quotelev1">&gt;   2: Mode1
+</em><br />
+<em class="quotelev1">&gt;   3: Mode2
+</em><br />
+<em class="quotelev1">&gt;   4: Mode3
+</em><br />
+<em class="quotelev1">&gt;         Index column is 1
+</em><br />
+<em class="quotelev1">&gt;   [runanalysis modes rmsip name pc1 name2 pc2 beg 1 end 1 out rmsip]
+</em><br />
+<em class="quotelev1">&gt; Error: 'pc1' not found: Modes should be read in prior to this command with 'readdata'
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; TIME: Total analysis execution time: 0.0000 seconds.
+</em><br />
+<em class="quotelev1">&gt;         1 errors encountered reading input.
+</em><br />
+<em class="quotelev1">&gt; TIME: Total execution time: 0.0960 seconds.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Also, I tried to read a file containing the first eigenvector and the other has 50 eignevector but it gave me a result of 1 as below.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; readdata evecs-firstvector-ca.dat name pc1
+</em><br />
+<em class="quotelev1">&gt; readdata evecs-allvectors-ca.dat name pc2
+</em><br />
+<em class="quotelev1">&gt; runanalysis modes rmsip name pc1 name2 pc2 beg 1 end 1 out rmsip
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I am not fully aware of what I have to do to calculate rmsip for each mode and then plot rmsip vs each mode.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thank you, indeed
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Waleed
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Friday, 16 April 2021, 16:50:18 EEST, Daniel Roe &lt;daniel.r.roe.gmail.com&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Hi,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Fri, Apr 16, 2021 at 12:01 AM waleed zalloum
+</em><br />
+<em class="quotelev1">&gt; &lt;waleed_zalloum.yahoo.com&gt; wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt; I tried to used modes of cpptraj, but with no succes.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Can you be more specific? What was the exact input you gave cpptraj?
+</em><br />
+<em class="quotelev1">&gt; Did you try using 'mode rmsip'? Did you get an error message?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; -Dan
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Apr 16 2021 - 12:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0125.html" title="Next message in the list">David A Case: "Re: [AMBER] .rst file not produced during production run"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0123.html" title="Previous message in the list">Roberts, Amy L2: "Re: [AMBER] .rst file not produced during production run"</a></li>
+<li><dfn>Maybe in reply to</dfn>: <a href="0115.html" title="Message to which this message replies">waleed zalloum: "[AMBER] RMSIP"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg124" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg124" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg124" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg124" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Umbrella Sampling at constant pH using amber 22 from Adrian Roitberg via AMBER on 2022-10-27 (Amber Archive Oct 2022)</title>
+<meta name="Author" content="Adrian Roitberg via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Umbrella Sampling at constant pH using amber 22" />
+<meta name="Date" content="2022-10-27" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Umbrella Sampling at constant pH using amber 22</h1>
+<!-- received="Thu Oct 27 11:30:02 2022" -->
+<!-- isoreceived="20221027183002" -->
+<!-- sent="Thu, 27 Oct 2022 14:07:39 -0400" -->
+<!-- isosent="20221027180739" -->
+<!-- name="Adrian Roitberg via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Umbrella Sampling at constant pH using amber 22" -->
+<!-- id="21c0dfb3-8d77-51f4-fa41-8d4b5f40dc1d.ufl.edu" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAM+tB7jadyo5MJPB36zPiefd9Z31X2x+PdpLKt3ed9-s30k0sQ.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0141.html" accesskey="d" title="3163490855--- via AMBER: &quot;[AMBER] &#20320;&#22909;amber@ambermd.org&#20320;&#22909;&quot;">Next message</a> ]
+[ <a href="0139.html" title="Dulal Mondal via AMBER: &quot;[AMBER] Umbrella Sampling at constant pH using amber 22&quot;">Previous message</a> ]
+[ <a href="0139.html" title="Dulal Mondal via AMBER: &quot;[AMBER] Umbrella Sampling at constant pH using amber 22&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg140" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg140" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg140" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg140" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Adrian Roitberg via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Umbrella%20Sampling%20at%20constant%20pH%20using%20amber%2022">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 27 Oct 2022 14:07:39 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />Three things:
+<br />
+<br />1. There was a change in the cpin format from amber 18, which affects 
+<br />
+cases where you try to titrate &quot;too&quot; many residues at once.
+<br />
+<br />Please re-create your cpin using Amber22 and try again.
+<br />
+<br />2. I would warn you a lot against titrating 72 residues at once. Even if 
+<br />
+every residue in your protein was somehow changing protonation states at 
+<br />
+the pHs you want, you would need very long MD runs to feel like you 
+<br />
+sampled both conformational space AND protonation space.
+<br />
+<br />Think of the following: The regular pKa of an aspartic acid is ~4 and of 
+<br />
+a lysine is ~10. What are the chances that you will find a pH where BOTH 
+<br />
+of those residue change protonation state under those conditions ? There 
+<br />
+are examples where that happens, but they are so rare, that you need a 
+<br />
+really good reason to do it, because of the extra computational cost.
+<br />
+<br />So, if you are running this at [H=4 for example, I would not bother with 
+<br />
+CYS, TYR, LYS, unless you KNOW something about the system beforehand.
+<br />
+<br />At pH 9, I would not bother with ASP/GLU
+<br />
+<br /><br />In particular, if any of these residues is fully solvent exposed and not 
+<br />
+making strong contacts with the protein, I  would not try to titrate them.
+<br />
+<br />3. You can titrate CYS and TYR, but they are much less validated than 
+<br />
+the other residues. In fact, I have almost never seen a deprotonated 
+<br />
+tyrosine, except in VERY particular circumstances.
+<br />
+<br />Our parameters for CYS are not quite right yet, we are almost finished 
+<br />
+with a good set, which we will publish when ready.
+<br />
+<br />Adrian
+<br />
+<br /><br /><br />On 10/27/22 1:19 PM, Dulal Mondal via AMBER wrote:
+<br />
+<em class="quotelev1">&gt; [External Email]
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Dear Users,
+</em><br />
+<em class="quotelev1">&gt; I am running Umbrella Sampling at constant pH. I found the following error.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; &quot;At line 233 of file /home/dulal/amber22_src/src/pmemd/src/constantph.F90
+</em><br />
+<em class="quotelev1">&gt; (unit = 23, file = 'amber.cpin')
+</em><br />
+<em class="quotelev1">&gt; Fortran runtime error: Cannot match namelist object name 'residue:&quot;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The cpin file is attached below. I generated the cpin file using amber 18.
+</em><br />
+<em class="quotelev1">&gt; Can any one help me?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; With regards,
+</em><br />
+<em class="quotelev1">&gt; Dulal Mondal
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br /><pre>
+-- 
+Dr. Adrian E. Roitberg (he/him/el)
+V.T. and Louise Jackson Professor in Chemistry
+Department of Chemistry
+University of Florida
+roitberg.ufl&#46;<!--nospam-->edu
+352-392-6972
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Thu Oct 27 2022 - 11:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0141.html" title="Next message in the list">3163490855--- via AMBER: "[AMBER] &#20320;&#22909;amber@ambermd.org&#20320;&#22909;"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0139.html" title="Previous message in the list">Dulal Mondal via AMBER: "[AMBER] Umbrella Sampling at constant pH using amber 22"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0139.html" title="Message to which this message replies">Dulal Mondal via AMBER: "[AMBER] Umbrella Sampling at constant pH using amber 22"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg140" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg140" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg140" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg140" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

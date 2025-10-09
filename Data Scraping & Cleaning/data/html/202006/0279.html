@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Problems with RMSF calculations from kartik.lakshmi.gmail.com on 2020-06-26 (Amber Archive Jun 2020)</title>
+<meta name="Author" content="kartik.lakshmi.gmail.com (kartik.lakshmi.gmail.com)" />
+<meta name="Subject" content="[AMBER] Problems with RMSF calculations" />
+<meta name="Date" content="2020-06-26" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Problems with RMSF calculations</h1>
+<!-- received="Fri Jun 26 12:00:03 2020" -->
+<!-- isoreceived="20200626190003" -->
+<!-- sent="Fri, 26 Jun 2020 11:48:47 -0700" -->
+<!-- isosent="20200626184847" -->
+<!-- name="kartik.lakshmi.gmail.com" -->
+<!-- email="kartik.lakshmi.gmail.com" -->
+<!-- subject="[AMBER] Problems with RMSF calculations" -->
+<!-- id="834D79B9-C399-43B4-951B-5BCF5B7F7209.hxcore.ol" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0280.html" accesskey="d" title="Billiot, Eugene: &quot;[AMBER] restraining surfactant tails in micelles intact&quot;">Next message</a> ]
+[ <a href="0278.html" title="Carlos Simmerling: &quot;Re: [AMBER] What is happening in my Molecular Dynamics in the beginning of every 500 steps ?&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0282.html" accesskey="t" title="Kenneth Huang: &quot;Re: [AMBER] Problems with RMSF calculations&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg279" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg279" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg279" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg279" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: &lt;<a href="mailto:kartik.lakshmi.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Problems%20with%20RMSF%20calculations">kartik.lakshmi.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 26 Jun 2020 11:48:47 -0700</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+&nbsp;&nbsp;&nbsp;I have a total of 500 ns trajectory - 250 + 250 ns - starting from the same
+<br />
+&nbsp;&nbsp;&nbsp;eq.rst file. I calculated the RMSF (wrt to the first frame as the reference)
+<br />
+&nbsp;&nbsp;&nbsp;for this 500 ns using this cpptraj script:
+<br />
+<br />&nbsp;&nbsp;&nbsp;parm ../../prod/pd1/wt.prmtop
+<br />
+&nbsp;&nbsp;&nbsp;trajin ../../prod/pd1/[1]wt_[2]pd.nc
+<br />
+&nbsp;&nbsp;&nbsp;trajin ../../prod/pd2/[3]wt_[4]pd.nc
+<br />
+&nbsp;&nbsp;&nbsp;reference ../../prod/pd1/[5]wt_[6]pd.nc 1
+<br />
+&nbsp;&nbsp;&nbsp;rms .CA reference
+<br />
+&nbsp;&nbsp;&nbsp;atomicfluct out RMSF.dat .CA byres
+<br />
+&nbsp;&nbsp;&nbsp;run
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;I would expect the RMSF calculated using this script to give the average
+<br />
+&nbsp;&nbsp;&nbsp;RMSF from the two production runs but it seems that the RMSF calculated
+<br />
+&nbsp;&nbsp;&nbsp;using the input above is not the true average of the two trajectories.
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;The attached graph will make it clearer.
+<br />
+&nbsp;&nbsp;&nbsp;comp_mean.png contains the RMSF calculated using cpptraj for the entire PD1
+<br />
+&nbsp;&nbsp;&nbsp;and PD2 and for PD1 + PD2. I have also plotted here the mean RMSFs (for 10ns
+<br />
+&nbsp;&nbsp;&nbsp;chunks) for PD 1 and PD 2 that I calculated using python. Am I using the
+<br />
+&nbsp;&nbsp;&nbsp;RMSF script incorrectly? I want to calculate the residue-wise fluctuations
+<br />
+&nbsp;&nbsp;&nbsp;of the Ca atoms of the peptide backbone of my entire simulation (i.e. PD 1
+<br />
+&nbsp;&nbsp;&nbsp;and 2 combined).
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;Thanks a lot in advance for all the help!
+<br />
+<br />&nbsp;&nbsp;&nbsp;Kartik Lakshmi Rallapalli
+<br />
+<br />References
+<br />
+<br />&nbsp;&nbsp;&nbsp;1. <a href="https://urldefense.com/v3/__http:/wt_pd.nc__;!!Mih3wA!RkWVHZ9uzYaTsfRwSkKOl8GwVSF_aGB56sRRlI2gEzyf_i_Lj7VJPgwZCZ9m">https://urldefense.com/v3/__http:/wt_pd.nc__;!!Mih3wA!RkWVHZ9uzYaTsfRwSkKOl8GwVSF_aGB56sRRlI2gEzyf_i_Lj7VJPgwZCZ9m</a>$
+<br />
+&nbsp;&nbsp;&nbsp;2. <a href="http://pd.nc/">http://pd.nc/</a>
+<br />
+&nbsp;&nbsp;&nbsp;3. <a href="https://urldefense.com/v3/__http:/wt_pd.nc__;!!Mih3wA!RkWVHZ9uzYaTsfRwSkKOl8GwVSF_aGB56sRRlI2gEzyf_i_Lj7VJPgwZCZ9m">https://urldefense.com/v3/__http:/wt_pd.nc__;!!Mih3wA!RkWVHZ9uzYaTsfRwSkKOl8GwVSF_aGB56sRRlI2gEzyf_i_Lj7VJPgwZCZ9m</a>$
+<br />
+&nbsp;&nbsp;&nbsp;4. <a href="http://pd.nc/">http://pd.nc/</a>
+<br />
+&nbsp;&nbsp;&nbsp;5. <a href="https://urldefense.com/v3/__http:/wt_pd.nc__;!!Mih3wA!RkWVHZ9uzYaTsfRwSkKOl8GwVSF_aGB56sRRlI2gEzyf_i_Lj7VJPgwZCZ9m">https://urldefense.com/v3/__http:/wt_pd.nc__;!!Mih3wA!RkWVHZ9uzYaTsfRwSkKOl8GwVSF_aGB56sRRlI2gEzyf_i_Lj7VJPgwZCZ9m</a>$
+<br />
+&nbsp;&nbsp;&nbsp;6. <a href="http://pd.nc/">http://pd.nc/</a>
+<br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<p><img src="att-0279/comp_mean.png" alt="comp_mean.png" />
+<br />
+(image/png attachment: <a href="att-0279/comp_mean.png">comp_mean.png</a>)</p>
+<!-- attachment="comp_mean.png" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Fri Jun 26 2020 - 12:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0280.html" title="Next message in the list">Billiot, Eugene: "[AMBER] restraining surfactant tails in micelles intact"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0278.html" title="Previous message in the list">Carlos Simmerling: "Re: [AMBER] What is happening in my Molecular Dynamics in the beginning of every 500 steps ?"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0282.html" title="Next message in this discussion thread">Kenneth Huang: "Re: [AMBER] Problems with RMSF calculations"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0282.html" title="Message sent in reply to this message">Kenneth Huang: "Re: [AMBER] Problems with RMSF calculations"</a></li>
+<li><dfn>Reply</dfn>: <a href="0314.html" title="Message sent in reply to this message">Daniel Roe: "Re: [AMBER] Problems with RMSF calculations"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg279" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg279" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg279" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg279" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

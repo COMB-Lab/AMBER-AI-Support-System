@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Individual water lifetimes within a distance cutoff? from Kenneth Huang on 2020-06-09 (Amber Archive Jun 2020)</title>
+<meta name="Author" content="Kenneth Huang (kennethneltharion.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Individual water lifetimes within a distance cutoff?" />
+<meta name="Date" content="2020-06-09" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Individual water lifetimes within a distance cutoff?</h1>
+<!-- received="Tue Jun  9 21:00:03 2020" -->
+<!-- isoreceived="20200610040003" -->
+<!-- sent="Tue, 9 Jun 2020 23:55:20 -0400" -->
+<!-- isosent="20200610035520" -->
+<!-- name="Kenneth Huang" -->
+<!-- email="kennethneltharion.gmail.com" -->
+<!-- subject="Re: [AMBER] Individual water lifetimes within a distance cutoff?" -->
+<!-- id="CALeh7kAHwmEHfeWLmwijSJboX=NyREr1RcS7KCd16oJSOnRzig.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="1d6cf1fb4ff04ec682293aea42a3d61b.BN6PR0101MB3188.prod.exchangelabs.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0078.html" accesskey="d" title="Sofia Vasilakaki: &quot;[AMBER] atom type in a substituted pyrimidine&quot;">Next message</a> ]
+[ <a href="0076.html" title="HOCHEOL LIM: &quot;[AMBER] tleap - extract ion molecules and save it as pdb&quot;">Previous message</a> ]
+[ <a href="0063.html" title="Kenneth Huang: &quot;[AMBER] Individual water lifetimes within a distance cutoff?&quot;">Maybe in reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg77" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg77" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg77" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg77" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Kenneth Huang &lt;<a href="mailto:kennethneltharion.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Individual%20water%20lifetimes%20within%20a%20distance%20cutoff%3F">kennethneltharion.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 9 Jun 2020 23:55:20 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Karolina and Daniel,
+<br />
+<br />Thanks for the suggestions! The water in question is currently interfacial
+<br />
+between protein/DNA, though it is good to know there's a tool to look for
+<br />
+water internal of a protein. I'll take a look at the lifetime command, and
+<br />
+see if I can't get it to do something similar to what I want- thanks again!
+<br />
+<br />Best,
+<br />
+<br />Kenneth
+<br />
+<br />On Tue, Jun 9, 2020 at 11:01 AM Daniel Roe &lt;daniel.r.roe.gmail.com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hi,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I would probably use the 'hbond' command and select the residue of
+</em><br />
+<em class="quotelev1">&gt; interest to get hydrogen bonds between that residue and waters (you
+</em><br />
+<em class="quotelev1">&gt; can omit the angle criterion if you just want a distance criterion),
+</em><br />
+<em class="quotelev1">&gt; make sure I save the time series, then run lifetime analysis on that.
+</em><br />
+<em class="quotelev1">&gt; Something like:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; hbond HB &lt;residue mask&gt; solventdonor :WAT solventacceptor :WAT.O series
+</em><br />
+<em class="quotelev1">&gt; run
+</em><br />
+<em class="quotelev1">&gt; lifetime HB[solventhb] out solvent.lifetime.dat
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; If you want to play around with the 'lifetime' analysis it might be
+</em><br />
+<em class="quotelev1">&gt; better to write the hbond data to a file with the 'uvseries' keyword,
+</em><br />
+<em class="quotelev1">&gt; then read that data back in, e.g.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Run 1:
+</em><br />
+<em class="quotelev1">&gt; hbond HB &lt;residue mask&gt; solventdonor :WAT solventacceptor :WAT.O
+</em><br />
+<em class="quotelev1">&gt; series uvseries uv.dat
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Run2:
+</em><br />
+<em class="quotelev1">&gt; readdata uv.dat name UV
+</em><br />
+<em class="quotelev1">&gt; runanalysis UV out solvent.lifetime.dat
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; See the manual for full details on the keywords available for 'hbond'
+</em><br />
+<em class="quotelev1">&gt; and 'lifetime'.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Hope this helps!
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; -Dan
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Mon, Jun 8, 2020 at 7:19 PM Kenneth Huang
+</em><br />
+<em class="quotelev1">&gt; &lt;kennethneltharion.gmail.com&gt; wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Hi all,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; A slightly open ended question- does anyone have a good way for
+</em><br />
+<em class="quotelev1">&gt; calculating
+</em><br />
+<em class="quotelev2">&gt; &gt; the individual lifetimes for water within a distance cutoff? Ie, how long
+</em><br />
+<em class="quotelev2">&gt; &gt; is any given water within X distance of a residue present in consecutive
+</em><br />
+<em class="quotelev2">&gt; &gt; frames? So if water 100 was there for n=1 till n=100, it'd register as
+</em><br />
+<em class="quotelev1">&gt; 100
+</em><br />
+<em class="quotelev2">&gt; &gt; frames, and if that water ever came back after, it'd reset the counter
+</em><br />
+<em class="quotelev2">&gt; &gt; again.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I've managed to get a working script using a combination of
+</em><br />
+<em class="quotelev2">&gt; &gt; watershell+closest to fetch water IDs meeting some distance criteria, but
+</em><br />
+<em class="quotelev2">&gt; &gt; am running into issues with getting the lifetimes. My first instinct was
+</em><br />
+<em class="quotelev1">&gt; to
+</em><br />
+<em class="quotelev2">&gt; &gt; try to brute force it by measuring distance of water as-
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; distance x :waterID :resID
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; And then parse that output with awk, but then I realized I'd have to do
+</em><br />
+<em class="quotelev2">&gt; &gt; that for ~17,000 distinct water IDs, which seems very cost prohibitive.
+</em><br />
+<em class="quotelev1">&gt; It
+</em><br />
+<em class="quotelev2">&gt; &gt; seems like there should be something I could possibly use from the output
+</em><br />
+<em class="quotelev2">&gt; &gt; of closest, but I haven't been able to find anything so far.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; The solution I tried was to then grab the output from closest, and run it
+</em><br />
+<em class="quotelev2">&gt; &gt; through an R script that's able to determine how many frames it takes for
+</em><br />
+<em class="quotelev2">&gt; &gt; every water to migrate away from some inital point. However,trying to
+</em><br />
+<em class="quotelev1">&gt; track
+</em><br />
+<em class="quotelev2">&gt; &gt; individual water lifetimes, I'm running into similar issues with just the
+</em><br />
+<em class="quotelev2">&gt; &gt; sheer time/memory cost.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Best,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Kenneth
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; --
+</em><br />
+<em class="quotelev2">&gt; &gt; Ask yourselves, all of you, what power would hell have if those
+</em><br />
+<em class="quotelev1">&gt; imprisoned
+</em><br />
+<em class="quotelev2">&gt; &gt; here could not dream of heaven?
+</em><br />
+<em class="quotelev2">&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://nam12.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=02%7C01%7Ckhuang8%40student.gsu.edu%7Cb0edccd7a66e427ce0b308d80c860a44%7C704d822c358a47849a1649e20b75f941%7C0%7C0%7C637273117133957145&amp;amp;sda">https://nam12.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=02%7C01%7Ckhuang8%40student.gsu.edu%7Cb0edccd7a66e427ce0b308d80c860a44%7C704d822c358a47849a1649e20b75f941%7C0%7C0%7C637273117133957145&amp;amp;sda</a>ta=1UOy3LlDSAHwTHT%2Fxhkv309t%2FaIuTLhZirVhexuDZK4%3D&amp;amp;reserved=0
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://nam12.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=02%7C01%7Ckhuang8%40student.gsu.edu%7Cb0edccd7a66e427ce0b308d80c860a44%7C704d822c358a47849a1649e20b75f941%7C0%7C0%7C637273117133957145&amp;amp;sda">https://nam12.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=02%7C01%7Ckhuang8%40student.gsu.edu%7Cb0edccd7a66e427ce0b308d80c860a44%7C704d822c358a47849a1649e20b75f941%7C0%7C0%7C637273117133957145&amp;amp;sda</a>ta=1UOy3LlDSAHwTHT%2Fxhkv309t%2FaIuTLhZirVhexuDZK4%3D&amp;amp;reserved=0
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br /><br /><pre>
+-- 
+Ask yourselves, all of you, what power would hell have if those imprisoned
+here could not dream of heaven?
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Jun 09 2020 - 21:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0078.html" title="Next message in the list">Sofia Vasilakaki: "[AMBER] atom type in a substituted pyrimidine"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0076.html" title="Previous message in the list">HOCHEOL LIM: "[AMBER] tleap - extract ion molecules and save it as pdb"</a></li>
+<li><dfn>Maybe in reply to</dfn>: <a href="0063.html" title="Message to which this message replies">Kenneth Huang: "[AMBER] Individual water lifetimes within a distance cutoff?"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg77" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg77" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg77" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg77" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

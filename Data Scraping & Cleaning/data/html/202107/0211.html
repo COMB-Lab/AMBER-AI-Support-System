@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Solvate and manipulate order of atoms in Leap from He, Amy on 2021-07-25 (Amber Archive Jul 2021)</title>
+<meta name="Author" content="He, Amy (he.1768.buckeyemail.osu.edu)" />
+<meta name="Subject" content="[AMBER] Solvate and manipulate order of atoms in Leap" />
+<meta name="Date" content="2021-07-25" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Solvate and manipulate order of atoms in Leap</h1>
+<!-- received="Sun Jul 25 15:30:02 2021" -->
+<!-- isoreceived="20210725223002" -->
+<!-- sent="Sun, 25 Jul 2021 22:26:06 +0000" -->
+<!-- isosent="20210725222606" -->
+<!-- name="He, Amy" -->
+<!-- email="he.1768.buckeyemail.osu.edu" -->
+<!-- subject="[AMBER] Solvate and manipulate order of atoms in Leap" -->
+<!-- id="CH0PR01MB7020EA2AB30EBAB4B11FB305A3E79.CH0PR01MB7020.prod.exchangelabs.com" -->
+<!-- charset="windows-1252" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0212.html" accesskey="d" title="Matthew Guberman-Pfeffer: &quot;[AMBER] Cphstats unable to read cpin&quot;">Next message</a> ]
+[ <a href="0210.html" title="SATYAJIT KHATUA: &quot;[AMBER] Protein-protein interaction energy calculation&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg211" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg211" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg211" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg211" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: He, Amy &lt;<a href="mailto:he.1768.buckeyemail.osu.edu?Subject=Re%3A%20%5BAMBER%5D%20Solvate%20and%20manipulate%20order%20of%20atoms%20in%20Leap">he.1768.buckeyemail.osu.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 25 Jul 2021 22:26:06 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello Amber Community,
+<br />
+<br />I�m using Amber/20 and I�m doing system preparation with the leap program. I want to solvate the system, add ions, and I have to change the order of a few atoms in the structure, and generate new inputs with the re-ordered system.
+<br />
+<br />Thus, I tried to do this in three steps.
+<br />
+<br />&nbsp;&nbsp;1.  Solvate, add ions and save the structure of the solvated system. Here�s the tleap.in:
+<br />
+source leaprc.constph
+<br />
+<br />complex = loadPDB cry_system.pdb
+<br />
+loadAmberParams frcmod.ionsjc_tip3p
+<br />
+<br />solvateOct complex TIP3PBOX 12.0 0.75
+<br />
+addIonsRand complex Na+ 52 Cl- 45
+<br />
+<br />savepdb complex solvated_system.pdb
+<br />
+<br />quit
+<br />
+<br />&nbsp;&nbsp;1.  Re-order atoms in solvated_system.pdb
+<br />
+&nbsp;&nbsp;2.  Generate the prmtop and rstart file with the re-ordered system. Here�s the other tleap.in:
+<br />
+set default reorder_residues off
+<br />
+<br />source leaprc.constph
+<br />
+<br />complex = loadPDB reordered_system.pdb
+<br />
+loadAmberParams frcmod.ionsjc_tip3p
+<br />
+<br />saveAmberParm complex reordered_system.parm7 reordered_system.rst7
+<br />
+<br />quit
+<br />
+<br />However, I didn�t find the BOX information in my parm7 (prmtop) file. And I think it�s because I didn�t set the box in the second leap step, by either �setbox� or �solvatebox��
+<br />
+<br />My questions are:
+<br />
+<br />&nbsp;&nbsp;1.  How can I retrieve the box information of the re-ordered system? Is it ok to copy the box dimensions from the parm7 file which might be generated from the solvation step?
+<br />
+&nbsp;&nbsp;2.  What do you usually do to obtain the proper box dimensions for an already solvated system (like a custom solvent box)?
+<br />
+<br />My apologies for the multiple posts. Thank you for your time and kind advice in advance!
+<br />
+<br /><br />Best,
+<br />
+Amy
+<br />
+<br /><br /><br /><br /><pre>
+--
+Amy He
+Chemistry Graduate Teaching Assistant
+Hadad Research Group
+Ohio State University
+he.1768.osu.edu
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Sun Jul 25 2021 - 15:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0212.html" title="Next message in the list">Matthew Guberman-Pfeffer: "[AMBER] Cphstats unable to read cpin"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0210.html" title="Previous message in the list">SATYAJIT KHATUA: "[AMBER] Protein-protein interaction energy calculation"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg211" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg211" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg211" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg211" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

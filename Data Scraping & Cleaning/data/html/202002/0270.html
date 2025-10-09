@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] replica exchange with GPU from bbalta.itu.edu.tr on 2020-02-28 (Amber Archive Feb 2020)</title>
+<meta name="Author" content="bbalta.itu.edu.tr (bbalta.itu.edu.tr)" />
+<meta name="Subject" content="[AMBER] replica exchange with GPU" />
+<meta name="Date" content="2020-02-28" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] replica exchange with GPU</h1>
+<!-- received="Fri Feb 28 04:30:02 2020" -->
+<!-- isoreceived="20200228123002" -->
+<!-- sent="Fri, 28 Feb 2020 15:14:59 +0300" -->
+<!-- isosent="20200228121459" -->
+<!-- name="bbalta.itu.edu.tr" -->
+<!-- email="bbalta.itu.edu.tr" -->
+<!-- subject="[AMBER] replica exchange with GPU" -->
+<!-- id="20200228151459.Horde.UYe-n-QDD19R-R-mO5YJ-oy.webmail.itu.edu.tr" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20100225161659.GA13048.biomaps.rutgers.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0271.html" accesskey="d" title="Carlos Simmerling: &quot;Re: [AMBER] replica exchange with GPU&quot;">Next message</a> ]
+[ <a href="0269.html" title="Elvis Martis: &quot;Re: [AMBER] generate ligand frcmod and lib files&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0271.html" accesskey="t" title="Carlos Simmerling: &quot;Re: [AMBER] replica exchange with GPU&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg270" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg270" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg270" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg270" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: &lt;<a href="mailto:bbalta.itu.edu.tr?Subject=Re%3A%20%5BAMBER%5D%20replica%20exchange%20with%20GPU">bbalta.itu.edu.tr</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 28 Feb 2020 15:14:59 +0300</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+We are trying to run a replica exchange simulation using  
+<br />
+pmemd.cuda.MPI in Amber 16. The cluster we use is composed of machines  
+<br />
+with the following properties: 2 x NVIDIA Tesla P100 GPU, 384 GB  
+<br />
+ECC2600 MHz RAM, 2x 20 core Intel Xeon Scalable 6148 CPUs.
+<br />
+We tried different number of replicas. The groupfile (for initial  
+<br />
+equilibration) and slurm job submission script we used for 10 replicas  
+<br />
+are as follows:
+<br />
+-O -rem 0 -i eq.in.001 -o eq.out.001 -c  
+<br />
+baslakcross344.7K_5thns_eq.incrd -r eq.rst.001 -x eq.mdcrd.001 -inf  
+<br />
+eq.mdinfo.001 -p 1-388_stripped.top
+<br />
+-O -rem 0 -i eq.in.002 -o eq.out.002 -c  
+<br />
+baslakcross344.7K_100thns_eq.incrd -r eq.rst.002 -x eq.mdcrd.002 -inf  
+<br />
+eq.mdinfo.002 -p 1-388_stripped.top
+<br />
+-O -rem 0 -i eq.in.003 -o eq.out.003 -c  
+<br />
+baslakcross344.7K_180thns_eq.incrd -r eq.rst.003 -x eq.mdcrd.003 -inf  
+<br />
+eq.mdinfo.003 -p 1-388_stripped.top
+<br />
+-O -rem 0 -i eq.in.004 -o eq.out.004 -c  
+<br />
+baslakcross344.7K_225thns_eq.incrd -r eq.rst.004 -x eq.mdcrd.004 -inf  
+<br />
+eq.mdinfo.004 -p 1-388_stripped.top
+<br />
+-O -rem 0 -i eq.in.005 -o eq.out.005 -c  
+<br />
+baslakcross344.7K_495thns_eq.incrd -r eq.rst.005 -x eq.mdcrd.005 -inf  
+<br />
+eq.mdinfo.005 -p 1-388_stripped.top
+<br />
+-O -rem 0 -i eq.in.006 -o eq.out.006 -c  
+<br />
+baslakcross344.7K_650thns_eq.incrd -r eq.rst.006 -x eq.mdcrd.006 -inf  
+<br />
+eq.mdinfo.006 -p 1-388_stripped.top
+<br />
+-O -rem 0 -i eq.in.007 -o eq.out.007 -c baslakcross344.7K_c0_eq.incrd  
+<br />
+-r eq.rst.007 -x eq.mdcrd.007 -inf eq.mdinfo.007 -p 1-388_stripped.top
+<br />
+-O -rem 0 -i eq.in.008 -o eq.out.008 -c baslakcross344.7K_c1_eq.incrd  
+<br />
+-r eq.rst.008 -x eq.mdcrd.008 -inf eq.mdinfo.008 -p 1-388_stripped.top
+<br />
+-O -rem 0 -i eq.in.009 -o eq.out.009 -c baslakcross344.7K_c2_eq.incrd  
+<br />
+-r eq.rst.009 -x eq.mdcrd.009 -inf eq.mdinfo.009 -p 1-388_stripped.top
+<br />
+-O -rem 0 -i eq.in.010 -o eq.out.010 -c baslakcross344.7K_c3_eq.incrd  
+<br />
+-r eq.rst.010 -x eq.mdcrd.010 -inf eq.mdinfo.010 -p 1-388_stripped.top
+<br />
+<br />#!/bin/bash
+<br />
+#SBATCH -p barbun-cuda
+<br />
+#SBATCH -A uucar
+<br />
+#SBATCH -J 1-388remd201
+<br />
+#SBATCH -N 1
+<br />
+#SBATCH -n 20
+<br />
+#SBATCH --gres=gpu:2
+<br />
+#SBATCH --time=1-00:00:00
+<br />
+#SBATCH --output=slurm-%j.out
+<br />
+#SBATCH --error=slurm-%j.err
+<br />
+#SBATCH -D  
+<br />
+/truba_scratch/uucar/hsp70_amber/REMD_NUCLEOTIDE_FREE_201PR/NEW_TEMP/1-388
+<br />
+export  
+<br />
+WORKDIR=/truba_scratch/uucar/hsp70_amber/REMD_NUCLEOTIDE_FREE_201PR/NEW_TEMP/1-388
+<br />
+cd $WORKDIR
+<br />
+module load centos7.3/lib/openmpi/1.8.8-gcc-4.8.5
+<br />
+module load centos7.3/lib/cuda/9.0
+<br />
+echo &quot;SLURM_NODELIST $SLURM_NODELIST&quot;
+<br />
+echo &quot;NUMBER OF CORES $SLURM_NTASKS&quot;
+<br />
+mpirun $AMBER_DIR/bin/pmemd.cuda.MPI -ng 10 -groupfile deneme_eq.groupfile
+<br />
+<br />Amber produced an output file but the output terminated after writing  
+<br />
+the result of the 0th step:
+<br />
+&nbsp;&nbsp;NSTEP =        0   TIME(PS) =       0.000  TEMP(K) =     0.00  PRESS  
+<br />
+=     0.0
+<br />
+&nbsp;&nbsp;Etot   =   -134342.6908  EKtot   =         0.0000  EPtot      =    
+<br />
+-134342.6908
+<br />
+&nbsp;&nbsp;BOND   =     19102.2338  ANGLE   =      3092.7537  DIHED      =       
+<br />
+4080.3001
+<br />
+&nbsp;&nbsp;1-4 NB =      1347.0833  1-4 EEL =     17091.3523  VDWAALS    =      
+<br />
+17272.2203
+<br />
+&nbsp;&nbsp;EELEC  =   -196328.6342  EHBOND  =         0.0000  RESTRAINT  =       
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;0.0000
+<br />
+&nbsp;&nbsp;&nbsp;
+<br />
+------------------------------------------------------------------------------
+<br />
+<br />The error message given by the system is:
+<br />
+SLURM_NODELIST barbun122
+<br />
+NUMBER OF CORES 20
+<br />
+&nbsp;&nbsp;Running multipmemd version of pmemd Amber16
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total processors =    20
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of groups =    10
+<br />
+gpu_allreduce cudaDeviceSynchronize failed an illegal memory access  
+<br />
+was encountered
+<br />
+gpu_allreduce cudaDeviceSynchronize failed an illegal memory access  
+<br />
+was encountered
+<br />
+gpu_allreduce cudaDeviceSynchronize failed an illegal memory access  
+<br />
+was encountered
+<br />
+gpu_allreduce cudaDeviceSynchronize failed an illegal memory access  
+<br />
+was encountered
+<br />
+gpu_allreduce cudaDeviceSynchronize failed an illegal memory access  
+<br />
+was encountered
+<br />
+gpu_allreduce cudaDeviceSynchronize failed an illegal memory access  
+<br />
+was encountered
+<br />
+gpu_allreduce cudaDeviceSynchronize failed an illegal memory access  
+<br />
+was encountered
+<br />
+gpu_allreduce cudaDeviceSynchronize failed an illegal memory access  
+<br />
+was encountered
+<br />
+gpu_allreduce cudaDeviceSynchronize failed an illegal memory access  
+<br />
+was encountered
+<br />
+gpu_allreduce cudaDeviceSynchronize failed an illegal memory access  
+<br />
+was encountered
+<br />
+-------------------------------------------------------
+<br />
+Primary job  terminated normally, but 1 process returned
+<br />
+a non-zero exit code.. Per user-direction, the job has been aborted.
+<br />
+-------------------------------------------------------
+<br />
+--------------------------------------------------------------------------
+<br />
+mpirun detected that one or more processes exited with non-zero  
+<br />
+status, thus causing
+<br />
+the job to be terminated. The first process to do so was:
+<br />
+<br />&nbsp;&nbsp;&nbsp;Process name: [[13854,1],12]
+<br />
+&nbsp;&nbsp;&nbsp;Exit code:    255
+<br />
+<br /><br />We also tried with 40 replicas, different number of CPUs (up to 80), 3  
+<br />
+GPUs on 2 different machines, single GPU with pmemd.cuda (without  
+<br />
+MPI). But none of them worked. With 40 replicas and 80 CPUs we  
+<br />
+obtained the following eeror in addition to the ones mentioned above:
+<br />
+cudaMalloc GpuBuffer::Allocate failed out of memory
+<br />
+<br /><br />It seems from the manual and mailing list that Amber 16 supports REMD  
+<br />
+on GPUs. So probably we make a mistake at some point. Any help will be  
+<br />
+greatly appreciated.
+<br />
+Thank you.
+<br />
+<br /><br /><br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Feb 28 2020 - 04:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0271.html" title="Next message in the list">Carlos Simmerling: "Re: [AMBER] replica exchange with GPU"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0269.html" title="Previous message in the list">Elvis Martis: "Re: [AMBER] generate ligand frcmod and lib files"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0271.html" title="Next message in this discussion thread">Carlos Simmerling: "Re: [AMBER] replica exchange with GPU"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0271.html" title="Message sent in reply to this message">Carlos Simmerling: "Re: [AMBER] replica exchange with GPU"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg270" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg270" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg270" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg270" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

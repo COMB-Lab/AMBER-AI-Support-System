@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] 3D-RISM solvent placement with MoFT from George Madalin Giambasu on 2021-03-28 (Amber Archive Mar 2021)</title>
+<meta name="Author" content="George Madalin Giambasu (giambasu.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] 3D-RISM solvent placement with MoFT" />
+<meta name="Date" content="2021-03-28" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] 3D-RISM solvent placement with MoFT</h1>
+<!-- received="Sun Mar 28 19:00:02 2021" -->
+<!-- isoreceived="20210329020002" -->
+<!-- sent="Sun, 28 Mar 2021 21:42:25 -0400" -->
+<!-- isosent="20210329014225" -->
+<!-- name="George Madalin Giambasu" -->
+<!-- email="giambasu.gmail.com" -->
+<!-- subject="Re: [AMBER] 3D-RISM solvent placement with MoFT" -->
+<!-- id="BF363E59-711C-4FE8-A0B8-80858935F9F5.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="BL0PR01MB45619A49790692D9DB8DC3D3A3629.BL0PR01MB4561.prod.exchangelabs.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0289.html" accesskey="d" title="Hrishikesh Dhondge: &quot;Re: [AMBER] Is it possible to create a deb for ubuntu or a pypi one ?&quot;">Next message</a> ]
+[ <a href="0287.html" title="David A Case: &quot;Re: [AMBER] Is it possible to create a deb for ubuntu or a pypi one ?&quot;">Previous message</a> ]
+[ <a href="0244.html" title="He, Amy: &quot;Re: [AMBER] 3D-RISM solvent placement with MoFT&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0303.html" accesskey="t" title="He, Amy: &quot;Re: [AMBER] 3D-RISM solvent placement with MoFT&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg288" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg288" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg288" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg288" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: George Madalin Giambasu &lt;<a href="mailto:giambasu.gmail.com?Subject=Re%3A%20%5BAMBER%5D%203D-RISM%20solvent%20placement%20with%20MoFT">giambasu.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 28 Mar 2021 21:42:25 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Amy - happy to see that the increase in Laplacian threshold helped. See some more comments bellow comments.
+<br />
+<br /><em class="quotelev1">&gt; (1) As the threshold increases, more and more points are eliminated, because the Laplacian at these positions is less negative than the reference Laplacian (=threshold*min(Laplacian)). Is it right to think that the eliminated positions are likely the false positives where a solvent molecule should not be placed at?
+</em><br />
+<br />You can think about these eliminated positions as corresponding to loosely bound waters. For ions, we sometimes use terms such as diffusely or territorially bound which is opposed to site-bound. By increasing the Laplacian threshold you are more likely to identify site-bound waters.
+<br />
+<br /><br /><em class="quotelev1">&gt; (2) For the occupancy values, am I right in thinking that one can average the occupancy values by volume of the blob, or is there some way to get the individual occupancy value for each position in a blob?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<br />That is a good question. The current code integrates over the entire volume of the blob and so if you wanted to approximate the occupancy for each water position you could divide it by the number of waters contained within the blob. I am planning to change this in the next version of the code and integrate the density around each water position. 
+<br />
+<br />I hope this make sense, let me know if I have answered your questions.
+<br />
+<br />George Giambasu
+<br />
+<br /><br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Mar 28 2021 - 19:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0289.html" title="Next message in the list">Hrishikesh Dhondge: "Re: [AMBER] Is it possible to create a deb for ubuntu or a pypi one ?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0287.html" title="Previous message in the list">David A Case: "Re: [AMBER] Is it possible to create a deb for ubuntu or a pypi one ?"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0244.html" title="Message to which this message replies">He, Amy: "Re: [AMBER] 3D-RISM solvent placement with MoFT"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0303.html" title="Next message in this discussion thread">He, Amy: "Re: [AMBER] 3D-RISM solvent placement with MoFT"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg288" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg288" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg288" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg288" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

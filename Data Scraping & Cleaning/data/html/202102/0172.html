@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] High value for force constant is acceptable? from Karl Kirschner on 2021-02-19 (Amber Archive Feb 2021)</title>
+<meta name="Author" content="Karl Kirschner (k.n.kirschner.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] High value for force constant is acceptable?" />
+<meta name="Date" content="2021-02-19" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] High value for force constant is acceptable?</h1>
+<!-- received="Fri Feb 19 11:00:02 2021" -->
+<!-- isoreceived="20210219190002" -->
+<!-- sent="Fri, 19 Feb 2021 19:39:29 +0100" -->
+<!-- isosent="20210219183929" -->
+<!-- name="Karl Kirschner" -->
+<!-- email="k.n.kirschner.gmail.com" -->
+<!-- subject="Re: [AMBER] High value for force constant is acceptable?" -->
+<!-- id="CAF=D&ndash;bxovPhomB=khL1vBNfeK2&ndash;&ndash;JisUPUQpnm0g6kxruD1bWQ.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20210218132537.sqz6fyc3tvuiryes.oredkbe204bl02.rad.rutgers.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0173.html" accesskey="d" title="Vaibhav Dixit: &quot;[AMBER] MAXPR error in sander sp job&quot;">Next message</a> ]
+[ <a href="0171.html" title="SATYAJIT KHATUA: &quot;[AMBER] Interaction energy by MM-PBSA for a superantigen with important Zn(II) center&quot;">Previous message</a> ]
+[ <a href="0157.html" title="David A Case: &quot;Re: [AMBER] High value for force constant is acceptable?&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg172" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg172" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg172" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg172" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Karl Kirschner &lt;<a href="mailto:k.n.kirschner.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20High%20value%20for%20force%20constant%20is%20acceptable%3F">k.n.kirschner.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 19 Feb 2021 19:39:29 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello Rinsha,
+<br />
+<br />&nbsp;&nbsp;I can briefly comment about the value of the force constant that we use
+<br />
+in performing torsion scans for optimizing force-field parameters. In these
+<br />
+projects, we only perform molecular mechanics (MM) minimization on a single
+<br />
+molecule in the gas phase, and thus cannot directly address the use of
+<br />
+large force constants in multi-molecule (e.g. protein-ligand)
+<br />
+condensed-phase MD simulations.
+<br />
+<br />&nbsp;To do an apples-to-apples comparison between the MM and quantum mechanics
+<br />
+calculations, we typically use a very large force constant (i.e.
+<br />
+significantly larger than 800.0 kcal/mol rad2). I believe this is necessary
+<br />
+since we are often optimizing conformations that are quite far from
+<br />
+stationary points on the molecule's potential energy surface (PES; e.g. a
+<br />
+high energy conformation found between a transition state and a minimum).
+<br />
+As a conformation approaches a stationary point, then I think the force
+<br />
+constants don't have to be so large, especially when the local PES is
+<br />
+shallow. If the MM minima reproduces the QM minima well, then these
+<br />
+conformations (i.e. those that reside at an energy minimum) shouldn't need
+<br />
+to be constrained at all when isolated (e.g. a single gas-phase molecule).
+<br />
+<br />&nbsp;Without knowing exactly what you are wanting to simulate, I can't say too
+<br />
+much more. If you are using the force constant to reproduce a transition
+<br />
+state in your simulations, then you might need a large force to keep it in
+<br />
+the desired conformation. However, if you think that the target
+<br />
+conformation is a minimum -- and you believe that the applied force field
+<br />
+models the molecule's PES accurately -- then I wouldn't think you need a
+<br />
+large force constant. Another condition that I can think of where you might
+<br />
+need a large force constant is when an induced-fit mechanism is occurring
+<br />
+and the given force field does not reproduce a very high energy
+<br />
+conformation well. Perhaps some insight can be gained through investigating
+<br />
+the target molecule using QM and seeing if the used force field reproduces
+<br />
+the QM data.
+<br />
+<br />Hope that adds some food for thought.
+<br />
+Bests,
+<br />
+Karl
+<br />
+<br /><br /><br />On Thu, Feb 18, 2021 at 2:26 PM David A Case &lt;david.case.rutgers.edu&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; On Thu, Feb 11, 2021, Rinsha Chk wrote:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;I am doing an MD simulation on azobenzene with dihedral angle restraint.
+</em><br />
+<em class="quotelev2">&gt; &gt;But it requires a force constant of 800.0 kcal/molrad2 to maintain the
+</em><br />
+<em class="quotelev2">&gt; &gt;desired dihedral angle value... My concern is that, is it acceptable to
+</em><br />
+<em class="quotelev1">&gt; use
+</em><br />
+<em class="quotelev2">&gt; &gt;such a high value?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; That is very high.  What is your evidence that such a large constant is
+</em><br />
+<em class="quotelev1">&gt; needed?  Could you live with some deviation of the desired torsion angle?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I hope Amber users that regularly do torsion scans will chime in here.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ....thx...dac
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Feb 19 2021 - 11:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0173.html" title="Next message in the list">Vaibhav Dixit: "[AMBER] MAXPR error in sander sp job"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0171.html" title="Previous message in the list">SATYAJIT KHATUA: "[AMBER] Interaction energy by MM-PBSA for a superantigen with important Zn(II) center"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0157.html" title="Message to which this message replies">David A Case: "Re: [AMBER] High value for force constant is acceptable?"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg172" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg172" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg172" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg172" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

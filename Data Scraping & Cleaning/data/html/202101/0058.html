@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] NaN VDWAALS Error During Minimization from Thomas Cheatham on 2021-01-05 (Amber Archive Jan 2021)</title>
+<meta name="Author" content="Thomas Cheatham (tec3.utah.edu)" />
+<meta name="Subject" content="Re: [AMBER] NaN VDWAALS Error During Minimization" />
+<meta name="Date" content="2021-01-05" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] NaN VDWAALS Error During Minimization</h1>
+<!-- received="Tue Jan  5 21:00:03 2021" -->
+<!-- isoreceived="20210106050003" -->
+<!-- sent="Wed, 6 Jan 2021 04:39:56 +0000" -->
+<!-- isosent="20210106043956" -->
+<!-- name="Thomas Cheatham" -->
+<!-- email="tec3.utah.edu" -->
+<!-- subject="Re: [AMBER] NaN VDWAALS Error During Minimization" -->
+<!-- id="40e02114da1a4f8abaeb3b0d5f45f060.utah.edu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="1a6e5531208540c5b0227a7f111fdfe4.utah.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0059.html" accesskey="d" title="Abdul-Rashid III Sampaco: &quot;[AMBER] pytraj in python 3.9&quot;">Next message</a> ]
+[ <a href="0057.html" title="Thomas Cheatham: &quot;Re: [AMBER] NaN VDWAALS Error During Minimization&quot;">Previous message</a> ]
+[ <a href="0057.html" title="Thomas Cheatham: &quot;Re: [AMBER] NaN VDWAALS Error During Minimization&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0052.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] NaN VDWAALS Error During Minimization&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg58" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg58" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg58" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg58" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Thomas Cheatham &lt;<a href="mailto:tec3.utah.edu?Subject=Re%3A%20%5BAMBER%5D%20NaN%20VDWAALS%20Error%20During%20Minimization">tec3.utah.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 6 Jan 2021 04:39:56 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Ah, still could be confusing. My &quot;restraints.in&quot; file was in a sub-folder inputs; if not in sub-folder inputs, remove the inputs/ from the DISANG in the mdin...--tec3
+<br />
+<br />________________________________________
+<br />
+From: Thomas Cheatham
+<br />
+Sent: Tuesday, January 5, 2021 9:33:17 PM
+<br />
+To: amber.ambermd.org
+<br />
+Subject: Re: [AMBER] NaN VDWAALS Error During Minimization
+<br />
+<br />It is likely an electrostatic collapse (electrostatic stronger than vdw so atoms of opposite charge overlap and cannot be overcome by minimization) OR bad parameters.
+<br />
+<br />I minimize first, turning off electrostatics, to get the vdw resolved and this usually works. If it doesn't, bad parameters somewhere...
+<br />
+<br />min_noelec.in:
+<br />
+<br />relax vdw
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;imin = 1, maxcyc = 300, ncyc = 300,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntb = 2, ntp = 1,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;cut = 9.0,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;iwrap = 1,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lastist = 10000000,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lastrst = 10000000,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;nmropt = 1,
+<br />
+&nbsp;&amp;end
+<br />
+&nbsp;&amp;wt
+<br />
+&nbsp;&nbsp;&nbsp;type = 'ELEC', value1 = 0.0,
+<br />
+&nbsp;&amp;end
+<br />
+&nbsp;&amp;wt
+<br />
+&nbsp;&nbsp;&nbsp;type = 'END',
+<br />
+&nbsp;&amp;end
+<br />
+DISANG=inputs/restraints.in
+<br />
+LISTOUT=POUT
+<br />
+<br />Create a separate file called restraints.in
+<br />
+<br />&nbsp;&amp;rst iat = 0, &amp;end
+<br />
+<br /><br />--tec3
+<br />
+<br />________________________________________
+<br />
+From: Bill Ross &lt;ross.cgl.ucsf.edu&gt;
+<br />
+Sent: Tuesday, January 5, 2021 9:01:06 PM
+<br />
+To: amber.ambermd.org
+<br />
+Subject: Re: [AMBER] NaN VDWAALS Error During Minimization
+<br />
+<br />That's a suggestion for devs to discuss among themselves, in case any
+<br />
+missed it. :-)
+<br />
+<br />Bill
+<br />
+<br />On 1/5/21 7:45 PM, Bill Ross wrote:
+<br />
+<em class="quotelev1">&gt; The atom with max gradient is printed at each step. Maybe having the top
+</em><br />
+<em class="quotelev1">&gt; two atoms would help, or any atom with a big diff from the rest should
+</em><br />
+<em class="quotelev1">&gt; also be printed?
+</em><br />
+<pre>
+--
+Phobrain.com
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Jan 05 2021 - 21:00:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0059.html" title="Next message in the list">Abdul-Rashid III Sampaco: "[AMBER] pytraj in python 3.9"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0057.html" title="Previous message in the list">Thomas Cheatham: "Re: [AMBER] NaN VDWAALS Error During Minimization"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0057.html" title="Message to which this message replies">Thomas Cheatham: "Re: [AMBER] NaN VDWAALS Error During Minimization"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0052.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] NaN VDWAALS Error During Minimization"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg58" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg58" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg58" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg58" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

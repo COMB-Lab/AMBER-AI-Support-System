@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Using ParmEd to convert gromacs truncated octahedron box to amber from Jason Swails on 2021-07-18 (Amber Archive Jul 2021)</title>
+<meta name="Author" content="Jason Swails (jason.swails.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Using ParmEd to convert gromacs truncated octahedron box to amber" />
+<meta name="Date" content="2021-07-18" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Using ParmEd to convert gromacs truncated octahedron box to amber</h1>
+<!-- received="Sun Jul 18 08:00:02 2021" -->
+<!-- isoreceived="20210718150002" -->
+<!-- sent="Sun, 18 Jul 2021 10:42:52 -0400" -->
+<!-- isosent="20210718144252" -->
+<!-- name="Jason Swails" -->
+<!-- email="jason.swails.gmail.com" -->
+<!-- subject="Re: [AMBER] Using ParmEd to convert gromacs truncated octahedron box to amber" -->
+<!-- id="CAEk9e3pwKDd1094FfyPfAjB21kqogZvBXeo=4axXwbtU-suXwA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAJ=qwBEFRHV_BJhSR-4Ev2zRwpAuspPw07DYcBSY0tx7jXfncg.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0132.html" accesskey="d" title="Razil Tahir: &quot;[AMBER] Forcefield for alkyl chain in glycolipid molecule&quot;">Next message</a> ]
+[ <a href="0130.html" title="Matthew Guberman-Pfeffer: &quot;Re: [AMBER] fitpkaeo.py not reading input from cestats&quot;">Previous message</a> ]
+[ <a href="0018.html" title="amin sagar: &quot;[AMBER] Using ParmEd to convert gromacs truncated octahedron box to amber&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg131" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg131" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg131" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg131" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Jason Swails &lt;<a href="mailto:jason.swails.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Using%20ParmEd%20to%20convert%20gromacs%20truncated%20octahedron%20box%20to%20amber">jason.swails.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 18 Jul 2021 10:42:52 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+If the simulation runs with sensible energies and dynamics by changing
+<br />
+IFBOX to 3, then use that.  If the density is sensible and the
+<br />
+energies/forces don't have the hallmark signs of particle clashes (very
+<br />
+high energies and forces), then the way that the MD engine is handling the
+<br />
+unit cells is correct.  GROMACS stores the unit cell vectors themselves,
+<br />
+not the angles, so ParmEd has to convert to the form Amber uses.
+<br />
+<br />HTH,
+<br />
+Jason
+<br />
+<br />On Sat, Jul 3, 2021 at 11:13 AM amin sagar &lt;aamin.sagar.gmail.com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Dear Amber Users/Developers,
+</em><br />
+<em class="quotelev1">&gt; I am using ParmEd to convert a gromacs topology to Amber. The box is a
+</em><br />
+<em class="quotelev1">&gt; truncated octahedron.
+</em><br />
+<em class="quotelev1">&gt; My input is as follows.
+</em><br />
+<em class="quotelev1">&gt; gromber topol.top conf1-ions.gro topdir amber99sbws-stq.ff radii mbondi2
+</em><br />
+<em class="quotelev1">&gt; hmassrepartition
+</em><br />
+<em class="quotelev1">&gt; outparm conf1-ions-hmr.parm7 conf1-ions-hmr.rst7
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The rst file generated by ParmEd has the following last line
+</em><br />
+<em class="quotelev1">&gt; 114.2371000 114.2371165 114.2370945 70.5287548 109.4712039 70.5288000
+</em><br />
+<em class="quotelev1">&gt; and the values of IFBOX in parm7 file is 2. I think the values for
+</em><br />
+<em class="quotelev1">&gt; truncated octahedron should all be 109.47.
+</em><br />
+<em class="quotelev1">&gt; If I try to use these files, I get the following error.
+</em><br />
+<em class="quotelev1">&gt; Error: ifbox=2 in prmtop but angles are not correct
+</em><br />
+<em class="quotelev1">&gt; If I change the value of ifbox to 3, I can run the simulation. Is this way
+</em><br />
+<em class="quotelev1">&gt; correct? or should I change the angles?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I would really appreciate any suggestions.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt; Amin.
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br /><br /><pre>
+-- 
+Jason M. Swails
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Sun Jul 18 2021 - 08:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0132.html" title="Next message in the list">Razil Tahir: "[AMBER] Forcefield for alkyl chain in glycolipid molecule"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0130.html" title="Previous message in the list">Matthew Guberman-Pfeffer: "Re: [AMBER] fitpkaeo.py not reading input from cestats"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0018.html" title="Message to which this message replies">amin sagar: "[AMBER] Using ParmEd to convert gromacs truncated octahedron box to amber"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg131" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg131" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg131" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg131" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

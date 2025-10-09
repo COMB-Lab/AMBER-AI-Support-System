@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] question about dihedral angles from Gordon Richard Chalmers on 2020-12-02 (Amber Archive Dec 2020)</title>
+<meta name="Author" content="Gordon Richard Chalmers (gordoncs.uga.edu)" />
+<meta name="Subject" content="Re: [AMBER] question about dihedral angles" />
+<meta name="Date" content="2020-12-02" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] question about dihedral angles</h1>
+<!-- received="Wed Dec  2 15:00:03 2020" -->
+<!-- isoreceived="20201202230003" -->
+<!-- sent="Wed, 2 Dec 2020 22:58:04 +0000" -->
+<!-- isosent="20201202225804" -->
+<!-- name="Gordon Richard Chalmers" -->
+<!-- email="gordoncs.uga.edu" -->
+<!-- subject="Re: [AMBER] question about dihedral angles" -->
+<!-- id="BN6PR02MB27067B0A2A1EA75582B33724DCF30.BN6PR02MB2706.namprd02.prod.outlook.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAGk3s-SjyZUb9qQ83j0xrVfeNr-mPoFO7fNchiVNxr3L2z01Vw.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0030.html" accesskey="d" title="Gordon Richard Chalmers: &quot;Re: [AMBER] question about dihedral angles&quot;">Next message</a> ]
+[ <a href="0028.html" title="Carlos Simmerling: &quot;Re: [AMBER] question about dihedral angles&quot;">Previous message</a> ]
+[ <a href="0028.html" title="Carlos Simmerling: &quot;Re: [AMBER] question about dihedral angles&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0030.html" accesskey="t" title="Gordon Richard Chalmers: &quot;Re: [AMBER] question about dihedral angles&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg29" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg29" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg29" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg29" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gordon Richard Chalmers &lt;<a href="mailto:gordoncs.uga.edu?Subject=Re%3A%20%5BAMBER%5D%20question%20about%20dihedral%20angles">gordoncs.uga.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 2 Dec 2020 22:58:04 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Why don't you try this then: given phi psi angle information of
+<br />
+pdb and a linear peptide of its form, reconstruct the pdb file.
+<br />
+The problem is not due to numerical instability of the phi/psi
+<br />
+angle computation; phi/psi angles are important physically.
+<br />
+<br />Gordon Chalmers
+<br />
+________________________________
+<br />
+From: Carlos Simmerling &lt;carlos.simmerling.gmail.com&gt;
+<br />
+Sent: Wednesday, December 2, 2020 5:52 PM
+<br />
+To: AMBER Mailing List &lt;amber.ambermd.org&gt;
+<br />
+Subject: Re: [AMBER] question about dihedral angles
+<br />
+<br />[EXTERNAL SENDER - PROCEED CAUTIOUSLY]
+<br />
+<br /><br />I think that even if you have a list of phi/psi pairs and their values,
+<br />
+it's pretty well known that small angle variations can result in large
+<br />
+Cartesian changes far from the bond being rotated. I'm not saying this
+<br />
+isn't a good plan, but you may run into issues (as you say) with non-planar
+<br />
+groups giving small changes in the intended dihedral and leading to
+<br />
+significant changes farther down the chain.
+<br />
+<br />You should be able to put together a cpptraj script by listing the atom
+<br />
+names/residues in dihedral commands to measure them from your pdb, then
+<br />
+building a cpptraj script to rotate.
+<br />
+Dan's documentation is quite good for academic code standards and I don't
+<br />
+think you'll need him to make the inputs for you.
+<br />
+<br />tleap can do similar things with commands such as &quot;impose&quot;, and in the end
+<br />
+it should matter which part gets rotated if you have a single molecule,
+<br />
+since all that will be affected is the overall rotational frame of
+<br />
+reference. If that is important though, then Dan's suggestion is worth
+<br />
+trying. There may be other codes that were intended to build structure
+<br />
+models, Amber doesn't really have extensive tools for that purpose.
+<br />
+<br />On Wed, Dec 2, 2020 at 5:41 PM Gordon Richard Chalmers &lt;gordoncs.uga.edu&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Hi Daniel,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; How about giving me a known PDB protein model and a sequence of
+</em><br />
+<em class="quotelev1">&gt; rotations to bring its linear form into it?  That would be a benefit,
+</em><br />
+<em class="quotelev1">&gt; Either
+</em><br />
+<em class="quotelev1">&gt; in tleap or cpptraj.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I think I know what the issue is with non-parallel planes from
+</em><br />
+<em class="quotelev1">&gt; the 2 pairs of 3 atoms in the 4 bond of the peptides.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Gordon Chalmers
+</em><br />
+<em class="quotelev1">&gt; ________________________________
+</em><br />
+<em class="quotelev1">&gt; From: Daniel Roe &lt;daniel.r.roe.gmail.com&gt;
+</em><br />
+<em class="quotelev1">&gt; Sent: Wednesday, December 2, 2020 11:50 AM
+</em><br />
+<em class="quotelev1">&gt; To: AMBER Mailing List &lt;amber.ambermd.org&gt;
+</em><br />
+<em class="quotelev1">&gt; Subject: Re: [AMBER] question about dihedral angles
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; [EXTERNAL SENDER - PROCEED CAUTIOUSLY]
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Hi,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The command for calculating dihedral angles in cpptraj is 'dihedral'.
+</em><br />
+<em class="quotelev1">&gt; The command for rotating atoms around a dihedral is 'rotatedihedral'.
+</em><br />
+<em class="quotelev1">&gt; Both are documented in the manual. The convention in cpptraj is for
+</em><br />
+<em class="quotelev1">&gt; all atoms connected to the greater atom index to move; those connected
+</em><br />
+<em class="quotelev1">&gt; to the lower atom index are fixed. Cpptraj does the rotation in
+</em><br />
+<em class="quotelev1">&gt; Cartesian space - I think tleap may do it via internal coordinates but
+</em><br />
+<em class="quotelev1">&gt; I'm not sure about that.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; -Dan
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Wed, Dec 2, 2020 at 9:04 AM Gordon Richard Chalmers &lt;gordoncs.uga.edu&gt;
+</em><br />
+<em class="quotelev1">&gt; wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Thank you for the help in this.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; In a protein the phi and psi angles require 2 adjacent
+</em><br />
+<em class="quotelev2">&gt; &gt; residues.  Calculating these angles and rotating is
+</em><br />
+<em class="quotelev2">&gt; &gt; fairly easy.  It is a matter of what is rotated to agree
+</em><br />
+<em class="quotelev2">&gt; &gt; to a PDB model starting from a linear backbone model.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I will be working the angle rotations further in tleap today,
+</em><br />
+<em class="quotelev2">&gt; &gt; a little delayed at the moment.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; In principle, you should rotate the entire peptide chain
+</em><br />
+<em class="quotelev2">&gt; &gt; after or before the ith residue as these are bonded in
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; %% phi  C(i-1)-N-CA-C
+</em><br />
+<em class="quotelev2">&gt; &gt; %% psi N-CA-C-N(i+1)
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; The actual rotation angle about the intermediary N-CA
+</em><br />
+<em class="quotelev2">&gt; &gt; or CA-C axis should be the dihedral angle geometrically.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Maybe my own Matlab algorithms aren't correct yet, but
+</em><br />
+<em class="quotelev2">&gt; &gt; I have checked this many times.  I will try to use tleap or
+</em><br />
+<em class="quotelev2">&gt; &gt; cpptraj instead as a check.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Gordon Chalmers
+</em><br />
+<em class="quotelev2">&gt; &gt; Department of Computer Science
+</em><br />
+<em class="quotelev2">&gt; &gt; Complex Carbohydrate Research Center
+</em><br />
+<em class="quotelev2">&gt; &gt; University of Georgia
+</em><br />
+<em class="quotelev2">&gt; &gt; ________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; From: David A Case &lt;david.case.rutgers.edu&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Sent: Wednesday, December 2, 2020 8:51 AM
+</em><br />
+<em class="quotelev2">&gt; &gt; To: AMBER Mailing List &lt;amber.ambermd.org&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Subject: Re: [AMBER] question about dihedral angles
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; [EXTERNAL SENDER - PROCEED CAUTIOUSLY]
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; On Wed, Dec 02, 2020, Karl Kirschner wrote:
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;impose mymolecule {7} { {C1 C2 C3 C4 120.0} }
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; One point is this: the command above doesn't specific which atoms are to
+</em><br />
+<em class="quotelev2">&gt; &gt; be *moved* in order to  make the dihderal be 120 degrees.  Should the
+</em><br />
+<em class="quotelev2">&gt; &gt; program move C4 (and atoms bonded to it), or move C1 (and atoms bonded
+</em><br />
+<em class="quotelev2">&gt; &gt; to it)?  Or do something else?  This may not be important in some
+</em><br />
+<em class="quotelev2">&gt; &gt; workflows, but can be key in others.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; The pyMol example has the same problem.  Of course, its
+</em><br />
+<em class="quotelev2">&gt; &gt; documentation may be better in explaining what choices are made.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; These sorts of manipulations are a natural for NAB (aka &quot;molecular
+</em><br />
+<em class="quotelev2">&gt; &gt; awk&quot;), but it has its own learning curve and documentation deficiencies.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; ....dac
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Dec 02 2020 - 15:00:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0030.html" title="Next message in the list">Gordon Richard Chalmers: "Re: [AMBER] question about dihedral angles"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0028.html" title="Previous message in the list">Carlos Simmerling: "Re: [AMBER] question about dihedral angles"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0028.html" title="Message to which this message replies">Carlos Simmerling: "Re: [AMBER] question about dihedral angles"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0030.html" title="Next message in this discussion thread">Gordon Richard Chalmers: "Re: [AMBER] question about dihedral angles"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0030.html" title="Message sent in reply to this message">Gordon Richard Chalmers: "Re: [AMBER] question about dihedral angles"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg29" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg29" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg29" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg29" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

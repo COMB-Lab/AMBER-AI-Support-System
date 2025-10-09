@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] TI electrostatic free energy from Franz Waibl on 2020-11-30 (Amber Archive Nov 2020)</title>
+<meta name="Author" content="Franz Waibl (Franz.Waibl.uibk.ac.at)" />
+<meta name="Subject" content="[AMBER] TI electrostatic free energy" />
+<meta name="Date" content="2020-11-30" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] TI electrostatic free energy</h1>
+<!-- received="Mon Nov 30 07:00:03 2020" -->
+<!-- isoreceived="20201130150003" -->
+<!-- sent="Mon, 30 Nov 2020 15:34:44 +0100" -->
+<!-- isosent="20201130143444" -->
+<!-- name="Franz Waibl" -->
+<!-- email="Franz.Waibl.uibk.ac.at" -->
+<!-- subject="[AMBER] TI electrostatic free energy" -->
+<!-- id="90286fc0-e2ff-1aa4-b1cc-79246e92ea23.uibk.ac.at" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0284.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] TI electrostatic free energy&quot;">Next message</a> ]
+[ <a href="0282.html" title="accuratefreeenergy.gmail.com: &quot;Re: [AMBER] AMBER 18 cuda installation error&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0284.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] TI electrostatic free energy&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg283" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg283" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg283" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg283" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Franz Waibl &lt;<a href="mailto:Franz.Waibl.uibk.ac.at?Subject=Re%3A%20%5BAMBER%5D%20TI%20electrostatic%20free%20energy">Franz.Waibl.uibk.ac.at</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 30 Nov 2020 15:34:44 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber community,
+<br />
+<br />I am trying to compute the free energy of hydration of a set of small 
+<br />
+molecules at different salt concentrations, using TI. I want to use a 
+<br />
+2-step transform (i.e., first remove the charges, then the Van der Waals 
+<br />
+part).
+<br />
+<br />However, I have problems figuring out how to set up the electrostatic 
+<br />
+step in pmemd (CUDA-version, using Amber 20). Currently, my input file 
+<br />
+looks like this:
+<br />
+<br />production 10 ns npt run - Berendsen barostat, TI, remove charges
+<br />
+&amp;cntrl
+<br />
+&nbsp;    ntx=1, irest=0,
+<br />
+&nbsp;    ioutfm=1,
+<br />
+&nbsp;    ntb=2, iwrap=1,
+<br />
+&nbsp;    ntp=1, barostat=2, pres0=1.0,taup=1.0,
+<br />
+&nbsp;    ntc=2, ntf=1,
+<br />
+&nbsp;    ntt=3, tempi=300.0, temp0=300.0, gamma_ln=2,
+<br />
+&nbsp;    nstlim=5000000, dt=0.002,
+<br />
+&nbsp;    ntwr=50000, ntwx=5000,
+<br />
+&nbsp;    ntpr=500,
+<br />
+&nbsp;    icfe=1, klambda=1, ifsc=0, timask1=':1', timask2=':2', crgmask=':2',
+<br />
+&nbsp;    ifmbar=1, mbar_states=11, tishake=0,
+<br />
+mbar_lambda=0.00,0.10,0.20,0.30,0.40,0.50,0.60,0.70,0.80,0.90,1.00,,
+<br />
+&nbsp;    clambda=0.50,
+<br />
+/
+<br />
+<br />(Of course, I have equivalent input files for the other lambda values). 
+<br />
+Of this run, I am discarding the first 40% (4ns) as equilibration. The 
+<br />
+1st and second residue are 2 copies of my molecule (the topology was 
+<br />
+created using tleap by &quot;combine { solute solute solvent }&quot;.)
+<br />
+<br />The problem is that I am getting very large free energies (e.g, 130 
+<br />
+kcal/mol for caffeine, favoring lambda=0). This occurs with and without 
+<br />
+the salt, so I think the problem is not related to the ions. 
+<br />
+Furthermore, I don't think that convergence is the problem, because I 
+<br />
+tried using 10x longer simulations for a few systems, and the results 
+<br />
+are very similar.
+<br />
+<br />The VdW contribution is rather close to zero, and therefore doesn't 
+<br />
+compensate the high values. I assume that this is realistic, and that 
+<br />
+the problem is related to the electrostatics part. (is this correct?)
+<br />
+<br />I would be very thankful for any suggestions on what might be wrong here...
+<br />
+<br /><br />Best regards,
+<br />
+<br />Franz Waibl
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Nov 30 2020 - 07:00:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0284.html" title="Next message in the list">David A Case: "Re: [AMBER] TI electrostatic free energy"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0282.html" title="Previous message in the list">accuratefreeenergy.gmail.com: "Re: [AMBER] AMBER 18 cuda installation error"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0284.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] TI electrostatic free energy"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0284.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] TI electrostatic free energy"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg283" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg283" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg283" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg283" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

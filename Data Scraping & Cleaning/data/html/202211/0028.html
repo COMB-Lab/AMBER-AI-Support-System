@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] compile AMBER 22 with non-default gcc from Scott Brozell via AMBER on 2022-11-04 (Amber Archive Nov 2022)</title>
+<meta name="Author" content="Scott Brozell via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] compile AMBER 22 with non-default gcc" />
+<meta name="Date" content="2022-11-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] compile AMBER 22 with non-default gcc</h1>
+<!-- received="Fri Nov  4 23:30:03 2022" -->
+<!-- isoreceived="20221105063003" -->
+<!-- sent="Sat, 5 Nov 2022 02:17:20 -0400" -->
+<!-- isosent="20221105061720" -->
+<!-- name="Scott Brozell via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] compile AMBER 22 with non-default gcc" -->
+<!-- id="20221105061720.GB16094.casegroup5.rutgers.edu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="b38a7a8a-375f-88b7-440c-31526a1f1072.mpi-muenster.mpg.de" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0029.html" accesskey="d" title="Gustavo Seabra via AMBER: &quot;Re: [AMBER] Problem with topology file generation&quot;">Next message</a> ]
+[ <a href="0027.html" title="Tanmoy Paul via AMBER: &quot;[AMBER] Problem with topology file generation&quot;">Previous message</a> ]
+[ <a href="0023.html" title="Vlad Cojocaru via AMBER: &quot;[AMBER] compile AMBER 22 with non-default gcc&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0030.html" accesskey="t" title="David A Case via AMBER: &quot;Re: [AMBER] compile AMBER 22 with non-default gcc&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg28" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg28" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg28" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg28" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Scott Brozell via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20compile%20AMBER%2022%20with%20non-default%20gcc">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 5 Nov 2022 02:17:20 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />On Sat, Nov 05, 2022 at 12:08:11AM +0100, Vlad Cojocaru via AMBER wrote:
+<br />
+<em class="quotelev1">&gt; On an openSUSE Tumbleweed machine, I am trying to compile AMBER 22 with a
+</em><br />
+<em class="quotelev1">&gt; non-default gcc. It worked with the default gcc (which points to gcc-12) but
+</em><br />
+<em class="quotelev1">&gt; I cannot build the CUDA enabled executables because CUDA only supports gcc
+</em><br />
+<em class="quotelev1">&gt; up to 11. So, I am trying to use &quot;gcc-11&quot; instead.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I tried modifying the run_cmake file to include the options
+</em><br />
+<em class="quotelev1">&gt; &quot;-DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11
+</em><br />
+<em class="quotelev1">&gt; -DCMAKE_FORTRAN_COMPILER=gfortran-11&quot;
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I also tried setting the CC, CXX. FC environment variables (export CC=gcc-11
+</em><br />
+<em class="quotelev1">&gt; ... ). However, run_cmake still tries to compile with the default gcc
+</em><br />
+<em class="quotelev1">&gt; ignoring all these settings.
+</em><br />
+<br />There's a gotcha: CMAKE_FORTRAN_COMPILER should be CMAKE_Fortran_COMPILER.
+<br />
+(This was discovered late in amber 22 release testing and deemed low
+<br />
+priority.  Perhaps we were high on fungi as this looks like too mushroom
+<br />
+for error in hindsight 8.)
+<br />
+<br />I used this to build with them thar new fangled oneapi compilers:
+<br />
+<br />&nbsp;&nbsp;cmake $AMBER_PREFIX/amber22_src \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber22 \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DCOMPILER=MANUAL \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DCMAKE_C_COMPILER=icx \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DCMAKE_CXX_COMPILER=icpx \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DCMAKE_F90_COMPILER=ifx \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DCMAKE_Fortran_COMPILER=ifx \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DBUILD_QUICK=TRUE  \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DCMAKE_VERBOSE_MAKEFILE=TRUE \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DCOLOR_CMAKE_MESSAGES=FALSE \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DMPI=FALSE -DCUDA=FALSE -DINSTALL_TESTS=TRUE \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;-DDOWNLOAD_MINICONDA=TRUE \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;2&gt;&amp;1 | tee  cmake.log
+<br />
+<br />scott
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Nov 04 2022 - 23:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0029.html" title="Next message in the list">Gustavo Seabra via AMBER: "Re: [AMBER] Problem with topology file generation"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0027.html" title="Previous message in the list">Tanmoy Paul via AMBER: "[AMBER] Problem with topology file generation"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0023.html" title="Message to which this message replies">Vlad Cojocaru via AMBER: "[AMBER] compile AMBER 22 with non-default gcc"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0030.html" title="Next message in this discussion thread">David A Case via AMBER: "Re: [AMBER] compile AMBER 22 with non-default gcc"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg28" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg28" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg28" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg28" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

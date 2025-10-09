@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Bond energy discrepancy between amber simulated results and cpptraj from Ruihan Zhou via AMBER on 2022-08-29 (Amber Archive Aug 2022)</title>
+<meta name="Author" content="Ruihan Zhou via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Bond energy discrepancy between amber simulated results and cpptraj" />
+<meta name="Date" content="2022-08-29" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Bond energy discrepancy between amber simulated results and cpptraj</h1>
+<!-- received="Mon Aug 29 05:30:04 2022" -->
+<!-- isoreceived="20220829123004" -->
+<!-- sent="Mon, 29 Aug 2022 05:27:56 -0700" -->
+<!-- isosent="20220829122756" -->
+<!-- name="Ruihan Zhou via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Bond energy discrepancy between amber simulated results and cpptraj" -->
+<!-- id="CAECN=KgfM0nHZbTVeoDAN5jzFxFxg-DohKLiyObGY2gdaTLKqA.mail.gmail.com" -->
+<!-- charset="UTF-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0143.html" accesskey="d" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] Bond energy discrepancy between amber simulated results and cpptraj&quot;">Next message</a> ]
+[ <a href="0141.html" title="Maria Nagan via AMBER: &quot;Re: [AMBER] AMBER tutorial 5.4 original publication?&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0143.html" accesskey="t" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] Bond energy discrepancy between amber simulated results and cpptraj&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg142" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg142" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg142" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg142" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Ruihan Zhou via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Bond%20energy%20discrepancy%20between%20amber%20simulated%20results%20and%20cpptraj">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 29 Aug 2022 05:27:56 -0700</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber Users,
+<br />
+<br />I'm working on converting amber force fields to another MD engine LAMMPS.
+<br />
+During the conversion I've noticed a bond energy discrepancy between the
+<br />
+results from amber simulations and cpptraj results when using GAFF and I
+<br />
+want to know why this happens.
+<br />
+<br />Take dialanine as an example, we've run amber simulations without periodic
+<br />
+boundary conditions under NVE with a cutoff effectively covering the whole
+<br />
+molecule using FF14SB, FF19SB and GAFF. With cpptraj on the same molecule,
+<br />
+we take in the initial configuration and output the energy.
+<br />
+<br />With FF14SB, FF19SB, all molecular energies have matched, but for GAFF the
+<br />
+bond energy was different. This observation holds true for some other
+<br />
+molecules we've tested like n-methylacetamide and trialanine. (As a side
+<br />
+note, the bond energies from cpptraj matched all the LAMMPS test we've ran.)
+<br />
+<br />The bond energy comparisons for ala2 are listed here:
+<br />
+ff14sb 0.7569  cpptraj 0.7569
+<br />
+ff19sb 0.7846  cpptraj 0.7846
+<br />
+gaff     2.2579  cpptraj 2.8260
+<br />
+<br />For ala3:
+<br />
+ff14sb 0.7572 cpptraj 0.7572
+<br />
+ff19sb 0.7723 cpptraj 0.7723
+<br />
+gaff     3.2580 cpptraj 3.8895
+<br />
+<br />The NVE.in script I've used is like this:
+<br />
+Production NVE
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;imin=0,
+<br />
+&nbsp;&nbsp;ntx=1,
+<br />
+&nbsp;&nbsp;irest=0,
+<br />
+&nbsp;&nbsp;nstlim=1,
+<br />
+&nbsp;&nbsp;dt=0.001,
+<br />
+&nbsp;&nbsp;ntf=2,
+<br />
+&nbsp;&nbsp;ntc=2,
+<br />
+&nbsp;&nbsp;ntpr=10,
+<br />
+&nbsp;&nbsp;ntwx=10,
+<br />
+&nbsp;&nbsp;cut=999.0,
+<br />
+&nbsp;&nbsp;ntb=0,
+<br />
+&nbsp;&nbsp;ntp=0,
+<br />
+&nbsp;&nbsp;ntt=0,
+<br />
+&nbsp;&nbsp;ig=-1,
+<br />
+&nbsp;&nbsp;tol = 0.0000001,
+<br />
+&nbsp;&nbsp;nscm=0,
+<br />
+&nbsp;/
+<br />
+<br />Here's the cpptraj log:
+<br />
+# Args:  -p ala2_gaff.prmtop -c ala2_gaff.rst7
+<br />
+# Loaded topologies:
+<br />
+#   ala2_gaff.prmtop
+<br />
+energy system out sys.agr
+<br />
+run
+<br />
+quit
+<br />
+<br />In the attachment I have the prmtop and rst7 files for ala2 of all the
+<br />
+force fields tested. All info files are from amber simulation and all agr
+<br />
+files are energy outputs from cpptraj.
+<br />
+<br />I would appreciate any help on this issue! Thanks in advance!
+<br />
+<br /><br />Best,
+<br />
+Ruihan
+<br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>application/x-info attachment: <a href="att-0142/ala2_ff14.info">ala2_ff14.info</a></li>
+</ul>
+<!-- attachment="ala2_ff14.info" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0142/ala2_ff19.agr">ala2_ff19.agr</a></li>
+</ul>
+<!-- attachment="ala2_ff19.agr" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0142/ala2_ff14.agr">ala2_ff14.agr</a></li>
+</ul>
+<!-- attachment="ala2_ff14.agr" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0142/ala2_ff14.prmtop">ala2_ff14.prmtop</a></li>
+</ul>
+<!-- attachment="ala2_ff14.prmtop" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0142/ala2_ff14.rst7">ala2_ff14.rst7</a></li>
+</ul>
+<!-- attachment="ala2_ff14.rst7" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0142/ala2_ff19.rst7">ala2_ff19.rst7</a></li>
+</ul>
+<!-- attachment="ala2_ff19.rst7" -->
+<ul>
+<li>application/x-info attachment: <a href="att-0142/ala2_ff19.info">ala2_ff19.info</a></li>
+</ul>
+<!-- attachment="ala2_ff19.info" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0142/ala2_ff19.prmtop">ala2_ff19.prmtop</a></li>
+</ul>
+<!-- attachment="ala2_ff19.prmtop" -->
+<ul>
+<li>application/x-info attachment: <a href="att-0142/ala2_gaff.info">ala2_gaff.info</a></li>
+</ul>
+<!-- attachment="ala2_gaff.info" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0142/ala2_gaff.agr">ala2_gaff.agr</a></li>
+</ul>
+<!-- attachment="ala2_gaff.agr" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0142/ala2_gaff.prmtop">ala2_gaff.prmtop</a></li>
+</ul>
+<!-- attachment="ala2_gaff.prmtop" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0142/ala2_gaff.rst7">ala2_gaff.rst7</a></li>
+</ul>
+<!-- attachment="ala2_gaff.rst7" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Mon Aug 29 2022 - 05:30:04 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0143.html" title="Next message in the list">Carlos Simmerling via AMBER: "Re: [AMBER] Bond energy discrepancy between amber simulated results and cpptraj"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0141.html" title="Previous message in the list">Maria Nagan via AMBER: "Re: [AMBER] AMBER tutorial 5.4 original publication?"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0143.html" title="Next message in this discussion thread">Carlos Simmerling via AMBER: "Re: [AMBER] Bond energy discrepancy between amber simulated results and cpptraj"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0143.html" title="Message sent in reply to this message">Carlos Simmerling via AMBER: "Re: [AMBER] Bond energy discrepancy between amber simulated results and cpptraj"</a></li>
+<li><dfn>Reply</dfn>: <a href="0154.html" title="Message sent in reply to this message">Daniel Roe via AMBER: "Re: [AMBER] Bond energy discrepancy between amber simulated results and cpptraj"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg142" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg142" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg142" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg142" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

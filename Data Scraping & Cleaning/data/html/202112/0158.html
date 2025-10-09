@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] amber20 - test suite picks up the wrong libgfortran from Mark Dixon on 2021-12-21 (Amber Archive Dec 2021)</title>
+<meta name="Author" content="Mark Dixon (mark.c.dixon.durham.ac.uk)" />
+<meta name="Subject" content="Re: [AMBER] amber20 - test suite picks up the wrong libgfortran" />
+<meta name="Date" content="2021-12-21" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] amber20 - test suite picks up the wrong libgfortran</h1>
+<!-- received="Tue Dec 21 08:00:02 2021" -->
+<!-- isoreceived="20211221160002" -->
+<!-- sent="Tue, 21 Dec 2021 15:55:30 +0000 (GMT)" -->
+<!-- isosent="20211221155530" -->
+<!-- name="Mark Dixon" -->
+<!-- email="mark.c.dixon.durham.ac.uk" -->
+<!-- subject="Re: [AMBER] amber20 - test suite picks up the wrong libgfortran" -->
+<!-- id="dedc682e-69ce-1e29-d11-22f1b449a559.durham.ac.uk" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20211126141516.clphhwcbxpvdrwzi.godel.fios-router.home" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0159.html" accesskey="d" title="Pengfei Li: &quot;Re: [AMBER] Adding atom types to gaff.dat&quot;">Next message</a> ]
+[ <a href="0157.html" title="Carlos Simmerling: &quot;Re: [AMBER] Atom types and atom order of lib files and pdb files&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg158" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg158" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg158" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg158" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Mark Dixon &lt;<a href="mailto:mark.c.dixon.durham.ac.uk?Subject=Re%3A%20%5BAMBER%5D%20amber20%20-%20test%20suite%20picks%20up%20the%20wrong%20libgfortran">mark.c.dixon.durham.ac.uk</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 21 Dec 2021 15:55:30 +0000 (GMT)</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Fri, 26 Nov 2021, David A Case wrote:
+<br />
+...
+<br />
+<em class="quotelev2">&gt;&gt; Now I just need to find the right combination for amber to pass its
+</em><br />
+<em class="quotelev2">&gt;&gt; numerical tests with nothing worse than rounding errors. I always seem
+</em><br />
+<em class="quotelev2">&gt;&gt; to have trouble with this bit...
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The goal is not to have rounding errors (that we don't know about).  You can
+</em><br />
+<em class="quotelev1">&gt; go to the web page below to see the compiler and OS'es we used when creating
+</em><br />
+<em class="quotelev1">&gt; the AmberTools21 release, and their results for the test suite:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    <a href="https://gitlab.ambermd.org/amber/amber/-/wikis/Singularity-reports">https://gitlab.ambermd.org/amber/amber/-/wikis/Singularity-reports</a>
+</em><br />
+...
+<br />
+<br />Trying again with the compiler from rocky linux 8.5 (GCC 8.5.0) and 
+<br />
+openmpi 4.1.1 on an AMD Zen2 system, the tests still flag various errors 
+<br />
+and they look fairly worrying.
+<br />
+<br />(AmberTools version 21.11, Amber version 20.12)
+<br />
+<br /><br />1) test_at_serial, amber's own built blas/lapack:
+<br />
+<br />/somewhere/amber20/AmberTools/src/FEW/examples/test/calc_a_1t/AMT/pqr_snaps/AMT_rec.pqr.3 
+<br />
+has four extra lines than it's supposed to, each containing &quot;TER&quot;:
+<br />
+<br />ATOM      1 HH31 CCC     1       0.953   4.463  23.406  0.1123  1.0000       H
+<br />
+TER
+<br />
+ATOM      2 HH32 CCC     1      -0.108   4.490  23.158 -0.3662  1.0000       H
+<br />
+TER
+<br />
+ATOM      3  CH3 CCC     1      -0.422   3.451  23.064  0.1123  1.7000       C
+<br />
+TER
+<br />
+ATOM      4 HH33 CCC     1      -0.685   4.967  23.950  0.1123  1.0000       H
+<br />
+TER
+<br />
+<br />Unfortunately, this takes the test suite's error detection code out of 
+<br />
+step, reporting almost every line in the file as a possible failure which 
+<br />
+makes it difficult to check.
+<br />
+<br /><br />2) test_at_serial, using openblas/0.3.18:
+<br />
+<br />Same as (1) plus two extra failures:
+<br />
+<br />possible FAILURE:  check spc.xvv.other.dif /somewhere/amber20/AmberTools/test/rism1d/spc-kh
+<br />
+43c43
+<br />
+&lt;   5.9583872041744979E-1 -8.8128430347391506E-1
+<br />
+<em class="quotelev1">&gt;   5.9583872509336222E-1 -8.8128603774108361E-1
+</em><br />
+### Maximum absolute error in matching lines = 1.73e-06 at line 43 field 2
+<br />
+### Maximum relative error in matching lines = 1.97e-06 at line 43 field 2
+<br />
+---------------------------------------
+<br />
+<br />possible FAILURE: (ignored)  check min.out.dif
+<br />
+/somewhere/amber20/test/sebomd/AM1-d-CB1/dimethylether
+<br />
+99c99
+<br />
+&lt;       4      -4.5795E+1     4.0472     7.7317     H13         5
+<br />
+<em class="quotelev1">&gt;       4      -4.5795E+1     4.0472     7.7317     H12         4
+</em><br />
+---------------------------------------
+<br />
+<br /><br />3) test_amber_parallel, (same result with export DO_PARALLEL=&quot;mpirun -np 2&quot; or
+<br />
+&nbsp;&nbsp;export DO_PARALLEL=&quot;mpirun -np 4&quot;, openblas/0.3.18 
+<br />
+(but same warnings flagged when using amber-built blas/lapack):
+<br />
+<br />possible FAILURE: (ignored)  check campTI.out.dif
+<br />
+/somewhere/amber20/test/pmemdTI/campTI
+<br />
+139c139
+<br />
+&lt;  Etot   =     -7493.5124  EKtot   =      2139.0193  EPtot      =     -9632.5316
+<br />
+<pre>
+---
+&gt;  Etot   =     -7493.4706  EKtot   =      2139.0611  EPtot      =     -9632.5316
+143c143
+&lt;  EKCMT  =      1041.1462  VIRIAL  =      1665.9226  VOLUME     =     42036.1438
+---
+&gt;  EKCMT  =      1041.1666  VIRIAL  =      1665.9226  VOLUME     =     42036.1438
+149c149
+&lt;  Etot   =     -7493.5124  EKtot   =      2139.0193  EPtot      =     -9632.5316
+---
+&gt;  Etot   =     -7493.4706  EKtot   =      2139.0611  EPtot      =     -9632.5316
+153c153
+&lt;  EKCMT  =      1041.1462  VIRIAL  =      1665.9226  VOLUME     =     42036.1438
+---
+&gt;  EKCMT  =      1041.1666  VIRIAL  =      1665.9226  VOLUME     =     42036.1438
+158,159c158,159
+&lt;  NSTEP =        3   TIME(PS) =       0.003  TEMP(K) =   307.04  PRESS =  -836.5
+&lt;  Etot   =     -7495.0413  EKtot   =      2171.2403  EPtot      =     -9666.2815
+---
+&gt;  NSTEP =        3   TIME(PS) =       0.003  TEMP(K) =   307.05  PRESS =  -836.4
+&gt;  Etot   =     -7494.9995  EKtot   =      2171.2818  EPtot      =     -9666.2813
+161,163c161,163
+&lt;  1-4 NB =        11.0757  1-4 EEL =       -94.0936  VDWAALS    =      1300.0421
+&lt;  EELEC  =    -10968.6174  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1061.0009  VIRIAL  =      1820.1528  VOLUME     =     42034.8514
+---
+&gt;  1-4 NB =        11.0757  1-4 EEL =       -94.0936  VDWAALS    =      1300.0420
+&gt;  EELEC  =    -10968.6172  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1061.0214  VIRIAL  =      1820.1525  VOLUME     =     42034.8514
+168,169c168,169
+&lt;  NSTEP =        3   TIME(PS) =       0.003  TEMP(K) =   307.04  PRESS =  -836.5
+&lt;  Etot   =     -7495.0413  EKtot   =      2171.2403  EPtot      =     -9666.2815
+---
+&gt;  NSTEP =        3   TIME(PS) =       0.003  TEMP(K) =   307.05  PRESS =  -836.4
+&gt;  Etot   =     -7494.9995  EKtot   =      2171.2818  EPtot      =     -9666.2813
+171,173c171,173
+&lt;  1-4 NB =        11.0757  1-4 EEL =       -94.0936  VDWAALS    =      1300.0421
+&lt;  EELEC  =    -10968.6174  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1061.0009  VIRIAL  =      1820.1528  VOLUME     =     42034.8514
+---
+&gt;  1-4 NB =        11.0757  1-4 EEL =       -94.0936  VDWAALS    =      1300.0420
+&gt;  EELEC  =    -10968.6172  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1061.0214  VIRIAL  =      1820.1525  VOLUME     =     42034.8514
+178,179c178,179
+&lt;  NSTEP =        4   TIME(PS) =       0.004  TEMP(K) =   312.96  PRESS = -1000.6
+&lt;  Etot   =     -7495.5227  EKtot   =      2213.1012  EPtot      =     -9708.6239
+---
+&gt;  NSTEP =        4   TIME(PS) =       0.004  TEMP(K) =   312.97  PRESS = -1000.6
+&gt;  Etot   =     -7495.4809  EKtot   =      2213.1421  EPtot      =     -9708.6230
+181,183c181,183
+&lt;  1-4 NB =        10.7797  1-4 EEL =       -93.8765  VDWAALS    =      1273.3213
+&lt;  EELEC  =    -10982.5456  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1088.8934  VIRIAL  =      1996.9837  VOLUME     =     42033.2813
+---
+&gt;  1-4 NB =        10.7797  1-4 EEL =       -93.8765  VDWAALS    =      1273.3212
+&gt;  EELEC  =    -10982.5447  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1088.9139  VIRIAL  =      1996.9818  VOLUME     =     42033.2814
+188,189c188,189
+&lt;  NSTEP =        4   TIME(PS) =       0.004  TEMP(K) =   312.96  PRESS = -1000.6
+&lt;  Etot   =     -7495.5227  EKtot   =      2213.1012  EPtot      =     -9708.6239
+---
+&gt;  NSTEP =        4   TIME(PS) =       0.004  TEMP(K) =   312.97  PRESS = -1000.6
+&gt;  Etot   =     -7495.4809  EKtot   =      2213.1421  EPtot      =     -9708.6230
+191,193c191,193
+&lt;  1-4 NB =        10.7797  1-4 EEL =       -93.8765  VDWAALS    =      1273.3213
+&lt;  EELEC  =    -10982.5456  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1088.8934  VIRIAL  =      1996.9837  VOLUME     =     42033.2813
+---
+&gt;  1-4 NB =        10.7797  1-4 EEL =       -93.8765  VDWAALS    =      1273.3212
+&gt;  EELEC  =    -10982.5447  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1088.9139  VIRIAL  =      1996.9818  VOLUME     =     42033.2814
+198,203c198,203
+&lt;  NSTEP =        5   TIME(PS) =       0.005  TEMP(K) =   319.00  PRESS = -1142.5
+&lt;  Etot   =     -7495.7367  EKtot   =      2255.7990  EPtot      =     -9751.5357
+&lt;  BOND   =        28.7213  ANGLE   =        29.3799  DIHED      =        24.1331
+&lt;  1-4 NB =        10.5016  1-4 EEL =       -93.6366  VDWAALS    =      1250.6284
+&lt;  EELEC  =    -11001.2634  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1115.8094  VIRIAL  =      2152.6504  VOLUME     =     42031.4037
+---
+&gt;  NSTEP =        5   TIME(PS) =       0.005  TEMP(K) =   319.01  PRESS = -1142.5
+&gt;  Etot   =     -7495.6950  EKtot   =      2255.8387  EPtot      =     -9751.5336
+&gt;  BOND   =        28.7213  ANGLE   =        29.3800  DIHED      =        24.1331
+&gt;  1-4 NB =        10.5016  1-4 EEL =       -93.6366  VDWAALS    =      1250.6285
+&gt;  EELEC  =    -11001.2616  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1115.8298  VIRIAL  =      2152.6458  VOLUME     =     42031.4038
+208,213c208,213
+&lt;  NSTEP =        5   TIME(PS) =       0.005  TEMP(K) =   319.00  PRESS = -1142.5
+&lt;  Etot   =     -7495.7367  EKtot   =      2255.7990  EPtot      =     -9751.5357
+&lt;  BOND   =        28.7213  ANGLE   =        29.3799  DIHED      =        24.1331
+&lt;  1-4 NB =        10.5016  1-4 EEL =       -93.6366  VDWAALS    =      1250.6284
+&lt;  EELEC  =    -11001.2634  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1115.8094  VIRIAL  =      2152.6504  VOLUME     =     42031.4037
+---
+&gt;  NSTEP =        5   TIME(PS) =       0.005  TEMP(K) =   319.01  PRESS = -1142.5
+&gt;  Etot   =     -7495.6950  EKtot   =      2255.8387  EPtot      =     -9751.5336
+&gt;  BOND   =        28.7213  ANGLE   =        29.3800  DIHED      =        24.1331
+&gt;  1-4 NB =        10.5016  1-4 EEL =       -93.6366  VDWAALS    =      1250.6285
+&gt;  EELEC  =    -11001.2616  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1115.8298  VIRIAL  =      2152.6458  VOLUME     =     42031.4038
+218,223c218,223
+&lt;  NSTEP =        6   TIME(PS) =       0.006  TEMP(K) =   324.69  PRESS = -1251.5
+&lt;  Etot   =     -7495.8975  EKtot   =      2296.0318  EPtot      =     -9791.9293
+&lt;  BOND   =        27.2185  ANGLE   =        29.5961  DIHED      =        24.3343
+&lt;  1-4 NB =        10.2550  1-4 EEL =       -93.4012  VDWAALS    =      1233.7568
+&lt;  EELEC  =    -11023.6888  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1138.1161  VIRIAL  =      2273.8215  VOLUME     =     42029.2600
+---
+&gt;  NSTEP =        6   TIME(PS) =       0.006  TEMP(K) =   324.70  PRESS = -1251.5
+&gt;  Etot   =     -7495.8558  EKtot   =      2296.0701  EPtot      =     -9791.9258
+&gt;  BOND   =        27.2186  ANGLE   =        29.5962  DIHED      =        24.3343
+&gt;  1-4 NB =        10.2550  1-4 EEL =       -93.4012  VDWAALS    =      1233.7571
+&gt;  EELEC  =    -11023.6858  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1138.1364  VIRIAL  =      2273.8134  VOLUME     =     42029.2602
+225c225
+&lt;  DV/DL  =         5.5179
+---
+&gt;  DV/DL  =         5.5178
+228,233c228,233
+&lt;  NSTEP =        6   TIME(PS) =       0.006  TEMP(K) =   324.69  PRESS = -1251.5
+&lt;  Etot   =     -7495.8975  EKtot   =      2296.0318  EPtot      =     -9791.9293
+&lt;  BOND   =        27.2185  ANGLE   =        29.5961  DIHED      =        24.3343
+&lt;  1-4 NB =        10.2550  1-4 EEL =       -93.4012  VDWAALS    =      1233.7568
+&lt;  EELEC  =    -11023.6888  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1138.1161  VIRIAL  =      2273.8215  VOLUME     =     42029.2600
+---
+&gt;  NSTEP =        6   TIME(PS) =       0.006  TEMP(K) =   324.70  PRESS = -1251.5
+&gt;  Etot   =     -7495.8558  EKtot   =      2296.0701  EPtot      =     -9791.9258
+&gt;  BOND   =        27.2186  ANGLE   =        29.5962  DIHED      =        24.3343
+&gt;  1-4 NB =        10.2550  1-4 EEL =       -93.4012  VDWAALS    =      1233.7571
+&gt;  EELEC  =    -11023.6858  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1138.1364  VIRIAL  =      2273.8134  VOLUME     =     42029.2602
+235c235
+&lt;  DV/DL  =         5.5179
+---
+&gt;  DV/DL  =         5.5178
+238,243c238,243
+&lt;  NSTEP =        7   TIME(PS) =       0.007  TEMP(K) =   329.91  PRESS = -1328.6
+&lt;  Etot   =     -7496.0367  EKtot   =      2332.9581  EPtot      =     -9828.9949
+&lt;  BOND   =        26.3205  ANGLE   =        29.6794  DIHED      =        24.5631
+&lt;  1-4 NB =        10.0493  1-4 EEL =       -93.2000  VDWAALS    =      1222.3538
+&lt;  EELEC  =    -11048.7609  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1155.5096  VIRIAL  =      2361.0832  VOLUME     =     42026.9122
+---
+&gt;  NSTEP =        7   TIME(PS) =       0.007  TEMP(K) =   329.92  PRESS = -1328.5
+&gt;  Etot   =     -7495.9950  EKtot   =      2332.9947  EPtot      =     -9828.9898
+&gt;  BOND   =        26.3206  ANGLE   =        29.6795  DIHED      =        24.5631
+&gt;  1-4 NB =        10.0493  1-4 EEL =       -93.2000  VDWAALS    =      1222.3542
+&gt;  EELEC  =    -11048.7565  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1155.5297  VIRIAL  =      2361.0712  VOLUME     =     42026.9124
+245c245
+&lt;  DV/DL  =        -0.8236
+---
+&gt;  DV/DL  =        -0.8237
+248,253c248,253
+&lt;  NSTEP =        7   TIME(PS) =       0.007  TEMP(K) =   329.91  PRESS = -1328.6
+&lt;  Etot   =     -7496.0367  EKtot   =      2332.9581  EPtot      =     -9828.9949
+&lt;  BOND   =        26.3205  ANGLE   =        29.6794  DIHED      =        24.5631
+&lt;  1-4 NB =        10.0493  1-4 EEL =       -93.2000  VDWAALS    =      1222.3538
+&lt;  EELEC  =    -11048.7609  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1155.5096  VIRIAL  =      2361.0832  VOLUME     =     42026.9122
+---
+&gt;  NSTEP =        7   TIME(PS) =       0.007  TEMP(K) =   329.92  PRESS = -1328.5
+&gt;  Etot   =     -7495.9950  EKtot   =      2332.9947  EPtot      =     -9828.9898
+&gt;  BOND   =        26.3206  ANGLE   =        29.6795  DIHED      =        24.5631
+&gt;  1-4 NB =        10.0493  1-4 EEL =       -93.2000  VDWAALS    =      1222.3542
+&gt;  EELEC  =    -11048.7565  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1155.5297  VIRIAL  =      2361.0712  VOLUME     =     42026.9124
+255c255
+&lt;  DV/DL  =        -0.8236
+---
+&gt;  DV/DL  =        -0.8237
+258,263c258,263
+&lt;  NSTEP =        8   TIME(PS) =       0.008  TEMP(K) =   334.66  PRESS = -1377.7
+&lt;  Etot   =     -7496.1944  EKtot   =      2366.5309  EPtot      =     -9862.7252
+&lt;  BOND   =        26.0815  ANGLE   =        29.6216  DIHED      =        24.8101
+&lt;  1-4 NB =         9.8901  1-4 EEL =       -93.0630  VDWAALS    =      1215.4806
+&lt;  EELEC  =    -11075.5461  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1168.7568  VIRIAL  =      2418.8680  VOLUME     =     42024.4200
+---
+&gt;  NSTEP =        8   TIME(PS) =       0.008  TEMP(K) =   334.67  PRESS = -1377.7
+&gt;  Etot   =     -7496.1527  EKtot   =      2366.5657  EPtot      =     -9862.7184
+&gt;  BOND   =        26.0817  ANGLE   =        29.6217  DIHED      =        24.8101
+&gt;  1-4 NB =         9.8901  1-4 EEL =       -93.0630  VDWAALS    =      1215.4813
+&gt;  EELEC  =    -11075.5402  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1168.7767  VIRIAL  =      2418.8515  VOLUME     =     42024.4203
+268,273c268,273
+&lt;  NSTEP =        8   TIME(PS) =       0.008  TEMP(K) =   334.66  PRESS = -1377.7
+&lt;  Etot   =     -7496.1944  EKtot   =      2366.5309  EPtot      =     -9862.7252
+&lt;  BOND   =        26.0815  ANGLE   =        29.6216  DIHED      =        24.8101
+&lt;  1-4 NB =         9.8901  1-4 EEL =       -93.0630  VDWAALS    =      1215.4806
+&lt;  EELEC  =    -11075.5461  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1168.7568  VIRIAL  =      2418.8680  VOLUME     =     42024.4200
+---
+&gt;  NSTEP =        8   TIME(PS) =       0.008  TEMP(K) =   334.67  PRESS = -1377.7
+&gt;  Etot   =     -7496.1527  EKtot   =      2366.5657  EPtot      =     -9862.7184
+&gt;  BOND   =        26.0817  ANGLE   =        29.6217  DIHED      =        24.8101
+&gt;  1-4 NB =         9.8901  1-4 EEL =       -93.0630  VDWAALS    =      1215.4813
+&gt;  EELEC  =    -11075.5402  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1168.7767  VIRIAL  =      2418.8515  VOLUME     =     42024.4203
+278,283c278,283
+&lt;  NSTEP =        9   TIME(PS) =       0.009  TEMP(K) =   338.95  PRESS = -1403.3
+&lt;  Etot   =     -7496.3779  EKtot   =      2396.8626  EPtot      =     -9893.2405
+&lt;  BOND   =        26.4478  ANGLE   =        29.4792  DIHED      =        25.0651
+&lt;  1-4 NB =         9.7809  1-4 EEL =       -93.0189  VDWAALS    =      1212.3000
+&lt;  EELEC  =    -11103.2947  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1178.7254  VIRIAL  =      2451.9554  VOLUME     =     42021.8359
+---
+&gt;  NSTEP =        9   TIME(PS) =       0.009  TEMP(K) =   338.96  PRESS = -1403.3
+&gt;  Etot   =     -7496.3361  EKtot   =      2396.8957  EPtot      =     -9893.2318
+&gt;  BOND   =        26.4479  ANGLE   =        29.4793  DIHED      =        25.0651
+&gt;  1-4 NB =         9.7809  1-4 EEL =       -93.0189  VDWAALS    =      1212.3009
+&gt;  EELEC  =    -11103.2871  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1178.7451  VIRIAL  =      2451.9343  VOLUME     =     42021.8362
+288,293c288,293
+&lt;  NSTEP =        9   TIME(PS) =       0.009  TEMP(K) =   338.95  PRESS = -1403.3
+&lt;  Etot   =     -7496.3779  EKtot   =      2396.8626  EPtot      =     -9893.2405
+&lt;  BOND   =        26.4478  ANGLE   =        29.4792  DIHED      =        25.0651
+&lt;  1-4 NB =         9.7809  1-4 EEL =       -93.0189  VDWAALS    =      1212.3000
+&lt;  EELEC  =    -11103.2947  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1178.7254  VIRIAL  =      2451.9554  VOLUME     =     42021.8359
+---
+&gt;  NSTEP =        9   TIME(PS) =       0.009  TEMP(K) =   338.96  PRESS = -1403.3
+&gt;  Etot   =     -7496.3361  EKtot   =      2396.8957  EPtot      =     -9893.2318
+&gt;  BOND   =        26.4479  ANGLE   =        29.4793  DIHED      =        25.0651
+&gt;  1-4 NB =         9.7809  1-4 EEL =       -93.0189  VDWAALS    =      1212.3009
+&gt;  EELEC  =    -11103.2871  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1178.7451  VIRIAL  =      2451.9343  VOLUME     =     42021.8362
+298,303c298,303
+&lt;  NSTEP =       10   TIME(PS) =       0.010  TEMP(K) =   342.79  PRESS = -1408.9
+&lt;  Etot   =     -7496.5726  EKtot   =      2424.0328  EPtot      =     -9920.6054
+&lt;  BOND   =        27.2935  ANGLE   =        29.3744  DIHED      =        25.3180
+&lt;  1-4 NB =         9.7246  1-4 EEL =       -93.0935  VDWAALS    =      1212.1153
+&lt;  EELEC  =    -11131.3378  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1186.1223  VIRIAL  =      2464.3011  VOLUME     =     42019.2039
+---
+&gt;  NSTEP =       10   TIME(PS) =       0.010  TEMP(K) =   342.80  PRESS = -1408.8
+&gt;  Etot   =     -7496.5309  EKtot   =      2424.0640  EPtot      =     -9920.5949
+&gt;  BOND   =        27.2937  ANGLE   =        29.3745  DIHED      =        25.3180
+&gt;  1-4 NB =         9.7246  1-4 EEL =       -93.0935  VDWAALS    =      1212.1164
+&gt;  EELEC  =    -11131.3287  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1186.1417  VIRIAL  =      2464.2753  VOLUME     =     42019.2044
+305c305
+&lt;  DV/DL  =       -24.0059
+---
+&gt;  DV/DL  =       -24.0060
+308,313c308,313
+&lt;  NSTEP =       10   TIME(PS) =       0.010  TEMP(K) =   342.79  PRESS = -1408.9
+&lt;  Etot   =     -7496.5726  EKtot   =      2424.0328  EPtot      =     -9920.6054
+&lt;  BOND   =        27.2935  ANGLE   =        29.3744  DIHED      =        25.3180
+&lt;  1-4 NB =         9.7246  1-4 EEL =       -93.0935  VDWAALS    =      1212.1153
+&lt;  EELEC  =    -11131.3378  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1186.1223  VIRIAL  =      2464.3011  VOLUME     =     42019.2039
+---
+&gt;  NSTEP =       10   TIME(PS) =       0.010  TEMP(K) =   342.80  PRESS = -1408.8
+&gt;  Etot   =     -7496.5309  EKtot   =      2424.0640  EPtot      =     -9920.5949
+&gt;  BOND   =        27.2937  ANGLE   =        29.3745  DIHED      =        25.3180
+&gt;  1-4 NB =         9.7246  1-4 EEL =       -93.0935  VDWAALS    =      1212.1164
+&gt;  EELEC  =    -11131.3287  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1186.1417  VIRIAL  =      2464.2753  VOLUME     =     42019.2044
+315c315
+&lt;  DV/DL  =       -24.0059
+---
+&gt;  DV/DL  =       -24.0060
+319,324c319,324
+&lt;  NSTEP =       10   TIME(PS) =       0.010  TEMP(K) =   325.18  PRESS = -1108.2
+&lt;  Etot   =     -7469.1455  EKtot   =      2299.5005  EPtot      =     -9768.6460
+&lt;  BOND   =        29.5821  ANGLE   =        29.1519  DIHED      =        24.3485
+&lt;  1-4 NB =        10.5107  1-4 EEL =       -93.6071  VDWAALS    =      1257.7749
+&lt;  EELEC  =    -11026.4070  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1117.3786  VIRIAL  =      2122.9778  VOLUME     =     42029.4665
+---
+&gt;  NSTEP =       10   TIME(PS) =       0.010  TEMP(K) =   325.19  PRESS = -1108.1
+&gt;  Etot   =     -7469.1079  EKtot   =      2299.5343  EPtot      =     -9768.6422
+&gt;  BOND   =        29.5822  ANGLE   =        29.1520  DIHED      =        24.3485
+&gt;  1-4 NB =        10.5107  1-4 EEL =       -93.6071  VDWAALS    =      1257.7752
+&gt;  EELEC  =    -11026.4037  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1117.3967  VIRIAL  =      2122.9688  VOLUME     =     42029.4667
+326c326
+&lt;  DV/DL  =         4.3929
+---
+&gt;  DV/DL  =         4.3928
+331c331
+&lt;  Etot   =        79.5318  EKtot   =        96.0091  EPtot      =       101.8707
+---
+&gt;  Etot   =        79.5193  EKtot   =        96.0020  EPtot      =       101.8672
+333,335c333,335
+&lt;  1-4 NB =         0.6565  1-4 EEL =         0.5022  VDWAALS    =        44.7329
+&lt;  EELEC  =        57.8240  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =        53.7118  VIRIAL  =       309.5196  VOLUME     =         5.9132
+---
+&gt;  1-4 NB =         0.6565  1-4 EEL =         0.5022  VDWAALS    =        44.7325
+&gt;  EELEC  =        57.8209  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =        53.7145  VIRIAL  =       309.5117  VOLUME     =         5.9131
+341,346c341,346
+&lt;  NSTEP =       10   TIME(PS) =       0.010  TEMP(K) =   325.18  PRESS = -1108.2
+&lt;  Etot   =     -7469.1455  EKtot   =      2299.5005  EPtot      =     -9768.6460
+&lt;  BOND   =        29.5821  ANGLE   =        29.1519  DIHED      =        24.3485
+&lt;  1-4 NB =        10.5107  1-4 EEL =       -93.6071  VDWAALS    =      1257.7749
+&lt;  EELEC  =    -11026.4070  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =      1117.3786  VIRIAL  =      2122.9778  VOLUME     =     42029.4665
+---
+&gt;  NSTEP =       10   TIME(PS) =       0.010  TEMP(K) =   325.19  PRESS = -1108.1
+&gt;  Etot   =     -7469.1079  EKtot   =      2299.5343  EPtot      =     -9768.6422
+&gt;  BOND   =        29.5822  ANGLE   =        29.1520  DIHED      =        24.3485
+&gt;  1-4 NB =        10.5107  1-4 EEL =       -93.6071  VDWAALS    =      1257.7752
+&gt;  EELEC  =    -11026.4037  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =      1117.3967  VIRIAL  =      2122.9688  VOLUME     =     42029.4667
+348c348
+&lt;  DV/DL  =         4.3929
+---
+&gt;  DV/DL  =         4.3928
+353c353
+&lt;  Etot   =        79.5318  EKtot   =        96.0091  EPtot      =       101.8707
+---
+&gt;  Etot   =        79.5193  EKtot   =        96.0020  EPtot      =       101.8672
+355,357c355,357
+&lt;  1-4 NB =         0.6565  1-4 EEL =         0.5022  VDWAALS    =        44.7329
+&lt;  EELEC  =        57.8240  EHBOND  =         0.  RESTRAINT  =         0.
+&lt;  EKCMT  =        53.7118  VIRIAL  =       309.5196  VOLUME     =         5.9132
+---
+&gt;  1-4 NB =         0.6565  1-4 EEL =         0.5022  VDWAALS    =        44.7325
+&gt;  EELEC  =        57.8209  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EKCMT  =        53.7145  VIRIAL  =       309.5117  VOLUME     =         5.9131
+364c364
+&lt;  Etot   =         0.  EKtot   =         0. EPtot      =         4.3929
+---
+&gt;  Etot   =         0.  EKtot   =         0.  EPtot      =         4.3928
+370c370
+&lt;  DV/DL  =         4.3929
+---
+&gt;  DV/DL  =         4.3928
+---------------------------------------
+4) test_at_parallel, export DO_PARALLEL=&quot;mpirun -np 4&quot;, openblas/0.3.18
+(but same warnings flagged when using amber-built blas/lapack). Did not
+see running at &quot;-np 2&quot;.
+The rism3d/1ahoa ones look worrying, and the middle-scheme/REMD_Constr_ALA
+ones look like the precision of the output format has changed?
+possible FAILURE:  check erism.pme.out.dif
+/somewhere/amber20/test/rism3d/1ahoa
+1c1
+&lt; solutePotentialEnergy                      2.5426284473793450E+4   1.1741237245979188E+4  -1.9653962044136872E+4   8.2873761757171887E+3   4.0512925675382717E+3   3.9892543875306319E+3   0.   1.6250266540866839E+3   1.1939958079750942E+4   0.   3.4461014073274123E+3
+&gt; solutePotentialEnergy                      2.5447388144824348E+4   1.1741237245979364E+4  -1.9653962044136959E+4   8.2873761757171815E+3   4.0512925675382821E+3   3.9892543875306501E+3   0.   1.6250266540866883E+3   1.1939958079750906E+4   0.   3.4672050783582345E+3
+2c2
+&lt; rism_excessChemicalPotential               3.4461014073274105E+3   1.1642078564297904E+4  -8.2404848088315302E+3  -6.9743694455541689   5.1482021306590674E+1
+&gt; rism_excessChemicalPotential               3.4672050783582354E+3   1.1527775423966465E+4  -8.1044197314646499E+3  -7.0190062729585634   5.0868392129379266E+1
+3c3
+&lt; rism_solventPotentialEnergy               -6.1467159933589674E+3  -3.3545508270240293E+3  -2.7654438137446314E+3  -1.3323764264978248  -2.5388976163809605E+1
+&gt; rism_solventPotentialEnergy               -6.1175832282965603E+3  -3.3829653413148662E+3  -2.7070058569754337E+3  -1.5919906150473202  -2.6020039391212649E+1
+4c4
+&lt; rism_partialMolarVolume                    3.4137042964302978E+4
+&gt; rism_partialMolarVolume                    3.4185069939324603E+4
+5c5
+&lt; rism_totalParticlesBox                                               7.3285706282397268E+2   1.4657112000258239E+3   2.7599625187651800E-2   4.0261458766936569
+&gt; rism_totalParticlesBox                                               7.3123564466729317E+2   1.4624670995419385E+3   3.4423257320063017E-2   4.0329676561505510
+6c6
+&lt; rism_totalChargeBox                       -3.9997861301621547  -6.2116964698583377E+2   6.2116840710717759E+2   2.7599625187651793E-2  -4.0261458766936560
+&gt; rism_totalChargeBox                       -4.0003200329561404  -6.1979533295504586E+2   6.1979355732092017E+2   3.4423257320063010E-2  -4.0329676561505501
+7c7
+&lt; rism_excessParticlesBox                                             -1.1396260791071606E+3  -2.2792550838364427E+3  -3.3586907790570200   6.3985547244898677E-1
+&gt; rism_excessParticlesBox                                             -1.1412474972638404E+3  -2.2824991843203284E+3  -3.3518671469246093   6.4667725190588032E-1
+8c8
+&lt; rism_excessChargeBox                      -3.9997861301621560   9.6594706548509851E+2  -9.6594830536375468E+2  -3.3586907790570195  -6.3985547244898666E-1
+&gt; rism_excessChargeBox                      -4.0003200329559876   9.6732137951588675E+2  -9.6732315515001221E+2  -3.3518671469246084  -6.4667725190588021E-1
+9c9
+&lt; rism_KirkwoodBuff                                                   -3.4222998085580024E+4  -3.4223042013830745E+4  -5.5772410132387391E+4   1.0625057256654220E+4
+&gt; rism_KirkwoodBuff                                                   -3.4271689311140122E+4  -3.4271752220926232E+4  -5.5659100978637849E+4   1.0738335645982273E+4
+10c10
+&lt; solutePotentialEnergy                      2.5426284473793450E+4   1.1741237245979188E+4  -1.9653962044136872E+4   8.2873761757171887E+3   4.0512925675382717E+3   3.9892543875306319E+3   0.   1.6250266540866839E+3   1.1939958079750942E+4   0.   3.4461014073274123E+3
+&gt; solutePotentialEnergy                      2.5447388144824348E+4   1.1741237245979364E+4  -1.9653962044136959E+4   8.2873761757171815E+3   4.0512925675382821E+3   3.9892543875306501E+3   0.   1.6250266540866883E+3   1.1939958079750906E+4   0.   3.4672050783582345E+3
+11c11
+&lt; rism_excessChemicalPotential               3.4461014073274105E+3   1.1642078564297904E+4  -8.2404848088315302E+3  -6.9743694455541689   5.1482021306590674E+1
+&gt; rism_excessChemicalPotential               3.4672050783582354E+3   1.1527775423966465E+4  -8.1044197314646499E+3  -7.0190062729585634   5.0868392129379266E+1
+12c12
+&lt; rism_solventPotentialEnergy               -6.1467159933589674E+3  -3.3545508270240293E+3  -2.7654438137446314E+3  -1.3323764264978248  -2.5388976163809605E+1
+&gt; rism_solventPotentialEnergy               -6.1175832282965603E+3  -3.3829653413148662E+3  -2.7070058569754337E+3  -1.5919906150473202  -2.6020039391212649E+1
+13c13
+&lt; rism_partialMolarVolume                    3.4137042964302978E+4
+&gt; rism_partialMolarVolume                    3.4185069939324603E+4
+14c14
+&lt; rism_totalParticlesBox                                               7.3285706282397268E+2   1.4657112000258239E+3   2.7599625187651800E-2   4.0261458766936569
+&gt; rism_totalParticlesBox                                               7.3123564466729317E+2   1.4624670995419385E+3   3.4423257320063017E-2   4.0329676561505510
+15c15
+&lt; rism_totalChargeBox                       -3.9997861301621547  -6.2116964698583377E+2   6.2116840710717759E+2   2.7599625187651793E-2  -4.0261458766936560
+&gt; rism_totalChargeBox                       -4.0003200329561404  -6.1979533295504586E+2   6.1979355732092017E+2   3.4423257320063010E-2  -4.0329676561505501
+16c16
+&lt; rism_excessParticlesBox                                             -1.1396260791071606E+3  -2.2792550838364427E+3  -3.3586907790570200   6.3985547244898677E-1
+&gt; rism_excessParticlesBox                                             -1.1412474972638404E+3  -2.2824991843203284E+3  -3.3518671469246093   6.4667725190588032E-1
+17c17
+&lt; rism_excessChargeBox                      -3.9997861301621560   9.6594706548509851E+2  -9.6594830536375468E+2  -3.3586907790570195  -6.3985547244898666E-1
+&gt; rism_excessChargeBox                      -4.0003200329559876   9.6732137951588675E+2  -9.6732315515001221E+2  -3.3518671469246084  -6.4667725190588021E-1
+18c18
+&lt; rism_KirkwoodBuff                                                   -3.4222998085580024E+4  -3.4223042013830745E+4  -5.5772410132387391E+4   1.0625057256654220E+4
+&gt; rism_KirkwoodBuff                                                   -3.4271689311140122E+4  -3.4271752220926232E+4  -5.5659100978637849E+4   1.0738335645982273E+4
+### Maximum absolute error in matching lines = 4.87e+01 at line 9 field 2
+### Maximum relative error in matching lines = 6.12e-03 at line 2 field 2
+---------------------------------------
+possible FAILURE:  check rem.log.dif
+/somewhere/amber20/test/middle-scheme/REMD_Constr_ALA
+8,11c8,11
+&lt;  1      1.15      0.     18.45    300.00    400.00      0.      -1
+&lt;  2      1.04      0.     18.45    325.00    350.00      2.00      -1
+&lt;  3      0.96      0.     18.45    350.00    325.00      0.      -1
+&lt;  4      0.87      0.     18.45    400.00    300.00      2.00      -1
+---
+&gt;  1      1.1547      0.          18.45    300.00    400.00      0.      -1
+&gt;  2      1.0377      0.          18.45    325.00    350.00      2.00      -1
+&gt;  3      0.9636      0.          18.45    350.00    325.00      0.      -1
+&gt;  4      0.8660      0.          18.45    400.00    300.00      2.00      -1
+13,16c13,16
+&lt;  1      0.94    300.79     21.86    400.00    350.00      1.00      -1
+&lt;  2      1.07    274.07     20.13    350.00    400.00      1.00      -1
+&lt;  3      0.96    232.19     19.79    325.00    300.00      1.00      -1
+&lt;  4      1.04    276.09     14.69    300.00    325.00      1.00      -1
+---
+&gt;  1      0.9354    300.79          21.86    400.00    350.00      1.00      -1
+&gt;  2      1.0690    274.07          20.13    350.00    400.00      1.00      -1
+&gt;  3      0.9608    232.19          19.79    325.00    300.00      1.00      -1
+&gt;  4      1.0408    276.09          14.69    300.00    325.00      1.00      -1
+18,21c18,21
+&lt;  1     -1.00    248.40     25.21    350.00    350.00      0.67      -1
+&lt;  2     -1.00    293.05     27.56    400.00    400.00      0.67      -1
+&lt;  3     -1.00    290.62     12.93    300.00    300.00      0.67      -1
+&lt;  4     -1.00    307.34     15.30    325.00    325.00      0.67      -1
+---
+&gt;  1     -1.0000    248.40          25.21    350.00    350.00      0.67      -1
+&gt;  2     -1.0000    293.05          27.56    400.00    400.00      0.67      -1
+&gt;  3     -1.0000    290.62          12.93    300.00    300.00      0.67      -1
+&gt;  4     -1.0000    307.34          15.30    325.00    325.00      0.67      -1
+23,26c23,26
+&lt;  1      1.07    312.07     17.26    350.00    400.00      1.00      -1
+&lt;  2      0.94    311.51     21.53    400.00    350.00      0.50      -1
+&lt;  3     -1.00    260.60     14.49    300.00    300.00      0.50      -1
+&lt;  4     -1.00    242.55     17.76    325.00    325.00      0.50      -1
+---
+&gt;  1      1.0690    312.07          17.26    350.00    400.00      1.00      -1
+&gt;  2      0.9354    311.51          21.53    400.00    350.00      0.50      -1
+&gt;  3     -1.0000    260.60          14.49    300.00    300.00      0.50      -1
+&gt;  4     -1.0000    242.55          17.76    325.00    325.00      0.50      -1
+28,31c28,31
+&lt;  1     -1.00    345.13     32.15    400.00    400.00      0.40      -1
+&lt;  2      0.96    272.37     25.22    350.00    325.00      0.80      -1
+&lt;  3     -1.00    267.70     17.44    300.00    300.00      0.40      -1
+&lt;  4      1.04    236.35     17.59    325.00    350.00      0.80      -1
+---
+&gt;  1     -1.0000    345.13          32.15    400.00    400.00      0.40      -1
+&gt;  2      0.9636    272.37          25.22    350.00    325.00      0.80      -1
+&gt;  3     -1.0000    267.70          17.44    300.00    300.00      0.40      -1
+&gt;  4      1.0377    236.35          17.59    325.00    350.00      0.80      -1
+---------------------------------------
+5) test_amber_parallel, export DO_PARALLEL=&quot;mpirun -np 4&quot;, openblas/0.3.18
+(but same warnings flagged when using amber-built blas/lapack).
+Some of these look worrying, some of them look like differences in
+formatting
+Any advice you can offer would be greatly appreciated.
+Best wishes,
+Mark
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Dec 21 2021 - 08:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0159.html" title="Next message in the list">Pengfei Li: "Re: [AMBER] Adding atom types to gaff.dat"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0157.html" title="Previous message in the list">Carlos Simmerling: "Re: [AMBER] Atom types and atom order of lib files and pdb files"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg158" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg158" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg158" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg158" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

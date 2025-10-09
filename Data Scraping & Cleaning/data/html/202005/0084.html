@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] RMSD discontinuity between NPT and NVT with restraints from Thomas Gaillard on 2020-05-06 (Amber Archive May 2020)</title>
+<meta name="Author" content="Thomas Gaillard (thomas.gaillard.polytechnique.edu)" />
+<meta name="Subject" content="[AMBER] RMSD discontinuity between NPT and NVT with restraints" />
+<meta name="Date" content="2020-05-06" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] RMSD discontinuity between NPT and NVT with restraints</h1>
+<!-- received="Wed May  6 09:00:02 2020" -->
+<!-- isoreceived="20200506160002" -->
+<!-- sent="Wed, 6 May 2020 17:57:00 +0200" -->
+<!-- isosent="20200506155700" -->
+<!-- name="Thomas Gaillard" -->
+<!-- email="thomas.gaillard.polytechnique.edu" -->
+<!-- subject="[AMBER] RMSD discontinuity between NPT and NVT with restraints" -->
+<!-- id="20200506155700.rnuanpbyq3ysrugy.polytechnique.edu" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0085.html" accesskey="d" title="Christina Bergonzo: &quot;Re: [AMBER] addions&quot;">Next message</a> ]
+[ <a href="0083.html" title="Jisha B: &quot;[AMBER] addions&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg84" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg84" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg84" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg84" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Thomas Gaillard &lt;<a href="mailto:thomas.gaillard.polytechnique.edu?Subject=Re%3A%20%5BAMBER%5D%20RMSD%20discontinuity%20between%20NPT%20and%20NVT%20with%20restraints">thomas.gaillard.polytechnique.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 6 May 2020 17:57:00 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber developers and users,
+<br />
+<br />I have an equilibration protocol with an NPT phase followed by an NVT
+<br />
+one. The pressure control is ntp=1, the temperature control ntt=3. The
+<br />
+same restraints are applied in the two phases (with the group syntax),
+<br />
+the reference coordinates for the restraints are always the same (the
+<br />
+initial structure, passed with &quot;-ref&quot; in inpcrd format, as written by
+<br />
+Leap with saveamberparm). The restart files are in netcdf restart format
+<br />
+(ntxo=2). I am using pmemd.cuda with Amber 14.
+<br />
+<br />I observe a structural discontinuity at the beginning of the NVT phase,
+<br />
+corresponding to a contraction of the RMSD with respect to the reference
+<br />
+structure. It looks as if the structure was brutally brought back to the
+<br />
+reference when the NVT phase begins.
+<br />
+<br />A possible interpretation would be that during NPT, the reference
+<br />
+structure is scaled at the same time as the simulated structure when the
+<br />
+box dimensions change. This scaling of the reference structure would
+<br />
+then be lost when the NVT phase begins as it is reread from the inpcrd.
+<br />
+<br />Is this interpretation correct? Is there a way to perform NPT then NVT
+<br />
+with restraints that would prevent the discontinuity problem that I
+<br />
+have?
+<br />
+<br />I hope that my explanation is clear enough, I can provide additional
+<br />
+informations if needed.
+<br />
+<br />Thank you for your time,
+<br />
+<br /><pre>
+-- 
+Thomas Gaillard
+Professeur assistant
+Laboratoire de Biochimie
+Ecole Polytechnique
+91128 Palaiseau cedex
+France
+tel: +33 1 69 33 48 62
+fax: +33 1 69 33 49 09
+thomas.gaillard.polytechnique.edu
+<a href="http://thomasgaillard.fr">http://thomasgaillard.fr</a>
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Wed May 06 2020 - 09:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0085.html" title="Next message in the list">Christina Bergonzo: "Re: [AMBER] addions"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0083.html" title="Previous message in the list">Jisha B: "[AMBER] addions"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg84" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg84" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg84" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg84" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

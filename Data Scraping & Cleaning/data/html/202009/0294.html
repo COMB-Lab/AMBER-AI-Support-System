@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] How does tleap detect improper torsions? from Brian Radak on 2020-09-22 (Amber Archive Sep 2020)</title>
+<meta name="Author" content="Brian Radak (brian.radak.gmail.com)" />
+<meta name="Subject" content="[AMBER] How does tleap detect improper torsions?" />
+<meta name="Date" content="2020-09-22" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] How does tleap detect improper torsions?</h1>
+<!-- received="Tue Sep 22 14:00:02 2020" -->
+<!-- isoreceived="20200922210002" -->
+<!-- sent="Tue, 22 Sep 2020 16:57:46 -0400" -->
+<!-- isosent="20200922205746" -->
+<!-- name="Brian Radak" -->
+<!-- email="brian.radak.gmail.com" -->
+<!-- subject="[AMBER] How does tleap detect improper torsions?" -->
+<!-- id="beccd3d2-7eb8-bada-fc22-b3237dd6757b.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0295.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] How does tleap detect improper torsions?&quot;">Next message</a> ]
+[ <a href="0293.html" title="Feng Pan: &quot;Re: [AMBER] umbrella sampling protein&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0295.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] How does tleap detect improper torsions?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg294" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg294" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg294" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg294" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Brian Radak &lt;<a href="mailto:brian.radak.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20How%20does%20tleap%20detect%20improper%20torsions%3F">brian.radak.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 22 Sep 2020 16:57:46 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hopefully there's a tleap guru who has some ideas about the following:
+<br />
+<br />We have a work flow that generates frcmod files for bespoke 
+<br />
+parameterization of small organic molecules. On /some/ occasions tleap 
+<br />
+gives the very clear warning
+<br />
+<br />** Warning: No sp2 improper torsion term for aa-bb-cc-dd
+<br />
+<br />Where I've used dummy types for illustrative purposes. What's confusing 
+<br />
+is that the loaded frcmod clearly has an improper defined for 
+<br />
+aa-cc-bb-dd -- why does tleap ignore this? When I swapped the atom order 
+<br />
+manually, the warning goes away and I've confirmed that one extra 
+<br />
+improper appears in the prmtop.
+<br />
+<br />&nbsp;From poking around the archives I understand that multiple equivalent 
+<br />
+improper terms are a big no-no, is that related? Our procedure (which I 
+<br />
+didn't develop) is very careful to enforce that the third atom is the 
+<br />
+central atom all cases - is that what tleap searches for? If so, how? 
+<br />
+Our code does this by:
+<br />
+<br />1.) Checking at all atoms in the improper torsion are bonded to atom3. 
+<br />
+If yes - yay, this torsion is good
+<br />
+2.) If no, check all possible connectivity patterns until one atom is 
+<br />
+bound to all others
+<br />
+3.) Swap the new central atom with atom3 in the definition
+<br />
+<br />Is there maybe a sneaky bug in this algorithm? So far, I've only noticed 
+<br />
+this problem with torsions that include all heavy atoms, but that might 
+<br />
+just be coincidence.
+<br />
+<br />Thanks in advance,
+<br />
+Brian
+<br />
+<br /><pre>
+--
+Brian Radak, PhD
+Senior Investigator, Silicon Therapeutics
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Sep 22 2020 - 14:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0295.html" title="Next message in the list">David A Case: "Re: [AMBER] How does tleap detect improper torsions?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0293.html" title="Previous message in the list">Feng Pan: "Re: [AMBER] umbrella sampling protein"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0295.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] How does tleap detect improper torsions?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0295.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] How does tleap detect improper torsions?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg294" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg294" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg294" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg294" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

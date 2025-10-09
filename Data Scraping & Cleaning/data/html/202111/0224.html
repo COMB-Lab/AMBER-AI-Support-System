@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] amber20 - test suite picks up the wrong libgfortran from David A Case on 2021-11-23 (Amber Archive Nov 2021)</title>
+<meta name="Author" content="David A Case (david.case.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] amber20 - test suite picks up the wrong libgfortran" />
+<meta name="Date" content="2021-11-23" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] amber20 - test suite picks up the wrong libgfortran</h1>
+<!-- received="Tue Nov 23 09:30:03 2021" -->
+<!-- isoreceived="20211123173003" -->
+<!-- sent="Tue, 23 Nov 2021 12:17:12 -0500" -->
+<!-- isosent="20211123171712" -->
+<!-- name="David A Case" -->
+<!-- email="david.case.rutgers.edu" -->
+<!-- subject="Re: [AMBER] amber20 - test suite picks up the wrong libgfortran" -->
+<!-- id="20211123171712.6rdwdiokrib7scn4.Davids-MBP-2.fios-router.home" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="7f3d1bf2-73f9-3816-51f8-be9ec3c7d231.durham.ac.uk" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0225.html" accesskey="d" title="Reza Khayat: &quot;[AMBER] Available postdoctoral position&quot;">Next message</a> ]
+[ <a href="0223.html" title="Liao: &quot;Re: [AMBER] Interesting findings regarding water density, ntf values, and total potential energy&quot;">Previous message</a> ]
+[ <a href="0215.html" title="Mark Dixon: &quot;[AMBER] amber20 - test suite picks up the wrong libgfortran&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0250.html" accesskey="t" title="Mark Dixon: &quot;Re: [AMBER] amber20 - test suite picks up the wrong libgfortran&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg224" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg224" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg224" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg224" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case &lt;<a href="mailto:david.case.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20amber20%20-%20test%20suite%20picks%20up%20the%20wrong%20libgfortran">david.case.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 23 Nov 2021 12:17:12 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Mon, Nov 22, 2021, Mark Dixon wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;I'm trying to tackle building amber20 using the new cmake-based system 
+</em><br />
+<em class="quotelev1">&gt;for the first time. I'm not sure what compiler to use, so am playing 
+</em><br />
+<em class="quotelev1">&gt;with GCC 11.2 on Rocky 8 Linux and have hit a problem.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;The build process adds an RPATH into its test executables, with 
+</em><br />
+<em class="quotelev1">&gt;/usr/lib64 placed sufficiently near the start that the OS-provided GCC 
+</em><br />
+<em class="quotelev1">&gt;gfortran runtime overrides my compiler (which is in a non-standard 
+</em><br />
+<em class="quotelev1">&gt;location). The contents of $AMBERHOME/{bin,lib} don't suffer from this 
+</em><br />
+<em class="quotelev1">&gt;problem.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Manually deleting the RPATH fixes the test executables, but is annoying.
+</em><br />
+<br />We are in the process of deprecating NAB.  The first step was to remove
+<br />
+references to it from the documentation.  A second step (which you may wish
+<br />
+to do now) is to not run the NAB tests by default.  To do this, go to
+<br />
+amber20_src/AmberTools/test, and remove &quot;test.nab&quot; from the target list
+<br />
+in test.serial and test.parallel2.  Given your (somewhat?) unusual setup,
+<br />
+and the declining interest in NAB, figuring out how to fix these RPATH
+<br />
+issues in NAB is likely to be low on the to-do list.  If you do need NAB,
+<br />
+see if you can just use the system compilers, which work in out CI tests.
+<br />
+<br />Of course, if anyone has a cmake-based fix to the RPATH problem, let us
+<br />
+know!
+<br />
+<br />[Aside: A third stage, removing NAB entirely (by moving it to its own
+<br />
+repository) is not likely to happen soon, since some workflows depend upon
+<br />
+it.  But we are encouraging people to convert to &quot;nabc&quot;, which offers similar
+<br />
+functionality, but with C rather than NAB as the programming language.]
+<br />
+<br />....dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Nov 23 2021 - 09:30:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0225.html" title="Next message in the list">Reza Khayat: "[AMBER] Available postdoctoral position"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0223.html" title="Previous message in the list">Liao: "Re: [AMBER] Interesting findings regarding water density, ntf values, and total potential energy"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0215.html" title="Message to which this message replies">Mark Dixon: "[AMBER] amber20 - test suite picks up the wrong libgfortran"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0250.html" title="Next message in this discussion thread">Mark Dixon: "Re: [AMBER] amber20 - test suite picks up the wrong libgfortran"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0250.html" title="Message sent in reply to this message">Mark Dixon: "Re: [AMBER] amber20 - test suite picks up the wrong libgfortran"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg224" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg224" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg224" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg224" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

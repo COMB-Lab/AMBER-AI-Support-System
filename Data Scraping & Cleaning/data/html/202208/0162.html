@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Question about NAB package usage in AMBER from Qinsi Xiong via AMBER on 2022-08-30 (Amber Archive Aug 2022)</title>
+<meta name="Author" content="Qinsi Xiong via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Question about NAB package usage in AMBER" />
+<meta name="Date" content="2022-08-30" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Question about NAB package usage in AMBER</h1>
+<!-- received="Tue Aug 30 17:00:03 2022" -->
+<!-- isoreceived="20220831000003" -->
+<!-- sent="Tue, 30 Aug 2022 23:42:41 +0000" -->
+<!-- isosent="20220830234241" -->
+<!-- name="Qinsi Xiong via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Question about NAB package usage in AMBER" -->
+<!-- id="SN6PR05MB53108AFD1A6D8935154B3BE796799.SN6PR05MB5310.namprd05.prod.outlook.com" -->
+<!-- charset="windows-1252" -->
+<!-- inreplyto="SN6PR05MB531005808FCB654E546A1B9596799.SN6PR05MB5310.namprd05.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0163.html" accesskey="d" title="laura zhang via AMBER: &quot;[AMBER] one error from MMPBSA.py&quot;">Next message</a> ]
+[ <a href="0161.html" title="Ali Morshedifard via AMBER: &quot;Re: [AMBER] {SPAM?} Re: timask vs. scmask question&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg162" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg162" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg162" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg162" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Qinsi Xiong via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Question%20about%20NAB%20package%20usage%20in%20AMBER">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 30 Aug 2022 23:42:41 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear all,
+<br />
+<br />I�m trying to find a way to construct a superhelix A-form DNA structure (or say nucleosome-like structure) with relative short basepairs (less than 100).
+<br />
+I know NAB can do this ($AMBERHOME/ AmberTools/examples/nab/ program_10.nab), but the tricky part is that NAB only supports to construct a nucleosome model based on B-form DNA, and what I want is to construct a nucleosome model based on A-form DNA.
+<br />
+<br />&nbsp;&nbsp;1.  I tried to modify the code by changing the input parameter of wc_helix() from
+<br />
+�m1 = wc_helix( sbase, &quot;&quot;, &quot;dna&quot;, abase, &quot;&quot;, &quot;dna&quot;, 2.25, -4.96, 0.0, 0.0, &quot;&quot; );�
+<br />
+to
+<br />
+�m1 = wc_helix( sbase, &quot;&quot;, &quot;dna&quot;, abase, &quot;&quot;, &quot;dna&quot;, -6.0, 20.0, 0.0, 0.0, &quot;&quot; );�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;And I failed in getting a right A-type geometry, which is predictable, as it is mentioned in the manual that wc_helix() is not a generic method for constructing different types of helixes.
+<br />
+<br /><br />&nbsp;&nbsp;1.  I then tried to replace wc_helix() function with fd_helix() function, then I got the error below:
+<br />
+<br />program_10.nab:55 syntax error
+<br />
+<br />nab2c failed!
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I think the reason I got this information was that the molecules fd_helix() generated didn�t label with A/B strand, so the molecular fd_helix() generated can�t be used for the afterward functions like mergestr().
+<br />
+<br />Since I�m not an expert in NAB language and there are very few discussions about NAB online, I�m emailing to seek your help. Any suggestions would be highly appreciated.
+<br />
+<br />Best,
+<br />
+Qinsi
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Aug 30 2022 - 17:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0163.html" title="Next message in the list">laura zhang via AMBER: "[AMBER] one error from MMPBSA.py"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0161.html" title="Previous message in the list">Ali Morshedifard via AMBER: "Re: [AMBER] {SPAM?} Re: timask vs. scmask question"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg162" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg162" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg162" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg162" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

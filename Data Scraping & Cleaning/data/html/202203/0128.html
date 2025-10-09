@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Small Cutoffs Not Supported for Implicit Solvent GPU Simulation Runs from Carlos Simmerling on 2022-03-21 (Amber Archive Mar 2022)</title>
+<meta name="Author" content="Carlos Simmerling (carlos.simmerling.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Small Cutoffs Not Supported for Implicit Solvent GPU Simulation Runs" />
+<meta name="Date" content="2022-03-21" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Small Cutoffs Not Supported for Implicit Solvent GPU Simulation Runs</h1>
+<!-- received="Mon Mar 21 11:00:02 2022" -->
+<!-- isoreceived="20220321180002" -->
+<!-- sent="Mon, 21 Mar 2022 10:34:14 -0700" -->
+<!-- isosent="20220321173414" -->
+<!-- name="Carlos Simmerling" -->
+<!-- email="carlos.simmerling.gmail.com" -->
+<!-- subject="Re: [AMBER] Small Cutoffs Not Supported for Implicit Solvent GPU Simulation Runs" -->
+<!-- id="CAGk3s-R0GFPNzZ1Cgqw_h82QBmt0FomPy8FxVvqQHheTYXRdgg.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CACfZsghBjeMyD7GB7OJPLtKCsV937iWBoTE6jHaJKj3MoR3Ckg.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0129.html" accesskey="d" title="Scott Brozell: &quot;Re: [AMBER] Cannot install AmberTools 21 due to errors in getline.c file&quot;">Next message</a> ]
+[ <a href="0127.html" title="David A Case: &quot;Re: [AMBER] Small Cutoffs Not Supported for Implicit Solvent GPU Simulation Runs&quot;">Previous message</a> ]
+[ <a href="0126.html" title="Nathan Black: &quot;[AMBER] Small Cutoffs Not Supported for Implicit Solvent GPU Simulation Runs&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0141.html" accesskey="t" title="Nathan Black: &quot;Re: [AMBER] Small Cutoffs Not Supported for Implicit Solvent GPU Simulation Runs&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg128" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg128" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg128" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg128" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Carlos Simmerling &lt;<a href="mailto:carlos.simmerling.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Small%20Cutoffs%20Not%20Supported%20for%20Implicit%20Solvent%20GPU%20Simulation%20Runs">carlos.simmerling.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 21 Mar 2022 10:34:14 -0700</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+For large systems, explicit solvent may be faster than implicit. But a
+<br />
+bigger question may be about the system boundary - will your system behave
+<br />
+properly if there is no periodic boundary? I don't think that there is
+<br />
+support to maintain your cubic system geometry in implicit solvent unless
+<br />
+you add some type of restraints. Since there is no defined volume, the
+<br />
+system is infinitely dilute and will no longer correspond to 60 mM.
+<br />
+<br />On Mon, Mar 21, 2022, 7:28 AM Nathan Black &lt;nathanblack262.gmail.com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hello AMBER Users,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I am attempting to simulate a very large system (2500 anionic surfactants
+</em><br />
+<em class="quotelev1">&gt; and 2500 organic counterions, a grand total of ~150K atoms) in a (245
+</em><br />
+<em class="quotelev1">&gt; Angstrom)^3 cubic region to approximate a 60 mM surfactant solution, as
+</em><br />
+<em class="quotelev1">&gt; defined in Packmol.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; My purpose in doing this is to model aggregation behavior- as some
+</em><br />
+<em class="quotelev1">&gt; surfactant micelles related to mine are known to have aggregation numbers
+</em><br />
+<em class="quotelev1">&gt; (N) in the 300-400 range, I wanted to add a larger number of surfactants so
+</em><br />
+<em class="quotelev1">&gt; that (assuming some degree of adherence to experimental findings) multiple
+</em><br />
+<em class="quotelev1">&gt; micelles would form in each simulation.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; To reduce the computational expense of a simulation for this large system,
+</em><br />
+<em class="quotelev1">&gt; I attempted to set a nonbonded interaction cutoff of 10.0 Angstroms (cut =
+</em><br />
+<em class="quotelev1">&gt; 10.0), choose a Generalized Born implicit solvation model (igb = 5), and
+</em><br />
+<em class="quotelev1">&gt; run using GPUs (implementation with pmemd.cuda). However, I received an
+</em><br />
+<em class="quotelev1">&gt; error message when attempting this simulation- I did some further digging
+</em><br />
+<em class="quotelev1">&gt; and found that the nonbonded interaction cutoff must be set to the system
+</em><br />
+<em class="quotelev1">&gt; size when igb &gt; 0 while using pmemd.cuda.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I will experiment with reducing the size of the system, but are there any
+</em><br />
+<em class="quotelev1">&gt; known workarounds to this? I ask that question knowing that this design was
+</em><br />
+<em class="quotelev1">&gt; probably intentional.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I understand that it is good practice to set a large cutoff when working
+</em><br />
+<em class="quotelev1">&gt; with implicit solvent, but at this point the simulations would run for far
+</em><br />
+<em class="quotelev1">&gt; too long to be useful, given that my system (the minimization of one such
+</em><br />
+<em class="quotelev1">&gt; 60 mM surfactant &quot;solution&quot; took about 24 hours when run on CPUs with cut =
+</em><br />
+<em class="quotelev1">&gt; 10.0) is incredibly large.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Let me know if there is any other information I can give to help answer my
+</em><br />
+<em class="quotelev1">&gt; question. Any help is much appreciated.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks so much,
+</em><br />
+<em class="quotelev1">&gt; NDB
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Mar 21 2022 - 11:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0129.html" title="Next message in the list">Scott Brozell: "Re: [AMBER] Cannot install AmberTools 21 due to errors in getline.c file"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0127.html" title="Previous message in the list">David A Case: "Re: [AMBER] Small Cutoffs Not Supported for Implicit Solvent GPU Simulation Runs"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0126.html" title="Message to which this message replies">Nathan Black: "[AMBER] Small Cutoffs Not Supported for Implicit Solvent GPU Simulation Runs"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0141.html" title="Next message in this discussion thread">Nathan Black: "Re: [AMBER] Small Cutoffs Not Supported for Implicit Solvent GPU Simulation Runs"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0141.html" title="Message sent in reply to this message">Nathan Black: "Re: [AMBER] Small Cutoffs Not Supported for Implicit Solvent GPU Simulation Runs"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg128" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg128" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg128" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg128" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

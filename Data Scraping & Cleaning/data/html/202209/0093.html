@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Data set math gives &quot;size is 0&quot; from Rodrigo Galindo-Murillo via AMBER on 2022-09-22 (Amber Archive Sep 2022)</title>
+<meta name="Author" content="Rodrigo Galindo-Murillo via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Data set math gives &quot;size is 0&quot;" />
+<meta name="Date" content="2022-09-22" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Data set math gives &quot;size is 0&quot;</h1>
+<!-- received="Thu Sep 22 22:00:03 2022" -->
+<!-- isoreceived="20220923050003" -->
+<!-- sent="Thu, 22 Sep 2022 22:44:10 -0600" -->
+<!-- isosent="20220923044410" -->
+<!-- name="Rodrigo Galindo-Murillo via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Data set math gives &quot;size is 0&quot;" -->
+<!-- id="CAEg5OQHiCjVu47R9=epm0VULuFr9iNSFW3Qt6o=oF2HuVzYaqw.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="41210cf8.2de0.1836883d112.Coremail.linhuiyin2000.163.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0094.html" accesskey="d" title="David A Case via AMBER: &quot;Re: [AMBER] problems in using autoimage&quot;">Next message</a> ]
+[ <a href="0092.html" title="Chunsheng Lin via AMBER: &quot;[AMBER] Data set math gives &#0034;size is 0&#0034;&quot;">Previous message</a> ]
+[ <a href="0092.html" title="Chunsheng Lin via AMBER: &quot;[AMBER] Data set math gives &#0034;size is 0&#0034;&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg93" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg93" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg93" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg93" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Rodrigo Galindo-Murillo via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Data%20set%20math%20gives%20%22size%20is%200%22">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 22 Sep 2022 22:44:10 -0600</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello!
+<br />
+In order to do operations with datasets, you need to first read the
+<br />
+data, so the datasets can be populated with data, and then you can
+<br />
+perform operations. I made a simple example for the operation you want
+<br />
+to do:
+<br />
+----------------------------------------------------------
+<br />
+parm nowater.topo
+<br />
+trajin nowater.nc 1 last 100
+<br />
+distance d1 :1 :10 out d1.dat
+<br />
+distance d2 :2 :11 out d2.dat
+<br />
+go
+<br />
+resta=d1-d2
+<br />
+write resta.dat resta
+<br />
+go
+<br />
+----------------------------------------------------------
+<br />
+Output of resta.dat:
+<br />
+#Frame          resta
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1      -1.1309
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2      -1.4515
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3      -1.0341
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4      -1.8777
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5       0.3417
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6      -2.1835
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7      -0.2239
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8       0.4551
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9      -0.3705
+<br />
+<br />This CPPTRAJ input works for my data. Read the trajectory input, and
+<br />
+then do any operations you are interested in.
+<br />
+<br />Hope that helps!
+<br />
+Rodrigo
+<br />
+<br />On Thu, Sep 22, 2022 at 10:03 PM Chunsheng Lin via AMBER
+<br />
+&lt;amber.ambermd.org&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Dear Colleagues,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I want to calculate two bond lengths as well as their differences with cpptraj. My cpptraj.in file is as following:
+</em><br />
+<em class="quotelev1">&gt; trajin a18.nc
+</em><br />
+<em class="quotelev1">&gt; distance dT1_T2 .683 .684 out a18.txt
+</em><br />
+<em class="quotelev1">&gt; distance dT2_T3 .684 .664 out a18.txt
+</em><br />
+<em class="quotelev1">&gt; cv = dT1_T2 - dT2_T3
+</em><br />
+<em class="quotelev1">&gt; write a18.txt cv
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; However, cpptraj gives such results:
+</em><br />
+<em class="quotelev1">&gt; BEGIN TRAJECTORY PROCESSING:
+</em><br />
+<em class="quotelev1">&gt; .....................................................
+</em><br />
+<em class="quotelev1">&gt; ACTION SETUP FOR PARM 'a18.prmtop' (2 actions):
+</em><br />
+<em class="quotelev1">&gt;   0: [distance dT1_T2 .683 .684 out a18.txt]
+</em><br />
+<em class="quotelev1">&gt;         .683 (1 atoms) to .684 (1 atoms), imaged.
+</em><br />
+<em class="quotelev1">&gt;   1: [distance dT2_T3 .684 .664 out a18.txt]
+</em><br />
+<em class="quotelev1">&gt;         .684 (1 atoms) to .664 (1 atoms), imaged.
+</em><br />
+<em class="quotelev1">&gt; ----- a18.nc (1-6204, 1) -----
+</em><br />
+<em class="quotelev1">&gt;  0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100% Complete.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Read 6204 frames and processed 6204 frames.
+</em><br />
+<em class="quotelev1">&gt; TIME: Avg. throughput= 17658.8126 frames / second.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ACTION OUTPUT:
+</em><br />
+<em class="quotelev1">&gt; TIME: Analyses took 0.0000 seconds.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; DATASETS (3 total):
+</em><br />
+<em class="quotelev1">&gt;         dT1_T2 &quot;dT1_T2&quot; (double, distance), size is 6204
+</em><br />
+<em class="quotelev1">&gt;         dT2_T3 &quot;dT2_T3&quot; (double, distance), size is 6204
+</em><br />
+<em class="quotelev1">&gt;         cv &quot;cv&quot; (double), size is 0
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; DATAFILES (1 total):
+</em><br />
+<em class="quotelev1">&gt;   a18.txt (Standard Data File):  dT1_T2 dT2_T3
+</em><br />
+<em class="quotelev1">&gt; --------------------------
+</em><br />
+<em class="quotelev1">&gt; The resulted file a18.txt has only dT1_T2 and dT2_T3, and no cv. What is the problem? Why the data set math result &quot;cv&quot; size is 0?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best regards,
+</em><br />
+<em class="quotelev1">&gt; Chunsheng
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Sep 22 2022 - 22:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0094.html" title="Next message in the list">David A Case via AMBER: "Re: [AMBER] problems in using autoimage"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0092.html" title="Previous message in the list">Chunsheng Lin via AMBER: "[AMBER] Data set math gives &#0034;size is 0&#0034;"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0092.html" title="Message to which this message replies">Chunsheng Lin via AMBER: "[AMBER] Data set math gives &#0034;size is 0&#0034;"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg93" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg93" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg93" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg93" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

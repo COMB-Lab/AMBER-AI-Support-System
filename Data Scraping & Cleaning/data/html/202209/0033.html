@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] ATOMIC NUMBER section in prmtop file - sulfur atom in ligand is -1? from He, Amy via AMBER on 2022-09-05 (Amber Archive Sep 2022)</title>
+<meta name="Author" content="He, Amy via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] ATOMIC NUMBER section in prmtop file - sulfur atom in ligand is -1?" />
+<meta name="Date" content="2022-09-05" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] ATOMIC NUMBER section in prmtop file - sulfur atom in ligand is -1?</h1>
+<!-- received="Mon Sep  5 10:30:02 2022" -->
+<!-- isoreceived="20220905173002" -->
+<!-- sent="Mon, 5 Sep 2022 17:21:17 +0000" -->
+<!-- isosent="20220905172117" -->
+<!-- name="He, Amy via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] ATOMIC NUMBER section in prmtop file - sulfur atom in ligand is -1?" -->
+<!-- id="CH0PR01MB70203E1FE98701F1C8747E3FA37F9.CH0PR01MB7020.prod.exchangelabs.com" -->
+<!-- charset="windows-1252" -->
+<!-- inreplyto="20220905131412.acburscmwlqfkk54.runchouwod107l1.rad.rutgers.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0034.html" accesskey="d" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Unwrapping in MSD calculations with pytraj/cpptraj&quot;">Next message</a> ]
+[ <a href="0032.html" title="SATYAJIT KHATUA via AMBER: &quot;Re: [AMBER] Fwd: AMBER 22 installation with CUDA support&quot;">Previous message</a> ]
+[ <a href="0029.html" title="David A Case via AMBER: &quot;Re: [AMBER] ATOMIC NUMBER section in prmtop file - sulfur atom in ligand is -1?&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0043.html" accesskey="t" title="He, Amy via AMBER: &quot;Re: [AMBER] ATOMIC NUMBER section in prmtop file - sulfur atom in ligand is -1?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg33" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg33" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg33" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg33" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: He, Amy via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20ATOMIC%20NUMBER%20section%20in%20prmtop%20file%20-%20sulfur%20atom%20in%20ligand%20is%20-1%3F">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 5 Sep 2022 17:21:17 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Dr. Case,
+<br />
+<br />Thank you so much for your thoughtful reply! That was really helpful. I thought the problem was relevant to hydrogen mass partitioning, but as you correctly pointed out, it is likely more about the parametrization of the sulfur atom.
+<br />
+But I�m still not so sure what to do about the problem� And I would really appreciate it if you could give some more advice on it. My apologies for the lengthy message in advance.
+<br />
+<br /><br />1. New atom type�?
+<br />
+I did notice that the ligand bisulfite sulfur could be a new atom type. The sulfur has atom type SO in my prepin file, as assigned from Antchamber, which is not in $AMBERHOME/dat/leap/parm/parm10.dat, but in $AMBERHOME/dat/antechamber/ATOMTYPE_AMBER.DEF.
+<br />
+<br />Therefore, Antechamber didn�t reject the atom type. In addition, I was able to use parmchk2 so that the relevant parameters are complemented with the GAFF2 equivalents.
+<br />
+<br />However, without declaring the new atom type in Leap, there would be a message in the standard output:
+<br />
+# +Currently only Sp3-Sp3/Sp3-Sp2/Sp2-Sp2 are supported
+<br />
+# +---Tried to superimpose torsions for: *-C55-S58-*
+<br />
+# +--- With Sp3 - Sp0
+<br />
+# +--- Sp0 probably means a new atom type is involved
+<br />
+# +--- which needs to be added via addAtomTypes
+<br />
+<br />Still, Leap was able to write a prmtop file for my system, though it seems like it could not recognize the hybridization state of the sulfur� I disregarded this message the first time I ran the calculation, because I thought this torsion had been taken care of in the GAFF2.frcmod I made:
+<br />
+H2-CT-SO-O    9    1.300         0.000           3.000      same as X -c3-s6-X , penalty score=  0.0
+<br />
+<br /><br />2. My Leap input file
+<br />
+cat &lt;&lt; EOF &gt; leap.addatomtype.in
+<br />
+source leaprc.protein.ff14SB
+<br />
+source leaprc.gaff2
+<br />
+source leaprc.water.tip3p
+<br />
+addAtomTypes {
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;{ &quot;SO&quot;   &quot;S&quot; &quot;sp3&quot; }
+<br />
+}
+<br />
+set default PBRadii mbondi3
+<br />
+loadamberprep RES.prepin
+<br />
+loadamberparams RES_gaff2.frcmod
+<br />
+loadamberparams RES_ff14SB.frcmod
+<br />
+complex = loadpdb complex.pdb4amber.pdb
+<br />
+saveamberparm complex prmtop.prmtop inpcrd.inpcrd
+<br />
+quit
+<br />
+EOF
+<br />
+<br /><br />3. Difference in prmtop files
+<br />
+I used a compare tool to examine the prmtop files. I found that addAtomTypes changed ATOMIC_NUMBER, RADII, and SCREEN in the prmtop.
+<br />
+ATOMIC_NUMBER: from -1 to 16
+<br />
+RADII: from 1.5 to 1.8
+<br />
+SCREEN: from 0.8 to 0.96
+<br />
+<br /><br />4. Results of the minimization
+<br />
+I found a big difference in the EEL term, with or without adding the new atom type in Leap!!!
+<br />
+(1) No Leap addAtomTypes, No ParmED HMR
+<br />
+&nbsp;&nbsp;&nbsp;NSTEP       ENERGY          RMS            GMAX         NAME    NUMBER
+<br />
+&nbsp;&nbsp;&nbsp;1000      -1.0844E+04     9.4968E-02     1.5259E+00     CE2      3311
+<br />
+<br />BOND    =      164.5286  ANGLE   =      594.5273  DIHED      =     3359.7041
+<br />
+VDWAALS =    -2761.2412  EEL     =   -21251.9696  EGB        =    -4408.7354
+<br />
+1-4 VDW =      934.7608  1-4 EEL =    11987.3438  RESTRAINT  =        0.0000
+<br />
+ESURF   =      536.9040
+<br />
+<br />(2) Leap addAtomTypes, No ParmED HMR
+<br />
+&nbsp;&nbsp;&nbsp;NSTEP       ENERGY          RMS            GMAX         NAME    NUMBER
+<br />
+&nbsp;&nbsp;&nbsp;1000      -7.2047E+04     2.9975E+00     1.0349E+02     O60      4654
+<br />
+<br />BOND    =      316.5836  ANGLE   =     1018.8918  DIHED      =     3472.6794
+<br />
+VDWAALS =    -2755.0830  EEL     =   -83097.9364  EGB        =    -4361.2372
+<br />
+1-4 VDW =      865.3401  1-4 EEL =    11956.3905  RESTRAINT  =        0.0000
+<br />
+ESURF   =      537.265
+<br />
+<br />With adding the new atom type in Leap, the endpoint structure appeared to be really distorted, just like it was with the ParmED prmtop file. And I thought that was not just because of the changes in RADII and SCREEN.
+<br />
+So I was kind of thinking, maybe ATOMIC NUMBER is -1 is the correct option (and it is necessary) for the sulfur atom, because it doesn�t have a type in parm10, and has been overridden by its equivalent in GAFF2?? Or maybe I did something that was serious wrong in the parameterization :�(
+<br />
+<br />I�m sharing my input files and commands:
+<br />
+Ligand pdb as input for Antechamber
+<br />
+<a href="https://drive.google.com/file/d/1cTxnJdA9a4NHLH4NRZfUNRXdvu-T6p3L/view?usp=sharing">https://drive.google.com/file/d/1cTxnJdA9a4NHLH4NRZfUNRXdvu-T6p3L/view?usp=sharing</a>
+<br />
+Complex pdb as input for Leap
+<br />
+<a href="https://drive.google.com/file/d/1-Ya_aL4vhvvg--umDozso_GUhoiNli6Y/view?usp=sharing">https://drive.google.com/file/d/1-Ya_aL4vhvvg--umDozso_GUhoiNli6Y/view?usp=sharing</a>
+<br />
+Bash commands I used to execute programs and generate other inputs
+<br />
+<a href="https://drive.google.com/file/d/1cTxnJdA9a4NHLH4NRZfUNRXdvu-T6p3L/view?usp=sharing">https://drive.google.com/file/d/1cTxnJdA9a4NHLH4NRZfUNRXdvu-T6p3L/view?usp=sharing</a>
+<br />
+<br /><br />I hope the formatting of this message is readable.. The outcome should be reproducible with the shared files. Once again, massive thanks to you for your time and kind advice.
+<br />
+<br /><br />Many Thanks,
+<br />
+Amy
+<br />
+<br /><br /><br /><pre>
+--
+Amy He
+Chemistry Graduate Teaching Assistant
+Hadad Research Group
+Ohio State University
+he.1768.osu.edu
+From: David A Case &lt;david.case.rutgers.edu&gt;
+Date: Monday, September 5, 2022 at 9:14 AM
+To: He, Amy &lt;he.1768.buckeyemail.osu.edu&gt;, AMBER Mailing List &lt;amber.ambermd.org&gt;
+Subject: Re: [AMBER] ATOMIC NUMBER section in prmtop file - sulfur atom in ligand is -1?
+On Mon, Sep 05, 2022, He, Amy via AMBER wrote:
+&gt;One is the original prmtop I generated by Leap. In the ATOMIC NUMBER
+&gt;section, the ligand sulfur atom is -1.
+I'm guessing(?) that you defined a new sulfur atom type for the ligand,
+but neglected to have a addAtomTypes command in your tleap script:
+addAtomTypes {
+    { &quot;xx&quot;   &quot;S&quot; &quot;sp3&quot; }
+}
+Where &quot;xx&quot; is your new atom type.  Still, this should not make any
+difference, since (I think!) Amber only really uses the atomic number for
+QM/MM calculations, not for conventional force fields.
+Also, the masses are irrelevant for minimization.  I think we would need
+to have files to reproduce the problem you are seeing (for a small test
+case).  It sounds like my assumption that the atomic number section is not
+relevant is probably wrong.
+You might be able to make some progress by looking the breakdown of energy
+terms for the starting structure, using both prmtop files.  Are all fields
+the same except for the VDW term?
+If you did leave out the addAtomTypes entry, you could try to fix that, then
+regenerate the prmtop file with tleap.  Maybe something else is different as
+well.  Use the parmed commands printLJTypes and printLJMatrix to examine
+your nonbonded interactions.  Look especially for things related to the
+sulfur atom.
+...good luck...dac
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Mon Sep 05 2022 - 10:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0034.html" title="Next message in the list">Daniel Roe via AMBER: "Re: [AMBER] Unwrapping in MSD calculations with pytraj/cpptraj"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0032.html" title="Previous message in the list">SATYAJIT KHATUA via AMBER: "Re: [AMBER] Fwd: AMBER 22 installation with CUDA support"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0029.html" title="Message to which this message replies">David A Case via AMBER: "Re: [AMBER] ATOMIC NUMBER section in prmtop file - sulfur atom in ligand is -1?"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0043.html" title="Next message in this discussion thread">He, Amy via AMBER: "Re: [AMBER] ATOMIC NUMBER section in prmtop file - sulfur atom in ligand is -1?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0043.html" title="Message sent in reply to this message">He, Amy via AMBER: "Re: [AMBER] ATOMIC NUMBER section in prmtop file - sulfur atom in ligand is -1?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg33" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg33" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg33" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg33" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

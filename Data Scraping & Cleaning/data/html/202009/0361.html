@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] PMF calculation from Dickson, Callum on 2020-09-28 (Amber Archive Sep 2020)</title>
+<meta name="Author" content="Dickson, Callum (callum.dickson.novartis.com)" />
+<meta name="Subject" content="Re: [AMBER] PMF calculation" />
+<meta name="Date" content="2020-09-28" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] PMF calculation</h1>
+<!-- received="Mon Sep 28 14:00:02 2020" -->
+<!-- isoreceived="20200928210002" -->
+<!-- sent="Mon, 28 Sep 2020 20:37:53 +0000" -->
+<!-- isosent="20200928203753" -->
+<!-- name="Dickson, Callum" -->
+<!-- email="callum.dickson.novartis.com" -->
+<!-- subject="Re: [AMBER] PMF calculation" -->
+<!-- id="DM5P171MB005763D526EBFF887A8426C7FC350.DM5P171MB0057.NAMP171.PROD.OUTLOOK.COM" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAGhNHfi1hrn=U+LJ=gz7htKKPuQMo8X3kdJ8E8JchYmJqEzNSw.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0362.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] Make some of RNA bases as DNA in leap&quot;">Next message</a> ]
+[ <a href="0360.html" title="somdev pahari: &quot;[AMBER] PMF calculation&quot;">Previous message</a> ]
+[ <a href="0360.html" title="somdev pahari: &quot;[AMBER] PMF calculation&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0365.html" accesskey="t" title="somdev pahari: &quot;Re: [AMBER] PMF calculation&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg361" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg361" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg361" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg361" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Dickson, Callum &lt;<a href="mailto:callum.dickson.novartis.com?Subject=Re%3A%20%5BAMBER%5D%20PMF%20calculation">callum.dickson.novartis.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 28 Sep 2020 20:37:53 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Somdev,
+<br />
+<br />Your results look quite reasonable but you will need to simulate longer to get convergence. Why do you think you should have negative values? Debasing the results so that dG=0 in the water phase, a negative region would indicate methanol prefers the lipid bilayer environment over water.
+<br />
+<br />If you look at the PMF curve in the tutorial, although it comes back down close to zero, at no point is the free energy negative, indicating methanol would prefer to remain in water using GAFF and lipid14 force fields. In the Orsi paper, it seems like the free energy for methanol is very slightly negative around the lipid head group region, however these simulations used a coarse grained membrane so it is hard to directly compare.
+<br />
+<br />The logP for methanol is around logP = -0.5, so it prefers water over oil. logP doesn't always track directly with membrane partitioning but it is a good indicator. If you run the same PMF for something like benzene (logP ~ 2), it should certainly prefer the membrane environment with -ve free energy.
+<br />
+<br />Best,
+<br />
+Callum
+<br />
+<br />-----Original Message-----
+<br />
+From: somdev pahari &lt;somdevpahari1.gmail.com&gt; 
+<br />
+Sent: Tuesday, September 29, 2020 4:25 AM
+<br />
+To: AMBER Mailing List &lt;amber.ambermd.org&gt;
+<br />
+Subject: [AMBER] PMF calculation
+<br />
+<br />&nbsp;Dear Amber users,
+<br />
+I am trying to calculate PMF for the lipid membrane system and using this tutorial as a reference ( <a href="https://urldefense.proofpoint.com/v2/url?u=https-3A__github.com_callumjd_AMBER-2DUmbrella-5FCOM-5Frestraint-5Ftutorial&amp;d=DwIBaQ&amp;c=ZbgFmJjg4pdtrnL2HUJUDw&amp;r=HwsFjSfOtLupDR-NuCP430rdz1DD2LkJxNM3BsKSjrw&amp;m=glKztQJkVaVEw8x6mt5z6eAYHOsRFnnr0EC8hgMFGK8&amp;s=xtdgAIY30mJZ3ga2">https://urldefense.proofpoint.com/v2/url?u=https-3A__github.com_callumjd_AMBER-2DUmbrella-5FCOM-5Frestraint-5Ftutorial&amp;d=DwIBaQ&amp;c=ZbgFmJjg4pdtrnL2HUJUDw&amp;r=HwsFjSfOtLupDR-NuCP430rdz1DD2LkJxNM3BsKSjrw&amp;m=glKztQJkVaVEw8x6mt5z6eAYHOsRFnnr0EC8hgMFGK8&amp;s=xtdgAIY30mJZ3ga2</a>YeZkK2GDHVS9g672O7YCsr3B8xs&amp;e= ) with Amber 18.
+<br />
+I am trying to reproduce some results as described in the tutorial as well as in this paper (<a href="https://urldefense.proofpoint.com/v2/url?u=https-3A__doi.org_10.1021_jp903248s&amp;d=DwIBaQ&amp;c=ZbgFmJjg4pdtrnL2HUJUDw&amp;r=HwsFjSfOtLupDR-NuCP430rdz1DD2LkJxNM3BsKSjrw&amp;m=glKztQJkVaVEw8x6mt5z6eAYHOsRFnnr0EC8hgMFGK8&amp;s=QLU7ZMNOXG81ve1WJAFSk8mN9-x4TIz5JiQYCmMPC14&amp;e">https://urldefense.proofpoint.com/v2/url?u=https-3A__doi.org_10.1021_jp903248s&amp;d=DwIBaQ&amp;c=ZbgFmJjg4pdtrnL2HUJUDw&amp;r=HwsFjSfOtLupDR-NuCP430rdz1DD2LkJxNM3BsKSjrw&amp;m=glKztQJkVaVEw8x6mt5z6eAYHOsRFnnr0EC8hgMFGK8&amp;s=QLU7ZMNOXG81ve1WJAFSk8mN9-x4TIz5JiQYCmMPC14&amp;e</a>= ), also mentioned in the tutorial.
+<br />
+I did it for water and methanol. What I faced that in the case of methanol there do not have any single negative value as it should be. I took 0.5 A as window width and ran a test simulation of 5 ns for each. I know that it's not enough for convergence, still, am I missing something? Kindly help me out.
+<br />
+Thanks in advance.
+<br />
+<br />Regards
+<br />
+Somdev Pahari
+<br />
+Research Scholar
+<br />
+NIT Rourkela
+<br />
+Odisha, India
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Sep 28 2020 - 14:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0362.html" title="Next message in the list">David A Case: "Re: [AMBER] Make some of RNA bases as DNA in leap"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0360.html" title="Previous message in the list">somdev pahari: "[AMBER] PMF calculation"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0360.html" title="Message to which this message replies">somdev pahari: "[AMBER] PMF calculation"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0365.html" title="Next message in this discussion thread">somdev pahari: "Re: [AMBER] PMF calculation"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0365.html" title="Message sent in reply to this message">somdev pahari: "Re: [AMBER] PMF calculation"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg361" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg361" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg361" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg361" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

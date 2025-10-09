@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] ghost pmemd.cuda process ? from Ross Walker on 2022-01-24 (Amber Archive Jan 2022)</title>
+<meta name="Author" content="Ross Walker (ross.rosswalker.co.uk)" />
+<meta name="Subject" content="Re: [AMBER] ghost pmemd.cuda process ?" />
+<meta name="Date" content="2022-01-24" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] ghost pmemd.cuda process ?</h1>
+<!-- received="Mon Jan 24 07:00:02 2022" -->
+<!-- isoreceived="20220124150002" -->
+<!-- sent="Mon, 24 Jan 2022 09:45:16 -0500" -->
+<!-- isosent="20220124144516" -->
+<!-- name="Ross Walker" -->
+<!-- email="ross.rosswalker.co.uk" -->
+<!-- subject="Re: [AMBER] ghost pmemd.cuda process ?" -->
+<!-- id="0EB4926B-5ED6-4044-AF0A-B0730F650B5B.rosswalker.co.uk" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="000901d80fd3$6cc78200$46568600$.iqac.csic.es" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0200.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] Negative DIHEDRAL_PERIODICITY in prmtop for amber20-benchmark FactorIX benchmark&quot;">Next message</a> ]
+[ <a href="0198.html" title="David A Case: &quot;Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)&quot;">Previous message</a> ]
+[ <a href="0188.html" title="Jordi Bujons: &quot;[AMBER] ghost pmemd.cuda process ?&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0217.html" accesskey="t" title="Jordi Bujons: &quot;Re: [AMBER] ghost pmemd.cuda process ?&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg199" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg199" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg199" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg199" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Ross Walker &lt;<a href="mailto:ross.rosswalker.co.uk?Subject=Re%3A%20%5BAMBER%5D%20ghost%20pmemd.cuda%20process%20%3F">ross.rosswalker.co.uk</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 24 Jan 2022 09:45:16 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Jordi,
+<br />
+<br />I am unable to replicate the behavior you describe. Running AMBER 20 +AmberTools 21, latest patches as of yesterday, GCC/ 9.3.1, CUDA 11.4, PMEMD.CUDA single process on a system with 2 GPUs I get:
+<br />
+<br />1 x run on GPU 0
+<br />
+Mon Jan 24 06:34:51 2022       
+<br />
++-----------------------------------------------------------------------------+
+<br />
+| NVIDIA-SMI 470.74       Driver Version: 470.74       CUDA Version: 11.4     |
+<br />
+|-------------------------------+----------------------+----------------------+
+<br />
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+<br />
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+<br />
+|                               |                      |               MIG M. |
+<br />
+|===============================+======================+======================|
+<br />
+|   0  NVIDIA GeForce ...  Off  | 00000000:01:00.0 Off |                  N/A |
+<br />
+| 74%   72C    P2   208W / 310W |    287MiB /  7977MiB |     95%   E. Process |
+<br />
+|                               |                      |                  N/A |
+<br />
++-------------------------------+----------------------+----------------------+
+<br />
+|   1  NVIDIA GeForce ...  Off  | 00000000:21:00.0 Off |                  N/A |
+<br />
+|  0%   54C    P0     1W / 310W |      0MiB /  7982MiB |      0%   E. Process |
+<br />
+|                               |                      |                  N/A |
+<br />
++-------------------------------+----------------------+----------------------+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br />
++-----------------------------------------------------------------------------+
+<br />
+| Processes:                                                                  |
+<br />
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+<br />
+|        ID   ID                                                   Usage      |
+<br />
+|=============================================================================|
+<br />
+|    0   N/A  N/A     99756      C   ...al/amber20/bin/pmemd.cuda      285MiB |
+<br />
++-----------------------------------------------------------------------------+
+<br />
+<br />1x run on GPU 1
+<br />
+Mon Jan 24 06:37:02 2022       
+<br />
++-----------------------------------------------------------------------------+
+<br />
+| NVIDIA-SMI 470.74       Driver Version: 470.74       CUDA Version: 11.4     |
+<br />
+|-------------------------------+----------------------+----------------------+
+<br />
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+<br />
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+<br />
+|                               |                      |               MIG M. |
+<br />
+|===============================+======================+======================|
+<br />
+|   0  NVIDIA GeForce ...  Off  | 00000000:01:00.0 Off |                  N/A |
+<br />
+| 47%   58C    P0     1W / 310W |      0MiB /  7977MiB |      0%   E. Process |
+<br />
+|                               |                      |                  N/A |
+<br />
++-------------------------------+----------------------+----------------------+
+<br />
+|   1  NVIDIA GeForce ...  Off  | 00000000:21:00.0 Off |                  N/A |
+<br />
+| 70%   71C    P2   221W / 310W |    287MiB /  7982MiB |     95%   E. Process |
+<br />
+|                               |                      |                  N/A |
+<br />
++-------------------------------+----------------------+----------------------+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br />
++-----------------------------------------------------------------------------+
+<br />
+| Processes:                                                                  |
+<br />
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+<br />
+|        ID   ID                                                   Usage      |
+<br />
+|=============================================================================|
+<br />
+|    1   N/A  N/A     99858      C   ...al/amber20/bin/pmemd.cuda      285MiB |
+<br />
++-----------------------------------------------------------------------------+
+<br />
+<br /><br />2x individual runs on each of the two GPUs
+<br />
+Mon Jan 24 06:42:44 2022       
+<br />
++-----------------------------------------------------------------------------+
+<br />
+| NVIDIA-SMI 470.74       Driver Version: 470.74       CUDA Version: 11.4     |
+<br />
+|-------------------------------+----------------------+----------------------+
+<br />
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+<br />
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+<br />
+|                               |                      |               MIG M. |
+<br />
+|===============================+======================+======================|
+<br />
+|   0  NVIDIA GeForce ...  Off  | 00000000:01:00.0 Off |                  N/A |
+<br />
+| 83%   80C    P2   216W / 310W |    287MiB /  7977MiB |     95%   E. Process |
+<br />
+|                               |                      |                  N/A |
+<br />
++-------------------------------+----------------------+----------------------+
+<br />
+|   1  NVIDIA GeForce ...  Off  | 00000000:21:00.0 Off |                  N/A |
+<br />
+| 73%   73C    P2   225W / 310W |    287MiB /  7982MiB |     95%   E. Process |
+<br />
+|                               |                      |                  N/A |
+<br />
++-------------------------------+----------------------+----------------------+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br />
++-----------------------------------------------------------------------------+
+<br />
+| Processes:                                                                  |
+<br />
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+<br />
+|        ID   ID                                                   Usage      |
+<br />
+|=============================================================================|
+<br />
+|    0   N/A  N/A     99987      C   ...al/amber20/bin/pmemd.cuda      285MiB |
+<br />
+|    1   N/A  N/A     99988      C   ...al/amber20/bin/pmemd.cuda      285MiB |
+<br />
++-----------------------------------------------------------------------------+
+<br />
+<br />You should only see additional processes when running pmemd.cuda.MPI since this is part of the way the code communicates using peer to peer copies. When running single GPU pmemd.cuda you should only see the one process.
+<br />
+<br />Note with regards to your CUDA_VISIBLE_DEVICES workaround this is something the queuing system should be setting automatically for you based on which GPU Consumable resource it allocate. The alternative is for the queuing system to use CGroups to essentially virtualize the resources and prevent jobs from using resources outside of those allocated. If neither of those things are happening it suggests that the queuing system is not properly configured for nodes with GPUs.
+<br />
+<br />All the best
+<br />
+Ross
+<br />
+<br /><em class="quotelev1">&gt; On Jan 22, 2022, at 16:02, Jordi Bujons &lt;jordi.bujons.iqac.csic.es&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Dear all,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I am running a series of simulations on several nodes of a cluster which are
+</em><br />
+<em class="quotelev1">&gt; equipped with different number and type of GPUs. I had done this in the past
+</em><br />
+<em class="quotelev1">&gt; and it used to be very simple since all nodes are set with Persistence and
+</em><br />
+<em class="quotelev1">&gt; Compute Exclusive modes on, such that any number of GPU jobs could be
+</em><br />
+<em class="quotelev1">&gt; launched through the queue system (SGE 6.2) and the jobs would be
+</em><br />
+<em class="quotelev1">&gt; distributed among the nodes with available GPUs, using a single GPU per job
+</em><br />
+<em class="quotelev1">&gt; and without doing anything else on the user side.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; However, more recently I found that this is not possible anymore because
+</em><br />
+<em class="quotelev1">&gt; each GPU job seems to initiate 2 pmemd.cuda processes: one which performs
+</em><br />
+<em class="quotelev1">&gt; the actual calculation and a second one that remains without doing much but
+</em><br />
+<em class="quotelev1">&gt; keeping one GPU busy and not available for other jobs. Thus, if I run the
+</em><br />
+<em class="quotelev1">&gt; command nvidia-smi after launching a single pmemd.cuda calculation, this is
+</em><br />
+<em class="quotelev1">&gt; the output:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; +---------------------------------------------------------------------------
+</em><br />
+<em class="quotelev1">&gt; --+
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; | NVIDIA-SMI 460.27.04    Driver Version: 460.27.04    CUDA Version: 11.2
+</em><br />
+<em class="quotelev1">&gt; |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; |-------------------------------+----------------------+--------------------
+</em><br />
+<em class="quotelev1">&gt; --+
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr.
+</em><br />
+<em class="quotelev1">&gt; ECC |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute
+</em><br />
+<em class="quotelev1">&gt; M. |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; |                               |                      |               MIG
+</em><br />
+<em class="quotelev1">&gt; M. |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; |===============================+======================+====================
+</em><br />
+<em class="quotelev1">&gt; ==|
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; |   0  GeForce GTX 108...  On   | 00000000:03:00.0 Off |
+</em><br />
+<em class="quotelev1">&gt; N/A |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; | 20%   36C    P8     9W / 250W |    226MiB / 11176MiB |      0%   E.
+</em><br />
+<em class="quotelev1">&gt; Process |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; |                               |                      |
+</em><br />
+<em class="quotelev1">&gt; N/A |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; +-------------------------------+----------------------+--------------------
+</em><br />
+<em class="quotelev1">&gt; --+
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; |   1  GeForce GTX 108...  On   | 00000000:81:00.0 Off |
+</em><br />
+<em class="quotelev1">&gt; N/A |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; | 67%   84C    P2   212W / 250W |    627MiB / 11178MiB |     98%   E.
+</em><br />
+<em class="quotelev1">&gt; Process |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; |                               |                      |
+</em><br />
+<em class="quotelev1">&gt; N/A |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; +-------------------------------+----------------------+--------------------
+</em><br />
+<em class="quotelev1">&gt; --+
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; +---------------------------------------------------------------------------
+</em><br />
+<em class="quotelev1">&gt; --+
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; | Processes:
+</em><br />
+<em class="quotelev1">&gt; |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; |  GPU   GI   CI        PID   Type   Process name                  GPU
+</em><br />
+<em class="quotelev1">&gt; Memory |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; |        ID   ID                                                   Usage
+</em><br />
+<em class="quotelev1">&gt; |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; |===========================================================================
+</em><br />
+<em class="quotelev1">&gt; ==|
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; |    0   N/A  N/A      2121      G   /usr/bin/X
+</em><br />
+<em class="quotelev1">&gt; 35MiB |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; |    0   N/A  N/A      2165      G   /usr/bin/sddm-greeter
+</em><br />
+<em class="quotelev1">&gt; 29MiB |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; |    0   N/A  N/A     31248      C   ...ms/amber21/bin/pmemd.cuda
+</em><br />
+<em class="quotelev1">&gt; 155MiB |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; |    1   N/A  N/A     31248      C   ...ms/amber21/bin/pmemd.cuda
+</em><br />
+<em class="quotelev1">&gt; 623MiB |
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; +---------------------------------------------------------------------------
+</em><br />
+<em class="quotelev1">&gt; --+
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; As shown, GPU ID 0 is busy with a pmemd.cuda process that shows 0% GPU-Util,
+</em><br />
+<em class="quotelev1">&gt; while GPU ID 1 is running at almost 100%. The calculation runs just fine but
+</em><br />
+<em class="quotelev1">&gt; trying to launch a second job in this node fails because no available GPUs.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; The only way that I found to use all the available GPUs is by setting the
+</em><br />
+<em class="quotelev1">&gt; CUDA_VISIBLE_DEVICES parameter. Doing this, each job runs a single
+</em><br />
+<em class="quotelev1">&gt; pmemd.cuda process and occupies a single GPU. The inconvenience of this is
+</em><br />
+<em class="quotelev1">&gt; that trying to launch a relatively large number of simulations through the
+</em><br />
+<em class="quotelev1">&gt; queue system requires to set the CUDA_VISIBLE_DEVICES parameter in each
+</em><br />
+<em class="quotelev1">&gt; case, and it is possible that jobs won't run even if there are GPUs
+</em><br />
+<em class="quotelev1">&gt; available because they have a different IDs than the one set.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I do not know if this a problem of a wrong compilation or of the Nvidia
+</em><br />
+<em class="quotelev1">&gt; driver or something else. I wonder if somebody has found the same problem
+</em><br />
+<em class="quotelev1">&gt; and if there is any fix for this. Any suggestion will be appreciated.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Regards,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Jordi
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ----------------------------------------------------------------------------
+</em><br />
+<em class="quotelev1">&gt; ----------
+</em><br />
+<em class="quotelev1">&gt; Jordi Bujons, PhD
+</em><br />
+<em class="quotelev1">&gt; Dept. of Biological Chemistry (QB)
+</em><br />
+<em class="quotelev1">&gt; Institute of Advanced Chemistry of Catalonia (IQAC)
+</em><br />
+<em class="quotelev1">&gt; National Research Council of Spain (CSIC)
+</em><br />
+<em class="quotelev1">&gt; Address: Jordi Girona 18-26, 08034 Barcelona, Spain
+</em><br />
+<em class="quotelev1">&gt; Phone:  &lt;tel:%2B34%20934006100%20ext.%201291&gt; +34 934006100 ext. 1291
+</em><br />
+<em class="quotelev1">&gt; FAX:  &lt;tel:%2B34%20932045904&gt; +34 932045904
+</em><br />
+<em class="quotelev1">&gt; &lt;mailto:jordi.bujons.iqac.csic.es&gt; jordi.bujons.iqac.csic.es
+</em><br />
+<em class="quotelev1">&gt; &lt;<a href="http://www.iqac.csic.es">http://www.iqac.csic.es</a>&gt; <a href="http://www.iqac.csic.es">http://www.iqac.csic.es</a>
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jan 24 2022 - 07:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0200.html" title="Next message in the list">David A Case: "Re: [AMBER] Negative DIHEDRAL_PERIODICITY in prmtop for amber20-benchmark FactorIX benchmark"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0198.html" title="Previous message in the list">David A Case: "Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0188.html" title="Message to which this message replies">Jordi Bujons: "[AMBER] ghost pmemd.cuda process ?"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0217.html" title="Next message in this discussion thread">Jordi Bujons: "Re: [AMBER] ghost pmemd.cuda process ?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg199" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg199" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg199" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg199" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

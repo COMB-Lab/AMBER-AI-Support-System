@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Nudged Elastic Band solvent choice and initial heating problem from ������ on 2021-02-03 (Amber Archive Feb 2021)</title>
+<meta name="Author" content="������ (santaclaus.sjtu.edu.cn)" />
+<meta name="Subject" content="[AMBER] Nudged Elastic Band solvent choice and initial heating problem" />
+<meta name="Date" content="2021-02-03" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Nudged Elastic Band solvent choice and initial heating problem</h1>
+<!-- received="Wed Feb  3 04:30:02 2021" -->
+<!-- isoreceived="20210203123002" -->
+<!-- sent="Wed, 3 Feb 2021 20:12:45 +0800 (CST)" -->
+<!-- isosent="20210203121245" -->
+<!-- name="������" -->
+<!-- email="santaclaus.sjtu.edu.cn" -->
+<!-- subject="[AMBER] Nudged Elastic Band solvent choice and initial heating problem" -->
+<!-- id="1889034332.26814420.1612354365696.JavaMail.zimbra.sjtu.edu.cn" -->
+<!-- charset="gb2312" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0027.html" accesskey="d" title="Carlos Simmerling: &quot;Re: [AMBER] Nudged Elastic Band solvent choice and initial heating problem&quot;">Next message</a> ]
+[ <a href="0025.html" title="Ch Bilal: &quot;[AMBER] ModuleNotFoundError: No module named &#0039;MMPBSA_mods&#0039;&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0027.html" accesskey="t" title="Carlos Simmerling: &quot;Re: [AMBER] Nudged Elastic Band solvent choice and initial heating problem&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg26" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg26" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg26" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg26" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: ������ &lt;<a href="mailto:santaclaus.sjtu.edu.cn?Subject=Re%3A%20%5BAMBER%5D%20Nudged%20Elastic%20Band%20solvent%20choice%20and%20initial%20heating%20problem">santaclaus.sjtu.edu.cn</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 3 Feb 2021 20:12:45 +0800 (CST)</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Amber users, 
+<br />
+<br />I am trying to perform nudged elastic band method (NEB) on a large 1618-residue protein. 
+<br />
+<br />I am using the same NEB parameters and protocol as the Amber tutorial A5, except for those relating to implicit solvent. Here, I applied the explicit solvent. All the initial structures have been carefully prepared and minimized. 
+<br />
+However, when I checked the output of the initial heating MD, the individual replicate energies were **** (change the cut to 9999 also cause this problem). 
+<br />
+Please see the output 1 below. 
+<br />
+<br />Then I tried NEB with implicit solvent , adopting the same parameter as the tutorial, the energy problem seems to be solved. 
+<br />
+I found the energy of this system was small without plenty of solvent-solvent interactions. That may be the reason to solve the problem. 
+<br />
+Please see the output 2 below. 
+<br />
+<br /><br />Therefore, I have the following questions: 
+<br />
+For large protein systems, what is the best type of solvent to choose? 
+<br />
+In my opinion, although there are lots of solvent-solvent interactions, the explicit solvent would still be better since it is close to the reality. 
+<br />
+If so, how to solve the initial heating problems with the explicit solvent? 
+<br />
+My opinion might be ill-considered for I'm new to MD. 
+<br />
+<br /><br />Any suggestions on what I might have done wrong would be much appreciated. 
+<br />
+<br />Many thanks, 
+<br />
+<br />Pineapple 
+<br />
+<br /><br />Output1: 
+<br />
+<br />------------------------------------------------------- 
+<br />
+Amber 18 PMEMD 2018 
+<br />
+------------------------------------------------------- 
+<br />
+<br />Here is the input file: 
+<br />
+&amp;cntrl 
+<br />
+imin = 0, irest = 0, 
+<br />
+ntc=1, ntf=1, 
+<br />
+ntpr=1000, ntwx=10000, 
+<br />
+ntb = 1, igb=0, cut=10, rgbmax=10, 
+<br />
+nstlim = 1000000, nscm=0, 
+<br />
+dt = 0.0005, ig=-1, 
+<br />
+ntt = 3, gamma_ln=1000.0, 
+<br />
+tempi=0.0, temp0=300.0, 
+<br />
+tgtfitmask=&quot;:1-1618.CA&quot;, 
+<br />
+tgtrmsmask=&quot;:1-1618&quot;, 
+<br />
+ineb = 1,skmin = 10,skmax = 10, 
+<br />
+nmropt=1, 
+<br />
+/ 
+<br />
+&amp;wt type='TEMP0', istep1=0,istep2=800000, 
+<br />
+value1=0.0, value2=300.0 
+<br />
+/ 
+<br />
+&amp;wt type='END' 
+<br />
+/ 
+<br />
+<br />|------------------- GPU DEVICE INFO -------------------- 
+<br />
+| 
+<br />
+| Task ID: 0 
+<br />
+| CUDA_VISIBLE_DEVICES: 0,1,2,3,4,5,6,7 
+<br />
+| CUDA Capable Devices Detected: 8 
+<br />
+| CUDA Device ID in use: 0 
+<br />
+| CUDA Device Name: Tesla V100-SXM2-16GB 
+<br />
+| CUDA Device Global Mem Size: 16130 MB 
+<br />
+| CUDA Device Num Multiprocessors: 80 
+<br />
+| CUDA Device Core Freq: 1.53 GHz 
+<br />
+| 
+<br />
+|-------------------------------------------------------- 
+<br />
+|---------------- GPU PEER TO PEER INFO ----------------- 
+<br />
+| 
+<br />
+| Peer to Peer support: ENABLED 
+<br />
+| 
+<br />
+|-------------------------------------------------------- 
+<br />
+<br />-------------------------------------------------------------------------------- 
+<br />
+4. RESULTS 
+<br />
+-------------------------------------------------------------------------------- 
+<br />
+<br />The following selection will be used for NEB structure fitting 
+<br />
+Mask &quot;:1-1618.CA&quot; matches 1618 atoms 
+<br />
+The following selection will be used for NEB force application 
+<br />
+Mask &quot;:1-1618&quot; matches 25494 atoms 
+<br />
+<br />Last atom in NEB fitmask or rmsmask is 25494 
+<br />
+<br />NSTEP = 0 TIME(PS) = 0.000 TEMP(K) = 0.00 PRESS = 0.0 
+<br />
+Etot = -686665.5046 EKtot = 0.0000 EPtot = -686665.5046 
+<br />
+BOND = 49737.9500 ANGLE = 16906.3886 DIHED = 21361.6559 
+<br />
+1-4 NB = 74233.0973 1-4 EEL = 74040.2101 VDWAALS = 69345.1204 
+<br />
+EELEC = -992289.9269 EHBOND = 0.0000 RESTRAINT = 0.0000 
+<br />
+NEB replicate breakdown: 
+<br />
+Energy for replicate 1 = -686665.5046 
+<br />
+Energy for replicate 2 = -686665.5046 
+<br />
+Energy for replicate 3 = -686665.5046 
+<br />
+Energy for replicate 4 = -686665.5046 
+<br />
+Energy for replicate 5 = -686665.5046 
+<br />
+Energy for replicate 6 = -686665.5046 
+<br />
+Energy for replicate 7 = -686665.5046 
+<br />
+Energy for replicate 8 = -686665.5046 
+<br />
+Energy for replicate 9 = -686665.5046 
+<br />
+Energy for replicate 10 = -686665.5046 
+<br />
+Energy for replicate 11 = -686665.5046 
+<br />
+Energy for replicate 12 = -686665.5046 
+<br />
+Energy for replicate 13 = -686665.5046 
+<br />
+Energy for replicate 14 = -686665.5046 
+<br />
+Energy for replicate 15 = -686665.5046 
+<br />
+Energy for replicate 16 = -686665.5046 
+<br />
+Energy for replicate 17 = -543804.4518 
+<br />
+Energy for replicate 18 = -543804.4518 
+<br />
+Energy for replicate 19 = -543804.4518 
+<br />
+Energy for replicate 20 = -543804.4518 
+<br />
+Energy for replicate 21 = -543804.4518 
+<br />
+Energy for replicate 22 = -543804.4518 
+<br />
+Energy for replicate 23 = -543804.4518 
+<br />
+Energy for replicate 24 = -543804.4518 
+<br />
+Energy for replicate 25 = -543804.4518 
+<br />
+Energy for replicate 26 = -543804.4518 
+<br />
+Energy for replicate 27 = -543804.4518 
+<br />
+Energy for replicate 28 = -543804.4518 
+<br />
+Energy for replicate 29 = -543804.4518 
+<br />
+Energy for replicate 30 = -543804.4518 
+<br />
+Energy for replicate 31 = -543804.4518 
+<br />
+Energy for replicate 32 = -543804.4518 
+<br />
+Total Energy of replicates = ************* 
+<br />
+------------------------------------------------------------------------------ 
+<br />
+<br />NMR restraints: Bond = 0.000 Angle = 0.000 Torsion = 0.000 
+<br />
+=============================================================================== 
+<br />
+<br />NSTEP = 1000 TIME(PS) = 0.500 TEMP(K) = 0.00 PRESS = 0.0 
+<br />
+Etot = -686665.5046 EKtot = 0.0000 EPtot = -686665.5046 
+<br />
+BOND = 49737.9500 ANGLE = 16906.3886 DIHED = 21361.6559 
+<br />
+1-4 NB = 74233.0973 1-4 EEL = 74040.2101 VDWAALS = 69345.1204 
+<br />
+EELEC = -992289.9269 EHBOND = 0.0000 RESTRAINT = 0.0000 
+<br />
+NEB replicate breakdown: 
+<br />
+Energy for replicate 1 = -686665.5046 
+<br />
+Energy for replicate 2 = ************* 
+<br />
+Energy for replicate 3 = ************* 
+<br />
+Energy for replicate 4 = ************* 
+<br />
+Energy for replicate 5 = ************* 
+<br />
+Energy for replicate 6 = ************* 
+<br />
+Energy for replicate 7 = ************* 
+<br />
+Energy for replicate 8 = ************* 
+<br />
+Energy for replicate 9 = ************* 
+<br />
+Energy for replicate 10 = ************* 
+<br />
+Energy for replicate 11 = ************* 
+<br />
+Energy for replicate 12 = ************* 
+<br />
+Energy for replicate 13 = ************* 
+<br />
+Energy for replicate 14 = ************* 
+<br />
+Energy for replicate 15 = ************* 
+<br />
+Energy for replicate 16 = ************* 
+<br />
+Energy for replicate 17 = ************* 
+<br />
+Energy for replicate 18 = ************* 
+<br />
+Energy for replicate 19 = ************* 
+<br />
+Energy for replicate 20 = ************* 
+<br />
+Energy for replicate 21 = ************* 
+<br />
+Energy for replicate 22 = ************* 
+<br />
+Energy for replicate 23 = ************* 
+<br />
+Energy for replicate 24 = ************* 
+<br />
+Energy for replicate 25 = ************* 
+<br />
+Energy for replicate 26 = ************* 
+<br />
+Energy for replicate 27 = ************* 
+<br />
+Energy for replicate 28 = ************* 
+<br />
+Energy for replicate 29 = ************* 
+<br />
+Energy for replicate 30 = ************* 
+<br />
+Energy for replicate 31 = ************* 
+<br />
+Energy for replicate 32 = -543804.4518 
+<br />
+Total Energy of replicates = ************* 
+<br />
+------------------------------------------------------------------------------ 
+<br />
+<br /><br />Output2: 
+<br />
+<br />Here is the input file: 
+<br />
+&amp;cntrl 
+<br />
+imin = 0, irest = 0, 
+<br />
+ntc=1, ntf=1, 
+<br />
+ntpr=1000, ntwx=10000, 
+<br />
+ntb = 0, cut = 999.0, rgbmax=999.0, 
+<br />
+igb = 1, saltcon=0.2, 
+<br />
+nstlim = 1000000, nscm=0, 
+<br />
+dt = 0.0005, ig=-1, 
+<br />
+ntt = 3, gamma_ln=1000.0, 
+<br />
+tempi=0.0, temp0=300.0, 
+<br />
+tgtfitmask=&quot;:1-1618.CA&quot;, 
+<br />
+tgtrmsmask=&quot;:1-1618&quot;, 
+<br />
+ineb = 1,skmin = 10,skmax = 10, 
+<br />
+nmropt=1, 
+<br />
+/ 
+<br />
+&amp;wt type='TEMP0', istep1=0,istep2=800000, 
+<br />
+value1=0.0, value2=300.0 
+<br />
+/ 
+<br />
+&amp;wt type='END' 
+<br />
+/ 
+<br />
+<br /><br />-------------------------------------------------------------------------------- 
+<br />
+4. RESULTS 
+<br />
+-------------------------------------------------------------------------------- 
+<br />
+<br />The following selection will be used for NEB structure fitting 
+<br />
+Mask &quot;:1-1618.CA&quot; matches 1618 atoms 
+<br />
+The following selection will be used for NEB force application 
+<br />
+Mask &quot;:1-1618&quot; matches 25494 atoms 
+<br />
+<br />Last atom in NEB fitmask or rmsmask is 25494 
+<br />
+<br />NSTEP = 0 TIME(PS) = 0.000 TEMP(K) = 0.00 PRESS = 0.0 
+<br />
+Etot = -47074.9209 EKtot = 0.0000 EPtot = -47074.9209 
+<br />
+BOND = 970.8273 ANGLE = 3662.2135 DIHED = 19095.3704 
+<br />
+1-4 NB = 5347.5040 1-4 EEL = 70022.7257 VDWAALS = -12763.4042 
+<br />
+EELEC = -116272.6746 EGB = -17137.4828 RESTRAINT = 0.0000 
+<br />
+NEB replicate breakdown: 
+<br />
+Energy for replicate 1 = -47074.9209 
+<br />
+Energy for replicate 2 = -47074.9209 
+<br />
+Energy for replicate 3 = -47074.9209 
+<br />
+Energy for replicate 4 = -47074.9209 
+<br />
+Energy for replicate 5 = -47074.9209 
+<br />
+Energy for replicate 6 = -47074.9209 
+<br />
+Energy for replicate 7 = -47074.9209 
+<br />
+Energy for replicate 8 = -47074.9209 
+<br />
+Energy for replicate 9 = -47074.9209 
+<br />
+Energy for replicate 10 = -47074.9209 
+<br />
+Energy for replicate 11 = -47074.9209 
+<br />
+Energy for replicate 12 = -47074.9209 
+<br />
+Energy for replicate 13 = -47074.9209 
+<br />
+Energy for replicate 14 = -47074.9209 
+<br />
+Energy for replicate 15 = -47074.9209 
+<br />
+Energy for replicate 16 = -47074.9209 
+<br />
+Energy for replicate 17 = -47224.1291 
+<br />
+Energy for replicate 18 = -47224.1291 
+<br />
+Energy for replicate 19 = -47224.1291 
+<br />
+Energy for replicate 20 = -47224.1291 
+<br />
+Energy for replicate 21 = -47224.1291 
+<br />
+Energy for replicate 22 = -47224.1291 
+<br />
+Energy for replicate 23 = -47224.1291 
+<br />
+Energy for replicate 24 = -47224.1291 
+<br />
+Energy for replicate 25 = -47224.1291 
+<br />
+Energy for replicate 26 = -47224.1291 
+<br />
+Energy for replicate 27 = -47224.1291 
+<br />
+Energy for replicate 28 = -47224.1291 
+<br />
+Energy for replicate 29 = -47224.1291 
+<br />
+Energy for replicate 30 = -47224.1291 
+<br />
+Energy for replicate 31 = -47224.1291 
+<br />
+Energy for replicate 32 = -47224.1291 
+<br />
+Total Energy of replicates = -1508784.8001 
+<br />
+------------------------------------------------------------------------------ 
+<br />
+<br />NMR restraints: Bond = 0.000 Angle = 0.000 Torsion = 0.000 
+<br />
+=============================================================================== 
+<br />
+<br />NSTEP = 1000 TIME(PS) = 0.500 TEMP(K) = 0.00 PRESS = 0.0 
+<br />
+Etot = -47074.9209 EKtot = 0.0000 EPtot = -47074.9209 
+<br />
+BOND = 970.8273 ANGLE = 3662.2135 DIHED = 19095.3704 
+<br />
+1-4 NB = 5347.5040 1-4 EEL = 70022.7257 VDWAALS = -12763.4042 
+<br />
+EELEC = -116272.6746 EGB = -17137.4828 RESTRAINT = 0.0000 
+<br />
+NEB replicate breakdown: 
+<br />
+Energy for replicate 1 = -47074.9209 
+<br />
+Energy for replicate 2 = -47338.7714 
+<br />
+Energy for replicate 3 = -47452.8556 
+<br />
+Energy for replicate 4 = -47523.3896 
+<br />
+Energy for replicate 5 = -47567.5181 
+<br />
+Energy for replicate 6 = -47593.6794 
+<br />
+Energy for replicate 7 = -47607.9944 
+<br />
+Energy for replicate 8 = -47616.0892 
+<br />
+Energy for replicate 9 = -47621.0239 
+<br />
+Energy for replicate 10 = -47623.2967 
+<br />
+Energy for replicate 11 = -47626.3209 
+<br />
+Energy for replicate 12 = -47606.0063 
+<br />
+Energy for replicate 13 = -47301.0893 
+<br />
+Energy for replicate 14 = -43986.1754 
+<br />
+Energy for replicate 15 = -9617.2634 
+<br />
+Energy for replicate 16 = 160468.8020 
+<br />
+Energy for replicate 17 = 161919.1912 
+<br />
+Energy for replicate 18 = -8970.7711 
+<br />
+Energy for replicate 19 = -43988.7678 
+<br />
+Energy for replicate 20 = -47409.1935 
+<br />
+Energy for replicate 21 = -47717.8482 
+<br />
+Energy for replicate 22 = -47741.0225 
+<br />
+Energy for replicate 23 = -47738.2980 
+<br />
+Energy for replicate 24 = -47735.4112 
+<br />
+Energy for replicate 25 = -47732.2131 
+<br />
+Energy for replicate 26 = -47725.8105 
+<br />
+Energy for replicate 27 = -47713.8208 
+<br />
+Energy for replicate 28 = -47691.4394 
+<br />
+Energy for replicate 29 = -47650.9497 
+<br />
+Energy for replicate 30 = -47584.8315 
+<br />
+Energy for replicate 31 = -47474.7247 
+<br />
+Energy for replicate 32 = -47224.1291 
+<br />
+Total Energy of replicates = -1020867.6326 
+<br />
+------------------------------------------------------------------------------ 
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Feb 03 2021 - 04:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0027.html" title="Next message in the list">Carlos Simmerling: "Re: [AMBER] Nudged Elastic Band solvent choice and initial heating problem"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0025.html" title="Previous message in the list">Ch Bilal: "[AMBER] ModuleNotFoundError: No module named &#0039;MMPBSA_mods&#0039;"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0027.html" title="Next message in this discussion thread">Carlos Simmerling: "Re: [AMBER] Nudged Elastic Band solvent choice and initial heating problem"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0027.html" title="Message sent in reply to this message">Carlos Simmerling: "Re: [AMBER] Nudged Elastic Band solvent choice and initial heating problem"</a></li>
+<li><dfn>Reply</dfn>: <a href="0030.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Nudged Elastic Band solvent choice and initial heating problem"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg26" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg26" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg26" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg26" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

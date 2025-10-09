@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Cpptrj : How to give two hbond calculation at the same time. from Rodrigo Galindo-Murillo on 2022-02-14 (Amber Archive Feb 2022)</title>
+<meta name="Author" content="Rodrigo Galindo-Murillo (rodrigogalindo.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Cpptrj : How to give two hbond calculation at the same time." />
+<meta name="Date" content="2022-02-14" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Cpptrj : How to give two hbond calculation at the same time.</h1>
+<!-- received="Mon Feb 14 12:30:02 2022" -->
+<!-- isoreceived="20220214203002" -->
+<!-- sent="Mon, 14 Feb 2022 13:09:09 -0700" -->
+<!-- isosent="20220214200909" -->
+<!-- name="Rodrigo Galindo-Murillo" -->
+<!-- email="rodrigogalindo.gmail.com" -->
+<!-- subject="Re: [AMBER] Cpptrj : How to give two hbond calculation at the same time." -->
+<!-- id="CAEg5OQGJYTJNo0PP5_jwsbJS38Ph0abgUrZpxxm+jTQbQb0sfw.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAPQ+66CE9imERprqZ2XrCzF9mhwBZMDekyjKRyq33opyUMLCkg.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0139.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] CPPTRAJ, Comparing H-bonding in two trajectories&quot;">Next message</a> ]
+[ <a href="0137.html" title="Lara rajam: &quot;Re: [AMBER] Cpptrj : How to give two hbond calculation at the same time.&quot;">Previous message</a> ]
+[ <a href="0137.html" title="Lara rajam: &quot;Re: [AMBER] Cpptrj : How to give two hbond calculation at the same time.&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg138" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg138" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg138" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg138" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Rodrigo Galindo-Murillo &lt;<a href="mailto:rodrigogalindo.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Cpptrj%20%3A%20How%20to%20give%20two%20hbond%20calculation%20at%20the%20same%20time.">rodrigogalindo.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 14 Feb 2022 13:09:09 -0700</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello!
+<br />
+You are trying to create multiple datasets with the same name:
+<br />
+<br /><em class="quotelev3">&gt;&gt;&gt;Warning: DataSet 'MyHB[UU]' already present.
+</em><br />
+<br />Try running the same script but changing the name of the dataset for
+<br />
+each hbond command, like:
+<br />
+<br />hbond MyHB01 distance 3.5 angle 135 :1,82 out 182xnhb.dat avgout
+<br />
+<br />hbond MyHB02 distance 3.5 angle 135 :2,82 out 282xnhb.dat avgout
+<br />
+<br />hbond MyHB03 distance 3.5 angle 135 :3,82 out 382xnhb.dat avgout
+<br />
+<br />etc.
+<br />
+<br />Hope that helps!
+<br />
+Rodrigo.
+<br />
+<br />On Mon, Feb 14, 2022 at 12:55 PM Lara rajam &lt;lara.4884.gmail.com&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Dear AMBER
+</em><br />
+<em class="quotelev1">&gt; I am using V18.01
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; This is my input
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Trajin md1.mdcrd
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Trajin md2.mdcrd
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; autoimage
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; hbond MyHB distance 3.5 angle 135 :1,82 out 182xnhb.dat avgout
+</em><br />
+<em class="quotelev1">&gt; 182xavghb.dat nointramol series
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; hbond MyHB distance 3.5 angle 135 :2,82 out 282xnhb.dat avgout
+</em><br />
+<em class="quotelev1">&gt; 282xavghb.dat nointramol series
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; hbond MyHB distance 3.5 angle 135 :3,82 out 382xnhb.dat avgout
+</em><br />
+<em class="quotelev1">&gt; 382xavghb.dat nointramol series
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; hbond MyHB distance 3.5 angle 135 :18,82 out 1882xnhb.dat avgout
+</em><br />
+<em class="quotelev1">&gt; 1882xavghb.dat nointramol series
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; hbond MyHB distance 3.5 angle 135 :12,82 out 1282xnhb.dat avgout
+</em><br />
+<em class="quotelev1">&gt; 1282xavghb.dat nointramol series
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; run
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Error as below
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; AUTOIMAGE: To box center based on center of mass, anchor is first molecule.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   [hbond MyHB distance 3.5 angle 135 :1,82 out 182xnhb.dat avgout
+</em><br />
+<em class="quotelev1">&gt; 182xavghb.dat nointramol series]
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   HBOND: Searching for Hbond donors/acceptors in region specified by :1,82
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Only looking for intermolecular hydrogen bonds.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Distance cutoff = 3.500, Angle Cutoff = 135.000
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Writing # Hbond v time results to 182xnhb.dat
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Writing Hbond avgs to 182xavghb.dat
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Time series data for each hbond will be saved for analysis.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   [hbond MyHB distance 3.5 angle 135 :2,82 out 282xnhb.dat avgout
+</em><br />
+<em class="quotelev1">&gt; 282xavghb.dat nointramol series]
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Warning: DataSet 'MyHB[UU]' already present.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Error: Could not initialize action [hbond]
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; 1 errors encountered reading input.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Warning: Set 'MyHB[UU]' contains no data.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Warning: File '182xnhb.dat' has no sets containing data.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Warning: File '282xnhb.dat' has no sets containing data.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; TIME: Total execution time: 0.0476 seconds.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Error: Error(s) occurred during execution.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thank you
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Mon, Feb 14, 2022 at 1:39 PM Daniel Roe &lt;daniel.r.roe.gmail.com&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Hi,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; It should be no problem to run any number of 'hbond' calculations in a
+</em><br />
+<em class="quotelev2">&gt; &gt; single run. When you say the script is not running, what do you mean
+</em><br />
+<em class="quotelev2">&gt; &gt; exactly? Is there an error/warning? Does it crash? Also, what version
+</em><br />
+<em class="quotelev2">&gt; &gt; of cpptraj are you using?
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; -Dan
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; On Mon, Feb 14, 2022 at 12:18 PM Lara rajam &lt;lara.4884.gmail.com&gt; wrote:
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Dear AMber
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; I am trying to calculate the multiple specific hbond in the single run.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; How to give the syntax ?
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; For example
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; hbond MyHB distance 3.5 angle 135 :1,78 out 178xnhb.dat avgout
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; 178xavghb.dat nointramol series
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; hbond MyHB distance 3.5 angle 135 :3,78 out 378xnhb.dat avgout
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; 378xavghb.dat nointramol series
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; When I give like this the script is not running
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Any help is appreciated !
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Feb 14 2022 - 12:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0139.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] CPPTRAJ, Comparing H-bonding in two trajectories"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0137.html" title="Previous message in the list">Lara rajam: "Re: [AMBER] Cpptrj : How to give two hbond calculation at the same time."</a></li>
+<li><dfn>In reply to</dfn>: <a href="0137.html" title="Message to which this message replies">Lara rajam: "Re: [AMBER] Cpptrj : How to give two hbond calculation at the same time."</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg138" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg138" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg138" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg138" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Interesting findings regarding water density, ntf values, and total potential energy from Liao on 2021-11-23 (Amber Archive Nov 2021)</title>
+<meta name="Author" content="Liao (liaojunzhuo.aliyun.com)" />
+<meta name="Subject" content="[AMBER] Interesting findings regarding water density, ntf values, and total potential energy" />
+<meta name="Date" content="2021-11-23" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Interesting findings regarding water density, ntf values, and total potential energy</h1>
+<!-- received="Tue Nov 23 00:30:02 2021" -->
+<!-- isoreceived="20211123083002" -->
+<!-- sent="Tue, 23 Nov 2021 16:23:35 +0800" -->
+<!-- isosent="20211123082335" -->
+<!-- name="Liao" -->
+<!-- email="liaojunzhuo.aliyun.com" -->
+<!-- subject="[AMBER] Interesting findings regarding water density, ntf values, and total potential energy" -->
+<!-- id="9bcdd344-9cdb-4ff4-a783-e0f005ce95cf.liaojunzhuo.aliyun.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0222.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] Interesting findings regarding water density, ntf values, and total potential energy&quot;">Next message</a> ]
+[ <a href="0220.html" title="David A Case: &quot;Re: [AMBER] &#0034;unknown flag: filename.top&#0034; error with PMEMD and topology file from CHARMM-GUI&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0222.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] Interesting findings regarding water density, ntf values, and total potential energy&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg221" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg221" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg221" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg221" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Liao &lt;<a href="mailto:liaojunzhuo.aliyun.com?Subject=Re%3A%20%5BAMBER%5D%20Interesting%20findings%20regarding%20water%20density%2C%20ntf%20values%2C%20and%20total%20potential%20energy">liaojunzhuo.aliyun.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 23 Nov 2021 16:23:35 +0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber community,
+<br />
+Today I was investigating some water behavior with a box of pure TIP3P water. I was doing so because I noticed in my research projects the water density was around 0.96 at 300K. I thought it should be around 1.
+<br />
+Anyway, I found out that the water density is affected by ntf values. The following are results from 3 trials each of ntf=1, ntf=2, ntf=8. I need to use ntf=8 as part of my binding studies.
+<br />
+ntf=8   0.9630 0.9614 0.9643 
+<br />
+ntf=2   0.9854 0.9852 0.9837 
+<br />
+ntf=1   1.0253 1.0257 1.0239
+<br />
+The potential energy values are also affected:
+<br />
+ntf=8   -59576.5082 -59610.5461 -59626.2363 
+<br />
+ntf=2   -59916.4938 -59959.9350 -59926.4898
+<br />
+ntf=1   -60732.8611 -60657.8262 -60669.2797
+<br />
+<br />Since in all cases the intramolecular and 1-4 interaction energies are all 0, and that TIP3P water is rigid. In theory I believe all values of ntf should give the same result? But somehow it didn't. And, when I turned off SHAKE and used 0.002 as the timestep, the simulation still crashed-but there are no solute atoms at all. It probably doesn't matter in many scenarios, but I'm not sure for every single scenario. I'm just very curious of the reason this is happening. Were there forces and interactions of a pure box of TIP3P water I missed out, or does has something to do with how the simulation code is written?
+<br />
+<br />Thank you!
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Nov 23 2021 - 00:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0222.html" title="Next message in the list">David A Case: "Re: [AMBER] Interesting findings regarding water density, ntf values, and total potential energy"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0220.html" title="Previous message in the list">David A Case: "Re: [AMBER] &#0034;unknown flag: filename.top&#0034; error with PMEMD and topology file from CHARMM-GUI"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0222.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] Interesting findings regarding water density, ntf values, and total potential energy"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0222.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Interesting findings regarding water density, ntf values, and total potential energy"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0230.html" title="Message sent in reply to this message">Liao: "Re: [AMBER] Interesting findings regarding water density, ntf values, and total potential energy"</a></li>
+<li><dfn>Reply</dfn>: <a href="0231.html" title="Message sent in reply to this message">Matias Machado: "Re: [AMBER] Interesting findings regarding water density, ntf values, and total potential energy"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg221" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg221" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg221" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg221" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

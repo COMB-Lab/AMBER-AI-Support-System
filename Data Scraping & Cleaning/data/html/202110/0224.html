@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Atom type does not shown up in PARMCHK.DAT from Dr. Anselm Horn on 2021-10-27 (Amber Archive Oct 2021)</title>
+<meta name="Author" content="Dr. Anselm Horn (anselm.horn.fau.de)" />
+<meta name="Subject" content="Re: [AMBER] Atom type does not shown up in PARMCHK.DAT" />
+<meta name="Date" content="2021-10-27" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Atom type does not shown up in PARMCHK.DAT</h1>
+<!-- received="Wed Oct 27 01:00:02 2021" -->
+<!-- isoreceived="20211027080002" -->
+<!-- sent="Wed, 27 Oct 2021 09:36:35 +0200" -->
+<!-- isosent="20211027073635" -->
+<!-- name="Dr. Anselm Horn" -->
+<!-- email="anselm.horn.fau.de" -->
+<!-- subject="Re: [AMBER] Atom type does not shown up in PARMCHK.DAT" -->
+<!-- id="9009ea88-66e1-c5ac-f843-94eeffe3f4ad.fau.de" -->
+<!-- charset="windows-1252" -->
+<!-- inreplyto="BYAPR06MB4565CE9EA41762F0E21D1EB7E7849.BYAPR06MB4565.namprd06.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0225.html" accesskey="d" title="Victor Nazarychev: &quot;Re: [AMBER] Fwd: Ambertools21 installation problems&quot;">Next message</a> ]
+[ <a href="0223.html" title="Umesh Roy: &quot;[AMBER] Error: an illegal memory access was encountered launching kernel kClearForces&quot;">Previous message</a> ]
+[ <a href="0219.html" title="Rohanizeidanlou, Sahar: &quot;[AMBER]  Atom type does not shown up in PARMCHK.DAT&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg224" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg224" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg224" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg224" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Dr. Anselm Horn &lt;<a href="mailto:anselm.horn.fau.de?Subject=Re%3A%20%5BAMBER%5D%20Atom%20type%20does%20not%20shown%20up%20in%20PARMCHK.DAT">anselm.horn.fau.de</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 27 Oct 2021 09:36:35 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Sahar,
+<br />
+<br />the error you obtained indicates a deeper problem with your system:
+<br />
+The atom type assignment is probably not correct.
+<br />
+<br />When you look into the pqr and prep file you attached you see that a
+<br />
+carbon and two hydrogen atoms have the DU (=dummy) atom type, which is
+<br />
+obviously not ok. Thus, you don't want to add the DU atom type to any
+<br />
+DAT file, but correct the atom types.
+<br />
+<br />Although I can only guess how you created the prep file, I strongly
+<br />
+recommend to always have a look at automatically assigned atom types; in
+<br />
+the case of doubt, you could have a look into the original literature
+<br />
+for the exact atom type definition, but also the AMBER parameter files
+<br />
+contain a short definition of the atom types (thanks for the
+<br />
+documentation to the developers!). Be aware that the choice of the atom
+<br />
+type essentially directs all the other automatic parameter assignments
+<br />
+for bonds, angles, torsions and is key in ligand parameterization.
+<br />
+<br />The DU atoms in your system are C26, HC26, H261. I tried to visualize
+<br />
+your system, and found that carbon C26 seems to have five valencies, two
+<br />
+of which are HC26 and H261. Thus, maybe your ligand structure needs a
+<br />
+closer look first.
+<br />
+<br />Good luck!
+<br />
+<br />Anselm
+<br />
+<br />Bioinformatik  |  NHR.FAU
+<br />
+Friedrich-Alexander-Universit�t Erlangen-N�rnberg (FAU)
+<br />
+Germany
+<br />
+<br /><br /><br /><br /><br /><br />On 10/27/2021 01:38 AM, Rohanizeidanlou, Sahar wrote:
+<br />
+<em class="quotelev1">&gt; Hi Amber Community,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I am running parmchk2 on a ligand structure after generating the .prep file using ANTECHAMBER and getting the below error:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; $AMBERHOME/bin/parmchk2 -i lig.prep -f prepi -o lig.frcmod
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Atom type of DU does not shown up in PARMCHK.DAT
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I know that the DU atom type does not exist in the PARMCHK.DAT file. Can anyone guide me how can I add this atom type in the DAT file?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I have attached the ligand structure and prep file for your reference.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Thanks for your support in advance.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Best regards,
+</em><br />
+<em class="quotelev1">&gt; Sahar Cain
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Oct 27 2021 - 01:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0225.html" title="Next message in the list">Victor Nazarychev: "Re: [AMBER] Fwd: Ambertools21 installation problems"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0223.html" title="Previous message in the list">Umesh Roy: "[AMBER] Error: an illegal memory access was encountered launching kernel kClearForces"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0219.html" title="Message to which this message replies">Rohanizeidanlou, Sahar: "[AMBER]  Atom type does not shown up in PARMCHK.DAT"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg224" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg224" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg224" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg224" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

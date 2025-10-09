@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] working with mmpbsa with protein and three ligands in same complex from David A Case on 2021-01-17 (Amber Archive Jan 2021)</title>
+<meta name="Author" content="David A Case (david.case.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] working with mmpbsa with protein and three ligands in same complex" />
+<meta name="Date" content="2021-01-17" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] working with mmpbsa with protein and three ligands in same complex</h1>
+<!-- received="Sun Jan 17 07:30:02 2021" -->
+<!-- isoreceived="20210117153002" -->
+<!-- sent="Sun, 17 Jan 2021 10:16:54 -0500" -->
+<!-- isosent="20210117151654" -->
+<!-- name="David A Case" -->
+<!-- email="david.case.rutgers.edu" -->
+<!-- subject="Re: [AMBER] working with mmpbsa with protein and three ligands in same complex" -->
+<!-- id="20210117151654.xwrdrhhrd5xxbren.ipo3912l400.rad.rutgers.edu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAH9Uu9PLYePEi2-v4-a45fzx6-KqZoLJvJCQEkhM4vjR63x4vA.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0280.html" accesskey="d" title="Jenny 148: &quot;[AMBER] Distance of every c alpha in a protein to every other c alpha&quot;">Next message</a> ]
+[ <a href="0278.html" title="Sadaf Rani: &quot;[AMBER] working with mmpbsa with protein and three ligands in same complex&quot;">Previous message</a> ]
+[ <a href="0278.html" title="Sadaf Rani: &quot;[AMBER] working with mmpbsa with protein and three ligands in same complex&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0304.html" accesskey="t" title="Sadaf Rani: &quot;Re: [AMBER] working with mmpbsa with protein and three ligands in same complex&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg279" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg279" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg279" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg279" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case &lt;<a href="mailto:david.case.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20working%20with%20mmpbsa%20with%20protein%20and%20three%20ligands%20in%20same%20complex">david.case.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 17 Jan 2021 10:16:54 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Sun, Jan 17, 2021, Sadaf Rani wrote:
+<br />
+<br /><em class="quotelev1">&gt;I have a query and need your suggestions, please. I want to calculate
+</em><br />
+<em class="quotelev1">&gt;ligand binding affinities of a protein-ligand complex in which I have 1
+</em><br />
+<em class="quotelev1">&gt;ligand and two cofacors in the same complex. How should I calculate binding
+</em><br />
+<em class="quotelev1">&gt;affinities of all with protein using mmpbsa? Do I need to built separate
+</em><br />
+<em class="quotelev1">&gt;complexes for all of the three ligands (ligand plus cofactors)?
+</em><br />
+<br />Don't be confused by the terms &quot;protein&quot;, &quot;ligand&quot; and &quot;complex&quot;.  MMPBSA
+<br />
+doesn't know any chemistry, it effectively always treats a two-component
+<br />
+system, A + B -&gt; C, where A, B and C can be anything you want.
+<br />
+<br />To describe the binding of three components, you could do some combination
+<br />
+of the following calculations, depending on what information you wish to 
+<br />
+obtain; (in this table, &quot;C&quot; would alway be the combination of &quot;A&quot; and &quot;B&quot;):
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;A&quot;                &quot;B&quot;    
+<br />
+----------------------------------------------
+<br />
+1.         protein              ligand
+<br />
+2.      protein+ligand         cofactor1
+<br />
+3.  protein+ligand+cofactor1   cofactor2
+<br />
+4.      protein+cofactor1        ligand
+<br />
+<br />....etc...etc.  The order of the calculations doesn't matter, at least
+<br />
+in principle.  And you probably don't need all the steps.  With a protein
+<br />
+plus three binders, there are *many* possible states, depending on whether
+<br />
+each binder has its own pocket (and so can only bind in one place), and
+<br />
+whether the two cofactors are the same or different.  If each binder can
+<br />
+only bind in its &quot;own&quot; pocket, you would have
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nothing bound      1 state
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 item bound       3 states
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 items bound      3 states
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3 items bound      1 state
+<br />
+<br />But is is very rare that you would want to simulate all of them.
+<br />
+<br />...hope this helps....dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Jan 17 2021 - 07:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0280.html" title="Next message in the list">Jenny 148: "[AMBER] Distance of every c alpha in a protein to every other c alpha"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0278.html" title="Previous message in the list">Sadaf Rani: "[AMBER] working with mmpbsa with protein and three ligands in same complex"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0278.html" title="Message to which this message replies">Sadaf Rani: "[AMBER] working with mmpbsa with protein and three ligands in same complex"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0304.html" title="Next message in this discussion thread">Sadaf Rani: "Re: [AMBER] working with mmpbsa with protein and three ligands in same complex"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0304.html" title="Message sent in reply to this message">Sadaf Rani: "Re: [AMBER] working with mmpbsa with protein and three ligands in same complex"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg279" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg279" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg279" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg279" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] overall and internal correlation function from Mani Radh on 2021-01-25 (Amber Archive Jan 2021)</title>
+<meta name="Author" content="Mani Radh (manmdh04.gmail.com)" />
+<meta name="Subject" content="[AMBER] overall and internal correlation function" />
+<meta name="Date" content="2021-01-25" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] overall and internal correlation function</h1>
+<!-- received="Mon Jan 25 10:00:02 2021" -->
+<!-- isoreceived="20210125180002" -->
+<!-- sent="Mon, 25 Jan 2021 21:18:12 +0330" -->
+<!-- isosent="20210125174812" -->
+<!-- name="Mani Radh" -->
+<!-- email="manmdh04.gmail.com" -->
+<!-- subject="[AMBER] overall and internal correlation function" -->
+<!-- id="CAFegXC4zJoU17HoYfag33mBx7Mzr=ouGBFruYvTMxjyB7uaZ9Q.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0350.html" accesskey="d" title="Sebastian Oleksy: &quot;[AMBER] OPC monovalent ion parameters&quot;">Next message</a> ]
+[ <a href="0348.html" title="Nicy yadav: &quot;[AMBER] pdb4amber error&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg349" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg349" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg349" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg349" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Mani Radh &lt;<a href="mailto:manmdh04.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20overall%20and%20internal%20correlation%20function">manmdh04.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 25 Jan 2021 21:18:12 +0330</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear all,
+<br />
+<br /><br />I am trying to calculate the time correlation function (TCF) of a vector,
+<br />
+the distance between an ion and the first water shell, from the MD
+<br />
+trajectory by using cpptraj. I use two different analysis commands
+<br />
+*timecorr* and *rotdif*. The way I obtain the TCF is:
+<br />
+<br /><br />*trajin md.nc &lt;<a href="http://md.nc">http://md.nc</a>&gt;*
+<br />
+<br />*vector v1 .Na+ .O*
+<br />
+<br />*timecorr dplr norm vec1 v1 tstep 1 tcorr 20000 order 2 out cf.dat*
+<br />
+<br />*run*
+<br />
+<br /><br /><br />and,
+<br />
+<br /><br /><br />*trajin md.nc &lt;<a href="http://md.nc">http://md.nc</a>&gt;*
+<br />
+<br />*average avg2 pdb*
+<br />
+<br />*run*
+<br />
+<br />*reference avg1.pdb [avg]*
+<br />
+<br />*rms R0 .O,Na+  ref  [avg]  savematrices*
+<br />
+<br />*rotdif  nvecs 100  rmatrix  R0 [RM] \*
+<br />
+<br />*ti 0.0 tf  20000 dt 0.5 deffout deffs.out corrout cor.dat \*
+<br />
+<br />*outfile rotdifout*
+<br />
+<br />*go*
+<br />
+<br /><br /><br />The md.nc trajectory is a 20 ps simulation in the NVE ensemble with a 0.5
+<br />
+fs time step.
+<br />
+As I understood TCF obtained from *timecorr *(cf.dat) is an internal
+<br />
+correlation function, and I want to know TCF from *rotdif *(cor.dat) is
+<br />
+total correlation or overall correlation function?
+<br />
+<br />Second question, is my RMS fit to a reference structure true?  I mean
+<br />
+define sodium and oxygen of water atoms for generating rotation matrix.
+<br />
+<br /><br /><br />Any help is appreciated.
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jan 25 2021 - 10:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0350.html" title="Next message in the list">Sebastian Oleksy: "[AMBER] OPC monovalent ion parameters"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0348.html" title="Previous message in the list">Nicy yadav: "[AMBER] pdb4amber error"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg349" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg349" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg349" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg349" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

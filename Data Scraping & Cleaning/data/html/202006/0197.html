@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] GPU error in the heating step of PMEMD.CUDA from rosaester.forgione.unina.it on 2020-06-22 (Amber Archive Jun 2020)</title>
+<meta name="Author" content="rosaester.forgione.unina.it (rosaester.forgione.unina.it)" />
+<meta name="Subject" content="[AMBER] GPU error in the heating step of PMEMD.CUDA" />
+<meta name="Date" content="2020-06-22" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] GPU error in the heating step of PMEMD.CUDA</h1>
+<!-- received="Mon Jun 22 04:30:03 2020" -->
+<!-- isoreceived="20200622113003" -->
+<!-- sent="Mon, 22 Jun 2020 13:05:51 +0200" -->
+<!-- isosent="20200622110551" -->
+<!-- name="rosaester.forgione.unina.it" -->
+<!-- email="rosaester.forgione.unina.it" -->
+<!-- subject="[AMBER] GPU error in the heating step of PMEMD.CUDA" -->
+<!-- id="20200622130551.24093q0psmd2vkpb.inbox.unina.it" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0198.html" accesskey="d" title="rosaester.forgione.unina.it: &quot;Re: [AMBER] GPU error in the heating step of PMEMD.CUDA&quot;">Next message</a> ]
+[ <a href="0196.html" title="gaohanlu: &quot;Re: [AMBER] contents of AMBER Digest, Vol 3040, Issue 1, message 1&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0198.html" accesskey="t" title="rosaester.forgione.unina.it: &quot;Re: [AMBER] GPU error in the heating step of PMEMD.CUDA&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg197" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg197" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg197" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg197" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: &lt;<a href="mailto:rosaester.forgione.unina.it?Subject=Re%3A%20%5BAMBER%5D%20GPU%20error%20in%20the%20heating%20step%20of%20PMEMD.CUDA">rosaester.forgione.unina.it</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 22 Jun 2020 13:05:51 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+&nbsp;&nbsp;Hi,
+<br />
+<br />I am facing problems in running MD dynamics by using PMEMD.CUDA
+<br />
+<br />During the 300 K heating step (NPT) the following error appears:
+<br />
+<br />ERROR: Calculation halted.  Periodic box dimensions have changed too  
+<br />
+much from their initial values.
+<br />
+&nbsp;&nbsp;&nbsp;Your system density has likely changed by a large amount, probably from
+<br />
+&nbsp;&nbsp;&nbsp;starting the simulation from a structure a long way from equilibrium.
+<br />
+<br />&nbsp;&nbsp;&nbsp;[Although this error can also occur if the simulation has blown up  
+<br />
+for some reason]
+<br />
+<br />&nbsp;&nbsp;&nbsp;The GPU code does not automatically reorganize grid cells and thus you
+<br />
+&nbsp;&nbsp;&nbsp;will need to restart the calculation from the previous restart file.
+<br />
+&nbsp;&nbsp;&nbsp;This will generate new grid cells and allow the calculation to continue.
+<br />
+&nbsp;&nbsp;&nbsp;It may be necessary to repeat this restarting multiple times if your system
+<br />
+&nbsp;&nbsp;&nbsp;is a long way from an equilibrated density.
+<br />
+<br />&nbsp;&nbsp;&nbsp;Alternatively you can run with the CPU code until the density has converged
+<br />
+&nbsp;&nbsp;&nbsp;and then switch back to the GPU code.
+<br />
+<br />However, the MD simulations goes on passing to the production steps.
+<br />
+<br />I tried to restart the simulation from the previous restart file, as  
+<br />
+suggested by the error message, but it doesn't work since the same  
+<br />
+error appears.
+<br />
+<br />I  used the same equilibration protocol that I routinely use to carry  
+<br />
+on MDs on ligands alone (glycans) and protein-ligand complex.
+<br />
+<br />I tried to run a MD simulation on an &quot;old&quot; system, already analyzed  
+<br />
+with amber without any issue, and the same error appears. Thus, it  
+<br />
+seems that the problem is not strictly related to the parameters of  
+<br />
+the system.
+<br />
+I also run the simulation on GPU 0 and then on 1 and the error is still there.
+<br />
+<br />Anyone can suggest how to fix this problem?
+<br />
+<br />Thanks in advance,
+<br />
+<br />Rosa
+<br />
+<br /><br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jun 22 2020 - 04:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0198.html" title="Next message in the list">rosaester.forgione.unina.it: "Re: [AMBER] GPU error in the heating step of PMEMD.CUDA"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0196.html" title="Previous message in the list">gaohanlu: "Re: [AMBER] contents of AMBER Digest, Vol 3040, Issue 1, message 1"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0198.html" title="Next message in this discussion thread">rosaester.forgione.unina.it: "Re: [AMBER] GPU error in the heating step of PMEMD.CUDA"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0198.html" title="Message sent in reply to this message">rosaester.forgione.unina.it: "Re: [AMBER] GPU error in the heating step of PMEMD.CUDA"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg197" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg197" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg197" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg197" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

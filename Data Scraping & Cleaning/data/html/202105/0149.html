@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] solvent accessibility from David A Case on 2021-05-14 (Amber Archive May 2021)</title>
+<meta name="Author" content="David A Case (david.case.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] solvent accessibility" />
+<meta name="Date" content="2021-05-14" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] solvent accessibility</h1>
+<!-- received="Fri May 14 18:30:02 2021" -->
+<!-- isoreceived="20210515013002" -->
+<!-- sent="Fri, 14 May 2021 21:22:04 -0400" -->
+<!-- isosent="20210515012204" -->
+<!-- name="David A Case" -->
+<!-- email="david.case.rutgers.edu" -->
+<!-- subject="Re: [AMBER] solvent accessibility" -->
+<!-- id="20210515012204.izr6whwi2e2bhwsy.oredkbe208al01.rad.rutgers.edu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAAC0qOYO9g3-FyHbg1E7x8dhte-2QULwNPq70N=yDcBN6mUG4g.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0150.html" accesskey="d" title="Rafa&#0322; Madaj: &quot;Re: [AMBER] Selenomethionine force field parameters&quot;">Next message</a> ]
+[ <a href="0148.html" title="Rodrigo da Silva Bitzer: &quot;Re: [AMBER] Error running make install&quot;">Previous message</a> ]
+[ <a href="0145.html" title="Daniel Roe: &quot;Re: [AMBER] solvent accessibility&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0152.html" accesskey="t" title="German P. Barletta: &quot;Re: [AMBER] solvent accessibility&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg149" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg149" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg149" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg149" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case &lt;<a href="mailto:david.case.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20solvent%20accessibility">david.case.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 14 May 2021 21:22:04 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Fri, May 14, 2021, Dan Roe wrote:
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Unfortunately the 'molsurf' command doesn't have a real per-atom
+</em><br />
+<em class="quotelev1">&gt;surface area calculation - it's one of the long-standing items on my
+</em><br />
+<em class="quotelev1">&gt;to-do list (that only gets longer and longer unfortunately). The LCPO
+</em><br />
+<em class="quotelev1">&gt;surface area calculation ('surf') can do per-atom, but it's quite
+</em><br />
+<em class="quotelev1">&gt;inferior to 'molsurf'.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Maybe there is an enterprising grad. student or post-doc who would
+</em><br />
+<em class="quotelev1">&gt;like to volunteer to add this to CPPTRAJ? :-)
+</em><br />
+<br />I think some care is required here.  The molecular surface, (aka the
+<br />
+solvent-excluded surface, or SES) as defined by Connolly and Richards, and
+<br />
+implemented in molsurf and many other codes, includes surface segments
+<br />
+that can be assigned to a single atom, but also surface segments arising
+<br />
+from places where the probe sphere is in contact with two or more atoms at
+<br />
+the same time.  So it's not just a lack of coding that prevents a per-atom
+<br />
+decomposition: one would have to arbitrarily decide how to assign the latter
+<br />
+areas to atoms.  And almost any algorithm one thinks of will lead to some
+<br />
+odd behaviors.
+<br />
+<br />One &quot;can&quot; assign surface segments of the solvent-accessible surface (SAS) to
+<br />
+individual atoms.  Adding up the values for all atoms in a residue would
+<br />
+then (by one definition) give residue-level values.  I'm not sure how useful
+<br />
+such numbers would be, nor whether they would be be less useful than
+<br />
+the corresponding LCPO values.
+<br />
+<br />Long-time participants in this list will know that I am often unhappy with
+<br />
+decomposition schemes for free energies.  So don't lose heart too easily:
+<br />
+it's good that there are people working to make good use of such approaches.
+<br />
+<br />....dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri May 14 2021 - 18:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0150.html" title="Next message in the list">Rafa&#0322; Madaj: "Re: [AMBER] Selenomethionine force field parameters"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0148.html" title="Previous message in the list">Rodrigo da Silva Bitzer: "Re: [AMBER] Error running make install"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0145.html" title="Message to which this message replies">Daniel Roe: "Re: [AMBER] solvent accessibility"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0152.html" title="Next message in this discussion thread">German P. Barletta: "Re: [AMBER] solvent accessibility"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg149" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg149" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg149" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg149" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

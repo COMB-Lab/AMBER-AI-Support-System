@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Program received signal SIGSEGV: Segmentation fault - invalid memory reference. from David A Case on 2021-06-06 (Amber Archive Jun 2021)</title>
+<meta name="Author" content="David A Case (david.case.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] Program received signal SIGSEGV: Segmentation fault - invalid memory reference." />
+<meta name="Date" content="2021-06-06" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Program received signal SIGSEGV: Segmentation fault - invalid memory reference.</h1>
+<!-- received="Sun Jun  6 05:30:03 2021" -->
+<!-- isoreceived="20210606123003" -->
+<!-- sent="Sun, 6 Jun 2021 08:18:44 -0400" -->
+<!-- isosent="20210606121844" -->
+<!-- name="David A Case" -->
+<!-- email="david.case.rutgers.edu" -->
+<!-- subject="Re: [AMBER] Program received signal SIGSEGV: Segmentation fault - invalid memory reference." -->
+<!-- id="20210606121844.6epgbw7wrerzoan4.rbsbrr1028l01.rad.rutgers.edu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CADtXeWat0FcxiJ2nrmkRfxNJ_Stcu2Ttj_Sx1br=T9JfeXMFYQ.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0035.html" accesskey="d" title="priya murugan: &quot;[AMBER] How to fix the numbering of amino acid that got shifted in topology file that created in amber Tleap&quot;">Next message</a> ]
+[ <a href="0033.html" title="Pietro Amodeo: &quot;[AMBER] Possible impact of cryptomining limitations on new NVidia GPUs on pmemd performances&quot;">Previous message</a> ]
+[ <a href="0032.html" title="Akinyemi Omoniyi: &quot;Re: [AMBER] Program received signal SIGSEGV: Segmentation fault - invalid memory reference.&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg34" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg34" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg34" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg34" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case &lt;<a href="mailto:david.case.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20Program%20received%20signal%20SIGSEGV%3A%20Segmentation%20fault%20-%20invalid%20memory%20reference.">david.case.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 6 Jun 2021 08:18:44 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Sun, Jun 06, 2021, Akinyemi Omoniyi wrote:
+<br />
+<br /><em class="quotelev1">&gt;I have checked the min2.out file and the thing that I noticed was that the
+</em><br />
+<em class="quotelev1">&gt;file is incomplete when compared with the similar file from the tutorial.
+</em><br />
+<br />You have a very bad bond energy, so something must have gone wrong during
+<br />
+the setup phase:
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;NSTEP       ENERGY          RMS            GMAX         NAME    NUMBER
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1      -2.9452E+05     2.8379E+01     9.2002E+03     SG       6627
+<br />
+<br />&nbsp;&nbsp;BOND    =  1097341.6452  ANGLE   =     5491.1031  DIHED      =     2344.1542
+<br />
+&nbsp;&nbsp;VDWAALS =   213685.2572  EEL     = -1644142.2256  HBOND      =        0.0000
+<br />
+&nbsp;&nbsp;1-4 VDW =     2813.7314  1-4 EEL =    27269.5779  RESTRAINT  =        0.0000
+<br />
+&nbsp;&nbsp;CMAP    =      679.8318
+<br />
+<br />Use the checkstructure action in cpptraj to look for bad bonds, and see if
+<br />
+that helps to pinpoint the problem.  You might also visualize your system
+<br />
+with VMD or Chimera to see if you can pinpoint what is wrong.
+<br />
+<br />This looks like a very large system(?) If you are new to Amber, you might
+<br />
+want to try smaller calculations first to gain experience about what to
+<br />
+expect.
+<br />
+<br />...good luck...dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Jun 06 2021 - 05:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0035.html" title="Next message in the list">priya murugan: "[AMBER] How to fix the numbering of amino acid that got shifted in topology file that created in amber Tleap"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0033.html" title="Previous message in the list">Pietro Amodeo: "[AMBER] Possible impact of cryptomining limitations on new NVidia GPUs on pmemd performances"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0032.html" title="Message to which this message replies">Akinyemi Omoniyi: "Re: [AMBER] Program received signal SIGSEGV: Segmentation fault - invalid memory reference."</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg34" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg34" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg34" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg34" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Barostat and thermostat for membrane protein-ligand simulation from Sally Pias on 2020-07-09 (Amber Archive Jul 2020)</title>
+<meta name="Author" content="Sally Pias (sallypias.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Barostat and thermostat for membrane protein-ligand simulation" />
+<meta name="Date" content="2020-07-09" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Barostat and thermostat for membrane protein-ligand simulation</h1>
+<!-- received="Thu Jul  9 18:30:05 2020" -->
+<!-- isoreceived="20200710013005" -->
+<!-- sent="Thu, 9 Jul 2020 19:27:40 -0600" -->
+<!-- isosent="20200710012740" -->
+<!-- name="Sally Pias" -->
+<!-- email="sallypias.gmail.com" -->
+<!-- subject="Re: [AMBER] Barostat and thermostat for membrane protein-ligand simulation" -->
+<!-- id="CANvDYdqZ9W6=mxTwGZCaHGu-rrE80tn=ODtVkVccjfoDA342hg.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="f698a869-fad7-9256-7ecb-c6218f7704c8.uniroma3.it" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0142.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] Mask behavior vs distance measurement?&quot;">Next message</a> ]
+[ <a href="0140.html" title="David A Case: &quot;Re: [AMBER] Problem with running Python script in AMBER environment.&quot;">Previous message</a> ]
+[ <a href="0125.html" title="Andrea Pasquadibisceglie: &quot;Re: [AMBER] Barostat and thermostat for membrane protein-ligand simulation&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0153.html" accesskey="t" title="ANDREA PASQUADIBISCEGLIE: &quot;Re: [AMBER] Barostat and thermostat for membrane protein-ligand simulation&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg141" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg141" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg141" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg141" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Sally Pias &lt;<a href="mailto:sallypias.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Barostat%20and%20thermostat%20for%20membrane%20protein-ligand%20simulation">sallypias.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 9 Jul 2020 19:27:40 -0600</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Andrea,
+<br />
+<br />In my experience, these settings should be fine. It is probably a good idea
+<br />
+to use the zero surface tension, as you have, but to my knowledge this
+<br />
+approach has not been rigorously tested.The Monte Carlo barostat would
+<br />
+speed up the simulations but seems to skew the box dimensions faster than
+<br />
+the Berendsen barostat without a surface tension. You will also likely see
+<br />
+a moderate increase in bilayer thickness with the Monte Carlo barostat,
+<br />
+though I am not convinced the values we have seen are out of the range of
+<br />
+experimental measurements. The performance increase may be worth switching
+<br />
+barostats (giving an additional 50 ns for equilibration with the new
+<br />
+barostat). It is probably also best to use the zero surface tension because
+<br />
+box dimension changes can be dramatic on the microsecond timescale,
+<br />
+especially in lipid-only systems. However, an imposed surface tension is
+<br />
+not physically rigorous and may have some minor physical effects.
+<br />
+<br />Best,
+<br />
+Sally
+<br />
+<br />Sally Pias
+<br />
+New Mexico Tech
+<br />
+<br />On Thu, Jul 9, 2020 at 3:32 AM Andrea Pasquadibisceglie &lt;
+<br />
+andrea.pasquadibisceglie.uniroma3.it&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hi Sally,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I used the default value (0.0 dyne/cm) for the surface tension
+</em><br />
+<em class="quotelev1">&gt; parameter. Is that correct?
+</em><br />
+<em class="quotelev1">&gt; The simulations will be one or two microseconds long, and the issue I am
+</em><br />
+<em class="quotelev1">&gt; referring to is:
+</em><br />
+<em class="quotelev1">&gt; /&quot;a substantial skewing of the box vectors can occur over very long
+</em><br />
+<em class="quotelev1">&gt; simulation timeframes.&quot;/
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thank you,
+</em><br />
+<em class="quotelev1">&gt; Andrea
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Jul 09 2020 - 18:30:05 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0142.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] Mask behavior vs distance measurement?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0140.html" title="Previous message in the list">David A Case: "Re: [AMBER] Problem with running Python script in AMBER environment."</a></li>
+<li><dfn>In reply to</dfn>: <a href="0125.html" title="Message to which this message replies">Andrea Pasquadibisceglie: "Re: [AMBER] Barostat and thermostat for membrane protein-ligand simulation"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0153.html" title="Next message in this discussion thread">ANDREA PASQUADIBISCEGLIE: "Re: [AMBER] Barostat and thermostat for membrane protein-ligand simulation"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg141" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg141" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg141" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg141" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

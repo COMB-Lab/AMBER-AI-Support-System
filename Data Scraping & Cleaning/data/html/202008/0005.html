@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Reduced Performance with pmemd.cuda Compared With Benchmarks. from 李奕言 on 2020-08-02 (Amber Archive Aug 2020)</title>
+<meta name="Author" content="李奕言 (liyiyan.pku.edu.cn)" />
+<meta name="Subject" content="[AMBER] Reduced Performance with pmemd.cuda Compared With Benchmarks." />
+<meta name="Date" content="2020-08-02" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Reduced Performance with pmemd.cuda Compared With Benchmarks.</h1>
+<!-- received="Sun Aug  2 20:30:02 2020" -->
+<!-- isoreceived="20200803033002" -->
+<!-- sent="Mon, 3 Aug 2020 11:21:55 +0800 (GMT+08:00)" -->
+<!-- isosent="20200803032155" -->
+<!-- name="李奕言" -->
+<!-- email="liyiyan.pku.edu.cn" -->
+<!-- subject="[AMBER] Reduced Performance with pmemd.cuda Compared With Benchmarks." -->
+<!-- id="543e8b8a.2bfe.173b257089e.Coremail.liyiyan.pku.edu.cn" -->
+<!-- charset="UTF-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0006.html" accesskey="d" title="&#36763;&#24535;&#23439;: &quot;Re: [AMBER] Issue about &#0034;... . RESTARTED DUE TO LINMIN	FAILURE...&#0034; (???)&quot;">Next message</a> ]
+[ <a href="0004.html" title="Bill Ross: &quot;Re: [AMBER] how to calculate net charge of &#0034;molecule&#0034; using the command &#0034;netCharge&#0034;&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0016.html" accesskey="t" title="David Cerutti: &quot;Re: [AMBER] Reduced Performance with pmemd.cuda Compared With Benchmarks.&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg5" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg5" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg5" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg5" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: 李奕言 &lt;<a href="mailto:liyiyan.pku.edu.cn?Subject=Re%3A%20%5BAMBER%5D%20Reduced%20Performance%20with%20pmemd.cuda%20Compared%20With%20Benchmarks.">liyiyan.pku.edu.cn</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 3 Aug 2020 11:21:55 +0800 (GMT+08:00)</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear all, 
+<br />
+<br /><br /><br /><br />Here is a new Amber user, who has been doing MD simulations on GTX 1080 Ti using pmemd.cuda in Amber 16 and have encountered considerable reduction in performance.
+<br />
+<br /><br /><br /><br />First I ran the benchmark sets of AMBER 16 GPU acceleration.  For NPT simulation of Factor IX with 90,906 atoms, I have got ~89 ns/day on single GPU, slightly less than the benchmark performance (92.08 ns/day), which is acceptable. Since the benchmark results were OK, I was not suspecting any problem with the GPU.
+<br />
+<br />When it came to my membrane protein system, which contains a GPCR dimer protein (ffSB14), POPC lipids (lipid 14), waters (TIP3P) and ions, and has a fairly similar atom number of 95,096, I was getting ~65 ns/day on single GPU. This was not what I was expecting, seeing that 95,096 was not THAT larger than 90,906.
+<br />
+<br />My input file for the NPT simulation is as follows.  I have tried to get as close as possible to the benchmark input.
+<br />
+<br />NPT Production Run
+<br />
+<br />&amp;cntrl
+<br />
+&nbsp;nstlim=250000000, dt=0.002, ntx=5, irest=1, ntpr=50000, ntwr=50000000, ntwx=50000,
+<br />
+&nbsp;temp0=300.0, ntt=1, tautp=10.0, 
+<br />
+&nbsp;ntb=2, ntp=1, barostat=2,
+<br />
+&nbsp;ntc=2, ntf=2,
+<br />
+&nbsp;ioutfm=1,
+<br />
+&amp;end
+<br />
+/
+<br />
+1/ I have even cut down the writing of output and trajectories for better performance by raising ntpr and ntwx values, at the cost of inadequate trajectory snapshots. Is this necessary?
+<br />
+<br />2/ Also, currently I am running an aMD simulation with similar input settings, which resulted in ~42 ns/day.  Is aMD performance destined to drop compared to conventional MD?
+<br />
+<br />Production Run with Accelerated MD
+<br />
+&amp;cntrl
+<br />
+&nbsp;nstlim=250000000, dt=0.002, ntx=5, irest=1, ntpr=1000, ntwr=50000000, ntwx=1000, ntwprt=8873,
+<br />
+&nbsp;temp0=300.0, ntt=1, tautp=10.0, 
+<br />
+&nbsp;ntb=2, ntp=1, barostat=2, cut=10.0,
+<br />
+&nbsp;ntc=2, ntf=2,
+<br />
+&nbsp;ioutfm=1,
+<br />
+&nbsp;iamd=3,
+<br />
+&nbsp;ethreshd=23916, alphad=1104,
+<br />
+&nbsp;ethreshp=-187677, alphap=19011,
+<br />
+&amp;end
+<br />
+/
+<br />
+<br />3/ Does the performance of pmemd.cuda differ among systems, or does it simply depend on the atom number?  
+<br />
+<br /><br /><br /><br />I am hoping to get tips for improving the performance of my NPT runs.
+<br />
+<br /><br /><br /><br />Many thanks for any reply.
+<br />
+<br /><br /><br /><br />Best regards,
+<br />
+<br />Ian
+<br />
+<br /><br /><br /><br /><br /><br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Aug 02 2020 - 20:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0006.html" title="Next message in the list">&#36763;&#24535;&#23439;: "Re: [AMBER] Issue about &#0034;... . RESTARTED DUE TO LINMIN	FAILURE...&#0034; (???)"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0004.html" title="Previous message in the list">Bill Ross: "Re: [AMBER] how to calculate net charge of &#0034;molecule&#0034; using the command &#0034;netCharge&#0034;"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0016.html" title="Next message in this discussion thread">David Cerutti: "Re: [AMBER] Reduced Performance with pmemd.cuda Compared With Benchmarks."</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0016.html" title="Message sent in reply to this message">David Cerutti: "Re: [AMBER] Reduced Performance with pmemd.cuda Compared With Benchmarks."</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg5" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg5" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg5" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg5" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

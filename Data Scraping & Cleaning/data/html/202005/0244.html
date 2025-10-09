@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Questions about PCA from Daniel Roe on 2020-05-20 (Amber Archive May 2020)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Questions about PCA" />
+<meta name="Date" content="2020-05-20" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Questions about PCA</h1>
+<!-- received="Wed May 20 09:30:03 2020" -->
+<!-- isoreceived="20200520163003" -->
+<!-- sent="Wed, 20 May 2020 12:16:42 -0400" -->
+<!-- isosent="20200520161642" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] Questions about PCA" -->
+<!-- id="CAAC0qObPeJzHCRtLap0wPi3kcOp9EvpOAP7rBj+5wPYJh9Ae7Q.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAAoPRXXs7WZq16eg8Q1BvuSJLwYOGEqh-o=Jf3GUxwEuqhBTgQ.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0245.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] can i analysis number of water molecules in protein by watershell&quot;">Next message</a> ]
+[ <a href="0243.html" title="Daniel Roe: &quot;Re: [AMBER] how to compute the protein interaction surface with the ligand&quot;">Previous message</a> ]
+[ <a href="0184.html" title="Kat G: &quot;[AMBER] Questions about PCA&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg244" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg244" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg244" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg244" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Questions%20about%20PCA">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 20 May 2020 12:16:42 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />On Fri, May 15, 2020 at 12:27 AM Kat G &lt;katwin86.gmail.com&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; 1. From the output modes.dat (calculate eigenvalues for all eigenvectors),
+</em><br />
+<em class="quotelev1">&gt; my first eigenvector only accounts for 14% of the total motion. It requires
+</em><br />
+<em class="quotelev1">&gt; 65 eigenvectors to describe 80% of the total motion. Do you think the
+</em><br />
+<em class="quotelev1">&gt; results are not good? I suppose that the first PC should contribute more
+</em><br />
+<em class="quotelev1">&gt; than 50% and it requires only a few PCs to represent the most dynamic modes
+</em><br />
+<em class="quotelev1">&gt; of the concatenating 3 trajectories.
+</em><br />
+<br />It's not necessarily that your results &quot;aren't good&quot;; I think it has
+<br />
+more to do with the fact that your results aren't converged. See
+<br />
+below.
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; 2. I am trying to define pcmin and pcmax to generate the pseudo-trajectory
+</em><br />
+<em class="quotelev1">&gt; by checking the histogram of PC projection. I notice that the projection of
+</em><br />
+<em class="quotelev1">&gt; the first 3 PCs does not distribute evenly around 0, especially PC1. (png
+</em><br />
+<em class="quotelev1">&gt; files are attached). Since I did center my data before diagonalizing the
+</em><br />
+<em class="quotelev1">&gt; covariance matrix, I suppose 0 should be the center of all PC projections
+</em><br />
+<em class="quotelev1">&gt; from each trajectory. Please correct me if I am wrong.
+</em><br />
+<br />So I'm assuming a few things from the way you named your attached
+<br />
+figure files, as well as from the legends in the figures. I'm assuming
+<br />
+that traj1-proj.png has the projections for the first 3 principle
+<br />
+components for the first trajectory, and that traj2-proj.png and
+<br />
+traj3-proj.png has the same for the second and third trajectories
+<br />
+respectively. If that is indeed the case, your results aren't
+<br />
+converged because the distributions for the projection of your
+<br />
+principal components do not overlap. For example, look at the
+<br />
+distributions for your first principal component for each trajectory
+<br />
+(black lines in the three figures). As you note, they aren't
+<br />
+distributed about 0, and do not really overlap. This means that in
+<br />
+each trajectory, the motion that ended up being PC 1 from the combined
+<br />
+PCA is different. If you continue each simulation, you'll gradually
+<br />
+see the distributions overlap more and more. You can even quantify
+<br />
+this with the Kullback-Liebler divergence analysis (check the 'kldiv'
+<br />
+keyword of the 'kde' analysis command); this is the kind of analysis
+<br />
+that was done in the following papers:
+<br />
+<a href="https://pubs.acs.org/doi/abs/10.1021/jp4125099">https://pubs.acs.org/doi/abs/10.1021/jp4125099</a>,
+<br />
+<a href="https://pubs.acs.org/doi/abs/10.1021/ct400862k">https://pubs.acs.org/doi/abs/10.1021/ct400862k</a>. The supporting info
+<br />
+has the scripts that were used.
+<br />
+<br />Hope this helps,
+<br />
+<br />-Dan
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Below is the script I used based on the PCA tutorial on Amber.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; parm topo.prmtop
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; trajin traj1.nc 500 2000 1
+</em><br />
+<em class="quotelev1">&gt; trajin traj2.nc 500 2000 1
+</em><br />
+<em class="quotelev1">&gt; trajin traj3.nc 500 2000 1
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; rms first :1-309.CA
+</em><br />
+<em class="quotelev1">&gt; average crdset avg
+</em><br />
+<em class="quotelev1">&gt; createcrd avg-traj
+</em><br />
+<em class="quotelev1">&gt; run
+</em><br />
+<em class="quotelev1">&gt; crdaction avg-traj rms ref avg :1-309.CA
+</em><br />
+<em class="quotelev1">&gt; crdaction avg-traj matrix covar :1-309.CA name covar-matrix
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; runanalysis diagmatrix covar-matrix out evecs.dat vecs 927
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; crdaction avg-traj projection traj1 modes evecs.dat beg 1 end 927 :1-309.CA
+</em><br />
+<em class="quotelev1">&gt; crdframes 1,1501 out traj1-projection.dat
+</em><br />
+<em class="quotelev1">&gt; crdaction avg-traj projection traj2 modes evecs.dat beg 1 end 927 :1-309.CA
+</em><br />
+<em class="quotelev1">&gt; crdframes 1502,3002 out traj2-projection.dat
+</em><br />
+<em class="quotelev1">&gt; crdaction avg-traj projection traj3 modes evecs.dat beg 1 end 927 :1-309.CA
+</em><br />
+<em class="quotelev1">&gt; crdframes 3003,last out traj3-projection.dat
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; hist traj1:1 bins 100 out hist-traj1.agr norm name traj1-pc1
+</em><br />
+<em class="quotelev1">&gt; hist traj1:2 bins 100 out hist-traj1.agr norm name traj1-pc2
+</em><br />
+<em class="quotelev1">&gt; hist traj1:3 bins 100 out hist-traj1.agr norm name traj1-pc3
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; hist traj2:1 bins 100 out hist-traj2.agr norm name traj2-pc1
+</em><br />
+<em class="quotelev1">&gt; hist traj2:2 bins 100 out hist-traj2.agr norm name traj2-pc2
+</em><br />
+<em class="quotelev1">&gt; hist traj2:3 bins 100 out hist-traj2.agr norm name traj2-pc3
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; hist traj3:1 bins 100 out hist-traj3.agr norm name traj3-pc1
+</em><br />
+<em class="quotelev1">&gt; hist traj3:2 bins 100 out hist-traj3.agr norm name traj3-pc2
+</em><br />
+<em class="quotelev1">&gt; hist traj3:3 bins 100 out hist-traj3.agr norm name traj3-pc3
+</em><br />
+<em class="quotelev1">&gt; run
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; readdata evecs.dat name Evecs
+</em><br />
+<em class="quotelev1">&gt; runanalysis modes name Evecs trajout PC1.pdb pcmin -20 pcmax 20 tmode 1
+</em><br />
+<em class="quotelev1">&gt; trajoutmask :1-309.CA trajoutfmt pdb
+</em><br />
+<em class="quotelev1">&gt; runanalysis modes name Evecs trajout PC2.pdb pcmin -20 pcmax 20 tmode 2
+</em><br />
+<em class="quotelev1">&gt; trajoutmask :1-309.CA trajoutfmt pdb
+</em><br />
+<em class="quotelev1">&gt; runanalysis modes name Evecs trajout PC3.pdb pcmin -20 pcmax 20 tmode 3
+</em><br />
+<em class="quotelev1">&gt; trajoutmask :1-309.CA trajoutfmt pdb
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; runanalysis modes name Evecs eigenval out modes.dat
+</em><br />
+<em class="quotelev1">&gt; run
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; 3. I would like to filter the motions along PC1/PC2 from the individual
+</em><br />
+<em class="quotelev1">&gt; trajectory. Is it the appropriate script to do?
+</em><br />
+<em class="quotelev1">&gt; parm topo.prmtop
+</em><br />
+<em class="quotelev1">&gt; trajin traj1.nc 500 2000 1
+</em><br />
+<em class="quotelev1">&gt; rms first :1-303.CA
+</em><br />
+<em class="quotelev1">&gt; average crdset avg
+</em><br />
+<em class="quotelev1">&gt; createcrd avg-traj
+</em><br />
+<em class="quotelev1">&gt; run
+</em><br />
+<em class="quotelev1">&gt; readdata evecs.dat
+</em><br />
+<em class="quotelev1">&gt; reaction avg-traj projection myprojection modes evecs.dat out myproject.txt
+</em><br />
+<em class="quotelev1">&gt; beg 1 end 3 :1-303.CA
+</em><br />
+<em class="quotelev1">&gt; filter myprojection:1 min 0 max 4 out filter.dat
+</em><br />
+<em class="quotelev1">&gt; trajout filter-traj1-pc1.pdb
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Again, since the histogram of PC1 projection from traj1 is not center at 0,
+</em><br />
+<em class="quotelev1">&gt; can I set my min and max as 0 and 4, respectively?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thank you for your help
+</em><br />
+<em class="quotelev1">&gt; Kat
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed May 20 2020 - 09:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0245.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] can i analysis number of water molecules in protein by watershell"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0243.html" title="Previous message in the list">Daniel Roe: "Re: [AMBER] how to compute the protein interaction surface with the ligand"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0184.html" title="Message to which this message replies">Kat G: "[AMBER] Questions about PCA"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg244" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg244" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg244" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg244" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

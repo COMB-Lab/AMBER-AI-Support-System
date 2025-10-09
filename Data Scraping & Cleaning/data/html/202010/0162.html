@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] vlimit=10 compromise for Amber 20 error: &quot;an illegal memory access was encountered launching kernel kClearForces&quot;? from Liao on 2020-10-13 (Amber Archive Oct 2020)</title>
+<meta name="Author" content="Liao (liaojunzhuo.aliyun.com)" />
+<meta name="Subject" content="[AMBER] vlimit=10 compromise for Amber 20 error: &quot;an illegal memory access was encountered launching kernel kClearForces&quot;?" />
+<meta name="Date" content="2020-10-13" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] vlimit=10 compromise for Amber 20 error: &quot;an illegal memory access was encountered launching kernel kClearForces&quot;?</h1>
+<!-- received="Tue Oct 13 11:30:02 2020" -->
+<!-- isoreceived="20201013183002" -->
+<!-- sent="Wed, 14 Oct 2020 02:29:23 +0800" -->
+<!-- isosent="20201013182923" -->
+<!-- name="Liao" -->
+<!-- email="liaojunzhuo.aliyun.com" -->
+<!-- subject="[AMBER] vlimit=10 compromise for Amber 20 error: &quot;an illegal memory access was encountered launching kernel kClearForces&quot;?" -->
+<!-- id="652a8f9b-d4ed-48c2-944a-4b685fc35720.liaojunzhuo.aliyun.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="A662A150-B732-4640-AACE-36E6533CBEF1.aliyun.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0163.html" accesskey="d" title="Delwakkada Liyanage, Senal Dinuka: &quot;[AMBER] Using parmchk2 with GLYCAM_06j.dat&quot;">Next message</a> ]
+[ <a href="0161.html" title="David A Case: &quot;Re: [AMBER] Error running small molecule simulation: &#0034;RESTARTED DUE TO LINMIN FAILURE&#0034; and &#0034;an illegal memory access was encountered launching kernel kClearForces&#0034; erros&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0172.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] vlimit=10 compromise for Amber 20 error: &#0034;an illegal memory access was encountered launching kernel kClearForces&#0034;?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg162" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg162" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg162" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg162" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Liao &lt;<a href="mailto:liaojunzhuo.aliyun.com?Subject=Re%3A%20%5BAMBER%5D%20vlimit%3D10%20compromise%20for%20Amber%2020%20error%3A%20%22an%20illegal%20memory%20access%20was%20encountered%20launching%20kernel%20kClearForces%22%3F">liaojunzhuo.aliyun.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 14 Oct 2020 02:29:23 +0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+﻿Dear Amber Users,
+<br />
+<br />I’ve most recently started to use Amber 20 and the ff19sb force field along with opc water. 
+<br />
+<br />With pmemd.cuda, I’ve ran into this problem, that it almost randomly gives this error message and crashes. &quot;Error: an illegal memory access was encountered launching kernel kClearForces&quot;
+<br />
+<br />After extensive debugging and performing various control runs, reading from the forum, here’s what I discovered:
+<br />
+<br />1.If I set nptr=1, only at such a small number could I see that the system simply blows up all of a sudden with no hint, in terms of kinetic energy and temperature. Please see below the sudden blowup:
+<br />
+&nbsp;NSTEP =    15979   TIME(PS) =    3781.958  TEMP(K) =   321.98  PRESS =     0.0
+<br />
+&nbsp;Etot   =   -166339.6957  EKtot   =     34967.1914  EPtot      =   -201306.8871
+<br />
+&nbsp;BOND   =      1332.6273  ANGLE   =      3654.6213  DIHED      =      2344.1866
+<br />
+&nbsp;UB     =         0.0000  IMP     =         0.0000  CMAP       =       300.2194
+<br />
+&nbsp;1-4 NB =      1602.3619  1-4 EEL =     15665.8723  VDWAALS    =     23153.0389
+<br />
+&nbsp;EELEC  =   -249359.8148  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+<br />
+&nbsp;EKCMT  =         0.0000  VIRIAL  =         0.0000  VOLUME     =    523407.2851         Density    =         1.0341
+<br />
+&nbsp;------------------------------------------------------------------------------
+<br />
+&nbsp;NSTEP =    15980   TIME(PS) =    3781.960  TEMP(K) = 12807.45  PRESS =     0.0
+<br />
+&nbsp;Etot   =   1200379.6146  EKtot   =   1390876.8750  EPtot      =   -190497.2604
+<br />
+&nbsp;BOND   =      1331.5817  ANGLE   =      3724.0317  DIHED      =      2343.1848
+<br />
+&nbsp;UB     =         0.0000  IMP     =         0.0000  CMAP       =       300.3352
+<br />
+&nbsp;1-4 NB =      4362.7163  1-4 EEL =     15659.0224  VDWAALS    =     31195.5756
+<br />
+&nbsp;EELEC  =   -249413.7082  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+<br />
+&nbsp;EKCMT  =         0.0000  VIRIAL  =         0.0000  VOLUME     =    523407.2851            Density    =         1.0341
+<br />
+&nbsp;------------------------------------------------------------------------------
+<br />
+&nbsp;NSTEP =    15981   TIME(PS) =    3781.962  TEMP(K) =      NaN  PRESS =     0.0
+<br />
+&nbsp;Etot   =            NaN  EKtot   =            NaN  EPtot      = **************
+<br />
+&nbsp;BOND   =     78051.6147  ANGLE   =      5028.6654  DIHED      =      2347.0270
+<br />
+&nbsp;UB     =         0.0000  IMP     =         0.0000  CMAP       =       298.6265
+<br />
+&nbsp;1-4 NB =      1615.2760  1-4 EEL =     15623.6489  VDWAALS    = **************
+<br />
+&nbsp;EELEC  =   -249473.1008  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+<br />
+&nbsp;EKCMT  =         0.0000  VIRIAL  =         0.0000  VOLUME     =    523407.2851              Density    =         1.0341
+<br />
+<br />2. Using the Langevin theromostat (gamma=2), a random start seed will make it blow up randomly, a fixed seed will make it crash at the exact same place (though with ntpr smaller than 10 or so, the same seed is giving a slightly different temperature, though crashing at similar times). This is what made debugging so hard at first, that it may crash after 2 minutes, or after 1 hour, until I used a fixed seed.
+<br />
+<br />3. At 310K, a timestep of 0.001 seems less likely to crash than 0.002, but still does. Reducing the temperature to 273K doesn’t help. 
+<br />
+<br />I eventually found 2 resolutions to the problem. 
+<br />
+The 1st way is when I switch back to ff14SB (with nothing else changed but the random seed), by regenerating the prmtop file, it runs and completes normally. But since I’ve got Amber 20, I still want to try use the ff19sb. Running the MD in the Amber18 pmemd gives a similar error (Error: an illegal memory access was encountered launching kernel kNLSkinTest), so it doesn’t seem to be the software. 
+<br />
+The 2nd way is to set vlimit=10. Even at vlimit=12, it gives an energy value blowup (but the simulation kept going until finish though). The output file didn’t give any warning messages, though when i compare the results of vlimit=10 from the crashed one, the energy value gets to be slightly different starting from near the crash point. 
+<br />
+<br />My concern here is, is vlimit=10 a good enough long-term solution? Since the default is 20. And why is this happening? It’s a typical ligand-protein system, and tried several ligands the same problem. 
+<br />
+<br />Thanks for reading!
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Oct 13 2020 - 11:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0163.html" title="Next message in the list">Delwakkada Liyanage, Senal Dinuka: "[AMBER] Using parmchk2 with GLYCAM_06j.dat"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0161.html" title="Previous message in the list">David A Case: "Re: [AMBER] Error running small molecule simulation: &#0034;RESTARTED DUE TO LINMIN FAILURE&#0034; and &#0034;an illegal memory access was encountered launching kernel kClearForces&#0034; erros"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0172.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] vlimit=10 compromise for Amber 20 error: &#0034;an illegal memory access was encountered launching kernel kClearForces&#0034;?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0172.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] vlimit=10 compromise for Amber 20 error: &#0034;an illegal memory access was encountered launching kernel kClearForces&#0034;?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg162" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg162" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg162" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg162" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] gaff with and without gaff atom types from Erdem Yeler on 2020-01-05 (Amber Archive Jan 2020)</title>
+<meta name="Author" content="Erdem Yeler (erdemyeler.gmail.com)" />
+<meta name="Subject" content="[AMBER] gaff with and without gaff atom types" />
+<meta name="Date" content="2020-01-05" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] gaff with and without gaff atom types</h1>
+<!-- received="Sun Jan  5 09:00:02 2020" -->
+<!-- isoreceived="20200105170002" -->
+<!-- sent="Sun, 5 Jan 2020 19:32:08 +0300" -->
+<!-- isosent="20200105163208" -->
+<!-- name="Erdem Yeler" -->
+<!-- email="erdemyeler.gmail.com" -->
+<!-- subject="[AMBER] gaff with and without gaff atom types" -->
+<!-- id="CAC1EcEpvR_zq0UVDgxSLKWL2dCC2EbkGMoEBYyhkvnhTPsEELw.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0048.html" accesskey="d" title="David Case: &quot;Re: [AMBER] hiiiii&quot;">Next message</a> ]
+[ <a href="0046.html" title="Ray Luo: &quot;Re: [AMBER] MMPBSA standard deviation (Geng Dong)&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0049.html" accesskey="t" title="David Case: &quot;Re: [AMBER] gaff with and without gaff atom types&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg47" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg47" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg47" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg47" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Erdem Yeler &lt;<a href="mailto:erdemyeler.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20gaff%20with%20and%20without%20gaff%20atom%20types">erdemyeler.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 5 Jan 2020 19:32:08 +0300</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+I parameterized some novel molecules for AMBER but it is very strange that
+<br />
+when I use gaff atom types in the mol2 and frcmod file, minimized geometry
+<br />
+moves away from the real X-ray structure... but when I use with the
+<br />
+--almost-- same parameters with the AMBER Atom type (you know, ouput from
+<br />
+parmchk2 without any flag, capital letters frcmod file) I am getting really
+<br />
+good results.
+<br />
+Here is example:
+<br />
+M  is the non-standard atom
+<br />
+<br />when I use this file with gaff (I shortened the file of course. in my real
+<br />
+frcmod all parameters are avaliable):
+<br />
+<br />M -os-c3   112.86     222.210    seminaro
+<br />
+oh-M -os   100.85     141.940   seminaro
+<br />
+os-M -os   88.101     216.130   seminaro
+<br />
+M -oh-ho   45.820     114.920   seminaro
+<br />
+x - x -x       122.222   222.2   same as x-x-x
+<br />
+<br />my results are terrible. Minimized geometry and X-ray structure are totally
+<br />
+different. but  when I use this:
+<br />
+<br />parmchk2 -i MMMM.mol2 -f mol2 -o MMM_nitrur.dat
+<br />
+<br />and then when I fill the dat file's ATTN lines manually
+<br />
+<br />M -O -C   112.86     222.210   vffdt results
+<br />
+O -M -O   100.85     141.940   vffdt results
+<br />
+M -O -O   45.820     114.920   vffdt results
+<br />
+X- X -X       122.222   222.2   same as X-X-X
+<br />
+I am getting wonderful results. You can say oh-M -os and os-M -os are both
+<br />
+can be expressed as O -M -O in the second file, but I cheked it and changed
+<br />
+these &quot;common parameters&quot;  and I got the same results. My question is: What
+<br />
+is the reason for that? How can I get the same results from 2 different
+<br />
+methods?
+<br />
+Thank you
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Jan 05 2020 - 09:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0048.html" title="Next message in the list">David Case: "Re: [AMBER] hiiiii"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0046.html" title="Previous message in the list">Ray Luo: "Re: [AMBER] MMPBSA standard deviation (Geng Dong)"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0049.html" title="Next message in this discussion thread">David Case: "Re: [AMBER] gaff with and without gaff atom types"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0049.html" title="Message sent in reply to this message">David Case: "Re: [AMBER] gaff with and without gaff atom types"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg47" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg47" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg47" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg47" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] [CPHMD] invalid reference to variable in NAMELIST input, CPIN file from cprivat.ub.edu on 2020-09-21 (Amber Archive Sep 2020)</title>
+<meta name="Author" content="cprivat.ub.edu (cprivat.ub.edu)" />
+<meta name="Subject" content="[AMBER] [CPHMD] invalid reference to variable in NAMELIST input, CPIN file" />
+<meta name="Date" content="2020-09-21" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] [CPHMD] invalid reference to variable in NAMELIST input, CPIN file</h1>
+<!-- received="Mon Sep 21 08:00:02 2020" -->
+<!-- isoreceived="20200921150002" -->
+<!-- sent="Mon, 21 Sep 2020 14:36:48 +0000" -->
+<!-- isosent="20200921143648" -->
+<!-- name="cprivat.ub.edu" -->
+<!-- email="cprivat.ub.edu" -->
+<!-- subject="[AMBER] [CPHMD] invalid reference to variable in NAMELIST input, CPIN file" -->
+<!-- id="DB7PR07MB47930ECC731C98D23A7D145FDC3A0.DB7PR07MB4793.eurprd07.prod.outlook.com" -->
+<!-- charset="windows-1252" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0268.html" accesskey="d" title="Cruzeiro,Vinicius Wilian D: &quot;Re: [AMBER] [CPHMD] invalid reference to variable in NAMELIST input, CPIN file&quot;">Next message</a> ]
+[ <a href="0266.html" title="Nada Afiva: &quot;Re: [AMBER] MMPBSA binding energy was positive for charged ligand&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0268.html" accesskey="t" title="Cruzeiro,Vinicius Wilian D: &quot;Re: [AMBER] [CPHMD] invalid reference to variable in NAMELIST input, CPIN file&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg267" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg267" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg267" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg267" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: &lt;<a href="mailto:cprivat.ub.edu?Subject=Re%3A%20%5BAMBER%5D%20%5BCPHMD%5D%20invalid%20reference%20to%20variable%20in%20NAMELIST%20input%2C%20CPIN%20file">cprivat.ub.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 21 Sep 2020 14:36:48 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+<br /><br />I am running CpHMD simulations in AMBER18 (pmemd.cuda) and it crashes at the beginning of the production run. I have used a protocol (very similar to the one indicated by Jason Swails in his wikidot) that has worked on similar systems.
+<br />
+<br /><br />I have checked old messages of the mailing and I see that it has already been commented, but I hope that you can shed some light on the problem.
+<br />
+<br />The specific error is: �Error: an illegal memory access was encountered launching kernel kNLSkinTest �
+<br />
+<br /><br />I have done some tests:
+<br />
+- Run short simulations in NVT (and disactivated CPHMD) to relax the system before performing the production run.
+<br />
+- Change the thermostat (from Langevin to Berendsen), which seems to work. However, I would like to continue with the Langevin thermostat as it seems to work better for long simulations.
+<br />
+- Carry out the simulations on CPUs.
+<br />
+<br /><br />When using CPUs, I obtained the following error, which is more instructive:
+<br />
+<br />forrtl: severe (19): invalid reference to variable in NAMELIST input, unit 23, file /scratch/1739534.1.iqtc06.q/asyn_2n0a_015_dyn.cpin, line 154, position 9
+<br />
+<br /><br />This line refers to �PKA_CORR=0.0000,4.0000,4.0000,4.0000,4.0000,10.4000,0.0000,0.0000,4.4000,4.4000,4.4000,4.4000,9.6000,0.0000,7.1000,0.6000,0.0000,� in the CPIN file.
+<br />
+<br /><br />I should add that the simulations are being carried out with hydrogen mass repartition (and dt=0.004). The protonation change attempt is done every 100 steps, and the water relaxation is set at 50 steps. I have performed simulations under these conditions using the same system (in another initial conformation) and they worked, so it seems that it shouldn't affect now.
+<br />
+<br /><br />So... in my opinion, it looks like a problem related with CPHMD. In fact, if I deactivate the method and perform the production run, the problem does not appear. Thus... I was wondering if you could give me some advice.
+<br />
+<br /><br />Thanks,
+<br />
+Cristian
+<br />
+<br /><br /><br />Aquest missatge, i els fitxers adjunts que hi pugui haver, pot contenir informaci� confidencial o protegida legalment i s�adre�a exclusivament a la persona o entitat destinat�ria. Si no consteu com a destinatari final o no teniu l�enc�rrec de rebre�l, no esteu autoritzat a llegir-lo, retenir-lo, modificar-lo, distribuir-lo, copiar-lo ni a revelar-ne el contingut. Si l�heu rebut per error, informeu-ne el remitent i elimineu del sistema tant el missatge com els fitxers adjunts que hi pugui haver.
+<br />
+<br />Este mensaje, y los ficheros adjuntos que pueda incluir, puede contener informaci�n confidencial o legalmente protegida y est� exclusivamente dirigido a la persona o entidad destinataria. Si usted no consta como destinatario final ni es la persona encargada de recibirlo, no est� autorizado a leerlo, retenerlo, modificarlo, distribuirlo o copiarlo, ni a revelar su contenido. Si lo ha recibido por error, informe de ello al remitente y elimine del sistema tanto el mensaje como los ficheros adjuntos que pueda contener.
+<br />
+<br />This email message and any attachments it carries may contain confidential or legally protected material and are intended solely for the individual or organization to whom they are addressed. If you are not the intended recipient of this message or the person responsible for processing it, then you are not authorized to read, save, modify, send, copy or disclose any part of it. If you have received the message by mistake, please inform the sender of this and eliminate the message and any attachments it carries from your account.
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Sep 21 2020 - 08:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0268.html" title="Next message in the list">Cruzeiro,Vinicius Wilian D: "Re: [AMBER] [CPHMD] invalid reference to variable in NAMELIST input, CPIN file"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0266.html" title="Previous message in the list">Nada Afiva: "Re: [AMBER] MMPBSA binding energy was positive for charged ligand"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0268.html" title="Next message in this discussion thread">Cruzeiro,Vinicius Wilian D: "Re: [AMBER] [CPHMD] invalid reference to variable in NAMELIST input, CPIN file"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0268.html" title="Message sent in reply to this message">Cruzeiro,Vinicius Wilian D: "Re: [AMBER] [CPHMD] invalid reference to variable in NAMELIST input, CPIN file"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg267" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg267" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg267" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg267" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

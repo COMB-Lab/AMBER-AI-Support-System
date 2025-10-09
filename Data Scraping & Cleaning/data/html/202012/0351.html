@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Electrostatic distance plot from Daniel Roe on 2020-12-30 (Amber Archive Dec 2020)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Electrostatic distance plot" />
+<meta name="Date" content="2020-12-30" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Electrostatic distance plot</h1>
+<!-- received="Wed Dec 30 07:00:03 2020" -->
+<!-- isoreceived="20201230150003" -->
+<!-- sent="Wed, 30 Dec 2020 09:45:59 -0500" -->
+<!-- isosent="20201230144559" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] Electrostatic distance plot" -->
+<!-- id="CAAC0qObMcKHnEYN3m7ZPqKUghw1Y7NP4HV7m_GZCrcRMyGiRAw.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAG8eZXyQJfo1AXL-CmG5P92VnxW83K_wQG-p4kMr7s3d9+N2Jg.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0352.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] Cation-pi interaction characterization&quot;">Next message</a> ]
+[ <a href="0350.html" title="Daniel Roe: &quot;Re: [AMBER] PROTEIN-DNA rmsd plot&quot;">Previous message</a> ]
+[ <a href="0321.html" title="Sruthi Sudhakar: &quot;Re: [AMBER] Electrostatic distance plot&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg351" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg351" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg351" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg351" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Electrostatic%20distance%20plot">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 30 Dec 2020 09:45:59 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />One potential issue with the cpptraj input you posted is you have an
+<br />
+'rms' command before your 'distance' command. If your system has
+<br />
+periodic boundary conditions, cpptraj prints out a warning that
+<br />
+imaging is not possible after rotating the system. If you're
+<br />
+calculating an imaged distance, it will probably be warped by the
+<br />
+'rms'. Try putting the 'distance' command before 'rms' and see if that
+<br />
+helps things.
+<br />
+<br />-Dan
+<br />
+<br />On Wed, Dec 23, 2020 at 10:44 AM Sruthi Sudhakar
+<br />
+&lt;sruthisudhakarraji.gmail.com&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Sir,
+</em><br />
+<em class="quotelev1">&gt; Sorry for the confusion. It is a distance plot between the N+ atom and
+</em><br />
+<em class="quotelev1">&gt; phosphate of the backbone. These are expected to show electrostatic
+</em><br />
+<em class="quotelev1">&gt; interactions since the backbone is negative. The script we have used for
+</em><br />
+<em class="quotelev1">&gt; this calculation is
+</em><br />
+<em class="quotelev1">&gt; parm comsol.prmtop
+</em><br />
+<em class="quotelev1">&gt; trajin prod.nc
+</em><br />
+<em class="quotelev1">&gt; rms first :1-23
+</em><br />
+<em class="quotelev1">&gt; distance :14.OP2 :1.N4 out distance4_14_OP2.dat
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; And I got the plot attached. But the value ranges in between 2-20
+</em><br />
+<em class="quotelev1">&gt; angstroms. Is it likely to have such values ?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Regards,
+</em><br />
+<em class="quotelev1">&gt; Sruthi Sudhakar
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Wed, Dec 23, 2020 at 8:34 PM Carlos Simmerling &lt;
+</em><br />
+<em class="quotelev1">&gt; carlos.simmerling.gmail.com&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I think it was confusing that you said it was an &quot;electrostatic distance
+</em><br />
+<em class="quotelev2">&gt; &gt; plot&quot; but really this is just a distance plot. If you are looking to
+</em><br />
+<em class="quotelev2">&gt; &gt; analyze hydrogen bonds, cpptraj has that ability and can provide much more
+</em><br />
+<em class="quotelev2">&gt; &gt; detailed information that seen in your distance plot. The cpptraj manual
+</em><br />
+<em class="quotelev2">&gt; &gt; has details, and there are tutorials available.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; On Wed, Dec 23, 2020 at 9:19 AM Sruthi Sudhakar &lt;
+</em><br />
+<em class="quotelev2">&gt; &gt; sruthisudhakarraji.gmail.com&gt; wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Dear prof. Case,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; The cut off merely means that in the plot if the distance of 3.5
+</em><br />
+<em class="quotelev2">&gt; &gt; angstroms
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; or less is maintained, it was considered to be a good electrostatic
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; interaction in the system throughout the simulation. This notion was
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; considered referring some previous publications. Hope the attachment is
+</em><br />
+<em class="quotelev2">&gt; &gt; now
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; visible to you.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; On Wed, 23 Dec 2020 at 7:38 PM, David A Case &lt;david.case.rutgers.edu&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; wrote:
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; On Wed, Dec 23, 2020, Sruthi Sudhakar wrote:
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt; &gt; &gt;I have been calculating the electrostatic distance plot between the
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt; &gt; &gt;protonated nitrogen atom of my ligand and the negatively charged
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; backbone
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt; &gt; &gt;of DNA in a DNA-ligand complex. The distance was calculated using the
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt; &gt; &gt;distance option in cpptraj. The protonated nitrogen belongs to the
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt; &gt; &gt;pyrrodiline ring at the end of a propyl chain. The plot between the N+
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; and
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt; &gt; &gt;OP is attached here. If the cut off of 3.5 angstroms  is considered
+</em><br />
+<em class="quotelev2">&gt; &gt; are
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; the
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt; &gt; &gt;high fluctuations (10-20 angstroms) seen in the plot possible or is it
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; some
+</em><br />
+<em class="quotelev1">&gt; &gt; &gt; &gt; &gt;discrepancy? Kindly advise on the above.
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; Nothing was attached...you might also be more specific about what you
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; mean a &quot;cut off of 3.5 angstroms&quot;....
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; ....dac
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Dec 30 2020 - 07:00:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0352.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] Cation-pi interaction characterization"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0350.html" title="Previous message in the list">Daniel Roe: "Re: [AMBER] PROTEIN-DNA rmsd plot"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0321.html" title="Message to which this message replies">Sruthi Sudhakar: "Re: [AMBER] Electrostatic distance plot"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg351" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg351" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg351" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg351" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

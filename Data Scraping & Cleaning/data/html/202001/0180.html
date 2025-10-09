@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer from Casalini  Tommaso on 2020-01-16 (Amber Archive Jan 2020)</title>
+<meta name="Author" content="Casalini  Tommaso (tommaso.casalini.chem.ethz.ch)" />
+<meta name="Subject" content="[AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer" />
+<meta name="Date" content="2020-01-16" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer</h1>
+<!-- received="Thu Jan 16 02:00:02 2020" -->
+<!-- isoreceived="20200116100002" -->
+<!-- sent="Thu, 16 Jan 2020 09:30:58 +0000" -->
+<!-- isosent="20200116093058" -->
+<!-- name="Casalini  Tommaso" -->
+<!-- email="tommaso.casalini.chem.ethz.ch" -->
+<!-- subject="[AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer" -->
+<!-- id="9b27389b657c4421a0e63e836a546383.chem.ethz.ch" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0181.html" accesskey="d" title="Stephan Schott: &quot;Re: [AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer&quot;">Next message</a> ]
+[ <a href="0179.html" title="DHEERAJ CHITARA: &quot;[AMBER] Reg. Centering of Molecule and Periodic Boundary Conditions&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0181.html" accesskey="t" title="Stephan Schott: &quot;Re: [AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg180" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg180" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg180" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg180" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Casalini  Tommaso &lt;<a href="mailto:tommaso.casalini.chem.ethz.ch?Subject=Re%3A%20%5BAMBER%5D%20Issues%20with%20Umbrella%20Sampling%20Simulations%20involving%20lipid%20bilayer">tommaso.casalini.chem.ethz.ch</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 16 Jan 2020 09:30:58 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber users and developers,
+<br />
+<br />I am performing Umbrella Sampling simulations to study the permeation of a small polymer fragment inside a POPC/CHL 2:1 lipid bilayer.
+<br />
+<br /><br />I built the lipid bilayer with the CHARMM GUI website and I have obtained an equilibrated structure, that I checked with the area per lipid and bilayer thickness as a function of simulation time.
+<br />
+<br />I have subsequently put the polymer fragment in the simulation box and I have rebuilt the simulation box with the AddToBox utility, adding water and ions only along z.
+<br />
+<br />I ran additional simulations to obtain an equilibrated system configuration and I started US simulations.
+<br />
+<br />I use the following input file:
+<br />
+<br /><br />Equil
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;imin = 0,
+<br />
+&nbsp;&nbsp;irest = 1,
+<br />
+&nbsp;&nbsp;ntx = 7,
+<br />
+&nbsp;&nbsp;ntb = 2,
+<br />
+&nbsp;&nbsp;pres0 = 1.0,
+<br />
+&nbsp;&nbsp;ntp = 3,
+<br />
+&nbsp;&nbsp;taup = 2.0,
+<br />
+&nbsp;&nbsp;cut = 10.0,
+<br />
+&nbsp;&nbsp;ntc = 2,
+<br />
+&nbsp;&nbsp;ntf = 2,
+<br />
+&nbsp;&nbsp;temp0 = 310.0,
+<br />
+&nbsp;&nbsp;tempi = 310.0,
+<br />
+&nbsp;&nbsp;ntt = 3,
+<br />
+&nbsp;&nbsp;gamma_ln = 1.0,
+<br />
+&nbsp;&nbsp;nstlim = 20000000,
+<br />
+&nbsp;&nbsp;dt = 0.002,
+<br />
+&nbsp;&nbsp;ntpr = 10000,
+<br />
+&nbsp;&nbsp;ntwx = 10000,
+<br />
+&nbsp;&nbsp;ntwr = 10000,
+<br />
+&nbsp;&nbsp;nmropt = 1,
+<br />
+&nbsp;&nbsp;csurften = 3,
+<br />
+&nbsp;&nbsp;gamma_ten = 0.0,
+<br />
+&nbsp;&nbsp;ninterface = 2,
+<br />
+&nbsp;&nbsp;tol = 0.0000001
+<br />
+&nbsp;/
+<br />
+&nbsp;&amp;wt type = 'DUMPFREQ', istep1 = 100 /
+<br />
+&nbsp;&amp;wt type = 'END', /
+<br />
+&nbsp;DISANG = ref_COM.rst
+<br />
+&nbsp;DUMPAVE = Pull_dist.dat
+<br />
+&nbsp;LISTIN = POUT
+<br />
+&nbsp;LISTOUT = POUT
+<br />
+&nbsp;/
+<br />
+&nbsp;/
+<br />
+&nbsp;&amp;ewald
+<br />
+&nbsp;&nbsp;skinnb = 3.0,
+<br />
+&nbsp;/
+<br />
+<br />This is the ref_COM.rst file:
+<br />
+<br /><br />&amp;rst
+<br />
+iat=-1,-1,
+<br />
+r1=-99.0,
+<br />
+r2=0.0,
+<br />
+r3=0.0,
+<br />
+r4=99.0,
+<br />
+rk2=2.5,
+<br />
+rk3=2.5,
+<br />
+iresid=0,
+<br />
+fxyz=0,0,1,
+<br />
+outxyz=1,
+<br />
+igr1=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,
+<br />
+igr2=130,264,398,606,888,1022,1156,1364,1498,1632,1766,1900,2034,2168,2376,2510,2866,3000,3208,3342,3476,3610,3744,3878,4086,4294,4576,4710,4844,4978,5112,5320,5602,5736,6018,6226,6360,6568,6850,6984,7192,7326,7534,7668,7802,7936,8144,82
+<br />
+78,8412,8546,8754,8888,9022,9230,9512,9646,9780,9914,10048,10182,10316,10524,10954,11088,11222,11356,11490,11624,11758,11966,12248,12382,12516,12650,12858,12992,13126,13260,13468,13676,13884,14018,14226,14434,14568,14702,14836,14970,1510
+<br />
+4,15238,15520,15654,15862,15996,16204,16338,16472,16606,16740,17022,17156,17438,17572,17780,17914,18270,18552,18686,18820,18954,19088,19296,19430,19786,19920,20054,20188,20322,20456,20590,20724,20858,20992,21200,
+<br />
+/
+<br />
+<br />where atoms 1-63 belong to my polymer fragment, while atoms of igr2 are the N31 atoms of the polar heads (I essentially follow the approach explained by Dr. Dickson Callum in his tutorial). I checked the numbers and they are correct.
+<br />
+<br />For some unknown reasons, I obtained this:
+<br />
+<br /><br />&nbsp;NSTEP =    10000   TIME(PS) =   10540.000  TEMP(K) =   309.33  PRESS =  -116.3
+<br />
+&nbsp;Etot   = **************  EKtot   =     34089.0039  EPtot      = **************
+<br />
+&nbsp;BOND   =      2925.3688  ANGLE   =     12094.6034  DIHED      =      7501.6413
+<br />
+&nbsp;1-4 NB =      2919.0577  1-4 EEL =    -42192.4792  VDWAALS    =      5238.4991
+<br />
+&nbsp;EELEC  =   -110714.2666  EHBOND  =         0.0000  RESTRAINT  = **************
+<br />
+&nbsp;EAMBER (non-restraint)  =   -122227.5755
+<br />
+&nbsp;EKCMT  =      9433.8540  VIRIAL  =     10678.6782  VOLUME     =    495566.9126
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SURFTEN    =       -52.4235
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Density    =         1.0067
+<br />
+&nbsp;------------------------------------------------------------------------------
+<br />
+<br />&nbsp;NMR restraints: Bond =*********   Angle =     0.000   Torsion =     0.000
+<br />
+===============================================================================
+<br />
+<br />&nbsp;NSTEP =    20000   TIME(PS) =   10560.000  TEMP(K) =   311.67  PRESS =   187.4
+<br />
+&nbsp;Etot   = **************  EKtot   =     34346.3750  EPtot      = **************
+<br />
+&nbsp;BOND   =      2985.2622  ANGLE   =     12157.1242  DIHED      =      7567.3432
+<br />
+&nbsp;1-4 NB =      2901.6475  1-4 EEL =    -42177.9928  VDWAALS    =      5504.9903
+<br />
+&nbsp;EELEC  =   -110692.8191  EHBOND  =         0.0000  RESTRAINT  = **************
+<br />
+&nbsp;EAMBER (non-restraint)  =   -121754.4445
+<br />
+&nbsp;EKCMT  =      9541.5155  VIRIAL  =      7537.2160  VOLUME     =    495324.5851
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SURFTEN    =        86.8556
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Density    =         1.0072
+<br />
+&nbsp;------------------------------------------------------------------------------
+<br />
+<br />&nbsp;NMR restraints: Bond =*********   Angle =     0.000   Torsion =     0.000
+<br />
+===============================================================================
+<br />
+<br />&nbsp;NSTEP =    30000   TIME(PS) =   10580.000  TEMP(K) =   307.85  PRESS =   -10.4
+<br />
+&nbsp;Etot   = **************  EKtot   =     33925.5469  EPtot      = **************
+<br />
+&nbsp;BOND   =      3003.1912  ANGLE   =     12038.2158  DIHED      =      7478.7713
+<br />
+&nbsp;1-4 NB =      2874.2811  1-4 EEL =    -42133.3378  VDWAALS    =      5436.8241
+<br />
+&nbsp;EELEC  =   -110538.2867  EHBOND  =         0.0000  RESTRAINT  = **************
+<br />
+&nbsp;EAMBER (non-restraint)  =   -121840.3409
+<br />
+&nbsp;EKCMT  =      9409.4898  VIRIAL  =      9520.6799  VOLUME     =    495200.1274
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SURFTEN    =      -193.4285
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Density    =         1.0075
+<br />
+&nbsp;------------------------------------------------------------------------------
+<br />
+<br />&nbsp;NMR restraints: Bond =*********   Angle =     0.000   Torsion =     0.000
+<br />
+<br />If I do not add a restraint, the system behaves nicely.
+<br />
+<br />What puzzles me is that I used the same protocol and approach for the same polymer fragment in a pure DOPC membrane and I had no problems, and the obtained results are consistent.
+<br />
+<br />Can you provide some suggestions?
+<br />
+<br />I thank you in advance for your support!
+<br />
+<br />Tommaso
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Jan 16 2020 - 02:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0181.html" title="Next message in the list">Stephan Schott: "Re: [AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0179.html" title="Previous message in the list">DHEERAJ CHITARA: "[AMBER] Reg. Centering of Molecule and Periodic Boundary Conditions"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0181.html" title="Next message in this discussion thread">Stephan Schott: "Re: [AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Maybe reply</dfn>: <a href="0181.html" title="Message sent in reply to this message">Stephan Schott: "Re: [AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0186.html" title="Message sent in reply to this message">Stephan Schott: "Re: [AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0228.html" title="Message sent in reply to this message">Stephan Schott: "Re: [AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg180" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg180" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg180" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg180" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

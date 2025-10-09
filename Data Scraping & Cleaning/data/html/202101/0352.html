@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] abmd ignores cv_min cv_max and resolution for colvar=&quot;TORSION&quot; from Luis Simon on 2021-01-25 (Amber Archive Jan 2021)</title>
+<meta name="Author" content="Luis Simon (lsimon.usal.es)" />
+<meta name="Subject" content="[AMBER] abmd ignores cv_min cv_max and resolution for colvar=&quot;TORSION&quot;" />
+<meta name="Date" content="2021-01-25" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] abmd ignores cv_min cv_max and resolution for colvar=&quot;TORSION&quot;</h1>
+<!-- received="Mon Jan 25 13:30:02 2021" -->
+<!-- isoreceived="20210125213002" -->
+<!-- sent="Mon, 25 Jan 2021 22:03:43 +0100" -->
+<!-- isosent="20210125210343" -->
+<!-- name="Luis Simon" -->
+<!-- email="lsimon.usal.es" -->
+<!-- subject="[AMBER] abmd ignores cv_min cv_max and resolution for colvar=&quot;TORSION&quot;" -->
+<!-- id="3EE31DC2-2966-455A-A4E1-9E830EC0800B.usal.es" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0353.html" accesskey="d" title="Devlina Chakravarty: &quot;[AMBER] Help to generate prmtop and .crd files from a PDB trajectory&quot;">Next message</a> ]
+[ <a href="0351.html" title="Carlos Simmerling: &quot;Re: [AMBER] OPC monovalent ion parameters&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0386.html" accesskey="t" title="Feng Pan: &quot;Re: [AMBER] abmd ignores cv_min cv_max and resolution for colvar=&#0034;TORSION&#0034;&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg352" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg352" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg352" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg352" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Luis Simon &lt;<a href="mailto:lsimon.usal.es?Subject=Re%3A%20%5BAMBER%5D%20abmd%20ignores%20cv_min%20cv_max%20and%20resolution%20for%20colvar%3D%22TORSION%22">lsimon.usal.es</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 25 Jan 2021 22:03:43 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Amber users…
+<br />
+<br />I tried to run an abmd calculation with two dihedral angles as colvars. I tried to set some limits to these angles, but amber ignores it, as well as the resolution. This is in the output file:
+<br />
+<br />&nbsp;NFE : CV #1 periodic, 125 points, min/max = -3.141593/3.141593
+<br />
+&nbsp;NFE : CV #2 periodic, 125 points, min/max = -3.141593/3.141593
+<br />
+<br />The colvar file is at follows:
+<br />
+<br />&amp;colvar
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;cv_type = 'TORSION'
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;cv_ni = 4, cv_i = 636,634,640,641
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;resolution = 0.2 
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;cv_min = -1.0
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;cv_max = 2.1
+<br />
+<br />/
+<br />
+&amp;colvar
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;cv_type = 'TORSION'
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;cv_ni = 4, cv_i = 634,640,641,644
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;resolution = 0.2
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;cv_min = -4.2
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;cv_max = -0.5
+<br />
+<br />/
+<br />
+<br />And the &amp;abmd section of the input file is something like: 
+<br />
+<br />&nbsp;&nbsp;&amp;abmd
+<br />
+&nbsp;&nbsp;&nbsp;mode='FLOODING'
+<br />
+&nbsp;&nbsp;&nbsp;monitor_file='abmd.001.txt'
+<br />
+&nbsp;&nbsp;&nbsp;monitor_freq=500   
+<br />
+&nbsp;&nbsp;&nbsp;cv_file='abmd_cv.in'
+<br />
+&nbsp;&nbsp;&nbsp;umbrella_file='abmd_umbrella.001.nc'
+<br />
+&nbsp;&nbsp;&nbsp;timescale=1
+<br />
+&nbsp;&nbsp;&nbsp;selection_freq = 5000
+<br />
+&nbsp;&nbsp;&nbsp;selection_constant = 0.00001
+<br />
+&nbsp;&nbsp;&nbsp;selection_epsilon = 0.0
+<br />
+&nbsp;&nbsp;&nbsp;wt_temperature = 10000
+<br />
+&nbsp;&nbsp;&nbsp;wt_umbrella_file = 'wt_umbrella.001.nc’
+<br />
+<br />(I run 4 replicas, changing abmd_umbrella.001.nc and wt_umbrella.001.nc to 002, 003, and 004 files). I also wonder which of the nc files should be used with nee-umbrella-slice program. The tutorials uses wt_umbrella.001.nc, but I wonder if the results from different walkers do not need to be combined.
+<br />
+<br /><br />Thanks for your help!
+<br />
+<br /><br /><br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>application/pkcs7-signature attachment: <a href="att-0352/smime.p7s">smime.p7s</a></li>
+</ul>
+<!-- attachment="smime.p7s" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Mon Jan 25 2021 - 13:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0353.html" title="Next message in the list">Devlina Chakravarty: "[AMBER] Help to generate prmtop and .crd files from a PDB trajectory"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0351.html" title="Previous message in the list">Carlos Simmerling: "Re: [AMBER] OPC monovalent ion parameters"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0386.html" title="Next message in this discussion thread">Feng Pan: "Re: [AMBER] abmd ignores cv_min cv_max and resolution for colvar=&#0034;TORSION&#0034;"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0386.html" title="Message sent in reply to this message">Feng Pan: "Re: [AMBER] abmd ignores cv_min cv_max and resolution for colvar=&#0034;TORSION&#0034;"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg352" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg352" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg352" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg352" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

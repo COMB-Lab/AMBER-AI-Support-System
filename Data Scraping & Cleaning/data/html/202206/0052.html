@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Spurious protein distortion in Thermodynamic Integration from Ali Morshedifard via AMBER on 2022-06-26 (Amber Archive Jun 2022)</title>
+<meta name="Author" content="Ali Morshedifard via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Spurious protein distortion in Thermodynamic Integration" />
+<meta name="Date" content="2022-06-26" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Spurious protein distortion in Thermodynamic Integration</h1>
+<!-- received="Thu Aug  4 13:33:27 2022" -->
+<!-- isoreceived="20220804203327" -->
+<!-- sent="Sun, 26 Jun 2022 18:00:49 -0700" -->
+<!-- isosent="20220627010049" -->
+<!-- name="Ali Morshedifard via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Spurious protein distortion in Thermodynamic Integration" -->
+<!-- id="93183949-a877-bc5e-951c-1ae9fd3cda28.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0053.html" accesskey="d" title="CHEN Huifeng via AMBER: &quot;[AMBER] mdin files problem in REMD&quot;">Next message</a> ]
+[ <a href="0051.html" title="Suchetana Gupta via AMBER: &quot;Re: [AMBER] REMD trajectory visualisation help&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg52" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg52" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg52" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg52" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Ali Morshedifard via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Spurious%20protein%20distortion%20in%20Thermodynamic%20Integration">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 26 Jun 2022 18:00:49 -0700</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear amber community,
+<br />
+<br />I'd appreciate your advice on resolving an issue I'm having with TI 
+<br />
+simulations. I'll first explain the attached system and the problem that 
+<br />
+I have when I try to use single-topology for TI simulations.
+<br />
+<br />System setup (setup.sh):
+<br />
+<br />comp1.pdb and comp2.pdb each have a protein (:1-130) and a ligand 
+<br />
+positioned at :102. They are combined in leap and the ligands are bonded 
+<br />
+to the protein and the system is solvated. Next, the combined system is 
+<br />
+tiMerged in parmed and the result is a protein :1-130 and two covalently 
+<br />
+bonded ligands :131 and :132 (named 'lia' and 'lib' respectively). We 
+<br />
+simply want to disappear :131.H321,H322,H323 to get to :132 in a TI 
+<br />
+transformation (I've simplified things to focus on the issue).
+<br />
+<br />The problem:
+<br />
+<br />I equilibrate with &quot;scmask1=':131.H321,H322,H323', scmask2=' ' &quot; at 
+<br />
+clambda=0.5 (see folder 1_equil_partial_sc). If you look at the movie 
+<br />
+(step2.nc with topology merged.parm7), you'll see that the protein 
+<br />
+becomes completely unstable which should not be happening. However, if I 
+<br />
+equilibrate by transforming all of the ligand with &quot;scmask1=':131', 
+<br />
+scmask2=':132' &quot;, the system is stable. My question is: what is wrong 
+<br />
+with my first equilibration setup? Note that the problem doesn't seem to 
+<br />
+be the equilibration process (slower heating etc doesn't help, I've 
+<br />
+tried various scenarios) and since transforming the full ligand is 
+<br />
+working, there seems to be something wrong with the TI setup which I 
+<br />
+haven't been able to figure out. I should be getting the same results 
+<br />
+when transforming only the three atoms compared to the full ligand.
+<br />
+<br />I've gone through the tutorial and my setup is similar to the 
+<br />
+&quot;sidechain&quot; section of the tutorial (single-topology) since I'm 
+<br />
+transforming a covalently bonded ligand.
+<br />
+<br />Here's the link to download the files:
+<br />
+<br /><a href="https://drive.google.com/file/d/1WtHzJijXi_tleoSNbUa2bcOmMsxcX0J-/view?usp=sharing">https://drive.google.com/file/d/1WtHzJijXi_tleoSNbUa2bcOmMsxcX0J-/view?usp=sharing</a>
+<br />
+<br /><br />Please let me know if any part is ambiguous and I'll explain further.
+<br />
+<br />Thank you very much,
+<br />
+<br />Ali Morshedifard
+<br />
+<br /><br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Aug 04 2022 - 13:33:27 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0053.html" title="Next message in the list">CHEN Huifeng via AMBER: "[AMBER] mdin files problem in REMD"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0051.html" title="Previous message in the list">Suchetana Gupta via AMBER: "Re: [AMBER] REMD trajectory visualisation help"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg52" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg52" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg52" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg52" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

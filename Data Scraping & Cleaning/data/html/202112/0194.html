@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] scientific issue from Alexander Izvorski on 2021-12-26 (Amber Archive Dec 2021)</title>
+<meta name="Author" content="Alexander Izvorski (aizvorski.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] scientific issue" />
+<meta name="Date" content="2021-12-26" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] scientific issue</h1>
+<!-- received="Sun Dec 26 14:00:02 2021" -->
+<!-- isoreceived="20211226220002" -->
+<!-- sent="Sun, 26 Dec 2021 13:29:53 -0800" -->
+<!-- isosent="20211226212953" -->
+<!-- name="Alexander Izvorski" -->
+<!-- email="aizvorski.gmail.com" -->
+<!-- subject="Re: [AMBER] scientific issue" -->
+<!-- id="CABwbVQOFXTaqbDzzrWRCvqFA7O-L0KbDSyX5e6jZ6ciAKwhHpw.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20211110160448.xfsmrrtsxmfvynn2.sas50eb71e61e14.rad.rutgers.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0195.html" accesskey="d" title="Alexander Izvorski: &quot;[AMBER] DE Shaw RNA parameters error&quot;">Next message</a> ]
+[ <a href="0193.html" title="David A Case: &quot;Re: [AMBER] CUDA installation error - CENTOS 7&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg194" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg194" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg194" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg194" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Alexander Izvorski &lt;<a href="mailto:aizvorski.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20scientific%20issue">aizvorski.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 26 Dec 2021 13:29:53 -0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Second what David said - probably the kinetics are key.  A simple example
+<br />
+of exactly what you're describing would be lipids in water - of course the
+<br />
+lipids would aggregate (into droplets, micelles etc).  Now add some
+<br />
+detergent - indeed the detergent would initially aggregate with the lipid
+<br />
+droplets as well  :)  it may take a long time (maybe even microseconds) to
+<br />
+see any droplets spontaneously breaking up.
+<br />
+<br />Some things to think about: what do the aggregates look like?  In a lot of
+<br />
+cases they would have a specific structure (crystal, filament, micelle
+<br />
+etc).  What does the &quot;dispersed aggregate&quot; look like?  (smaller aggregates
+<br />
+capped with the second molecule, etc)  What is the transition pathway?  You
+<br />
+may have an easier time simulating (or observing) single steps along the
+<br />
+transition pathway rather than looking for (eg) spontaneous disaggregation
+<br />
+of large aggregates.
+<br />
+<br />On Wed, Nov 10, 2021 at 8:05 AM David A Case &lt;david.case.rutgers.edu&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; On Wed, Nov 10, 2021, SOMA ROY wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;Problem: I am simulating the aggregation of some small molecules (small
+</em><br />
+<em class="quotelev2">&gt; &gt;molecule-1). After the simulation, I am going to add another small
+</em><br />
+<em class="quotelev2">&gt; &gt;molecule (small molecules-2) to the nanoaggregates which may dissipate the
+</em><br />
+<em class="quotelev2">&gt; &gt;nanoaggregates as observed from the experimental data. Now, I have
+</em><br />
+<em class="quotelev2">&gt; &gt;performed the simulation of the small molecule-1 aggregation. When I have
+</em><br />
+<em class="quotelev2">&gt; &gt;added the small molecule-2 to the aggregates, it is clumping with the
+</em><br />
+<em class="quotelev1">&gt; small
+</em><br />
+<em class="quotelev2">&gt; &gt;molecule-1. How should I simulate the dissipation of the small molecule-1
+</em><br />
+<em class="quotelev2">&gt; &gt;nanoaggregates after the addition of the small molecule-2?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; This might be a kinetic problem, that is takes a long time for molecule-2
+</em><br />
+<em class="quotelev1">&gt; to
+</em><br />
+<em class="quotelev1">&gt; dissipate the aggregates.  It may also be a force-field problem: the system
+</em><br />
+<em class="quotelev1">&gt; may favor nanoaggregates even when molecule-2 is present.  Or, the
+</em><br />
+<em class="quotelev1">&gt; experimental setup and that in the simulation may be different; are you
+</em><br />
+<em class="quotelev1">&gt; sure
+</em><br />
+<em class="quotelev1">&gt; your simulated concentrations are realistic?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; One thought: try starting with both molecule-1 and molecule-2 as monomers,
+</em><br />
+<em class="quotelev1">&gt; and see if there is a difference in aggregation compared to the simulation
+</em><br />
+<em class="quotelev1">&gt; where no molecule-2 molecules were present.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; This is a very complex problem, and it may take a lot of work to create a
+</em><br />
+<em class="quotelev1">&gt; physically-realistic simulation.  Don't lose sight of the fact that you
+</em><br />
+<em class="quotelev1">&gt; want to learn something new from the simulations, and not just reproduce
+</em><br />
+<em class="quotelev1">&gt; known experimental results.  Even &quot;failed&quot; simulations may lead to novel
+</em><br />
+<em class="quotelev1">&gt; insights.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ...dac
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Dec 26 2021 - 14:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0195.html" title="Next message in the list">Alexander Izvorski: "[AMBER] DE Shaw RNA parameters error"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0193.html" title="Previous message in the list">David A Case: "Re: [AMBER] CUDA installation error - CENTOS 7"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg194" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg194" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg194" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg194" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

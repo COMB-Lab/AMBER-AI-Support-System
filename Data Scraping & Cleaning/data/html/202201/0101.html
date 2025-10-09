@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] number of waters near a mask (K+) cpptraj from Vaibhav Dixit on 2022-01-12 (Amber Archive Jan 2022)</title>
+<meta name="Author" content="Vaibhav Dixit (vaibhavadixit.gmail.com)" />
+<meta name="Subject" content="[AMBER] number of waters near a mask (K+) cpptraj" />
+<meta name="Date" content="2022-01-12" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] number of waters near a mask (K+) cpptraj</h1>
+<!-- received="Wed Jan 12 23:00:02 2022" -->
+<!-- isoreceived="20220113070002" -->
+<!-- sent="Thu, 13 Jan 2022 12:08:55 +0530" -->
+<!-- isosent="20220113063855" -->
+<!-- name="Vaibhav Dixit" -->
+<!-- email="vaibhavadixit.gmail.com" -->
+<!-- subject="[AMBER] number of waters near a mask (K+) cpptraj" -->
+<!-- id="CAO6-0Tkzi5hTkEP6PKd_p5ChzXr9ENV6_ZK+zpBYTJcfXFjP-Q.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0102.html" accesskey="d" title="Manuel Fernandez Merino: &quot;Re: [AMBER] Running AmberTools21 on HPC cluster using distributed memory&quot;">Next message</a> ]
+[ <a href="0100.html" title="David A Case: &quot;Re: [AMBER] About the drug charge _antechamber&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0105.html" accesskey="t" title="Daniel Roe: &quot;Re: [AMBER] number of waters near a mask (K+) cpptraj&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg101" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg101" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg101" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg101" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Vaibhav Dixit &lt;<a href="mailto:vaibhavadixit.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20number%20of%20waters%20near%20a%20mask%20(K%2B)%20cpptraj">vaibhavadixit.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 13 Jan 2022 12:08:55 +0530</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear All,
+<br />
+I want to find the number of water molecules that are in direct contact
+<br />
+with the K+ ions in each frame during the simulation.  I think this is not
+<br />
+supposed to remain constant since K+ ions will have occasional ion pairs
+<br />
+with counter ions, thus reducing the number of waters interacting with it.
+<br />
+For higher salt concentration, I should get a higher frequency of the
+<br />
+ion-pairs and thus a lower number of water contacts. Is this correct
+<br />
+thinking?
+<br />
+<br />For this, I'm trying to use the nativecontacts command with the following
+<br />
+option, but it gives an error that the water mask corresponds to 0 atoms.
+<br />
+I tried giving residue numbers for all waters, but that also fails in
+<br />
+cpptraj
+<br />
+Is it possible to do this with the closest option? I think it gives the
+<br />
+residue number for waters that are within a certain distance, but I want to
+<br />
+count the number of waters that are in direct contact with K+ ions.
+<br />
+<br />Please do suggest which command in cpptraj can help me get this analysis
+<br />
+done.
+<br />
+thank you and best regards
+<br />
+<br /><br />nativecontacts name KWAT :K+ :WAT byresidue out KWATcontacts.dat mindist
+<br />
+maxdist distance 4.0 first map mapout KWATresmap.gnu
+<br />
+contactpdb KWATcontactmap.pdb series seriesout KWATnativecontacts.dat
+<br />
+writecontacts KWATwritecontacts.dat
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mask [:K+] corresponds to 145 atoms.
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mask [:WAT] corresponds to 0 atoms.
+<br />
+Warning: Setup incomplete for [nativecontacts]: Skipping
+<br />
+<br /><br />nativecontacts name KWAT :K+ :876-23348&amp;!.H= byresidue out KWATcontacts.dat
+<br />
+mindist maxdist distance 4.0 first map mapout KWATresmap.gnu
+<br />
+contactpdb KWATcontactmap.pdb series seriesout KWATnativecontacts.dat
+<br />
+writecontacts KWATwritecontacts.dat
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mask [:K+] corresponds to 145 atoms.
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mask [:876-23348&amp;!.H*] corresponds to 0 atoms.
+<br />
+Warning: Setup incomplete for [nativecontacts]: Skipping
+<br />
+<br /><br />Regards,
+<br />
+<br />Dr. Vaibhav A. Dixit,
+<br />
+<br />Asst. Prof., Department of Medicinal Chemistry,
+<br />
+<br />National Institute of Pharmaceutical Education and Research, Guwahati
+<br />
+(NIPER-G), Sila Katamur (Halugurisuk), P.O.: Changsari, Dist: Kamrup, Pin:
+<br />
+781101, Assam, India
+<br />
+<br />Mob. No. +91-7709129400,
+<br />
+Email: vaibhav.niperguwahati.in; vaibhavadixit.gmail.com
+<br />
+<a href="https://niperguwahati.ac.in/DOC/profile/dixit.pdf">https://niperguwahati.ac.in/DOC/profile/dixit.pdf</a>
+<br />
+<a href="https://www.linkedin.com/in/vaibhav-dixit-b1a07a39/">https://www.linkedin.com/in/vaibhav-dixit-b1a07a39/</a>
+<br />
+<br />ORCID ID: https://orcid.org/0000-0003-4015-2941
+<br />
+<br />NCBI bibliography:
+<br />
+<a href="https://www.ncbi.nlm.nih.gov/myncbi/1Jgo56b26_AYKd/bibliography/public/">https://www.ncbi.nlm.nih.gov/myncbi/1Jgo56b26_AYKd/bibliography/public/</a>
+<br />
+<br /><a href="http://scholar.google.co.in/citations?user=X876BKcAAAAJ&amp;hl=en&amp;oi=sra">http://scholar.google.co.in/citations?user=X876BKcAAAAJ&amp;hl=en&amp;oi=sra</a>
+<br />
+<br />Please consider the environment before printing this e-mail
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Jan 12 2022 - 23:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0102.html" title="Next message in the list">Manuel Fernandez Merino: "Re: [AMBER] Running AmberTools21 on HPC cluster using distributed memory"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0100.html" title="Previous message in the list">David A Case: "Re: [AMBER] About the drug charge _antechamber"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0105.html" title="Next message in this discussion thread">Daniel Roe: "Re: [AMBER] number of waters near a mask (K+) cpptraj"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0105.html" title="Message sent in reply to this message">Daniel Roe: "Re: [AMBER] number of waters near a mask (K+) cpptraj"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg101" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg101" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg101" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg101" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

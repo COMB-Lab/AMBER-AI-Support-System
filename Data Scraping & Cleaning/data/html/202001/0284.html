@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] convergence of Ref energies in cpHMD from Cruzeiro,Vinicius Wilian D on 2020-01-23 (Amber Archive Jan 2020)</title>
+<meta name="Author" content="Cruzeiro,Vinicius Wilian D (vwcruzeiro.ufl.edu)" />
+<meta name="Subject" content="Re: [AMBER] convergence of Ref energies in cpHMD" />
+<meta name="Date" content="2020-01-23" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] convergence of Ref energies in cpHMD</h1>
+<!-- received="Thu Jan 23 15:00:02 2020" -->
+<!-- isoreceived="20200123230002" -->
+<!-- sent="Thu, 23 Jan 2020 22:38:23 +0000" -->
+<!-- isosent="20200123223823" -->
+<!-- name="Cruzeiro,Vinicius Wilian D" -->
+<!-- email="vwcruzeiro.ufl.edu" -->
+<!-- subject="Re: [AMBER] convergence of Ref energies in cpHMD" -->
+<!-- id="MWHPR2201MB1757C222C529B9691B3A4E48D10F0.MWHPR2201MB1757.namprd22.prod.outlook.com" -->
+<!-- charset="iso-8859-1" -->
+<!-- inreplyto="CAAoy1op2wUAEd=2ZNWwZVzzr3p-1M0rHjYbLx7mGPHCre=maxA.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0285.html" accesskey="d" title="Sruthi Sudhakar: &quot;Re: [AMBER] Multiple GPU imstallation of AMBER 18 error&quot;">Next message</a> ]
+[ <a href="0283.html" title="amirhossein taghavi: &quot;[AMBER] Shaw DE RNA ff in Amber format&quot;">Previous message</a> ]
+[ <a href="0254.html" title="Kolattukudy P.  Santo: &quot;Re: [AMBER] convergence of Ref energies in cpHMD&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg284" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg284" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg284" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg284" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Cruzeiro,Vinicius Wilian D &lt;<a href="mailto:vwcruzeiro.ufl.edu?Subject=Re%3A%20%5BAMBER%5D%20convergence%20of%20Ref%20energies%20in%20cpHMD">vwcruzeiro.ufl.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 23 Jan 2020 22:38:23 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello Santo,
+<br />
+<br />I noticed that you are using sander and I understand the complication of running longer simulations without GPU acceleration. However, I am taking my expectation regarding the simulation length from previous publications, like this one for example: https://pubs.acs.org/doi/abs/10.1021/acs.jctc.8b00935 . The simulations here were made with implicit solvent and for a system with only 270 atoms. As you can see, without REMD only 5 ns of simulation is clearly not nearly enough to achieve convergence (see Figure 5, for example). The --cumulative option in cphstats should confirm if this is the case for your system too (I would bet it is).
+<br />
+<br />Running simulations with REMD will actually decrease a bit the computational efficiency (amount of ns/day that you can do), however, you will reach convergence much faster, which means you will be able to run much shorter simulations than in a serial CpHMD simulation. In addition to that, when you have information about more than one pH value the pKa predictions become more accurate, and this also helps finddgref.py in finding the correct DELTAGREF value. Therefore, at the end of the day, if you have access to more CPUs, it is a good idea to take advantage of pH-REMD.
+<br />
+<br />I hope this helps,
+<br />
+Best,
+<br />
+<br /><br />Vin�cius Wilian D. Cruzeiro
+<br />
+<br />PhD Candidate
+<br />
+Department of Chemistry, Physical Chemistry Division
+<br />
+University of Florida, United States
+<br />
+<br />Voice: +1(352)846-1633
+<br />
+<br />________________________________
+<br />
+From: Kolattukudy P. Santo &lt;santotheophys.gmail.com&gt;
+<br />
+Sent: Wednesday, January 22, 2020 9:37 AM
+<br />
+To: Cruzeiro,Vinicius Wilian D &lt;vwcruzeiro.ufl.edu&gt;
+<br />
+Cc: AMBER Mailing List &lt;amber.ambermd.org&gt;
+<br />
+Subject: Re: [AMBER] convergence of Ref energies in cpHMD
+<br />
+<br />[External Email]
+<br />
+Hi Vinicius
+<br />
+Thank you for your  suggestion. 40 ns would be long time for serial mode. My system is of just 120 atoms, I am not sure parallel run would be more effective in terms of speed.
+<br />
+Santo
+<br />
+<br />On Wed, 22 Jan 2020 at 02:44, Cruzeiro,Vinicius Wilian D &lt;vwcruzeiro.ufl.edu&lt;mailto:vwcruzeiro.ufl.edu&gt;&gt; wrote:
+<br />
+Hello Santo,
+<br />
+<br />I suspect your issue is in the fact that you are running the production phase with only 4 ns. I suggest you to run a 4 ns simulation (outside finddgref.py) with one of the DELTAGREF values in the log file you sent and then use the --cumulative option in cphstats to check the convergence of your fraction of protonated species. I strongly suspect that this analysis will show that 4 ns is not enough to converge.
+<br />
+<br />If that is indeed the case, you will need to increase the total number of steps in your mdin file (I would try 40 ns, as a first trial). If you have access to more CPUs, you would gain significantly in sampling and in accuracy by running finddgref.py in parallel mode, which makes use of pH-REMD.
+<br />
+<br />I hope this helps,
+<br />
+Best,
+<br />
+<br /><br />Vin�cius Wilian D. Cruzeiro
+<br />
+<br />PhD Candidate
+<br />
+Department of Chemistry, Physical Chemistry Division
+<br />
+University of Florida, United States
+<br />
+<br />Voice: +1(352)846-1633
+<br />
+<br />________________________________
+<br />
+From: Kolattukudy P. Santo &lt;santotheophys.gmail.com&lt;mailto:santotheophys.gmail.com&gt;&gt;
+<br />
+Sent: Tuesday, January 21, 2020 9:13 AM
+<br />
+To: AMBER Mailing List &lt;amber.ambermd.org&lt;mailto:amber.ambermd.org&gt;&gt;
+<br />
+Subject: Re: [AMBER] convergence of Ref energies in cpHMD
+<br />
+<br />[External Email]
+<br />
+<br />Hi Vinicius
+<br />
+The mdin file is:
+<br />
+-------------------
+<br />
+Implicit solvent constant pH molecular dynamics
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;&nbsp;imin=0, irest=1, ntx=5,
+<br />
+&nbsp;&nbsp;&nbsp;ntpr=1000, ntwx=1000, nstlim=2000000,
+<br />
+&nbsp;&nbsp;&nbsp;dt=0.002, ntt=3, tempi=300,
+<br />
+&nbsp;&nbsp;&nbsp;temp0=300, tautp=2.0, ig=-1,
+<br />
+&nbsp;&nbsp;&nbsp;ntp=0, ntc=2, ntf=2, cut=30,
+<br />
+&nbsp;&nbsp;&nbsp;ntb=0, igb=2, saltcon=0.1,
+<br />
+&nbsp;&nbsp;&nbsp;nrespa=1, tol=0.000001, icnstph=1,
+<br />
+&nbsp;&nbsp;&nbsp;solvph=4.5, ntcnstph=5,
+<br />
+&nbsp;&nbsp;&nbsp;gamma_ln=5.0, ntwr=10000, ioutfm=1,
+<br />
+/
+<br />
+----------------------------
+<br />
+The initial log file was deleted. The currently running  log file ( still
+<br />
+running ) is below. This  has been running for about 15 hours.
+<br />
+<br />-----------------
+<br />
+&nbsp;Checking cpin file and/or cein file.
+<br />
+&nbsp;We are going to find DELTAGREF for a pH titratable residue without using
+<br />
+Replica Exchange.
+<br />
+&nbsp;The solvent pH value is   4.500 and was loaded from the mdin file (
+<br />
+finddg.in&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__finddg.in&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=EcnZCsFUR8BsdZelb6CMjXxpz6p4wFO0YFYVXSwET8k&amp;s=q4N-TBQOO5KADRfjvSxYjjVBjh3f4pSjwRIhIermaB4&amp;e">https://urldefense.proofpoint.com/v2/url?u=http-3A__finddg.in&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=EcnZCsFUR8BsdZelb6CMjXxpz6p4wFO0YFYVXSwET8k&amp;s=q4N-TBQOO5KADRfjvSxYjjVBjh3f4pSjwRIhIermaB4&amp;e</a>=&gt;).
+<br />
+&nbsp;The temperature is   300.00 K and was loaded from the mdin file (finddg.in&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__finddg.in&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=EcnZCsFUR8BsdZelb6CMjXxpz6p4wFO0YFYVXSwET8k&amp;s=q4N-TBQOO5KADRfjvSxYjjVBjh3f4pSjwRIhIermaB4&amp;e">https://urldefense.proofpoint.com/v2/url?u=http-3A__finddg.in&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=EcnZCsFUR8BsdZelb6CMjXxpz6p4wFO0YFYVXSwET8k&amp;s=q4N-TBQOO5KADRfjvSxYjjVBjh3f4pSjwRIhIermaB4&amp;e</a>=&gt;
+<br />
+).
+<br />
+&nbsp;According to the mdin file (finddg.in&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__finddg.in&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=EcnZCsFUR8BsdZelb6CMjXxpz6p4wFO0YFYVXSwET8k&amp;s=q4N-TBQOO5KADRfjvSxYjjVBjh3f4pSjwRIhIermaB4&amp;e">https://urldefense.proofpoint.com/v2/url?u=http-3A__finddg.in&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=EcnZCsFUR8BsdZelb6CMjXxpz6p4wFO0YFYVXSwET8k&amp;s=q4N-TBQOO5KADRfjvSxYjjVBjh3f4pSjwRIhIermaB4&amp;e</a>=&gt;), the value of ntcnstph is 5.
+<br />
+&nbsp;According to the mdin file (finddg.in&lt;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__finddg.in&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=EcnZCsFUR8BsdZelb6CMjXxpz6p4wFO0YFYVXSwET8k&amp;s=q4N-TBQOO5KADRfjvSxYjjVBjh3f4pSjwRIhIermaB4&amp;e">https://urldefense.proofpoint.com/v2/url?u=http-3A__finddg.in&amp;d=DwMFaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=EcnZCsFUR8BsdZelb6CMjXxpz6p4wFO0YFYVXSwET8k&amp;s=q4N-TBQOO5KADRfjvSxYjjVBjh3f4pSjwRIhIermaB4&amp;e</a>=&gt;), the value of nstlim is 2000000.
+<br />
+<br />&nbsp;The program will try to find a range of values for DELTAGREF
+<br />
+automatically, as the argument -dgrefrange was not given
+<br />
+<br />&nbsp;AMBER execution #1: running 50 MD steps for DELTAGREF = 0.000000 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is   0.00% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #2: running 50 MD steps for DELTAGREF = -100.000000
+<br />
+kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is   0.00% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #3: running 50 MD steps for DELTAGREF = 100.000000 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is 100.00% for the Residue 'UAP 2'
+<br />
+<br />&nbsp;The value of DELTAGREF in which 20% &gt; fraction of protonated species &gt; 80%
+<br />
+for solvent pH = 4.5 is between 0.000000 and 100.000000 kcal/mol.
+<br />
+<br />&nbsp;AMBER execution #4: running 200 MD steps for DELTAGREF = 50.000000 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is 100.00% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #5: running 200 MD steps for DELTAGREF = 25.000000 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is 100.00% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #6: running 200 MD steps for DELTAGREF = 12.500000 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is   5.10% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #7: running 200 MD steps for DELTAGREF = 18.750000 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is 100.00% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #8: running 200 MD steps for DELTAGREF = 15.625000 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is  28.20% for the Residue 'UAP 2'
+<br />
+<br />&nbsp;From this step on, we will make more accurate estimatives of DELTAGREF
+<br />
+values and we will keep increasing the number of steps.
+<br />
+&nbsp;The convergence criterium is: 48.50% &gt;= fraction &gt;= 51.50% for pH = 4.5.
+<br />
+<br />&nbsp;AMBER execution #9: running 200000  MD steps of equilibration for
+<br />
+DELTAGREF = 16.182147 kcal/mol
+<br />
+&nbsp;AMBER execution #9: running 2000000 MD steps of production    for
+<br />
+DELTAGREF = 16.182147 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is  99.90% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #10: running 200000  MD steps of equilibration for
+<br />
+DELTAGREF = 12.064631 kcal/mol
+<br />
+&nbsp;AMBER execution #10: running 2000000 MD steps of production    for
+<br />
+DELTAGREF = 12.064631 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is   7.00% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #11: running 200000  MD steps of equilibration for
+<br />
+DELTAGREF = 13.606706 kcal/mol
+<br />
+&nbsp;AMBER execution #11: running 2000000 MD steps of production    for
+<br />
+DELTAGREF = 13.606706 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is  95.50% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #12: running 200000  MD steps of equilibration for
+<br />
+DELTAGREF = 11.785415 kcal/mol
+<br />
+&nbsp;AMBER execution #12: running 2000000 MD steps of production    for
+<br />
+DELTAGREF = 11.785415 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is   3.80% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #13: running 200000  MD steps of equilibration for
+<br />
+DELTAGREF = 13.711856 kcal/mol
+<br />
+&nbsp;AMBER execution #13: running 2000000 MD steps of production    for
+<br />
+DELTAGREF = 13.711856 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is  82.70% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #14: running 200000  MD steps of equilibration for
+<br />
+DELTAGREF = 12.779159 kcal/mol
+<br />
+&nbsp;AMBER execution #14: running 2000000 MD steps of production    for
+<br />
+DELTAGREF = 12.779159 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is  35.50% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #15: running 200000  MD steps of equilibration for
+<br />
+DELTAGREF = 13.135145 kcal/mol
+<br />
+&nbsp;AMBER execution #15: running 2000000 MD steps of production    for
+<br />
+DELTAGREF = 13.135145 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is  78.30% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #16: running 200000  MD steps of equilibration for
+<br />
+DELTAGREF = 12.370134 kcal/mol
+<br />
+&nbsp;AMBER execution #16: running 2000000 MD steps of production    for
+<br />
+DELTAGREF = 12.370134 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is  12.90% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #17: running 200000  MD steps of equilibration for
+<br />
+DELTAGREF = 13.508694 kcal/mol
+<br />
+&nbsp;AMBER execution #17: running 2000000 MD steps of production    for
+<br />
+DELTAGREF = 13.508694 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is  54.20% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #18: running 200000  MD steps of equilibration for
+<br />
+DELTAGREF = 13.408303 kcal/mol
+<br />
+&nbsp;AMBER execution #18: running 2000000 MD steps of production    for
+<br />
+DELTAGREF = 13.408303 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is  51.70% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #19: running 200000  MD steps of equilibration for
+<br />
+DELTAGREF = 13.367748 kcal/mol
+<br />
+&nbsp;AMBER execution #19: running 2000000 MD steps of production    for
+<br />
+DELTAGREF = 13.367748 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is  60.90% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #20: running 200000  MD steps of equilibration for
+<br />
+DELTAGREF = 13.103584 kcal/mol
+<br />
+&nbsp;AMBER execution #20: running 2000000 MD steps of production    for
+<br />
+DELTAGREF = 13.103584 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is  35.60% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #21: running 200000  MD steps of equilibration for
+<br />
+DELTAGREF = 13.456968 kcal/mol
+<br />
+&nbsp;AMBER execution #21: running 2000000 MD steps of production    for
+<br />
+DELTAGREF = 13.456968 kcal/mol
+<br />
+&nbsp;&nbsp;&nbsp;The fraction of protonated species is  92.30% for the Residue 'UAP 2'
+<br />
+&nbsp;AMBER execution #22: running 200000  MD steps of equilibration for
+<br />
+DELTAGREF = 11.976217 kcal/mol
+<br />
+&nbsp;AMBER execution #22: running 2000000 MD steps of production    for
+<br />
+DELTAGREF = 11.976217 kcal/mol
+<br />
+<br /><br /><br />Thanks
+<br />
+Santo
+<br />
+<br /><br />On Mon, 20 Jan 2020 at 17:27, Cruzeiro,Vinicius Wilian D &lt;vwcruzeiro.ufl.edu&lt;mailto:vwcruzeiro.ufl.edu&gt;&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hello Santo,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; May you send the mdin file you are using in the simulation and your
+</em><br />
+<em class="quotelev1">&gt; current finddg.log file?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Vin�cius Wilian D Cruzeiro
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; PhD Candidate
+</em><br />
+<em class="quotelev1">&gt; Department of Chemistry, Physical Chemistry Division
+</em><br />
+<em class="quotelev1">&gt; University of Florida, United States
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Voice: +1(352)846-1633&lt;tel:+1(352)846-1633&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Jan 20, 2020, at 12:42 PM, Kolattukudy P. Santo &lt;
+</em><br />
+<em class="quotelev1">&gt; santotheophys.gmail.com&lt;mailto:santotheophys.gmail.com&gt;&lt;mailto:santotheophys.gmail.com&lt;mailto:santotheophys.gmail.com&gt;&gt;&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; finddg.log
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org&lt;mailto:AMBER.ambermd.org&gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=cXy6VPDsXJaEMYpImZJu4R0K7Ri2m1idUh27vINEsVs&amp;s=athAkYfSK3HAZiHL5IbmbwIO8OMH4u1ukbIHGrjkn2">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=cXy6VPDsXJaEMYpImZJu4R0K7Ri2m1idUh27vINEsVs&amp;s=athAkYfSK3HAZiHL5IbmbwIO8OMH4u1ukbIHGrjkn2</a>U&amp;e=
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br /><br /><pre>
+--
+*Dr. Kolattukudy P.  Santo*
+*Post doctoral Associate *
+*Department of Chemical and Biochemical Engineering*
+*Rutgers, The State University of New Jersey*
+*New Brunswick, New jersey*
+*USA*
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org&lt;mailto:AMBER.ambermd.org&gt;
+<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=cXy6VPDsXJaEMYpImZJu4R0K7Ri2m1idUh27vINEsVs&amp;s=athAkYfSK3HAZiHL5IbmbwIO8OMH4u1ukbIHGrjkn2">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=vg8iTdivJL1PEwCvcH8P2DFF-Rtc9lAQvIqnaSWm1Pc&amp;m=cXy6VPDsXJaEMYpImZJu4R0K7Ri2m1idUh27vINEsVs&amp;s=athAkYfSK3HAZiHL5IbmbwIO8OMH4u1ukbIHGrjkn2</a>U&amp;e=
+--
+Dr. Kolattukudy P.  Santo
+Post doctoral Associate
+Department of Chemical and Biochemical Engineering
+Rutgers, The State University of New Jersey
+New Brunswick, New jersey
+USA
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Thu Jan 23 2020 - 15:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0285.html" title="Next message in the list">Sruthi Sudhakar: "Re: [AMBER] Multiple GPU imstallation of AMBER 18 error"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0283.html" title="Previous message in the list">amirhossein taghavi: "[AMBER] Shaw DE RNA ff in Amber format"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0254.html" title="Message to which this message replies">Kolattukudy P.  Santo: "Re: [AMBER] convergence of Ref energies in cpHMD"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg284" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg284" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg284" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg284" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

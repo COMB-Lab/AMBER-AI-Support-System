@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results? from Robin Betz on 2020-03-06 (Amber Archive Mar 2020)</title>
+<meta name="Author" content="Robin Betz (robin.robinbetz.com)" />
+<meta name="Subject" content="Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?" />
+<meta name="Date" content="2020-03-06" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?</h1>
+<!-- received="Fri Mar  6 13:30:02 2020" -->
+<!-- isoreceived="20200306213002" -->
+<!-- sent="Fri, 6 Mar 2020 13:08:21 -0800" -->
+<!-- isosent="20200306210821" -->
+<!-- name="Robin Betz" -->
+<!-- email="robin.robinbetz.com" -->
+<!-- subject="Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?" -->
+<!-- id="CAL9_cpfukBpPKdeQFcf61rcfNUaUUngv_NLz5sn5cNdmRZRpxw.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAC1EcEqhuKPZJHdHAK5eCKv9iWg4je=EjK3zMGCAz3mkn4qy7Q.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0069.html" accesskey="d" title="Abhilash J: &quot;Re: [AMBER] CUDA single gpu usage issue&quot;">Next message</a> ]
+[ <a href="0067.html" title="David Cerutti: &quot;Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?&quot;">Previous message</a> ]
+[ <a href="0057.html" title="Erdem Yeler: &quot;[AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0082.html" accesskey="t" title="Erdem Yeler: &quot;Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg68" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg68" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg68" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg68" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Robin Betz &lt;<a href="mailto:robin.robinbetz.com?Subject=Re%3A%20%5BAMBER%5D%20When%20I%20use%20fitted%20parameters%20as%20initial%20parameters%20in%20paramfit%2C%20I%20am%20getting%20different%20results%3F">robin.robinbetz.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 6 Mar 2020 13:08:21 -0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Erdem,
+<br />
+<br />The reason you get different parameters on re-fit implies that paramfit
+<br />
+hasn't found the global minimum- that is, the best possible parameters.
+<br />
+It may be worth running it a few times until you actually get convergence,
+<br />
+or set the convergence parameters more stringently.
+<br />
+<br />The &quot;bad parameters&quot; warning is pretty aggressive, and just means that the
+<br />
+initial value of the function to minimize is large. That is probably
+<br />
+coming from the value of K, if you're seeing relative energy differences
+<br />
+that are reasonable. K is just a constant offset to discourage the
+<br />
+solver from making dramatic changes in the parameters to account for the
+<br />
+difference in baseline QM and MM energy. In your case, I
+<br />
+wouldn't say the parameters are bad, since as you say, they just got output
+<br />
+as the result of a fit.
+<br />
+<br />It's always a tradeoff when writing scientific codes between warning the
+<br />
+user excessively and creating a black box that appears to give
+<br />
+perfect results all the time. I err on the side of aggressive warnings,
+<br />
+which is why Paramfit yells at you so much.
+<br />
+<br />Hope this helps!
+<br />
+<br />Robin
+<br />
+<br />On Fri, Mar 6, 2020 at 4:12 AM Erdem Yeler &lt;erdemyeler.gmail.com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hello amberers,
+</em><br />
+<em class="quotelev1">&gt; Let's say I am optimizing X dihedral by using paramfit. After running
+</em><br />
+<em class="quotelev1">&gt; paramfit I obtained fitted.frcmod. And fit_output_energy.out file shows
+</em><br />
+<em class="quotelev1">&gt;  that: molecular mechanic energies obtained by using &quot;fitted.frcmod&quot; file
+</em><br />
+<em class="quotelev1">&gt; are, very close to  quantum mechanic calculations. No problem so far,
+</em><br />
+<em class="quotelev1">&gt; everything happened as we expected.
+</em><br />
+<em class="quotelev1">&gt; But, when I use fitted.frcmod file as initial parameters and running
+</em><br />
+<em class="quotelev1">&gt; paramfit with these parameters (quantum_A.dat, prmtop and mdcrd files exc..
+</em><br />
+<em class="quotelev1">&gt; are the same, only inital frcmod file was changed), this time
+</em><br />
+<em class="quotelev1">&gt; fit(2)_output_energy.out file says that : my &quot;initial parameters&quot; are very
+</em><br />
+<em class="quotelev1">&gt; far away from quantum mechanic calculations (even if I referenced &quot;relative
+</em><br />
+<em class="quotelev1">&gt; energies&quot; (relative energy on the chart = energy-minimum energy, so there
+</em><br />
+<em class="quotelev1">&gt; is no need to be use Ka)). But how can this happen?  Paramfit found some
+</em><br />
+<em class="quotelev1">&gt; parameters and it says these parameters are good but when I re-use them as
+</em><br />
+<em class="quotelev1">&gt; initial, this time how can exactly the same parameters could be &quot;bad
+</em><br />
+<em class="quotelev1">&gt; parameters&quot; as initial? I am really confused. Am I doing something wrong?
+</em><br />
+<em class="quotelev1">&gt; or this result is normal? (I tested many many times).
+</em><br />
+<em class="quotelev1">&gt; Thank you so much...
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Mar 06 2020 - 13:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0069.html" title="Next message in the list">Abhilash J: "Re: [AMBER] CUDA single gpu usage issue"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0067.html" title="Previous message in the list">David Cerutti: "Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0057.html" title="Message to which this message replies">Erdem Yeler: "[AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0082.html" title="Next message in this discussion thread">Erdem Yeler: "Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0082.html" title="Message sent in reply to this message">Erdem Yeler: "Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg68" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg68" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg68" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg68" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

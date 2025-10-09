@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Issue with MM/PBSA calculations on membrane system from Gilberto Pereira on 2021-08-23 (Amber Archive Aug 2021)</title>
+<meta name="Author" content="Gilberto Pereira (gilberto.pereiraportugal.gmail.com)" />
+<meta name="Subject" content="[AMBER] Issue with MM/PBSA calculations on membrane system" />
+<meta name="Date" content="2021-08-23" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Issue with MM/PBSA calculations on membrane system</h1>
+<!-- received="Mon Aug 23 08:00:02 2021" -->
+<!-- isoreceived="20210823150002" -->
+<!-- sent="Mon, 23 Aug 2021 16:57:06 +0200" -->
+<!-- isosent="20210823145706" -->
+<!-- name="Gilberto Pereira" -->
+<!-- email="gilberto.pereiraportugal.gmail.com" -->
+<!-- subject="[AMBER] Issue with MM/PBSA calculations on membrane system" -->
+<!-- id="CAMM0S=dyJwxcP0kjxXRauVA7SEWC8-1+j4fqRADZ2i4wR+sB8Q.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0143.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] Question about thermodynamic integration.&quot;">Next message</a> ]
+[ <a href="0141.html" title="David A Case: &quot;Re: [AMBER] Grumpy GROMBER over a ZeroDivisionError&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0144.html" accesskey="t" title="Ray Luo: &quot;Re: [AMBER] Issue with MM/PBSA calculations on membrane system&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg142" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg142" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg142" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg142" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gilberto Pereira &lt;<a href="mailto:gilberto.pereiraportugal.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Issue%20with%20MM%2FPBSA%20calculations%20on%20membrane%20system">gilberto.pereiraportugal.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 23 Aug 2021 16:57:06 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear members of the Amber mailing list.
+<br />
+<br />I am trying to carry out some MM/PBSA calculations in a protein-ligand
+<br />
+system whose simulation included a POPC membrane and explicit solvent,
+<br />
+carried out using GROMACS and converted to Amber format with GROMBER. The
+<br />
+water and membrane atoms were removed previous to the MM/PBSA calculation.
+<br />
+Below is the input file used to setup up the MM/PBSA run using AmberTools18.
+<br />
+<br />&quot;
+<br />
+Sample input file for MMPBSA with membrane proteins
+<br />
+&amp;general
+<br />
+use_sander=1,
+<br />
+startframe=1000, endframe=2000, interval=100,
+<br />
+keep_files=1, debug_printlevel=2
+<br />
+/
+<br />
+&amp;pb
+<br />
+radiopt=0, indi=4.0, istrng=0.150, exdi=80.0,
+<br />
+fillratio=1.25, ipb=1, nfocus=1,
+<br />
+bcopt=10, eneopt=1, cutfd=7.0, cutnb=99.0,
+<br />
+npbverb=1, solvopt=2, inp=1,
+<br />
+memopt=1, emem=1.0, mctrdz=90.31, mthick=46, poretype=1,
+<br />
+maxarcdot=15000, sasopt=0,
+<br />
+/
+<br />
+&quot;
+<br />
+Upon submission of the calculation, the program crashes with the following
+<br />
+error:
+<br />
+<br />minimizing coord set #     1
+<br />
+PB bomb in pb_atmlist(): MAXNEI too short
+<br />
+<br />Could you please help me to solve this issue?
+<br />
+<br />Best regards,
+<br />
+Gilberto Pereira
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Aug 23 2021 - 08:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0143.html" title="Next message in the list">David A Case: "Re: [AMBER] Question about thermodynamic integration."</a></li>
+<li><dfn>Previous message</dfn>: <a href="0141.html" title="Previous message in the list">David A Case: "Re: [AMBER] Grumpy GROMBER over a ZeroDivisionError"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0144.html" title="Next message in this discussion thread">Ray Luo: "Re: [AMBER] Issue with MM/PBSA calculations on membrane system"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0144.html" title="Message sent in reply to this message">Ray Luo: "Re: [AMBER] Issue with MM/PBSA calculations on membrane system"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg142" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg142" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg142" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg142" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Issue with defining angle parameters in frcmod files from Carlos Simmerling on 2021-12-22 (Amber Archive Dec 2021)</title>
+<meta name="Author" content="Carlos Simmerling (carlos.simmerling.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Issue with defining angle parameters in frcmod files" />
+<meta name="Date" content="2021-12-22" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Issue with defining angle parameters in frcmod files</h1>
+<!-- received="Wed Dec 22 12:30:02 2021" -->
+<!-- isoreceived="20211222203002" -->
+<!-- sent="Wed, 22 Dec 2021 15:19:28 -0500" -->
+<!-- isosent="20211222201928" -->
+<!-- name="Carlos Simmerling" -->
+<!-- email="carlos.simmerling.gmail.com" -->
+<!-- subject="Re: [AMBER] Issue with defining angle parameters in frcmod files" -->
+<!-- id="CAGk3s-QsrPsvMmJLq8XvDx1mxSiROpeBgRAjdOLocCNO2ANXxw.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="PA4PR01MB75360F0681D5240E899F03DEB17D9.PA4PR01MB7536.eurprd01.prod.exchangelabs.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0170.html" accesskey="d" title="Arooma Maryam: &quot;[AMBER] Query regarding minimization in AMBER 20&quot;">Next message</a> ]
+[ <a href="0168.html" title="Sam Walsworth (Researcher): &quot;[AMBER] Issue with defining angle parameters in frcmod files&quot;">Previous message</a> ]
+[ <a href="0168.html" title="Sam Walsworth (Researcher): &quot;[AMBER] Issue with defining angle parameters in frcmod files&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0173.html" accesskey="t" title="Sam Walsworth (Researcher): &quot;Re: [AMBER] Issue with defining angle parameters in frcmod files&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg169" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg169" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg169" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg169" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Carlos Simmerling &lt;<a href="mailto:carlos.simmerling.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Issue%20with%20defining%20angle%20parameters%20in%20frcmod%20files">carlos.simmerling.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 22 Dec 2021 15:19:28 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+I don't know of any easy way to do that. The purpose of atom types is to
+<br />
+control which parameters are applied. If you want different parameters,
+<br />
+then you should probably use different atom types. Once the prmtop is
+<br />
+built, the angles are listed separately for each set of 3 atoms, but each
+<br />
+just has a pointer into the angle parameter list where the force constant
+<br />
+is stored. In principle you could change that pointer, but the alternate
+<br />
+parameters would need to already be in the prmtop, and they won't have been
+<br />
+added unless they matched something else in your system. There are ways to
+<br />
+edit more extensively (manually adding parameters to the angle parameter
+<br />
+list in the prmtop, but not trivial if you aren't very familiar with the
+<br />
+format (see <a href="https://ambermd.org/prmtop.pdf">https://ambermd.org/prmtop.pdf</a>).
+<br />
+<br />I think that the best approach would be to use different atom types for the
+<br />
+atoms that differ between these ag-cc-na angles. You can duplicate the
+<br />
+existing parameters for the new atom type using the existing ones in your
+<br />
+frcmod, then edit the ones that you want to change. In my experience that's
+<br />
+much easier to edit at the frcmod level than at the prmtop level (and would
+<br />
+be re-usable if you do something similar in the future, rather than always
+<br />
+having to edit the prmtop).
+<br />
+<br />there might be a way to do this with parmed, but I'm not aware of it. There
+<br />
+also may be other tools for doing this kind of editing - maybe other on the
+<br />
+list will have better suggestions.
+<br />
+<br /><br />On Wed, Dec 22, 2021 at 2:22 PM Sam Walsworth (Researcher) &lt;
+<br />
+Sam.Walsworth.hud.ac.uk&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hello,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I have a molecule that has four angles made up of the same three atom
+</em><br />
+<em class="quotelev1">&gt; types in a row (ag-cc-na) whereby each of the four angles has its own
+</em><br />
+<em class="quotelev1">&gt; unique angle parameter (in kcal/rad^2). I'm assuming that if I defined one
+</em><br />
+<em class="quotelev1">&gt; of the angles in the frcmod file, it'd automatically apply that parameter
+</em><br />
+<em class="quotelev1">&gt; and angle value to all four ag-cc-na angles since they're made of the same
+</em><br />
+<em class="quotelev1">&gt; atom types.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Is there a way I can specify which atom name and/or atom number I want the
+</em><br />
+<em class="quotelev1">&gt; angle parameters applied to such that I can parameterise the different
+</em><br />
+<em class="quotelev1">&gt; angles appropriately?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Sam
+</em><br />
+<em class="quotelev1">&gt; University of Huddersfield inspiring global professionals.
+</em><br />
+<em class="quotelev1">&gt; [
+</em><br />
+<em class="quotelev1">&gt; <a href="https://marketing.hud.ac.uk/_HOSTED/EmailSig2014/EmailSigFooterSeptember2021.jpg">https://marketing.hud.ac.uk/_HOSTED/EmailSig2014/EmailSigFooterSeptember2021.jpg</a>
+</em><br />
+<em class="quotelev1">&gt; ]
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; This transmission is confidential and may be legally privileged. If you
+</em><br />
+<em class="quotelev1">&gt; receive it in error, please notify us immediately by e-mail and remove it
+</em><br />
+<em class="quotelev1">&gt; from your system. If the content of this e-mail does not relate to the
+</em><br />
+<em class="quotelev1">&gt; business of the University of Huddersfield, then we do not endorse it and
+</em><br />
+<em class="quotelev1">&gt; will accept no liability.
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Dec 22 2021 - 12:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0170.html" title="Next message in the list">Arooma Maryam: "[AMBER] Query regarding minimization in AMBER 20"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0168.html" title="Previous message in the list">Sam Walsworth (Researcher): "[AMBER] Issue with defining angle parameters in frcmod files"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0168.html" title="Message to which this message replies">Sam Walsworth (Researcher): "[AMBER] Issue with defining angle parameters in frcmod files"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0173.html" title="Next message in this discussion thread">Sam Walsworth (Researcher): "Re: [AMBER] Issue with defining angle parameters in frcmod files"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0173.html" title="Message sent in reply to this message">Sam Walsworth (Researcher): "Re: [AMBER] Issue with defining angle parameters in frcmod files"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg169" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg169" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg169" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg169" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] MMGBSA/MMPBSA Help from Abdul-Rashid III Sampaco on 2020-10-03 (Amber Archive Oct 2020)</title>
+<meta name="Author" content="Abdul-Rashid III Sampaco (absampaco.up.edu.ph)" />
+<meta name="Subject" content="[AMBER] MMGBSA/MMPBSA Help" />
+<meta name="Date" content="2020-10-03" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] MMGBSA/MMPBSA Help</h1>
+<!-- received="Sat Oct  3 05:00:02 2020" -->
+<!-- isoreceived="20201003120002" -->
+<!-- sent="Sat, 3 Oct 2020 19:33:44 +0800" -->
+<!-- isosent="20201003113344" -->
+<!-- name="Abdul-Rashid III Sampaco" -->
+<!-- email="absampaco.up.edu.ph" -->
+<!-- subject="[AMBER] MMGBSA/MMPBSA Help" -->
+<!-- id="CALQxp2THTch6HqH0wp+qHtWwiJ3xayzyEPJ1Ts-JfCCm+tydEQ.mail.gmail.com" -->
+<!-- charset="UTF-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0036.html" accesskey="d" title="Carlos Simmerling: &quot;Re: [AMBER] how to use one prmtop for two trajectories with just one ion difference&quot;">Next message</a> ]
+[ <a href="0034.html" title="aishen: &quot;[AMBER] about translation&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0422.html" accesskey="t" title="Ray Luo: &quot;Re: [AMBER] MMGBSA/MMPBSA Help&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg35" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg35" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg35" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg35" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Abdul-Rashid III Sampaco &lt;<a href="mailto:absampaco.up.edu.ph?Subject=Re%3A%20%5BAMBER%5D%20MMGBSA%2FMMPBSA%20Help">absampaco.up.edu.ph</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 3 Oct 2020 19:33:44 +0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear AMBER Community,
+<br />
+<br />I would like to ask for your help in making sense of my MMGBSA/MMPBSA
+<br />
+results. I separately docked a short peptide onto two receptors. I also
+<br />
+included calculations for an alanine scan on five of the peptide's amino
+<br />
+acid residues.
+<br />
+<br />In my initial calculation, I used the following parameters:
+<br />
+<br />&amp;general
+<br />
+&nbsp;&nbsp;startframe=1, endframe=100000, interval=100, verbose=1,
+<br />
+&nbsp;&nbsp;ligand_mask=&quot;:1761-1783&quot;, receptor_mask=&quot;:1-1760&quot;,
+<br />
+&nbsp;&nbsp;strip_mask=&quot;:WAT,PA,PC,PE,OL,K+,Cl-,CHL&quot;,
+<br />
+&nbsp;&nbsp;# entropy=1,
+<br />
+/
+<br />
+&amp;gb
+<br />
+&nbsp;&nbsp;igb=2, saltcon=0.150,
+<br />
+/
+<br />
+&amp;pb
+<br />
+&nbsp;&nbsp;istrng=0.100,
+<br />
+&nbsp;&nbsp;memopt=1,
+<br />
+&nbsp;&nbsp;inp=2, radiopt=0,
+<br />
+/
+<br />
+&amp;alanine_scanning
+<br />
+/
+<br />
+<br />However, MMPBSA results showed positive binding energy values. In another
+<br />
+thread in this mailing list that featured a similar issue, it was suggested
+<br />
+that inp=1 should be used instead of inp=2 to avoid obtaining positive
+<br />
+values in MMPBSA. I reran my calculations using inp=1 and obtained the
+<br />
+following results.
+<br />
+<br />receptor A:
+<br />
+[image: image.png]
+<br />
+<br />receptor B:
+<br />
+[image: image.png]
+<br />
+<br />Here are my questions:
+<br />
+<br />(1) There is a massive disparity between the MMGBSA and MMPBSA results on
+<br />
+the potassium channel. Is this normal? Aren't the MMGBSA and MMPBSA results
+<br />
+supposed to be fairly similar in magnitude since one is simply an
+<br />
+approximation of another?
+<br />
+<br />(2) Are the results on different receptors comparable? Is it safe to say
+<br />
+that according to the MMGBSA results, the peptide should prefer binding to
+<br />
+receptor B rather than receptor A? But this is contradicted by the MMPBSA
+<br />
+results.
+<br />
+<br />If these questions are deemed trivial, I will greatly appreciate being
+<br />
+recommended the right papers to read.
+<br />
+<br />Best,
+<br />
+Rashid
+<br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<p><img src="att-0035/image.png" alt="image.png" />
+<br />
+(image/png attachment: <a href="att-0035/image.png">image.png</a>)</p>
+<!-- attachment="image.png" -->
+<p><img src="att-0035/02-image.png" alt="image.png" />
+<br />
+(image/png attachment: <a href="att-0035/02-image.png">02-image.png</a>)</p>
+<!-- attachment="02-image.png" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Sat Oct 03 2020 - 05:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0036.html" title="Next message in the list">Carlos Simmerling: "Re: [AMBER] how to use one prmtop for two trajectories with just one ion difference"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0034.html" title="Previous message in the list">aishen: "[AMBER] about translation"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0422.html" title="Next message in this discussion thread">Ray Luo: "Re: [AMBER] MMGBSA/MMPBSA Help"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0422.html" title="Message sent in reply to this message">Ray Luo: "Re: [AMBER] MMGBSA/MMPBSA Help"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg35" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg35" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg35" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg35" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

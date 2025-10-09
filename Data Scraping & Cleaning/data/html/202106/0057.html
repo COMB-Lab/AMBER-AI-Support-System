@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] [MCPB.py]_KeyError: 'HZ2' from Pengfei Li on 2021-06-08 (Amber Archive Jun 2021)</title>
+<meta name="Author" content="Pengfei Li (ambermailpengfei.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] [MCPB.py]_KeyError: 'HZ2'" />
+<meta name="Date" content="2021-06-08" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] [MCPB.py]_KeyError: 'HZ2'</h1>
+<!-- received="Tue Jun  8 19:30:02 2021" -->
+<!-- isoreceived="20210609023002" -->
+<!-- sent="Tue, 8 Jun 2021 21:14:26 -0500" -->
+<!-- isosent="20210609021426" -->
+<!-- name="Pengfei Li" -->
+<!-- email="ambermailpengfei.gmail.com" -->
+<!-- subject="Re: [AMBER] [MCPB.py]_KeyError: 'HZ2'" -->
+<!-- id="4AE7CF77-001F-4455-91EC-05428F65B57D.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAEMR757_Rk_BtDw9G-aEN6_WmznKftzCaX-F8=9NvNd553=55Q.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0058.html" accesskey="d" title="Vaibhav Dixit: &quot;[AMBER] tleap error creating prmtop file&quot;">Next message</a> ]
+[ <a href="0056.html" title="Razil Tahir: &quot;[AMBER] Incomplete trajectory due to calculation halted error&quot;">Previous message</a> ]
+[ <a href="0038.html" title="sabrine kh: &quot;[AMBER] [MCPB.py]_KeyError: &#0039;HZ2&#0039;&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg57" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg57" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg57" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg57" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Pengfei Li &lt;<a href="mailto:ambermailpengfei.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20%5BMCPB.py%5D_KeyError%3A%20'HZ2'">ambermailpengfei.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 8 Jun 2021 21:14:26 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Sabrine,
+<br />
+<br />Based on the files you sent to my email, I guess you want to parameterize a dizinc metal site (but not all the protonation states of the metal site residues are correct, you should fix this issue before performing MCPB.py modeling).
+<br />
+<br />The error you mentioned was because that the ion_ids variable you set in the MCPB.py input file does not corresponds to a metal ion but corresponds to an atom in an amino acid. Your system has a dizinc center, so you should put the Atom IDs of the two zinc ions after the ion_ids variable. Please check the AMBER manual for the usage of the ion_ids variable in MCPB.py.
+<br />
+<br />Pengfei
+<br />
+<br /><em class="quotelev1">&gt; On Jun 7, 2021, at 6:59 AM, sabrine kh &lt;sabrine.khelifa.gmail.com&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; WhiIe i was trying to build bonded model for ligand binding metalloprotein
+</em><br />
+<em class="quotelev1">&gt; with MCPB.py with zinc ions, I got an error.
+</em><br />
+<em class="quotelev1">&gt; I run the following command &quot;MCPB.py -i 6ye2.in -s 1&quot; and I got the
+</em><br />
+<em class="quotelev1">&gt; following error:
+</em><br />
+<em class="quotelev1">&gt; chg = int(round(chargedict[ionname], 0))
+</em><br />
+<em class="quotelev1">&gt; KeyError: 'HZ2'
+</em><br />
+<em class="quotelev1">&gt; How can I solve this?
+</em><br />
+<em class="quotelev1">&gt; Thank you
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; this is  6ye2.in  input file:
+</em><br />
+<em class="quotelev1">&gt; original_pdb 6ye2_fixed_H.pdb
+</em><br />
+<em class="quotelev1">&gt; group_name 6ye2
+</em><br />
+<em class="quotelev1">&gt; cut_off 2.8
+</em><br />
+<em class="quotelev1">&gt; ion_ids 4018
+</em><br />
+<em class="quotelev1">&gt; ion_mol2files 6ye2_ZN.mol2
+</em><br />
+<em class="quotelev1">&gt; naa_mol2files 6ye2_ligand.mol2 6ye2_WAT.mol2
+</em><br />
+<em class="quotelev1">&gt; frcmod_files 6ye2_ligand.frcmod
+</em><br />
+<em class="quotelev1">&gt; large_opt 1
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; The terminal Output:
+</em><br />
+<em class="quotelev1">&gt; ******************************************************************
+</em><br />
+<em class="quotelev1">&gt; *               Welcome to use the MCPB.py program               *
+</em><br />
+<em class="quotelev1">&gt; *                          Version 7.0                           *
+</em><br />
+<em class="quotelev1">&gt; *                       Author: Pengfei Li                       *
+</em><br />
+<em class="quotelev1">&gt; *                      Merz Research Group                       *
+</em><br />
+<em class="quotelev1">&gt; *                   Michigan State University                    *
+</em><br />
+<em class="quotelev1">&gt; *                              AND                               *
+</em><br />
+<em class="quotelev1">&gt; *                 Hammes-Schiffer Research Group                 *
+</em><br />
+<em class="quotelev1">&gt; *                        Yale University                         *
+</em><br />
+<em class="quotelev1">&gt; *                              AND                               *
+</em><br />
+<em class="quotelev1">&gt; *                       Li Research Group                        *
+</em><br />
+<em class="quotelev1">&gt; *                   Loyola University Chicago                    *
+</em><br />
+<em class="quotelev1">&gt; ******************************************************************
+</em><br />
+<em class="quotelev1">&gt; The input file you are using is : 6ye2.in
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev1">&gt; The following is the input variable you have:
+</em><br />
+<em class="quotelev1">&gt; The variable ion_ids is :  [4018]
+</em><br />
+<em class="quotelev1">&gt; The variable ion_info is :  []
+</em><br />
+<em class="quotelev1">&gt; The variable ion_mol2files is :  ['6ye2_ZN.mol2']
+</em><br />
+<em class="quotelev1">&gt; The variable original_pdb is :  6ye2_fixed_H.pdb
+</em><br />
+<em class="quotelev1">&gt; The variable add_bonded_pairs is :  []
+</em><br />
+<em class="quotelev1">&gt; The variable add_redcrd is :  0
+</em><br />
+<em class="quotelev1">&gt; The variable additional_resids is :  []
+</em><br />
+<em class="quotelev1">&gt; The variable anglefc_avg is :  0
+</em><br />
+<em class="quotelev1">&gt; The variable bondfc_avg is :  0
+</em><br />
+<em class="quotelev1">&gt; The variable chgfix_resids is :  []
+</em><br />
+<em class="quotelev1">&gt; The variable cut_off is :  2.8
+</em><br />
+<em class="quotelev1">&gt; The variable force_field is :  ff19SB
+</em><br />
+<em class="quotelev1">&gt; The variable frcmod_files is :  ['6ye2_ligand.frcmod']
+</em><br />
+<em class="quotelev1">&gt; The variable gaff is :  1
+</em><br />
+<em class="quotelev1">&gt; The variable group_name is :  6ye2
+</em><br />
+<em class="quotelev1">&gt; The variable ion_paraset is :  12_6 (Only for the ions using the nonbonded
+</em><br />
+<em class="quotelev1">&gt; model).
+</em><br />
+<em class="quotelev1">&gt; The variable large_opt is :  1
+</em><br />
+<em class="quotelev1">&gt; The variable lgmodel_chg is :  -99
+</em><br />
+<em class="quotelev1">&gt; The variable lgmodel_spin is :  -99
+</em><br />
+<em class="quotelev1">&gt;             -99 means program will assign a charge automatically.
+</em><br />
+<em class="quotelev1">&gt; The variable naa_mol2files is :  ['6ye2_ligand.mol2', '6ye2_WAT.mol2']
+</em><br />
+<em class="quotelev1">&gt; The variable scale_factor is :  1.0
+</em><br />
+<em class="quotelev1">&gt;             ATTENTION: This is the scale factor of frequency. The
+</em><br />
+<em class="quotelev1">&gt;             force constants will be scaled by multiplying the square
+</em><br />
+<em class="quotelev1">&gt;             of scale_factor.
+</em><br />
+<em class="quotelev1">&gt; The variable smmodel_chg is :  -99
+</em><br />
+<em class="quotelev1">&gt; The variable smmodel_spin is :  -99
+</em><br />
+<em class="quotelev1">&gt;             -99 means program will assign a charge automatically.
+</em><br />
+<em class="quotelev1">&gt; The variable software_version is :  gau
+</em><br />
+<em class="quotelev1">&gt; The variable sqm_opt is :  0
+</em><br />
+<em class="quotelev1">&gt; The variable water_model is :  OPC
+</em><br />
+<em class="quotelev1">&gt; The variable xstru is :  0
+</em><br />
+<em class="quotelev1">&gt; ******************************************************************
+</em><br />
+<em class="quotelev1">&gt; *                                                                *
+</em><br />
+<em class="quotelev1">&gt; *=======================Metal Site Information===================*
+</em><br />
+<em class="quotelev1">&gt; *                                                                *
+</em><br />
+<em class="quotelev1">&gt; ******************************************************************
+</em><br />
+<em class="quotelev1">&gt; ***Selected Metal ion HZ2 is atom 4018 in residue 260-LYS
+</em><br />
+<em class="quotelev1">&gt; 230-SER.OG is in 2.8 Angstrom of or set bonded (in the input file) to (one
+</em><br />
+<em class="quotelev1">&gt; of) these metal ions
+</em><br />
+<em class="quotelev1">&gt; 260-LYS.NZ is in 2.8 Angstrom of or set bonded (in the input file) to (one
+</em><br />
+<em class="quotelev1">&gt; of) these metal ions
+</em><br />
+<em class="quotelev1">&gt; ***The following residues are in the Metal Site:
+</em><br />
+<em class="quotelev1">&gt; Residue 230-SER
+</em><br />
+<em class="quotelev1">&gt; Residue 260-LYS
+</em><br />
+<em class="quotelev1">&gt; ***The small model contains the following residues:
+</em><br />
+<em class="quotelev1">&gt; [230, 260]
+</em><br />
+<em class="quotelev1">&gt; ***The large model contains the following residues:
+</em><br />
+<em class="quotelev1">&gt; [229, 230, 231, 259, 260, 261]
+</em><br />
+<em class="quotelev1">&gt; ******************************************************************
+</em><br />
+<em class="quotelev1">&gt; *                                                                *
+</em><br />
+<em class="quotelev1">&gt; *=======================Building models==========================*
+</em><br />
+<em class="quotelev1">&gt; *                                                                *
+</em><br />
+<em class="quotelev1">&gt; ******************************************************************
+</em><br />
+<em class="quotelev1">&gt; ***Creating the small model...
+</em><br />
+<em class="quotelev1">&gt; It contains the residue 230-SER as sidechain coordinated.
+</em><br />
+<em class="quotelev1">&gt; It contains the residue 260-LYS as sidechain coordinated.
+</em><br />
+<em class="quotelev1">&gt; Totally there are 29 atoms in the small model.
+</em><br />
+<em class="quotelev1">&gt; Totally there are 76 electrons in the small model.
+</em><br />
+<em class="quotelev1">&gt; ***Creating the standard model...
+</em><br />
+<em class="quotelev1">&gt; It contains the residue 230-SER as normal.
+</em><br />
+<em class="quotelev1">&gt; It contains the residue 260-LYS as normal.
+</em><br />
+<em class="quotelev1">&gt; Totally there are 33 atoms in the standard model.
+</em><br />
+<em class="quotelev1">&gt; ***Creating the large model...
+</em><br />
+<em class="quotelev1">&gt; Creating the residue 229-PRO into ACE...
+</em><br />
+<em class="quotelev1">&gt; It contains the residue 230-SER as normal.
+</em><br />
+<em class="quotelev1">&gt; Creating the residue 231-LYS into NME...
+</em><br />
+<em class="quotelev1">&gt; Creating the residue 259-GLY into ACE...
+</em><br />
+<em class="quotelev1">&gt; It contains the residue 260-LYS as normal.
+</em><br />
+<em class="quotelev1">&gt; Creating the residue 261-TYR into NME...
+</em><br />
+<em class="quotelev1">&gt; Totally there are 57 atoms in the large model.
+</em><br />
+<em class="quotelev1">&gt; Totally there are 196 electrons in the large model.
+</em><br />
+<em class="quotelev1">&gt; Traceback (most recent call last):
+</em><br />
+<em class="quotelev1">&gt;  File &quot;/home/ubuntu/SMproject/amber20/bin/MCPB.py&quot;, line 651, in &lt;module&gt;
+</em><br />
+<em class="quotelev1">&gt;    gene_model_files(orpdbf, ionids, addres, addbpairs, gname, ff_choice,
+</em><br />
+<em class="quotelev1">&gt;  File
+</em><br />
+<em class="quotelev1">&gt; &quot;/home/ubuntu/SMproject/amber20/lib/python3.8/site-packages/pymsmt/mcpb/gene_model_files.py&quot;,
+</em><br />
+<em class="quotelev1">&gt; line 1909, in gene_model_files
+</em><br />
+<em class="quotelev1">&gt;    build_large_model(mol, reslist, lmsresids, lmsresace, lmsresnme,
+</em><br />
+<em class="quotelev1">&gt; lmsresgly,
+</em><br />
+<em class="quotelev1">&gt;  File
+</em><br />
+<em class="quotelev1">&gt; &quot;/home/ubuntu/SMproject/amber20/lib/python3.8/site-packages/pymsmt/mcpb/gene_model_files.py&quot;,
+</em><br />
+<em class="quotelev1">&gt; line 1603, in build_large_model
+</em><br />
+<em class="quotelev1">&gt;    write_gau_mkf(outf, gmkf, lgchg, SpinNum, gatms, ionnames,
+</em><br />
+<em class="quotelev1">&gt;  File
+</em><br />
+<em class="quotelev1">&gt; &quot;/home/ubuntu/SMproject/amber20/lib/python3.8/site-packages/pymsmt/mol/gauio.py&quot;,
+</em><br />
+<em class="quotelev1">&gt; line 286, in write_gau_mkf
+</em><br />
+<em class="quotelev1">&gt;    chg = int(round(chargedict[ionname], 0))
+</em><br />
+<em class="quotelev1">&gt; KeyError: 'HZ2'
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Jun 08 2021 - 19:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0058.html" title="Next message in the list">Vaibhav Dixit: "[AMBER] tleap error creating prmtop file"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0056.html" title="Previous message in the list">Razil Tahir: "[AMBER] Incomplete trajectory due to calculation halted error"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0038.html" title="Message to which this message replies">sabrine kh: "[AMBER] [MCPB.py]_KeyError: &#0039;HZ2&#0039;"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg57" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg57" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg57" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg57" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

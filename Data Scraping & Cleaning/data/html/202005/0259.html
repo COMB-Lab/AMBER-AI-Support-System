@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] TI production runs(20ns) NVT query from Debarati DasGupta on 2020-05-21 (Amber Archive May 2020)</title>
+<meta name="Author" content="Debarati DasGupta (debarati_dasgupta.hotmail.com)" />
+<meta name="Subject" content="[AMBER] TI production runs(20ns) NVT query" />
+<meta name="Date" content="2020-05-21" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] TI production runs(20ns) NVT query</h1>
+<!-- received="Thu May 21 07:30:02 2020" -->
+<!-- isoreceived="20200521143002" -->
+<!-- sent="Thu, 21 May 2020 14:05:42 +0000" -->
+<!-- isosent="20200521140542" -->
+<!-- name="Debarati DasGupta" -->
+<!-- email="debarati_dasgupta.hotmail.com" -->
+<!-- subject="[AMBER] TI production runs(20ns) NVT query" -->
+<!-- id="DM6PR20MB25714BD8D1227F40D555CF129DB70.DM6PR20MB2571.namprd20.prod.outlook.com" -->
+<!-- charset="windows-1252" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0260.html" accesskey="d" title="Cong Liu: &quot;Re: [AMBER] Amber20 serial make test FAILUREs on IBM Power9&quot;">Next message</a> ]
+[ <a href="0258.html" title="Cong Liu: &quot;[AMBER] Amber20 serial make test FAILUREs on IBM Power9&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg259" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg259" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg259" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg259" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Debarati DasGupta &lt;<a href="mailto:debarati_dasgupta.hotmail.com?Subject=Re%3A%20%5BAMBER%5D%20TI%20production%20runs(20ns)%20NVT%20query">debarati_dasgupta.hotmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 21 May 2020 14:05:42 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+I just started with my production runs of TI and I wanted to share my 20ns of NVT prod input file.
+<br />
+This is the last step in TI runs after 2ns of NPT equilibration.
+<br />
+Do I need to do 2 steps for disappearing charges and then vdw? I thought if ifsc=1, these 2 steps are taken care of in 1 single step?
+<br />
+Also, my ligand is a 10 atom system (pyrimidine), and its neutral, I m not sure how to disappear charges on it.
+<br />
+Any feedback will definitely help.
+<br />
+Also  sincere thanks to Dr Lin  for his advice; after applying the SC-patch in AMBER18, I am able to do 2ns of NPT on GPUs (for like 10 out 12 lambdas). That�s some progress and saving me a lot of time.
+<br />
+Regards,
+<br />
+Debarati
+<br />
+<br />&nbsp;As an example I have  attached input file pertaining to clambda=0.0080, I have 11 other input files for the other lambda parameters.
+<br />
+<br /><br />&amp;cntrl
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;imin = 0, nstlim = 20000000, dt = 0.001,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;irest = 1, ntx = 5, ig = -1,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;tempi = 300.0, temp0 = 300.0,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntwx = 10000, ntwe = 1000, ntwr = 1000, ntpr = 1000,ntwv=-1, ntave =100,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;cut = 11.0,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntt =3, ntb = 1, ntp = 0, gamma_ln=2, iwrap = 1,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntc = 1, ntf = 1, tol = 0.00001,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;nsnb   = 10, nscm = 10,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ioutfm=1,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;taup = 1,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntr=1, restraintmask=':1P3', restraint_wt = 20.00,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;icfe = 1, clambda = 0.008, ifsc=1,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;timask1=':1P3',timask2='',
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;scmask1=':1P3�, scmask2=''
+<br />
+&amp;end
+<br />
+&amp;ewald
+<br />
+&nbsp;&nbsp;&nbsp;skinnb=2, nfft1=96, nfft2=96, nfft3=96,
+<br />
+/
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu May 21 2020 - 07:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0260.html" title="Next message in the list">Cong Liu: "Re: [AMBER] Amber20 serial make test FAILUREs on IBM Power9"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0258.html" title="Previous message in the list">Cong Liu: "[AMBER] Amber20 serial make test FAILUREs on IBM Power9"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg259" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg259" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg259" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg259" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

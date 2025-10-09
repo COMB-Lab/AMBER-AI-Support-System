@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] GaMD output (gamd.log) file analysis from jacob wick on 2021-02-19 (Amber Archive Feb 2021)</title>
+<meta name="Author" content="jacob wick (jacobwick.la.gmail.com)" />
+<meta name="Subject" content="[AMBER] GaMD output (gamd.log) file analysis" />
+<meta name="Date" content="2021-02-19" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] GaMD output (gamd.log) file analysis</h1>
+<!-- received="Fri Feb 19 01:30:02 2021" -->
+<!-- isoreceived="20210219093002" -->
+<!-- sent="Fri, 19 Feb 2021 10:08:20 +0100" -->
+<!-- isosent="20210219090820" -->
+<!-- name="jacob wick" -->
+<!-- email="jacobwick.la.gmail.com" -->
+<!-- subject="[AMBER] GaMD output (gamd.log) file analysis" -->
+<!-- id="CACFUrFr0UwxtSbP79oojrcxEcN-DP=QY68+LAX_Sz-_KAO0epA.mail.gmail.com" -->
+<!-- charset="UTF-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0163.html" accesskey="d" title="Patil Pranita Uttamrao: &quot;[AMBER] query regarding heme forcefield parameters&quot;">Next message</a> ]
+[ <a href="0161.html" title="Rinsha Chk: &quot;Re: [AMBER] High value for force constant is acceptable?&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0196.html" accesskey="t" title="jacob wick: &quot;[AMBER] Fwd: GaMD output (gamd.log) file analysis&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg162" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg162" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg162" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg162" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: jacob wick &lt;<a href="mailto:jacobwick.la.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20GaMD%20output%20(gamd.log)%20file%20analysis">jacobwick.la.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 19 Feb 2021 10:08:20 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear AMBER community,
+<br />
+<br />I have performed GaMD equilibration on a protein-ligand system using the
+<br />
+dual boost scheme (boost potential and boost dihedral) utilizing the
+<br />
+following input file:
+<br />
+<br />&amp;cntrl
+<br />
+&nbsp;&nbsp;imin = 0, irest = 0, ntx = 1,
+<br />
+&nbsp;&nbsp;nstlim = 5000000, dt = 0.002,
+<br />
+&nbsp;&nbsp;ntc = 2, ntf = 2, tol = 0.000001,
+<br />
+&nbsp;&nbsp;iwrap = 1, ntb = 1, cut = 8.0,
+<br />
+&nbsp;&nbsp;ntt = 3, temp0 = 300.0, tempi = 300.0,
+<br />
+&nbsp;&nbsp;ntpr = 50, ntwx = 50, ntwr = 500,
+<br />
+&nbsp;&nbsp;ntxo = 1, ioutfm = 1, ig = -1, ntwprt = 22,
+<br />
+<br />&nbsp;&nbsp;igamd = 3, iE = 1, irest_gamd = 0,
+<br />
+&nbsp;&nbsp;ntcmd = 200, nteb = 200, ntave = 100,
+<br />
+&nbsp;&nbsp;sigma0P = 6.0, sigma0D = 6.0,
+<br />
+&amp;end
+<br />
+<br />When I opened the gamd.log file, I realized after a few frames, the
+<br />
+&quot;Total-Force-Weight&quot; and &quot;Boost-Energy-Potential&quot; are 1.000000000000
+<br />
+and 0.000000000000 respectively. Is this a normal behavior? As the boost
+<br />
+energy potential is zero, I wonder if the GaMD simulation (with boost
+<br />
+potential) is really running or not?
+<br />
+<br />I have attached the gamd.log file with some initial and final frames.
+<br />
+<br />I shall be very happy to receive any feedback on this.
+<br />
+<br />Thank you in advance...
+<br />
+Jac
+<br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>application/octet-stream attachment: <a href="att-0162/gamd1.log">gamd1.log</a></li>
+</ul>
+<!-- attachment="gamd1.log" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Fri Feb 19 2021 - 01:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0163.html" title="Next message in the list">Patil Pranita Uttamrao: "[AMBER] query regarding heme forcefield parameters"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0161.html" title="Previous message in the list">Rinsha Chk: "Re: [AMBER] High value for force constant is acceptable?"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0196.html" title="Next message in this discussion thread">jacob wick: "[AMBER] Fwd: GaMD output (gamd.log) file analysis"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0196.html" title="Message sent in reply to this message">jacob wick: "[AMBER] Fwd: GaMD output (gamd.log) file analysis"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg162" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg162" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg162" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg162" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

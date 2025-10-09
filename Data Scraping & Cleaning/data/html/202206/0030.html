@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Segmentation Fault During Minimization in Sander.MPI from Nathan Black via AMBER on 2022-06-21 (Amber Archive Jun 2022)</title>
+<meta name="Author" content="Nathan Black via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Segmentation Fault During Minimization in Sander.MPI" />
+<meta name="Date" content="2022-06-21" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Segmentation Fault During Minimization in Sander.MPI</h1>
+<!-- received="Thu Aug  4 13:32:59 2022" -->
+<!-- isoreceived="20220804203259" -->
+<!-- sent="Tue, 21 Jun 2022 12:45:26 -0500" -->
+<!-- isosent="20220621174526" -->
+<!-- name="Nathan Black via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Segmentation Fault During Minimization in Sander.MPI" -->
+<!-- id="CACfZsgi8+Byxdd7OxBj=vjrMD4vL_vLcLFOAYVfgk1ip_QxRXg.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0031.html" accesskey="d" title="&#20911;&#26102; via AMBER: &quot;Re: [AMBER] {SPAM?}  In the QM/MM MD with g09, the Fe which in the QM region, is written as F (and the atomic number is written as 9) in gau_job.log and gau_job.Inp.&quot;">Next message</a> ]
+[ <a href="0029.html" title="Stephan Schott via AMBER: &quot;Re: [AMBER] PIP2 lipids in Amber FF&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg30" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg30" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg30" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg30" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Nathan Black via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Segmentation%20Fault%20During%20Minimization%20in%20Sander.MPI">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 21 Jun 2022 12:45:26 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello AMBER Users,
+<br />
+<br />I am experiencing an issue with minimization using sander.MPI. It gives a
+<br />
+segmentation fault error, and when I go to read the corresponding
+<br />
+minimization mdout file, the last lines are in Section 3:
+<br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br />*--------------------------------------------------------------------------------
+<br />
+&nbsp;3.  ATOMIC COORDINATES AND
+<br />
+VELOCITIES--------------------------------------------------------------------------------default_name
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;begin
+<br />
+time read from input coords =     0.000 ps Number of triangulated 3-point
+<br />
+waters found:  1396247*
+<br />
+<br /><br /><br />It may be worth mentioning that this simulation system (which I refer to as
+<br />
+*sdstest1* in all files) contains 125 surfactant molecules, 125 sodium
+<br />
+counterions, and 1.39 million TIP3P water molecules in a ~346 angstrom cube
+<br />
+(to create a 5 mM surfactant aggregation system)
+<br />
+<br /><br />I have also run a second test (*sdstest16*) corresponding to an 80 mM
+<br />
+surfactant solution (125 surfactant molecules, 125 sodium counterions, and
+<br />
+87,040
+<br />
+&nbsp;sdstest1.inpcrd
+<br />
+&lt;<a href="https://drive.google.com/file/d/1I1IJCP5xC1INgzefwOxwR1emm6x_PbIQ/view?usp=drive_web">https://drive.google.com/file/d/1I1IJCP5xC1INgzefwOxwR1emm6x_PbIQ/view?usp=drive_web</a>&gt;
+<br />
+&nbsp;sdstest1_hmr.prmtop
+<br />
+&lt;<a href="https://drive.google.com/file/d/1O9-s6wXlpjnloCeXzTNMIp3Hbq4X1Dtd/view?usp=drive_web">https://drive.google.com/file/d/1O9-s6wXlpjnloCeXzTNMIp3Hbq4X1Dtd/view?usp=drive_web</a>&gt;
+<br />
+&nbsp;sdstest1_minimize.in
+<br />
+&lt;<a href="https://drive.google.com/file/d/1wusQN7tbqZyU1QfYAe9Nqs6S2JlFnE5I/view?usp=drive_web">https://drive.google.com/file/d/1wusQN7tbqZyU1QfYAe9Nqs6S2JlFnE5I/view?usp=drive_web</a>&gt;
+<br />
+&nbsp;sdstest1_minimize.out
+<br />
+&lt;<a href="https://drive.google.com/file/d/1sp-MenZOKY4ncN4rwtwmGkM8LpY2ZAaZ/view?usp=drive_web">https://drive.google.com/file/d/1sp-MenZOKY4ncN4rwtwmGkM8LpY2ZAaZ/view?usp=drive_web</a>&gt;
+<br />
+&nbsp;sdstest16.inpcrd
+<br />
+&lt;<a href="https://drive.google.com/file/d/1kmrPu_gDbvbFJ55MZP6-7GgefligRBN3/view?usp=drive_web">https://drive.google.com/file/d/1kmrPu_gDbvbFJ55MZP6-7GgefligRBN3/view?usp=drive_web</a>&gt;
+<br />
+&nbsp;sdstest16_hmr.prmtop
+<br />
+&lt;<a href="https://drive.google.com/file/d/1QxHFcW4rRvHTkV36sdiZ2LKHPdYUunOw/view?usp=drive_web">https://drive.google.com/file/d/1QxHFcW4rRvHTkV36sdiZ2LKHPdYUunOw/view?usp=drive_web</a>&gt;
+<br />
+&nbsp;sdstest16_minimize.in
+<br />
+&lt;<a href="https://drive.google.com/file/d/1eSKHdrWrsdq3j6PBd0LxNSIs0UO1SIIu/view?usp=drive_web">https://drive.google.com/file/d/1eSKHdrWrsdq3j6PBd0LxNSIs0UO1SIIu/view?usp=drive_web</a>&gt;
+<br />
+&nbsp;sdstest16_minimize.out
+<br />
+&lt;<a href="https://drive.google.com/file/d/1KQuSfo66hu-LrYs5Bz29gZlIykDlkfN6/view?usp=drive_web">https://drive.google.com/file/d/1KQuSfo66hu-LrYs5Bz29gZlIykDlkfN6/view?usp=drive_web</a>&gt;
+<br />
+&nbsp;simulate_sdstest1_TEST_GPU0
+<br />
+&lt;<a href="https://drive.google.com/file/d/1_VT3bjwBfAqgIcgrxkOOgS_VXbfRhWpF/view?usp=drive_web">https://drive.google.com/file/d/1_VT3bjwBfAqgIcgrxkOOgS_VXbfRhWpF/view?usp=drive_web</a>&gt;
+<br />
+&nbsp;simulate_sdstest16_TEST_GPU1
+<br />
+&lt;<a href="https://drive.google.com/file/d/1sKKyvh2yzO3oSZYR_DDHcn-M9r9MAerj/view?usp=drive_web">https://drive.google.com/file/d/1sKKyvh2yzO3oSZYR_DDHcn-M9r9MAerj/view?usp=drive_web</a>&gt;
+<br />
+TIP3P water molecules in a ~137 angstrom cube) , which has successfully
+<br />
+completed minimization in sander.
+<br />
+<br />In the sdstest16 minimization mdout file (successful), its section 3
+<br />
+reads:
+<br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />*--------------------------------------------------------------------------------
+<br />
+&nbsp;3.  ATOMIC COORDINATES AND
+<br />
+VELOCITIES--------------------------------------------------------------------------------default_name
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;begin
+<br />
+time read from input coords =     0.000 ps Number of triangulated 3-point
+<br />
+waters found:    87040|  Atom division among processors: |         0
+<br />
+11105   22208   33311   44414   55517   66620   77723|     88826   99929
+<br />
+&nbsp;111032  122135  133238  144341  155444  166547|    177650  188753  199856
+<br />
+&nbsp;210959  222062  233165  244268  255371|    266495     Sum of charges from
+<br />
+parm topology file =   0.00000043     Forcing neutrality...|  Running
+<br />
+AMBER/MPI version on   24 nodes|  WARNING: The number of processors is not
+<br />
+a power of 2|           this may be inefficient on some systems.*
+<br />
+<br /><br /><br />This leads me to believe that the segmentation fault for *sdstest1*
+<br />
+occurred while dividing atoms among processors. I have ruled out the
+<br />
+possibility that there are fewer available processors than requested (24),
+<br />
+as I ran sdstest1 on my computer which had 48 available processors at the
+<br />
+time of the run.
+<br />
+<br /><br />I have included all .inpcrd, .prmtop, minimization .mdin, minimization
+<br />
+.mdoutand command files for both sdstest1 and sdstest16. Any help/insight
+<br />
+as to why sdstest1 is failing minimization is greatly appreciated.
+<br />
+<br />Thank you for your continued help and support!
+<br />
+Nathan D. Black
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Aug 04 2022 - 13:32:59 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0031.html" title="Next message in the list">&#20911;&#26102; via AMBER: "Re: [AMBER] {SPAM?}  In the QM/MM MD with g09, the Fe which in the QM region, is written as F (and the atomic number is written as 9) in gau_job.log and gau_job.Inp."</a></li>
+<li><dfn>Previous message</dfn>: <a href="0029.html" title="Previous message in the list">Stephan Schott via AMBER: "Re: [AMBER] PIP2 lipids in Amber FF"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg30" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg30" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg30" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg30" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

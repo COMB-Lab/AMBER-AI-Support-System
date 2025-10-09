@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Tutorial B0 from Gustaf Olsson on 2020-08-27 (Amber Archive Aug 2020)</title>
+<meta name="Author" content="Gustaf Olsson (gustaf.olsson.lnu.se)" />
+<meta name="Subject" content="[AMBER] Tutorial B0" />
+<meta name="Date" content="2020-08-27" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Tutorial B0</h1>
+<!-- received="Thu Aug 27 01:00:02 2020" -->
+<!-- isoreceived="20200827080002" -->
+<!-- sent="Thu, 27 Aug 2020 07:52:38 +0000" -->
+<!-- isosent="20200827075238" -->
+<!-- name="Gustaf Olsson" -->
+<!-- email="gustaf.olsson.lnu.se" -->
+<!-- subject="[AMBER] Tutorial B0" -->
+<!-- id="047D3BDE-066B-4936-9FEE-B0D7829CB11E.lnu.se" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0217.html" accesskey="d" title="Prathit Chatterjee: &quot;[AMBER] Confusion regarding Center of mass coordinates for protein, with CPPTRAJ&quot;">Next message</a> ]
+[ <a href="0215.html" title="Pinky Mazumder: &quot;Re: [AMBER] Help for building cross linking polymer using graphic antechamber&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg216" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg216" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg216" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg216" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gustaf Olsson &lt;<a href="mailto:gustaf.olsson.lnu.se?Subject=Re%3A%20%5BAMBER%5D%20Tutorial%20B0">gustaf.olsson.lnu.se</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 27 Aug 2020 07:52:38 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Some suggestions regarding potential modifications to the tutorial which might be useful.
+<br />
+
+<br />
+&quot;From here, you can examine the topology, structure, atom names, atom types, and partial charges of the molecule. Basic editing of the molecule is also possible.&quot;
+<br />
+--&gt;&gt; If you are are on macOS using XQuartz, you will need a USB connected &quot;PC&quot; mouse and keyboard to enable all the functionalities in the GUI &quot;edit&quot; mode. The settings available to translate a trackpad and/or wireless mac mouse/keyboard is not working properly.
+<br />
+
+<br />
+
+<br />
+Given suggested input for CPPTRAJ on the website is:
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;trajin 02_Heat.nc
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;trajin 03_Prod.nc
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;reference 01_Min.ncrst
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;autoimage
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;rms reference mass out 02_03.rms time 2.0 :2
+<br />
+
+<br />
+However, the explanation is still referring to the two-step process:
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;center :1-3 mass origin	Center the residues 1-3 by mass to the system origin
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;image origin center	Image the atoms to the origin using the center of mass of the molecule
+<br />
+
+<br />
+This should likely be replaced with
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;autoimage	Automatically center and image (by molecule) a trajectory with periodic boundaries, the atoms of the ’anchor’ region (default the entire first molecule) will be centered
+<br />
+
+<br />
+So that the input and explanation are the same. 
+<br />
+
+<br />
+Everything seems to be working fine, nice tutorial.
+<br />
+Best regards
+<br />
+// Gustaf
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Aug 27 2020 - 01:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0217.html" title="Next message in the list">Prathit Chatterjee: "[AMBER] Confusion regarding Center of mass coordinates for protein, with CPPTRAJ"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0215.html" title="Previous message in the list">Pinky Mazumder: "Re: [AMBER] Help for building cross linking polymer using graphic antechamber"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg216" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg216" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg216" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg216" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] possible bug - SIGSEGV in cpptraj called from MMPBSA.py from Andrzej Dorobisz via AMBER on 2022-12-06 (Amber Archive Dec 2022)</title>
+<meta name="Author" content="Andrzej Dorobisz via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] possible bug - SIGSEGV in cpptraj called from MMPBSA.py" />
+<meta name="Date" content="2022-12-06" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] possible bug - SIGSEGV in cpptraj called from MMPBSA.py</h1>
+<!-- received="Tue Dec  6 03:00:03 2022" -->
+<!-- isoreceived="20221206110003" -->
+<!-- sent="Tue, 6 Dec 2022 11:31:57 +0100" -->
+<!-- isosent="20221206103157" -->
+<!-- name="Andrzej Dorobisz via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] possible bug - SIGSEGV in cpptraj called from MMPBSA.py" -->
+<!-- id="7153a046-4dbf-1b07-61a8-a793c8bdf956.cyfronet.krakow.pl" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0022.html" accesskey="d" title="Bruno Falcone via AMBER: &quot;[AMBER] NPT TI only works with CPU version of PMEMD&quot;">Next message</a> ]
+[ <a href="0020.html" title="Ross Walker via AMBER: &quot;Re: [AMBER] H100 &#0038; RTX4090 Benchmarks&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0023.html" accesskey="t" title="Daniel Roe via AMBER: &quot;Re: [AMBER] possible bug - SIGSEGV in cpptraj called from MMPBSA.py&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg21" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg21" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg21" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg21" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Andrzej Dorobisz via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20possible%20bug%20-%20SIGSEGV%20in%20cpptraj%20called%20from%20MMPBSA.py">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 6 Dec 2022 11:31:57 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+In our HPC centre one of our users encountered SIGSEGV using cpptraj 
+<br />
+program (which was called from MMPBSA.py). We traced it, isolated 
+<br />
+cpptraj call and collected debug information. Could you take a look at 
+<br />
+this - is it a bug in the code or problem with the input data?
+<br />
+<br />*Details*
+<br />
+<br />backtrace:
+<br />
+<em class="quotelev1">&gt; # function args file                              line
+</em><br />
+<em class="quotelev1">&gt; --  ---------------------------- 
+</em><br />
+<em class="quotelev1">&gt; ------------------------------------------------ 
+</em><br />
+<em class="quotelev1">&gt; --------------------------------  ----
+</em><br />
+<em class="quotelev1">&gt; #0  __memmove_avx_unaligned_erms () /lib64/libc.so.6
+</em><br />
+<em class="quotelev1">&gt; #1  Frame::SetCoordinates (this=0x2696cb0,frameIn=...,maskIn=...) 
+</em><br />
+<em class="quotelev1">&gt; src/cpptraj/src/Frame.cpp         558
+</em><br />
+<em class="quotelev1">&gt; #2  Action_Rmsd::DoAction (this=0x2696490,frameNum=221452,frm=...) 
+</em><br />
+<em class="quotelev1">&gt; src/cpptraj/src/Action_Rmsd.cpp   368
+</em><br />
+<em class="quotelev1">&gt; #3  ActionList::DoActions 
+</em><br />
+<em class="quotelev1">&gt; (this=0x7fff0417cc98,frameNumIn=221452,frm=...) 
+</em><br />
+<em class="quotelev1">&gt; src/cpptraj/src/ActionList.cpp    94
+</em><br />
+<em class="quotelev1">&gt; #4  CpptrajState::RunNormal (this=0x7fff0417cb60) 
+</em><br />
+<em class="quotelev1">&gt; src/cpptraj/src/CpptrajState.cpp  1354
+</em><br />
+<em class="quotelev1">&gt; #5  CpptrajState::Run (this=0x7fff0417cb60) 
+</em><br />
+<em class="quotelev1">&gt; src/cpptraj/src/CpptrajState.cpp  500
+</em><br />
+<em class="quotelev1">&gt; #6  Cpptraj::RunCpptraj 
+</em><br />
+<em class="quotelev1">&gt; (this=0x7fff0417cb60,argc=2,argv=0x7fff0417d048) 
+</em><br />
+<em class="quotelev1">&gt; src/cpptraj/src/Cpptraj.cpp       166
+</em><br />
+<em class="quotelev1">&gt; #7  CpptrajProgram (argc=2,argv=0x7fff0417d048) 
+</em><br />
+<em class="quotelev1">&gt; src/cpptraj/src/main.cpp          18
+</em><br />
+<em class="quotelev1">&gt; #8  main (argc=2,argv=0x7fff0417d048) src/cpptraj/src/main.cpp          30
+</em><br />
+<br />amber version:
+<br />
+- backtrace collected with Amber 22.1 and AmberTools 22.3 (compiled with 
+<br />
+-DOPTIMIZE=OFF and -O0 -g)
+<br />
+(we have tested also previous versions of Amber and they all fail on 
+<br />
+user input)
+<br />
+<br />direct command:
+<br />
+cat input-cpptraj.txt | cpptraj E81A.top
+<br />
+<br />commands in the input-cpptraj.txt:
+<br />
+<em class="quotelev1">&gt; trajin ../input/E81A.nc 1 224999 1
+</em><br />
+<em class="quotelev1">&gt; noprogress
+</em><br />
+<em class="quotelev1">&gt; rmsd !(:WAT,Cl*,CIO,Cs+,IB,K*,Li+,MG*,Na+,Rb+,CS,RB,NA,F,CL) mass first
+</em><br />
+<em class="quotelev1">&gt; outtraj _MMPBSA_complex.pdb onlyframes 1 nobox pdb
+</em><br />
+<em class="quotelev1">&gt; outtraj _MMPBSA_dummycomplex.inpcrd onlyframes 1 nobox restart
+</em><br />
+<em class="quotelev1">&gt; outtraj _MMPBSA_complex.mdcrd.0 onlyframes 1-224999 nobox
+</em><br />
+<em class="quotelev1">&gt; strip :288
+</em><br />
+<em class="quotelev1">&gt; outtraj _MMPBSA_receptor.pdb onlyframes 1 nobox pdb
+</em><br />
+<em class="quotelev1">&gt; outtraj _MMPBSA_dummyreceptor.inpcrd onlyframes 1 nobox restart
+</em><br />
+<em class="quotelev1">&gt; outtraj _MMPBSA_receptor.mdcrd.0 onlyframes 1-224999 nobox
+</em><br />
+<em class="quotelev1">&gt; unstrip
+</em><br />
+<em class="quotelev1">&gt; rmsd !(:WAT,Cl*,CIO,Cs+,IB,K*,Li+,MG*,Na+,Rb+,CS,RB,NA,F,CL) mass first
+</em><br />
+<em class="quotelev1">&gt; strip :1-287,289-576
+</em><br />
+<em class="quotelev1">&gt; outtraj _MMPBSA_ligand.pdb onlyframes 1 nobox pdb
+</em><br />
+<em class="quotelev1">&gt; outtraj _MMPBSA_dummyligand.inpcrd onlyframes 1 nobox restart
+</em><br />
+<em class="quotelev1">&gt; outtraj _MMPBSA_ligand.mdcrd.0 onlyframes 1-224999 nobox
+</em><br />
+<em class="quotelev1">&gt; unstrip
+</em><br />
+<em class="quotelev1">&gt; rmsd !(:WAT,Cl*,CIO,Cs+,IB,K*,Li+,MG*,Na+,Rb+,CS,RB,NA,F,CL) mass first
+</em><br />
+<br />The call that causes SIGSEGV is the memcpy call.
+<br />
+<br /><em class="quotelev1">&gt; void Frame::SetCoordinates(Frame const&amp; frameIn, AtomMask const&amp; maskIn) {
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   (...)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   for (AtomMask::const_iterator atom = maskIn.begin(); atom != 
+</em><br />
+<em class="quotelev1">&gt; maskIn.end(); ++atom)
+</em><br />
+<em class="quotelev1">&gt;   {
+</em><br />
+<em class="quotelev1">&gt;     memcpy( newXptr, frameIn.X_ + ((*atom) * 3), COORDSIZE_);         
+</em><br />
+<em class="quotelev1">&gt;             // &lt;= SIGSEGV here!
+</em><br />
+<em class="quotelev1">&gt;     newXptr += 3;
+</em><br />
+<em class="quotelev1">&gt;   }
+</em><br />
+<em class="quotelev1">&gt; }
+</em><br />
+<br />I checked with GDB that the problem is caused by a negative value of the 
+<br />
+source address in the memcpy call (second arg). Such a value is a 
+<br />
+consequence of an invalid index in the &quot;Selected_&quot; vector of the 
+<br />
+&quot;maskIn&quot; (to which the &quot;atom&quot; iterator points).
+<br />
+<br />First values of &quot;maskIn.Selected_&quot;:
+<br />
+{775042866, 3158064, 2, 3, 4, 5, 6, 7, 8, 9, ...}
+<br />
+<br />So the real question is what could have caused to get such a monster 
+<br />
+here....
+<br />
+<br /><br /><pre>
+---
+Finally, I would like to point out a minor issue in the MMPBSA.py code.
+When cpptraj fails, then MMPBSA.py also fails, but with the following 
+backtrace:
+&gt; Loading and checking parameter files for compatibility...
+&gt; cpptraj found! Using 
+&gt; /net/software/testing/software/Amber/22.1-intel-2021b-AmberTools-22.3/bin/cpptraj
+&gt; sander found! Using 
+&gt; /net/software/testing/software/Amber/22.1-intel-2021b-AmberTools-22.3/bin/sander
+&gt; Preparing trajectories for simulation...
+&gt; free(): invalid next size (normal)
+&gt;   File 
+&gt; &quot;/net/software/testing/software/Amber/22.1-intel-2021b-AmberTools-22.3/bin/MMPBSA.py.MPI&quot;, 
+&gt; line 99, in &lt;module&gt;
+&gt;     app.file_setup()
+&gt;   File 
+&gt; &quot;/net/software/testing/software/Amber/22.1-intel-2021b-AmberTools-22.3/lib/python3.9/site-packages/MMPBSA_mods/main.py&quot;, 
+&gt; line 155, in file_setup
+&gt;     self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+&gt;   File 
+&gt; &quot;/net/software/testing/software/Amber/22.1-intel-2021b-AmberTools-22.3/lib/python3.9/site-packages/MMPBSA_mods/make_trajs.py&quot;, 
+&gt; line 134, in make_trajectories
+&gt;     traj.Run(pre + 'normal_traj_cpptraj.out')
+&gt;   File 
+&gt; &quot;/net/software/testing/software/Amber/22.1-intel-2021b-AmberTools-22.3/lib/python3.9/site-packages/MMPBSA_mods/make_trajs.py&quot;, 
+&gt; line 687, in Run
+&gt;     raise TrajError('Error running %s' % self.program)
+&gt; AttributeError: 'Trajectory' object has no attribute 'program'
+&gt; Error occurred on rank 0.
+So actually, there is a bug in make_trajs.py code, because the 
+Trajectory object does not have a field named &quot;program&quot;.
+---
+Looking forward to you help,
+Andrzej Dorobisz
+HPC Software Department
+ACC Cyfronet AGH, Poland
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Dec 06 2022 - 03:00:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0022.html" title="Next message in the list">Bruno Falcone via AMBER: "[AMBER] NPT TI only works with CPU version of PMEMD"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0020.html" title="Previous message in the list">Ross Walker via AMBER: "Re: [AMBER] H100 &#0038; RTX4090 Benchmarks"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0023.html" title="Next message in this discussion thread">Daniel Roe via AMBER: "Re: [AMBER] possible bug - SIGSEGV in cpptraj called from MMPBSA.py"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0023.html" title="Message sent in reply to this message">Daniel Roe via AMBER: "Re: [AMBER] possible bug - SIGSEGV in cpptraj called from MMPBSA.py"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0025.html" title="Message sent in reply to this message">Daniel Roe via AMBER: "Re: [AMBER] possible bug - SIGSEGV in cpptraj called from MMPBSA.py"</a></li>
+<li><dfn>Reply</dfn>: <a href="0035.html" title="Message sent in reply to this message">St&#0233;phane T&#0233;letch&#0233;a via AMBER: "Re: [AMBER] possible bug - SIGSEGV in cpptraj called from MMPBSA.py"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg21" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg21" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg21" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg21" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] R: Reimaging issues from Damiano Spadoni via AMBER on 2022-12-13 (Amber Archive Dec 2022)</title>
+<meta name="Author" content="Damiano Spadoni via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] R: Reimaging issues" />
+<meta name="Date" content="2022-12-13" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] R: Reimaging issues</h1>
+<!-- received="Tue Dec 13 12:30:03 2022" -->
+<!-- isoreceived="20221213203003" -->
+<!-- sent="Tue, 13 Dec 2022 20:22:09 +0000" -->
+<!-- isosent="20221213202209" -->
+<!-- name="Damiano Spadoni via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] R: Reimaging issues" -->
+<!-- id="AM9PR06MB78765F979D53D412FE07E301B3E39.AM9PR06MB7876.eurprd06.prod.outlook.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="AM6PR06MB43256F61E676FB896E3C9D9FB33F9.AM6PR06MB4325.eurprd06.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0055.html" accesskey="d" title="Masshardt, Eric via AMBER: &quot;[AMBER] Amber20 build/install errors&quot;">Next message</a> ]
+[ <a href="0053.html" title="Daniel Roe via AMBER: &quot;Re: [AMBER] possible bug - SIGSEGV in cpptraj called from MMPBSA.py&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg54" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg54" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg54" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg54" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Damiano Spadoni via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20R%3A%20Reimaging%20issues">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 13 Dec 2022 20:22:09 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Dan,
+<br />
+
+<br />
+thanks for your reply.
+<br />
+Your suggestion seems to be working, now I only have to choose the right residues to use as anchor but the multimeric form now shows to be much better within the water box boundaries.
+<br />
+On a different task, would it make sense to use the RDF function to look for the number of water molecules that get in the different active sites, i. e. the RDF of wat mols around the metal cofactor in the active site? Or the Watershell command is more indicated for the study?
+<br />
+
+<br />
+Kind regards,
+<br />
+Damiano
+<br />
+________________________________
+<br />
+Da: Damiano Spadoni &lt;ezads12.exmail&#46;<!--nospam-->nottingham.ac.uk&gt;
+<br />
+Inviato: martedì 8 novembre 2022 13:35
+<br />
+A: amber.ambermd.org &lt;amber.ambermd.org&gt;
+<br />
+Oggetto: Reimaging issues
+<br />
+
+<br />
+Hi AMBERists,
+<br />
+
+<br />
+I am having issues in reimaging the MD simulations of a Protein in an orthorombic box of water. I want to check the permeability of the catalytic pocket through the homodimeric structure of the protein, if a different number of water molecules get into the active site of each monomer. To do this I thought to calculate the coordination number of the metal centre in the active site vs. water molecules. You might suggest a different strategy for doing this - am open to suggestions, of course.
+<br />
+My issue comes from the attempts of reimaging the trajectories as I thought water molecules should be included to measure how many of those get into the different pockets. The output coming from my cpptraj script seems to have the water box centred but not the protein, the protein always looks shifted from the centre of the box and there are &quot;cavities&quot; in the water box. My script looks like this:
+<br />
+
+<br />
+parm Protein.prmtop
+<br />
+trajin Protein_md10ns.mdcrd 0 last 50
+<br />
+unwrap :1-1640                                  #the protein is 1640 amino acid long
+<br />
+image origin center :1-1640 familiar
+<br />
+center :1-1640 mass origin
+<br />
+autoimage
+<br />
+trajout Reimaged_trajectories.nc netcdf
+<br />
+
+<br />
+Kind regards,
+<br />
+Damiano
+<br />
+<br /><br /><br />This message and any attachment are intended solely for the addressee
+<br />
+and may contain confidential information. If you have received this
+<br />
+message in error, please contact the sender and delete the email and
+<br />
+attachment. 
+<br />
+<br />Any views or opinions expressed by the author of this email do not
+<br />
+necessarily reflect the views of the University of Nottingham. Email
+<br />
+communications with the University of Nottingham may be monitored 
+<br />
+where permitted by law.
+<br />
+<br /><br /><br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Dec 13 2022 - 12:30:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0055.html" title="Next message in the list">Masshardt, Eric via AMBER: "[AMBER] Amber20 build/install errors"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0053.html" title="Previous message in the list">Daniel Roe via AMBER: "Re: [AMBER] possible bug - SIGSEGV in cpptraj called from MMPBSA.py"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg54" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg54" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg54" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg54" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

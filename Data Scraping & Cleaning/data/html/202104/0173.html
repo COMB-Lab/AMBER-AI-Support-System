@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] .rst file not produced during production run from Roberts, Amy L2 on 2021-04-21 (Amber Archive Apr 2021)</title>
+<meta name="Author" content="Roberts, Amy L2 (AMY.ROBERTS.UCDENVER.EDU)" />
+<meta name="Subject" content="Re: [AMBER] .rst file not produced during production run" />
+<meta name="Date" content="2021-04-21" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] .rst file not produced during production run</h1>
+<!-- received="Wed Apr 21 14:30:02 2021" -->
+<!-- isoreceived="20210421213002" -->
+<!-- sent="Wed, 21 Apr 2021 21:16:42 +0000" -->
+<!-- isosent="20210421211642" -->
+<!-- name="Roberts, Amy L2" -->
+<!-- email="AMY.ROBERTS.UCDENVER.EDU" -->
+<!-- subject="Re: [AMBER] .rst file not produced during production run" -->
+<!-- id="CY4PR0501MB3889B07F64605B3846E709508C479.CY4PR0501MB3889.namprd05.prod.outlook.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20210416210129.rxau2btis6vldlwv.sas1065303ec708.rad.rutgers.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0174.html" accesskey="d" title="David Ricardo Figueroa Blanco: &quot;[AMBER] PatchingError: .patches/AmberTools20_Unapplied_Patches/update.13 failed to apply. No changes made from this patch&quot;">Next message</a> ]
+[ <a href="0172.html" title="Neville Bethel: &quot;Re: [AMBER] protein sticking out of solvation box causing instability&quot;">Previous message</a> ]
+[ <a href="0125.html" title="David A Case: &quot;Re: [AMBER] .rst file not produced during production run&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg173" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg173" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg173" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg173" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Roberts, Amy L2 &lt;<a href="mailto:AMY.ROBERTS.UCDENVER.EDU?Subject=Re%3A%20%5BAMBER%5D%20.rst%20file%20not%20produced%20during%20production%20run">AMY.ROBERTS.UCDENVER.EDU</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 21 Apr 2021 21:16:42 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Yes, setting the cut to 8.0 resolves this issue!
+<br />
+<br />The command that now succeeds is
+<br />
+<br />$AMBERHOME/bin/sander -O -i 4_md.in -o wat_md.out -p wat.prmtop -c wat_equil.rst -r wat_md.rst -x water.mdcrd
+<br />
+<br />And per your suggestion I updated the contents of my 4_md.in to 
+<br />
+<br />&amp;cntrl
+<br />
+&nbsp;&nbsp;imin = 0, irest = 1, ntx = 7,
+<br />
+&nbsp;&nbsp;ntb = 2, pres0 = 1.0, ntp = 1,
+<br />
+&nbsp;&nbsp;taup = 2.0,
+<br />
+&nbsp;&nbsp;cut = 8.0, ntr = 0,
+<br />
+&nbsp;&nbsp;ntc = 2, ntf = 2,
+<br />
+&nbsp;&nbsp;tempi = 300.0, temp0 = 300.0,
+<br />
+&nbsp;&nbsp;ntt = 3, gamma_ln = 1.0,
+<br />
+&nbsp;&nbsp;nstlim = 20000, dt = 0.001,
+<br />
+&nbsp;&nbsp;ntpr = 100, ntwx = 1, ntwr = 1000
+<br />
+/
+<br />
+<br />Thank you!
+<br />
+<br />Amy
+<br />
+<br />-----Original Message-----
+<br />
+From: David A Case &lt;david.case.rutgers.edu&gt; 
+<br />
+Sent: Friday, April 16, 2021 3:01 PM
+<br />
+To: AMBER Mailing List &lt;amber.ambermd.org&gt;
+<br />
+Subject: Re: [AMBER] .rst file not produced during production run
+<br />
+<br />On Fri, Apr 16, 2021, Roberts, Amy L2 wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Cutoff list exceeds largest sphere in unit cell!!
+</em><br />
+<em class="quotelev1">&gt; Big problems with imaging!!
+</em><br />
+<em class="quotelev1">&gt; a,b,c =    24.047116319114011        22.573755462423588        27.547999941411810
+</em><br />
+<em class="quotelev1">&gt; alpha,beta,gamma =    90.000000000000000        90.000000000000000        90.000000000000000
+</em><br />
+<em class="quotelev1">&gt; cutlist,sphere =    11.287000000000001        11.286877731211792
+</em><br />
+<br />You have a very small box size...very near the limit for Amber.
+<br />
+<br />You need to reduce your cutoff for such a small cell.  I'm guessing(?) that you set cut=9.287 in response to earlier messages like this.  But with constant pressure, the cell size will decrease, and with it, the largest value of cut that you can use.
+<br />
+<br />If this is &quot;just&quot; a student project, using the default cut of 8.0 should be fine for teaching.  If you need to explore bigger cutoffs, you'll need to construct a bigger box.
+<br />
+<br />....hope this helps...dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Apr 21 2021 - 14:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0174.html" title="Next message in the list">David Ricardo Figueroa Blanco: "[AMBER] PatchingError: .patches/AmberTools20_Unapplied_Patches/update.13 failed to apply. No changes made from this patch"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0172.html" title="Previous message in the list">Neville Bethel: "Re: [AMBER] protein sticking out of solvation box causing instability"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0125.html" title="Message to which this message replies">David A Case: "Re: [AMBER] .rst file not produced during production run"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg173" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg173" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg173" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg173" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

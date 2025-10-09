@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Thermodynamic integration for charge-changing mutations from Skanda Sastry via AMBER on 2023-01-05 (Amber Archive Jan 2023)</title>
+<meta name="Author" content="Skanda Sastry via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Thermodynamic integration for charge-changing mutations" />
+<meta name="Date" content="2023-01-05" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Thermodynamic integration for charge-changing mutations</h1>
+<!-- received="Thu Jan  5 17:30:02 2023" -->
+<!-- isoreceived="20230106013002" -->
+<!-- sent="Thu, 5 Jan 2023 17:22:18 -0800" -->
+<!-- isosent="20230106012218" -->
+<!-- name="Skanda Sastry via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Thermodynamic integration for charge-changing mutations" -->
+<!-- id="CACTQ5mU1iHC6TkPBXCQuMac_6x+k5TVd4Wh2fyvGy8OskmLU_Q.mail.gmail.com" -->
+<!-- charset="UTF-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0023.html" accesskey="d" title="Enrico Martinez via AMBER: &quot;[AMBER] Calculation of dG for dimeric system&quot;">Next message</a> ]
+[ <a href="0021.html" title="David A Case via AMBER: &quot;Re: [AMBER] Non-standard KCX residue with missing hydrogen on carbamate and charge -1&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg22" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg22" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg22" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg22" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Skanda Sastry via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Thermodynamic%20integration%20for%20charge-changing%20mutations">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 5 Jan 2023 17:22:18 -0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber mailing list,
+<br />
+<br />I hope you all had a refreshing holiday break. I wanted to write to ask
+<br />
+help with using thermodynamic integration to find the change in binding
+<br />
+free energy upon a charge-changing mutation. We are specifically using this
+<br />
+approach to try to predict binding free energy changes in an
+<br />
+antibody-antigen complex (PDB: 6OGE).
+<br />
+<br />According to the literature, there are problems with the accuracy of
+<br />
+thermodynamic integration when the transformation does not conserve net
+<br />
+charge (source &lt;<a href="https://pubs.acs.org/doi/pdf/10.1021/acs.jcim.0c00613">https://pubs.acs.org/doi/pdf/10.1021/acs.jcim.0c00613</a>&gt;). To
+<br />
+mitigate this issue, we have been trying to implement the neutral
+<br />
+co-alchemical ion approach given in this paper
+<br />
+&lt;<a href="https://pubs.acs.org/doi/pdf/10.1021/acs.jctc.8b00825">https://pubs.acs.org/doi/pdf/10.1021/acs.jctc.8b00825</a>&gt;. However, we have
+<br />
+run into a few challenges with this approach.
+<br />
+<br />Our process is to use 12-lambdas, 5 ns at each lambda, and then use the
+<br />
+average dV/dL from each lambda and a weighted sum with Gaussian quadrature
+<br />
+to compute the change in free energy upon a mutation. We prepare the
+<br />
+structure by doing minimization, heating (with backbone restrained), NPT
+<br />
+equilibration (with backbone restrained), and NVT equilibration
+<br />
+(unrestrained) at lambda = 0.5. Then, we equilibrate the system at each of
+<br />
+the different lambdas before doing the 5 ns production run. We run
+<br />
+simulations in explicit water, with 150 mM NaCl - this paper
+<br />
+&lt;<a href="https://pubs.acs.org/doi/pdf/10.1021/acs.jctc.8b00825">https://pubs.acs.org/doi/pdf/10.1021/acs.jctc.8b00825</a>&gt; discusses the
+<br />
+improvement in accuracy when running simulations in a solution with 150 mM
+<br />
+NaCl vs no salt.
+<br />
+<br />The strange phenomenon I wanted to write in about was that in many
+<br />
+charge-changing simulations, we see the co-alchemical neutral ion
+<br />
+inevitably nearing closer and closer to the amino acid getting mutated
+<br />
+during the preparatory heating and NPT/NVT equilibrations. The neutral ion
+<br />
+is part of the TI region (timask), but not part of the SC region (scmask),
+<br />
+while the original and mutated amino acid are part of both the TI and SC
+<br />
+regions. We were wondering what causes the neutral ion to approach closer
+<br />
+and closer to the mutated amino acid? Currently, the only way we can keep
+<br />
+the neutral ion in the bulk solution is by placing a positional restraint
+<br />
+on the neutral ion. We feel that the neutral ion should not be close to the
+<br />
+solute at all, since its only purpose is for the system to remain charge
+<br />
+neutral during thermodynamic integration.
+<br />
+<br />I have attached input files containing the parameters for minimization,
+<br />
+heating, and NPT/NVT equilibration in order to give as much information as
+<br />
+possible. I also have attached the topology and coordinates files for the
+<br />
+complex.
+<br />
+<br />&nbsp;coalc_merge.parm7
+<br />
+&lt;<a href="https://drive.google.com/file/d/1vBhnlnm7xB513QMCGfm0HSWh6U-jDK5Q/view?usp=drive_web">https://drive.google.com/file/d/1vBhnlnm7xB513QMCGfm0HSWh6U-jDK5Q/view?usp=drive_web</a>&gt;
+<br />
+&nbsp;coalc_merge.rst7
+<br />
+&lt;<a href="https://drive.google.com/file/d/1SgyqR9JKOhA4X1O1TbuzYWRFI2_v7lWl/view?usp=drive_web">https://drive.google.com/file/d/1SgyqR9JKOhA4X1O1TbuzYWRFI2_v7lWl/view?usp=drive_web</a>&gt;
+<br />
+<br /><br />Regards,
+<br />
+<br />Skanda
+<br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>application/octet-stream attachment: <a href="att-0022/equil.in">equil.in</a></li>
+</ul>
+<!-- attachment="equil.in" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0022/equilnorest.in">equilnorest.in</a></li>
+</ul>
+<!-- attachment="equilnorest.in" -->
+<ul>
+<li>text/x-sh attachment: <a href="att-0022/submission.sh">submission.sh</a></li>
+</ul>
+<!-- attachment="submission.sh" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0022/min.in">min.in</a></li>
+</ul>
+<!-- attachment="min.in" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0022/heat.in">heat.in</a></li>
+</ul>
+<!-- attachment="heat.in" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Thu Jan 05 2023 - 17:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0023.html" title="Next message in the list">Enrico Martinez via AMBER: "[AMBER] Calculation of dG for dimeric system"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0021.html" title="Previous message in the list">David A Case via AMBER: "Re: [AMBER] Non-standard KCX residue with missing hydrogen on carbamate and charge -1"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg22" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg22" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg22" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg22" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

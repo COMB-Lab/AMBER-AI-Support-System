@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] QM/MM Convergence questions from Goetz, Andreas on 2020-03-09 (Amber Archive Mar 2020)</title>
+<meta name="Author" content="Goetz, Andreas (agoetz.sdsc.edu)" />
+<meta name="Subject" content="Re: [AMBER] QM/MM Convergence questions" />
+<meta name="Date" content="2020-03-09" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] QM/MM Convergence questions</h1>
+<!-- received="Mon Mar  9 12:30:01 2020" -->
+<!-- isoreceived="20200309193001" -->
+<!-- sent="Mon, 9 Mar 2020 19:17:48 +0000" -->
+<!-- isosent="20200309191748" -->
+<!-- name="Goetz, Andreas" -->
+<!-- email="agoetz.sdsc.edu" -->
+<!-- subject="Re: [AMBER] QM/MM Convergence questions" -->
+<!-- id="31316FFC-3425-4B88-9FEF-CB8CCFE9ACC6.ucsd.edu" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="40b0baa3.6495.170beb8672b.Coremail.xzhfood.njau.edu.cn" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0095.html" accesskey="d" title="&#36763;&#24535;&#23439;: &quot;[AMBER]  QM/MM Convergence questions&quot;">Next message</a> ]
+[ <a href="0093.html" title="David Cerutti: &quot;Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?&quot;">Previous message</a> ]
+[ <a href="0083.html" title="&#36763;&#24535;&#23439;: &quot;Re: [AMBER] QM/MM Convergence questions&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg94" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg94" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg94" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg94" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Goetz, Andreas &lt;<a href="mailto:agoetz.sdsc.edu?Subject=Re%3A%20%5BAMBER%5D%20QM%2FMM%20Convergence%20questions">agoetz.sdsc.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 9 Mar 2020 19:17:48 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+It sounds like Amber did not generate a valid Gaussian input file. If this is at the beginning of your  ‘gau_job.inp’ file:
+<br />
+
+<br />
+<em class="quotelev1">&gt; %chk=gau_job.chk
+</em><br />
+<em class="quotelev1">&gt; %NProcShared=16
+</em><br />
+<em class="quotelev1">&gt; %mem=6GB
+</em><br />
+<em class="quotelev1">&gt; #P BLYP/STO-3G SCF=(Conver=8) NoSymm Force Charge Prop=(Field,Read)
+</em><br />
+
+<br />
+Then Link 0 and route look good. Please inspect the remainder of the file. It should be followed by
+<br />
+- 1 empty line
+<br />
+- 1 comment line
+<br />
+- 1 empty line
+<br />
+- charge, spin multiplicity,
+<br />
+- Cartesian coordinates
+<br />
+- 1 empty line
+<br />
+- coordinates and charge of MM atoms within cutoff (if electrostatic embedding is used)
+<br />
+- 1 empty line
+<br />
+- coordinates of MM atoms within cutoff
+<br />
+
+<br />
+All the best,
+<br />
+Andy
+<br />
+
+<br />
+—
+<br />
+Dr. Andreas W. Goetz
+<br />
+Assistant Research Scientist
+<br />
+San Diego Supercomputer Center
+<br />
+Tel: +1-858-822-4771
+<br />
+Email: agoetz.sdsc.edu
+<br />
+Web: www.awgoetz.de
+<br />
+
+<br />
+<em class="quotelev1">&gt; On Mar 9, 2020, at 2:55 AM, 辛志宏 &lt;xzhfood.njau.edu.cn&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Thank you.
+</em><br />
+<em class="quotelev1">&gt; I have launched QM/MM calculation after modifying template and tpl files, but a new error occurs, I try several methods to solve the questions, but all of them failure, the details of methods and error information are as follows, I suspect that it might be the QM part reason when a C-C bond cutoff, two free atoms can be visualized by VMD, I don't know if it is the reason and how to correct it, so I attached my QM PDB files, thank you for your help in advance.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; error from amber out file,
+</em><br />
+<em class="quotelev1">&gt; RESULTS
+</em><br />
+<em class="quotelev1">&gt; --------------------------------------------------------------------------------
+</em><br />
+<em class="quotelev1">&gt; SANDER BOMB in subroutine get_gau_forces (qm2_extern_gau_module)
+</em><br />
+<em class="quotelev1">&gt;  Error with system call (executing Gaussian)
+</em><br />
+<em class="quotelev1">&gt; Will quit now.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; errof from gaussian log file
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; No NMR shielding tensors so no spin-rotation constants.
+</em><br />
+<em class="quotelev1">&gt; Leave Link  601 at Sun Mar  8 01:36:09 2020, MaxMem=   805306368 cpu:        25.0
+</em><br />
+<em class="quotelev1">&gt; (Enter /home/xzhfood/gaussian/g09/l602.exe)
+</em><br />
+<em class="quotelev1">&gt; Did not find a floating point number as input
+</em><br />
+<em class="quotelev1">&gt; Error termination via Lnk1e in /home/xzhfood/gaussian/g09/l602.exe at Sun Mar  8 01:36:09 2020.
+</em><br />
+<em class="quotelev1">&gt; Job cpu time:       0 days 18 hours 22 minutes 14.1 seconds.
+</em><br />
+<em class="quotelev1">&gt;  File lengths (MBytes):  RWF=    540 Int=      0 D2E=      0 Chk=     12 Scr=      1
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Several methods I have tried,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;  %chk=gau_job.chk
+</em><br />
+<em class="quotelev1">&gt;  %NProcShared=16
+</em><br />
+<em class="quotelev1">&gt;  Will use up to   16 processors via shared memory.
+</em><br />
+<em class="quotelev1">&gt;  %mem=6GB
+</em><br />
+<em class="quotelev1">&gt;  -------------------------------------------------------------------
+</em><br />
+<em class="quotelev1">&gt;  #P BLYP/STO-3G SCF=(Conver=8) NoSymm Force Charge Prop=(Field,Read)
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; #p opt=(cartesian,maxcyc=500) b3lyp/gen scf=(maxcycle=300,xqc) geom=connectivity
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; #P B3LYP/6-31G* SCF=(Maxcyc=500,Xqc,Conver=8) NoSymm Force Charge Prop
+</em><br />
+<em class="quotelev1">&gt; =(Field,Read)
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; #P B3LYP/6-31G* SCF=(Maxcyc=500,Xqc,Conver=8) IOP(6/50=1) NoSymm Force
+</em><br />
+<em class="quotelev1">&gt; Charge Prop=(Field,Read)
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; #P B3LYP/6-31G* SCF=(Maxcyc=500,Xqc,Conver=8) IOP(6/50=1) IOP(6/50=0) 
+</em><br />
+<em class="quotelev1">&gt; NoSymm Force Charge Prop=(Field,Read)
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Your sincerely,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Tianyou XIn
+</em><br />
+<em class="quotelev1">&gt; Nanjing Agricultural University
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Mar 09 2020 - 12:30:01 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0095.html" title="Next message in the list">&#36763;&#24535;&#23439;: "[AMBER]  QM/MM Convergence questions"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0093.html" title="Previous message in the list">David Cerutti: "Re: [AMBER] When I use fitted parameters as initial parameters in paramfit, I am getting different results?"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0083.html" title="Message to which this message replies">&#36763;&#24535;&#23439;: "Re: [AMBER] QM/MM Convergence questions"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg94" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg94" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg94" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg94" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

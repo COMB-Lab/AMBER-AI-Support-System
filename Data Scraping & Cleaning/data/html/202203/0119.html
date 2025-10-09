@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] CPPTRAJ, Conflicting H-Bonding Results from Daniel Roe on 2022-03-18 (Amber Archive Mar 2022)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] CPPTRAJ, Conflicting H-Bonding Results" />
+<meta name="Date" content="2022-03-18" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] CPPTRAJ, Conflicting H-Bonding Results</h1>
+<!-- received="Fri Mar 18 07:00:02 2022" -->
+<!-- isoreceived="20220318140002" -->
+<!-- sent="Fri, 18 Mar 2022 09:35:54 -0400" -->
+<!-- isosent="20220318133554" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] CPPTRAJ, Conflicting H-Bonding Results" -->
+<!-- id="CAAC0qOaV-yjp_KWq2aUyM-ZZUEC_+A_TqT4nB-TiAcPeU37+-A.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="5186908B-81FC-4563-9494-664AA1CE0803.uconn.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0120.html" accesskey="d" title="Matthew Guberman-Pfeffer: &quot;Re: [AMBER] CPPTRAJ, Conflicting H-Bonding Results&quot;">Next message</a> ]
+[ <a href="0118.html" title="David A Case: &quot;Re: [AMBER] PySander availability in PyTraj&quot;">Previous message</a> ]
+[ <a href="0109.html" title="Matthew Guberman-Pfeffer: &quot;[AMBER] CPPTRAJ, Conflicting H-Bonding Results&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0120.html" accesskey="t" title="Matthew Guberman-Pfeffer: &quot;Re: [AMBER] CPPTRAJ, Conflicting H-Bonding Results&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg119" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg119" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg119" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg119" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20CPPTRAJ%2C%20Conflicting%20H-Bonding%20Results">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 18 Mar 2022 09:35:54 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />On Thu, Mar 17, 2022 at 12:23 PM Matthew Guberman-Pfeffer
+<br />
+&lt;matthew.guberman-pfeffer.uconn.edu&gt; wrote:
+<br />
+<em class="quotelev1">&gt; Why did the H-bond to GLN_1009.HB2 not appear in the output from the first command? Do the two commands use different criteria?
+</em><br />
+<br />Yes; the commands are using the criteria you specified in each case.
+<br />
+This is outlined pretty clearly in the manual:
+<br />
+```
+<br />
+Potential hydrogen bond donor/acceptor atoms are searched for as follows:
+<br />
+1. If just &lt;mask&gt; is specified donors and acceptors will be
+<br />
+automatically determined from &lt;mask&gt;.
+<br />
+2. If donormask is specified donors will be determined from &lt;dmask&gt;
+<br />
+(only atoms bonded to hydrogen will be considered valid). Optionally,
+<br />
+donorhmask can be used in conjunction with donormask to explicitly
+<br />
+specify the hydrogen atoms bonded to  donor atoms. Acceptors will be
+<br />
+automatically determined from &lt;mask&gt;.
+<br />
+3. If acceptormask is specified acceptors will be determined from
+<br />
+&lt;amask&gt;. Donors will be automatically determined from &lt;mask&gt;.
+<br />
+4. If both acceptormask and donormask are specified only &lt;amask&gt; and
+<br />
+&lt;dmask&gt; will be used; no searching will occur in &lt;mask&gt;.
+<br />
+<br />Automatic determination of hydrogen bond donors/acceptors uses the
+<br />
+simplistic criterion that “hydrogen bonds are FON”, i.e., hydrogens
+<br />
+bonded to F, O, and N atoms are considered donors, and F, O, and N
+<br />
+atoms are considered acceptors.
+<br />
+```
+<br />
+<br />So for your first command:
+<br />
+<br /><em class="quotelev1">&gt; hbond All out All.hbvtime.dat solventdonor :WAT solventacceptor :WAT.O \
+</em><br />
+<em class="quotelev1">&gt; avgout All.UU.avg.dat solvout All.UV.avg.dat bridgeout All.bridge.avg.dat
+</em><br />
+<br />Cpptraj is automatically determining donors/acceptors according to the
+<br />
+FON criterion. For your second command:
+<br />
+<br /><em class="quotelev1">&gt; hbond donormask :1018 acceptormask :X  avgout temp_Res_1018-X_avg.dat
+</em><br />
+<br />You are saying that *all atoms* in mask :1018 are a potential donor,
+<br />
+and *all atoms* in :X are potential acceptors. This is what is giving
+<br />
+you such improbable results as:
+<br />
+<br /><em class="quotelev1">&gt; GLN_1009.HB2        ALA_1018.HA     <a href="mailto:ALA_1018.CA?Subject=Re%3A%20%5BAMBER%5D%20CPPTRAJ%2C%20Conflicting%20H-Bonding%20Results">ALA_1018.CA</a>       10       0&#46;<!--nospam-->0268       2.9364     140.2398
+</em><br />
+<br />Cpptraj will take 'donormask' and 'acceptormask' at face value, so you
+<br />
+need to really restrict those masks to atoms you want to consider as
+<br />
+donors or acceptors. Try something like :1018./F,O,N to restrict to
+<br />
+elements F, O, and N, etc.
+<br />
+<br />-Dan
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Mar 18 2022 - 07:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0120.html" title="Next message in the list">Matthew Guberman-Pfeffer: "Re: [AMBER] CPPTRAJ, Conflicting H-Bonding Results"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0118.html" title="Previous message in the list">David A Case: "Re: [AMBER] PySander availability in PyTraj"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0109.html" title="Message to which this message replies">Matthew Guberman-Pfeffer: "[AMBER] CPPTRAJ, Conflicting H-Bonding Results"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0120.html" title="Next message in this discussion thread">Matthew Guberman-Pfeffer: "Re: [AMBER] CPPTRAJ, Conflicting H-Bonding Results"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0120.html" title="Message sent in reply to this message">Matthew Guberman-Pfeffer: "Re: [AMBER] CPPTRAJ, Conflicting H-Bonding Results"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg119" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg119" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg119" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg119" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

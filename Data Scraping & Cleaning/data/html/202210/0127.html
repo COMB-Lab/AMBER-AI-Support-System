@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] ERROR while using receptor_mask in MMPBSA from David A Case via AMBER on 2022-10-26 (Amber Archive Oct 2022)</title>
+<meta name="Author" content="David A Case via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] ERROR while using receptor_mask in MMPBSA" />
+<meta name="Date" content="2022-10-26" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] ERROR while using receptor_mask in MMPBSA</h1>
+<!-- received="Wed Oct 26 05:30:05 2022" -->
+<!-- isoreceived="20221026123005" -->
+<!-- sent="Wed, 26 Oct 2022 08:15:58 -0400" -->
+<!-- isosent="20221026121558" -->
+<!-- name="David A Case via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] ERROR while using receptor_mask in MMPBSA" -->
+<!-- id="20221026121558.zvkterlc6cd2otl4.pop-os.localdomain" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAC9mRRmr8dN0wrPaM7DSzq0-DkZwXpG672aj=Bxe+T4fEYSKxQ.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0128.html" accesskey="d" title="Christina Bergonzo via AMBER: &quot;Re: [AMBER] Help in Standardizing NEB&quot;">Next message</a> ]
+[ <a href="0126.html" title="David A Case via AMBER: &quot;Re: [AMBER] RESTRAINT versus NMR restraint in output?&quot;">Previous message</a> ]
+[ <a href="0122.html" title="Amit Sharma \(Asstt. Prof., MCARS\) via AMBER: &quot;[AMBER] ERROR while using receptor_mask in MMPBSA&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg127" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg127" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg127" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg127" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20ERROR%20while%20using%20receptor_mask%20in%20MMPBSA">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 26 Oct 2022 08:15:58 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Tue, Oct 25, 2022, Amit Sharma (Asstt. Prof., MCARS) via AMBER wrote:
+<br />
+<br /><em class="quotelev1">&gt;Hello, I am trying to calculate the binding energy between the specific
+</em><br />
+<em class="quotelev1">&gt;residue stretch (from residue :145-267) of the receptor with the ligand.
+</em><br />
+<em class="quotelev1">&gt;The whole receptor is of 274 residue. While running the script it gave
+</em><br />
+<em class="quotelev1">&gt;following error:
+</em><br />
+<br /><em class="quotelev1">&gt;PrmtopError: provided receptor/ligand masks don't select every atom in the
+</em><br />
+<em class="quotelev1">&gt;complex topology!
+</em><br />
+<br />This seems pretty clear, at least as far as Amber error messages go :-)
+<br />
+<br /><em class="quotelev1">&gt;  receptor_mask=:145-267, ligand_mask=:275-298
+</em><br />
+<br />The union of your receptor and ligand doesn't include the entire system, which
+<br />
+is what MMPBSA analysis requires.
+<br />
+<br />Note that energy is not pairwise de-composable, so that there is no correct
+<br />
+answer to the question of what is the binding of just residues 145-267 to the
+<br />
+ligand.  You could use decomposition analysis to get a rough idea of what
+<br />
+is going on.
+<br />
+<br />Easier: strip residues 1-144 and 268-274 from each snapshot using cpptraj.
+<br />
+cpptraj can also provide a prmtop file corresponding to the smaller system.
+<br />
+Then use that for your MMPBSA analysis.  This is also approximate, since you
+<br />
+are filling the space that used to be occupied by the stripped residues with
+<br />
+a high dielectric constant rather than a low one.  But it may still provide
+<br />
+some insights.
+<br />
+<br />...good luck...dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Oct 26 2022 - 05:30:05 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0128.html" title="Next message in the list">Christina Bergonzo via AMBER: "Re: [AMBER] Help in Standardizing NEB"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0126.html" title="Previous message in the list">David A Case via AMBER: "Re: [AMBER] RESTRAINT versus NMR restraint in output?"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0122.html" title="Message to which this message replies">Amit Sharma \(Asstt. Prof., MCARS\) via AMBER: "[AMBER] ERROR while using receptor_mask in MMPBSA"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg127" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg127" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg127" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg127" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

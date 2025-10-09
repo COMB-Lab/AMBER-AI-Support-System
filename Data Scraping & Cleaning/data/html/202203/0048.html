@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] calculate entropy using MMPBSA.py from Ming Tang on 2022-03-10 (Amber Archive Mar 2022)</title>
+<meta name="Author" content="Ming Tang (m21.tang.qut.edu.au)" />
+<meta name="Subject" content="[AMBER] calculate entropy using MMPBSA.py" />
+<meta name="Date" content="2022-03-10" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] calculate entropy using MMPBSA.py</h1>
+<!-- received="Thu Mar 10 22:30:02 2022" -->
+<!-- isoreceived="20220311063002" -->
+<!-- sent="Fri, 11 Mar 2022 06:11:31 +0000" -->
+<!-- isosent="20220311061131" -->
+<!-- name="Ming Tang" -->
+<!-- email="m21.tang.qut.edu.au" -->
+<!-- subject="[AMBER] calculate entropy using MMPBSA.py" -->
+<!-- id="SY6PR01MB8156255B91F23A35ECBA21B9B60C9.SY6PR01MB8156.ausprd01.prod.outlook.com" -->
+<!-- charset="iso-8859-1" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0049.html" accesskey="d" title="Thomas Cheatham: &quot;Re: [AMBER] calculate entropy using MMPBSA.py&quot;">Next message</a> ]
+[ <a href="0047.html" title="chanyann06.stu.scu.edu.cn: &quot;[AMBER] Unit cell size changed and coords overlap problems&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0049.html" accesskey="t" title="Thomas Cheatham: &quot;Re: [AMBER] calculate entropy using MMPBSA.py&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg48" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg48" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg48" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg48" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Ming Tang &lt;<a href="mailto:m21.tang.qut.edu.au?Subject=Re%3A%20%5BAMBER%5D%20calculate%20entropy%20using%20MMPBSA.py">m21.tang.qut.edu.au</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 11 Mar 2022 06:11:31 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear list,
+<br />
+<br />I am calculating binding entropy of dna to protein using MMPBSA. In the literature, researchers truncate the system by deleting the protein residues further than 8 � away from the ligand to reduce the computational cost. I tried to extract the corresponding residues' trajectory and parmtop, and they match well in chimera visualisation. But gave me the below error:
+<br />
+<br />&nbsp;&nbsp;File &quot;/home/tm/Downloads/amber16/bin/MMPBSA.py&quot;, line 99, in &lt;module&gt;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;app.file_setup()
+<br />
+&nbsp;&nbsp;File &quot;/home/tm/Downloads/amber16/lib/python2.7/site-packages/MMPBSA_mods/main.py&quot;, line 156, in file_setup
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;self.mpi_size, str(external_progs['cpptraj']), self.pre)
+<br />
+&nbsp;&nbsp;File &quot;/home/tm/Downloads/amber16/lib/python2.7/site-packages/MMPBSA_mods/make_trajs.py&quot;, line 104, in make_trajectories
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;traj.Strip(INPUT['ligand_mask'])
+<br />
+&nbsp;&nbsp;File &quot;/home/tm/Downloads/amber16/lib/python2.7/site-packages/MMPBSA_mods/make_trajs.py&quot;, line 646, in Strip
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;raise InternalError('Cannot pass no mask to Strip!')
+<br />
+InternalError: Cannot pass no mask to Strip!
+<br />
+<br />The command and control file work well for the full complex. Do I have to use tleap to process the truncated complex and get the coordinates and parmtop file that can be recognised by amber?
+<br />
+<br />Thanks,
+<br />
+Tammy
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Mar 10 2022 - 22:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0049.html" title="Next message in the list">Thomas Cheatham: "Re: [AMBER] calculate entropy using MMPBSA.py"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0047.html" title="Previous message in the list">chanyann06.stu.scu.edu.cn: "[AMBER] Unit cell size changed and coords overlap problems"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0049.html" title="Next message in this discussion thread">Thomas Cheatham: "Re: [AMBER] calculate entropy using MMPBSA.py"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0049.html" title="Message sent in reply to this message">Thomas Cheatham: "Re: [AMBER] calculate entropy using MMPBSA.py"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg48" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg48" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg48" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg48" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

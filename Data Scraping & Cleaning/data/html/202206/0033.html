@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Nudged Elastic Band for a enzymatic reaction in explicit solvent from Simone Fioccola via AMBER on 2022-06-22 (Amber Archive Jun 2022)</title>
+<meta name="Author" content="Simone Fioccola via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Nudged Elastic Band for a enzymatic reaction in explicit solvent" />
+<meta name="Date" content="2022-06-22" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Nudged Elastic Band for a enzymatic reaction in explicit solvent</h1>
+<!-- received="Thu Aug  4 13:33:04 2022" -->
+<!-- isoreceived="20220804203304" -->
+<!-- sent="Wed, 22 Jun 2022 08:34:26 +0000" -->
+<!-- isosent="20220622083426" -->
+<!-- name="Simone Fioccola via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Nudged Elastic Band for a enzymatic reaction in explicit solvent" -->
+<!-- id="AS8PR08MB6567FCAF1F4A1157AF606AD3BDB29.AS8PR08MB6567.eurprd08.prod.outlook.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0034.html" accesskey="d" title="Fabian Glaser via AMBER: &quot;[AMBER] cholorform solvent very high energy&quot;">Next message</a> ]
+[ <a href="0032.html" title="&#20911;&#26102; via AMBER: &quot;Re: [AMBER] In the QM/MM MD with g09, the Fe which in the QM region, is written as F (and the atomic number is written as 9) in gau_job.log and gau_job.Inp.&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg33" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg33" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg33" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg33" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Simone Fioccola via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Nudged%20Elastic%20Band%20for%20a%20enzymatic%20reaction%20in%20explicit%20solvent">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 22 Jun 2022 08:34:26 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear AMBER users,
+<br />
+<br />I'm trying to perform NEB for a system composed by 304 residues in explicit solvent. The QM part of this system in which some of the residues are involved in an enzymatic reaction is treated at PM6 level. The starting and ending point structures were previously relaxed and minimized appropriately for the NEB so that the Potential energy gap between them is around 24 Kcal/mol. This value is near to that expected for this kind of reaction.
+<br />
+Even so, I don't understand why the potential energy of the others copies dramatically goes up just after the beginning of the first heating step. As can see by the following output, the energy difference between the copies and the fixed points is around 10.000 kcal/mol.
+<br />
+I tried to run changing some input parameters like spring constant and Langevin frequency, but I had the same results.
+<br />
+Here following the input I've used, and the outcomes obtained.
+<br />
+<br />Best Regards,
+<br />
+<br />Simone
+<br />
+<br />neb
+<br />
+&amp;cntrl
+<br />
+&nbsp;&nbsp;&nbsp;imin=0,
+<br />
+&nbsp;&nbsp;&nbsp;irest=0,
+<br />
+&nbsp;&nbsp;&nbsp;cut=8.0,
+<br />
+&nbsp;&nbsp;&nbsp;ntpr=100, ntwr=100, ntwx=100, ioutfm=1,
+<br />
+&nbsp;&nbsp;&nbsp;ntf=2, ntc=2,
+<br />
+&nbsp;&nbsp;&nbsp;ntt=3, gamma_ln=1000.0, ig=-1,
+<br />
+&nbsp;&nbsp;&nbsp;nstlim=40000, dt=0.0005,
+<br />
+&nbsp;&nbsp;&nbsp;tempi=0.0, temp0=300.0,
+<br />
+&nbsp;&nbsp;&nbsp;ntb=1, ntp=0,
+<br />
+&nbsp;&nbsp;&nbsp;noshakemask = ':36,231,304,310'
+<br />
+&nbsp;&nbsp;&nbsp;tgtfitmask=&quot;:36,231,304,310&quot;,
+<br />
+&nbsp;&nbsp;&nbsp;tgtrmsmask=&quot;:36,231,304,310&quot;,
+<br />
+&nbsp;&nbsp;&nbsp;ineb = 1,skmin = 10,skmax = 10,
+<br />
+&nbsp;&nbsp;&nbsp;ifqnt=1,
+<br />
+&nbsp;&nbsp;&nbsp;nmropt=1,
+<br />
+/
+<br />
+&amp;wt type='TEMP0', istep1=0,istep2=35000,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;value1=0.0, value2=300.0
+<br />
+/
+<br />
+&amp;wt type='END'
+<br />
+/
+<br />
+&amp;qmmm
+<br />
+&nbsp;&nbsp;&nbsp;qmmask=':35,36,167,188,190,231,302-304,310,313,316-318',
+<br />
+&nbsp;&nbsp;&nbsp;qmcharge=-4,
+<br />
+&nbsp;&nbsp;&nbsp;qm_theory='PM6',
+<br />
+&nbsp;&nbsp;&nbsp;qmshake=0,
+<br />
+&nbsp;&nbsp;&nbsp;qmcut=8.0,
+<br />
+/
+<br />
+<br />NSTEP =      100   TIME(PS) =       0.050  TEMP(K) =     0.88  PRESS =     0.0
+<br />
+Etot   =   -102335.0227  EKtot   =        49.6085  EPtot      =   -102384.6313
+<br />
+BOND   =      2376.1917  ANGLE   =       636.2826  DIHED      =      3152.2142
+<br />
+1-4 NB =       917.3374  1-4 EEL =      9380.4532  VDWAALS    =     15698.3931
+<br />
+EELEC  =   -131659.4617  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+<br />
+PM6ESCF=     -2886.0417
+<br />
+NEB replicate breakdown:
+<br />
+Energy for replicate   1 =  -112138.5260
+<br />
+Energy for replicate   2 =  -102384.9305
+<br />
+Energy for replicate   3 =  -102384.6313
+<br />
+Energy for replicate   4 =  -102384.5845
+<br />
+Energy for replicate   5 =  -102384.2176
+<br />
+Energy for replicate   6 =  -102384.2919
+<br />
+Energy for replicate   7 =  -102384.9233
+<br />
+Energy for replicate   8 =  -102384.6932
+<br />
+Energy for replicate   9 =  -102384.6863
+<br />
+Energy for replicate  10 =  -102384.7983
+<br />
+Energy for replicate  11 =  -102384.2414
+<br />
+Energy for replicate  12 =  -102384.1638
+<br />
+Energy for replicate  13 =  -102384.5048
+<br />
+Energy for replicate  14 =  -102383.9617
+<br />
+Energy for replicate  15 =  -102375.6665
+<br />
+Energy for replicate  16 =  -102335.8659
+<br />
+Energy for replicate  17 =  -102312.0666
+<br />
+Energy for replicate  18 =  -102358.5182
+<br />
+Energy for replicate  19 =  -102366.2849
+<br />
+Energy for replicate  20 =  -102367.5166
+<br />
+Energy for replicate  21 =  -102367.8928
+<br />
+Energy for replicate  22 =  -102367.1021
+<br />
+Energy for replicate  23 =  -102367.6742
+<br />
+Energy for replicate  24 =  -102367.9548
+<br />
+Energy for replicate  25 =  -102367.6490
+<br />
+Energy for replicate  26 =  -102367.6276
+<br />
+Energy for replicate  27 =  -102367.8002
+<br />
+Energy for replicate  28 =  -102367.4804
+<br />
+Energy for replicate  29 =  -102367.3654
+<br />
+Energy for replicate  30 =  -102367.8843
+<br />
+Energy for replicate  31 =  -102367.1492
+<br />
+Energy for replicate  32 =  -112114.1602
+<br />
+Total Energy of replicates = -3295410.8136
+<br />
+Ewald error estimate:   0.1112E-01
+<br />
+------------------------------------------------------------------------------
+<br />
+<br />NMR restraints: Bond =    0.000   Angle =     0.000   Torsion =     0.000
+<br />
+===============================================================================
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Aug 04 2022 - 13:33:04 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0034.html" title="Next message in the list">Fabian Glaser via AMBER: "[AMBER] cholorform solvent very high energy"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0032.html" title="Previous message in the list">&#20911;&#26102; via AMBER: "Re: [AMBER] In the QM/MM MD with g09, the Fe which in the QM region, is written as F (and the atomic number is written as 9) in gau_job.log and gau_job.Inp."</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg33" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg33" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg33" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg33" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

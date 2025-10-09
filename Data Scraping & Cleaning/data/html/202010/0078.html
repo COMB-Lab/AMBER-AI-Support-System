@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Compiling CPPTRAJ from GitHub from Gustaf Olsson on 2020-10-06 (Amber Archive Oct 2020)</title>
+<meta name="Author" content="Gustaf Olsson (gustaf.olsson.lnu.se)" />
+<meta name="Subject" content="Re: [AMBER] Compiling CPPTRAJ from GitHub" />
+<meta name="Date" content="2020-10-06" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Compiling CPPTRAJ from GitHub</h1>
+<!-- received="Tue Oct  6 02:30:02 2020" -->
+<!-- isoreceived="20201006093002" -->
+<!-- sent="Tue, 6 Oct 2020 09:22:08 +0000" -->
+<!-- isosent="20201006092208" -->
+<!-- name="Gustaf Olsson" -->
+<!-- email="gustaf.olsson.lnu.se" -->
+<!-- subject="Re: [AMBER] Compiling CPPTRAJ from GitHub" -->
+<!-- id="94E2C5FA-E733-470B-8902-80C9D3D56D71.lnu.se" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAAC0qOYOWGARZmPimAaeuBXhOcJ+sDL9YYLUZhPLAe-H-pusGg.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0079.html" accesskey="d" title="Gustaf Olsson: &quot;Re: [AMBER] Compiling CPPTRAJ from GitHub&quot;">Next message</a> ]
+[ <a href="0077.html" title="Gustaf Olsson: &quot;Re: [AMBER] Compiling CPPTRAJ from GitHub&quot;">Previous message</a> ]
+[ <a href="0055.html" title="Daniel Roe: &quot;Re: [AMBER] Compiling CPPTRAJ from GitHub&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0079.html" accesskey="t" title="Gustaf Olsson: &quot;Re: [AMBER] Compiling CPPTRAJ from GitHub&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg78" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg78" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg78" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg78" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gustaf Olsson &lt;<a href="mailto:gustaf.olsson.lnu.se?Subject=Re%3A%20%5BAMBER%5D%20Compiling%20CPPTRAJ%20from%20GitHub">gustaf.olsson.lnu.se</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 6 Oct 2020 09:22:08 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+So I managed to figure out how to solve the problem and I am not sure of this is a “problem” or a result of “TLDR” and me not reading the documentation carefully enough.
+<br />
+
+<br />
+I tried a lot of different alternative inputs without success as files (which were obviously present and in the aforementioned location) were not found
+<br />
+
+<br />
+
+<br />
+########### Before managing to figure out the problem, skip ahead of not interesting ########### 
+<br />
+
+<br />
+I used CMAKE to configure amber20, still not loving it though I thought it was time to “get with the program” as I suspect this will be the way moving forward.
+<br />
+
+<br />
+No, I cannot compile without amberlibs either. There seems to be a problem finding library files regardless of what I try, though the library files differ.
+<br />
+
+<br />
+./configure -macAccelerate clang OR ./configure clang OR ./configure -amberlib --with-netcdf=/usr/local/Cellar/netcdf/4.7.4_1/ clang OR ./configure --with-netcdf=/usr/local/Cellar/netcdf/4.7.4_1/ clang
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Checking for sanderlib: dyld: Library not loaded: .rpath/libsander.dylib
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Referenced from: /Users/guolaa/Git/cpptraj.clone/./testp
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reason: image not found
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;./configure: line 360: 33288 Abort trap: 6           ./testp &gt; prog.out
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Error: Run of test program failed, compiled with: clang++ -Wall -O3 -std=c++11 -I/Users/guolaa/SOFTWARE/amber20/include -o testp testp.cpp /Users/guolaa/SOFTWARE/amber20/lib/libsander.dylib
+<br />
+
+<br />
+As it seems that the missing libsander.dylib (which is not missing) is located in the amber20 install directory, is there a place/way to include this file which does not require amber to be installed?
+<br />
+
+<br />
+./configure -macAccelerate -amberlib clang OR ./configure -amberlib clang
+<br />
+Checking NetCDF: dyld: Library not loaded: &#64;rpath/libnetcdf&#46;<!--nospam-->13.dylib
+<br />
+&nbsp;&nbsp;Referenced from: /Users/guolaa/Git/cpptraj.clone/./testp
+<br />
+&nbsp;&nbsp;Reason: image not found
+<br />
+./configure: line 360: 33430 Abort trap: 6           ./testp &gt; prog.out
+<br />
+
+<br />
+Error: Run of test program failed, compiled with: clang++ -Wall -O3 -std=c++11 -I/Users/guolaa/SOFTWARE/amber20/include -o testp testp.cpp -L/Users/guolaa/SOFTWARE/amber20/lib -lnetcdf
+<br />
+
+<br />
+################################################################################ 
+<br />
+
+<br />
+The solution, make sure that amber20 is not in the path. My guess is that at some stage/level there is a check for “$AMBERHOME” even if the -amberlib flag is not provided. As soon as I removed amber20 from my path and run
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;./configure -macAccelerate clang
+<br />
+
+<br />
+The configuration ran and the build finished, producing an executable file which seems to be working. So it seems that building in absence of amber is working without a problem, when building in presence of amber, something messes up paths in a some way.
+<br />
+
+<br />
+Best regards
+<br />
+// Gustaf
+<br />
+
+<br />
+
+<br />
+<em class="quotelev1">&gt; On 5 Oct 2020, at 16:07, Daniel Roe &lt;daniel.r.roe.gmail&#46;<!--nospam-->com&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Hi,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Did you compile Amber with configure or cmake? What options did you
+</em><br />
+<em class="quotelev1">&gt; use for either case?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Can GitHub cpptraj compile on its own (i.e. without the '-amberlib' flag)?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I'm trying to reproduce on my end at the moment
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; -Dan
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; On Mon, Oct 5, 2020 at 3:09 AM Gustaf Olsson &lt;gustaf.olsson.lnu&#46;<!--nospam-->se&gt; wrote:
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Currently I am running macOS Mojave (10.14.6). There are some applications I which are still not fully supported so I am holding off of updating the OS.
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Using gnu/clang basically produces the same error:
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; GNU
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Checking sanderlib: dyld: Library not loaded: &#64;rpath/libsander&#46;<!--nospam-->dylib
+</em><br />
+<em class="quotelev2">&gt;&gt;  Referenced from: /cpptraj.clone/./testp
+</em><br />
+<em class="quotelev2">&gt;&gt;  Reason: image not found
+</em><br />
+<em class="quotelev2">&gt;&gt; ./configure: line 360:  3955 Abort trap: 6           ./testp &gt; prog.out
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Error: Run of test program failed, compiled with: mpicxx -Wall -O3 -std=gnu++11 -I/amber20//include -o testp testp.cpp /amber20//lib/libsander.dylib
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; CLANG
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt;  Checking for sanderlib: dyld: Library not loaded: &#64;rpath/libsander&#46;<!--nospam-->dylib
+</em><br />
+<em class="quotelev2">&gt;&gt;  Referenced from: /cpptraj.clone/./testp
+</em><br />
+<em class="quotelev2">&gt;&gt;  Reason: image not found
+</em><br />
+<em class="quotelev2">&gt;&gt; ./configure: line 360:  4332 Abort trap: 6           ./testp &gt; prog.out
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Error: Run of test program failed, compiled with: clang++ -Wall -O3 -std=c++11 -I/amber20/include -o testp testp.cpp /amber20/lib/libsander.dylib
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Using -amberlib in combination with clang produces a similar library error, though this time with netcdf:
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt;  Checking NetCDF: dyld: Library not loaded: &#64;rpath/libnetcdf&#46;<!--nospam-->13.dylib
+</em><br />
+<em class="quotelev2">&gt;&gt;  Referenced from: /cpptraj.clone/./testp
+</em><br />
+<em class="quotelev2">&gt;&gt;  Reason: image not found
+</em><br />
+<em class="quotelev2">&gt;&gt; ./configure: line 360:  4533 Abort trap: 6           ./testp &gt; prog.out
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Error: Run of test program failed, compiled with: clang++ -Wall -O3 -std=c++11 -I/amber20/include -o testp testp.cpp -L/amber20/lib -lnetcdf
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; I do seem to have an empty DYLD_LIBRARY_PATH, where should this be pointing to get the correct includes? I have tried using the optional library flag: -sanderlib --with-sanderlib=/amber20/ without success (meaning I still get the sander library not being loaded).
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; I have run the “c++” commands as they are as well as verbose though I see no errors or warnings, the only thing I see which could be any indication of a problem are these lines:
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt;   ignoring nonexistent directory &quot;/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1&quot;
+</em><br />
+<em class="quotelev2">&gt;&gt;   ignoring nonexistent directory &quot;/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/local/include&quot;
+</em><br />
+<em class="quotelev2">&gt;&gt;   ignoring nonexistent directory &quot;/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/Library/Frameworks&quot;
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Maybe this is a OS version thing? I still think it is strange as commands seemingly executes without any errors when run manually and all the paths presented seems to point to the correct locations where there library files are located.
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Best regards
+</em><br />
+<em class="quotelev2">&gt;&gt; // Gustaf
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; On 2 Oct 2020, at 17:41, Daniel Roe &lt;daniel.r.roe.gmail&#46;<!--nospam-->com&gt; wrote:
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; Hi,
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; The error indicates that it was the running of the test program that
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; failed, i.e. the compile was successful. Is maybe DYLD_LIBRARY_PATH
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; not properly set? I admit I don't really ever run on Macs so this one
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; may be tough to debug for me. What OSX version are you using?
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; -Dan
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; On Fri, Oct 2, 2020 at 11:34 AM David A Case &lt;david.case.rutgers&#46;<!--nospam-->edu&gt; wrote:
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; On Fri, Oct 02, 2020, Gustaf Olsson wrote:
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev1">&gt;&gt;&gt;&gt;&gt;  Error: Run of test program failed, compiled with: clang++ -Wall
+</em><br />
+<em class="quotelev1">&gt;&gt;&gt;&gt;&gt;  -O3 -std=c++11 -I/Users/xxx/amber20/include -o testp testp.cpp
+</em><br />
+<em class="quotelev1">&gt;&gt;&gt;&gt;&gt;  -L/Users/xxx/amber20/lib -lnetcdf
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; Have you tried to run the command above by hand?  Maybe the error message is
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; getting lost somewhere.  It would be most helpful to know if the error
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; happens at the compile step or at the ld step.
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; ....dac
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; AMBER.ambermd&#46;<!--nospam-->org
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt;&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Oct 06 2020 - 02:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0079.html" title="Next message in the list">Gustaf Olsson: "Re: [AMBER] Compiling CPPTRAJ from GitHub"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0077.html" title="Previous message in the list">Gustaf Olsson: "Re: [AMBER] Compiling CPPTRAJ from GitHub"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0055.html" title="Message to which this message replies">Daniel Roe: "Re: [AMBER] Compiling CPPTRAJ from GitHub"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0079.html" title="Next message in this discussion thread">Gustaf Olsson: "Re: [AMBER] Compiling CPPTRAJ from GitHub"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0079.html" title="Message sent in reply to this message">Gustaf Olsson: "Re: [AMBER] Compiling CPPTRAJ from GitHub"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg78" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg78" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg78" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg78" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

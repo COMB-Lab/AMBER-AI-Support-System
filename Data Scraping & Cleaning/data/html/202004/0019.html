@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Incorrect results when running MMPBSA example. from Shum, Ho Hin on 2020-04-02 (Amber Archive Apr 2020)</title>
+<meta name="Author" content="Shum, Ho Hin (hohin2.connect.hku.hk)" />
+<meta name="Subject" content="[AMBER] Incorrect results when running MMPBSA example." />
+<meta name="Date" content="2020-04-02" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Incorrect results when running MMPBSA example.</h1>
+<!-- received="Thu Apr  2 22:00:02 2020" -->
+<!-- isoreceived="20200403050002" -->
+<!-- sent="Fri, 3 Apr 2020 12:48:38 +0800" -->
+<!-- isosent="20200403044838" -->
+<!-- name="Shum, Ho Hin" -->
+<!-- email="hohin2.connect.hku.hk" -->
+<!-- subject="[AMBER] Incorrect results when running MMPBSA example." -->
+<!-- id="CABN_6tBYQEYQrVU59NYQyV8GmK1DJxKUBJAjXkmhbGB+yX6iMw.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0020.html" accesskey="d" title="Rosellen, Martin: &quot;Re: [AMBER] Error: Could not find angle parameter&quot;">Next message</a> ]
+[ <a href="0018.html" title="Pinky Mazumder: &quot;[AMBER] cellulose chain&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg19" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg19" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg19" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg19" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Shum, Ho Hin &lt;<a href="mailto:hohin2.connect.hku.hk?Subject=Re%3A%20%5BAMBER%5D%20Incorrect%20results%20when%20running%20MMPBSA%20example.">hohin2.connect.hku.hk</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 3 Apr 2020 12:48:38 +0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber experts,
+<br />
+<br />I am writing this letter to seek help in some incorrect result found using
+<br />
+the “MMPBSA.py” and “MMPBSA.py.MPI” in Amber16 and Amber18.
+<br />
+<br /><br /><br />Trial data from Amber Advanced Tutorial 3 was downloaded, from the
+<br />
+following links, for testing.
+<br />
+<br /><a href="https://ambermd.org/tutorials/advanced/tutorial3/py_script/section1.htm">https://ambermd.org/tutorials/advanced/tutorial3/py_script/section1.htm</a>
+<br />
+<br /><a href="https://ambermd.org/tutorials/advanced/tutorial3/py_script/section4.htm">https://ambermd.org/tutorials/advanced/tutorial3/py_script/section4.htm</a>
+<br />
+<br /><br /><br />However, results from the installed Amber16 and Amber18 were different from
+<br />
+the result provided in the tutorial.
+<br />
+<br />The energy calculation in the Generalized Born model was correct, but the
+<br />
+result in the Poisson Boltzmann part was different.
+<br />
+<br />Expected delta total should be ~-86.3579, but in all both non-MPI and MPI
+<br />
+MMPBSA.py I used in my machine, the result is ~-28.2058
+<br />
+<br /><br />Any clues on this solving this issue would help me a lot...
+<br />
+<br />Thank you!
+<br />
+<br /><br />Best regards,
+<br />
+<br />Marcus
+<br />
+<br /><br />Below is the input file and result files.
+<br />
+<br /><br />Input:
+<br />
+<br />mmpbsa.in:
+<br />
+<br /><br />| Input file for running PB and GB
+<br />
+| &amp;general
+<br />
+|   endframe=50, verbose=1,
+<br />
+| #   entropy=1,
+<br />
+| /
+<br />
+| &amp;gb
+<br />
+|  igb=2, saltcon=0.100
+<br />
+| /
+<br />
+| &amp;pb
+<br />
+|   istrng=0.100,
+<br />
+| /
+<br />
+<br /><br />Command:
+<br />
+<br />| MMPBSA.py -O -i mmpbsa.in -o FINAL_RESULTS_MMPBSA.dat -sp
+<br />
+ras-raf_solvated.prmtop -cp ras-raf.prmtop -rp ras.prmtop -lp raf.prmtop -y
+<br />
+prod*.mdcrd.gz &gt; progress.log 2&gt;&amp;1
+<br />
+<br /><br />Result:
+<br />
+<br /><br />| Run on Tue Mar 24 18:18:22 2020
+<br />
+|
+<br />
+|Input file:
+<br />
+|--------------------------------------------------------------
+<br />
+|Input file for running PB and GB
+<br />
+|&amp;general
+<br />
+|   endframe=50, verbose=1,
+<br />
+|#  entropy=1,
+<br />
+|/
+<br />
+|&amp;gb
+<br />
+|  igb=2, saltcon=0.100
+<br />
+|/
+<br />
+|&amp;pb
+<br />
+|  istrng=0.100,
+<br />
+|/
+<br />
+|--------------------------------------------------------------
+<br />
+|MMPBSA.py Version=14.0
+<br />
+|Solvated complex topology file:  ras-raf_solvated.prmtop
+<br />
+|Complex topology file:           ras-raf.prmtop
+<br />
+|Receptor topology file:          ras.prmtop
+<br />
+|Ligand topology file:            raf.prmtop
+<br />
+|Initial mdcrd(s):                prod.mdcrd
+<br />
+|
+<br />
+|Receptor mask:                  &quot;:1-166&quot;
+<br />
+|Ligand mask:                    &quot;:167-242&quot;
+<br />
+|
+<br />
+|Calculations performed using 50 complex frames.
+<br />
+|Poisson Boltzmann calculations performed using internal PBSA solver in
+<br />
+mmpbsa_py_energy
+<br />
+|
+<br />
+|Generalized Born ESURF calculated using 'LCPO' surface areas
+<br />
+|
+<br />
+|All units are reported in kcal/mole.
+<br />
+-------------------------------------------------------------------------------
+<br />
+-------------------------------------------------------------------------------
+<br />
+<br />GENERALIZED BORN:
+<br />
+<br />Complex:
+<br />
+Energy Component            Average              Std. Dev.   Std. Err. of
+<br />
+Mean
+<br />
+-------------------------------------------------------------------------------
+<br />
+VDWAALS                  -1863.7981               16.9946
+<br />
+&nbsp;2.4034
+<br />
+EEL                     -17200.7406               75.1582
+<br />
+10.6290
+<br />
+EGB                      -3249.6527               64.5827
+<br />
+&nbsp;9.1334
+<br />
+ESURF                       91.3567                1.3775
+<br />
+&nbsp;0.1948
+<br />
+<br />G gas                   -19064.5387               73.4400
+<br />
+10.3860
+<br />
+G solv                   -3158.2960               64.1112
+<br />
+&nbsp;9.0667
+<br />
+<br />TOTAL                   -22222.8347               39.9219
+<br />
+&nbsp;5.6458
+<br />
+<br /><br />Receptor:
+<br />
+Energy Component            Average              Std. Dev.   Std. Err. of
+<br />
+Mean
+<br />
+-------------------------------------------------------------------------------
+<br />
+VDWAALS                  -1268.1869               14.0928
+<br />
+&nbsp;1.9930
+<br />
+EEL                     -11557.0789               71.0248
+<br />
+10.0444
+<br />
+EGB                      -2532.0576               57.1271
+<br />
+&nbsp;8.0790
+<br />
+ESURF                       64.2856                1.1041
+<br />
+&nbsp;0.1561
+<br />
+<br />G gas                   -12825.2658               66.1471
+<br />
+&nbsp;9.3546
+<br />
+G solv                   -2467.7721               56.9614
+<br />
+&nbsp;8.0556
+<br />
+<br />TOTAL                   -15293.0379               32.1381
+<br />
+&nbsp;4.5450
+<br />
+<br /><br />Ligand:
+<br />
+Energy Component            Average              Std. Dev.   Std. Err. of
+<br />
+Mean
+<br />
+-------------------------------------------------------------------------------
+<br />
+VDWAALS                   -529.3073                9.3319
+<br />
+&nbsp;1.3197
+<br />
+EEL                      -4684.4887               35.7985
+<br />
+&nbsp;5.0627
+<br />
+EGB                      -1688.9704               26.2775
+<br />
+&nbsp;3.7162
+<br />
+ESURF                       37.0477                0.6113
+<br />
+&nbsp;0.0865
+<br />
+<br />G gas                    -5213.7960               37.0299
+<br />
+&nbsp;5.2368
+<br />
+G solv                   -1651.9227               26.1219
+<br />
+&nbsp;3.6942
+<br />
+<br />TOTAL                    -6865.7187               22.1937
+<br />
+&nbsp;3.1387
+<br />
+<br /><br />Differences (Complex - Receptor - Ligand):
+<br />
+Energy Component            Average              Std. Dev.   Std. Err. of
+<br />
+Mean
+<br />
+-------------------------------------------------------------------------------
+<br />
+VDWAALS                    -66.3039                4.2329
+<br />
+&nbsp;0.5986
+<br />
+EEL                       -959.1730               34.5550
+<br />
+&nbsp;4.8868
+<br />
+EGB                        971.3753               32.7146
+<br />
+&nbsp;4.6265
+<br />
+ESURF                       -9.9766                0.3725
+<br />
+&nbsp;0.0527
+<br />
+<br />DELTA G gas              -1025.4769               34.3707
+<br />
+&nbsp;4.8607
+<br />
+DELTA G solv               961.3987               32.5152
+<br />
+&nbsp;4.5983
+<br />
+<br />DELTA TOTAL                -64.0781                6.3096
+<br />
+&nbsp;0.8923
+<br />
+<br /><br />-------------------------------------------------------------------------------
+<br />
+-------------------------------------------------------------------------------
+<br />
+<br />POISSON BOLTZMANN:
+<br />
+<br />Complex:
+<br />
+Energy Component            Average              Std. Dev.   Std. Err. of
+<br />
+Mean
+<br />
+-------------------------------------------------------------------------------
+<br />
+VDWAALS                  -1863.7981               16.9946
+<br />
+&nbsp;2.4034
+<br />
+EEL                     -17200.7406               75.1582
+<br />
+10.6290
+<br />
+EPB                      -3042.9732               69.0328
+<br />
+&nbsp;9.7627
+<br />
+ENPOLAR                   1933.4589                6.8742
+<br />
+&nbsp;0.9722
+<br />
+EDISPER                  -1130.8283                6.9218
+<br />
+&nbsp;0.9789
+<br />
+<br />G gas                   -19064.5387               73.4400
+<br />
+10.3860
+<br />
+G solv                   -2240.3425               68.3262
+<br />
+&nbsp;9.6628
+<br />
+<br />TOTAL                   -21304.8812               47.8829
+<br />
+&nbsp;6.7717
+<br />
+<br /><br />Receptor:
+<br />
+Energy Component            Average              Std. Dev.   Std. Err. of
+<br />
+Mean
+<br />
+-------------------------------------------------------------------------------
+<br />
+VDWAALS                  -1268.1869               14.0928
+<br />
+&nbsp;1.9930
+<br />
+EEL                     -11557.0789               71.0248
+<br />
+10.0444
+<br />
+EPB                      -2441.2908               57.8922
+<br />
+&nbsp;8.1872
+<br />
+ENPOLAR                   1323.4880                5.2717
+<br />
+&nbsp;0.7455
+<br />
+EDISPER                   -787.7775                4.5944
+<br />
+&nbsp;0.6497
+<br />
+<br />G gas                   -12825.2658               66.1471
+<br />
+&nbsp;9.3546
+<br />
+G solv                   -1905.5803               56.8799
+<br />
+&nbsp;8.0440
+<br />
+<br />TOTAL                   -14730.8461               40.8423
+<br />
+&nbsp;5.7760
+<br />
+<br /><br />Ligand:
+<br />
+Energy Component            Average              Std. Dev.   Std. Err. of
+<br />
+Mean
+<br />
+-------------------------------------------------------------------------------
+<br />
+VDWAALS                   -529.3073                9.3319
+<br />
+&nbsp;1.3197
+<br />
+EEL                      -4684.4887               35.7985
+<br />
+&nbsp;5.0627
+<br />
+EPB                      -1548.7938               27.2871
+<br />
+&nbsp;3.8590
+<br />
+ENPOLAR                    660.9497                3.2883
+<br />
+&nbsp;0.4650
+<br />
+EDISPER                   -444.1892                3.9350
+<br />
+&nbsp;0.5565
+<br />
+<br />G gas                    -5213.7960               37.0299
+<br />
+&nbsp;5.2368
+<br />
+G solv                   -1332.0333               27.6670
+<br />
+&nbsp;3.9127
+<br />
+<br />TOTAL                    -6545.8293               29.0059
+<br />
+&nbsp;4.1021
+<br />
+<br /><br />Differences (Complex - Receptor - Ligand):
+<br />
+Energy Component            Average              Std. Dev.   Std. Err. of
+<br />
+Mean
+<br />
+-------------------------------------------------------------------------------
+<br />
+VDWAALS                    -66.3039                4.2329
+<br />
+&nbsp;0.5986
+<br />
+EEL                       -959.1730               34.5550
+<br />
+&nbsp;4.8868
+<br />
+EPB                        947.1114               33.4524
+<br />
+&nbsp;4.7309
+<br />
+ENPOLAR                    -50.9787                1.8037
+<br />
+&nbsp;0.2551
+<br />
+EDISPER                    101.1385                2.6639
+<br />
+&nbsp;0.3767
+<br />
+<br />DELTA G gas              -1025.4769               34.3707
+<br />
+&nbsp;4.8607
+<br />
+DELTA G solv               997.2711               33.4305
+<br />
+&nbsp;4.7278
+<br />
+<br />DELTA TOTAL                -28.2058                8.1968
+<br />
+&nbsp;1.1592
+<br />
+<br /><br />-------------------------------------------------------------------------------
+<br />
+-------------------------------------------------------------------------------
+<br />
+<br /><br /><br /><br /><br /><br />Thank you very much!
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Apr 02 2020 - 22:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0020.html" title="Next message in the list">Rosellen, Martin: "Re: [AMBER] Error: Could not find angle parameter"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0018.html" title="Previous message in the list">Pinky Mazumder: "[AMBER] cellulose chain"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg19" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg19" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg19" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg19" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Regarding setting up MMGBSA calculation from Debarati DasGupta on 2021-11-12 (Amber Archive Nov 2021)</title>
+<meta name="Author" content="Debarati DasGupta (debarati_dasgupta.hotmail.com)" />
+<meta name="Subject" content="[AMBER] Regarding setting up MMGBSA calculation" />
+<meta name="Date" content="2021-11-12" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Regarding setting up MMGBSA calculation</h1>
+<!-- received="Fri Nov 12 04:30:03 2021" -->
+<!-- isoreceived="20211112123003" -->
+<!-- sent="Fri, 12 Nov 2021 12:18:24 +0000" -->
+<!-- isosent="20211112121824" -->
+<!-- name="Debarati DasGupta" -->
+<!-- email="debarati_dasgupta.hotmail.com" -->
+<!-- subject="[AMBER] Regarding setting up MMGBSA calculation" -->
+<!-- id="DM6PR20MB257162BCCD2146336FCFEBA69D959.DM6PR20MB2571.namprd20.prod.outlook.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0128.html" accesskey="d" title="Juliette Newell: &quot;[AMBER] Running Simulations in a Vacuum&quot;">Next message</a> ]
+[ <a href="0126.html" title="David A Case: &quot;Re: [AMBER] amber20 - cmake cannot find cuda&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg127" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg127" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg127" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg127" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Debarati DasGupta &lt;<a href="mailto:debarati_dasgupta.hotmail.com?Subject=Re%3A%20%5BAMBER%5D%20Regarding%20setting%20up%20MMGBSA%20calculation">debarati_dasgupta.hotmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 12 Nov 2021 12:18:24 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+My script is this
+<br />
+$AMBERHOME/bin/MMPBSA.py -O -i mmpbsa.in -o FINAL_RESULTS_MMPBSA.dat -sp serotonin_Mark4.prmtop -cp serotonin_Mark4_gas.prmtop -rp protein.prmtop -lp ligand.prmtop -y ./run1/serotonin_mark4_production4A.nc
+<br />
+mmpbsa.in looks like this:
+<br />
+Input file for running PB and GB
+<br />
+&amp;general
+<br />
+&nbsp;&nbsp;&nbsp;endframe=2000, keep_files=2,
+<br />
+/
+<br />
+&amp;gb
+<br />
+&nbsp;&nbsp;igb=2, saltcon=0.100,
+<br />
+/
+<br />
+&amp;pb
+<br />
+&nbsp;&nbsp;istrng=0.100,
+<br />
+/
+<br />
+<br /><br /><br /><br />Error I get in my slurm.out is as follows:
+<br />
+Hostname = exp-2-13
+<br />
+Date = Fri Nov 12 04:14:58 PST 2021
+<br />
+Loading and checking parameter files for compatibility...
+<br />
+cpptraj found! Using /cm/shared/apps/spack/cpu/opt/spack/linux-centos8-zen2/gcc-10.2.0/amber-external/bin/cpptraj
+<br />
+mmpbsa_py_energy found! Using /cm/shared/apps/spack/cpu/opt/spack/linux-centos8-zen2/gcc-10.2.0/amber-external/bin/mmpbsa_py_energy
+<br />
+Preparing trajectories for simulation...
+<br />
+1250 frames were processed by cpptraj for use in calculation.
+<br />
+<br />Running calculations on normal system...
+<br />
+<br />Beginning GB calculations with /cm/shared/apps/spack/cpu/opt/spack/linux-centos8-zen2/gcc-10.2.0/amber-external/bin/mmpbsa_py_energy
+<br />
+&nbsp;&nbsp;calculating complex contribution...
+<br />
+&nbsp;&nbsp;File &quot;/cm/shared/apps/spack/cpu/opt/spack/linux-centos8-zen2/gcc-10.2.0/amber-external/bin/MMPBSA.py&quot;, line 100, in &lt;module&gt;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;app.run_mmpbsa()
+<br />
+&nbsp;&nbsp;File &quot;/cm/shared/apps/spack/cpu/opt/spack/linux-centos8-zen2/gcc-10.2.0/amber-external/lib/python3.8/site-packages/MMPBSA_mods/main.py&quot;, line 218, in run_mmpbsa
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;self.calc_list.run(rank, self.stdout)
+<br />
+&nbsp;&nbsp;File &quot;/cm/shared/apps/spack/cpu/opt/spack/linux-centos8-zen2/gcc-10.2.0/amber-external/lib/python3.8/site-packages/MMPBSA_mods/calculation.py&quot;, line 82, in run
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;calc.run(rank, stdout=stdout, stderr=stderr)
+<br />
+&nbsp;&nbsp;File &quot;/cm/shared/apps/spack/cpu/opt/spack/linux-centos8-zen2/gcc-10.2.0/amber-external/lib/python3.8/site-packages/MMPBSA_mods/calculation.py&quot;, line 156, in run
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;raise CalcError('%s failed with prmtop %s!' % (self.program,
+<br />
+CalcError: /cm/shared/apps/spack/cpu/opt/spack/linux-centos8-zen2/gcc-10.2.0/amber-external/bin/mmpbsa_py_energy failed with prmtop serotonin_Mark4_gas.prmtop!
+<br />
+<br />Fatal Error!
+<br />
+All files have been retained for your error investigation:
+<br />
+You should begin by examining the output files of the first failed calculation.
+<br />
+Consult the &quot;Temporary Files&quot; subsection of the MMPBSA.py chapter in the
+<br />
+manual for file naming conventions.
+<br />
+/cm/local/apps/slurm/var/spool/job7028864/slurm_script: line 38: /home/debarati: Is a directory
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Nov 12 2021 - 04:30:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0128.html" title="Next message in the list">Juliette Newell: "[AMBER] Running Simulations in a Vacuum"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0126.html" title="Previous message in the list">David A Case: "Re: [AMBER] amber20 - cmake cannot find cuda"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg127" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg127" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg127" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg127" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

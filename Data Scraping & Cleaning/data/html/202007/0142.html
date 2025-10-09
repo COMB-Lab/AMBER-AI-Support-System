@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Mask behavior vs distance measurement? from Daniel Roe on 2020-07-09 (Amber Archive Jul 2020)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Mask behavior vs distance measurement?" />
+<meta name="Date" content="2020-07-09" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Mask behavior vs distance measurement?</h1>
+<!-- received="Thu Jul  9 19:30:04 2020" -->
+<!-- isoreceived="20200710023004" -->
+<!-- sent="Thu, 9 Jul 2020 22:06:18 -0400" -->
+<!-- isosent="20200710020618" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] Mask behavior vs distance measurement?" -->
+<!-- id="CAAC0qObWWn=rJA9faHdxrcPMtw-RpryMKqVwQ4HZ2SHV2mmvHQ.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CALeh7kDZQj0XwWWBrRkdHinOsxRRy9G7YLqrRy4TkFc_58+Rwg.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0143.html" accesskey="d" title="Feng Pan: &quot;Re: [AMBER] nmropt vs infe&quot;">Next message</a> ]
+[ <a href="0141.html" title="Sally Pias: &quot;Re: [AMBER] Barostat and thermostat for membrane protein-ligand simulation&quot;">Previous message</a> ]
+[ <a href="0139.html" title="Kenneth Huang: &quot;[AMBER] Mask behavior vs distance measurement?&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0147.html" accesskey="t" title="Kenneth Huang: &quot;Re: [AMBER] Mask behavior vs distance measurement?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg142" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg142" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg142" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg142" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Mask%20behavior%20vs%20distance%20measurement%3F">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 9 Jul 2020 22:06:18 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />&lt;: means “residues within” so if _any_ part of the residue meets the
+<br />
+distance cutoff the whole residue is selected. Try &lt;&#64; (atoms within)
+<br />
+instead.
+<br />
+<br />-Dan
+<br />
+<br />On Thu, Jul 9, 2020 at 8:05 PM Kenneth Huang &lt;kennethneltharion.gmail&#46;<!--nospam-->com&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hi all,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I'm running into an odd situation where the behavior of the mask command
+</em><br />
+<em class="quotelev1">&gt; doesn't seem to be lining up exactly with the actual measured distance, ie
+</em><br />
+<em class="quotelev1">&gt; if I have
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; mask &quot;(:35.N4&lt;:5.5)&amp;:47-135&amp;( :<a href="mailto:LYS.NZ?Subject=Re%3A%20%5BAMBER%5D%20Mask%20behavior%20vs%20distance%20measurement%3F">LYS.NZ</a> | :ARG.NH1,NH2 | :GLU.OE1,OE2 |
+</em><br />
+<em class="quotelev2">&gt; &gt; :ASP.OD1,OD2 )&quot; maskout maskout_N4.dat
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; To measure any charged groups of the protein within 5.5 A of the N4 group
+</em><br />
+<em class="quotelev1">&gt; on a DNA base, it says frame 1 has both NH groups on an ARG within the
+</em><br />
+<em class="quotelev1">&gt; raidus,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; #Frame    AtomNum Atom   ResNum  Res   MolNum
+</em><br />
+<em class="quotelev2">&gt; &gt;        1     2527 NH1       108 ARG         3
+</em><br />
+<em class="quotelev2">&gt; &gt;        1     2530 NH2       108 ARG         3
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; But when I try to fetch the distance via
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; distance dN4 :35.N4 :108.NH1 out dist&#46;<!--nospam-->m35N4-108.dat noimage
+</em><br />
+<em class="quotelev2">&gt; &gt; distance dN4b :35.N4 :108.NH2 out dist&#46;<!--nospam-->m35N4b-108.dat noimage
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The distance I get for both sets say that it's mugh further than the 5.5
+</em><br />
+<em class="quotelev1">&gt; radius of mask?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;        1       6.4996
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt;        1       5.7482
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; My first thought is I've somehow messed up the selection algebra in the
+</em><br />
+<em class="quotelev1">&gt; mask portion, but I can't seem to find an actual error in it?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Kenneth
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; --
+</em><br />
+<em class="quotelev1">&gt; Ask yourselves, all of you, what power would hell have if those imprisoned
+</em><br />
+<em class="quotelev1">&gt; here could not dream of heaven?
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Jul 09 2020 - 19:30:04 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0143.html" title="Next message in the list">Feng Pan: "Re: [AMBER] nmropt vs infe"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0141.html" title="Previous message in the list">Sally Pias: "Re: [AMBER] Barostat and thermostat for membrane protein-ligand simulation"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0139.html" title="Message to which this message replies">Kenneth Huang: "[AMBER] Mask behavior vs distance measurement?"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0147.html" title="Next message in this discussion thread">Kenneth Huang: "Re: [AMBER] Mask behavior vs distance measurement?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0147.html" title="Message sent in reply to this message">Kenneth Huang: "Re: [AMBER] Mask behavior vs distance measurement?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg142" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg142" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg142" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg142" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

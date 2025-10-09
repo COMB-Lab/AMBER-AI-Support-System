@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] ValueError: could not convert string to float: ********* Error occured on rank 0. Exiting. All files have been retained. from David Case on 2020-01-16 (Amber Archive Jan 2020)</title>
+<meta name="Author" content="David Case (david.case.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] ValueError: could not convert string to float: ********* Error occured on rank 0. Exiting. All files have been retained." />
+<meta name="Date" content="2020-01-16" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] ValueError: could not convert string to float: ********* Error occured on rank 0. Exiting. All files have been retained.</h1>
+<!-- received="Thu Jan 16 06:00:04 2020" -->
+<!-- isoreceived="20200116140004" -->
+<!-- sent="Thu, 16 Jan 2020 13:36:00 +0000" -->
+<!-- isosent="20200116133600" -->
+<!-- name="David Case" -->
+<!-- email="david.case.rutgers.edu" -->
+<!-- subject="Re: [AMBER] ValueError: could not convert string to float: ********* Error occured on rank 0. Exiting. All files have been retained." -->
+<!-- id="20200116133559.q3ib5lukmwsge3xa.godel.rutgers.edu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CA+Hq8HwD90jPwCaL0xEB23h7rh4AK5c-dwOpUvqJ8=rfyqZqXg.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0184.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] Reg. Centering of Molecule and Periodic Boundary Conditions&quot;">Next message</a> ]
+[ <a href="0182.html" title="Casalini  Tommaso: &quot;Re: [AMBER] Issues with Umbrella Sampling Simulations involving	lipid bilayer&quot;">Previous message</a> ]
+[ <a href="0178.html" title="Neha Gandhi: &quot;[AMBER] ValueError: could not convert string to float: ********* Error occured on rank 0. Exiting. All files have been retained.&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg183" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg183" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg183" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg183" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David Case &lt;<a href="mailto:david.case.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20ValueError%3A%20could%20not%20convert%20string%20to%20float%3A%20*********%20Error%20occured%20on%20rank%200.%20Exiting.%20All%20files%20have%20been%20retained.">david.case.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 16 Jan 2020 13:36:00 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Thu, Jan 16, 2020, Neha Gandhi wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;I am running mmgbsa and single residue decomposition. It threw following
+</em><br />
+<em class="quotelev1">&gt;error &quot;ValueError: could not convert string to float: *********
+</em><br />
+<br />Look at your trajectory file with a text editor: you will see that there
+<br />
+are coordinates that are too large to fit into the space allowed, and
+<br />
+are indicated by stars.
+<br />
+<br />Simplest thing usually is to set ioutfm=1, and write to a netCDF
+<br />
+trajectory format.  However, there may also be something wrong with your
+<br />
+system, and it is &quot;blowing up&quot; somehow.  Be sure to visualize things
+<br />
+with a program like chimera or VMD or pymol, to help make sure that you
+<br />
+are not sending bad results to MM_PBSA.
+<br />
+<br />Note also the opinion of many: for snapshot analysis (like MM_PB/GBSA),
+<br />
+the PB model is generally more robust than in GB.  GB can be very useful
+<br />
+for running trajectories, since it is fast, and can be applied at every
+<br />
+step.  But where speed is not needed so much, PB can be very helpful.
+<br />
+So, at the least, consider running MM_PBSA alongside MM_GBSA.
+<br />
+<br />....dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Jan 16 2020 - 06:00:04 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0184.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] Reg. Centering of Molecule and Periodic Boundary Conditions"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0182.html" title="Previous message in the list">Casalini  Tommaso: "Re: [AMBER] Issues with Umbrella Sampling Simulations involving	lipid bilayer"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0178.html" title="Message to which this message replies">Neha Gandhi: "[AMBER] ValueError: could not convert string to float: ********* Error occured on rank 0. Exiting. All files have been retained."</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg183" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg183" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg183" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg183" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

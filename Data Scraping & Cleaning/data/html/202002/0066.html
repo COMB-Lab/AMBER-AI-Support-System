@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Shaw DE RNA ff in Amber format from Cavender, Chapin on 2020-02-06 (Amber Archive Feb 2020)</title>
+<meta name="Author" content="Cavender, Chapin (Chapin_Cavender.URMC.Rochester.edu)" />
+<meta name="Subject" content="Re: [AMBER] Shaw DE RNA ff in Amber format" />
+<meta name="Date" content="2020-02-06" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Shaw DE RNA ff in Amber format</h1>
+<!-- received="Thu Feb  6 13:30:02 2020" -->
+<!-- isoreceived="20200206213002" -->
+<!-- sent="Thu, 6 Feb 2020 21:23:53 +0000" -->
+<!-- isosent="20200206212353" -->
+<!-- name="Cavender, Chapin" -->
+<!-- email="Chapin_Cavender.URMC.Rochester.edu" -->
+<!-- subject="Re: [AMBER] Shaw DE RNA ff in Amber format" -->
+<!-- id="1581024233028.56867.URMC.Rochester.edu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="mailman.1.1581019201.9350.amber.ambermd.org" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0067.html" accesskey="d" title="David S&#0225;ez: &quot;[AMBER] On QM/MM dummy atom and deprotonated TYR&quot;">Next message</a> ]
+[ <a href="0065.html" title="Annachiara TINIVELLA: &quot;Re: [AMBER] sulfonamide parameters for correct geometry&quot;">Previous message</a> ]
+[ <a href="0063.html" title="Josh Berryman: &quot;Re: [AMBER] Shaw DE RNA ff in Amber format&quot;">Maybe in reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg66" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg66" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg66" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg66" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Cavender, Chapin &lt;<a href="mailto:Chapin_Cavender.URMC.Rochester.edu?Subject=Re%3A%20%5BAMBER%5D%20Shaw%20DE%20RNA%20ff%20in%20Amber%20format">Chapin_Cavender.URMC.Rochester.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 6 Feb 2020 21:23:53 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+<em class="quotelev1">&gt; Hi Amir, I wrote a script that calls parmed to convert an existing amber
+</em><br />
+<em class="quotelev1">&gt; topology to have the DES partial charges etc.
+</em><br />
+<br />As far as I can tell, this script will update the nonbonded parameters but not the torsions, of which Tan et al. changed gamma, zeta, and chi for each nucleobase. Thus, it is an incomplete implementation of the DES RNA force field.
+<br />
+<br />A full implementation of this force field is included in the supporting information of this publication: https://pubs.acs.org/doi/10.1021/acs.jctc.8b00955
+<br />
+<br />Note that it is required to use both the TIP4P-D water model (Amber file included in the above publication) and the CHARMM22 parameters for monovalent ions (not included in the above publication) in order to match the conditions used in Tan et al. (2018). Here is an Amber frcmod file for the CHARMM22 parameters for Na+, K+, Cl-, and Mg2+:
+<br />
+<br />Ion parameters from CHARMM22
+<br />
+MASS
+<br />
+Na+  22.99         0.250               sodium    pol: J. Phys. Chem. 11,1541,(1978)
+<br />
+K+   39.10         1.060               potassium
+<br />
+Cl-  35.45         1.910               chlorine  (Applequist)
+<br />
+Mg2+ 24.305
+<br />
+&nbsp;
+<br />
+NONBON
+<br />
+&nbsp;&nbsp;Na+      1.36375   0.0469
+<br />
+&nbsp;&nbsp;K+       1.76375   0.0870
+<br />
+&nbsp;&nbsp;Cl-      2.27      0.150
+<br />
+&nbsp;&nbsp;Mg2+     1.18500   0.0150
+<br />
+<br />Best,
+<br />
+Chapin Cavender
+<br />
+PhD student, Dave Mathews lab
+<br />
+Department of Biochemistry &amp; Biophysics
+<br />
+University of Rochester School of Medicine &amp; Dentistry
+<br />
+________________________________________
+<br />
+<br />Date: Thu, 6 Feb 2020 14:34:00 +0100
+<br />
+From: Josh Berryman &lt;the.real.josh.berryman.gmail.com&gt;
+<br />
+Subject: Re: [AMBER] Shaw DE RNA ff in Amber format
+<br />
+To: AMBER Mailing List &lt;amber.ambermd.org&gt;,     amirhossein taghavi
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;taghavi.amirhossein.gmail.com&gt;
+<br />
+Message-ID:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CANRE9HVz7P8YL2B3eOUXG72-cj7dcDwCY8WczbTy-heNZ6GvHQ.mail.gmail.com&gt;
+<br />
+Content-Type: text/plain; charset=&quot;UTF-8&quot;
+<br />
+<br />Hi Amir, I wrote a script that calls parmed to convert an existing amber
+<br />
+topology to have the DES partial charges etc.
+<br />
+<br />I'll paste it below
+<br />
+#############################
+<br />
+#!/bin/bash
+<br />
+<br />inParm=$1
+<br />
+if [ -s &quot;$inParm&quot; ]
+<br />
+then
+<br />
+&nbsp;&nbsp;&nbsp;echo &quot;reading paramset from $inParm&quot;
+<br />
+else
+<br />
+&nbsp;&nbsp;&nbsp;echo &quot;require input parm: .${inParm}. is not present&quot;
+<br />
+&nbsp;&nbsp;&nbsp;exit 1
+<br />
+fi
+<br />
+<br />rm -f setDES.prmed
+<br />
+<br />###define a pattern for charge modifications
+<br />
+chrg_pattern=&quot;BASE ATOM FF14 NEW&quot;
+<br />
+declare -a cplist=(
+<br />
+&quot;DC N4  -0.9530 -0.8716&quot;
+<br />
+&quot;DC H41 +0.4234 +0.3827&quot;
+<br />
+&quot;DC H42 +0.4234 +0.3827&quot;
+<br />
+&quot;DT N3  -0.3549 -0.3913&quot;
+<br />
+&quot;DT H3  +0.3154 +0.3518&quot;
+<br />
+&quot;DG N1  -0.4787 -0.5606&quot;
+<br />
+&quot;DG H1  +0.3424 +0.4243&quot;
+<br />
+&quot;DG N2  -0.9672 -1.0158&quot;
+<br />
+&quot;DG H21 +0.4364 +0.4607&quot;
+<br />
+&quot;DG H22 +0.4364 +0.4607&quot;
+<br />
+&quot;DA N1  -0.7615 -0.7969&quot;
+<br />
+&quot;DA H2  +0.0473 +0.0650&quot;
+<br />
+&quot;DA N6  -0.9019 -1.0088&quot;
+<br />
+&quot;DA H61 +0.4115 +0.4738&quot;
+<br />
+&quot;DA H62 +0.4115 +0.4738&quot;
+<br />
+)
+<br />
+n_cp=${#cplist[.]}
+<br />
+for i in `seq 0 $[n_cp - 1]`
+<br />
+do
+<br />
+&nbsp;&nbsp;&nbsp;pattern=${cplist[$i]}
+<br />
+&nbsp;&nbsp;&nbsp;echo &quot;applying charge pattern $i: $pattern&quot;
+<br />
+&nbsp;&nbsp;&nbsp;echo $pattern |\
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;awk '{printf(&quot;printDetails  :%s*.%s\n&quot;,$1,$2);\
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(&quot;change CHARGE :%s*.%s %s\n&quot;,$1,$2,$4)}' &gt;&gt; setDES.prmed
+<br />
+done
+<br />
+vdw_pattern=&quot;at_type sigma_old sigma_new eps_old eps_new master_mask&quot;
+<br />
+declare -a vdwlist=(
+<br />
+&quot;H   1.0691   0.0000  0.0157  0.0000
+<br />
+(:DG=.H1,H21,H22)|(:DA=.H61,H62)|(:DC=.H41,H42)|(:DT=.H3)&quot;
+<br />
+&quot;NA  3.2500   3.2890  0.1700  0.1700 (:DG=.N7,N9)|(:DA=.N1,N3,N7,N9)&quot;
+<br />
+&quot;NN  3.2500   3.3507  0.1700  0.1700
+<br />
+(:DG=.N1,N2,N3)|(:DA=.N6)|(:DT=.N1,N3)|(:DC=.N1,N3,N4)&quot;
+<br />
+&quot;CA  3.3997   3.3004  0.0860  0.0636 (:DA=.C2,C4,C5,C6,C8)&quot;
+<br />
+&quot;CN  3.3997   3.2850  0.0860  0.0538
+<br />
+(:DG=.C2,C4,C6,C6,C8)|(:DC=.C2,C4,C5,C6)|(:DT=.C2,C4,C5,C6)&quot;
+<br />
+)
+<br />
+<br />##new name _ residue _ list of old names
+<br />
+declare -a atname_matches=(
+<br />
+&quot;NN DG* .N1  .N2  .N3&quot;
+<br />
+&quot;CN DG* .C2  .C4  .C5 .C6 .C8&quot;
+<br />
+&quot;NA DG* .N7  .N9&quot;
+<br />
+&quot;H  DG* .H1  .H21 .H22&quot;
+<br />
+&quot;NA DA* .N1  .N3  .N7 .N9&quot;
+<br />
+&quot;NN DA* .N6&quot;
+<br />
+&quot;CA DA* .C2  .C4  .C5 .C6 .C8&quot;
+<br />
+&quot;H  DA* .H61 .H62&quot;
+<br />
+&quot;NN DC* .N1  .N3  .N4&quot;
+<br />
+&quot;CN DC* .C2  .C4  .C5 .C6&quot;
+<br />
+&quot;H  DC* .H41 .H42&quot;
+<br />
+&quot;NN DT* .N1  .N3&quot;
+<br />
+&quot;CN DT* .C2  .C4  .C5 .C6&quot;
+<br />
+&quot;NN DT* .N1  .N3&quot;
+<br />
+&quot;H  DT* .H3&quot;
+<br />
+)
+<br />
+<br /><br />n_vd=${#vdwlist[.]}
+<br />
+n_atpats=${#atname_matches[.]}
+<br />
+for i in `seq 0 $[n_vd - 1]`
+<br />
+do
+<br />
+&nbsp;&nbsp;&nbsp;pattern=${vdwlist[$i]}
+<br />
+&nbsp;&nbsp;&nbsp;echo &quot;applying vdw pattern $i: $pattern&quot;
+<br />
+&nbsp;&nbsp;&nbsp;newAtName=$(echo $pattern | awk '{print $1}')
+<br />
+&nbsp;&nbsp;&nbsp;regexp=$(echo $pattern  | awk '{print $NF}')
+<br />
+&nbsp;&nbsp;&nbsp;##parmed takes Rmin as input.
+<br />
+&nbsp;&nbsp;&nbsp;##the paper gives sigma: not the same.
+<br />
+&nbsp;&nbsp;&nbsp;radius=$(echo $pattern  | awk '{print 0.5*(2**(1./6.))*$3}')
+<br />
+&nbsp;&nbsp;&nbsp;epsilon=$(echo $pattern | awk '{print $5}')
+<br />
+&nbsp;&nbsp;&nbsp;echo &quot;printLJMatrix 1&quot;                                   &gt;&gt; setDES.prmed
+<br />
+&nbsp;&nbsp;&nbsp;echo &quot;printDetails $regexp&quot;                              &gt;&gt; setDES.prmed
+<br />
+<br />&nbsp;&nbsp;&nbsp;echo &quot;addLJType $regexp radius $radius epsilon $epsilon&quot; &gt;&gt; setDES.prmed
+<br />
+&nbsp;&nbsp;&nbsp;echo &quot;printDetails $regexp&quot;                              &gt;&gt; setDES.prmed
+<br />
+&nbsp;&nbsp;&nbsp;echo &quot;printLJMatrix 1&quot;                                   &gt;&gt; setDES.prmed
+<br />
+done
+<br />
+echo &quot;parmout $1.des&quot; &gt;&gt; setDES.prmed
+<br />
+<br />rm -f $1.des
+<br />
+parmed $1 &lt; setDES.prmed
+<br />
+<br /><br /><br /><br />On Thu, 23 Jan 2020 at 23:00, amirhossein taghavi &lt;
+<br />
+taghavi.amirhossein.gmail.com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hello all,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Does anyone have the DE Shaw ff for RNA  in Amber format:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Proc Natl Acad Sci U S A. 2018 Feb 13;115(7):E1346-E1355.
+</em><br />
+<em class="quotelev1">&gt; &quot;RNA force field with accuracy comparable to state-of-the-art protein orce
+</em><br />
+<em class="quotelev1">&gt; fields.&quot; Tan D, Piana S, Dirks RM, Shaw DE.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I saw Prof. Case asked this on Amber-developers but can not find any
+</em><br />
+<em class="quotelev1">&gt; answer.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks in forward.
+</em><br />
+<em class="quotelev1">&gt; Cheers,
+</em><br />
+<em class="quotelev1">&gt; Amir
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwICAg&amp;c=4sF48jRmVAe_CH-k9mXYXEGfSnM3bY53YSKuLUQRxhA&amp;r=E2G_FiEtGhStTPYmNtsKk1lRtqjn8haGVq3W8F23rEPZ9zK1SwNK3Gk-rV9NMQ5E&amp;m=r2Jw6S8IynRPd4GbyXX3FxpSJOFa23qvuioQJ98ysFs&amp;s">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwICAg&amp;c=4sF48jRmVAe_CH-k9mXYXEGfSnM3bY53YSKuLUQRxhA&amp;r=E2G_FiEtGhStTPYmNtsKk1lRtqjn8haGVq3W8F23rEPZ9zK1SwNK3Gk-rV9NMQ5E&amp;m=r2Jw6S8IynRPd4GbyXX3FxpSJOFa23qvuioQJ98ysFs&amp;s</a>=_rAV3gSdXEgdh2KV5q69v4acCUjQCxfbl-3Skv0FjMs&amp;e=
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Feb 06 2020 - 13:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0067.html" title="Next message in the list">David S&#0225;ez: "[AMBER] On QM/MM dummy atom and deprotonated TYR"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0065.html" title="Previous message in the list">Annachiara TINIVELLA: "Re: [AMBER] sulfonamide parameters for correct geometry"</a></li>
+<li><dfn>Maybe in reply to</dfn>: <a href="0063.html" title="Message to which this message replies">Josh Berryman: "Re: [AMBER] Shaw DE RNA ff in Amber format"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg66" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg66" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg66" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg66" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

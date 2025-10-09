@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Query regarding 3DRISM in Amber with CHARMM force field from Tyler Luchko (Lists) on 2020-02-12 (Amber Archive Feb 2020)</title>
+<meta name="Author" content="Tyler Luchko (Lists) ("Tyler)" />
+<meta name="Subject" content="Re: [AMBER] Query regarding 3DRISM in Amber with CHARMM force field" />
+<meta name="Date" content="2020-02-12" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Query regarding 3DRISM in Amber with CHARMM force field</h1>
+<!-- received="Wed Feb 12 10:30:02 2020" -->
+<!-- isoreceived="20200212183002" -->
+<!-- sent="Wed, 12 Feb 2020 10:05:06 -0800" -->
+<!-- isosent="20200212180506" -->
+<!-- name="Tyler Luchko (Lists)" -->
+<!-- email=""Tyler" -->
+<!-- subject="Re: [AMBER] Query regarding 3DRISM in Amber with CHARMM force field" -->
+<!-- id="2BD44CE4-C262-45F6-8928-110C05DD319B.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAC6hn052mj-x=zmsvtT=5Y1fYfXBa2vmuEJHsZ4i7PQSf01BKg.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0102.html" accesskey="d" title="Eduardo R. Almeida: &quot;[AMBER] Simulation of an asymmetric membrane model&quot;">Next message</a> ]
+[ <a href="0100.html" title="Abhilash J: &quot;Re: [AMBER] AMBER 18 installation issue&quot;">Previous message</a> ]
+[ <a href="0096.html" title="Rakesh Srivastava: &quot;[AMBER] Query regarding 3DRISM in Amber with CHARMM force field&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg101" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg101" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg101" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg101" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Tyler Luchko (Lists) &lt;<a href="mailto:%22Tyler?Subject=Re%3A%20%5BAMBER%5D%20Query%20regarding%203DRISM%20in%20Amber%20with%20CHARMM%20force%20field">"Tyler</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 12 Feb 2020 10:05:06 -0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Rakesh,
+<br />
+<br />Check to see if the prmtop has periodic boundary conditions.  You can tell by looking in the prmtop for
+<br />
+<br />%FLAG BOX_DIMENSIONS
+<br />
+<br />3D-RISM doesn’t care about this information but the SFF library that is also used seems to have problems with it.  
+<br />
+<br />To get rid of this information, make sure to use the 'nobox’  flag when stripping solvent.  If the solvent is already removed, you can get rid of the box information with the command
+<br />
+<br />strip ‘’ nobox
+<br />
+<br />Hope this helps,
+<br />
+<br />Tyler
+<br />
+<br /><em class="quotelev1">&gt; On Feb 11, 2020, at 10:46 PM, Rakesh Srivastava &lt;allahabad.21.gmail&#46;<!--nospam-->com&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Dear Amber users,
+</em><br />
+<em class="quotelev1">&gt; I have a small protein of 34 residues, There are two unusual amino acids
+</em><br />
+<em class="quotelev1">&gt; whose CHARMM force field parameters were used and MD simulation was
+</em><br />
+<em class="quotelev1">&gt; performed on GROMACS with the CHARMM36 force field. Then I converted the
+</em><br />
+<em class="quotelev1">&gt; trajectory into Amber trajectory using MD convert tool and prepared the
+</em><br />
+<em class="quotelev1">&gt; prmtop file using parmed.
+</em><br />
+<em class="quotelev1">&gt; The MMPBSA calculation is running fine with new trajectory and prmtop file
+</em><br />
+<em class="quotelev1">&gt; in Amber but when I am trying to run the 3DRISM calculation, I get
+</em><br />
+<em class="quotelev1">&gt; following error:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Running MME
+</em><br />
+<em class="quotelev1">&gt; FATAL: allocation failure in ivector()
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Can anyone help me out here?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Thanks in advance.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Rakesh Srivastava
+</em><br />
+<em class="quotelev1">&gt; Research Fellow
+</em><br />
+<em class="quotelev1">&gt; School of Computational &amp; Integrative Sciences
+</em><br />
+<em class="quotelev1">&gt; Jawaharlal Nehru University, New Delhi-110067
+</em><br />
+<em class="quotelev1">&gt; India
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Feb 12 2020 - 10:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0102.html" title="Next message in the list">Eduardo R. Almeida: "[AMBER] Simulation of an asymmetric membrane model"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0100.html" title="Previous message in the list">Abhilash J: "Re: [AMBER] AMBER 18 installation issue"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0096.html" title="Message to which this message replies">Rakesh Srivastava: "[AMBER] Query regarding 3DRISM in Amber with CHARMM force field"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg101" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg101" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg101" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg101" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

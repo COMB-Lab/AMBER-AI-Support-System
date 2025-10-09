@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Minimization erro from Debarati DasGupta on 2020-06-23 (Amber Archive Jun 2020)</title>
+<meta name="Author" content="Debarati DasGupta (debarati_dasgupta.hotmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Minimization erro" />
+<meta name="Date" content="2020-06-23" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Minimization erro</h1>
+<!-- received="Tue Jun 23 16:00:03 2020" -->
+<!-- isoreceived="20200623230003" -->
+<!-- sent="Tue, 23 Jun 2020 22:50:09 +0000" -->
+<!-- isosent="20200623225009" -->
+<!-- name="Debarati DasGupta" -->
+<!-- email="debarati_dasgupta.hotmail.com" -->
+<!-- subject="Re: [AMBER] Minimization erro" -->
+<!-- id="DM6PR20MB2571054C49E02C7A92734D289D940.DM6PR20MB2571.namprd20.prod.outlook.com" -->
+<!-- charset="iso-8859-1" -->
+<!-- inreplyto="CALoSBphwg1f8KqJVEzANmGAzZUyHbcSpLPU2F4eB-y=7ZOiGFA.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0214.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] Minimization erro&quot;">Next message</a> ]
+[ <a href="0212.html" title="Wesley Michael Botello-Smith: &quot;Re: [AMBER] nmropt vs infe&quot;">Previous message</a> ]
+[ <a href="0211.html" title="Renato Araujo: &quot;[AMBER] Minimization erro&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0214.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] Minimization erro&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg213" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg213" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg213" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg213" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Debarati DasGupta &lt;<a href="mailto:debarati_dasgupta.hotmail.com?Subject=Re%3A%20%5BAMBER%5D%20Minimization%20erro">debarati_dasgupta.hotmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 23 Jun 2020 22:50:09 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello Renato,
+<br />
+I have faced  a similar error on protein minimizations especially if the system is energetically unfavourable conformation.
+<br />
+But first, I would set ntpr=1, see the output at each small step and see at what NSTEP does the segfault happen.
+<br />
+Lastly I sometimes have to play with the tolerance value (see tol=0.0001) That  helps at times.
+<br />
+Lastly you may need to put restraint on the protein backbone and slowly release the restrain weight from 10 to 8  to 5 to 2 .. then finally bring it to unrestrained minimization.
+<br />
+Thanks
+<br />
+Debarati
+<br />
+From: Renato Araujo&lt;mailto:renatoacufpa.gmail.com&gt;
+<br />
+Sent: 23 June 2020 15:06
+<br />
+To: AMBER Mailing List&lt;mailto:amber.ambermd.org&gt;
+<br />
+Subject: [AMBER] Minimization erro
+<br />
+<br />Hello everyone
+<br />
+<br />I'm doing four minimization steps as follows:
+<br />
+In the first, you specify the water and ion residues (cl- or Na +).
+<br />
+In the second, only the protein residues (H minimization);
+<br />
+In the third, it specifies protein + water (Leaving ions out).
+<br />
+The last is a general minimization, I don't specify anything.
+<br />
+<br />The first three steps occur without errors, but the last one gives this
+<br />
+messages in the terminal:
+<br />
+<br />Program received signal SIGSEGV: Segmentation fault - invalid memory
+<br />
+reference.
+<br />
+<br />Backtrace for this error:
+<br />
+<br />Program received signal SIGSEGV: Segmentation fault - invalid memory
+<br />
+reference.
+<br />
+<br />Backtrace for this error:
+<br />
+#0  0x7f53f713732a
+<br />
+#1  0x7f53f7136503
+<br />
+#2  0x7f53f6594f1f
+<br />
+#3  0x561510ec46e8
+<br />
+#4  0x561510ec6798
+<br />
+#5  0x561511138083
+<br />
+#6  0x561510e36c45
+<br />
+#7  0x561510e2ca88
+<br />
+#8  0x561510e2cb6b
+<br />
+#9  0x7f53f6577b96
+<br />
+#10  0x561510da5669
+<br />
+#11  0xffffffffffffffff
+<br />
+#0  0x7f0e812e232a
+<br />
+#1  0x7f0e812e1503
+<br />
+#2  0x7f0e8073ff1f
+<br />
+#3  0x5578bfc666e8
+<br />
+#4  0x5578bfc68798
+<br />
+#5  0x5578bfeda083
+<br />
+#6  0x5578bfbd8c45
+<br />
+#7  0x5578bfbcea88
+<br />
+#8  0x5578bfbceb6b
+<br />
+#9  0x7f0e80722b96
+<br />
+#10  0x5578bfb47669
+<br />
+#11  0xffffffffffffffff
+<br />
+--------------------------------------------------------------------------
+<br />
+mpirun noticed that process rank 1 with PID 0 on node renato exited on
+<br />
+signal 11 (Segmentation fault).
+<br />
+My output is as follows:
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------------------------
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Amber 18 SANDER                              2018
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------------------------
+<br />
+<br />| Run on 06/23/2020 at 11:26:48
+<br />
+<br />|   Executable path: sander.MPI
+<br />
+| Working directory: /home/renato/Documentos/DM_dengue/lig_13f/min
+<br />
+|          Hostname: Unknown
+<br />
+&nbsp;&nbsp;[-O]verwriting output
+<br />
+<br />File Assignments:
+<br />
+|  MDIN: mdin_min4
+<br />
+<br />| MDOUT: min4.out
+<br />
+<br />|INPCRD: min3.rst
+<br />
+<br />|  PARM: complex_solv.prmtop
+<br />
+<br />|RESTRT: min4.rst
+<br />
+<br />|  REFC: refc
+<br />
+<br />| MDVEL: mdvel
+<br />
+<br />| MDFRC: mdfrc
+<br />
+<br />|  MDEN: mden
+<br />
+<br />| MDCRD: mdcrd
+<br />
+<br />|MDINFO: mdinfo
+<br />
+<br />|  MTMD: mtmd
+<br />
+<br />|INPDIP: inpdip
+<br />
+<br />|RSTDIP: rstdip
+<br />
+<br />|INPTRA: inptraj
+<br />
+<br /><br />|    REMLOG: rem.log
+<br />
+|   REMTYPE: rem.type
+<br />
+|  REMSTRIP:
+<br />
+|   SAVEENE: saveene
+<br />
+|CLUSTERINF: cluster.info
+<br />
+| RESERVOIR: reserv/frame
+<br />
+|   REMDDIM:
+<br />
+<br /><br />&nbsp;Here is the input file:
+<br />
+<br />Mnimization ALL
+<br />
+<br />&amp;cntrl
+<br />
+<br />&nbsp;imin=1, ntx=1,
+<br />
+<br />&nbsp;ntpr=1000, ntwr=5000, ibelly=0,
+<br />
+<br />&nbsp;maxcyc=10000, ncyc=5000,
+<br />
+<br />&amp;end
+<br />
+<br /><br />--------------------------------------------------------------------------------
+<br />
+&nbsp;&nbsp;&nbsp;1.  RESOURCE   USE:
+<br />
+--------------------------------------------------------------------------------
+<br />
+<br />| Flags: MPI
+<br />
+<br />&nbsp;getting box info from netcdf restart file
+<br />
+| NetCDF restart box info found
+<br />
+|Largest sphere to fit in unit cell has radius =    31.401
+<br />
+| New format PARM file being parsed.
+<br />
+| Version =    1.000 Date = 06/22/20 Time = 20:44:52
+<br />
+&nbsp;NATOM  =   30381 NTYPES =      20 NBONH =   28301 MBONA  =    2114
+<br />
+&nbsp;NTHETH =    4753 MTHETA =    2854 NPHIH =    9600 MPHIA  =    8877
+<br />
+&nbsp;NHPARM =       0 NPARM  =       0 NNB   =   57930 NRES   =    9008
+<br />
+&nbsp;NBONA  =    2114 NTHETA =    2854 NPHIA =    8877 NUMBND =      94
+<br />
+&nbsp;NUMANG =     208 NPTRA  =     213 NATYP =      54 NPHB   =       1
+<br />
+&nbsp;IFBOX  =       2 NMXRS  =      40 IFCAP =       0 NEXTRA =       0
+<br />
+&nbsp;NCOPY  =       0
+<br />
+<br /><br />|     Memory Use     Allocated
+<br />
+|     Real             2549560
+<br />
+|     Hollerith         100153
+<br />
+|     Integer          1599490
+<br />
+|     Max Pairs        1265875
+<br />
+|     nblistReal        364572
+<br />
+|     nblist Int       1126788
+<br />
+|       Total            38752 kbytes
+<br />
+<br />| Note: 1-4 EEL scale factors are being read from the topology file.
+<br />
+<br />| Note: 1-4 VDW scale factors are being read from the topology file.
+<br />
+| Duplicated    0 dihedrals
+<br />
+| Duplicated    0 dihedrals
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BOX TYPE: TRUNCATED OCTAHEDRON
+<br />
+<br />--------------------------------------------------------------------------------
+<br />
+&nbsp;&nbsp;&nbsp;2.  CONTROL  DATA  FOR  THE  RUN
+<br />
+--------------------------------------------------------------------------------
+<br />
+<br />default_name
+<br />
+<br /><br />General flags:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imin    =       1, nmropt  =       0
+<br />
+<br />Nature and format of input:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntx     =       1, irest   =       0, ntrx    =       1
+<br />
+<br />Nature and format of output:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntxo    =       2, ntpr    =    1000, ntrx    =       1, ntwr    =
+<br />
+&nbsp;5000
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iwrap   =       0, ntwx    =       0, ntwv    =       0, ntwe    =
+<br />
+&nbsp;&nbsp;0
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ioutfm  =       1, ntwprt  =       0, idecomp =       0, rbornstat=
+<br />
+&nbsp;&nbsp;&nbsp;0
+<br />
+<br />Potential function:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntf     =       1, ntb     =       1, igb     =       0, nsnb    =
+<br />
+&nbsp;25
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipol    =       0, gbsa    =       0, iesp    =       0
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dielc   =   1.00000, cut     =   8.00000, intdiel =   1.00000
+<br />
+<br />Frozen or restrained atoms:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ibelly  =       0, ntr     =       0
+<br />
+<br />Energy minimization:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maxcyc  =   10000, ncyc    =    5000, ntmin   =       1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dx0     =   0.01000, drms    =   0.00010
+<br />
+<br />Ewald parameters:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verbose =       0, ew_type =       0, nbflag  =       1, use_pme =
+<br />
+&nbsp;&nbsp;1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vdwmeth =       1, eedmeth =       1, netfrc  =       0
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Box X =   76.918   Box Y =   76.918   Box Z =   76.918
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alpha =  109.471   Beta  =  109.471   Gamma =  109.471
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NFFT1 =   80       NFFT2 =   80       NFFT3 =   80
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cutoff=    8.000   Tol   =0.100E-04
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ewald Coefficient =  0.34864
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interpolation order =    4
+<br />
+<br />| MPI Timing options:
+<br />
+|      profile_mpi =        0
+<br />
+|  INFO: Old style inpcrd file read
+<br />
+<br /><br />--------------------------------------------------------------------------------
+<br />
+&nbsp;&nbsp;&nbsp;3.  ATOMIC COORDINATES AND VELOCITIES
+<br />
+--------------------------------------------------------------------------------
+<br />
+<br />default_name
+<br />
+<br />&nbsp;begin time read from input coords =     0.000 ps
+<br />
+<br />&nbsp;Number of triangulated 3-point waters found:     8738
+<br />
+|  Atom division among processors:
+<br />
+|         0    3798    7596   11391   15189   18987   22782   26580
+<br />
+|     30381
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sum of charges from parm topology file =  -0.00000008
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Forcing neutrality...
+<br />
+|  Running AMBER/MPI version on    8 nodes
+<br />
+<br /><br />--------------------------------------------------------------------------------
+<br />
+&nbsp;&nbsp;&nbsp;4.  RESULTS
+<br />
+--------------------------------------------------------------------------------
+<br />
+<br />&nbsp;---------------------------------------------------
+<br />
+&nbsp;APPROXIMATING switch and d/dx switch using CUBIC SPLINE INTERPOLATION
+<br />
+&nbsp;using   5000.0 points per unit in tabled values
+<br />
+&nbsp;TESTING RELATIVE ERROR over r ranging from 0.0 to cutoff
+<br />
+| CHECK switch(x): max rel err =   0.2738E-14   at   2.422500
+<br />
+| CHECK d/dx switch(x): max rel err =   0.8332E-11   at   2.782960
+<br />
+&nbsp;---------------------------------------------------
+<br />
+| Local SIZE OF NONBOND LIST =     698087
+<br />
+| TOTAL SIZE OF NONBOND LIST =    5569574
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;NSTEP       ENERGY          RMS            GMAX         NAME    NUMBER
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1      -1.2016E+05     3.1238E+00     1.9733E+02     CD        228
+<br />
+<br />&nbsp;BOND    =     9200.9187  ANGLE   =      618.0340  DIHED      =
+<br />
+3006.4760
+<br />
+&nbsp;VDWAALS =    21690.8594  EEL     =  -165137.8675  HBOND      =
+<br />
+&nbsp;0.0000
+<br />
+&nbsp;1-4 VDW =     1049.7757  1-4 EEL =     9412.6505  RESTRAINT  =
+<br />
+&nbsp;0.0000
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;NSTEP       ENERGY          RMS            GMAX         NAME    NUMBER
+<br />
+&nbsp;&nbsp;&nbsp;1000      -4.9483E+07     9.5761E+10     1.4210E+13     H        4117
+<br />
+<br />&nbsp;BOND    =     9379.9938  ANGLE   =      591.6063  DIHED      =
+<br />
+2912.8623
+<br />
+&nbsp;VDWAALS =    21737.5492  EEL     = *************  HBOND      =
+<br />
+&nbsp;0.0000
+<br />
+&nbsp;1-4 VDW =      827.5770  1-4 EEL =     8939.7758  RESTRAINT  =
+<br />
+&nbsp;0.0000
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;NSTEP       ENERGY          RMS            GMAX         NAME    NUMBER
+<br />
+&nbsp;&nbsp;&nbsp;2000      -1.9546E+08     1.4996E+12     2.2252E+14     H        4117
+<br />
+<br />&nbsp;BOND    =     9379.9933  ANGLE   =      591.6063  DIHED      =
+<br />
+2912.8623
+<br />
+&nbsp;VDWAALS =    21737.5484  EEL     = *************  HBOND      =
+<br />
+&nbsp;0.0000
+<br />
+&nbsp;1-4 VDW =      827.5770  1-4 EEL =     8939.7758  RESTRAINT  =
+<br />
+&nbsp;0.0000
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;NSTEP       ENERGY          RMS            GMAX         NAME    NUMBER
+<br />
+&nbsp;&nbsp;&nbsp;3000      -1.2560E+08     6.1884E+11     9.1827E+13     H        4117
+<br />
+<br />&nbsp;BOND    =     9379.9934  ANGLE   =      591.6063  DIHED      =
+<br />
+2912.8623
+<br />
+&nbsp;VDWAALS =    21737.5485  EEL     = *************  HBOND      =
+<br />
+&nbsp;0.0000
+<br />
+&nbsp;1-4 VDW =      827.5770  1-4 EEL =     8939.7758  RESTRAINT  =
+<br />
+&nbsp;0.0000
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;NSTEP       ENERGY          RMS            GMAX         NAME    NUMBER
+<br />
+&nbsp;&nbsp;&nbsp;4000      -4.9483E+07     9.5761E+10     1.4210E+13     H        4117
+<br />
+<br />&nbsp;BOND    =     9379.9938  ANGLE   =      591.6063  DIHED      =
+<br />
+2912.8623
+<br />
+&nbsp;VDWAALS =    21737.5492  EEL     = *************  HBOND      =
+<br />
+&nbsp;0.0000
+<br />
+&nbsp;1-4 VDW =      827.5770  1-4 EEL =     8939.7758  RESTRAINT  =
+<br />
+&nbsp;0.0000
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;NSTEP       ENERGY          RMS            GMAX         NAME    NUMBER
+<br />
+&nbsp;&nbsp;&nbsp;5000      -1.9546E+08     1.4996E+12     2.2252E+14     H        4117
+<br />
+<br />&nbsp;BOND    =     9379.9933  ANGLE   =      591.6063  DIHED      =
+<br />
+2912.8623
+<br />
+&nbsp;VDWAALS =    21737.5484  EEL     = *************  HBOND      =
+<br />
+&nbsp;0.0000
+<br />
+&nbsp;1-4 VDW =      827.5770  1-4 EEL =     8939.7758  RESTRAINT  =
+<br />
+&nbsp;0.0000
+<br />
+<br /><br />please suggestions for this error
+<br />
+<br />thank you
+<br />
+<pre>
+--
+Prof Dr Renato Costa
+Instituto Federal do Par� - IFPA
+Grupo de Modelagem Molecular - UFPA
+Tel.+55  91 985484622
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Jun 23 2020 - 16:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0214.html" title="Next message in the list">David A Case: "Re: [AMBER] Minimization erro"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0212.html" title="Previous message in the list">Wesley Michael Botello-Smith: "Re: [AMBER] nmropt vs infe"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0211.html" title="Message to which this message replies">Renato Araujo: "[AMBER] Minimization erro"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0214.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] Minimization erro"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg213" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg213" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg213" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg213" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Void bubbles forming in minimization with single nucleoside/solvent? from Kenneth Huang on 2022-02-02 (Amber Archive Feb 2022)</title>
+<meta name="Author" content="Kenneth Huang (khuang8.student.gsu.edu)" />
+<meta name="Subject" content="[AMBER] Void bubbles forming in minimization with single nucleoside/solvent?" />
+<meta name="Date" content="2022-02-02" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Void bubbles forming in minimization with single nucleoside/solvent?</h1>
+<!-- received="Wed Feb  2 10:30:02 2022" -->
+<!-- isoreceived="20220202183002" -->
+<!-- sent="Wed, 2 Feb 2022 18:05:52 +0000" -->
+<!-- isosent="20220202180552" -->
+<!-- name="Kenneth Huang" -->
+<!-- email="khuang8.student.gsu.edu" -->
+<!-- subject="[AMBER] Void bubbles forming in minimization with single nucleoside/solvent?" -->
+<!-- id="BN6PR0101MB3188AF8215ABA4180E111148A0279.BN6PR0101MB3188.prod.exchangelabs.com" -->
+<!-- charset="iso-8859-1" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0013.html" accesskey="d" title="gmx: &quot;Re: [AMBER] Mass-weighted covariance matrix&quot;">Next message</a> ]
+[ <a href="0011.html" title="Daniel Roe: &quot;Re: [AMBER] Mass-weighted covariance matrix&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0014.html" accesskey="t" title="Carlos Simmerling: &quot;Re: [AMBER] Void bubbles forming in minimization with single nucleoside/solvent?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg12" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg12" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg12" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg12" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Kenneth Huang &lt;<a href="mailto:khuang8.student.gsu.edu?Subject=Re%3A%20%5BAMBER%5D%20Void%20bubbles%20forming%20in%20minimization%20with%20single%20nucleoside%2Fsolvent%3F">khuang8.student.gsu.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 2 Feb 2022 18:05:52 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi all,
+<br />
+<br />I'm having an unusual situation where I have a single nucleoside (DTN in this case) in a water box with salt on Amber16, but it keeps crashing during production. I went back and double checked, and noticed there was some very odd behavior with void bubbles forming during the initial minimization (attached), ie if I run it with
+<br />
+<br />mpirun --bind-to core -np 6 ${AMBERHOME}/amber16/bin/pmemd.MPI -O -i 01a_sol_min.in -p *.prmtop -c *.inpcrd -o 01a_sol_min.out -r 01a_sol_min.rst -ref *.inpcrd
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;imin   = 1,
+<br />
+&nbsp;&nbsp;maxcyc = 2000,
+<br />
+&nbsp;&nbsp;ncyc   = 1000,
+<br />
+&nbsp;&nbsp;ntmin   = 1,
+<br />
+&nbsp;&nbsp;ntb    = 1,
+<br />
+&nbsp;&nbsp;ntr    = 1,
+<br />
+&nbsp;&nbsp;ntpr   = 500,
+<br />
+&nbsp;&nbsp;cut    = 8.0
+<br />
+&nbsp;/
+<br />
+Hold only DNA+protein fixed
+<br />
+500.0
+<br />
+RES 1 1
+<br />
+END
+<br />
+END
+<br />
+Some very large gaps form in the solvent which by the point it hits production I'm guessing it can't resolve, but I can't think of why that'd be? I did a fairly standard setup for the system with
+<br />
+<br />source leaprc.DNA.OL15
+<br />
+source leaprc.water.tip3p
+<br />
+loadamberparams frcmod.ionsjc_tip3p
+<br />
+m1 = loadpdb DTN_21.pdb
+<br />
+solvateOct m1 TIP3PBOX 10.0 iso 1.0
+<br />
+addIons m1 Na+ 0
+<br />
+addIons m1 Cl- 0
+<br />
+addIonsRand m1 Na+ 2
+<br />
+addIonsRand m1 Cl- 2
+<br />
+saveamberparm m1 DTN_21.prmtop DTN_21.inpcrd
+<br />
+savepdb m1 check_DTN_21.pdb
+<br />
+quit
+<br />
+<br />I've managed to get other nucleosides to finish without any issues so far, but I'm scratching my head of what'd be wrong, or if I had missed something obvious?
+<br />
+<br />Best,
+<br />
+<br />Kenneth
+<br />
+<br /><br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>application/x-shellscript attachment: <a href="att-0012/amberrun.sh">amberrun.sh</a></li>
+</ul>
+<!-- attachment="amberrun.sh" -->
+<ul>
+<li>application/x-aportisdoc attachment: <a href="att-0012/01_min.pdb">01_min.pdb</a></li>
+</ul>
+<!-- attachment="01_min.pdb" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0012/01a_sol_min.rst">01a_sol_min.rst</a></li>
+</ul>
+<!-- attachment="01a_sol_min.rst" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0012/DTN_21.prmtop">DTN_21.prmtop</a></li>
+</ul>
+<!-- attachment="DTN_21.prmtop" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0012/DTN_21.inpcrd">DTN_21.inpcrd</a></li>
+</ul>
+<!-- attachment="DTN_21.inpcrd" -->
+<ul>
+<li>application/octet-stream attachment: <a href="att-0012/01a_sol_min.in">01a_sol_min.in</a></li>
+</ul>
+<!-- attachment="01a_sol_min.in" -->
+<ul>
+<li>application/x-aportisdoc attachment: <a href="att-0012/DTN_21.pdb">DTN_21.pdb</a></li>
+</ul>
+<!-- attachment="DTN_21.pdb" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Wed Feb 02 2022 - 10:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0013.html" title="Next message in the list">gmx: "Re: [AMBER] Mass-weighted covariance matrix"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0011.html" title="Previous message in the list">Daniel Roe: "Re: [AMBER] Mass-weighted covariance matrix"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0014.html" title="Next message in this discussion thread">Carlos Simmerling: "Re: [AMBER] Void bubbles forming in minimization with single nucleoside/solvent?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0014.html" title="Message sent in reply to this message">Carlos Simmerling: "Re: [AMBER] Void bubbles forming in minimization with single nucleoside/solvent?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg12" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg12" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg12" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg12" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

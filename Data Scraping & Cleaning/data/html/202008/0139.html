@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Amber20 install problem （Geng Dong） from Gustaf Olsson on 2020-08-20 (Amber Archive Aug 2020)</title>
+<meta name="Author" content="Gustaf Olsson (gustaf.olsson.lnu.se)" />
+<meta name="Subject" content="Re: [AMBER] Amber20 install problem （Geng Dong）" />
+<meta name="Date" content="2020-08-20" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Amber20 install problem （Geng Dong）</h1>
+<!-- received="Thu Aug 20 01:00:02 2020" -->
+<!-- isoreceived="20200820080002" -->
+<!-- sent="Thu, 20 Aug 2020 07:45:32 +0000" -->
+<!-- isosent="20200820074532" -->
+<!-- name="Gustaf Olsson" -->
+<!-- email="gustaf.olsson.lnu.se" -->
+<!-- subject="Re: [AMBER] Amber20 install problem （Geng Dong）" -->
+<!-- id="67B23095-B282-4DD5-89B6-C438ECE26DE1.lnu.se" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="20200820020031.fx7s4et22kfoi7iy.pop-os.localdomain" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0140.html" accesskey="d" title="Marek Maly: &quot;[AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files&quot;">Next message</a> ]
+[ <a href="0138.html" title="David A Case: &quot;Re: [AMBER] &#36716;&#21457;: Amber20 install problem &#65288;Geng Dong&#65289;&quot;">Previous message</a> ]
+[ <a href="0138.html" title="David A Case: &quot;Re: [AMBER] &#36716;&#21457;: Amber20 install problem &#65288;Geng Dong&#65289;&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg139" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg139" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg139" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg139" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gustaf Olsson &lt;<a href="mailto:gustaf.olsson.lnu.se?Subject=Re%3A%20%5BAMBER%5D%20Amber20%20install%20problem%20�%FF%FFGeng%20Dong�%FF%FF">gustaf.olsson.lnu.se</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 20 Aug 2020 07:45:32 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Personally, building Amber on ubuntu has regularly produced the least amount of build problems and fewest problems with tests compared to other OSs.
+<br />
+
+<br />
+Just based on the error reported, this is an indication that there might be a problem with the &quot;read-frame”, though what could have caused it is not as easy guess.
+<br />
+
+<br />
+Maybe a simple place to start is to check the file integrity? Have a look at the files in question:
+<br />
+/home/Kai/software/amber20/AmberTools/src/cpptraj/test/Test_Esander_Short/*.save
+<br />
+
+<br />
+Maybe do a quick compare:
+<br />
+
+<br />
+md5sum /home/Kai/software/amber20/AmberTools/src/cpptraj/test/Test_Esander_Short/*.save
+<br />
+
+<br />
+MD5 (gb.dat.save) = a4436aed03bca71e9bc88e89b011f734
+<br />
+MD5 (pme.dat.save) = 5660d9f15eecef44fd0d9baefd163a14
+<br />
+
+<br />
+If this matches up, maybe there is a problem with these files? I’m not savvy enough in fortran code to judge if it is correct:
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;READ(AA(IPT3+1:IPT4-1),'(F8.3)') RPVER
+<br />
+
+<br />
+Where I’m not sure what F8.3 specifies, floating point with 8 characters and something (.3). Though if there was a problem I would guess that more people might have reported it?
+<br />
+
+<br />
+Best regards
+<br />
+// Gustaf
+<br />
+
+<br />
+
+<br />
+<em class="quotelev1">&gt; On 20 Aug 2020, at 04:00, David A Case &lt;david.case.rutgers&#46;<!--nospam-->edu&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; On Thu, Aug 20, 2020, 东庚 wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; I am Geng Dong from Shantou University Medical College.
+</em><br />
+<em class="quotelev2">&gt;&gt; Thank you for you reply in amber.org mail list about my problem. Since I
+</em><br />
+<em class="quotelev2">&gt;&gt; can not attach the test.log file to the mail of amber, I send it to you
+</em><br />
+<em class="quotelev2">&gt;&gt; directly.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I am at a loss here.  You have many, many errors -- lots are all in the same
+</em><br />
+<em class="quotelev1">&gt; piece of code, but many others are not.
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; We installed amber on Ubuntu 18 LTS with gnu complier.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I personally, and many others, have used Ubuntu18.  Can you report the
+</em><br />
+<em class="quotelev1">&gt; result of typing &quot;which gfortran&quot; and &quot;gfortran --version&quot;?  Can you try an
+</em><br />
+<em class="quotelev1">&gt; installation on some other machine?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Is there any chance that the encoding of files is odd? Might there have been
+</em><br />
+<em class="quotelev1">&gt; some conversion related to Chinese characters?  Or perhaps an encrypted file
+</em><br />
+<em class="quotelev1">&gt; system?  I'm fishing for any information you might have about why your
+</em><br />
+<em class="quotelev1">&gt; system might differ from what almost everyone else has.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I'm cc-ing this to the amber list with a truncated version of the log file.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; The failure to parse the VERSION string in prmtop files happens several
+</em><br />
+<em class="quotelev1">&gt; hundred times; but other errors pop up as well.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ...regards...dac
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; &lt;test.log&gt;_______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Aug 20 2020 - 01:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0140.html" title="Next message in the list">Marek Maly: "[AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0138.html" title="Previous message in the list">David A Case: "Re: [AMBER] &#36716;&#21457;: Amber20 install problem &#65288;Geng Dong&#65289;"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0138.html" title="Message to which this message replies">David A Case: "Re: [AMBER] &#36716;&#21457;: Amber20 install problem &#65288;Geng Dong&#65289;"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg139" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg139" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg139" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg139" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

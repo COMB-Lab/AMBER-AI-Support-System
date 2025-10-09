@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] amber20 - test suite picks up the wrong libgfortran from Mark Dixon on 2021-11-22 (Amber Archive Nov 2021)</title>
+<meta name="Author" content="Mark Dixon (mark.c.dixon.durham.ac.uk)" />
+<meta name="Subject" content="[AMBER] amber20 - test suite picks up the wrong libgfortran" />
+<meta name="Date" content="2021-11-22" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] amber20 - test suite picks up the wrong libgfortran</h1>
+<!-- received="Mon Nov 22 09:30:02 2021" -->
+<!-- isoreceived="20211122173002" -->
+<!-- sent="Mon, 22 Nov 2021 17:12:07 +0000 (GMT)" -->
+<!-- isosent="20211122171207" -->
+<!-- name="Mark Dixon" -->
+<!-- email="mark.c.dixon.durham.ac.uk" -->
+<!-- subject="[AMBER] amber20 - test suite picks up the wrong libgfortran" -->
+<!-- id="7f3d1bf2-73f9-3816-51f8-be9ec3c7d231.durham.ac.uk" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0216.html" accesskey="d" title="Alan: &quot;Re: [AMBER] Can Parmed convert AMBER files to GROMACS made with the AMBER19SB ? -- closed&quot;">Next message</a> ]
+[ <a href="0214.html" title="ABEL Stephane: &quot;Re: [AMBER] Can Parmed convert AMBER files to GROMACS made with the AMBER19SB ? -- closed&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0224.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] amber20 - test suite picks up the wrong libgfortran&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg215" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg215" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg215" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg215" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Mark Dixon &lt;<a href="mailto:mark.c.dixon.durham.ac.uk?Subject=Re%3A%20%5BAMBER%5D%20amber20%20-%20test%20suite%20picks%20up%20the%20wrong%20libgfortran">mark.c.dixon.durham.ac.uk</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 22 Nov 2021 17:12:07 +0000 (GMT)</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi there,
+<br />
+<br />I'm trying to tackle building amber20 using the new cmake-based system for 
+<br />
+the first time. I'm not sure what compiler to use, so am playing with GCC 
+<br />
+11.2 on Rocky 8 Linux and have hit a problem.
+<br />
+<br />The build process adds an RPATH into its test executables, with /usr/lib64 
+<br />
+placed sufficiently near the start that the OS-provided GCC gfortran 
+<br />
+runtime overrides my compiler (which is in a non-standard location). The 
+<br />
+contents of $AMBERHOME/{bin,lib} don't suffer from this problem.
+<br />
+<br />Manually deleting the RPATH fixes the test executables, but is annoying.
+<br />
+<br />e.g.
+<br />
+<br />$ readelf -d ./AmberTools/test/nab/rismala-mdiis0 | grep RPATH
+<br />
+&nbsp;&nbsp;0x000000000000000f (RPATH)              Library rpath: [/local/slurm.1052/amber20/lib:/usr/lib64:/apps/developers/libraries/openblas/0.3.18/1/gcc-11.2/lib:/apps/developers/compilers/gcc/11.2/1/default/lib64:/lib64:/local/slurm.1052/amber20_src/build/AmberTools/src/xblas/build]
+<br />
+<br />$ ./AmberTools/test/nab/rismala-mdiis0
+<br />
+./AmberTools/test/nab/rismala-mdiis0: /usr/lib64/libgfortran.so.5: version `GFORTRAN_10' not found (required by ./AmberTools/test/nab/rismala-mdiis0)
+<br />
+./AmberTools/test/nab/rismala-mdiis0: /usr/lib64/libgfortran.so.5: version `GFORTRAN_10' not found (required by /local/slurm.1052/amber20/lib/libnetcdff.so.6)
+<br />
+./AmberTools/test/nab/rismala-mdiis0: /usr/lib64/libgfortran.so.5: version `GFORTRAN_10' not found (required by /local/slurm.1052/amber20/lib/libpbsa.so)
+<br />
+<br />$ chrpath -d ./AmberTools/test/nab/rismala-mdiis0
+<br />
+<br />$ ./AmberTools/test/nab/rismala-mdiis0
+<br />
+getpdb: can't open file ala.pdb
+<br />
+<br />$ echo $LD_LIBRARY_PATH
+<br />
+/local/slurm.1052/amber20/lib:/local/slurm.1052/amber20/lib:/apps/developers/libraries/openblas/0.3.18/1/gcc-11.2/lib:/apps/developers/libraries/openmpi/4.1.1/1/gcc-11.2/lib:/apps/developers/compilers/gcc/11.2/1/default/lib64:/apps/developers/compilers/gcc/11.2/1/default/lib:/apps/infrastructure/slurm/default/default/default/lib:/apps/infrastructure/slurm/default/default/default/lib:
+<br />
+$ echo $LIBRARY_PATH
+<br />
+/apps/developers/libraries/openblas/0.3.18/1/gcc-11.2/lib:/apps/developers/libraries/openmpi/4.1.1/1/gcc-11.2/lib:/apps/developers/compilers/gcc/11.2/1/default/lib64:/apps/developers/compilers/gcc/11.2/1/default/lib:/apps/infrastructure/slurm/default/default/default/lib:/apps/infrastructure/slurm/default/default/default/lib:/apps/infrastructure/slurm/default/default/default/lib:
+<br />
+<br /><br />Starting again and giving cmake &quot;-DCMAKE_SKIP_INSTALL_RPATH=TRUE&quot; results 
+<br />
+in the same issue. Using &quot;-DCMAKE_SKIP_RPATH=TRUE&quot; causes the build to 
+<br />
+fail, with the &quot;make&quot; step no longer being able find bundled libraries it 
+<br />
+has built (e.g. netcdf)
+<br />
+<br />Any tips, please? Or should I just be using intel or clang anyway?
+<br />
+<br />Thanks,
+<br />
+<br />Mark
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Nov 22 2021 - 09:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0216.html" title="Next message in the list">Alan: "Re: [AMBER] Can Parmed convert AMBER files to GROMACS made with the AMBER19SB ? -- closed"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0214.html" title="Previous message in the list">ABEL Stephane: "Re: [AMBER] Can Parmed convert AMBER files to GROMACS made with the AMBER19SB ? -- closed"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0224.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] amber20 - test suite picks up the wrong libgfortran"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0224.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] amber20 - test suite picks up the wrong libgfortran"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg215" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg215" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg215" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg215" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

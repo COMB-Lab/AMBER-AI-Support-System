@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] P2 correlation functions questions from David Case on 2020-01-07 (Amber Archive Jan 2020)</title>
+<meta name="Author" content="David Case (david.case.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] P2 correlation functions questions" />
+<meta name="Date" content="2020-01-07" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] P2 correlation functions questions</h1>
+<!-- received="Tue Jan  7 18:30:02 2020" -->
+<!-- isoreceived="20200108023002" -->
+<!-- sent="Wed, 8 Jan 2020 02:29:27 +0000" -->
+<!-- isosent="20200108022927" -->
+<!-- name="David Case" -->
+<!-- email="david.case.rutgers.edu" -->
+<!-- subject="Re: [AMBER] P2 correlation functions questions" -->
+<!-- id="20200108022926.o7is22mi7abytmxj.vpn-client-172-16-8-185.rutgers.edu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="7B9A0E56-CED4-4318-A195-720DFBA63F1E.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0083.html" accesskey="d" title="David Case: &quot;Re: [AMBER] AMBER 18 cuda installation&quot;">Next message</a> ]
+[ <a href="0081.html" title="Adrian Roitberg: &quot;[AMBER] saxs&quot;">Previous message</a> ]
+[ <a href="0078.html" title="erik zuiderweg: &quot;[AMBER] P2 correlation functions questions&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg82" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg82" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg82" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg82" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David Case &lt;<a href="mailto:david.case.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20P2%20correlation%20functions%20questions">david.case.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 8 Jan 2020 02:29:27 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Tue, Jan 07, 2020, erik zuiderweg wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;cpptraj ../BETA_APO.top &lt;&lt; EOF
+</em><br />
+<em class="quotelev1">&gt;trajin ../BETA_APO_MIN_HEAT_EQUIL_MD.x 1 800
+</em><br />
+<em class="quotelev1">&gt;vector v2 :2.H  :2.N
+</em><br />
+<em class="quotelev1">&gt;analyze timecorr vec1 v2 out corr_2_NH
+</em><br />
+<em class="quotelev1">&gt;EOF
+</em><br />
+<br />How many frames are in the trajectory file?  Generally, only the first
+<br />
+5-10% of the correlation function is worth much.  Internal correlation
+<br />
+functions for NH groups in proteins generally reach plateaus in about 50
+<br />
+ps or less, suggesting that you want 1 nsec or so of sampling at a
+<br />
+minimum.
+<br />
+<br />To get internal motion, you would want to remove overall rotation first,
+<br />
+usually by doing an rms fit on (say) the secondary structure parts of
+<br />
+the protein.  If you want to study overall tumbling as well as internal
+<br />
+motion, then you should not do the RMS fit.  (But then you will need
+<br />
+long-long trajectories, and no thermostats, etc.)
+<br />
+<br />A dated, but still pretty relevant paper is this one:
+<br />
+<br />%A V. Wong
+<br />
+%A D.A. Case
+<br />
+%T Evaluating Rotational Diffusion from Protein MD Simulations
+<br />
+%J J. Phys. Chem. B
+<br />
+%V 112
+<br />
+%P 6013-6024
+<br />
+%D 2008
+<br />
+<br />There have been improvements in force fields since 2008, but the basic
+<br />
+ideas are little changed.
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;In real life, the P2 is taken between the direction of the NH vector and
+</em><br />
+<em class="quotelev1">&gt;the magnetic field.
+</em><br />
+<br />The calculation computes P2 of the angle between the vector at time 0
+<br />
+and the same vector at time tau later.  This computation is invariant to
+<br />
+what the PDB &quot;Z&quot; direction is.  There is no notion of a reference axis.
+<br />
+<br />...hope this helps....dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Jan 07 2020 - 18:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0083.html" title="Next message in the list">David Case: "Re: [AMBER] AMBER 18 cuda installation"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0081.html" title="Previous message in the list">Adrian Roitberg: "[AMBER] saxs"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0078.html" title="Message to which this message replies">erik zuiderweg: "[AMBER] P2 correlation functions questions"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg82" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg82" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg82" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg82" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

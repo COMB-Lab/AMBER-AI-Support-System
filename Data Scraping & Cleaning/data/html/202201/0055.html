@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Problems with mdgx torsion parameters fitting - possible bug with polymers? from Casalini  Tommaso on 2022-01-09 (Amber Archive Jan 2022)</title>
+<meta name="Author" content="Casalini  Tommaso (tommaso.casalini.chem.ethz.ch)" />
+<meta name="Subject" content="[AMBER] Problems with mdgx torsion parameters fitting - possible bug with polymers?" />
+<meta name="Date" content="2022-01-09" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Problems with mdgx torsion parameters fitting - possible bug with polymers?</h1>
+<!-- received="Mon Jan 10 00:00:02 2022" -->
+<!-- isoreceived="20220110080002" -->
+<!-- sent="Mon, 10 Jan 2022 07:51:49 +0000" -->
+<!-- isosent="20220110075149" -->
+<!-- name="Casalini  Tommaso" -->
+<!-- email="tommaso.casalini.chem.ethz.ch" -->
+<!-- subject="[AMBER] Problems with mdgx torsion parameters fitting - possible bug with polymers?" -->
+<!-- id="8dcbbf3843f543468549f32759c81081.chem.ethz.ch" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0056.html" accesskey="d" title="MIRA JHAWAR: &quot;Re: [AMBER] regading no tortion terms&quot;">Next message</a> ]
+[ <a href="0054.html" title="MIRA JHAWAR: &quot;Re: [AMBER] regading no tortion terms&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0065.html" accesskey="t" title="David Cerutti: &quot;Re: [AMBER] Problems with mdgx torsion parameters fitting - possible bug with polymers?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg55" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg55" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg55" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg55" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Casalini  Tommaso &lt;<a href="mailto:tommaso.casalini.chem.ethz.ch?Subject=Re%3A%20%5BAMBER%5D%20Problems%20with%20mdgx%20torsion%20parameters%20fitting%20-%20possible%20bug%20with%20polymers%3F">tommaso.casalini.chem.ethz.ch</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 10 Jan 2022 07:51:49 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber users and developers,
+<br />
+<br />I am reposting my request since unfortunately I did not receive any feedback.
+<br />
+<br />I would like to use mdgx to refine the estimate of the force field terms related to the torsional barriers along the backbone of a polymer. I am using a tetramer as reference system.
+<br />
+<br />I created a library with monomer units, properly assigning atom types, charges, head and tail atoms.
+<br />
+<br />I am following the mdgx tutorial available on Amber website. In particular, I try to fit the terms related to three different torsions. In terms of gaff2 atom types, they are the following:
+<br />
+<br /><br />c3 c os c3
+<br />
+<br />c os c3 c
+<br />
+<br />os c3 c os
+<br />
+<br /><br />I computed the energies of about 500 structures and I have successfully created the files containing the coordinates and the energies. When I try to perform the fit, I receive the following message:
+<br />
+<br /><br />mdgx &gt;&gt; Unique adjustable parameters enumerated.
+<br />
+mdgx &gt;&gt;    564 conformations read.
+<br />
+mdgx &gt;&gt; Parameter keys read.
+<br />
+mdgx &gt;&gt; Torsion type os   c3   c    os   marked for optimization but not found
+<br />
+mdgx &gt;&gt; in any systems.
+<br />
+<br /><br />mdgx &gt;&gt; Torsion type c    os   c3   c    marked for optimization but not found
+<br />
+mdgx &gt;&gt; in any systems.
+<br />
+<br />Essentially, the code says that two out three torsions are not present, but they are. I did another check, creating a mol2 file of the tetramer and using parmchk to print the entire parameter set (using the option -a 'Y'). The resulting .frcmod file confirms that the torsions are indeed present. This is the input file for fitting (I copied gaff2.dat in the directory where I am performing the fitting):
+<br />
+<br />&amp;files
+<br />
+&nbsp;-parm  gaff2.dat
+<br />
+&nbsp;-d     PLL.dat
+<br />
+&nbsp;-o     fit.out
+<br />
+&amp;end
+<br />
+<br />&amp;param
+<br />
+&nbsp;System PLL.top coords.cdf energies.dat
+<br />
+&nbsp;ParmOutput frcmod
+<br />
+&nbsp;eunits hartree
+<br />
+&nbsp;accrep report.m
+<br />
+&nbsp;verbose 1
+<br />
+<br />&nbsp;fith os c3 c  os
+<br />
+&nbsp;fith c3 c  os c3
+<br />
+&nbsp;fith c  os c3 c
+<br />
+&nbsp;hrst 0.0002
+<br />
+<br />&amp;end
+<br />
+<br />Am I missing something?
+<br />
+<br /><br />I thank in advance for the support.
+<br />
+<br />Tommaso
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jan 10 2022 - 00:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0056.html" title="Next message in the list">MIRA JHAWAR: "Re: [AMBER] regading no tortion terms"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0054.html" title="Previous message in the list">MIRA JHAWAR: "Re: [AMBER] regading no tortion terms"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0065.html" title="Next message in this discussion thread">David Cerutti: "Re: [AMBER] Problems with mdgx torsion parameters fitting - possible bug with polymers?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0065.html" title="Message sent in reply to this message">David Cerutti: "Re: [AMBER] Problems with mdgx torsion parameters fitting - possible bug with polymers?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg55" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg55" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg55" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg55" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

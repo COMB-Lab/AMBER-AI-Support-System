@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI) from Michael Coleman on 2022-02-04 (Amber Archive Feb 2022)</title>
+<meta name="Author" content="Michael Coleman (mcolema5.uoregon.edu)" />
+<meta name="Subject" content="Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)" />
+<meta name="Date" content="2022-02-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)</h1>
+<!-- received="Fri Feb  4 19:30:02 2022" -->
+<!-- isoreceived="20220205033002" -->
+<!-- sent="Sat, 5 Feb 2022 03:18:21 +0000" -->
+<!-- isosent="20220205031821" -->
+<!-- name="Michael Coleman" -->
+<!-- email="mcolema5.uoregon.edu" -->
+<!-- subject="Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)" -->
+<!-- id="MWHPR1001MB217475BE22D6B169FF711BBE9A2A9.MWHPR1001MB2174.namprd10.prod.outlook.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20220204134634.cyvcxzzqdfod4l2t.ipo3912l114.rad.rutgers.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0050.html" accesskey="d" title="Michael Coleman: &quot;Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)&quot;">Next message</a> ]
+[ <a href="0048.html" title="Carlos Simmerling: &quot;Re: [AMBER] Same initial velocities with ig=NNN and NTT=1 (on GPU)?&quot;">Previous message</a> ]
+[ <a href="0033.html" title="David A Case: &quot;Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0035.html" accesskey="t" title="Ross Walker: &quot;Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg49" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg49" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg49" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg49" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Michael Coleman &lt;<a href="mailto:mcolema5.uoregon.edu?Subject=Re%3A%20%5BAMBER%5D%20any%20working%20singularity%20or%20docker%20recipe%3F%20(esp%20for%20CUDA%20and%20MPI)">mcolema5.uoregon.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 5 Feb 2022 03:18:21 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Thank you--this is very helpful!
+<br />
+<br /><br />For the record, here are the details on the build that finally worked for us (RHEL 7.9):
+<br />
+<br />We're using Spack, and on the 'develop' branch, are at
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;commit b9bb303063299ba512a19168d1635172edb0e944
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Author: Sebastian Pipping &lt;sebastian.pipping.org&gt;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Date:   Wed Feb 2 00:29:29 2022 +0100
+<br />
+<br />With that, we installed with
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;spack install amber.20 %gcc +x11 +mpi +cuda ^cuda.10.2.89 ^intel-mpi
+<br />
+<br />It doesn't look like much, but we tried at least 15 other Spack invocations, with various compilers and versions of MPI and CUDA, all of which failed in various ways (usually compilation failure).  We never did get a vanilla compile working, using the Amber instructions.  It's certainly possible that we're missing something simple.
+<br />
+<br />This works for our K80s.  Trying this version with an A100 draws the &quot;cudaMemcpyToSymbol: SetSim copy to cSim failed invalid device symbol&quot; error, which I believe indicates a gencode mismatch.  (I'm a bit surprised that the A100 can't run K80 code, but apparently not.)
+<br />
+<br />Tried advancing the 'cuda' version to best support our (few) A100s.  In particular, it appears that some version of CUDA 11 is required to make best use of A100s.  (Can't recall which version.)  The versions of CUDA 11 currently possible in Spack don't lead to a successful Amber compile.  We'll look more later.
+<br />
+<br />Mike
+<br />
+<br /><br /><br />-----Original Message-----
+<br />
+From: David A Case &lt;david.case.rutgers.edu&gt; 
+<br />
+Sent: Friday, February 4, 2022 5:47 AM
+<br />
+To: AMBER Mailing List &lt;amber.ambermd.org&gt;
+<br />
+Subject: Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)
+<br />
+<br />On Fri, Feb 04, 2022, Michael Coleman wrote:
+<br />
+<br /><em class="quotelev1">&gt;Finally managed a path to get this compiled (details to follow).  In
+</em><br />
+<em class="quotelev1">&gt;testing 'pmemd.cuda.MPI' on the 'jac' benchmark, I'm seeing our multiple
+</em><br />
+<em class="quotelev1">&gt;K80s lighting up as expected, but there is no benefit in wall-clock time
+</em><br />
+<em class="quotelev1">&gt;for adding multiple GPUs.  If anything, adding GPUs increases running time.
+</em><br />
+<br />That is a common experience, although others might comment on what they
+<br />
+expect for jac and K80s.  Check out the DHFR (aka jac) benchmarks results
+<br />
+here for K80s:
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://urldefense.com/v3/__https://ambermd.org/gpus14/benchmarks.htm*__;Iw!!C5qS4YX3!QLWndnL_3CHIFv9zc-CFXrNUDnxCEUyhByyowhe1DhHYQk_HB3_UD4WG1M9F-_iZirU">https://urldefense.com/v3/__https://ambermd.org/gpus14/benchmarks.htm*__;Iw!!C5qS4YX3!QLWndnL_3CHIFv9zc-CFXrNUDnxCEUyhByyowhe1DhHYQk_HB3_UD4WG1M9F-_iZirU</a>$ 
+<br />
+<br />This shows significant increases on going to 2 to 4 GPUs, but results
+<br />
+like this are generally quite dependent on the interconnect hardware and
+<br />
+its software settings.  And look at the last note on &quot;&quot;Maximizing GPU
+<br />
+performance&quot; here:
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://urldefense.com/v3/__https://ambermd.org/GPULogistics.php__;!!C5qS4YX3!QLWndnL_3CHIFv9zc-CFXrNUDnxCEUyhByyowhe1DhHYQk_HB3_UD4WG1M9FVin2kew">https://urldefense.com/v3/__https://ambermd.org/GPULogistics.php__;!!C5qS4YX3!QLWndnL_3CHIFv9zc-CFXrNUDnxCEUyhByyowhe1DhHYQk_HB3_UD4WG1M9FVin2kew</a>$ 
+<br />
+<br /><em class="quotelev1">&gt;Is there an available example that would be expected to show a benefit with
+</em><br />
+<em class="quotelev1">&gt;(say) eight or sixteen K80s?
+</em><br />
+<br />I don't know of any such example for a single MD run.  Multiple GPUs can be
+<br />
+great for independent simulations, or for things like replica-exchange,
+<br />
+where communication between GPUs is minimal.
+<br />
+<br /><br />....dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!C5qS4YX3!QLWndnL_3CHIFv9zc-CFXrNUDnxCEUyhByyowhe1DhHYQk_HB3_UD4WG1M9FHVUGerQ">https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!C5qS4YX3!QLWndnL_3CHIFv9zc-CFXrNUDnxCEUyhByyowhe1DhHYQk_HB3_UD4WG1M9FHVUGerQ</a>$ 
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Feb 04 2022 - 19:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0050.html" title="Next message in the list">Michael Coleman: "Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0048.html" title="Previous message in the list">Carlos Simmerling: "Re: [AMBER] Same initial velocities with ig=NNN and NTT=1 (on GPU)?"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0033.html" title="Message to which this message replies">David A Case: "Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0035.html" title="Next message in this discussion thread">Ross Walker: "Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg49" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg49" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg49" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg49" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

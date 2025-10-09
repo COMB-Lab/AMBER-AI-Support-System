@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] NAB superimpose issue from Mandar Kulkarni on 2021-06-07 (Amber Archive Jun 2021)</title>
+<meta name="Author" content="Mandar Kulkarni (mandar.kulkarni.chem.gmail.com)" />
+<meta name="Subject" content="[AMBER] NAB superimpose issue" />
+<meta name="Date" content="2021-06-07" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] NAB superimpose issue</h1>
+<!-- received="Mon Jun  7 15:00:02 2021" -->
+<!-- isoreceived="20210607220002" -->
+<!-- sent="Mon, 7 Jun 2021 23:52:04 +0200" -->
+<!-- isosent="20210607215204" -->
+<!-- name="Mandar Kulkarni" -->
+<!-- email="mandar.kulkarni.chem.gmail.com" -->
+<!-- subject="[AMBER] NAB superimpose issue" -->
+<!-- id="CAKC_24h0ZcmgHn6TTGkm+0MKuQnRdc0fDmQi9uN_pND6zAKiMQ.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0049.html" accesskey="d" title="James Moraes de Almeida: &quot;[AMBER] Pressure tensor components in the GPU code.&quot;">Next message</a> ]
+[ <a href="0047.html" title="David A Case: &quot;Re: [AMBER] knlskintest error when using HMR with 4fs&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0054.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] NAB superimpose issue&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg48" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg48" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg48" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg48" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Mandar Kulkarni &lt;<a href="mailto:mandar.kulkarni.chem.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20NAB%20superimpose%20issue">mandar.kulkarni.chem.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 7 Jun 2021 23:52:04 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />I am using NAB from AMBERTOOLS21 to connect two RNA duplexes. Here, I wish
+<br />
+to align sequences at common bases using &quot;superimpose&quot; and then connect
+<br />
+eventually with &quot;connectres&quot;. I am using this as an example to test
+<br />
+*superimpose* and *connectres* functionalities.
+<br />
+<br />NAB script (shown below) runs without error and gives rmsd 0 (suggesting
+<br />
+successful alignment). The problem is when I see structures in VMD
+<br />
+(ref_1.pdb and sup_rna.pdb) they are not aligned at all as expected.
+<br />
+<br />I am expecting that fragment 2 will be on top of fragment 1 with base-pair
+<br />
+C:G aligned. Please advise if I am missing something here.
+<br />
+<br />Please see the NAB script here:
+<br />
+##############
+<br />
+//A-form duplex
+<br />
+// trying to connect two fragments: Fragment 1: UUUU; Fragment 2: AUGA
+<br />
+// Point of alignment is common base &quot;C&quot; in both sequences
+<br />
+<br />// Creating RNAs first
+<br />
+<br />molecule m1, m2, m_ref, m_align  ;
+<br />
+<br />float r ; // variable r for RMSD
+<br />
+<br />m1 = fd_helix( &quot;arna&quot;, &quot;uuuuc&quot;, &quot;rna&quot; );
+<br />
+m2 = fd_helix( &quot;arna&quot;, &quot;cauga&quot;, &quot;rna&quot; );
+<br />
+<br />putpdb( &quot;rna_1.pdb&quot;, m1);
+<br />
+putpdb( &quot;rna_2.pdb&quot;, m2);
+<br />
+<br />// reading PDBs and aligning
+<br />
+<br />//m_ref = reference molecule
+<br />
+m_ref = getpdb(&quot;rna_1.pdb&quot;);
+<br />
+<br />//m_align = molecule to be aligned
+<br />
+m_align = getpdb(&quot;rna_2.pdb&quot;);
+<br />
+<br />//superimpose(  m_align,&quot;1,10,C[1-5]',O4'&quot; , m_ref, &quot;5,6,C[1-5]',O4'&quot;);
+<br />
+<br />superimpose(  m_align,&quot;1,10&quot; , m_ref, &quot;5,6&quot;);
+<br />
+putpdb (&quot;sup_rna.pdb&quot;, m_align);
+<br />
+<br />rmsd( m_ref, &quot;::C1'&quot;, m_align, &quot;::C1'&quot;, r );
+<br />
+printf( &quot;rmsd = %8.3fn&quot;, r );
+<br />
+<br />################
+<br />
+<br />Best Regards,
+<br />
+Mandar Kulkarni
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jun 07 2021 - 15:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0049.html" title="Next message in the list">James Moraes de Almeida: "[AMBER] Pressure tensor components in the GPU code."</a></li>
+<li><dfn>Previous message</dfn>: <a href="0047.html" title="Previous message in the list">David A Case: "Re: [AMBER] knlskintest error when using HMR with 4fs"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0054.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] NAB superimpose issue"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0054.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] NAB superimpose issue"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg48" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg48" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg48" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg48" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

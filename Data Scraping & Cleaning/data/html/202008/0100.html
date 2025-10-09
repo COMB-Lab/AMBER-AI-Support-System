@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Compiling AmberTools on macOS from Gustaf Olsson on 2020-08-12 (Amber Archive Aug 2020)</title>
+<meta name="Author" content="Gustaf Olsson (gustaf.olsson.lnu.se)" />
+<meta name="Subject" content="[AMBER] Compiling AmberTools on macOS" />
+<meta name="Date" content="2020-08-12" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Compiling AmberTools on macOS</h1>
+<!-- received="Wed Aug 12 07:30:02 2020" -->
+<!-- isoreceived="20200812143002" -->
+<!-- sent="Wed, 12 Aug 2020 14:08:23 +0000" -->
+<!-- isosent="20200812140823" -->
+<!-- name="Gustaf Olsson" -->
+<!-- email="gustaf.olsson.lnu.se" -->
+<!-- subject="[AMBER] Compiling AmberTools on macOS" -->
+<!-- id="B2DB6A9E-0A7C-4662-8A72-D1299CDB81FC.lnu.se" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0101.html" accesskey="d" title="Liao: &quot;Re: [AMBER] Using cpptraj to generate rst7 files from trajectory&quot;">Next message</a> ]
+[ <a href="0099.html" title="Daniel Roe: &quot;Re: [AMBER] Using cpptraj to generate rst7 files from trajectory&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg100" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg100" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg100" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg100" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gustaf Olsson &lt;<a href="mailto:gustaf.olsson.lnu.se?Subject=Re%3A%20%5BAMBER%5D%20Compiling%20AmberTools%20on%20macOS">gustaf.olsson.lnu.se</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 12 Aug 2020 14:08:23 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+So, for personal “safekeeping” and general information. As far as I can se, the method below is reproducible for compiling (AmberTools20) AT20 (and I’m guessing amber20 as well as I do not yet have a licence) on:
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;macOS Mojave Version 10.14.6 (18G4032)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Xcode Version 11.3.1 (11C504)
+<br />
+
+<br />
+As well as the latest
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;macOS Catalina Version 10.15.6 (19G73) and whatever the most recent Xcode version is as of August 2020.
+<br />
+
+<br />
+Using the Homebrew package manager. I suppose it is important to mention that you follow these instructions on your own risk. I have tested this several times though I take no responsibility for the outcome and can leave no guarantees that it will work for you and will not cause any problems.
+<br />
+
+<br />
+
+<br />
+
+<br />
+First, check out: http://ambermd.org/InstMacOS.php
+<br />
+
+<br />
+Then, get a hold of the AT20 tarball.
+<br />
+
+<br />
+Install the homebrew package manager
+<br />
+
+<br />
+Regardless of what you do already have installed regarding alternative gfortran/gcc packages, you must make sure you have installed gcc9
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;brew install gcc.9
+<br />
+
+<br />
+Wherever you plan on compiling AT, place the tarball and:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;tar xvf AmberTools20.tar.bz2
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;cd amber20_src/build
+<br />
+
+<br />
+Edit the &quot;../cmake/LibraryUtils.cmake” file replacing:
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;75    message(FATAL_ERROR &quot;Could not determine whether \&quot;${LIBRARY}\&quot; is a static or shared library, it does not have a known suffix.&quot;)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;--&gt;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;75    set(LIB_TYPE SHARED)
+<br />
+
+<br />
+With an editor of your choice.
+<br />
+
+<br />
+For the serial version, edit the “run_cmake” file
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;28   $cmake $AMBER_PREFIX/amber20_src \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;29     -DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber20 \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;30     -DCOMPILER=CLANG -DBLA_VENDOR=Apple \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;31     -DMPI=FALSE -DCUDA=FALSE -DINSTALL_TESTS=TRUE \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32     -DDOWNLOAD_MINICONDA=TRUE -DMINICONDA_USE_PY3=TRUE \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;33     2&gt;&amp;1 | tee cmake.log
+<br />
+—&gt;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;28   $cmake $AMBER_PREFIX/amber20_src \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;29     -DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber20 \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;30     -DCOMPILER=MANUAL -DBLA_VENDOR=Apple \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;31     -DMPI=FALSE -DCUDA=FALSE -DINSTALL_TESTS=TRUE \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32     -DDOWNLOAD_MINICONDA=TRUE -DMINICONDA_USE_PY3=TRUE \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;33     -DCMAKE_C_COMPILER=/usr/bin/clang \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;34     -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;35     -DCMAKE_Fortran_COMPILER=/usr/local/bin/gfortran-9 \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;36     2&gt;&amp;1 | tee cmake.log
+<br />
+
+<br />
+With the editor of your choice. Change whatever other things you feel comfortable with of course. This will install amber20 in the same directory as where you extracted the tarball. Then
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;./run_cmake
+<br />
+
+<br />
+Hopefully done. For parallel compilation:
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;brew install open-mpi 
+<br />
+
+<br />
+This is the stable 4.0.4 version, no other version is available currently.
+<br />
+
+<br />
+This time, with you favourite editor, edit line 31 of your already modified “run_cmake” file 
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;31     -DMPI=FALSE -DCUDA=FALSE -DINSTALL_TESTS=TRUE \
+<br />
+—&gt;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;31     -DMPI=TRUE -DCUDA=FALSE -DINSTALL_TESTS=TRUE \
+<br />
+
+<br />
+And then
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;./run_cmake
+<br />
+
+<br />
+There still is no support for the openmpi features of, amongst others, cpptraj with clang on macOS.
+<br />
+
+<br />
+I have done this twice on two different systems although there might be conflicts or I might have different dependencies already installed and so fort. If you try this and it works for you, please do me a big favour and confirm here.
+<br />
+
+<br />
+Next challenge will apparently be “macOS 11 ‘Big Sur’” so let's se what that update breaks. If nothing in between I guess the switch to ARM will be the next hurdle after that.
+<br />
+
+<br />
+Best regards
+<br />
+// Gustaf
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Aug 12 2020 - 07:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0101.html" title="Next message in the list">Liao: "Re: [AMBER] Using cpptraj to generate rst7 files from trajectory"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0099.html" title="Previous message in the list">Daniel Roe: "Re: [AMBER] Using cpptraj to generate rst7 files from trajectory"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg100" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg100" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg100" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg100" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

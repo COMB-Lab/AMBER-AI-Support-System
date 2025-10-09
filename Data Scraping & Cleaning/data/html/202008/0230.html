@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files from Scott Brozell on 2020-08-27 (Amber Archive Aug 2020)</title>
+<meta name="Author" content="Scott Brozell (sbrozell.iqb.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files" />
+<meta name="Date" content="2020-08-27" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files</h1>
+<!-- received="Thu Aug 27 15:00:02 2020" -->
+<!-- isoreceived="20200827220002" -->
+<!-- sent="Thu, 27 Aug 2020 17:43:01 -0400" -->
+<!-- isosent="20200827214301" -->
+<!-- name="Scott Brozell" -->
+<!-- email="sbrozell.iqb.rutgers.edu" -->
+<!-- subject="Re: [AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files" -->
+<!-- id="20200827214301.GK30620.casegroup5.rutgers.edu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="op.0pw0japtlc8gdf.kfy-336.ujep.cz" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0231.html" accesskey="d" title="Ayesha Fatima: &quot;Re: [AMBER] &#0034;Atom does not have a type&#0034; despite adding .frcmod parameters&quot;">Next message</a> ]
+[ <a href="0229.html" title="Erika Davidoff: &quot;[AMBER] &#0034;Atom does not have a type&#0034; despite adding .frcmod parameters&quot;">Previous message</a> ]
+[ <a href="0200.html" title="Marek Maly: &quot;Re: [AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg230" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg230" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg230" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg230" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Scott Brozell &lt;<a href="mailto:sbrozell.iqb.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20Antechamber%20and%20parmchk2%20problem%20in%20case%20of%20processing%20mol2%20input%20files">sbrozell.iqb.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 27 Aug 2020 17:43:01 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />1.  Clarification on my previous comments:
+<br />
+Prior to AmberTools 17 antechamber silently failed to read charges
+<br />
+from a nonconforming -cf file and used charges that may have already
+<br />
+been read from the main input file -i.  The patch below for charge.c
+<br />
+will get AmberTools 20 back to that dubious behavior.
+<br />
+<br /><br />2.  What is the intended antechamber protocol ?
+<br />
+As you correctly indicate, -c rc requires -rf file, else the error
+<br />
+you show below will be produced.
+<br />
+I have asked the antechamber authors this question, see issue 155.
+<br />
+<br />Presently the workaround is this rather silly approach:
+<br />
+antechamber -fi mol2 -i m.mol2 -c wc -cf m.chrg -fo foo -o bar
+<br />
+antechamber -fi mol2 -i m.mol2 -c rc -cf m.chrg ...
+<br />
+<br />scott
+<br />
+<br />On Tue, Aug 25, 2020 at 07:07:48PM +0200, Marek Maly wrote:
+<br />
+<em class="quotelev1">&gt; Hi Scott,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; first of all thank you for prompt reaction !
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Dne Sat, 22 Aug 2020 00:02:13 +0200 Scott Brozell  
+</em><br />
+<em class="quotelev1">&gt; &lt;sbrozell.iqb.rutgers.edu&gt; napsal/-a:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev2">&gt; &gt; Hi,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; A mol2 file is not a valid format for -cf.
+</em><br />
+<em class="quotelev2">&gt; &gt; (-cf rc expects only charges; see the result of -cf wc for an example,  
+</em><br />
+<em class="quotelev2">&gt; &gt; eg:
+</em><br />
+<em class="quotelev2">&gt; &gt;  -0.174900  0.149300  0.272000 -0.174900  0.149300 -0.131900  0.132800  
+</em><br />
+<em class="quotelev2">&gt; &gt; -0.056100
+</em><br />
+<em class="quotelev2">&gt; &gt; )
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; OK, so parameter -cf is possible to use just for file containing ONLY  
+</em><br />
+<em class="quotelev1">&gt; charges.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I just notice again that up to the AmberTools16 (including this version)  
+</em><br />
+<em class="quotelev1">&gt; this was never problem and my script worked perfectly with &quot;-cf input mol2  
+</em><br />
+<em class="quotelev1">&gt; file&quot;.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; If I now (in AmberTools19) delete from my scrit problematic &quot;-cf input  
+</em><br />
+<em class="quotelev1">&gt; mol2 file&quot; (and use &quot;-dr no&quot; to prevent errs thanks to presence of &quot;Si&quot;  
+</em><br />
+<em class="quotelev1">&gt; atom) it writes:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Info: Finished reading file (Mol_m1-o1-sm.mol2); atoms read (180), bonds  
+</em><br />
+<em class="quotelev1">&gt; read (180).
+</em><br />
+<em class="quotelev1">&gt; Running: /opt/amber18/bin/bondtype -j full -i ANTECHAMBER_BOND_TYPE.AC0 -o  
+</em><br />
+<em class="quotelev1">&gt; ANTECHAMBER_BOND_TYPE.AC -f ac
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Running: /opt/amber18/bin/atomtype -i ANTECHAMBER_AC.AC0 -o  
+</em><br />
+<em class="quotelev1">&gt; ANTECHAMBER_AC.AC -p gaff
+</em><br />
+<em class="quotelev1">&gt; /opt/amber18/bin/to_be_dispatched/antechamber: Fatal Error!
+</em><br />
+<em class="quotelev1">&gt; Cannot open file () with mode (r).
+</em><br />
+<em class="quotelev1">&gt; No such file or directory
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; So which are the right Antechamber parameters/(parameters arguments) usage  
+</em><br />
+<em class="quotelev1">&gt; in actual AT version to simply create output mol2 file with GAFF atom  
+</em><br />
+<em class="quotelev1">&gt; types from the mol2 input file, which already contains RESP charges (just  
+</em><br />
+<em class="quotelev1">&gt; proper atom types are missing) ?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;    Best wishes,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;       Marek
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; However, prior to the enhanced error reporting in AmberTools 17
+</em><br />
+<em class="quotelev2">&gt; &gt; antechamber silently failed to read charges from the -rf file and
+</em><br />
+<em class="quotelev2">&gt; &gt; used charges that may have already been read from the main input file -i.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Here's a workaround that gets back to that behavior while we work
+</em><br />
+<em class="quotelev2">&gt; &gt; on an improved approach.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; *** 20.c        2020-04-27 21:19:42.000000000 -0400
+</em><br />
+<em class="quotelev2">&gt; &gt; --- 20m.c       2020-08-21 17:53:52.451689802 -0400
+</em><br />
+<em class="quotelev2">&gt; &gt; *************** void rcharge(char *filename, int atomnum
+</em><br />
+<em class="quotelev2">&gt; &gt; *** 372,379 ****
+</em><br />
+<em class="quotelev2">&gt; &gt;       }
+</em><br />
+<em class="quotelev2">&gt; &gt;       fclose(fpcharge);
+</em><br />
+<em class="quotelev2">&gt; &gt;       if (number == 0) {
+</em><br />
+<em class="quotelev2">&gt; &gt; !         eprintf(&quot;Unable to find charges in file (%s).\n&quot;
+</em><br />
+<em class="quotelev2">&gt; &gt; !                 &quot;Verify the filename and the file contents.&quot;,  
+</em><br />
+<em class="quotelev2">&gt; &gt; filename);
+</em><br />
+<em class="quotelev2">&gt; &gt;       }
+</em><br />
+<em class="quotelev2">&gt; &gt;   //      if ((*minfo).usercharge &lt; -9990.)
+</em><br />
+<em class="quotelev2">&gt; &gt;       if ((*minfo).icharge &lt; -9990.)
+</em><br />
+<em class="quotelev2">&gt; &gt; --- 372,379 ----
+</em><br />
+<em class="quotelev2">&gt; &gt;       }
+</em><br />
+<em class="quotelev2">&gt; &gt;       fclose(fpcharge);
+</em><br />
+<em class="quotelev2">&gt; &gt;       if (number == 0) {
+</em><br />
+<em class="quotelev2">&gt; &gt; !         printf(&quot;\nUnable to read charges in the -cf file (%s).\n&quot;
+</em><br />
+<em class="quotelev2">&gt; &gt; !                 &quot;Using charges from the -i input file.&quot;, filename);
+</em><br />
+<em class="quotelev2">&gt; &gt;       }
+</em><br />
+<em class="quotelev2">&gt; &gt;   //      if ((*minfo).usercharge &lt; -9990.)
+</em><br />
+<em class="quotelev2">&gt; &gt;       if ((*minfo).icharge &lt; -9990.)
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; scott
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; On Thu, Aug 20, 2020 at 09:02:00PM -0400, Scott Brozell wrote:
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; Hi,
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; Marek, thanks for the detailed bug report.
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; I have reproduced the problem and will start debugging.
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; scott
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; ps
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; why did the chicken cross the road ?
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; it was amberlating !
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; On Thu, Aug 20, 2020 at 12:21:08PM +0200, Marek Maly wrote:
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; I would like to draw attention to a problem regarding the specific  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; use of
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; the antechamber and parmchk / parmchk2 programs, starting with the
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; AmberTools17 version. It is the use of these routines to create mol2  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; and
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; frcmod outputs from the mol2 input, where the only operation required  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; is to
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; add gaff atom types to the mol2 output file and eventually to create  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; also
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; the appropriate frcmod file. The input mol2 file is in my case  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; obtained as
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; the output from R.E.D. IV program, used for calculation of partial  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; charges
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; using RESP method. At first I thought that the problem with this  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; relatively
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; simple action, which the antechamber and parmchk programs handled  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; easily
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; until version 16, is due to the presence of the foreign chemical  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; element
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; &quot;Si&quot; (atom no. 80) in my residues, but as it turned out (after the Si  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; -
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; substitution Si - &gt; C in the input mol2 file) this problem is more  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; general
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; in nature. Unfortunately, the problem persists even after this  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; substitution
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; and even after disabling the acdoctor routine (running antechamber  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; with &quot;-dr
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; no&quot;) and possibly &quot;freezing&quot; non-standard bonds in the input mol2  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; file with
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; &quot;f&quot;. In the best (AT19) case, all key Amber files are created:
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; ANTECHAMBER_AC.AC
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; ANTECHAMBER_AC.AC0
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; ANTECHAMBER_BOND_TYPE.AC
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; ANTECHAMBER_BOND_TYPE.AC0
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; ATOMTYPE.INF
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; which are moreover identical (except for the letter &quot;f&quot; for frozen  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; bonds) to
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; the same files produced by AmberTools16.
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; However, my calculation script in AmberTools19 case still ends with an
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; absurd error:
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; &quot;Unable to find charges in file (Mol_m1-o1-sm.mol2)&quot;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; where Mol_m1-o1-sm.mol2 is the input mol2 file. This is of course  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; nonsense,
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; considering the existence of all the Amber files mentioned above. So  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; in
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; spite the perfect creation of  all *.AC, *.AC0 and INF files neither  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; the
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; output mol2 file nor the frcmod file is created.
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; I would be very grateful for advice on how to get such great output  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; with
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; AmberTools19 or later (mol2 file with added atom types and possibly  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; frcmod
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; file - it is clear to me that in the case of a foreign chemical  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; element, the
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; frcmod file will not contain concrete bond / nonbond values  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; parameters) as
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; could be obtained using antechamber and parmchk in AmberTools16 and  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; older
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; versions. This functionality is key for my work and I hope there  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; exists a
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; more elegant solution than  maintaining an alternative old version of
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; AmberTools16 just for this specific need.
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; The inputs and outputs for one specific residue are available in the
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; attached file, namely:
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; #1 AmberTools16
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; a) using parmchk
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; b) using parmchk2
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; There are identical mol2 outputs but different frcmod outputs (in  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; case b) is
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; this file empty)
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; #2 AmberTools19
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; a) using parmchk2 (without modifying the input mol2 script and without
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; adding the &quot;-dr no&quot; parameter to the antechamer command)
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; b) using parmchk2 (unusual &quot;Si-x&quot; bonds are frozen with &quot;f&quot; and the
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; antechamber is started with the parameter &quot;-dr no&quot;)
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; You may easily try/check also the case, were the &quot;Si&quot; atom (number  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; 80) is
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; substituted with &quot;C&quot; atom, and &quot;-dr no&quot; + &quot;f&quot; are eventually used.
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; FILES
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; input mol2 file: Mol_m1-o1-sm.mol2
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; calculation script: MakePREPandCHECK_MOL2_TO_MOL2.sh
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; output mol2 file: Mol_m1-o1-sm_withAT.mol2 (created just in AT16 case)
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; output frcmod file: Mol_m1-o1-sm.frcmod (created just in AT16 case,  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; please
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; notice the difference between parmchk ans parmchk2 case).
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; Then there are the usual Amber outputs and StdOut and ErrOut files
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; (SCREEN_OUTPUT_ATxy.txt, ERR_ATxy.txt) with informations/errs  
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; reported by
+</em><br />
+<em class="quotelev4">&gt; &gt;&gt; &gt; antechamber/parmchk/2 programs on the screen.
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev3">&gt; &gt;&gt; <a href="https://nam02.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=02%7C01%7Csbrozell%40iqb.rutgers.edu%7C8eaa90db9fda40074a0408d84919785e%7Cb92d2b234d35447093ff69aca6632ffe%7C1%7C0%7C637339721031610203&amp;amp;sd">https://nam02.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=02%7C01%7Csbrozell%40iqb.rutgers.edu%7C8eaa90db9fda40074a0408d84919785e%7Cb92d2b234d35447093ff69aca6632ffe%7C1%7C0%7C637339721031610203&amp;amp;sd</a>ata=WXmmVhQ3gTmfDPkEGb8kkhBU244fnR%2BJo6wexrvC8zs%3D&amp;amp;reserved=0
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="https://nam02.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=02%7C01%7Csbrozell%40iqb.rutgers.edu%7C8eaa90db9fda40074a0408d84919785e%7Cb92d2b234d35447093ff69aca6632ffe%7C1%7C0%7C637339721031610203&amp;amp;sd">https://nam02.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=02%7C01%7Csbrozell%40iqb.rutgers.edu%7C8eaa90db9fda40074a0408d84919785e%7Cb92d2b234d35447093ff69aca6632ffe%7C1%7C0%7C637339721031610203&amp;amp;sd</a>ata=WXmmVhQ3gTmfDPkEGb8kkhBU244fnR%2BJo6wexrvC8zs%3D&amp;amp;reserved=0
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; -- 
+</em><br />
+<em class="quotelev1">&gt; Vytvo?eno po?tovn? aplikac? Opery: https://nam02.safelinks.protection.outlook.com/?url=http%3A%2F%2Fwww.opera.com%2Fmail%2F&amp;amp;data=02%7C01%7Csbrozell%40iqb.rutgers.edu%7C8eaa90db9fda40074a0408d84919785e%7Cb92d2b234d35447093ff69aca6632ffe%7C1%7C0%7C637339721031610203&amp;amp;sdata=UzS%2BNzSasRAn8gTqN4SbHOTHSzZgWsVfo3QAVLpFRYg%3D&amp;amp;reserved=0
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="https://nam02.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=02%7C01%7Csbrozell%40iqb.rutgers.edu%7C8eaa90db9fda40074a0408d84919785e%7Cb92d2b234d35447093ff69aca6632ffe%7C1%7C0%7C637339721031610203&amp;amp;sd">https://nam02.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=02%7C01%7Csbrozell%40iqb.rutgers.edu%7C8eaa90db9fda40074a0408d84919785e%7Cb92d2b234d35447093ff69aca6632ffe%7C1%7C0%7C637339721031610203&amp;amp;sd</a>ata=WXmmVhQ3gTmfDPkEGb8kkhBU244fnR%2BJo6wexrvC8zs%3D&amp;amp;reserved=0
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Aug 27 2020 - 15:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0231.html" title="Next message in the list">Ayesha Fatima: "Re: [AMBER] &#0034;Atom does not have a type&#0034; despite adding .frcmod parameters"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0229.html" title="Previous message in the list">Erika Davidoff: "[AMBER] &#0034;Atom does not have a type&#0034; despite adding .frcmod parameters"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0200.html" title="Message to which this message replies">Marek Maly: "Re: [AMBER] Antechamber and parmchk2 problem in case of processing mol2 input files"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg230" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg230" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg230" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg230" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

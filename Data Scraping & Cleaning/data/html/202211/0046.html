@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Reimaging issues from Damiano Spadoni via AMBER on 2022-11-08 (Amber Archive Nov 2022)</title>
+<meta name="Author" content="Damiano Spadoni via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Reimaging issues" />
+<meta name="Date" content="2022-11-08" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Reimaging issues</h1>
+<!-- received="Tue Nov  8 06:00:03 2022" -->
+<!-- isoreceived="20221108140003" -->
+<!-- sent="Tue, 8 Nov 2022 13:35:54 +0000" -->
+<!-- isosent="20221108133554" -->
+<!-- name="Damiano Spadoni via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Reimaging issues" -->
+<!-- id="AM6PR06MB43256F61E676FB896E3C9D9FB33F9.AM6PR06MB4325.eurprd06.prod.outlook.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="AM6PR06MB4325D5C20E85C960E8547B7BB32B9.AM6PR06MB4325.eurprd06.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0047.html" accesskey="d" title="Reim, Thorben via AMBER: &quot;[AMBER] What is the &#0034;right&#0034; number of unit cells for simulating protein crystals?&quot;">Next message</a> ]
+[ <a href="0045.html" title="Nitin Kulhar via AMBER: &quot;[AMBER] installation&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0179.html" accesskey="t" title="Damiano Spadoni via AMBER: &quot;[AMBER] Reimaging issues&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg46" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg46" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg46" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg46" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Damiano Spadoni via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Reimaging%20issues">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 8 Nov 2022 13:35:54 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi AMBERists,
+<br />
+
+<br />
+I am having issues in reimaging the MD simulations of a Protein in an orthorombic box of water. I want to check the permeability of the catalytic pocket through the homodimeric structure of the protein, if a different number of water molecules get into the active site of each monomer. To do this I thought to calculate the coordination number of the metal centre in the active site vs. water molecules. You might suggest a different strategy for doing this - am open to suggestions, of course.
+<br />
+My issue comes from the attempts of reimaging the trajectories as I thought water molecules should be included to measure how many of those get into the different pockets. The output coming from my cpptraj script seems to have the water box centred but not the protein, the protein always looks shifted from the centre of the box and there are &quot;cavities&quot; in the water box. My script looks like this:
+<br />
+
+<br />
+parm Protein.prmtop
+<br />
+trajin Protein_md10ns.mdcrd 0 last 50
+<br />
+unwrap :1-1640                                  #the protein is 1640 amino acid long
+<br />
+image origin center :1-1640 familiar
+<br />
+center :1-1640 mass origin
+<br />
+autoimage
+<br />
+trajout Reimaged_trajectories.nc netcdf
+<br />
+
+<br />
+Kind regards,
+<br />
+Damiano
+<br />
+<br /><br /><br />This message and any attachment are intended solely for the addressee
+<br />
+and may contain confidential information. If you have received this
+<br />
+message in error, please contact the sender and delete the email and
+<br />
+attachment. 
+<br />
+<br />Any views or opinions expressed by the author of this email do not
+<br />
+necessarily reflect the views of the University of Nottingham. Email
+<br />
+communications with the University of Nottingham may be monitored 
+<br />
+where permitted by law.
+<br />
+<br /><br /><br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Nov 08 2022 - 06:00:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0047.html" title="Next message in the list">Reim, Thorben via AMBER: "[AMBER] What is the &#0034;right&#0034; number of unit cells for simulating protein crystals?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0045.html" title="Previous message in the list">Nitin Kulhar via AMBER: "[AMBER] installation"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0179.html" title="Next message in this discussion thread">Damiano Spadoni via AMBER: "[AMBER] Reimaging issues"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0179.html" title="Message sent in reply to this message">Damiano Spadoni via AMBER: "[AMBER] Reimaging issues"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg46" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg46" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg46" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg46" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

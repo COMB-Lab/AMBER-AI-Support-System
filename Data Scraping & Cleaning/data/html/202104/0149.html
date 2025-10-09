@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] amber manual - non-bonded terms from Jutta Rogal on 2021-04-19 (Amber Archive Apr 2021)</title>
+<meta name="Author" content="Jutta Rogal (jutta.rogal.nyu.edu)" />
+<meta name="Subject" content="[AMBER] amber manual - non-bonded terms" />
+<meta name="Date" content="2021-04-19" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] amber manual - non-bonded terms</h1>
+<!-- received="Mon Apr 19 09:00:02 2021" -->
+<!-- isoreceived="20210419160002" -->
+<!-- sent="Mon, 19 Apr 2021 11:34:47 -0400" -->
+<!-- isosent="20210419153447" -->
+<!-- name="Jutta Rogal" -->
+<!-- email="jutta.rogal.nyu.edu" -->
+<!-- subject="[AMBER] amber manual - non-bonded terms" -->
+<!-- id="72aaef3a-0154-e437-575f-c7921c15ab5b.nyu.edu" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0150.html" accesskey="d" title="Sangita Kachhap: &quot;[AMBER] Amber Tool&quot;">Next message</a> ]
+[ <a href="0148.html" title="Vaibhav Dixit: &quot;Re: [AMBER] unusually high entropy values MMPBSA quasi-harmonic&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg149" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg149" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg149" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg149" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Jutta Rogal &lt;<a href="mailto:jutta.rogal.nyu.edu?Subject=Re%3A%20%5BAMBER%5D%20amber%20manual%20-%20non-bonded%20terms">jutta.rogal.nyu.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 19 Apr 2021 11:34:47 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+<br />I recently started to work with amber force fields and, first of all, I 
+<br />
+would like to say that section 14.1 of the Amber 2020 manual that 
+<br />
+explains the parameter files is really helpful.  But we had quite some 
+<br />
+confusion with section 14.1.7. about the non-bonded terms.  After 
+<br />
+Eq.(14.8) it says &quot;Rmin is the sum of the van der Waals radii, Ri+Rj...&quot; 
+<br />
+which is fine, but then in the caption of Fig. 14.2 it says that Rmin = 
+<br />
+1.908 Ang for the c3 atom.  I believe this should be Ri and, in this 
+<br />
+case, Rmin = 2*Ri.
+<br />
+<br />Then, in Eq.(14.13), there is Rmin,i,j = 0.5(Rmin,i+Rmin,j), so then, in 
+<br />
+this case, it should be Rmin = 2*Rmin,i,j = Rmin,i+Rmin,j = Ri+Rj.
+<br />
+<br />Furthermore, in the text following Eq.(14.14), it says that in the 
+<br />
+parameter file [Rmin,\epsilon] are given, but again, I believe, this 
+<br />
+should be Ri.
+<br />
+<br />Also, after Eq.(14.12) it say: &quot;Van der Waals data in Amber force fields 
+<br />
+are given for each atom as a single data pair, a radius Rmin (’van der 
+<br />
+Waals’ radius in Ang) and an energy \epsilon (kcal/mol) representing the 
+<br />
+depth of the potential well.&quot;  So, when we were using Eq.(14.12) to 
+<br />
+compute A from \epsilon and Rmin, we first used the 'Rmin' given in the 
+<br />
+parameter file, instead of 2*Rmin.
+<br />
+<br />Unless we have some other confusion in this, it would be great if you 
+<br />
+could adjust the manual and maybe use, for example, Rvdw or something 
+<br />
+else as a variable for the van der Waals radii that are given in the 
+<br />
+parameter file and then Rmin only for the parameter entering Eq.(14.8).
+<br />
+<br />Thanks,
+<br />
+Jutta
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd&#46;<!--nospam-->org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Apr 19 2021 - 09:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0150.html" title="Next message in the list">Sangita Kachhap: "[AMBER] Amber Tool"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0148.html" title="Previous message in the list">Vaibhav Dixit: "Re: [AMBER] unusually high entropy values MMPBSA quasi-harmonic"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg149" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg149" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg149" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg149" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] hbond cpptraj from Clorice Reinhardt on 2021-03-15 (Amber Archive Mar 2021)</title>
+<meta name="Author" content="Clorice Reinhardt (clorice.reinhardt.yale.edu)" />
+<meta name="Subject" content="Re: [AMBER] hbond cpptraj" />
+<meta name="Date" content="2021-03-15" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] hbond cpptraj</h1>
+<!-- received="Mon Mar 15 15:30:02 2021" -->
+<!-- isoreceived="20210315223002" -->
+<!-- sent="Mon, 15 Mar 2021 18:27:27 -0400" -->
+<!-- isosent="20210315222727" -->
+<!-- name="Clorice Reinhardt" -->
+<!-- email="clorice.reinhardt.yale.edu" -->
+<!-- subject="Re: [AMBER] hbond cpptraj" -->
+<!-- id="260E679C-E5F4-4478-B016-FACC40F132D2.yale.edu" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAKEJUpKFGwpQf5kocjN9gNSXXcpiZe1jmvNTOdOjY23yaKPGkQ.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0141.html" accesskey="d" title="Ming Tang: &quot;Re: [AMBER] Apply Lennar-Jones potential between small molecules&quot;">Next message</a> ]
+[ <a href="0139.html" title="Rana Rehan Khalid: &quot;[AMBER] MCPB.py ZINC Mediated interactions parameterization&quot;">Previous message</a> ]
+[ <a href="0137.html" title="Jon Uranga: &quot;[AMBER] hbond cpptraj&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg140" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg140" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg140" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg140" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Clorice Reinhardt &lt;<a href="mailto:clorice.reinhardt.yale.edu?Subject=Re%3A%20%5BAMBER%5D%20hbond%20cpptraj">clorice.reinhardt.yale.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 15 Mar 2021 18:27:27 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Jon,
+<br />
+I didn’t see a reply, and just a disclaimer I’m not a developer, but I think you are confused by the definition of a molecule in amber. Aspartate and glutamine in your protein are part of the same molecule, and although they are different amino acids they still by definition are part of one protein molecule. So your result is exactly what one would expect with the command nointramol. Traditionally, I think people use this when they are trying to detect hydrogen bonds between say, a protein molecule and a small ligand. Those are two separate molecules, and one could use nointramol to only get the values between the protein and the ligand. You can find the hydrogen bond documentation in cpptraj, but you can just pass it a list of residues you are interested in, or alternatively just filter the results with awk, grep, or your favorite bash command.
+<br />
+All the best,
+<br />
+Clorice
+<br />
+<br /><em class="quotelev1">&gt; On Mar 15, 2021, at 9:47 AM, Jon Uranga &lt;jonur9.gmail&#46;<!--nospam-->com&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Dear Amber users,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I am writing with regard to the hbond command of cpptraj (V18.01). I am
+</em><br />
+<em class="quotelev1">&gt; trying to analyze the H bond interaction between several
+</em><br />
+<em class="quotelev1">&gt; hydrophilic residues in an enzyme and among all these interactions one is
+</em><br />
+<em class="quotelev1">&gt; between a glutamine (residue number 358) and an aspartate (residue number
+</em><br />
+<em class="quotelev1">&gt; 350). Since there are plenty of interactions and I am only interested in
+</em><br />
+<em class="quotelev1">&gt; the H bond between different residues I have included 'nointramol'.
+</em><br />
+<em class="quotelev1">&gt; However, I am experiencing something unexpected which I would like to ask
+</em><br />
+<em class="quotelev1">&gt; herein.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; In case that 'nointramol' is present, I do not get the interaction between
+</em><br />
+<em class="quotelev1">&gt; the glutamine and the aspartate:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; *hbond inter out hbond.dat donormask :358.NE2 acceptormask :350.OD2
+</em><br />
+<em class="quotelev1">&gt; nointramol avgout hbond.av*
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; However, if I remove 'nointramol', now I do get the value corresponding for
+</em><br />
+<em class="quotelev1">&gt; this interaction.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Since this interaction is intermolecular I cannot understand this
+</em><br />
+<em class="quotelev1">&gt; behaviour. Is there something wrong in the command I have written here?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Thanks a lot!
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Bests,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Jon
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; -- 
+</em><br />
+<em class="quotelev1">&gt; *********************************************************
+</em><br />
+<em class="quotelev1">&gt; Jon Uranga
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Institute of Physical Chemistry
+</em><br />
+<em class="quotelev1">&gt; Computational Chemistry and Biochemistry Group
+</em><br />
+<em class="quotelev1">&gt; Tammannstr. 6
+</em><br />
+<em class="quotelev1">&gt; 37077 Göttingen
+</em><br />
+<em class="quotelev1">&gt; Germany
+</em><br />
+<em class="quotelev1">&gt; Office Phone: 33131
+</em><br />
+<em class="quotelev1">&gt; E-mail: jon.uranga.chemie.uni-goettingen.de
+</em><br />
+<em class="quotelev1">&gt; *********************************************************
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Mar 15 2021 - 15:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0141.html" title="Next message in the list">Ming Tang: "Re: [AMBER] Apply Lennar-Jones potential between small molecules"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0139.html" title="Previous message in the list">Rana Rehan Khalid: "[AMBER] MCPB.py ZINC Mediated interactions parameterization"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0137.html" title="Message to which this message replies">Jon Uranga: "[AMBER] hbond cpptraj"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg140" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg140" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg140" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg140" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Problem of running a simulation in A100 GPU server. from David A Case on 2021-06-13 (Amber Archive Jun 2021)</title>
+<meta name="Author" content="David A Case (david.case.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] Problem of running a simulation in A100 GPU server." />
+<meta name="Date" content="2021-06-13" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Problem of running a simulation in A100 GPU server.</h1>
+<!-- received="Sun Jun 13 19:00:03 2021" -->
+<!-- isoreceived="20210614020003" -->
+<!-- sent="Sun, 13 Jun 2021 21:47:17 -0400" -->
+<!-- isosent="20210614014717" -->
+<!-- name="David A Case" -->
+<!-- email="david.case.rutgers.edu" -->
+<!-- subject="Re: [AMBER] Problem of running a simulation in A100 GPU server." -->
+<!-- id="20210614014717.tutv6b4gn2z3lofq.oq-aa-wh408-b.rad.rutgers.edu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAGZT7tP6p+nZbSFFEhQ0JbaAc-0f-5U2nhZOcTh9UbGavxrrHw.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0102.html" accesskey="d" title="Vaibhav Dixit: &quot;Re: [AMBER] strange tleap error with bond command&quot;">Next message</a> ]
+[ <a href="0100.html" title="David A Case: &quot;Re: [AMBER] strange tleap error with bond command&quot;">Previous message</a> ]
+[ <a href="0097.html" title="Jong Young Joung: &quot;[AMBER] Problem of running a simulation in A100 GPU server.&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg101" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg101" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg101" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg101" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case &lt;<a href="mailto:david.case.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20Problem%20of%20running%20a%20simulation%20in%20A100%20GPU%20server.">david.case.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 13 Jun 2021 21:47:17 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Sun, Jun 13, 2021, Jong Young Joung wrote:
+<br />
+<br /><em class="quotelev1">&gt;After installing Amber20 in a GPU server using A100 card,
+</em><br />
+<em class="quotelev1">&gt;I tried a simulation of a bound structure of a certain protein-ligand.
+</em><br />
+<em class="quotelev1">&gt;Right after the simulation run started, the system began to be unstable.
+</em><br />
+<br /><em class="quotelev1">&gt;However, when I tried the same simulation with the same md preparation
+</em><br />
+<em class="quotelev1">&gt;files in the GPU server using V100 card, the simulation continued to
+</em><br />
+<em class="quotelev1">&gt;progress stably.
+</em><br />
+<br />Since you get bad behavior &quot;right after the simulation run started&quot;, you
+<br />
+should be able to run parallel short simulations on A100 vs V100, using
+<br />
+identical inputs and setting a small value for ntpr to give maximum
+<br />
+information.  Try to narrow down as much as you can what the differences
+<br />
+are.  Are the energies identical on the first step?  If so, how long does it
+<br />
+take for them to diverge?
+<br />
+<br />I'm assuming here that the cuda test cases pass for the A100 both cards.
+<br />
+If not, one needs to explore possible problems with the installation, or
+<br />
+(potentially) with the hardware itself.  But you should be in good shape to
+<br />
+track this down: you have a machine where things appear to work, and one
+<br />
+where things fail; so there are a number of things that should come to mind
+<br />
+to try to narrow down the underlying cause.
+<br />
+<br />....dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Jun 13 2021 - 19:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0102.html" title="Next message in the list">Vaibhav Dixit: "Re: [AMBER] strange tleap error with bond command"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0100.html" title="Previous message in the list">David A Case: "Re: [AMBER] strange tleap error with bond command"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0097.html" title="Message to which this message replies">Jong Young Joung: "[AMBER] Problem of running a simulation in A100 GPU server."</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg101" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg101" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg101" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg101" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

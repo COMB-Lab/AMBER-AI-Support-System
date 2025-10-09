@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Abasic Site and Errant OH Group on Sugar from Robert Molt on 2020-05-04 (Amber Archive May 2020)</title>
+<meta name="Author" content="Robert Molt (rwmolt07.gmail.com)" />
+<meta name="Subject" content="[AMBER] Abasic Site and Errant OH Group on Sugar" />
+<meta name="Date" content="2020-05-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Abasic Site and Errant OH Group on Sugar</h1>
+<!-- received="Mon May  4 06:00:04 2020" -->
+<!-- isoreceived="20200504130004" -->
+<!-- sent="Mon, 4 May 2020 08:40:40 -0400" -->
+<!-- isosent="20200504124040" -->
+<!-- name="Robert Molt" -->
+<!-- email="rwmolt07.gmail.com" -->
+<!-- subject="[AMBER] Abasic Site and Errant OH Group on Sugar" -->
+<!-- id="B3DA3E6D-F38A-4DF5-A15D-B365CC7B40BD.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0033.html" accesskey="d" title="Robert Molt: &quot;Re: [AMBER] Release of Amber20 and AmberTools20&quot;">Next message</a> ]
+[ <a href="0031.html" title="David A Case: &quot;Re: [AMBER] Simulation stops during NPT&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0036.html" accesskey="t" title="Christina Bergonzo: &quot;Re: [AMBER] Abasic Site and Errant OH Group on Sugar&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg32" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg32" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg32" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg32" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Robert Molt &lt;<a href="mailto:rwmolt07.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Abasic%20Site%20and%20Errant%20OH%20Group%20on%20Sugar">rwmolt07.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 4 May 2020 08:40:40 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Good evening,
+<br />
+<br />I am observing a problem of added atoms I do not desire after leap processing; I am hoping for assistance in tracking down the mistake I am making which results in these extra atoms.
+<br />
+<br />Consider a protein/DNA complex given in the attached file 5.pdb. It has standard residues, but for the &quot;ABB residue.&quot; Dr. Bergonzo kindly offered me a library file with parameters for an ABB “residue” (I re-post her file here as ABB.off). I loaded the initial pdb structure, with the leap commands specified below (I have also attached the leap.log file). I had no particular errors within leap (beyond what I believe are “innocent” warnings in the leap.log). I then proceeded to minimize and heat the system, and finally observed a problem: leap added a OH in the C1 position of the ABB residue. This was not intended. The file “stripped.pdb” shows the system post-heating (post-leap, moreover).
+<br />
+<br />I believe the leap log clarifies the point of departure:
+<br />
+<br />&quot;Joining DC - ABB
+<br />
+&nbsp;&nbsp;Added missing heavy atom: .R&lt;ABB 329&gt;.A&lt;O1B 13&gt;
+<br />
+Joining ABB - DC&quot;
+<br />
+<br />Questions:
+<br />
+<br />1.)  I believe that this line from the leap log shows the adding the OH group I do not wish. Can this interpretation be confirmed?
+<br />
+<br />2.) This would imply to me that my ABB.off file is expecting a OH residue on the C1 atom. When I examine the .off file, I see an O1B specified in the line
+<br />
+<br />&nbsp;&quot;O1B&quot; &quot;OH&quot; 0 1 131072 13 8 -0.648200
+<br />
+<br />Is this interpretation correct? I have been trying to find the part of the AMBER manual which clarifies this file format, but am coming up short. I would think that this could be found in chapter 15, beginning page 225 of the 19th edition, but I do not see anything clarifying the .off file format. I also cannot find anything in the manual when I search for .off
+<br />
+<br />3.) I am very confused how the attached .off file would result in an O1B being added to a C1’ carbon. Perhaps this answer will be forthcoming in better understanding the file format of .off files.
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon May 04 2020 - 06:00:04 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0033.html" title="Next message in the list">Robert Molt: "Re: [AMBER] Release of Amber20 and AmberTools20"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0031.html" title="Previous message in the list">David A Case: "Re: [AMBER] Simulation stops during NPT"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0036.html" title="Next message in this discussion thread">Christina Bergonzo: "Re: [AMBER] Abasic Site and Errant OH Group on Sugar"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0036.html" title="Message sent in reply to this message">Christina Bergonzo: "Re: [AMBER] Abasic Site and Errant OH Group on Sugar"</a></li>
+<li><dfn>Reply</dfn>: <a href="0039.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Abasic Site and Errant OH Group on Sugar"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg32" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg32" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg32" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg32" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

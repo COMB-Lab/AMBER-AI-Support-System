@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] multi source calls in tleap from Matias Machado on 2021-02-11 (Amber Archive Feb 2021)</title>
+<meta name="Author" content="Matias Machado (mmachado.pasteur.edu.uy)" />
+<meta name="Subject" content="Re: [AMBER] multi source calls in tleap" />
+<meta name="Date" content="2021-02-11" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] multi source calls in tleap</h1>
+<!-- received="Thu Feb 11 06:00:07 2021" -->
+<!-- isoreceived="20210211140007" -->
+<!-- sent="Thu, 11 Feb 2021 10:52:23 -0300 (UYT)" -->
+<!-- isosent="20210211135223" -->
+<!-- name="Matias Machado" -->
+<!-- email="mmachado.pasteur.edu.uy" -->
+<!-- subject="Re: [AMBER] multi source calls in tleap" -->
+<!-- id="e3bbd530-a65d-4813-a395-66d505220b34.free.ipmont.lan" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="20210208145007.tfw46c6kiau4k5t3.godel.fios-router.home" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0108.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] single strand RNA parameters&quot;">Next message</a> ]
+[ <a href="0106.html" title="David A Case: &quot;Re: [AMBER] Questions about loading FF02 and MMGBSA&quot;">Previous message</a> ]
+[ <a href="0077.html" title="David A Case: &quot;Re: [AMBER] multi source calls in tleap&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0142.html" accesskey="t" title="Alan: &quot;Re: [AMBER] multi source calls in tleap&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg107" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg107" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg107" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg107" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Matias Machado &lt;<a href="mailto:mmachado.pasteur.edu.uy?Subject=Re%3A%20%5BAMBER%5D%20multi%20source%20calls%20in%20tleap">mmachado.pasteur.edu.uy</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 11 Feb 2021 10:52:23 -0300 (UYT)</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Alan,
+<br />
+<br />These feature is present since AMBER 16 or so (at leat that is the oldest version I've tied)...
+<br />
+<br />I don't think it is a bug, but Dave should certainly know better that me...
+<br />
+<br />I think it is some kind of safe-lock to prevent users from doing potentially wrong things... such as over-witting force fields...
+<br />
+<br />Indeed, oldff/leaprc.ff99SB and oldff/leaprc.ff99bsc0 load almost the same stuff, but for the bsc0 parameters of DNA.
+<br />
+<br />Hence the right way to load the force field is just &quot;source oldff/leaprc.ff99bsc0&quot;
+<br />
+<br />Anyway, as David mention, both the parameters and the way to load them are very old fashion...
+<br />
+<br />One proper way to do it at present is:
+<br />
+<br />source leaprc.protein.ff14SB
+<br />
+source leaprc.water.tip3p
+<br />
+source leaprc.DNA.bsc1
+<br />
+<br />Best,
+<br />
+<br />Matías
+<br />
+<br />PS: I'm stating to use &quot;leaprc.water.opc&quot; and OP3 (OPC3) water model, which is much better than TIP3P for the same price :-P
+<br />
+<br />----- Mensaje original -----
+<br />
+De: &quot;David A Case&quot; &lt;david.case.rutgers&#46;<!--nospam-->edu&gt;
+<br />
+Para: &quot;AMBER Mailing List&quot; &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+Enviados: Lunes, 8 de Febrero 2021 11:50:07
+<br />
+Asunto: Re: [AMBER] multi source calls in tleap
+<br />
+<br />On Sun, Feb 07, 2021, Alan wrote:
+<br />
+<br /><em class="quotelev1">&gt;I've only noticed that now in ambertools 2020, perhaps that happened years
+</em><br />
+<em class="quotelev1">&gt;ago, but my tleap scripts used to have:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;source oldff/leaprc.ff99SB
+</em><br />
+<em class="quotelev1">&gt;...
+</em><br />
+<em class="quotelev1">&gt;source oldff/leaprc.ff99bsc0
+</em><br />
+<br /><em class="quotelev1">&gt;Which now throws an error. 
+</em><br />
+<br />Looks like a bug to me.  I've submitted a fix for the upcoming AmberTools21.
+<br />
+Thanks for the report.
+<br />
+<br />Is there a command to &quot;unload&quot; or &quot;unsource&quot; loaded parameters?
+<br />
+<br />No.
+<br />
+<br /><em class="quotelev1">&gt;For now I've just broken my one script in several scripts, which is fine
+</em><br />
+<em class="quotelev1">&gt;but, still, it would be nice to know more about it.
+</em><br />
+<br />Just hoping here that you have a good reason to be using such outdated force
+<br />
+fields.
+<br />
+<br />...dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd&#46;<!--nospam-->org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Feb 11 2021 - 06:00:07 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0108.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] single strand RNA parameters"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0106.html" title="Previous message in the list">David A Case: "Re: [AMBER] Questions about loading FF02 and MMGBSA"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0077.html" title="Message to which this message replies">David A Case: "Re: [AMBER] multi source calls in tleap"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0142.html" title="Next message in this discussion thread">Alan: "Re: [AMBER] multi source calls in tleap"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0142.html" title="Message sent in reply to this message">Alan: "Re: [AMBER] multi source calls in tleap"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg107" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg107" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg107" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg107" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

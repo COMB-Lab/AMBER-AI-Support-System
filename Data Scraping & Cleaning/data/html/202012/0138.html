@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] An error during NPT/production (GPU run) from Женя Елизарова on 2020-12-11 (Amber Archive Dec 2020)</title>
+<meta name="Author" content="Женя Елизарова (zheneliz147.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] An error during NPT/production (GPU run)" />
+<meta name="Date" content="2020-12-11" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] An error during NPT/production (GPU run)</h1>
+<!-- received="Fri Dec 11 06:00:06 2020" -->
+<!-- isoreceived="20201211140006" -->
+<!-- sent="Fri, 11 Dec 2020 16:43:29 +0300" -->
+<!-- isosent="20201211134329" -->
+<!-- name="Женя Елизарова" -->
+<!-- email="zheneliz147.gmail.com" -->
+<!-- subject="Re: [AMBER] An error during NPT/production (GPU run)" -->
+<!-- id="CAJD2tBoWrfiyH5thDSWSO94txCTMu3MJCjZoUcLVk3+M2ninTg.mail.gmail.com" -->
+<!-- charset="UTF-8" -->
+<!-- inreplyto="CAEmzWj3e5heg-Z9YnBK=re8M-w4u3k0wZO8h=V6Q-ovb1qYh8g.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0139.html" accesskey="d" title="Chetna Tyagi: &quot;[AMBER] S2 order parameter not being calculated in IRED analysis.&quot;">Next message</a> ]
+[ <a href="0137.html" title="Carlos Simmerling: &quot;Re: [AMBER] Box info not found in prmtop file&quot;">Previous message</a> ]
+[ <a href="0097.html" title="David Cerutti: &quot;Re: [AMBER] An error during NPT/production (GPU run)&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0142.html" accesskey="t" title="David Cerutti: &quot;Re: [AMBER] An error during NPT/production (GPU run)&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg138" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg138" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg138" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg138" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Женя Елизарова &lt;<a href="mailto:zheneliz147.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20An%20error%20during%20NPT%2Fproduction%20(GPU%20run)">zheneliz147.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 11 Dec 2020 16:43:29 +0300</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+I've tried to change the code as you suggested, but still, this error
+<br />
+occurred. Probably, I need to change somewhere else?
+<br />
+In the attachment, there is a file, that I changed so you can check it in
+<br />
+case I did something wrong.
+<br />
+<br />Best wishes,
+<br />
+Evgenia Elizarova
+<br />
+<br />ср, 9 дек. 2020 г. в 11:50, David Cerutti &lt;dscerutti.gmail.com&gt;:
+<br />
+<br /><em class="quotelev1">&gt; I did some investigations on a separate topic, and systems set up with
+</em><br />
+<em class="quotelev1">&gt; ff19SB may fail for reasons relating to a bug in the bond work unit
+</em><br />
+<em class="quotelev1">&gt; allocation when CMAPs are involved.  I will be patching the code ASAP, but
+</em><br />
+<em class="quotelev1">&gt; in lieu of the patch you can go into ${AMBERHOME}/src/pmemd/src/cuda/ and
+</em><br />
+<em class="quotelev1">&gt; access the file bondRemap.cpp.  This is a problem with how the host sets up
+</em><br />
+<em class="quotelev1">&gt; the tables for the GPU to execute, but the fix is to look at or about line
+</em><br />
+<em class="quotelev1">&gt; 395 and change the code block starting there to:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   if (objcode == ANGL_CODE || objcode == NMR3_CODE || objcode == CMAP_CODE)
+</em><br />
+<em class="quotelev1">&gt; {
+</em><br />
+<em class="quotelev1">&gt;     if ((objcode == ANGL_CODE &amp;&amp; ispresent[2] == 0) ||
+</em><br />
+<em class="quotelev1">&gt;         (objcode == CMAP_CODE &amp;&amp; ispresent[4] == 0)) {
+</em><br />
+<em class="quotelev1">&gt;       bw-&gt;atomList[nunitatom] = p1atm[objID];
+</em><br />
+<em class="quotelev1">&gt;       nunitatom++;
+</em><br />
+<em class="quotelev1">&gt;     }
+</em><br />
+<em class="quotelev1">&gt;     if (unitMapCounts == NULL) {
+</em><br />
+<em class="quotelev1">&gt;       itmp = unitMap-&gt;data;
+</em><br />
+<em class="quotelev1">&gt;       itmp[p1atm[objID]] = unitID;
+</em><br />
+<em class="quotelev1">&gt;     }
+</em><br />
+<em class="quotelev1">&gt;     else {
+</em><br />
+<em class="quotelev1">&gt;       unitMap-&gt;map[p1atm[objID]][unitMapCounts-&gt;data[p1atm[objID]]] =
+</em><br />
+<em class="quotelev1">&gt; unitID;
+</em><br />
+<em class="quotelev1">&gt;       unitMapCounts-&gt;data[p1atm[objID]] += 1;
+</em><br />
+<em class="quotelev1">&gt;     }
+</em><br />
+<em class="quotelev1">&gt;   }
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The crucial thing is that &quot;if (ispresent[2] == 0)&quot; changes to either of two
+</em><br />
+<em class="quotelev1">&gt; pairs of conditions, involving the objcode as well as the array tracking
+</em><br />
+<em class="quotelev1">&gt; whether an atom in the object is already present in the work unit's import
+</em><br />
+<em class="quotelev1">&gt; group.  I have already verified that this is a bug and that fixing it
+</em><br />
+<em class="quotelev1">&gt; solves a similar problem in one of the Simmerling lab's systems, where it
+</em><br />
+<em class="quotelev1">&gt; would cause failures like what you are seeing after 35k, 55k, or even 100k
+</em><br />
+<em class="quotelev1">&gt; steps.  But, if you can modify your own code and re-run your test to
+</em><br />
+<em class="quotelev1">&gt; confirm that this solves your problem, that would be ideal.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Dave
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Fri, Dec 4, 2020 at 11:13 AM David A Case &lt;david.case.rutgers.edu&gt;
+</em><br />
+<em class="quotelev1">&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; On Mon, Nov 30, 2020, Женя Елизарова wrote:
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;I tried different force fields for protein. It occured that the problem
+</em><br />
+<em class="quotelev2">&gt; &gt; (an
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;error &quot;cpubuffer..&quot;) was with ff19SB force field. Calculations with
+</em><br />
+<em class="quotelev2">&gt; &gt; another
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;types of force fields (14,99) are more stable. Does it mean that i can't
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;use that force field? Or maybe you know how to fix it?
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; One thing worth trying:  get you system well-equilibrated with ff14SB,
+</em><br />
+<em class="quotelev2">&gt; &gt; then switch prmtop files to one for ff19SB, and continue the simulation
+</em><br />
+<em class="quotelev2">&gt; &gt; after (potential) bad interactions have been removed.  It would be of
+</em><br />
+<em class="quotelev2">&gt; &gt; interest to know if the ff19SB-related problems still show up.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; ....regards...dac
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>application/octet-stream attachment: <a href="att-0138/bondRemap.cpp">bondRemap.cpp</a></li>
+</ul>
+<!-- attachment="bondRemap.cpp" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Fri Dec 11 2020 - 06:00:06 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0139.html" title="Next message in the list">Chetna Tyagi: "[AMBER] S2 order parameter not being calculated in IRED analysis."</a></li>
+<li><dfn>Previous message</dfn>: <a href="0137.html" title="Previous message in the list">Carlos Simmerling: "Re: [AMBER] Box info not found in prmtop file"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0097.html" title="Message to which this message replies">David Cerutti: "Re: [AMBER] An error during NPT/production (GPU run)"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0142.html" title="Next message in this discussion thread">David Cerutti: "Re: [AMBER] An error during NPT/production (GPU run)"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0142.html" title="Message sent in reply to this message">David Cerutti: "Re: [AMBER] An error during NPT/production (GPU run)"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg138" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg138" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg138" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg138" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

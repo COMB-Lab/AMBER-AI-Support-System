@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Add molecule to prmtop/inpcrd ? from Matias Machado on 2021-04-07 (Amber Archive Apr 2021)</title>
+<meta name="Author" content="Matias Machado (mmachado.pasteur.edu.uy)" />
+<meta name="Subject" content="Re: [AMBER] Add molecule to prmtop/inpcrd ?" />
+<meta name="Date" content="2021-04-07" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Add molecule to prmtop/inpcrd ?</h1>
+<!-- received="Wed Apr  7 07:00:02 2021" -->
+<!-- isoreceived="20210407140002" -->
+<!-- sent="Wed, 07 Apr 2021 10:30:28 -0300 (UYT)" -->
+<!-- isosent="20210407133028" -->
+<!-- name="Matias Machado" -->
+<!-- email="mmachado.pasteur.edu.uy" -->
+<!-- subject="Re: [AMBER] Add molecule to prmtop/inpcrd ?" -->
+<!-- id="ae915729-b890-4a46-ac29-ed6009f68dea.free.ipmont.lan" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAO4guEK0ySNiGu3dyU-zVwyHF8nDwwc=qvBonkJEYzj=+aiFGg.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0038.html" accesskey="d" title="Daniel Roe: &quot;Re: [AMBER] Add molecule to prmtop/inpcrd ?&quot;">Next message</a> ]
+[ <a href="0036.html" title="&#20313;&#40511;&#33395;: &quot;[AMBER] Help for NETCDF Error :Input/Output error&quot;">Previous message</a> ]
+[ <a href="0033.html" title="Gustavo Seabra: &quot;[AMBER] Add molecule to prmtop/inpcrd ?&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0038.html" accesskey="t" title="Daniel Roe: &quot;Re: [AMBER] Add molecule to prmtop/inpcrd ?&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg37" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg37" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg37" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg37" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Matias Machado &lt;<a href="mailto:mmachado.pasteur.edu.uy?Subject=Re%3A%20%5BAMBER%5D%20Add%20molecule%20to%20prmtop%2Finpcrd%20%3F">mmachado.pasteur.edu.uy</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 07 Apr 2021 10:30:28 -0300 (UYT)</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Gustavo,
+<br />
+<br />mmm... that seems a pitfall in the AMBER's pipeline...
+<br />
+<br />Most probably CONNECT records from your original PDB are useless due to the re-ordering of atoms after the former leap...
+<br />
+<br />*** SPOILER ALERT: The following is an untrusted workaround ****
+<br />
+<br />I'm guessing here, but if the issue is the PDB format, then you can try saving the coordinates in .cif, which leap is able to read...
+<br />
+<br />But the problem could be leap setting bonds from both .lib (automatically) and from CONNECT, duplicating bonds and hence giving an error of &quot;too many bonds&quot;... if that's the case, you can try removing all bonds from residues and connection between amino acids in the topology (leaving glycosidic bonds untouched) by using the command &quot;change removebonds&quot; in cpptraj (note: this may also eliminate S-S bridges)... then you can save the PDB with CONNECT records... 
+<br />
+<br />Hope this helps...
+<br />
+<br />Best,
+<br />
+<br />Matías
+<br />
+<br />------------------------------------
+<br />
+PhD.
+<br />
+Researcher at Biomolecular Simulations Lab.
+<br />
+Institut Pasteur de Montevideo | Uruguay
+<br />
+[<a href="http://pasteur.uy/en/labs/biomolecular-simulations-laboratory">http://pasteur.uy/en/labs/biomolecular-simulations-laboratory</a>]
+<br />
+[<a href="http://www.sirahff.com">http://www.sirahff.com</a>]
+<br />
+<br />----- Mensaje original -----
+<br />
+De: &quot;Gustavo Seabra&quot; &lt;gustavo.seabra.gmail.com&gt;
+<br />
+Para: &quot;AMBER Mailing List&quot; &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+Enviados: Martes, 6 de Abril 2021 18:26:19
+<br />
+Asunto: [AMBER] Add molecule to prmtop/inpcrd ?
+<br />
+<br />Hi all,
+<br />
+<br />I wonder if there's any way to add a molecule to previously prepared
+<br />
+prmtop/inpcrd pair, without using any intermediate file (pdb, etc.)
+<br />
+<br />Can parmed do that?
+<br />
+<br />The reason I ask:
+<br />
+I did a simulation of a reasonably large system, with a membrane-inserted
+<br />
+glycosylated protein. Now, I'd like to add a ligand to a specific frame
+<br />
+from the trajectory I obtained, and run a new simulation in the presence of
+<br />
+this ligand.
+<br />
+<br />I tried the obvious: use cpptraj to select the frame, write as PDB, add the
+<br />
+ligand and use LEaP again to build the new system, but the problem is that
+<br />
+the new PDB saved by cpptraj either does not have CONECT information, or
+<br />
+has it for ALL bonds. (The same happens with AMBPDB). If I write with NO
+<br />
+CONECT, LEaP then doesn't read the glycam bonds correctly. If write the
+<br />
+CONECT cards, LEaP gets confused with some atoms having too many bonds
+<br />
+(apparently it may be caused by numbers overlapping in the PDB format)
+<br />
+<br />Thanks,
+<br />
+<pre>
+--
+Gustavo Seabra.
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Wed Apr 07 2021 - 07:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0038.html" title="Next message in the list">Daniel Roe: "Re: [AMBER] Add molecule to prmtop/inpcrd ?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0036.html" title="Previous message in the list">&#20313;&#40511;&#33395;: "[AMBER] Help for NETCDF Error :Input/Output error"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0033.html" title="Message to which this message replies">Gustavo Seabra: "[AMBER] Add molecule to prmtop/inpcrd ?"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0038.html" title="Next message in this discussion thread">Daniel Roe: "Re: [AMBER] Add molecule to prmtop/inpcrd ?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg37" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg37" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg37" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg37" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

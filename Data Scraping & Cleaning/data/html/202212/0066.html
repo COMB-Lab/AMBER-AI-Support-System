@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] MMPBSA Pairwise per-residue error from Bill Miller III via AMBER on 2022-12-16 (Amber Archive Dec 2022)</title>
+<meta name="Author" content="Bill Miller III via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] MMPBSA Pairwise per-residue error" />
+<meta name="Date" content="2022-12-16" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] MMPBSA Pairwise per-residue error</h1>
+<!-- received="Fri Dec 16 04:30:03 2022" -->
+<!-- isoreceived="20221216123003" -->
+<!-- sent="Fri, 16 Dec 2022 06:25:26 -0600" -->
+<!-- isosent="20221216122526" -->
+<!-- name="Bill Miller III via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] MMPBSA Pairwise per-residue error" -->
+<!-- id="34E7A01F-0486-4552-9444-207E6D367F7A.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="57E1789E-F10B-4A91-BDD2-619BE471CF23.ucr.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0067.html" accesskey="d" title="David A Case via AMBER: &quot;Re: [AMBER] Amber22 installation: &#0034;source /home/xxxx/amber22/amber.sh&#0034; and &#0034;make test.serial&#0034; errors&quot;">Next message</a> ]
+[ <a href="0065.html" title="Kapil Ursal via AMBER: &quot;[AMBER] Regarding unusual free energy value&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg66" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg66" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg66" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg66" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Bill Miller III via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20MMPBSA%20Pairwise%20per-residue%20error">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 16 Dec 2022 06:25:26 -0600</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+You should check the *ligand.mdout files created by MMPBSA.py. It appears there is a problem with your simulation. They very end of the log message says that a VDWAAL energy has a value of *******, meaning there is at least one frame where the energy of the ligand is too high for the number of digits available to print the energy in the output file. This is usually caused by two atoms that are overlapping or near overlapping in the analyzed frames. If you check the ligand mdout files and search for the “*******” characters, then you should be able to narrow down the problematic frame number(s) and overlapping residues since you’re also running decomp.
+<br />
+<br />Hope that helps.
+<br />
+<br />-Bill
+<br />
+<br /><br /><br /><em class="quotelev1">&gt; On Dec 16, 2022, at 12:30 AM, Pablo Arantes via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ﻿Hi Amber team,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I’ve been running MMPBSA Pairwise per-residue free energy decomposition calculations for several systems and everything is working fine, however for one system I’ve been having some issues. I’ve changed several options and nothing is working for me. I hope you can help me how to handle this error. The system is protein complex with DNA and RNA.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Follow the command lines and the mmpbsa.in &lt;<a href="http://mmpbsa.in/">http://mmpbsa.in/</a>&gt;:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ante-MMPBSA.py  -p SYS.prmtop -c com.prmtop -r sele1.prmtop -l sele2.prmtop -s :WAT:Na+:Cl-:Mg+:K+:ZN -n :1529-1683 --radii mbondi3
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; mpirun -np 32 MMPBSA.py.MPI -O -i mmpbsa.in &lt;<a href="http://mmpbsa.in/">http://mmpbsa.in/</a>&gt; -o TadA_RESULTS_MMPBSA.dat -do TadA_DECOMP_MMPBSA.dat -sp SYS.prmtop -cp com.prmtop -rp sele1.prmtop -lp sele2.prmtop -y trajectory.dcd
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; mmpbsa.in &lt;<a href="http://mmpbsa.in/">http://mmpbsa.in/</a>&gt;: 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; &amp;general
+</em><br />
+<em class="quotelev1">&gt;  endframe=300,  interval=1, verbose=1, strip_mask=:WAT:Na+:Cl-:Mg+:K+:ZN,
+</em><br />
+<em class="quotelev1">&gt; /
+</em><br />
+<em class="quotelev1">&gt; &amp;gb
+</em><br />
+<em class="quotelev1">&gt; igb=8, saltcon=0.15,
+</em><br />
+<em class="quotelev1">&gt; /
+</em><br />
+<em class="quotelev1">&gt; &amp;decomp
+</em><br />
+<em class="quotelev1">&gt; idecomp=4, print_res=&quot;1362-1528; 1529-1683; 1-1361; 1817-1856&quot;
+</em><br />
+<em class="quotelev1">&gt; dec_verbose=0,
+</em><br />
+<em class="quotelev1">&gt; /
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Follow the issue:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Creating receptor topology file by stripping :1529-1683 from com.prmtop
+</em><br />
+<em class="quotelev1">&gt; Done creating receptor topology file!
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Creating ligand topology file by stripping !(:1529-1683) from com.prmtop
+</em><br />
+<em class="quotelev1">&gt; Done creating ligand topology file!
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Loading and checking parameter files for compatibility...
+</em><br />
+<em class="quotelev1">&gt; sander found! Using /software/repo/moleculardynamics/amber/19/bin/sander
+</em><br />
+<em class="quotelev1">&gt; cpptraj found! Using /software/repo/moleculardynamics/amber/19/bin/cpptraj
+</em><br />
+<em class="quotelev1">&gt; Preparing trajectories for simulation...
+</em><br />
+<em class="quotelev1">&gt; 300 frames were processed by cpptraj for use in calculation.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Running calculations on normal system...
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Beginning GB calculations with /software/repo/moleculardynamics/amber/19/bin/sander
+</em><br />
+<em class="quotelev1">&gt;  calculating complex contribution...
+</em><br />
+<em class="quotelev1">&gt;  calculating receptor contribution...
+</em><br />
+<em class="quotelev1">&gt;  calculating ligand contribution...
+</em><br />
+<em class="quotelev1">&gt;  File &quot;/software/repo/moleculardynamics/amber/19/bin/MMPBSA.py.MPI&quot;, line 108, in &lt;module&gt;
+</em><br />
+<em class="quotelev1">&gt;    app.parse_output_files()
+</em><br />
+<em class="quotelev1">&gt;  File &quot;/software/repo/moleculardynamics/amber/19/lib/python2.7/site-packages/MMPBSA_mods/main.py&quot;, line 932, in parse_output_files
+</em><br />
+<em class="quotelev1">&gt;    self.using_chamber)}
+</em><br />
+<em class="quotelev1">&gt;  File &quot;/software/repo/moleculardynamics/amber/19/lib/python2.7/site-packages/MMPBSA_mods/amber_outputs.py&quot;, line 634, in init
+</em><br />
+<em class="quotelev1">&gt;    AmberOutput._read(self)
+</em><br />
+<em class="quotelev1">&gt;  File &quot;/software/repo/moleculardynamics/amber/19/lib/python2.7/site-packages/MMPBSA_mods/amber_outputs.py&quot;, line 343, in _read
+</em><br />
+<em class="quotelev1">&gt;    self._get_energies(output_file)
+</em><br />
+<em class="quotelev1">&gt;  File &quot;/software/repo/moleculardynamics/amber/19/lib/python2.7/site-packages/MMPBSA_mods/amber_outputs.py&quot;, line 661, in _get_energies
+</em><br />
+<em class="quotelev1">&gt;    self.data['VDWAALS'].append(float(words[2]))
+</em><br />
+<em class="quotelev1">&gt; ValueError: could not convert string to float: *********
+</em><br />
+<em class="quotelev1">&gt; Error occured on rank 0.
+</em><br />
+<em class="quotelev1">&gt; Exiting. All files have been retained.
+</em><br />
+<em class="quotelev1">&gt; --------------------------------------------------------------------------
+</em><br />
+<em class="quotelev1">&gt; MPI_ABORT was invoked on rank 0 in communicator MPI_COMM_WORLD
+</em><br />
+<em class="quotelev1">&gt; with errorcode 1.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+</em><br />
+<em class="quotelev1">&gt; You may or may not see output from other processes, depending on
+</em><br />
+<em class="quotelev1">&gt; exactly when Open MPI kills them.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Please let me know if you need anything else.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Thank you.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; -- 
+</em><br />
+<em class="quotelev1">&gt; Pablo Ricardo Arantes
+</em><br />
+<em class="quotelev1">&gt; Postdoctoral Research Fellow
+</em><br />
+<em class="quotelev1">&gt; PhD in Cell and Molecular Biology - UFRGS
+</em><br />
+<em class="quotelev1">&gt; MSc. in Cell and Molecular Biology -  UFRGS
+</em><br />
+<em class="quotelev1">&gt; The Palermo Lab
+</em><br />
+<em class="quotelev1">&gt; Department of Bioengineering 
+</em><br />
+<em class="quotelev1">&gt; University of California Riverside 
+</em><br />
+<em class="quotelev1">&gt; 225 Materials Science &amp; Engineering
+</em><br />
+<em class="quotelev1">&gt; 900 University Ave. | Riverside, CA 92521
+</em><br />
+<em class="quotelev1">&gt; Email: pabloa.ucr&#46;<!--nospam-->edu &lt;mailto:pabloa.ucr&#46;<!--nospam-->edu&gt;
+</em><br />
+<em class="quotelev1">&gt; Web: www.palermolab.com &lt;http://www.palermolab.com/&gt;
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd&#46;<!--nospam-->org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Dec 16 2022 - 04:30:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0067.html" title="Next message in the list">David A Case via AMBER: "Re: [AMBER] Amber22 installation: &#0034;source /home/xxxx/amber22/amber.sh&#0034; and &#0034;make test.serial&#0034; errors"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0065.html" title="Previous message in the list">Kapil Ursal via AMBER: "[AMBER] Regarding unusual free energy value"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg66" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg66" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg66" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg66" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

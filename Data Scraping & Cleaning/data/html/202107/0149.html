@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] cudaMemcpy GpuBuffer ERROR from Gerardo Zerbetto De Palma on 2021-07-19 (Amber Archive Jul 2021)</title>
+<meta name="Author" content="Gerardo Zerbetto De Palma (g.zerbetto.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] cudaMemcpy GpuBuffer ERROR" />
+<meta name="Date" content="2021-07-19" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] cudaMemcpy GpuBuffer ERROR</h1>
+<!-- received="Mon Jul 19 08:30:02 2021" -->
+<!-- isoreceived="20210719153002" -->
+<!-- sent="Mon, 19 Jul 2021 12:00:22 -0300" -->
+<!-- isosent="20210719150022" -->
+<!-- name="Gerardo Zerbetto De Palma" -->
+<!-- email="g.zerbetto.gmail.com" -->
+<!-- subject="Re: [AMBER] cudaMemcpy GpuBuffer ERROR" -->
+<!-- id="CAOMpsaUV=VRUL3dai164hJfZ9Vb7z_Fw7NfWOWyOQMpUzNZ2Pg.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAGk3s-QRyq8=18=NA7fTQZf_-=s5=WUx77i4fOs6CNby2fCzAg.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0150.html" accesskey="d" title="Carlos Simmerling: &quot;Re: [AMBER] cudaMemcpy GpuBuffer ERROR&quot;">Next message</a> ]
+[ <a href="0148.html" title="Sruthi Sudhakar: &quot;Re: [AMBER] Structure alteration and shortening of loops using xleap&quot;">Previous message</a> ]
+[ <a href="0145.html" title="Carlos Simmerling: &quot;Re: [AMBER] cudaMemcpy GpuBuffer ERROR&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0150.html" accesskey="t" title="Carlos Simmerling: &quot;Re: [AMBER] cudaMemcpy GpuBuffer ERROR&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg149" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg149" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg149" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg149" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gerardo Zerbetto De Palma &lt;<a href="mailto:g.zerbetto.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20cudaMemcpy%20GpuBuffer%20ERROR">g.zerbetto.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 19 Jul 2021 12:00:22 -0300</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Carlos. Thanks for the help. The system we are trying to simulate is a
+<br />
+nPT membrane embedded protein tetramer. We are just running a plain MD sim,
+<br />
+so no additional parameters are set. The initial coordinates were obtained
+<br />
+from a previous simulation that we had run with the same parameters, so
+<br />
+those coordinates are from a very well thermalized system. We just made a
+<br />
+single point mutation and made a minimization just to relax any clashes. It
+<br />
+is quite remarkable that the same system is being simulated in an RTX2080
+<br />
+(in another computer) without any trouble but when we run it in the TITAN V
+<br />
+it randomly crashes. Now we will try swapping the GPUs just to discard that
+<br />
+it is not a problem with any other computer component.
+<br />
+Thanks a lot, again.
+<br />
+Regards
+<br />
+<br />The original post was this one:
+<br />
+*Hi everyone.*
+<br />
+*We were trying to run some simulations of a membrane protein on an NVIDIA
+<br />
+TITAN V and got stuck by some cudaMemcpy that came in different flavors:*
+<br />
+<br /><br /><br />*cudaMemcpy GpuBuffer::Upload failed unspecified launch failurecudaMemcpy
+<br />
+GpuBuffer::Download failed unspecified launch failure*
+<br />
+<br />*cudaMemcpy GpuBuffer::Download failed an illegal instruction was
+<br />
+encountered*
+<br />
+<br />*Firstly we started running the sim using amber 18, restarting the sim
+<br />
+every 5 nanoseconds to get consecutive 5ns trajectories. After simulating
+<br />
+25 nanoseconds, the program stopped randomly. Then we tried to repeat the
+<br />
+simulation that had failed (using the same random seed and initial
+<br />
+coordinates) and the simulation succeeded, but the same error came up in a
+<br />
+subsequent simulation. These errors kept coming at a random timestep when
+<br />
+we restarted the simulations. Energies in the output seemed to be OK and
+<br />
+simulations sometimes proceeded without errors when restarted. Hoping that
+<br />
+this was a bug, we compiled amber 20 and ran the same simulations and had
+<br />
+the same random cudaMemcpy errors. Just to check if the simulated system
+<br />
+was fine, we are also running it in a RTX2080 with amber 18 without
+<br />
+problems, so far.*
+<br />
+<br />*We are running out of ideas here so here we are reaching out to the
+<br />
+community for some help in this matter. We will appreciate every idea or
+<br />
+question that can enlighten us to solve this puzzle.*
+<br />
+<br />El lun, 19 jul 2021 a las 11:08, Carlos Simmerling (&lt;
+<br />
+carlos.simmerling.gmail.com&gt;) escribió:
+<br />
+<br /><em class="quotelev1">&gt; for ff19SB problems, make sure your Amber version is completely updated
+</em><br />
+<em class="quotelev1">&gt; with current patches. There was a fix a while back that corrected an error
+</em><br />
+<em class="quotelev1">&gt; that could lead to failures with some force fields including ff19SB.
+</em><br />
+<em class="quotelev1">&gt; Information on applying patches is found here:
+</em><br />
+<em class="quotelev1">&gt; <a href="http://ambermd.org/AmberPatches.php">http://ambermd.org/AmberPatches.php</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; for the problem with ff14SB, I did not see the original post. More details
+</em><br />
+<em class="quotelev1">&gt; would be helpful, especially about the system you are simulating (is it
+</em><br />
+<em class="quotelev1">&gt; only protein, or more? did you use any other parameters except ff14SB?
+</em><br />
+<em class="quotelev1">&gt; Where were the initial coordinates obtained?).
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Mon, Jul 19, 2021 at 9:46 AM Gerardo Zerbetto De Palma &lt;
+</em><br />
+<em class="quotelev1">&gt; g.zerbetto.gmail.com&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Hi we are using ff14SB forcefield and the errors still appear.
+</em><br />
+<em class="quotelev2">&gt; &gt; Thanks for the help!
+</em><br />
+<em class="quotelev2">&gt; &gt; Regards
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Gerardo Zerbetto
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; &lt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="http://www.avg.com/email-signature?utm_medium=email&amp;utm_source=link&amp;utm_campaign=sig-email&amp;utm_content=webmail">http://www.avg.com/email-signature?utm_medium=email&amp;utm_source=link&amp;utm_campaign=sig-email&amp;utm_content=webmail</a>
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Virus-free.
+</em><br />
+<em class="quotelev2">&gt; &gt; www.avg.com
+</em><br />
+<em class="quotelev2">&gt; &gt; &lt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="http://www.avg.com/email-signature?utm_medium=email&amp;utm_source=link&amp;utm_campaign=sig-email&amp;utm_content=webmail">http://www.avg.com/email-signature?utm_medium=email&amp;utm_source=link&amp;utm_campaign=sig-email&amp;utm_content=webmail</a>
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; &lt;#DAB4FAD8-2DD7-40BB-A1B8-4E2AA1F9FDF2&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; El vie, 16 jul 2021 a las 18:29, Rafał Madaj (&lt;rmadaj.cbmm&#46;<!--nospam-->lodz.pl&gt;)
+</em><br />
+<em class="quotelev2">&gt; &gt; escribió:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Hi,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Which force field are you using? I had exactly same problem with
+</em><br />
+<em class="quotelev1">&gt; ff19SB.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; After changing into ff14SB the problem disappeared.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Regards,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Rafal
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; On 16.07.2021 18:01, Gerardo Zerbetto De Palma wrote:
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; Hi everyone.
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; We were trying to run some simulations of a membrane protein on an
+</em><br />
+<em class="quotelev2">&gt; &gt; NVIDIA
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; TITAN V and got stuck by some cudaMemcpy that came in different
+</em><br />
+<em class="quotelev2">&gt; &gt; flavors:
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; cudaMemcpy GpuBuffer::Upload failed unspecified launch failure
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; cudaMemcpy GpuBuffer::Download failed unspecified launch failure
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; cudaMemcpy GpuBuffer::Download failed an illegal instruction was
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; encountered
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; Firstly we started running the sim using amber 18, restarting the sim
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; every
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; 5 nanoseconds to get consecutive 5ns trajectories. After simulating
+</em><br />
+<em class="quotelev1">&gt; 25
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; nanoseconds, the program stopped randomly. Then we tried to repeat
+</em><br />
+<em class="quotelev1">&gt; the
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; simulation that had failed (using the same random seed and initial
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; coordinates) and the simulation succeeded, but the same error came up
+</em><br />
+<em class="quotelev2">&gt; &gt; in
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; a
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; subsequent simulation. These errors kept coming at a random timestep
+</em><br />
+<em class="quotelev2">&gt; &gt; when
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; we restarted the simulations. Energies in the output seemed to be OK
+</em><br />
+<em class="quotelev2">&gt; &gt; and
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; simulations sometimes proceeded without errors when restarted. Hoping
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; that
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; this was a bug, we compiled amber 20 and ran the same simulations and
+</em><br />
+<em class="quotelev2">&gt; &gt; had
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; the same random cudaMemcpy errors. Just to check if the simulated
+</em><br />
+<em class="quotelev2">&gt; &gt; system
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; was fine, we are also running it in a RTX2080 with amber 18 without
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; problems, so far.
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; We are running out of ideas here so here we are reaching out to the
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; community for some help in this matter. We will appreciate every idea
+</em><br />
+<em class="quotelev2">&gt; &gt; or
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; question that can enlighten us to solve this puzzle.
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; Regards!
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; Gerardo Zerbetto De Palma
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; &lt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="http://www.avg.com/email-signature?utm_medium=email&amp;utm_source=link&amp;utm_campaign=sig-email&amp;utm_content=webmail">http://www.avg.com/email-signature?utm_medium=email&amp;utm_source=link&amp;utm_campaign=sig-email&amp;utm_content=webmail</a>
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; Virus-free.
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; www.avg.com
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; &lt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="http://www.avg.com/email-signature?utm_medium=email&amp;utm_source=link&amp;utm_campaign=sig-email&amp;utm_content=webmail">http://www.avg.com/email-signature?utm_medium=email&amp;utm_source=link&amp;utm_campaign=sig-email&amp;utm_content=webmail</a>
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; &lt;#DAB4FAD8-2DD7-40BB-A1B8-4E2AA1F9FDF2&gt;
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev4">&gt; &gt; &gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER.ambermd&#46;<!--nospam-->org
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jul 19 2021 - 08:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0150.html" title="Next message in the list">Carlos Simmerling: "Re: [AMBER] cudaMemcpy GpuBuffer ERROR"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0148.html" title="Previous message in the list">Sruthi Sudhakar: "Re: [AMBER] Structure alteration and shortening of loops using xleap"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0145.html" title="Message to which this message replies">Carlos Simmerling: "Re: [AMBER] cudaMemcpy GpuBuffer ERROR"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0150.html" title="Next message in this discussion thread">Carlos Simmerling: "Re: [AMBER] cudaMemcpy GpuBuffer ERROR"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0150.html" title="Message sent in reply to this message">Carlos Simmerling: "Re: [AMBER] cudaMemcpy GpuBuffer ERROR"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg149" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg149" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg149" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg149" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

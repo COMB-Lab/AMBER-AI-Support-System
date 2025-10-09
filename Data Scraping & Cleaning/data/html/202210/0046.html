@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Multidihedral, average, lost residue numbers from Rosellen, Martin via AMBER on 2022-10-13 (Amber Archive Oct 2022)</title>
+<meta name="Author" content="Rosellen, Martin via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Multidihedral, average, lost residue numbers" />
+<meta name="Date" content="2022-10-13" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Multidihedral, average, lost residue numbers</h1>
+<!-- received="Thu Oct 13 08:00:02 2022" -->
+<!-- isoreceived="20221013150002" -->
+<!-- sent="Thu, 13 Oct 2022 14:33:14 +0000" -->
+<!-- isosent="20221013143314" -->
+<!-- name="Rosellen, Martin via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Multidihedral, average, lost residue numbers" -->
+<!-- id="ADA73D89-C4C3-4BA9-A915-979F705610D2.ucl.ac.uk" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0047.html" accesskey="d" title="Gustavo Seabra via AMBER: &quot;[AMBER] MCPB.py Failing with OPC water?&quot;">Next message</a> ]
+[ <a href="0045.html" title="Carlos Navarro via AMBER: &quot;[AMBER] Amber22 on Red Hat Enterprise Linux 8&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0048.html" accesskey="t" title="Rosellen, Martin via AMBER: &quot;Re: [AMBER] Multidihedral, average, lost residue numbers&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg46" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg46" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg46" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg46" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Rosellen, Martin via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Multidihedral%2C%20average%2C%20lost%20residue%20numbers">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 13 Oct 2022 14:33:14 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber mailing list,
+<br />
+
+<br />
+I wanted to calculate averages of dihedral angles of a whole hexamer with the following lines:
+<br />
+
+<br />
+parm native_hex.prmtop
+<br />
+trajin productions/prod_1.nc
+<br />
+multidihedral d phi psi chip out test.agr
+<br />
+go
+<br />
+avg d[*] out avgi.agr name angles
+<br />
+
+<br />
+I learned, that ‘avg' produces a line number with the calculated average for every dataset (one for each residue and angle) found in d[*]. For a structure of 50 residues, line numbers would go up to 150 therefore and it would be possible to map line numbers back to residue numbers. To make it even easier, I ran the following lines:
+<br />
+
+<br />
+parm native_hex.prmtop
+<br />
+trajin productions/prod_1.nc
+<br />
+multidihedral d phi psi chip out test.agr
+<br />
+go
+<br />
+avg d[psi] out avg_psi.agr name psi
+<br />
+avg d[phi] out avg_phi.agr name phi
+<br />
+avg d[chip] out avg_chip.agr name chip
+<br />
+
+<br />
+For psi and phi angles, the output files look fine. An issue remains with avg_chip.agr. Since a chi1 angle can’t be calculated for all residues (e.g. ALA, GLY) the line numbers can’t be easily mapped back to residue numbers. 
+<br />
+
+<br />
+The idea that I would try next is: 
+<br />
+
+<br />
+parm native_hex.prmtop
+<br />
+trajin productions/prod_1.nc
+<br />
+multidihedral d phi psi chip out test.agr
+<br />
+go
+<br />
+avg d[psi]:1 out avg_psi.agr name psi_1
+<br />
+avg d[phi]:1 out avg_phi.agr name phi_1
+<br />
+avg d[chip]:1 out avg_chip.agr name chip_1
+<br />
+avg d[psi]:2 out avg_psi.agr name psi_2
+<br />
+avg d[phi]:2 out avg_phi.agr name phi_2
+<br />
+avg d[chip]:2 out avg_chip.agr name chip_2
+<br />
+…
+<br />
+avg d[psi]:1332 out avg_psi.agr name psi_1332
+<br />
+avg d[phi]:1332 out avg_phi.agr name phi_1332
+<br />
+avg d[chip]:1332 out avg_chip.agr name chip_1332
+<br />
+
+<br />
+Is there maybe an easy way to get residue numbers into the avg output file next to calculated values?
+<br />
+
+<br />
+cheers
+<br />
+Martin
+<br />
+
+<br />
+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Oct 13 2022 - 08:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0047.html" title="Next message in the list">Gustavo Seabra via AMBER: "[AMBER] MCPB.py Failing with OPC water?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0045.html" title="Previous message in the list">Carlos Navarro via AMBER: "[AMBER] Amber22 on Red Hat Enterprise Linux 8"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0048.html" title="Next message in this discussion thread">Rosellen, Martin via AMBER: "Re: [AMBER] Multidihedral, average, lost residue numbers"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0048.html" title="Message sent in reply to this message">Rosellen, Martin via AMBER: "Re: [AMBER] Multidihedral, average, lost residue numbers"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg46" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg46" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg46" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg46" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

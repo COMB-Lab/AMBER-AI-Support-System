@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Fluctuation in GPU usage from Ross Walker on 2021-06-15 (Amber Archive Jun 2021)</title>
+<meta name="Author" content="Ross Walker (ross.rosswalker.co.uk)" />
+<meta name="Subject" content="Re: [AMBER] Fluctuation in GPU usage" />
+<meta name="Date" content="2021-06-15" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Fluctuation in GPU usage</h1>
+<!-- received="Tue Jun 15 11:00:03 2021" -->
+<!-- isoreceived="20210615180003" -->
+<!-- sent="Tue, 15 Jun 2021 13:52:10 -0400" -->
+<!-- isosent="20210615175210" -->
+<!-- name="Ross Walker" -->
+<!-- email="ross.rosswalker.co.uk" -->
+<!-- subject="Re: [AMBER] Fluctuation in GPU usage" -->
+<!-- id="F1FBCE28-B4C8-441C-95FC-0500E35A2094.rosswalker.co.uk" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAJinvRc9-DJXkrRvgLavcfRWo_WP2cLuzFYATVzMHe8LkECodw.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0113.html" accesskey="d" title="Yu Chen: &quot;Re: [AMBER] Amber20 5 times slower than Amber18?&quot;">Next message</a> ]
+[ <a href="0111.html" title="Aravind R: &quot;[AMBER] Fluctuation in GPU usage&quot;">Previous message</a> ]
+[ <a href="0111.html" title="Aravind R: &quot;[AMBER] Fluctuation in GPU usage&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg112" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg112" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg112" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg112" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Ross Walker &lt;<a href="mailto:ross.rosswalker.co.uk?Subject=Re%3A%20%5BAMBER%5D%20Fluctuation%20in%20GPU%20usage">ross.rosswalker.co.uk</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 15 Jun 2021 13:52:10 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Aravind,
+<br />
+<br />GPUs are not designed to be shared and more to the point unlike AMBER, Gromacs makes heavy usage of all the resources on a node including all CPU cores and will also heavily load the PCI-E bus due to how much information it shuttles back and forth between CPU and GPU. As such I would highly recommend never trying to run Gromacs on a shared node. It can be done but you need to properly configure the queuing system and cgroups to properly isolate jobs to only the resources the queuing system provided.
+<br />
+<br />Simple solution is don't run Gromacs at the same time as other calculations and never have two jobs sharing a GPU. You use the CUDA_VISIBLE_DEVICES environment variable to control which GPUs jobs run on but even then Gromacs will load the CPU and PCI bus up so much that it still will likely impact other jobs running on the same node.
+<br />
+<br />All the best
+<br />
+Ross
+<br />
+<br /><em class="quotelev1">&gt; On Jun 15, 2021, at 13:34, Aravind R &lt;aradrive1.gmail.com&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Dear Amber Experts,
+</em><br />
+<em class="quotelev1">&gt; I am using Amber(pmemd.cuda) in a cluster with 64 nodes, each containing 2
+</em><br />
+<em class="quotelev1">&gt; Nvidia Tesla K40m (not peer-to-peer connected). This is a shared cluster
+</em><br />
+<em class="quotelev1">&gt; across the institute. When amber runs in a single GPU with single core
+</em><br />
+<em class="quotelev1">&gt; separately it utilises 99% of GPU load and runs properly(attached
+</em><br />
+<em class="quotelev1">&gt; Only_amber.png).
+</em><br />
+<em class="quotelev1">&gt; But when the gromacs job is submitted to the same node, the GPU utilisation
+</em><br />
+<em class="quotelev1">&gt; decreases drastically (attached Amber_&amp;_gromacs.png) and thereby the speed
+</em><br />
+<em class="quotelev1">&gt; at which the job runs (attached Speed.png). Whereas gromacs jobs utilise
+</em><br />
+<em class="quotelev1">&gt; the GPU completely.
+</em><br />
+<em class="quotelev1">&gt; The script I use to submit the job attached herewith(Input_script.png)
+</em><br />
+<em class="quotelev1">&gt; along with top command results(Top_results.png).
+</em><br />
+<em class="quotelev1">&gt; Also, scheduler allows gromacs to run on the GPU when amber is already
+</em><br />
+<em class="quotelev1">&gt; running whereas not the vice-versa.
+</em><br />
+<em class="quotelev1">&gt; What is the reason for the decrease in GPU utilisation?
+</em><br />
+<em class="quotelev1">&gt; Thanks in advance,
+</em><br />
+<em class="quotelev1">&gt; Aravind R
+</em><br />
+<em class="quotelev1">&gt; &lt;Amber___gromacs.png&gt;&lt;Input_script.png&gt;&lt;Speed.png&gt;&lt;Only_amber.png&gt;&lt;Top_results.png&gt;_______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Jun 15 2021 - 11:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0113.html" title="Next message in the list">Yu Chen: "Re: [AMBER] Amber20 5 times slower than Amber18?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0111.html" title="Previous message in the list">Aravind R: "[AMBER] Fluctuation in GPU usage"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0111.html" title="Message to which this message replies">Aravind R: "[AMBER] Fluctuation in GPU usage"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg112" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg112" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg112" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg112" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

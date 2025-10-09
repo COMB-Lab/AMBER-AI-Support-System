@@ -1,0 +1,809 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer from Stephan Schott on 2020-01-20 (Amber Archive Jan 2020)</title>
+<meta name="Author" content="Stephan Schott (schottve.hhu.de)" />
+<meta name="Subject" content="Re: [AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer" />
+<meta name="Date" content="2020-01-20" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer</h1>
+<!-- received="Mon Jan 20 07:30:02 2020" -->
+<!-- isoreceived="20200120153002" -->
+<!-- sent="Mon, 20 Jan 2020 16:01:36 +0100" -->
+<!-- isosent="20200120150136" -->
+<!-- name="Stephan Schott" -->
+<!-- email="schottve.hhu.de" -->
+<!-- subject="Re: [AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer" -->
+<!-- id="CAOBY5rgKOoL47024EX3AUV_Ddys6ss6rrVvHCyci-2jux1gRxQ.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="5c816e94aa7c4f978305444ab646c940.Exchange-1.AD.hhu.de" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0229.html" accesskey="d" title="Anthony Bogetti: &quot;[AMBER] sqm calculation with external charges not working&quot;">Next message</a> ]
+[ <a href="0227.html" title="Stephan Schott: &quot;Re: [AMBER] defining a progress variable to be the z-component of some atom or group of atoms?&quot;">Previous message</a> ]
+[ <a href="0180.html" title="Casalini  Tommaso: &quot;[AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer&quot;">Maybe in reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0242.html" accesskey="t" title="Charles Lin: &quot;Re: [AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg228" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg228" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg228" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg228" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Stephan Schott &lt;<a href="mailto:schottve.hhu.de?Subject=Re%3A%20%5BAMBER%5D%20Issues%20with%20Umbrella%20Sampling%20Simulations%20involving%20lipid%20bilayer">schottve.hhu.de</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 20 Jan 2020 16:01:36 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Just for reference of the Mailing list:
+<br />
+<br />The files were checked with pmemd.cuda in amber16 and amber18, reproducing
+<br />
+the error in amber16 but not in amber18. I think this is then related to
+<br />
+the update done in amber 18 regarding COM restraints and the way the
+<br />
+simulation box is split in GPUs (<a href="http://archive.ambermd.org/201903/0103.html">http://archive.ambermd.org/201903/0103.html</a>),
+<br />
+but maybe Charlie can comment on that (on CC). Is there any way of porting
+<br />
+this patch to amber16?
+<br />
+Cheers,
+<br />
+<br />El vie., 17 ene. 2020 a las 10:27, Casalini Tommaso (&lt;
+<br />
+tommaso.casalini.chem&#46;<!--nospam-->ethz.ch&gt;) escribió:
+<br />
+<br /><em class="quotelev1">&gt; Dear Stephan,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; right now the restraint is aimed at keeping the polymer COM/bilayer COM
+</em><br />
+<em class="quotelev1">&gt; distance at 0 (as shown but the input file that I copied).
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I started by simply placing the chain in the simulation box, after
+</em><br />
+<em class="quotelev1">&gt; equilibration the distance was about 4 nm.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The output file with the distances was correctly written, but the
+</em><br />
+<em class="quotelev1">&gt; restraint energy was still ****** and the restraint was ineffective (the
+</em><br />
+<em class="quotelev1">&gt; chain was not moving in the center).
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I thought that the distance was too high so I tried to keep the distance
+</em><br />
+<em class="quotelev1">&gt; equal to 3 nm, but the issue remained.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Then I rebuilt the system by placing at the beginning the polymer in the
+</em><br />
+<em class="quotelev1">&gt; middle of the bilayer (distance equal to about 0).
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Right now the restraint energy should be reasonable, but it is still
+</em><br />
+<em class="quotelev1">&gt; *******.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The output file with the distances is correctly written, the distance is
+</em><br />
+<em class="quotelev1">&gt; equal to about 0.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; If necessary, I can share my files to check if someone can reproduce my
+</em><br />
+<em class="quotelev1">&gt; issue.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ________________________________
+</em><br />
+<em class="quotelev1">&gt; Da: Stephan Schott &lt;schottve.hhu.de&gt;
+</em><br />
+<em class="quotelev1">&gt; Inviato: giovedì 16 gennaio 2020 23:37:43
+</em><br />
+<em class="quotelev1">&gt; A: AMBER Mailing List
+</em><br />
+<em class="quotelev1">&gt; Oggetto: Re: [AMBER] Issues with Umbrella Sampling Simulations involving
+</em><br />
+<em class="quotelev1">&gt; lipid bilayer
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; So it starts with ****? What is your initial distance then and what values
+</em><br />
+<em class="quotelev1">&gt; do you get in the dump file?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; El jue., 16 ene. 2020 a las 13:39, Casalini Tommaso (&lt;
+</em><br />
+<em class="quotelev1">&gt; tommaso.casalini.chem.ethz.ch&gt;) escribió:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Dear Stephan,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; thanks a lot for your reply.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I am using the pmemd.cuda module of AMBER16, without additional patches.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I tried to implement your suggestion and the RESTRAINT energy goes crazy
+</em><br />
+<em class="quotelev2">&gt; &gt; immediately, from step 1 (I put ntpr = 1).
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; As mentioned in the previous mail, what puzzles me is that I used the
+</em><br />
+<em class="quotelev1">&gt; same
+</em><br />
+<em class="quotelev2">&gt; &gt; approach using a different membrane (pure DOPC) and everything went well.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Best,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Tommaso
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; ________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; Da: Stephan Schott &lt;schottve.hhu.de&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Inviato: giovedì 16 gennaio 2020 13:13:59
+</em><br />
+<em class="quotelev2">&gt; &gt; A: AMBER Mailing List
+</em><br />
+<em class="quotelev2">&gt; &gt; Oggetto: Re: [AMBER] Issues with Umbrella Sampling Simulations involving
+</em><br />
+<em class="quotelev2">&gt; &gt; lipid bilayer
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Hi Tommaso,
+</em><br />
+<em class="quotelev2">&gt; &gt; Are you using sander, pmemd or pmemd.cuda? What AMBER version are you
+</em><br />
+<em class="quotelev2">&gt; &gt; using, and which patches have been applied? I remember there was an issue
+</em><br />
+<em class="quotelev2">&gt; &gt; with COM restraints, fixed in update 13 of AMBER 18. You could try
+</em><br />
+<em class="quotelev2">&gt; &gt; increasing the rate at which you save the trajectory frames, to take a
+</em><br />
+<em class="quotelev1">&gt; look
+</em><br />
+<em class="quotelev2">&gt; &gt; at the moment when the RESTRAINT energy goes crazy.
+</em><br />
+<em class="quotelev2">&gt; &gt; Cheers,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; El jue., 16 ene. 2020 a las 10:32, Casalini Tommaso (&lt;
+</em><br />
+<em class="quotelev2">&gt; &gt; tommaso.casalini.chem&#46;<!--nospam-->ethz.ch&gt;) escribió:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Dear Amber users and developers,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; I am performing Umbrella Sampling simulations to study the permeation
+</em><br />
+<em class="quotelev1">&gt; of
+</em><br />
+<em class="quotelev2">&gt; &gt; a
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; small polymer fragment inside a POPC/CHL 2:1 lipid bilayer.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; I built the lipid bilayer with the CHARMM GUI website and I have
+</em><br />
+<em class="quotelev1">&gt; obtained
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; an equilibrated structure, that I checked with the area per lipid and
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; bilayer thickness as a function of simulation time.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; I have subsequently put the polymer fragment in the simulation box and
+</em><br />
+<em class="quotelev1">&gt; I
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; have rebuilt the simulation box with the AddToBox utility, adding water
+</em><br />
+<em class="quotelev2">&gt; &gt; and
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; ions only along z.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; I ran additional simulations to obtain an equilibrated system
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; configuration and I started US simulations.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; I use the following input file:
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Equil
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  &amp;cntrl
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   imin = 0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   irest = 1,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   ntx = 7,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   ntb = 2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   pres0 = 1.0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   ntp = 3,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   taup = 2.0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   cut = 10.0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   ntc = 2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   ntf = 2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   temp0 = 310.0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   tempi = 310.0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   ntt = 3,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   gamma_ln = 1.0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   nstlim = 20000000,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   dt = 0.002,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   ntpr = 10000,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   ntwx = 10000,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   ntwr = 10000,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   nmropt = 1,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   csurften = 3,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   gamma_ten = 0.0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   ninterface = 2,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   tol = 0.0000001
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  /
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  &amp;wt type = 'DUMPFREQ', istep1 = 100 /
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  &amp;wt type = 'END', /
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  DISANG = ref_COM.rst
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  DUMPAVE = Pull_dist.dat
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  LISTIN = POUT
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  LISTOUT = POUT
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  /
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  /
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  &amp;ewald
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;   skinnb = 3.0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  /
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; This is the ref_COM.rst file:
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; &amp;rst
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; iat=-1,-1,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; r1=-99.0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; r2=0.0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; r3=0.0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; r4=99.0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; rk2=2.5,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; rk3=2.5,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; iresid=0,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; fxyz=0,0,1,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; outxyz=1,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; igr1=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; igr2=130,264,398,606,888,1022,1156,1364,1498,1632,1766,1900,2034,2168,2376,2510,2866,3000,3208,3342,3476,3610,3744,3878,4086,4294,4576,4710,4844,4978,5112,5320,5602,5736,6018,6226,6360,6568,6850,6984,7192,7326,7534,7668,7802,7936,8144,82
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; 78,8412,8546,8754,8888,9022,9230,9512,9646,9780,9914,10048,10182,10316,10524,10954,11088,11222,11356,11490,11624,11758,11966,12248,12382,12516,12650,12858,12992,13126,13260,13468,13676,13884,14018,14226,14434,14568,14702,14836,14970,1510
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; 4,15238,15520,15654,15862,15996,16204,16338,16472,16606,16740,17022,17156,17438,17572,17780,17914,18270,18552,18686,18820,18954,19088,19296,19430,19786,19920,20054,20188,20322,20456,20590,20724,20858,20992,21200,
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; /
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; where atoms 1-63 belong to my polymer fragment, while atoms of igr2 are
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; the N31 atoms of the polar heads (I essentially follow the approach
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; explained by Dr. Dickson Callum in his tutorial). I checked the numbers
+</em><br />
+<em class="quotelev2">&gt; &gt; and
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; they are correct.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; For some unknown reasons, I obtained this:
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  NSTEP =    10000   TIME(PS) =   10540.000  TEMP(K) =   309.33  PRESS =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; -116.3
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  Etot   = **************  EKtot   =     34089.0039  EPtot      =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; **************
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  BOND   =      2925.3688  ANGLE   =     12094.6034  DIHED      =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; 7501.6413
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  1-4 NB =      2919.0577  1-4 EEL =    -42192.4792  VDWAALS    =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; 5238.4991
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  EELEC  =   -110714.2666  EHBOND  =         0.0000  RESTRAINT  =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; **************
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  EAMBER (non-restraint)  =   -122227.5755
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  EKCMT  =      9433.8540  VIRIAL  =     10678.6782  VOLUME     =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; 495566.9126
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;                                                     SURFTEN    =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  -52.4235
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;                                                     Density    =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  1.0067
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; ------------------------------------------------------------------------------
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  NMR restraints: Bond =*********   Angle =     0.000   Torsion =
+</em><br />
+<em class="quotelev2">&gt; &gt;  0.000
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; ===============================================================================
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  NSTEP =    20000   TIME(PS) =   10560.000  TEMP(K) =   311.67  PRESS =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  187.4
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  Etot   = **************  EKtot   =     34346.3750  EPtot      =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; **************
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  BOND   =      2985.2622  ANGLE   =     12157.1242  DIHED      =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; 7567.3432
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  1-4 NB =      2901.6475  1-4 EEL =    -42177.9928  VDWAALS    =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; 5504.9903
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  EELEC  =   -110692.8191  EHBOND  =         0.0000  RESTRAINT  =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; **************
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  EAMBER (non-restraint)  =   -121754.4445
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  EKCMT  =      9541.5155  VIRIAL  =      7537.2160  VOLUME     =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; 495324.5851
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;                                                     SURFTEN    =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; 86.8556
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;                                                     Density    =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  1.0072
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; ------------------------------------------------------------------------------
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  NMR restraints: Bond =*********   Angle =     0.000   Torsion =
+</em><br />
+<em class="quotelev2">&gt; &gt;  0.000
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; ===============================================================================
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  NSTEP =    30000   TIME(PS) =   10580.000  TEMP(K) =   307.85  PRESS =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  -10.4
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  Etot   = **************  EKtot   =     33925.5469  EPtot      =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; **************
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  BOND   =      3003.1912  ANGLE   =     12038.2158  DIHED      =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; 7478.7713
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  1-4 NB =      2874.2811  1-4 EEL =    -42133.3378  VDWAALS    =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; 5436.8241
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  EELEC  =   -110538.2867  EHBOND  =         0.0000  RESTRAINT  =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; **************
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  EAMBER (non-restraint)  =   -121840.3409
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  EKCMT  =      9409.4898  VIRIAL  =      9520.6799  VOLUME     =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; 495200.1274
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;                                                     SURFTEN    =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; -193.4285
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;                                                     Density    =
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  1.0075
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; ------------------------------------------------------------------------------
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;  NMR restraints: Bond =*********   Angle =     0.000   Torsion =
+</em><br />
+<em class="quotelev2">&gt; &gt;  0.000
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; If I do not add a restraint, the system behaves nicely.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; What puzzles me is that I used the same protocol and approach for the
+</em><br />
+<em class="quotelev2">&gt; &gt; same
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; polymer fragment in a pure DOPC membrane and I had no problems, and the
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; obtained results are consistent.
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Can you provide some suggestions?
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; I thank you in advance for your support!
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; Tommaso
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev3">&gt; &gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; --
+</em><br />
+<em class="quotelev2">&gt; &gt; Stephan Schott Verdugo
+</em><br />
+<em class="quotelev2">&gt; &gt; Biochemist
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Heinrich-Heine-Universitaet Duesseldorf
+</em><br />
+<em class="quotelev2">&gt; &gt; Institut fuer Pharm. und Med. Chemie
+</em><br />
+<em class="quotelev2">&gt; &gt; Universitaetsstr. 1
+</em><br />
+<em class="quotelev2">&gt; &gt; 40225 Duesseldorf
+</em><br />
+<em class="quotelev2">&gt; &gt; Germany
+</em><br />
+<em class="quotelev2">&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER.ambermd&#46;<!--nospam-->org
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt; &gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt; &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; --
+</em><br />
+<em class="quotelev1">&gt; Stephan Schott Verdugo
+</em><br />
+<em class="quotelev1">&gt; Biochemist
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Heinrich-Heine-Universitaet Duesseldorf
+</em><br />
+<em class="quotelev1">&gt; Institut fuer Pharm. und Med. Chemie
+</em><br />
+<em class="quotelev1">&gt; Universitaetsstr. 1
+</em><br />
+<em class="quotelev1">&gt; 40225 Duesseldorf
+</em><br />
+<em class="quotelev1">&gt; Germany
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br /><br /><pre>
+-- 
+Stephan Schott Verdugo
+Biochemist
+Heinrich-Heine-Universitaet Duesseldorf
+Institut fuer Pharm. und Med. Chemie
+Universitaetsstr. 1
+40225 Duesseldorf
+Germany
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Mon Jan 20 2020 - 07:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0229.html" title="Next message in the list">Anthony Bogetti: "[AMBER] sqm calculation with external charges not working"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0227.html" title="Previous message in the list">Stephan Schott: "Re: [AMBER] defining a progress variable to be the z-component of some atom or group of atoms?"</a></li>
+<li><dfn>Maybe in reply to</dfn>: <a href="0180.html" title="Message to which this message replies">Casalini  Tommaso: "[AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0242.html" title="Next message in this discussion thread">Charles Lin: "Re: [AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0242.html" title="Message sent in reply to this message">Charles Lin: "Re: [AMBER] Issues with Umbrella Sampling Simulations involving lipid bilayer"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg228" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg228" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg228" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg228" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

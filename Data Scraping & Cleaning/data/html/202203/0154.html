@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Entropy calculations in GIST from Franz Waibl on 2022-03-24 (Amber Archive Mar 2022)</title>
+<meta name="Author" content="Franz Waibl (Franz.Waibl.uibk.ac.at)" />
+<meta name="Subject" content="Re: [AMBER] Entropy calculations in GIST" />
+<meta name="Date" content="2022-03-24" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Entropy calculations in GIST</h1>
+<!-- received="Thu Mar 24 10:30:02 2022" -->
+<!-- isoreceived="20220324173002" -->
+<!-- sent="Thu, 24 Mar 2022 18:07:05 +0100" -->
+<!-- isosent="20220324170705" -->
+<!-- name="Franz Waibl" -->
+<!-- email="Franz.Waibl.uibk.ac.at" -->
+<!-- subject="Re: [AMBER] Entropy calculations in GIST" -->
+<!-- id="ff4e705f-adbb-39df-be7b-9c58a32a90d4.uibk.ac.at" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CWXP265MB481275B803C247DC282D91FFDB099.CWXP265MB4812.GBRP265.PROD.OUTLOOK.COM" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0155.html" accesskey="d" title="tluchko: &quot;Re: [AMBER] 1D-RISM with 4-Point water models&quot;">Next message</a> ]
+[ <a href="0153.html" title="Daniel Roe: &quot;Re: [AMBER] [AMBER ] cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered.&quot;">Previous message</a> ]
+[ <a href="0031.html" title="Daniella Hares: &quot;[AMBER] Entropy calculations in GIST&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg154" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg154" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg154" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg154" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Franz Waibl &lt;<a href="mailto:Franz.Waibl.uibk.ac.at?Subject=Re%3A%20%5BAMBER%5D%20Entropy%20calculations%20in%20GIST">Franz.Waibl.uibk.ac.at</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 24 Mar 2022 18:07:05 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />Unless you are using an old version of cpptraj, the Gist output contains 
+<br />
+three entropy columns: dTStrans, dTSorient, and dTSsix (all in _dens and 
+<br />
+_norm variants). dTSsix is the entropy estimated from the combined space 
+<br />
+of translations and rotations, and is approximately equal to dTSorient + 
+<br />
+dTStrans. Generally, it is advisable to use dTSsix if the split into 
+<br />
+translational and orientation contributions is not needed.
+<br />
+<br />There have been studies that also evaluate parts of the second order 
+<br />
+entropy, but this requires much more sampling of the water conformations 
+<br />
+and has not been implemented in cpptraj.
+<br />
+<br />The study you cite (<a href="https://doi.org/10.1021/acs.jctc.5b00939">https://doi.org/10.1021/acs.jctc.5b00939</a>), evaluates 
+<br />
+the second-order translational entropy on a grid. There is also a 
+<br />
+publication by our group (<a href="https://doi.org/10.1007/s10822-021-00429-y">https://doi.org/10.1007/s10822-021-00429-y</a>), 
+<br />
+in which we approximate this problem by a 1D rdf computed at every grid 
+<br />
+point. While this certainly means that we lose some information, it 
+<br />
+simplifies the convergence of the results.
+<br />
+<br /><br />Best regards,
+<br />
+<br />Franz
+<br />
+<br />Am 08.03.2022 um 14:44 schrieb Daniella Hares:
+<br />
+<em class="quotelev1">&gt; Dear all AMBER users,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I have a query regarding how the entropy is calculated in CPPTRAJ implementation of GIST.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; According to the paper below, the first-order entropy is evaluated using two different methods, but the GIST output has only two entropy quantities - the first order translational and orientational entropy densities - implying one method is used. Does anyone know which method is used in practice?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; S. Ramsey, C. Nguyen, R. Salomon-Ferrer, R. C. Walker, M. K. Gilson and T. Kurtzman, J. Comput. Chem., 2016, 37, 2029-2037. (doi: 10.1002/jcc.24417)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Additionally, the Amber21 manual states that the higher-order entropies are not yet computationally accessible, but there have been papers with extensions to GIST that account for this - for example, below.  Are any corrections used in the CPPTRAJ implementation of GIST?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; C. N. Nguyen, T. Kurtzman and M. K. Gilson, J. Chem. Theory Comput., 2016, 12, 414-429. (doi: 10.1021/acs.jctc.5b00939)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Any help would be appreciated.
+</em><br />
+<em class="quotelev1">&gt; Best wishes,
+</em><br />
+<em class="quotelev1">&gt; Dani Hares
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The Institute of Cancer Research: Royal Cancer Hospital, a charitable Company Limited by Guarantee, Registered in England under Company No. 534147 with its Registered Office at 123 Old Brompton Road, London SW7 3RP.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; This e-mail message is confidential and for use by the addressee only. If the message is received by anyone other than the addressee, please return the message to the sender by replying to it and then delete the message from your computer and network.
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Mar 24 2022 - 10:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0155.html" title="Next message in the list">tluchko: "Re: [AMBER] 1D-RISM with 4-Point water models"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0153.html" title="Previous message in the list">Daniel Roe: "Re: [AMBER] [AMBER ] cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered."</a></li>
+<li><dfn>In reply to</dfn>: <a href="0031.html" title="Message to which this message replies">Daniella Hares: "[AMBER] Entropy calculations in GIST"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg154" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg154" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg154" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg154" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

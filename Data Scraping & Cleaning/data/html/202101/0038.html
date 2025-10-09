@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Energy Evaluations from Carlos Simmerling on 2021-01-05 (Amber Archive Jan 2021)</title>
+<meta name="Author" content="Carlos Simmerling (carlos.simmerling.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Energy Evaluations" />
+<meta name="Date" content="2021-01-05" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Energy Evaluations</h1>
+<!-- received="Tue Jan  5 05:00:02 2021" -->
+<!-- isoreceived="20210105130002" -->
+<!-- sent="Tue, 5 Jan 2021 07:37:36 -0500" -->
+<!-- isosent="20210105123736" -->
+<!-- name="Carlos Simmerling" -->
+<!-- email="carlos.simmerling.gmail.com" -->
+<!-- subject="Re: [AMBER] Energy Evaluations" -->
+<!-- id="CAGk3s-Tee-W0ZqOQh6PCo9813eSsKdawMprA9Esb5869=GrePQ.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CEA0B69D-D9DD-4E9F-A9BA-09EB6B50DEF6.uconn.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0039.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] Amber 20 installation, problems with the testing phase&quot;">Next message</a> ]
+[ <a href="0037.html" title="Matthew Guberman-Pfeffer: &quot;Re: [AMBER] Setting PME cutoff in Crystal Simulations&quot;">Previous message</a> ]
+[ <a href="0035.html" title="Matthew Guberman-Pfeffer: &quot;[AMBER] Energy Evaluations&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0044.html" accesskey="t" title="Daniel Roe: &quot;Re: [AMBER] Energy Evaluations&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg38" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg38" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg38" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg38" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Carlos Simmerling &lt;<a href="mailto:carlos.simmerling.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Energy%20Evaluations">carlos.simmerling.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 5 Jan 2021 07:37:36 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+It should indeed be shifted. Did you write energies each step in md
+<br />
+(ntpr=1)? Otherwise you would not see a match in the mdout file.
+<br />
+<br />On Mon, Jan 4, 2021, 11:51 PM Matthew Guberman-Pfeffer &lt;
+<br />
+matthew.guberman-pfeffer.uconn.edu&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Dear Amber Community,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; In the spirit of an earlier post &lt;
+</em><br />
+<em class="quotelev1">&gt; <a href="http://archive.ambermd.org/202010/0428.html">http://archive.ambermd.org/202010/0428.html</a>&gt;, I’m trying to compute
+</em><br />
+<em class="quotelev1">&gt; vertical energy gaps. If I run cpptraj with the below lines:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;     parm complex.prmtop
+</em><br />
+<em class="quotelev1">&gt;     trajin prod_1.mdcrd
+</em><br />
+<em class="quotelev1">&gt;     esander RSURF out RSURF.dat cut 10.0 igb 0 ntb 1 ntf 2 ntc 2
+</em><br />
+<em class="quotelev1">&gt;     run
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I obtain energy values that are different from the original output, as
+</em><br />
+<em class="quotelev1">&gt; compared below.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;                             TOTAL                 VDW      ELEC
+</em><br />
+<em class="quotelev1">&gt;  Bond   Angle.    Dihedral     VDW14   elec14
+</em><br />
+<em class="quotelev1">&gt; Origianl MD     -569322.9       79197.4 -707668.5       2441.9  6655.1
+</em><br />
+<em class="quotelev1">&gt; 8500.0                  38721.9
+</em><br />
+<em class="quotelev1">&gt; ESANDER -569274.9       79236.1 -707657.7       2446.7  6652.0  8497.8
+</em><br />
+<em class="quotelev1">&gt; 2829.7  38720.5
+</em><br />
+<em class="quotelev1">&gt; Difference           48.0                  38.6      10.8
+</em><br />
+<em class="quotelev1">&gt; 4.8    -3.1     -2.2                    -1.4
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I get the same result as cpptraj if I run sander with imin=5 and ncyc=1.
+</em><br />
+<em class="quotelev1">&gt; As far as I can tell, the energy value I get from cpptraj are not anywhere
+</em><br />
+<em class="quotelev1">&gt; in the original MD output, suggesting to me that the values are not simply
+</em><br />
+<em class="quotelev1">&gt; shifted by some number of frames. Can someone please explain why the energy
+</em><br />
+<em class="quotelev1">&gt; values are different from the original MD?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt; Matthew
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Jan 05 2021 - 05:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0039.html" title="Next message in the list">David A Case: "Re: [AMBER] Amber 20 installation, problems with the testing phase"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0037.html" title="Previous message in the list">Matthew Guberman-Pfeffer: "Re: [AMBER] Setting PME cutoff in Crystal Simulations"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0035.html" title="Message to which this message replies">Matthew Guberman-Pfeffer: "[AMBER] Energy Evaluations"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0044.html" title="Next message in this discussion thread">Daniel Roe: "Re: [AMBER] Energy Evaluations"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg38" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg38" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg38" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg38" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

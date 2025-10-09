@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] {SPAM?}  scbeta, wrong default? from accuratefreeenergy--- via AMBER on 2022-11-28 (Amber Archive Nov 2022)</title>
+<meta name="Author" content="accuratefreeenergy--- via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] {SPAM?}  scbeta, wrong default?" />
+<meta name="Date" content="2022-11-28" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] {SPAM?}  scbeta, wrong default?</h1>
+<!-- received="Mon Nov 28 07:00:03 2022" -->
+<!-- isoreceived="20221128150003" -->
+<!-- sent="Mon, 28 Nov 2022 09:54:12 -0500" -->
+<!-- isosent="20221128145412" -->
+<!-- name="accuratefreeenergy&ndash;&ndash;&ndash; via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] {SPAM?}  scbeta, wrong default?" -->
+<!-- id="000501d90339$47231140$d56933c0$.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="FBE8CDA7-0ACA-41F4-97FB-E566BD202ED5.uconn.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0184.html" accesskey="d" title="Matthew Guberman-Pfeffer via AMBER: &quot;Re: [AMBER] {SPAM?} Re:  Inconsistent GPU Results&quot;">Next message</a> ]
+[ <a href="0182.html" title="accuratefreeenergy--- via AMBER: &quot;Re: [AMBER] gti_cut vs. gti_cut_sc&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0191.html" accesskey="t" title="accuratefreeenergy--- via AMBER: &quot;Re: [AMBER] {SPAM?}  scbeta, wrong default?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg183" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg183" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg183" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg183" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: accuratefreeenergy--- via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20%7BSPAM%3F%7D%20%20scbeta%2C%20wrong%20default%3F">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 28 Nov 2022 09:54:12 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Matthew,
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I think you are right: the manual description is not accurate.  Anyway, you should set beta=50 Å^2 if gti_lam_sch=1 or 1.0 if gti_scale_beta=1.
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When you look into source code, you also need to look at the GTI compilation flag at the same time.  The scbeta=12 in line 826 is for CPU.  &quot;Reset to -100&quot; is to indicate there is no user input value so that it can be reset later (for GPU only).  gti_auto_alpha is an experimental thing and not for users to modify at this point.
+<br />
+<br />Best,
+<br />
+<br />Taisung 
+<br />
+<br />-----Original Message-----
+<br />
+From: Matthew Guberman-Pfeffer &lt;matthew.guberman-pfeffer.uconn&#46;<!--nospam-->edu&gt; 
+<br />
+Sent: Saturday, November 26, 2022 1:37 AM
+<br />
+To: Matthew Guberman-Pfeffer &lt;matthew.guberman-pfeffer.uconn&#46;<!--nospam-->edu&gt;; AMBER Mailing List &lt;amber.ambermd&#46;<!--nospam-->org&gt;; accuratefreeenergy.gmail&#46;<!--nospam-->com
+<br />
+Subject: Re: {SPAM?} [AMBER] scbeta, wrong default?
+<br />
+<br /><br />Adding more details:
+<br />
+In mdin_ctrl_dat.F90 scbeta is set to 12.0 on line 826. Then reset to -100.000 on line 873. An if-loop starting on line 3517 then sets the .lt. 0 sets scbeta to 4.0 if gti_auto_alpha is .gt. 0 or else sets it to 12.0. What gti_auto_alpha does is not described in the manual or the source code so far as I can tell. 
+<br />
+<br />The above doesn't seem consistent with the manual that says scbeta is set to 50 Å^2 if gti_lam_sch=1 or 1.0 if gti_scale_beta=1. Why do the manual and the source code give different defaults for scbeta (and scalpha, by the way)? What values should I use?
+<br />
+<br />Obviously, since I’m looking at source code at nearly 2 AM, this is really important for me to figure out. Can anyone please help?
+<br />
+<br />Best,
+<br />
+Matthew
+<br />
+&nbsp;
+<br />
+<em class="quotelev1">&gt; On Nov 25, 2022, at 7:15 PM, Matthew Guberman-Pfeffer via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; *Message sent from a system outside of UConn.*
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Dear AMBER community,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; When I set gti_scale_beta=1, I see in the output scbeta=12 in the below output, but the manual says the default is 1.0. What should it be?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Input:
+</em><br />
+<em class="quotelev1">&gt; &amp;cntrl
+</em><br />
+<em class="quotelev1">&gt;  ig=-1,
+</em><br />
+<em class="quotelev1">&gt;  irest=0, ntx=1,
+</em><br />
+<em class="quotelev1">&gt;  dt=0.001, nstlim=10000000,
+</em><br />
+<em class="quotelev1">&gt;  ntt=3, gamma_ln=2.0, tempi=300.0, temp0=300.0,  ntb=2, ntp=1, 
+</em><br />
+<em class="quotelev1">&gt; barostat=2, pres0=1.0, taup=1.0,  igb=0, cut=10.0,  ntc=2, ntf=1,  
+</em><br />
+<em class="quotelev1">&gt; ntr=0, nmropt=1,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;  icfe=1, klambda=1,
+</em><br />
+<em class="quotelev1">&gt;  clambda=0.0, dynlmb=0.000000, ntave=125000,  tishake=1,  
+</em><br />
+<em class="quotelev1">&gt; noshakemask=':255,564,309,618',  timask1=':255,564',  
+</em><br />
+<em class="quotelev1">&gt; timask2=':309,618',  
+</em><br />
+<em class="quotelev1">&gt; scmask1='(:255&amp;.CB,HB2,HB3,CG,HG2,HG3,CD,OE1,OE2)|(:564&amp;&#64;CB,HB2,HB3,CG
+</em><br />
+<em class="quotelev1">&gt; ,HG2,HG  
+</em><br />
+<em class="quotelev1">&gt; scmask2='(:309&amp;&#64;CB,HB2,HB3,CG,HG2,HG3,CD,HD2,HD3,CE,HE2,HE3,NZ,HZ1,HZ2
+</em><br />
+<em class="quotelev1">&gt; ,HZ3)|(
+</em><br />
+<em class="quotelev1">&gt;  gti_syn_mass=0,
+</em><br />
+<em class="quotelev1">&gt;  crgmask= ,
+</em><br />
+<em class="quotelev1">&gt;  ti_vdw_mask= ,
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;  ifsc=1, gti_lam_sch=1,
+</em><br />
+<em class="quotelev1">&gt;  gti_scale_beta=1,
+</em><br />
+<em class="quotelev1">&gt;  !scalpha=0.5, scbeta=1.0,    ! default
+</em><br />
+<em class="quotelev1">&gt;  gti_ele_exp=2, gti_vdw_exp=6 ! default  gti_ele_sc=1, gti_vdw_sc=1,  
+</em><br />
+<em class="quotelev1">&gt; ! default
+</em><br />
+<em class="quotelev1">&gt;  gti_cut=1,                   ! Default
+</em><br />
+<em class="quotelev1">&gt;  gti_cut_sc=2,
+</em><br />
+<em class="quotelev1">&gt;  gti_chg_keep=1,              ! default
+</em><br />
+<em class="quotelev1">&gt;  gti_add_sc=1, gti_bat_sc=0,  ! default
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt;  ioutfm=1, iwrap=0,
+</em><br />
+<em class="quotelev1">&gt;  ntwr=10000, ntwx=10000, ntpr=10000, ntxo=2,  logdvdl=1, gti_output=1, 
+</em><br />
+<em class="quotelev1">&gt; gti_cpu_output=1, / &amp;wt type='DUMPFREQ', istep1=1000 / &amp;wt type='END' 
+</em><br />
+<em class="quotelev1">&gt; / DISANG=InterSubunitRestraints.rst 
+</em><br />
+<em class="quotelev1">&gt; DUMPAVE=InterSubunitRestraints_TIprep.dat
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Output:
+</em><br />
+<em class="quotelev1">&gt; ….
+</em><br />
+<em class="quotelev1">&gt; Free energy options:
+</em><br />
+<em class="quotelev1">&gt;     icfe    =       1, ifsc    =       1, klambda =       1
+</em><br />
+<em class="quotelev1">&gt;     clambda =  0.0000, scalpha =  0.5000, scbeta  = 12.0000
+</em><br />
+<em class="quotelev1">&gt;     sceeorder =       2
+</em><br />
+<em class="quotelev1">&gt;     dynlmb =  0.0000 logdvdl =       1
+</em><br />
+<em class="quotelev1">&gt; ….
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt; Matthew
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="https://nam10.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists">https://nam10.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists</a>
+</em><br />
+<em class="quotelev1">&gt; .ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=05%7C01%7C%7C9cd623
+</em><br />
+<em class="quotelev1">&gt; b4e86840b6f8c708dacf437f96%7C17f1a87e2a254eaab9df9d439034b080%7C0%7C0%
+</em><br />
+<em class="quotelev1">&gt; 7C638050186062284576%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQI
+</em><br />
+<em class="quotelev1">&gt; joiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;amp;sdata=G8
+</em><br />
+<em class="quotelev1">&gt; mUY85Bh%2BFlFhDJgULv5ufAQ39sqUjQ1XD%2BiOy4LSM%3D&amp;amp;reserved=0
+</em><br />
+<br /><br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Nov 28 2022 - 07:00:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0184.html" title="Next message in the list">Matthew Guberman-Pfeffer via AMBER: "Re: [AMBER] {SPAM?} Re:  Inconsistent GPU Results"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0182.html" title="Previous message in the list">accuratefreeenergy--- via AMBER: "Re: [AMBER] gti_cut vs. gti_cut_sc"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0191.html" title="Next message in this discussion thread">accuratefreeenergy--- via AMBER: "Re: [AMBER] {SPAM?}  scbeta, wrong default?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Maybe reply</dfn>: <a href="0191.html" title="Message sent in reply to this message">accuratefreeenergy--- via AMBER: "Re: [AMBER] {SPAM?}  scbeta, wrong default?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg183" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg183" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg183" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg183" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

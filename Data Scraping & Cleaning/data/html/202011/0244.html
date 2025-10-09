@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] tinker_to_amber from Emmett Leddin on 2020-11-25 (Amber Archive Nov 2020)</title>
+<meta name="Author" content="Emmett Leddin (drtigger13.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] tinker_to_amber" />
+<meta name="Date" content="2020-11-25" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] tinker_to_amber</h1>
+<!-- received="Wed Nov 25 13:00:02 2020" -->
+<!-- isoreceived="20201125210002" -->
+<!-- sent="Wed, 25 Nov 2020 14:37:14 -0600" -->
+<!-- isosent="20201125203714" -->
+<!-- name="Emmett Leddin" -->
+<!-- email="drtigger13.gmail.com" -->
+<!-- subject="Re: [AMBER] tinker_to_amber" -->
+<!-- id="CAJLSuzXSW3r48edOzHWBvVozhtRvjChSV4cXMRdxT0seTRV4QA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="BY5PR02MB6740800D13D56DB7DEB0F3F3BAE00.BY5PR02MB6740.namprd02.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0245.html" accesskey="d" title="Tru Huynh: &quot;Re: [AMBER] AMBER 18 cuda installation error&quot;">Next message</a> ]
+[ <a href="0243.html" title="Mariangela Dametto: &quot;[AMBER] AMBER 18 cuda installation error&quot;">Previous message</a> ]
+[ <a href="0175.html" title="Michael Sonny Miller: &quot;[AMBER] tinker_to_amber&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg244" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg244" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg244" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg244" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Emmett Leddin &lt;<a href="mailto:drtigger13.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20tinker_to_amber">drtigger13.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 25 Nov 2020 14:37:14 -0600</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello!
+<br />
+<br />The Amber14 manual has some very helpful instructions for tinker_to_amber
+<br />
+(pages 275-277).
+<br />
+<br />Which FF are you using? Did analout run just fine? Are you keeping the file
+<br />
+naming consistent?
+<br />
+<br />I just did a test using Tinker7.1 with the tinker_to_amber included in
+<br />
+Amber18 using the dhfr test case included in Tinker7 and
+<br />
+the amoebabio09.prm file included with Tinker7. Using the most current
+<br />
+amoebabio09.prm (included with the latest release) did not work with
+<br />
+Tinker7.
+<br />
+<br />$ $tinker7/analyze dhfr PC &gt; dhfr.analout
+<br />
+$ $tinker7/xyzpdb dhfr.xyz
+<br />
+$ $AMBERHOME/bin/tinker_to_amber -name dhfr -title &quot;DHFR AmoebaBio09 FF&quot;
+<br />
+<br />The one thing I noticed is that the .prm file can't have the .prm extension
+<br />
+when using tinker_to_amber, as it gets appended as part of the code (so
+<br />
+amoebabio09.prm.prm). It's also crucial that all 3 box lengths are defined
+<br />
+in the key file (even if it's cubic and 1 would do for Tinker).
+<br />
+<br />Key files are a little different between Tinker7 and Tinker8 (because of
+<br />
+the addition of anglep, if I understand correctly). This means that an
+<br />
+xyz/key pair in Tinker7 might not work in Tinker8, and one that works for
+<br />
+Tinker8 might not work for Tinker7. Most of the differences between the
+<br />
+src/etc/tinker_to_amber.F90 shipped with AmberTools14 and AmberTools18 deal
+<br />
+with indentation.
+<br />
+<br />Sincerely,
+<br />
+<br />Emmett Leddin
+<br />
+<br />Pronouns: he/him
+<br />
+Chemistry PhD Candidate
+<br />
+<br />On Thu, Nov 19, 2020 at 3:47 PM Michael Sonny Miller &lt;millerms.stanford.edu&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hi,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I'm having trouble getting any version of tinker_to_amber to work.
+</em><br />
+<em class="quotelev1">&gt; I have tried using the Amber18 and the Amber14 versions with Tinker 8 and
+</em><br />
+<em class="quotelev1">&gt; Tinker 7.1 respectively, and get errors about not finding information in
+</em><br />
+<em class="quotelev1">&gt; the analout file.
+</em><br />
+<em class="quotelev1">&gt; Is there a guide somewhere or examples of exactly what release of Tinker
+</em><br />
+<em class="quotelev1">&gt; is required for each Amber release, and how exactly one is supposed to use
+</em><br />
+<em class="quotelev1">&gt; tinker_to_amber?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thank you in advance.
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Nov 25 2020 - 13:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0245.html" title="Next message in the list">Tru Huynh: "Re: [AMBER] AMBER 18 cuda installation error"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0243.html" title="Previous message in the list">Mariangela Dametto: "[AMBER] AMBER 18 cuda installation error"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0175.html" title="Message to which this message replies">Michael Sonny Miller: "[AMBER] tinker_to_amber"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg244" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg244" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg244" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg244" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

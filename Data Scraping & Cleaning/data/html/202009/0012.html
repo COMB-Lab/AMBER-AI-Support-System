@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Two problems about Amber's TI totorial from ecnu_wangbo on 2020-09-01 (Amber Archive Sep 2020)</title>
+<meta name="Author" content="ecnu_wangbo (ecnu_wangbo.126.com)" />
+<meta name="Subject" content="[AMBER] Two problems about Amber's TI totorial" />
+<meta name="Date" content="2020-09-01" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Two problems about Amber's TI totorial</h1>
+<!-- received="Tue Sep  1 23:00:02 2020" -->
+<!-- isoreceived="20200902060002" -->
+<!-- sent="Wed, 2 Sep 2020 13:43:32 +0800 (GMT+08:00)" -->
+<!-- isosent="20200902054332" -->
+<!-- name="ecnu_wangbo" -->
+<!-- email="ecnu_wangbo.126.com" -->
+<!-- subject="[AMBER] Two problems about Amber's TI totorial" -->
+<!-- id="7534801d.68f1.1744d5778b4.Coremail.ecnu_wangbo.126.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0013.html" accesskey="d" title="Gustaf Olsson: &quot;Re: [AMBER] Enquiry&quot;">Next message</a> ]
+[ <a href="0011.html" title="Lucas Bandeira: &quot;[AMBER] Generating topology using tleap&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg12" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg12" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg12" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg12" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: ecnu_wangbo &lt;<a href="mailto:ecnu_wangbo.126.com?Subject=Re%3A%20%5BAMBER%5D%20Two%20problems%20about%20Amber's%20TI%20totorial">ecnu_wangbo.126.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 2 Sep 2020 13:43:32 +0800 (GMT+08:00)</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear AMBER
+<br />
+In the past few days, I used Amber18's thermodynamic integration method to calculate the free energy change from benzene to phenol using pmemd program in the tutorial. Encountered two problems as follows:
+<br />
+1. The process from benzene to phenol in the tutorial is divided into three steps: decharge, vdw_bonded, and recharge. Can it be achieved in one step? How should the input file parameters be modified?
+<br />
+2. When I tried to compare the results of TI with FEP and BAR using the ifbar parameter, I found that the MBAR energy output by pmemd.mpi of Amber18 is very different from the energy output by pmemd.cuda. Take a system of methane molecules in water box as an example. When lamda=1.0, the energy of pmemd.MPI output file is like this:
+<br />
+MBAR Energy analysis:
+<br />
+Energy at 0.0000 = -48412.8976
+<br />
+Energy at 0.5000 = -48412.4985
+<br />
+Energy at 1.0000 = -48412.0994
+<br />
+The output file of pmemd.cuda is as follows:
+<br />
+MBAR Energy analysis:
+<br />
+Energy at 0.0000 = -45396.9413
+<br />
+Energy at 0.5000 = -48321.2714
+<br />
+Energy at 1.0000 = -48330.8687
+<br />
+Through the calculation of BAR and FEP, I found that the output energy of pmemd.cuda can correctly calculate the solvation free energy of methane molecule (2.00 kcal/mol).
+<br />
+The input file for MD simulation is provided as follows:
+<br />
+fabregas to win
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;imin=0,irest=1,ntx=5,
+<br />
+&nbsp;&nbsp;ntb=2,cut=11.0,
+<br />
+&nbsp;&nbsp;ntp=1,pres0=1.0,taup=2.0,
+<br />
+&nbsp;&nbsp;ntf=1,ntc=2,
+<br />
+&nbsp;&nbsp;ntt=3,gamma_ln=5,
+<br />
+&nbsp;&nbsp;temp0=300.0,
+<br />
+&nbsp;&nbsp;nstlim=10000000,dt=0.001,
+<br />
+&nbsp;&nbsp;ntpr=1000,ntwr=1000,ntwx=1000,
+<br />
+&nbsp;&nbsp;ifsc=1,icfe=1,clambda=1.0,
+<br />
+&nbsp;&nbsp;timask1=':1',timask2='',
+<br />
+&nbsp;&nbsp;scmask1=':1',scmask2='',
+<br />
+&nbsp;&nbsp;ifmbar=1,mbar_states=3,mbar_lambda=0.0,0.5,1.0,
+<br />
+&nbsp;/
+<br />
+I do not know what's the problem, could any body tell me why?
+<br />
+Thanks in advance
+<br />
+Sincerely;
+<br />
+Wang Bo
+<br />
+<br /><br />| |
+<br />
+ecnu_wangbo
+<br />
+|
+<br />
+|
+<br />
+ecnu_wangbo.126.com
+<br />
+|
+<br />
+签名由网易邮箱大师定制
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Sep 01 2020 - 23:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0013.html" title="Next message in the list">Gustaf Olsson: "Re: [AMBER] Enquiry"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0011.html" title="Previous message in the list">Lucas Bandeira: "[AMBER] Generating topology using tleap"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg12" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg12" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg12" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg12" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

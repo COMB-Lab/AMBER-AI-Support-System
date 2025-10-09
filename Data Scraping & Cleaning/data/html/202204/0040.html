@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Imaging issue in DNA with cations - cpptraj from Sathyaseelan C on 2022-04-06 (Amber Archive Apr 2022)</title>
+<meta name="Author" content="Sathyaseelan C (bo17resch11006.iith.ac.in)" />
+<meta name="Subject" content="[AMBER] Imaging issue in DNA with cations - cpptraj" />
+<meta name="Date" content="2022-04-06" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Imaging issue in DNA with cations - cpptraj</h1>
+<!-- received="Wed Apr  6 01:30:02 2022" -->
+<!-- isoreceived="20220406083002" -->
+<!-- sent="Wed, 6 Apr 2022 13:36:40 +0530" -->
+<!-- isosent="20220406080640" -->
+<!-- name="Sathyaseelan C" -->
+<!-- email="bo17resch11006.iith.ac.in" -->
+<!-- subject="[AMBER] Imaging issue in DNA with cations - cpptraj" -->
+<!-- id="CAK7XutqcD-OC-VmkfbAZxu7jTMetv-CLKQN5BfKbE14DfBZsEw.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0041.html" accesskey="d" title="Richard Kullmann: &quot;Re: [AMBER] MMPBSA.py PB calculation not working&quot;">Next message</a> ]
+[ <a href="0039.html" title="Fabian Glaser: &quot;Re: [AMBER] A5000 vs 2080 Ti&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0048.html" accesskey="t" title="Dr. Anselm Horn: &quot;Re: [AMBER] Imaging issue in DNA with cations - cpptraj&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg40" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg40" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg40" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg40" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Sathyaseelan C &lt;<a href="mailto:bo17resch11006.iith.ac.in?Subject=Re%3A%20%5BAMBER%5D%20Imaging%20issue%20in%20DNA%20with%20cations%20-%20cpptraj">bo17resch11006.iith.ac.in</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 6 Apr 2022 13:36:40 +0530</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber users,
+<br />
+<br /><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I am facing an imaging issue during the MD simulation of a
+<br />
+DNA duplex with trivalent cations. The maging issue happens throughout the
+<br />
+simulation due to the terminal dimer of one of the DNA strands as well as
+<br />
+some of the trivalent ions. For instance, in one step the DNA dimer is out
+<br />
+of the box (as a fragment), but, in the next step it comes back to the
+<br />
+periodic box and becomes part of the duplex. This happens throughout the
+<br />
+simulation.  I tried with imaging options as below, but, were not useful.
+<br />
+Any suggestion is highly appreciated.
+<br />
+<br /><br /><br /><br />*For RMSD*
+<br />
+<br /><br /><br />*1)    **Using Image option*
+<br />
+<br />parm prmtop
+<br />
+<br />trajin trajin.nc
+<br />
+<br />reference ../../input/prmcrd
+<br />
+<br />center origin :1-32         # DNA residues
+<br />
+<br />image origin center
+<br />
+<br />center origin :33-44       # trivalent cations
+<br />
+<br />image origin center
+<br />
+<br />strip :WAT
+<br />
+<br />strip :LA
+<br />
+<br />strip :CL
+<br />
+<br />trajout test.pdb pdb
+<br />
+<br />go
+<br />
+<br /><br /><br />*2)    **Using Autoimage option*
+<br />
+<br /><br /><br />parm prmtop
+<br />
+<br />trajin trajin.nc
+<br />
+<br />reference ../../input/prmcrd
+<br />
+<br />autoimage
+<br />
+<br />strip :WAT
+<br />
+<br />strip :LA
+<br />
+<br />strip :CL
+<br />
+<br />trajout test.pdb pdb
+<br />
+<br />go
+<br />
+<br /><br /><br /><br /><br /><br /><br />Thanks in advance
+<br />
+<br />Sathyaseelan
+<br />
+<br /><pre>
+-- 
+*Thanks &amp; Regards*
+*C .Sathyaseelan *
+*PhD Research Scholar*
+*C/o Dr. Thenmalarchelvi Rathinavelan*
+*Molecular Biophysics Lab*
+*Dept. of Biotechnology*
+*Indian Institute of Technology (IIT)*
+*Kandi, Hyderabad, Telangana - 502285*
+*Ph.No 6383836804, 8300150807*
+-- 
+Disclaimer:- This footer text is to convey that this email is sent by one 
+of the users of IITH. So, do not mark it as SPAM.
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Wed Apr 06 2022 - 01:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0041.html" title="Next message in the list">Richard Kullmann: "Re: [AMBER] MMPBSA.py PB calculation not working"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0039.html" title="Previous message in the list">Fabian Glaser: "Re: [AMBER] A5000 vs 2080 Ti"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0048.html" title="Next message in this discussion thread">Dr. Anselm Horn: "Re: [AMBER] Imaging issue in DNA with cations - cpptraj"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0048.html" title="Message sent in reply to this message">Dr. Anselm Horn: "Re: [AMBER] Imaging issue in DNA with cations - cpptraj"</a></li>
+<li><dfn>Reply</dfn>: <a href="0050.html" title="Message sent in reply to this message">Daniel Roe: "Re: [AMBER] Imaging issue in DNA with cations - cpptraj"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg40" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg40" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg40" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg40" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

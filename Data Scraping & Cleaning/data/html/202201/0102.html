@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Running AmberTools21 on HPC cluster using distributed memory from Manuel Fernandez Merino on 2022-01-13 (Amber Archive Jan 2022)</title>
+<meta name="Author" content="Manuel Fernandez Merino (manuel.fernandez.crg.eu)" />
+<meta name="Subject" content="Re: [AMBER] Running AmberTools21 on HPC cluster using distributed memory" />
+<meta name="Date" content="2022-01-13" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Running AmberTools21 on HPC cluster using distributed memory</h1>
+<!-- received="Thu Jan 13 01:30:02 2022" -->
+<!-- isoreceived="20220113093002" -->
+<!-- sent="Thu, 13 Jan 2022 09:23:50 +0000" -->
+<!-- isosent="20220113092350" -->
+<!-- name="Manuel Fernandez Merino" -->
+<!-- email="manuel.fernandez.crg.eu" -->
+<!-- subject="Re: [AMBER] Running AmberTools21 on HPC cluster using distributed memory" -->
+<!-- id="34f546c3f27940a28cd16fcb49cc0fa7.crg.eu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20220112140541.reh7evojgeuluh3n.godel.fios-router.home" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0103.html" accesskey="d" title="Alan: &quot;[AMBER] Single Point Energy: sander x python sander&quot;">Next message</a> ]
+[ <a href="0101.html" title="Vaibhav Dixit: &quot;[AMBER] number of waters near a mask (K+) cpptraj&quot;">Previous message</a> ]
+[ <a href="0097.html" title="David A Case: &quot;Re: [AMBER] Running AmberTools21 on HPC cluster using distributed memory&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0107.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] Running AmberTools21 on HPC cluster using distributed memory&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg102" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg102" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg102" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg102" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Manuel Fernandez Merino &lt;<a href="mailto:manuel.fernandez.crg.eu?Subject=Re%3A%20%5BAMBER%5D%20Running%20AmberTools21%20on%20HPC%20cluster%20using%20distributed%20memory">manuel.fernandez.crg.eu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 13 Jan 2022 09:23:50 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear David,
+<br />
+<br />Thanks a lot for your answer. I have included the line export LD_LIBRARY_PATH=$AMBERHOME/lib in the job script and I believe things have progressed a bit. Now, the test is run until the end, and no PMIX errors arise, even though none of the tests seem to work. Moreover, the warning about LD_LIBRARY_PATH not being set has disappeared. Additionally, many of the tests that did not provide any information before, now create some warnings. I'm including here all of the errors that are printed (they are repeated several times along the log file):
+<br />
+<br />1. All the nab tests now print the following information:
+<br />
+<br />/software/pcosma/el7.2/amber20/bin/wrapped_progs/mpinab: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.21' not found (required by /software/pcosma/el7.2/amber20/bin/wrapped_progs/mpinab)
+<br />
+/software/pcosma/el7.2/amber20/bin/wrapped_progs/mpinab: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.26' not found (required by /software/pcosma/el7.2/amber20/bin/wrapped_progs/mpinab)
+<br />
+/software/pcosma/el7.2/amber20/bin/wrapped_progs/mpinab: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.20' not found (required by /software/pcosma/el7.2/amber20/bin/wrapped_progs/mpinab)
+<br />
+./Run.sff: Program error
+<br />
+make[3]: *** [Makefile:46: sff_test] Error 1
+<br />
+Running test to do simple minimization with shake
+<br />
+(this tests the molecular mechanics interface)
+<br />
+<br />(I believe this error may be most likely due to a non-updated version of libstdc++?)
+<br />
+<br />Other new errors that now appear:
+<br />
+<br />2. Error in libbz2.so.1.0 
+<br />
+<br />cd ../src/cpptraj/test &amp;&amp; make -k test
+<br />
+make[3]: Entering directory '/nfs/software/pcosma/el7.2/amber20/AmberTools/src/cpptraj/test'
+<br />
+make test.complete summary
+<br />
+make[4]: Entering directory '/nfs/software/pcosma/el7.2/amber20/AmberTools/src/cpptraj/test'
+<br />
+<br /><br />**********************************************************
+<br />
+<br />mpirun does not support recursive calls
+<br />
+<br />**********************************************************
+<br />
+&nbsp;&nbsp;./Run.dhfr:  Program error
+<br />
+make[3]: [Makefile:158: test.sander.BASIC] Error 1 (ignored)
+<br />
+cd dhfr &amp;&amp; ./Run.dhfr.noboxinfo
+<br />
+/software/pcosma/el7.2/amber20///bin/cpptraj.MPI: error while loading shared libraries: libbz2.so.1.0: cannot open shared object file: No such file or directory
+<br />
+Error: Could not execute '/software/pcosma/el7.2/amber20///bin/cpptraj.MPI --defines'
+<br />
+make[4]: *** [Makefile:654: test.complete] Error 1
+<br />
+possible FAILURE:  file mdout.dhfr.noboxinfo does not exist.
+<br />
+==============================================================
+<br />
+<br /><br />3. Error in libmpi_usempif08.so.40
+<br />
+<br />cd dhfr &amp;&amp; ./Run.dhfr.xmin
+<br />
+<br /><br />**********************************************************
+<br />
+<br />mpirun does not support recursive calls
+<br />
+<br />**********************************************************
+<br />
+&nbsp;&nbsp;./Run.dhfr.xmin:  Program error
+<br />
+make[3]: [Makefile:164: test.sander.BASIC] Error 1 (ignored)
+<br />
+cd ff14ipq &amp;&amp; ./Run.ff14ipq
+<br />
+/software/pcosma/el7.2/amber20///bin/sander.MPI: error while loading shared libraries: libmpi_usempif08.so.40: cannot open shared object file: No such file or directory
+<br />
+<br /><br />4. Error in libgfortran.so.5
+<br />
+<br />cd LES &amp;&amp; ./Run.PME_LES
+<br />
+./Run.Eremd: line 20: [: : integer expression expected
+<br />
+<br />&nbsp;&nbsp;ADDLES and SANDER.LES test:
+<br />
+<br />addles:
+<br />
+<br /><br />**********************************************************
+<br />
+<br />mpirun does not support recursive calls
+<br />
+<br />**********************************************************
+<br />
+./Run.Eremd: Program error
+<br />
+make[2]: [Makefile:922: test.sander.REM] Error 1 (ignored)
+<br />
+export TESTsander=/software/pcosma/el7.2/amber20///bin/sander.MPI; cd phtremd/implicit &amp;&amp; ./Run.phtremd
+<br />
+addles: error while loading shared libraries: libgfortran.so.5: cannot open shared object file: No such file or directory
+<br />
+&nbsp;&nbsp;./Run.PME_LES:  Program error
+<br />
+make[3]: [Makefile:417: test.sander.LES] Error 1 (ignored)
+<br />
+cd LES_CUT &amp;&amp; ./Run.LES
+<br />
+<br />&nbsp;&nbsp;SANDER.LES test, no PME
+<br />
+<br /><br />In addition to all these errors, most tests still just print the &quot;mpirun does not support recursive calls&quot; error without extra information. Regarding your other suggestions: I will now try testing parallel nab. And yes, I plan to use it with MPI for pmemd, but we are still processing the purchase of the Amber license so I can't use pmemd yet, I'm only using sander so far.  Finally, I'm the first one using Amber in the HPC cluster (I did the installation myself), so asking other people at my place is not an option, unfortunately. 
+<br />
+<br />Best,
+<br />
+Manuel
+<br />
+<br /><br />-----Original Message-----
+<br />
+From: David A Case &lt;david.case.rutgers.edu&gt; 
+<br />
+Sent: Wednesday, January 12, 2022 3:06 PM
+<br />
+To: AMBER Mailing List &lt;amber.ambermd.org&gt;
+<br />
+Subject: Re: [AMBER] Running AmberTools21 on HPC cluster using distributed memory
+<br />
+<br />On Wed, Jan 12, 2022, Manuel Fernandez Merino wrote:
+<br />
+<br /><em class="quotelev1">&gt;Error: LD_LIBRARY_PATH does not include $AMBERHOME/lib!
+</em><br />
+<br />If you submitting the job via some queue environment, you may need to set the LD_LIBRARY_PATH in the script itself, not just in your .bashrc file.
+<br />
+<br /><em class="quotelev1">&gt;(In an attempt to solve the LD_LIBRARY_PATH issue). When I launch any 
+</em><br />
+<em class="quotelev1">&gt;job in the cluster, I also get the notification that the 
+</em><br />
+<em class="quotelev1">&gt;LD_LIBRARY_PATH variable is not included in the environment because of 
+</em><br />
+<em class="quotelev1">&gt;a security issue, which I believe may have to do with this problem.
+</em><br />
+<br />See above: modify your environment in the script.  If you still get the security issue message, you'll need to discuss that with those who administer the cluster.
+<br />
+<br /><em class="quotelev1">&gt;cd nab &amp;&amp; make -k test testrism
+</em><br />
+<br />You may need to avoid testing parallel nab.  Go to $AMBERHOME/AmberTools/test and edit the Makefile to remove references to &quot;test.nab&quot;.
+<br />
+<br /><em class="quotelev1">&gt;cd ../src/cpptraj/test &amp;&amp; make -k test
+</em><br />
+<em class="quotelev1">&gt;make[3]: Entering directory '/nfs/software/pcosma/el7.2/amber20/AmberTools/src/cpptraj/test'
+</em><br />
+<em class="quotelev1">&gt;make test.complete summary
+</em><br />
+<em class="quotelev1">&gt;make[4]: Entering directory '/nfs/software/pcosma/el7.2/amber20/AmberTools/src/cpptraj/test'
+</em><br />
+<em class="quotelev1">&gt;[node-hp0511.linux.crg.es:14393] PMIX ERROR: ERROR in file 
+</em><br />
+<em class="quotelev1">&gt;gds_ds12_lock_pthread.c at line 168
+</em><br />
+<br />I've not seen this before.  If you mainly want to use the cluster with MPI for pmemd, try this:
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;cd $AMBERHOME/test &amp;&amp; make test.parallel.pmemd
+<br />
+<br />You may still get errors, but at least they will be more relevant.
+<br />
+<br />....dac
+<br />
+<br />p.s.: it's worth asking if other people are using Amber on this HPC cluster.
+<br />
+They may have more specific advice.
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Jan 13 2022 - 01:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0103.html" title="Next message in the list">Alan: "[AMBER] Single Point Energy: sander x python sander"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0101.html" title="Previous message in the list">Vaibhav Dixit: "[AMBER] number of waters near a mask (K+) cpptraj"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0097.html" title="Message to which this message replies">David A Case: "Re: [AMBER] Running AmberTools21 on HPC cluster using distributed memory"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0107.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] Running AmberTools21 on HPC cluster using distributed memory"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0107.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Running AmberTools21 on HPC cluster using distributed memory"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg102" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg102" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg102" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg102" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

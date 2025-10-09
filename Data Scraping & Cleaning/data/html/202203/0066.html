@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Non-Integer Charge for Systems Comprised of Large Number of Residues from Nathan Black on 2022-03-13 (Amber Archive Mar 2022)</title>
+<meta name="Author" content="Nathan Black (nathanblack262.gmail.com)" />
+<meta name="Subject" content="[AMBER] Non-Integer Charge for Systems Comprised of Large Number of Residues" />
+<meta name="Date" content="2022-03-13" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Non-Integer Charge for Systems Comprised of Large Number of Residues</h1>
+<!-- received="Sun Mar 13 12:00:03 2022" -->
+<!-- isoreceived="20220313190003" -->
+<!-- sent="Sun, 13 Mar 2022 13:32:05 -0500" -->
+<!-- isosent="20220313183205" -->
+<!-- name="Nathan Black" -->
+<!-- email="nathanblack262.gmail.com" -->
+<!-- subject="[AMBER] Non-Integer Charge for Systems Comprised of Large Number of Residues" -->
+<!-- id="CACfZsgixtb2n9F9iedsmSWhDPS23sUkObo+g=qDSE_fzR40oWA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0067.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] Non-Integer Charge for Systems Comprised of Large Number of Residues&quot;">Next message</a> ]
+[ <a href="0065.html" title="Carlos Simmerling: &quot;Re: [AMBER] Request help modifying a force field&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0067.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] Non-Integer Charge for Systems Comprised of Large Number of Residues&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg66" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg66" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg66" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg66" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Nathan Black &lt;<a href="mailto:nathanblack262.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Non-Integer%20Charge%20for%20Systems%20Comprised%20of%20Large%20Number%20of%20Residues">nathanblack262.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 13 Mar 2022 13:32:05 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello AMBER Users,
+<br />
+<br />I have run into an issue while trying to create a simulation box containing
+<br />
+a random distribution of molecules (generated using Packmol). Each
+<br />
+individual unit has a floating-point value for its charge as reported in
+<br />
+LEaP, but I believe that the slight deviation from integral charge values
+<br />
+for each unit has conglomerated into a *very *non-integral charge for the
+<br />
+larger mixture.
+<br />
+<br />Context: I plan on simulating surfactant aggregation in a system of 2500
+<br />
+anionic surfactants and 2500 organic diamine counterions. From known pKa
+<br />
+values and approximations of fraction ionized populations using the
+<br />
+Henderson-Hasselbach equation, I have determined that the system (at the
+<br />
+intended simulation pH) should consist of:
+<br />
+<br />&nbsp;&nbsp;&nbsp;- 2500 anionic surfactants (Unit Name: UNAABC, -1 charge)
+<br />
+&nbsp;&nbsp;&nbsp;- 167 fully-protonated diamine counterions (Unit Name: AA2, +2 charge)
+<br />
+&nbsp;&nbsp;&nbsp;- 2305 partially-protonated diamine counterions (Unit Name: AA1, +1
+<br />
+&nbsp;&nbsp;&nbsp;charge)
+<br />
+&nbsp;&nbsp;&nbsp;- 28 fully-deprotonated diamine counterions (Unit Name: AA0, 0 charge)
+<br />
+&nbsp;&nbsp;&nbsp;- 139 Cl- ions to fully neutralize the solution (very loose
+<br />
+&nbsp;&nbsp;&nbsp;approximation of ionic contributions of water. Unit Name: Cl-, -1 charge)
+<br />
+<br /><br />When checking the charges of each residue in LEaP, I find that:
+<br />
+<br />&nbsp;&nbsp;&nbsp;- UNA (Surfactant Tail, 0 Charge)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &quot;Total unperturbed charge: 0.000002, Total perturbed charge:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.000002&quot;
+<br />
+&nbsp;&nbsp;&nbsp;- ABC (Surfactant Head, -1 Charge)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &quot;Total unperturbed charge: -0.999998, Total perturbed charge:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-0.999998&quot;
+<br />
+&nbsp;&nbsp;&nbsp;- AA2 (Fully-Protonated Diamine Counterion, +2 Charge)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &quot;Total unperturbed charge: 1.995998, Total perturbed
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;charge: 1.995998&quot;
+<br />
+&nbsp;&nbsp;&nbsp;- AA1 (Partially-Protonated Diamine Counterion, +1 Charge)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &quot;Total unperturbed charge: 0.997999, Total perturbed charge:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.997999&quot;
+<br />
+&nbsp;&nbsp;&nbsp;- AA0 (Fully-Deprotonated Diamine Counterion, 0 Charge)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &quot;Total  unperturbed charge: -0.000000, Total perturbed charge:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-0.000000&quot;
+<br />
+<br /><br />However, when the mixture of these residues (2500 anionic surfactants, 2500
+<br />
+counterions in variety of protonation states) is created in Packmol and
+<br />
+loaded into LEaP, it has this to say about the charge: &quot;Total  unperturbed
+<br />
+charge: 133.724361, Total perturbed charge:  133.724361&quot;.
+<br />
+<br />When adding the charges for each residue multiplied by how many of each
+<br />
+residue I added, I get roughly this number as well. However, this means
+<br />
+that I would not be able to add Cl- ions as intended to neutralize the
+<br />
+solution charge.
+<br />
+<br />Does anyone have any suggested fixes for this? Any help is much appreciated.
+<br />
+<br />All the best,
+<br />
+NDB
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Mar 13 2022 - 12:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0067.html" title="Next message in the list">David A Case: "Re: [AMBER] Non-Integer Charge for Systems Comprised of Large Number of Residues"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0065.html" title="Previous message in the list">Carlos Simmerling: "Re: [AMBER] Request help modifying a force field"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0067.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] Non-Integer Charge for Systems Comprised of Large Number of Residues"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0067.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Non-Integer Charge for Systems Comprised of Large Number of Residues"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg66" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg66" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg66" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg66" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

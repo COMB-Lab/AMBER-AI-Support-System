@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] problems installing Amber20 + AmberTools21 parallel version with open-mpi from David A Case on 2022-03-16 (Amber Archive Mar 2022)</title>
+<meta name="Author" content="David A Case (david.case.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] problems installing Amber20 + AmberTools21 parallel version with open-mpi" />
+<meta name="Date" content="2022-03-16" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] problems installing Amber20 + AmberTools21 parallel version with open-mpi</h1>
+<!-- received="Wed Mar 16 05:30:02 2022" -->
+<!-- isoreceived="20220316123002" -->
+<!-- sent="Wed, 16 Mar 2022 08:18:31 -0400" -->
+<!-- isosent="20220316121831" -->
+<!-- name="David A Case" -->
+<!-- email="david.case.rutgers.edu" -->
+<!-- subject="Re: [AMBER] problems installing Amber20 + AmberTools21 parallel version with open-mpi" -->
+<!-- id="20220316121831.dij2lv3xfit6sxkp.rbsbrr1029l01.rad.rutgers.edu" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="3b0aceed5cd57d8dfca3e18cbff862c2.mail.irb.hr" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0089.html" accesskey="d" title="Matthew Guberman-Pfeffer: &quot;[AMBER] CPPTRAJ, Counting Per Residue Pair H-Bonding&quot;">Next message</a> ]
+[ <a href="0087.html" title="Soumyajit Karmakar: &quot;[AMBER] Regarding treating ligand with QM level of theory&quot;">Previous message</a> ]
+[ <a href="0086.html" title="Antonija Tomi&#0263;: &quot;Re: [AMBER] problems installing Amber20 + AmberTools21 parallel version with open-mpi&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg88" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg88" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg88" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg88" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case &lt;<a href="mailto:david.case.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20problems%20installing%20Amber20%20%2B%20AmberTools21%20parallel%20version%20with%20open-mpi">david.case.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 16 Mar 2022 08:18:31 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Tue, Mar 15, 2022, Antonija Tomić wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Using -DBUILD_PYTHON=FALSE I finally managed to install parallel 
+</em><br />
+<em class="quotelev1">&gt;version of Amber. However, I am not able to perform the tests (this is 
+</em><br />
+<em class="quotelev1">&gt;probably expected?). This is what I get after &quot;make test.parallel&quot;:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Error: Could not import Amber Python modules!
+</em><br />
+<em class="quotelev1">&gt;   Probably your Amber Python environment was not set up correctly.
+</em><br />
+<br />This is clearly a bug.  Developers: the &quot;test.serial&quot; target has logic
+<br />
+to decide if python is present or not, but this was never copied over into
+<br />
+the other test targets, like test.parallel.
+<br />
+<br />A possible workaround: edit the $AMBERHOME/AmberTools/test/test_check.sh
+<br />
+script, and comment out the &quot;error()&quot; call at about line 110.
+<br />
+<br />...thanks for the report....dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Mar 16 2022 - 05:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0089.html" title="Next message in the list">Matthew Guberman-Pfeffer: "[AMBER] CPPTRAJ, Counting Per Residue Pair H-Bonding"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0087.html" title="Previous message in the list">Soumyajit Karmakar: "[AMBER] Regarding treating ligand with QM level of theory"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0086.html" title="Message to which this message replies">Antonija Tomi&#0263;: "Re: [AMBER] problems installing Amber20 + AmberTools21 parallel version with open-mpi"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg88" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg88" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg88" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg88" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

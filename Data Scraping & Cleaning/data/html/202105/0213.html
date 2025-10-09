@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Joining two molecules from Dr. Anselm Horn on 2021-05-25 (Amber Archive May 2021)</title>
+<meta name="Author" content="Dr. Anselm Horn (anselm.horn.fau.de)" />
+<meta name="Subject" content="Re: [AMBER] Joining two molecules" />
+<meta name="Date" content="2021-05-25" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Joining two molecules</h1>
+<!-- received="Tue May 25 07:30:02 2021" -->
+<!-- isoreceived="20210525143002" -->
+<!-- sent="Tue, 25 May 2021 16:05:45 +0200" -->
+<!-- isosent="20210525140545" -->
+<!-- name="Dr. Anselm Horn" -->
+<!-- email="anselm.horn.fau.de" -->
+<!-- subject="Re: [AMBER] Joining two molecules" -->
+<!-- id="93c77edd-3c3e-ba98-2081-cf59af48fdf3.fau.de" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="BE31C0F8-D2DE-44B3-A86A-5034455A4602.lnu.se" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0214.html" accesskey="d" title="Matthew Guberman-Pfeffer: &quot;Re: [AMBER] DFT method for heme QM calculationPranita,&quot;">Next message</a> ]
+[ <a href="0212.html" title="Daniel Roe: &quot;Re: [AMBER] kindly help with this mmpbsa.py.MPI error&quot;">Previous message</a> ]
+[ <a href="0207.html" title="Gustaf Olsson: &quot;[AMBER] Joining two molecules&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0218.html" accesskey="t" title="Gustaf Olsson: &quot;Re: [AMBER] Joining two molecules&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg213" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg213" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg213" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg213" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Dr. Anselm Horn &lt;<a href="mailto:anselm.horn.fau.de?Subject=Re%3A%20%5BAMBER%5D%20Joining%20two%20molecules">anselm.horn.fau.de</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 25 May 2021 16:05:45 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Gustaf,
+<br />
+<br />your general approach loading entities into leap, manually create bonds,
+<br />
+then (try to) save top/crd files seems ok (at least to me).
+<br />
+<br />However, you have to ensure that you load/create molecular entities,
+<br />
+which still can be bonded together: Either you delete those atoms
+<br />
+manually, which were added by leap according to the unit description,
+<br />
+and then add the bond; or you update the actual unit description for
+<br />
+your molecular entities, so that no additional atoms are created by
+<br />
+tleap during loading and the two units just lack a single valence each -
+<br />
+which you then add.
+<br />
+<br />We had faced a similar problem in the past, where we were interested in
+<br />
+carbohydrates with acyl substitutents. At that time we refrained from
+<br />
+mixing force field descriptions within a single molecule, and created
+<br />
+acyl-chain parameters 'in the spirit' of Glycam, essentially generating
+<br />
+isolated acyl residues (DOI: 10.1038/s41598-018-23624-8 -&gt; supplement).
+<br />
+<br />Thus, if intending to mix parameters in a molecule, I'd ensure that the
+<br />
+molecular fragments represent defined force field residues, for which
+<br />
+parameters already exist. The second step then was to come up with
+<br />
+parameters for the joint.
+<br />
+<br />Best regards,
+<br />
+<br />Anselm
+<br />
+<br />NHR.FAU
+<br />
+Friedrich-Alexander-Universität Erlangen-Nürnberg
+<br />
+Germany
+<br />
+<br /><br /><br />On 05/25/2021 12:19 PM, Gustaf Olsson wrote:
+<br />
+<em class="quotelev1">&gt; I’ve been looking at the tutorials and some other material for a while now and I cannot figure out how I have ever managed to proceed past the step where structures are supposed to be joined.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; I’m trying to use to different FFs for 2 parts of 1 larger molecule (gaff and glycam), the idea here was to align an NH2 group of a substituent with a OH group on a carbohydrate. I deleted the “overlapping” atoms leaving the two molecules reasonably oriented with a R-(C=O)-NH-    -C gap. The plan is to connect/bond N-C and then use frcmod to adapt reasonable parameters for the “amide” group from glycam.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; However, trying to keep the connect record, or renumbering the connect records in the joined file, breaks it. Fatal error in leap and refusing to open in any other application. in order to use the file I had to remove the connect records.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Now, I thought I’d be able to use leap to figure out what parameters for the N-C bond I need to add. Opening the joint PDB file with the prep/frcmod and glycam in leap, “missing atoms” are added from residue template(s). This is not really what I want to happen as I cannot “bond” the N-C atoms and I now have overlapping atoms. I also loose a ring C3-C4 bond in the carbohydrate when I remove the connect record.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Either I am missing some step of which I am unaware or I am approaching this in a completely flawed way. Can I load my joint PDB file, ignoring missing atoms in residue template and then joint them to form a molecule to figure out what parameters I am missing with leap, or should I investigate a different approach?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Best regards
+</em><br />
+<em class="quotelev1">&gt; // Gustaf
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue May 25 2021 - 07:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0214.html" title="Next message in the list">Matthew Guberman-Pfeffer: "Re: [AMBER] DFT method for heme QM calculationPranita,"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0212.html" title="Previous message in the list">Daniel Roe: "Re: [AMBER] kindly help with this mmpbsa.py.MPI error"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0207.html" title="Message to which this message replies">Gustaf Olsson: "[AMBER] Joining two molecules"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0218.html" title="Next message in this discussion thread">Gustaf Olsson: "Re: [AMBER] Joining two molecules"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0218.html" title="Message sent in reply to this message">Gustaf Olsson: "Re: [AMBER] Joining two molecules"</a></li>
+<li><dfn>Reply</dfn>: <a href="0219.html" title="Message sent in reply to this message">Gustaf Olsson: "Re: [AMBER] Joining two molecules"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg213" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg213" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg213" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg213" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

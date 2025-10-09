@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] end state in TI calculations with pmemd.cuda from Qinghua Liao on 2021-11-04 (Amber Archive Nov 2021)</title>
+<meta name="Author" content="Qinghua Liao (scorpio.liao.gmail.com)" />
+<meta name="Subject" content="[AMBER] end state in TI calculations with pmemd.cuda" />
+<meta name="Date" content="2021-11-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] end state in TI calculations with pmemd.cuda</h1>
+<!-- received="Thu Nov  4 08:30:03 2021" -->
+<!-- isoreceived="20211104153003" -->
+<!-- sent="Thu, 4 Nov 2021 16:21:09 +0100" -->
+<!-- isosent="20211104152109" -->
+<!-- name="Qinghua Liao" -->
+<!-- email="scorpio.liao.gmail.com" -->
+<!-- subject="[AMBER] end state in TI calculations with pmemd.cuda" -->
+<!-- id="a56bfd90-7f91-e8bf-2471-a53c9c5a1580.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0038.html" accesskey="d" title="Feng Pan: &quot;Re: [AMBER] Error upon start of nfe-abmd&quot;">Next message</a> ]
+[ <a href="0036.html" title="Sam Walsworth (Researcher): &quot;[AMBER] Defining a new atom type (metal)&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg37" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg37" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg37" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg37" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Qinghua Liao &lt;<a href="mailto:scorpio.liao.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20end%20state%20in%20TI%20calculations%20with%20pmemd.cuda">scorpio.liao.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 4 Nov 2021 16:21:09 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+<br />I am running TI to calculate absolute binding free energy of a ligand to 
+<br />
+a enzyme,
+<br />
+and hydration free energy of Mg2+. In both cases, I have the same 
+<br />
+problem at the window
+<br />
+of lambda 0.0 of vdW transformation:
+<br />
+dummy in water -&gt; a particle in water (LJ126),  for Mg2+
+<br />
+dummy atoms in protein/water -&gt; ligand in protein/water (LJ126), for 
+<br />
+ligand binding
+<br />
+<br />Here is the input:
+<br />
+<br />TI simulation
+<br />
+&nbsp; &amp;cntrl
+<br />
+&nbsp;   imin = 0, nstlim = 2500000, irest = 1, ntx = 5, dt = 0.002,
+<br />
+&nbsp;   ntt = 3, temp0 = 300.0, gamma_ln = 2.0, ig = -1,
+<br />
+&nbsp;   ntc = 2, ntf = 1,
+<br />
+&nbsp;   ntb = 2, cut = 10.0 ,
+<br />
+&nbsp;   ntp = 1, pres0 = 1.0, taup = 2.0, barostat = 2 ,
+<br />
+&nbsp;   ioutfm = 1, iwrap = 1, nmropt = 0 ,
+<br />
+&nbsp;   ntwe = 50, ntwx = 25000, ntpr = 50, ntwr = 50000,
+<br />
+<br />&nbsp;   icfe = 1, clambda = 0.000, scalpha = 0.5, scbeta = 12.0,
+<br />
+&nbsp;   logdvdl = 50, ifmbar = 1, mbar_states = 25,
+<br />
+<br />&nbsp;   mbar_lambda = 
+<br />
+0.000,0.001,0.005,0.050,0.100,0.150,0.200,0.250,0.300,0.350,0.400,0.450,0.500,0.550,0.600,0.650,0.700,0.750,0.800,0.850,0.900,0.950,0.995,0.999,1.000 
+<br />
+,
+<br />
+<br />&nbsp;    ifsc=1, scmask1='', scmask2=':599', timask1= '' , timask2=':599', 
+<br />
+crgmask=':599' ,
+<br />
+<br />&nbsp; /
+<br />
+<br />:599 could be the ligand or the Mg2+.
+<br />
+<br />In the output I found this:
+<br />
+<br />MBAR Energy analysis:
+<br />
+Energy at 0.0000 =   -347175.261389
+<br />
+Energy at 0.0010 =   -347175.277294
+<br />
+Energy at 0.0050 =   -347175.339599
+<br />
+Energy at 0.0500 =   -347175.883645
+<br />
+Energy at 0.1000 =   -347176.092259
+<br />
+Energy at 0.1500 =   -347175.774626
+<br />
+Energy at 0.2000 =   -347174.781819
+<br />
+Energy at 0.2500 =   -347172.913973
+<br />
+Energy at 0.3000 =   -347169.898353
+<br />
+Energy at 0.3500 =   -347165.355646
+<br />
+Energy at 0.4000 =   -347158.746665
+<br />
+Energy at 0.4500 =   -347149.285216
+<br />
+Energy at 0.5000 =   -347135.790332
+<br />
+Energy at 0.5500 =   -347116.423987
+<br />
+Energy at 0.6000 =   -347088.200343
+<br />
+Energy at 0.6500 =   -347046.005721
+<br />
+Energy at 0.7000 =   -346980.476944
+<br />
+Energy at 0.7500 =   -346872.902025
+<br />
+Energy at 0.8000 =   -346681.120206
+<br />
+Energy at 0.8500 =   -346291.827917
+<br />
+Energy at 0.9000 =   -345297.965604
+<br />
+Energy at 0.9500 =   -341015.400345
+<br />
+Energy at 0.9950 =    -89656.787916
+<br />
+Energy at 0.9990 =   3442279.987340
+<br />
+Energy at 1.0000 = ****************
+<br />
+<br />The energy at window 1.0 is extremely high. This also happened in some 
+<br />
+windows of my calculation of Mg2+ hydration free energy using one-step 
+<br />
+transformation from dummy in water to Mg2+ in water.
+<br />
+I tried to turn off the MBAR analysis by setting ifmbar=0, it did not 
+<br />
+change the results though I did not see the large energy number from 
+<br />
+MBAR energy analysis.
+<br />
+<br />I tried to run the tutorial, ligand transformation, but I don't have the 
+<br />
+problem. <a href="https://ambermd.org/tutorials/advanced/tutorial9/index.html">https://ambermd.org/tutorials/advanced/tutorial9/index.html</a>
+<br />
+I don't have the issue with sander, either. I tried some reference 
+<br />
+calculations.
+<br />
+I searched the mailing list, there were also some people having the same 
+<br />
+problem, but I did not see a solution to it. Any suggestions? Thanks 
+<br />
+very much!
+<br />
+<br /><br />All the best,
+<br />
+Qinghua
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Nov 04 2021 - 08:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0038.html" title="Next message in the list">Feng Pan: "Re: [AMBER] Error upon start of nfe-abmd"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0036.html" title="Previous message in the list">Sam Walsworth (Researcher): "[AMBER] Defining a new atom type (metal)"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg37" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg37" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg37" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg37" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

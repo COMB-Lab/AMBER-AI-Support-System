@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Extract trajectories REMD from Daniel Roe via AMBER on 2022-06-16 (Amber Archive Jun 2022)</title>
+<meta name="Author" content="Daniel Roe via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Extract trajectories REMD" />
+<meta name="Date" content="2022-06-16" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Extract trajectories REMD</h1>
+<!-- received="Thu Aug  4 13:31:32 2022" -->
+<!-- isoreceived="20220804203132" -->
+<!-- sent="Thu, 16 Jun 2022 08:47:58 -0400" -->
+<!-- isosent="20220616124758" -->
+<!-- name="Daniel Roe via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Extract trajectories REMD" -->
+<!-- id="CAAC0qOZ9wdQp+_oJmwwWL9ZuH0==twksdqvVN0J2NKbLTUoeNQ.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="LNXP265MB2457B448F186CE9E9E46F83BF1AC9.LNXP265MB2457.GBRP265.PROD.OUTLOOK.COM" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0009.html" accesskey="d" title="Maria Nagan via AMBER: &quot;Re: [AMBER] Any help for TI calculation with pmemd.cuda&quot;">Next message</a> ]
+[ <a href="0007.html" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Extract trajectories REMD&quot;">Previous message</a> ]
+[ <a href="0001.html" title="Juliette Newell via AMBER: &quot;Re: [AMBER] Extract trajectories REMD&quot;">Maybe in reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0011.html" accesskey="t" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Extract trajectories REMD&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg8" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg8" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg8" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg8" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Extract%20trajectories%20REMD">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 16 Jun 2022 08:47:58 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />On Thu, Jun 16, 2022 at 6:36 AM Juliette Newell
+<br />
+&lt;juliette.newell.postgrad.manchester.ac.uk&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Is there a way to modify this to loop over all temperatures and get a trajectory per temperature?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The tutorial says:
+</em><br />
+<em class="quotelev1">&gt; ptraj ala10.prmtop &lt;&lt;EOF
+</em><br />
+<em class="quotelev1">&gt; trajin remd.mdcrd.001 remdtraj remdtrajtemp $T
+</em><br />
+<em class="quotelev1">&gt; trajout remd.Ttraj.$T
+</em><br />
+<em class="quotelev1">&gt; go
+</em><br />
+<em class="quotelev1">&gt; EOF
+</em><br />
+<br />Which tutorial are you using? If it mentions ptraj it is probably
+<br />
+pretty old and out of date (and needs updating).
+<br />
+<br />If you want to extract all of the temperature trajectories at once you
+<br />
+can use the 'ensemble' command. The 'ensemble' command is like 'trajin
+<br />
+remdtraj' but it sorts and processes all the replicas at once instead
+<br />
+of a single target replica. So you could do something like:
+<br />
+<br />cpptraj &lt;&lt;EOF
+<br />
+parm ala10.prmtop
+<br />
+ensemble remd.mdcrd.001
+<br />
+rms R1 first .CA out ensemble.rmsd.dat
+<br />
+trajout remd.nc
+<br />
+EOF
+<br />
+<br />This will read in the ensemble of MD trajectories of which
+<br />
+remd.mdcrd.001 is the &quot;lowest&quot;, sort by replica (temperature),
+<br />
+calculate the RMSD of each member of the sorted ensemble and output to
+<br />
+the file ensemble.rmsd.dat, and write out the sorted ensemble to
+<br />
+remd.nc.&lt;ext&gt;, where &lt;ext&gt; will be a number corresponding to the
+<br />
+sorted ensemble (the corresponding temperature will be printed in the
+<br />
+output from cpptraj).
+<br />
+<br />If the ensemble is large you can use the same input for cpptraj.MPI to
+<br />
+process the ensemble in parallel (using as many processes as
+<br />
+replicas). In parallel you can use to 'ensemblesize' command to
+<br />
+improve the efficiency of setup. So e.g. if you have a 12 member
+<br />
+ensemble:
+<br />
+<br />mpirun -n 12 cpptraj.MPI &lt;&lt;EOF
+<br />
+parm ala10.prmtop
+<br />
+ensemblesize 12
+<br />
+ensemble remd.mdcrd.001
+<br />
+rms R1 first .CA out ensemble.rmsd.dat
+<br />
+trajout remd.nc
+<br />
+EOF
+<br />
+<br />Note that in parallel cpptraj will write each member to separate data
+<br />
+files, so you'll get ensemble.rmsd.dat.&lt;ext&gt;.
+<br />
+<br />Hope this helps,
+<br />
+<br />-Dan
+<br />
+<br /><br /><br /><em class="quotelev1">&gt; Which I modified for my system.  But this is what gave the error.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thank you,
+</em><br />
+<em class="quotelev1">&gt; Juliette
+</em><br />
+<em class="quotelev1">&gt; ________________________________
+</em><br />
+<em class="quotelev1">&gt; From: Daniel Roe &lt;daniel.r.roe.gmail.com&gt;
+</em><br />
+<em class="quotelev1">&gt; Sent: 15 June 2022 19:27
+</em><br />
+<em class="quotelev1">&gt; To: Juliette Newell &lt;juliette.newell.postgrad.manchester.ac.uk&gt;; AMBER Mailing List &lt;amber.ambermd.org&gt;
+</em><br />
+<em class="quotelev1">&gt; Subject: Re: [AMBER] Extract trajectories REMD
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Hi,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Wed, Jun 15, 2022 at 5:41 AM Juliette Newell via AMBER
+</em><br />
+<em class="quotelev1">&gt; &lt;amber.ambermd.org&gt; wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Hi Dan,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Thank you for getting back to me.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; I have had a look at the cpptraj manual and also the replica exchange tutorial on the amber MD website and I am unsure where I am going wrong.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; The example in the manual says :
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; trajin rem.001 remdtraj remdtrajtemp 300
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; will this loop over all replicas? Or will I have to change the temperature at the end.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; As I said in my earlier response, you specify the &quot;lowest&quot; replica
+</em><br />
+<em class="quotelev1">&gt; trajectory, and cpptraj automatically searches for the remaining
+</em><br />
+<em class="quotelev1">&gt; trajectories based on extension. So for example if you have 4
+</em><br />
+<em class="quotelev1">&gt; temperature REMD trajectories named rem.nc.001, rem.nc.002,
+</em><br />
+<em class="quotelev1">&gt; rem.nc.003, rem.nc.004 and you want to process frames at a target
+</em><br />
+<em class="quotelev1">&gt; temperature of 330 K, you would use:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; trajin rem.nc.001 remdtraj remdtrajtemp 330
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Any actions or 'trajout' commands will then only be given the frames
+</em><br />
+<em class="quotelev1">&gt; at 330 K. Does that make sense?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; -Dan
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Aug 04 2022 - 13:31:32 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0009.html" title="Next message in the list">Maria Nagan via AMBER: "Re: [AMBER] Any help for TI calculation with pmemd.cuda"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0007.html" title="Previous message in the list">Daniel Roe via AMBER: "Re: [AMBER] Extract trajectories REMD"</a></li>
+<li><dfn>Maybe in reply to</dfn>: <a href="0001.html" title="Message to which this message replies">Juliette Newell via AMBER: "Re: [AMBER] Extract trajectories REMD"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0011.html" title="Next message in this discussion thread">Daniel Roe via AMBER: "Re: [AMBER] Extract trajectories REMD"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg8" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg8" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg8" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg8" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

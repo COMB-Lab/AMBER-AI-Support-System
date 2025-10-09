@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] pmemd.mpi crashes from David A Case via AMBER on 2022-08-26 (Amber Archive Aug 2022)</title>
+<meta name="Author" content="David A Case via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] pmemd.mpi crashes" />
+<meta name="Date" content="2022-08-26" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] pmemd.mpi crashes</h1>
+<!-- received="Fri Aug 26 06:00:06 2022" -->
+<!-- isoreceived="20220826130006" -->
+<!-- sent="Fri, 26 Aug 2022 08:48:51 -0400" -->
+<!-- isosent="20220826124851" -->
+<!-- name="David A Case via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] pmemd.mpi crashes" -->
+<!-- id="20220826124851.py7lgwku4lphkhzi.sasc8f7505cc9b1.rad.rutgers.edu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="SN6PR03MB4560CBB1767F628C68369BA7D9759.SN6PR03MB4560.namprd03.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0128.html" accesskey="d" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Automatic glycan bonds in tleap?&quot;">Next message</a> ]
+[ <a href="0126.html" title="Dr. Anselm Horn via AMBER: &quot;[AMBER] Automatic glycan bonds in tleap?&quot;">Previous message</a> ]
+[ <a href="0124.html" title="Rybenkov, Valentin V. via AMBER: &quot;[AMBER] pmemd.mpi crashes&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg127" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg127" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg127" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg127" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20pmemd.mpi%20crashes">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 26 Aug 2022 08:48:51 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Fri, Aug 26, 2022, Rybenkov, Valentin V. via AMBER wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;I have an odd problem. The same job for pmemd.MPI crashes on one computer
+</em><br />
+<em class="quotelev1">&gt;but not another. This is a new installation of Amber22 on CentOS 7.9. The
+</em><br />
+<em class="quotelev1">&gt;node that crashes is a better cpu, 128 cores with 125 GB memory. Nodes that
+</em><br />
+<em class="quotelev1">&gt;work are 20-32 cores with ~40 GB memory. Diagnostics on the failing machine
+</em><br />
+<em class="quotelev1">&gt;does not reveal problems. Crashes happen at various times when the job is
+</em><br />
+<em class="quotelev1">&gt;rerun, but seem to occur whenever it is time to write data to disc, not
+</em><br />
+<em class="quotelev1">&gt;necessarily for the first time. At low tasks_per_node (e.g. =6), crashes
+</em><br />
+<em class="quotelev1">&gt;happen later. Could this difference in memory per core be an issue? Is
+</em><br />
+<em class="quotelev1">&gt;there a parameter in Amber that controls how much memory per core is
+</em><br />
+<em class="quotelev1">&gt;allocated?
+</em><br />
+<br />Use the &quot;limit&quot; command to check your StackSize limit; Using &quot;unlimit
+<br />
+stacksize&quot; (exact command may vary with your OS and shell) can often help
+<br />
+prevent segfaults.
+<br />
+<br />If this doesn't help, can you provide more info on exactly what messages you
+<br />
+see when the program &quot;crashes&quot;?  Does this happen during the middle of a
+<br />
+run, or (say) at or before the first step?  Are you using the same number of
+<br />
+MPI threads on each machine?  Is there any indication of bad energetics
+<br />
+before the crash occurs?  Do the simulations appear to be successful using
+<br />
+the serial version of pmemd?
+<br />
+<br />...thx...dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Aug 26 2022 - 06:00:06 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0128.html" title="Next message in the list">Daniel Roe via AMBER: "Re: [AMBER] Automatic glycan bonds in tleap?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0126.html" title="Previous message in the list">Dr. Anselm Horn via AMBER: "[AMBER] Automatic glycan bonds in tleap?"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0124.html" title="Message to which this message replies">Rybenkov, Valentin V. via AMBER: "[AMBER] pmemd.mpi crashes"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg127" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg127" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg127" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg127" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

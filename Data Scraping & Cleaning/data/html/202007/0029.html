@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Error in Installing Amber 20 on GPU from Gustaf Olsson on 2020-07-01 (Amber Archive Jul 2020)</title>
+<meta name="Author" content="Gustaf Olsson (gustaf.olsson.lnu.se)" />
+<meta name="Subject" content="Re: [AMBER] Error in Installing Amber 20 on GPU" />
+<meta name="Date" content="2020-07-01" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Error in Installing Amber 20 on GPU</h1>
+<!-- received="Thu Jul  2 00:00:03 2020" -->
+<!-- isoreceived="20200702070003" -->
+<!-- sent="Thu, 2 Jul 2020 06:44:09 +0000" -->
+<!-- isosent="20200702064409" -->
+<!-- name="Gustaf Olsson" -->
+<!-- email="gustaf.olsson.lnu.se" -->
+<!-- subject="Re: [AMBER] Error in Installing Amber 20 on GPU" -->
+<!-- id="F8C4DDF0-EE5F-47F2-A034-56DFCA9EA269.lnu.se" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAPcA28wuu+Q92zUdVqyjW8AYcd+UkEu-OA3sv7aob3FOx+mucg.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0030.html" accesskey="d" title="angad sharma: &quot;[AMBER] calculating methane parameters using RISM&quot;">Next message</a> ]
+[ <a href="0028.html" title="Gustaf Olsson: &quot;Re: [AMBER] Amber20 installation&quot;">Previous message</a> ]
+[ <a href="0027.html" title="Suchetana Gupta: &quot;Re: [AMBER] Error in Installing Amber 20 on GPU&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0035.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] Error in Installing Amber 20 on GPU&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg29" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg29" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg29" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg29" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gustaf Olsson &lt;<a href="mailto:gustaf.olsson.lnu.se?Subject=Re%3A%20%5BAMBER%5D%20Error%20in%20Installing%20Amber%2020%20on%20GPU">gustaf.olsson.lnu.se</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 2 Jul 2020 06:44:09 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+I don’t know what OS you are working on though I would assume it is some linux distro. These often ship with a version of gcc pre-installed. It should also be possible to install a “second version” of gcc, not making this the default.
+<br />
+
+<br />
+There might be a gcc4 version hidden somewhere already, which you should be able to check using something like 
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$ find /usr/ -name “gcc&quot;
+<br />
+
+<br />
+or with an appropriate search path, you could potentially solve the issue through symlinking. Though I also assume that this might cause problems if there are other software depending on cuda.
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$ sudo ln -s /path/to/bin/gcc-4.X /path/to/cuda/bin/gcc and sudo ln -s /path/to/bin/g++-4.X /path/to/cuda/bin/g++
+<br />
+
+<br />
+I think the default cuda binary directory is &quot;/usr/local/cuda/bin”. Though I would suspect that this would also mean that you should build the rest of amber with the same version of gcc to avoid issues? (Someone with more insight might be able to chime in here).
+<br />
+
+<br />
+I would guess that you could export/alias another version of gcc for the particular install and the repeating this manually for a session when amber is being used, not making any changes persistent (CXX=g++-4.4 CC=gcc-4.4)
+<br />
+
+<br />
+
+<br />
+However, it seems that the problem might be something else, if you have Cuda 10 installed, it should support gnu gcc 7. So the best way to solve this issue seems to be to get the correct version of Cuda included in the configuration of the amber install, then the gnu gcc problem should resolve itself. Does amber support Cuda 10?
+<br />
+
+<br />
+Best regards
+<br />
+// Gustaf
+<br />
+
+<br />
+<em class="quotelev1">&gt; On 2 Jul 2020, at 07:57, Suchetana Gupta &lt;tutulg.gmail&#46;<!--nospam-->com&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Thanks for the response. Actually we have other programs running on this
+</em><br />
+<em class="quotelev1">&gt; machine which will be disrupted if we shift to gcc6. That is why we were
+</em><br />
+<em class="quotelev1">&gt; thinking of there is some other alternative.
+</em><br />
+<em class="quotelev1">&gt; Thanks
+</em><br />
+<em class="quotelev1">&gt; Suchetana Gupta
+</em><br />
+<em class="quotelev1">&gt; IACS, Kolkata
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; On Thu, 2 Jul 2020, 11:25 Gustaf Olsson, &lt;gustaf.olsson.lnu&#46;<!--nospam-->se&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; The error log seems pretty clear:
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt;    #error -- unsupported GNU version! gcc versions later than 6 are not
+</em><br />
+<em class="quotelev2">&gt;&gt; supported!
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; I am uncertain if this is a restriction from Amber or the installed CUDA
+</em><br />
+<em class="quotelev2">&gt;&gt; version though this matters less. What happens if you install gcc6 and try
+</em><br />
+<em class="quotelev2">&gt;&gt; to build?
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; It seems that compiling amber using the gnu compilers (pretty much been my
+</em><br />
+<em class="quotelev2">&gt;&gt; default since 2010-2018) is being met with more complications as the build
+</em><br />
+<em class="quotelev2">&gt;&gt; seems picky regarding versions and particularly in combination with
+</em><br />
+<em class="quotelev2">&gt;&gt; openmpi/cuda.
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Anyway, I would initially start by reverting to gcc6 and see if that
+</em><br />
+<em class="quotelev2">&gt;&gt; produces a working build.
+</em><br />
+<em class="quotelev2">&gt;&gt; Best regards
+</em><br />
+<em class="quotelev2">&gt;&gt; // Gustaf
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; On 1 Jul 2020, at 20:13, Suchetana Gupta &lt;tutulg.gmail&#46;<!--nospam-->com&lt;mailto:
+</em><br />
+<em class="quotelev2">&gt;&gt; tutulg.gmail.com&gt;&gt; wrote:
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt;&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Jul 02 2020 - 00:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0030.html" title="Next message in the list">angad sharma: "[AMBER] calculating methane parameters using RISM"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0028.html" title="Previous message in the list">Gustaf Olsson: "Re: [AMBER] Amber20 installation"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0027.html" title="Message to which this message replies">Suchetana Gupta: "Re: [AMBER] Error in Installing Amber 20 on GPU"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0035.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] Error in Installing Amber 20 on GPU"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg29" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg29" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg29" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg29" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

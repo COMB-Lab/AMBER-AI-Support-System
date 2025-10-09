@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] About REMD extracting temperature trajectory from Ojet on 2021-04-15 (Amber Archive Apr 2021)</title>
+<meta name="Author" content="Ojet (ojet0501.163.com)" />
+<meta name="Subject" content="[AMBER] About REMD extracting temperature trajectory" />
+<meta name="Date" content="2021-04-15" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] About REMD extracting temperature trajectory</h1>
+<!-- received="Thu Apr 15 20:00:02 2021" -->
+<!-- isoreceived="20210416030002" -->
+<!-- sent="Fri, 16 Apr 2021 10:32:57 +0800 (CST)" -->
+<!-- isosent="20210416023257" -->
+<!-- name="Ojet" -->
+<!-- email="ojet0501.163.com" -->
+<!-- subject="[AMBER] About REMD extracting temperature trajectory" -->
+<!-- id="1f052cc7.21ee.178d8863678.Coremail.ojet0501.163.com" -->
+<!-- charset="gbk" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0112.html" accesskey="d" title="&#30707;&#35895;&#27777;: &quot;[AMBER] &#31572;&#22797;: [ambermd.org&#20195;&#21457;]Re:  &#0034;No module named pytraj&#0034; during make test step&quot;">Next message</a> ]
+[ <a href="0110.html" title="Dr. Anselm Horn: &quot;Re: [AMBER] Cyclic Peptides: leap keeps adding missing atoms&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0120.html" accesskey="t" title="Daniel Roe: &quot;Re: [AMBER] About REMD extracting temperature trajectory&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg111" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg111" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg111" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg111" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Ojet &lt;<a href="mailto:ojet0501.163.com?Subject=Re%3A%20%5BAMBER%5D%20About%20REMD%20extracting%20temperature%20trajectory">ojet0501.163.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 16 Apr 2021 10:32:57 +0800 (CST)</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello, I did REMD according to the tutorial. After the simulation is over, an error is reported when using �� extract_300k_traj.x�� script to extract the temperature trajectory:
+<br />
+<br />NETCDF file: 
+<br />
+<br />WARNING: setupREMDTRAJ(): remdtraj requested in trajin but this NETCDF trajectory does not contain temperatures! Trajectory will be processed as replica traj.
+<br />
+<br />&nbsp;
+<br />
+<br />The ��extract_300k_traj.x�� script is as follows:
+<br />
+<br />#!/bin/csh
+<br />
+<br />ptraj 5EK4_1.prmtop &lt;&lt; EOF
+<br />
+<br />trajin remd.mdcrd.001 remdtraj remdtrajtemp 300
+<br />
+<br />trajout remd.300K.mdcrd nobox
+<br />
+<br />go
+<br />
+<br />EOF
+<br />
+<br />&nbsp;
+<br />
+<br />The following are the key input files when I perform REMD:
+<br />
+<br />remd.mdin:
+<br />
+<br />&nbsp;&amp;cntrl
+<br />
+<br />&nbsp;&nbsp;&nbsp;irest=0, ntx=1,
+<br />
+<br />&nbsp;&nbsp;&nbsp;nstlim=500, dt=0.002,
+<br />
+<br />&nbsp;&nbsp;&nbsp;irest=0, ntt=3, gamma_ln=1.0,
+<br />
+<br />&nbsp;&nbsp;&nbsp;temp0=XXXXX, ig=RANDOM_NUMBER,
+<br />
+<br />&nbsp;&nbsp;&nbsp;ntc=2, ntf=2, nscm=1000,
+<br />
+<br />&nbsp;&nbsp;&nbsp;ntb=0, igb=5,
+<br />
+<br />&nbsp;&nbsp;&nbsp;cut=999.0, rgbmax=999.0,
+<br />
+<br />&nbsp;&nbsp;&nbsp;ntpr=100, ntwx=1000, ntwr=10000,
+<br />
+<br />&nbsp;&nbsp;&nbsp;nmropt=1,
+<br />
+<br />&nbsp;&nbsp;&nbsp;numexchg=50000,
+<br />
+<br />&nbsp;&nbsp;&nbsp;ntr=1,
+<br />
+<br />&nbsp;&nbsp;&nbsp;restraint_wt=50.0,
+<br />
+<br />&nbsp;&nbsp;&nbsp;restraintmask=':1-347,374-390.CA',
+<br />
+<br />&nbsp;/
+<br />
+<br />&nbsp;&amp;wt TYPE='END'
+<br />
+<br />&nbsp;/
+<br />
+<br />DISANG=5EK4_chir.dat
+<br />
+<br />&nbsp;
+<br />
+<br />REMD simulations are run for a temperature range between 290 - 472K. The starting structure of the 30 replicas of REMD is the 5EKC protein with 30 different structures. 50 ns for each replica.
+<br />
+<br />&nbsp;
+<br />
+<br />remd.groupfile:
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.001 -o remd.mdout.001 -c 5EK4_1.inpcrd -r remd.rst.001 -x remd.mdcrd.001 -inf remd.mdinfo.001 -p 5EK4_1.prmtop -ref 5EK4_1.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.002 -o remd.mdout.002 -c 5EK4_2.inpcrd -r remd.rst.002 -x remd.mdcrd.002 -inf remd.mdinfo.002 -p 5EK4_1.prmtop -ref 5EK4_2.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.003 -o remd.mdout.003 -c 5EK4_3.inpcrd -r remd.rst.003 -x remd.mdcrd.003 -inf remd.mdinfo.003 -p 5EK4_1.prmtop -ref 5EK4_3.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.004 -o remd.mdout.004 -c 5EK4_4.inpcrd -r remd.rst.004 -x remd.mdcrd.004 -inf remd.mdinfo.004 -p 5EK4_1.prmtop -ref 5EK4_4.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.005 -o remd.mdout.005 -c 5EK4_5.inpcrd -r remd.rst.005 -x remd.mdcrd.005 -inf remd.mdinfo.005 -p 5EK4_1.prmtop -ref 5EK4_5.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.006 -o remd.mdout.006 -c 5EK4_6.inpcrd -r remd.rst.006 -x remd.mdcrd.006 -inf remd.mdinfo.006 -p 5EK4_1.prmtop -ref 5EK4_6.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.007 -o remd.mdout.007 -c 5EK4_7.inpcrd -r remd.rst.007 -x remd.mdcrd.007 -inf remd.mdinfo.007 -p 5EK4_1.prmtop -ref 5EK4_7.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.008 -o remd.mdout.008 -c 5EK4_8.inpcrd -r remd.rst.008 -x remd.mdcrd.008 -inf remd.mdinfo.008 -p 5EK4_1.prmtop -ref 5EK4_8.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.009 -o remd.mdout.009 -c 5EK4_9.inpcrd -r remd.rst.009 -x remd.mdcrd.009 -inf remd.mdinfo.009 -p 5EK4_1.prmtop -ref 5EK4_9.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.010 -o remd.mdout.010 -c 5EK4_10.inpcrd -r remd.rst.010 -x remd.mdcrd.010 -inf remd.mdinfo.010 -p 5EK4_1.prmtop -ref 5EK4_10.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.011 -o remd.mdout.011 -c 5EK4_11.inpcrd -r remd.rst.011 -x remd.mdcrd.011 -inf remd.mdinfo.011 -p 5EK4_1.prmtop -ref 5EK4_11.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.012 -o remd.mdout.012 -c 5EK4_12.inpcrd -r remd.rst.012 -x remd.mdcrd.012 -inf remd.mdinfo.012 -p 5EK4_1.prmtop -ref 5EK4_12.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.013 -o remd.mdout.013 -c 5EK4_13.inpcrd -r remd.rst.013 -x remd.mdcrd.013 -inf remd.mdinfo.013 -p 5EK4_1.prmtop -ref 5EK4_13.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.014 -o remd.mdout.014 -c 5EK4_14.inpcrd -r remd.rst.014 -x remd.mdcrd.014 -inf remd.mdinfo.014 -p 5EK4_1.prmtop -ref 5EK4_14.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.015 -o remd.mdout.015 -c 5EK4_15.inpcrd -r remd.rst.015 -x remd.mdcrd.015 -inf remd.mdinfo.015 -p 5EK4_1.prmtop -ref 5EK4_15.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.016 -o remd.mdout.016 -c 5EK4_16.inpcrd -r remd.rst.016 -x remd.mdcrd.016 -inf remd.mdinfo.016 -p 5EK4_1.prmtop -ref 5EK4_16.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.017 -o remd.mdout.017 -c 5EK4_17.inpcrd -r remd.rst.017 -x remd.mdcrd.017 -inf remd.mdinfo.017 -p 5EK4_1.prmtop -ref 5EK4_17.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.018 -o remd.mdout.018 -c 5EK4_18.inpcrd -r remd.rst.018 -x remd.mdcrd.018 -inf remd.mdinfo.018 -p 5EK4_1.prmtop -ref 5EK4_18.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.019 -o remd.mdout.019 -c 5EK4_19.inpcrd -r remd.rst.019 -x remd.mdcrd.019 -inf remd.mdinfo.019 -p 5EK4_1.prmtop -ref 5EK4_19.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.020 -o remd.mdout.020 -c 5EK4_20.inpcrd -r remd.rst.020 -x remd.mdcrd.020 -inf remd.mdinfo.020 -p 5EK4_1.prmtop -ref 5EK4_20.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.021 -o remd.mdout.021 -c 5EK4_21.inpcrd -r remd.rst.021 -x remd.mdcrd.021 -inf remd.mdinfo.021 -p 5EK4_1.prmtop -ref 5EK4_21.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.022 -o remd.mdout.022 -c 5EK4_22.inpcrd -r remd.rst.022 -x remd.mdcrd.022 -inf remd.mdinfo.022 -p 5EK4_1.prmtop -ref 5EK4_22.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.023 -o remd.mdout.023 -c 5EK4_23.inpcrd -r remd.rst.023 -x remd.mdcrd.023 -inf remd.mdinfo.023 -p 5EK4_1.prmtop -ref 5EK4_23.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.024 -o remd.mdout.024 -c 5EK4_24.inpcrd -r remd.rst.024 -x remd.mdcrd.024 -inf remd.mdinfo.024 -p 5EK4_1.prmtop -ref 5EK4_24.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.025 -o remd.mdout.025 -c 5EK4_25.inpcrd -r remd.rst.025 -x remd.mdcrd.025 -inf remd.mdinfo.025 -p 5EK4_1.prmtop -ref 5EK4_25.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.026 -o remd.mdout.026 -c 5EK4_26.inpcrd -r remd.rst.026 -x remd.mdcrd.026 -inf remd.mdinfo.026 -p 5EK4_1.prmtop -ref 5EK4_26.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.027 -o remd.mdout.027 -c 5EK4_27.inpcrd -r remd.rst.027 -x remd.mdcrd.027 -inf remd.mdinfo.027 -p 5EK4_1.prmtop -ref 5EK4_27.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.028 -o remd.mdout.028 -c 5EK4_28.inpcrd -r remd.rst.028 -x remd.mdcrd.028 -inf remd.mdinfo.028 -p 5EK4_1.prmtop -ref 5EK4_28.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.029 -o remd.mdout.029 -c 5EK4_29.inpcrd -r remd.rst.029 -x remd.mdcrd.029 -inf remd.mdinfo.029 -p 5EK4_1.prmtop -ref 5EK4_29.inpcrd
+<br />
+<br />-O -rem 1 -remlog rem.log -i remd.mdin.030 -o remd.mdout.030 -c 5EK4_30.inpcrd -r remd.rst.030 -x remd.mdcrd.030 -inf remd.mdinfo.030 -p 5EK4_1.prmtop -ref 5EK4_30.inpcrd
+<br />
+<br />&nbsp;
+<br />
+<br />The command to run REMD is:
+<br />
+<br />srun -n 30 pmemd.cuda.MPI -ng 30 -groupfile remd.groupfile
+<br />
+<br />&nbsp;
+<br />
+<br />The output file is as follows:
+<br />
+<br />rem.log:
+<br />
+<br />.........
+<br />
+<br /># exchange    50000
+<br />
+<br />&nbsp;1     -1.00    483.93  -4919.86    472.00    472.00      0.00      -1
+<br />
+<br />&nbsp;2      1.01    425.03  -5615.09    421.90    428.80      0.28      -1
+<br />
+<br />&nbsp;3     -1.00    357.92  -6665.98    363.30    363.30      0.26      -1
+<br />
+<br />&nbsp;4     -1.00    431.49  -5213.03    443.00    443.00      0.29      -1
+<br />
+<br />&nbsp;5      0.99    310.04  -7672.94    316.80    311.30      0.25      -1
+<br />
+<br />&nbsp;6     -1.00    381.14  -6215.04    395.00    395.00      0.27      -1
+<br />
+<br />&nbsp;7      0.99    457.53  -5069.34    457.60    450.20      0.29      -1
+<br />
+<br />&nbsp;8      0.99    308.95  -7850.23    305.80    300.50      0.24      -1
+<br />
+<br />&nbsp;9      1.01    310.87  -7623.60    311.30    316.80      0.25      -1
+<br />
+<br />10     -1.00    435.48  -5500.29    435.90    435.90      0.29      -1
+<br />
+<br />11      0.99    422.83  -5597.49    428.80    421.90      0.28      -1
+<br />
+<br />12     -1.00    320.61  -7401.61    322.30    322.30      0.25      -1
+<br />
+<br />13      1.01    448.75  -5117.91    450.20    457.60      0.28      -1
+<br />
+<br />14      1.01    300.06  -7902.66    300.50    305.80      0.25      -1
+<br />
+<br />15     -1.00    407.83  -6045.13    401.60    401.60      0.27      -1
+<br />
+<br />16     -1.00    411.97  -5993.03    408.30    408.30      0.28      -1
+<br />
+<br />17     -1.00    342.54  -7093.49    345.30    345.30      0.26      -1
+<br />
+<br />18     -1.00    374.51  -6618.57    369.50    369.50      0.27      -1
+<br />
+<br />19     -1.00    406.04  -5767.74    415.00    415.00      0.28      -1
+<br />
+<br />20     -1.00    347.37  -7103.56    339.40    339.40      0.26      -1
+<br />
+<br />21     -1.00    328.74  -7117.47    333.60    333.60      0.25      -1
+<br />
+<br />22     -1.00    354.91  -6798.13    357.20    357.20      0.26      -1
+<br />
+<br />23     -1.00    377.97  -6340.68    382.10    382.10      0.28      -1
+<br />
+<br />24      0.99    294.19  -7967.01    295.20    290.00      0.25      -1
+<br />
+<br />25      1.01    291.39  -7976.23    290.00    295.20      0.25      -1
+<br />
+<br />26     -1.00    326.46  -7318.99    327.90    327.90      0.25      -1
+<br />
+<br />27     -1.00    380.62  -6394.33    375.70    375.70      0.26      -1
+<br />
+<br />28     -1.00    384.89  -6096.66    388.50    388.50      0.28      -1
+<br />
+<br />29     -1.00    349.34  -6909.41    351.20    351.20      0.26      -1
+<br />
+<br />30     -1.00    468.11  -5049.65    465.00    465.00      0.32      -1
+<br />
+<br />&nbsp;
+<br />
+<br />remd.mdout.010 :
+<br />
+<br />........
+<br />
+<br />===============================================================================
+<br />
+<br />&nbsp;
+<br />
+<br />&nbsp;NSTEP = 24999800   TIME(PS) =   49999.600  TEMP(K) =   439.90  PRESS =     0.0
+<br />
+<br />&nbsp;Etot   =      1470.6336  EKtot   =      6895.8413  EPtot      =     -5425.2077
+<br />
+<br />&nbsp;BOND   =      1745.3514  ANGLE   =      4394.8278  DIHED      =      5328.6671
+<br />
+<br />&nbsp;1-4 NB =      1544.8450  1-4 EEL =     17601.7434  VDWAALS    =     -3226.1926
+<br />
+<br />&nbsp;EELEC  =    -28591.7114  EGB     =     -4559.0270  RESTRAINT  =       336.2887
+<br />
+<br />&nbsp;EAMBER (non-restraint)  =     -5761.4964
+<br />
+<br />&nbsp;TEMP0  =       435.9000  REPNUM  =             10  EXCHANGE#  =          50000
+<br />
+<br />&nbsp;------------------------------------------------------------------------------
+<br />
+<br />&nbsp;
+<br />
+<br />&nbsp;NMR restraints: Bond =    0.000   Angle =     0.000   Torsion =    19.562
+<br />
+<br />===============================================================================
+<br />
+<br />&nbsp;
+<br />
+<br />&nbsp;NSTEP = 24999900   TIME(PS) =   49999.800  TEMP(K) =   432.41  PRESS =     0.0
+<br />
+<br />&nbsp;Etot   =      1350.3298  EKtot   =      6778.4297  EPtot      =     -5428.0999
+<br />
+<br />&nbsp;BOND   =      1729.3050  ANGLE   =      4370.8293  DIHED      =      5383.2636
+<br />
+<br />&nbsp;1-4 NB =      1566.0495  1-4 EEL =     17505.5943  VDWAALS    =     -3259.0800
+<br />
+<br />&nbsp;EELEC  =    -28657.4152  EGB     =     -4427.6502  RESTRAINT  =       361.0038
+<br />
+<br />&nbsp;EAMBER (non-restraint)  =     -5789.1037
+<br />
+<br />&nbsp;TEMP0  =       435.9000  REPNUM  =             10  EXCHANGE#  =          50000
+<br />
+<br />&nbsp;------------------------------------------------------------------------------
+<br />
+<br />&nbsp;
+<br />
+<br />&nbsp;NMR restraints: Bond =    0.000   Angle =     0.000   Torsion =    21.718
+<br />
+<br />===============================================================================
+<br />
+<br />&nbsp;
+<br />
+<br />&nbsp;NSTEP = 25000000   TIME(PS) =   50000.000  TEMP(K) =   433.81  PRESS =     0.0
+<br />
+<br />&nbsp;Etot   =      1429.7036  EKtot   =      6800.4443  EPtot      =     -5370.7407
+<br />
+<br />&nbsp;BOND   =      1641.3302  ANGLE   =      4534.2074  DIHED      =      5377.9737
+<br />
+<br />&nbsp;1-4 NB =      1573.3763  1-4 EEL =     17498.4438  VDWAALS    =     -3220.7094
+<br />
+<br />&nbsp;EELEC  =    -28666.4125  EGB     =     -4444.1999  RESTRAINT  =       335.2497
+<br />
+<br />&nbsp;EAMBER (non-restraint)  =     -5705.9904
+<br />
+<br />&nbsp;TEMP0  =       435.9000  REPNUM  =             10  EXCHANGE#  =          50000
+<br />
+<br />&nbsp;------------------------------------------------------------------------------
+<br />
+<br />&nbsp;
+<br />
+<br />&nbsp;NMR restraints: Bond =    0.000   Angle =     0.000   Torsion =    18.340
+<br />
+<br />===============================================================================
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Apr 15 2021 - 20:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0112.html" title="Next message in the list">&#30707;&#35895;&#27777;: "[AMBER] &#31572;&#22797;: [ambermd.org&#20195;&#21457;]Re:  &#0034;No module named pytraj&#0034; during make test step"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0110.html" title="Previous message in the list">Dr. Anselm Horn: "Re: [AMBER] Cyclic Peptides: leap keeps adding missing atoms"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0120.html" title="Next message in this discussion thread">Daniel Roe: "Re: [AMBER] About REMD extracting temperature trajectory"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0120.html" title="Message sent in reply to this message">Daniel Roe: "Re: [AMBER] About REMD extracting temperature trajectory"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg111" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg111" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg111" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg111" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

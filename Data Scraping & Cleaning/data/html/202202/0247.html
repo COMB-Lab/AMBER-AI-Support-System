@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] CUDART lib not found during install from Charlotta Lebedenko on 2022-02-28 (Amber Archive Feb 2022)</title>
+<meta name="Author" content="Charlotta Lebedenko (clebedenko.fordham.edu)" />
+<meta name="Subject" content="[AMBER] CUDART lib not found during install" />
+<meta name="Date" content="2022-02-28" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] CUDART lib not found during install</h1>
+<!-- received="Mon Feb 28 10:30:03 2022" -->
+<!-- isoreceived="20220228183003" -->
+<!-- sent="Mon, 28 Feb 2022 13:04:46 -0500" -->
+<!-- isosent="20220228180446" -->
+<!-- name="Charlotta Lebedenko" -->
+<!-- email="clebedenko.fordham.edu" -->
+<!-- subject="[AMBER] CUDART lib not found during install" -->
+<!-- id="CAN5NB=F-CBvO092yrwckNOZkuRcJm+SXf_EOfZ-xrQ-QzX980A.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0246.html" title="Vinicius Wilian Cruzeiro: &quot;Re: [AMBER] pH replica exchange MD (pH-REMD) in explicit solvent, using CUDA MPI in AMBER 18&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg247" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg247" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg247" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg247" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Charlotta Lebedenko &lt;<a href="mailto:clebedenko.fordham.edu?Subject=Re%3A%20%5BAMBER%5D%20CUDART%20lib%20not%20found%20during%20install">clebedenko.fordham.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 28 Feb 2022 13:04:46 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber support,
+<br />
+<br />We are trying to install Amber20 and Ambertools21 with CUDA support on
+<br />
+Windows 10 21H2 using WSL2 with ubuntu. We see this cmake error:
+<br />
+-- Could NOT find CUDA (missing: CUDA_CUDART_LIBRARY) (found version &quot;11.4&quot;)
+<br />
+CMake Error at cmake/CudaConfig.cmake:15 (message):
+<br />
+&nbsp;&nbsp;You turned on CUDA, but it was not found.  Please set the
+<br />
+&nbsp;&nbsp;CUDA_TOOLKIT_ROOT_DIR option to your CUDA install directory.
+<br />
+Call Stack (most recent call first):
+<br />
+&nbsp;&nbsp;CMakeLists.txt:120 (include)
+<br />
+<br />nvcc is installed at: /usr/local/cuda-11.4/bin/nvcc
+<br />
+CUDA toolkit is installed into a standard location /usr/local/cuda:
+<br />
+&nbsp;ls -l /usr/local
+<br />
+total 36
+<br />
+drwxrwxr-x  2 root root 4096 Feb 28 11:49 bin
+<br />
+lrwxrwxrwx  1 root root   22 Feb 28 11:49 cuda -&gt; /etc/alternatives/cuda
+<br />
+lrwxrwxrwx  1 root root   25 Feb 28 11:49 cuda-11 -&gt;
+<br />
+/etc/alternatives/cuda-11
+<br />
+drwxr-xr-x 17 root root 4096 Feb 28 11:49 cuda-11.4
+<br />
+<br />&nbsp;ls -l  /etc/alternatives
+<br />
+lrwxrwxrwx 1 root root  20 Feb 28 11:49 cuda -&gt; /usr/local/cuda-11.4
+<br />
+lrwxrwxrwx 1 root root  20 Feb 28 11:49 cuda-11 -&gt; /usr/local/cuda-11.4
+<br />
+<br />We set export CUDA_HOME=/usr/local/cuda-11.4
+<br />
+<br />We added this to run_cmake to point to CUDA toolkit and cudart library:
+<br />
+-DCUDA=TRUE -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-11.4
+<br />
+-DCUDA_CUDART_LIBRARY=/usr/local/cuda-11.4/targets/x86_64-linux/lib/libcudart.so
+<br />
+<br />We still see the error above. What else can we try?
+<br />
+<br />We installed CUDA driver and toolkit following these instructions:
+<br />
+CUDA on WSL :: CUDA Toolkit Documentation (nvidia.com)
+<br />
+&lt;<a href="https://docs.nvidia.com/cuda/wsl-user-guide/index.html#:~:text=Launch%20the%20Linux%20distribution%20and%20make%20sure%20it,for%20the%20Linux%20distributions%20supported%20under%20WSL%202">https://docs.nvidia.com/cuda/wsl-user-guide/index.html#:~:text=Launch%20the%20Linux%20distribution%20and%20make%20sure%20it,for%20the%20Linux%20distributions%20supported%20under%20WSL%202</a>.&gt;
+<br />
+<br />Thank you,
+<br />
+Charlotta Lebedenko
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Feb 28 2022 - 10:30:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Previous message</dfn>: <a href="0246.html" title="Previous message in the list">Vinicius Wilian Cruzeiro: "Re: [AMBER] pH replica exchange MD (pH-REMD) in explicit solvent, using CUDA MPI in AMBER 18"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg247" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg247" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg247" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg247" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

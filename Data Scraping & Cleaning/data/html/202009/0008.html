@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber from Matias Machado on 2020-09-01 (Amber Archive Sep 2020)</title>
+<meta name="Author" content="Matias Machado (mmachado.pasteur.edu.uy)" />
+<meta name="Subject" content="Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber" />
+<meta name="Date" content="2020-09-01" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber</h1>
+<!-- received="Tue Sep  1 08:00:02 2020" -->
+<!-- isoreceived="20200901150002" -->
+<!-- sent="Tue, 01 Sep 2020 11:38:41 -0300 (UYT)" -->
+<!-- isosent="20200901143841" -->
+<!-- name="Matias Machado" -->
+<!-- email="mmachado.pasteur.edu.uy" -->
+<!-- subject="Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber" -->
+<!-- id="8feabfe2-f9f1-43c8-96bd-8973eb995280.free.ipmont.lan" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="bccc0418-c290-37c4-ccc7-c1cf4f7377a8.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0009.html" accesskey="d" title="Charo del Genio: &quot;Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber&quot;">Next message</a> ]
+[ <a href="0007.html" title="Kehinde Idowu: &quot;Re: [AMBER] Enquiry&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0009.html" accesskey="t" title="Charo del Genio: &quot;Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg8" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg8" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg8" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg8" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Matias Machado &lt;<a href="mailto:mmachado.pasteur.edu.uy?Subject=Re%3A%20%5BAMBER%5D%20Questions%20(and%20a%20small%20bug%20report)%20about%20SIRAH%20in%20Amber">mmachado.pasteur.edu.uy</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 01 Sep 2020 11:38:41 -0300 (UYT)</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+well... you will get an energy value indeed (cpptraj can't distinguish between FG or CG)... however the meaning of that energy will likely differ...
+<br />
+<br />In CG the potential energy surfaces is always a free energy surface, that's because you are condensing several degrees of freedom into single beads or topologies (e.g. side chain rotations), and hence part of the entropy is captured by the parameters (&quot;the potential energy&quot;: the enthalpy)... the &quot;captured amount&quot; depends on the CG model and how it was derived (i.e. by fitting to free energy of to other property)... in case of SIRAH, models are fit to structural properties, then the absolute energy values is likely to &quot;mean nothing&quot;, but the relative ones do... Indeed the self-consistence within the force field (i.e. hydrophobicity and hydrophilicity) is given by the relative interaction among all particles, however the reference energy isn't a particular well known thermodynamic quantity (e.g. hydration free energy)
+<br />
+<br />To get a feeling on what I'm saying, You can check this paper, in which authors use SIRAH 1.0 to calculate Protein-Protein Binding Free Energies:
+<br />
+<a href="https://doi.org/10.1021/acs.jctc.7b00660">https://doi.org/10.1021/acs.jctc.7b00660</a>
+<br />
+<br />Interesting, SIRAH 1.0 outperforms FoldX in most of those benchmarks... I expect SIRAH 2.0 to do much better... :-)
+<br />
+<br />Best,
+<br />
+<br />Matías
+<br />
+<br />----- Mensaje original -----
+<br />
+De: &quot;Charo del Genio&quot; &lt;the.paraw.gmail.com&gt;
+<br />
+Para: &quot;Matias Machado&quot; &lt;mmachado.pasteur.edu.uy&gt;
+<br />
+CC: &quot;AMBER Mailing List&quot; &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+Enviados: Sábado, 29 de Agosto 2020 10:52:09
+<br />
+Asunto: Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber
+<br />
+<br />On 28/08/2020 17:57, Matias Machado wrote:
+<br />
+<em class="quotelev1">&gt; Just for the record of this thread...
+</em><br />
+<em class="quotelev1">&gt; I've just uploaded a new release version of SIRAH for AMBER [version: x2.2_20-08] to our web [http://www.sirahff.com], including the bugfix for the LJoff.fcrmod issue.
+</em><br />
+<em class="quotelev1">&gt; It was tested to correctly work on cmake and legacy builds of AMBER Tools 19 and 20.
+</em><br />
+<em class="quotelev1">&gt; Enjoy it!
+</em><br />
+<em class="quotelev1">&gt; Matías
+</em><br />
+<br />Thank you very much, that's great!
+<br />
+<br />By the way, do you happen to have some suggestion on how to do energy analysis on a coarse-grained trajectory? I would normally use &quot;energy&quot; and &quot;lie&quot; from cpptraj, but I am not sure they would give 
+<br />
+sensible results after CG. What is your suggestion?
+<br />
+<br /><br />Cheers,
+<br />
+<br />Charo
+<br />
+<br /><br /><br /><br /><pre>
+-- 
+Dr. Charo I. del Genio
+Senior Lecturer in Statistical Physics
+Applied Mathematics Research Centre (AMRC)
+Design Hub
+Coventry University Technology Park
+Coventry CV1 5FB
+UK
+<a href="https://charodelgenio.weebly.com">https://charodelgenio.weebly.com</a>
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Sep 01 2020 - 08:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0009.html" title="Next message in the list">Charo del Genio: "Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0007.html" title="Previous message in the list">Kehinde Idowu: "Re: [AMBER] Enquiry"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0009.html" title="Next message in this discussion thread">Charo del Genio: "Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0009.html" title="Message sent in reply to this message">Charo del Genio: "Re: [AMBER] Questions (and a small bug report) about SIRAH in Amber"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg8" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg8" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg8" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg8" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

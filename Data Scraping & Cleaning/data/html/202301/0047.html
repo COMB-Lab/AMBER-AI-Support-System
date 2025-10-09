@@ -1,0 +1,690 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Amber Install Error from Tacey, Sean A via AMBER on 2023-01-10 (Amber Archive Jan 2023)</title>
+<meta name="Author" content="Tacey, Sean A via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Amber Install Error" />
+<meta name="Date" content="2023-01-10" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Amber Install Error</h1>
+<!-- received="Tue Jan 10 11:30:03 2023" -->
+<!-- isoreceived="20230110193003" -->
+<!-- sent="Tue, 10 Jan 2023 19:02:20 +0000" -->
+<!-- isosent="20230110190220" -->
+<!-- name="Tacey, Sean A via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Amber Install Error" -->
+<!-- id="BY5PR17MB31437733E33369E6C5DCCDC6F3FF9.BY5PR17MB3143.namprd17.prod.outlook.com" -->
+<!-- charset="windows-1252" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0048.html" accesskey="d" title="Javier Carmona Garcia via AMBER: &quot;[AMBER]  Increase maximum of atoms in COM distance restraint&quot;">Next message</a> ]
+[ <a href="0046.html" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] Distance restraints&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0070.html" accesskey="t" title="David A Case via AMBER: &quot;Re: [AMBER] Amber Install Error&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg47" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg47" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg47" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg47" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Tacey, Sean A via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Amber%20Install%20Error">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 10 Jan 2023 19:02:20 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+<br />When trying to install a GPU-enabled Amber20, we are running into an issue during run_cmake, followed by an error during make install. Before running run_cmake, we do run �./update_amber �upgrade� to ensure we have all the latest updates before installing (ran into other, different issues when installing the base CPU Amber20 before the holidays that these updates resolved).
+<br />
+<br />For run_cmake, we receive the following error message that repeats numerous times throughout the process for different python files:
+<br />
+<br />%%%%%%%%%
+<br />
+Error processing line 1 of /tmp/amber/gpu_install/amber20_src/build/CMakeFiles/miniconda/install/lib/python3.10/site-packages/distutils-precedence.pth:
+<br />
+<br />&nbsp;&nbsp;Traceback (most recent call last):
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;File &quot;/tmp/amber/gpu_install/amber20_src/build/CMakeFiles/miniconda/install/lib/python3.10/site.py&quot;, line 186, in addpackage
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exec(line)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;File &quot;&lt;string&gt;&quot;, line 1, in &lt;module&gt;
+<br />
+&nbsp;&nbsp;ModuleNotFoundError: No module named '_distutils_hack'
+<br />
+%%%%%%%%%
+<br />
+<br />Looking into this issue, it seems to be an issue with setuptools, however run_cmake installs this before this error occurs. Although, it is replacing the installed version (setuptools-65.5.0) with an older version (setuptools-47.3.1). Not sure if this older version is causing problems?
+<br />
+<br />Run_cmake still finishes with these errors, so we figured we�d give �make install� a go. When we do this, it gets to about 93% complete before printing the following error messages and crashing (install incomplete). It seems to be an issue with the
+<br />
+<br />%%%%%%%%%
+<br />
+In file included from /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/Python.h:74:0,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from pytraj/utils/cyutils.cpp:18:
+<br />
+pytraj/utils/cyutils.cpp: In function �void __pyx_tp_dealloc_array(PyObject*)�:
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/object.h:133:58: error: lvalue required as increment operand
+<br />
+&nbsp;#define Py_REFCNT(ob) _Py_REFCNT(_PyObject_CAST_CONST(ob))
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:19992:7: note: in expansion of macro �Py_REFCNT�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++Py_REFCNT(o);
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/object.h:133:58: error: lvalue required as decrement operand
+<br />
+&nbsp;#define Py_REFCNT(ob) _Py_REFCNT(_PyObject_CAST_CONST(ob))
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:19994:7: note: in expansion of macro �Py_REFCNT�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--Py_REFCNT(o);
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp: In function �void __pyx_tp_dealloc_memoryview(PyObject*)�:
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/object.h:133:58: error: lvalue required as increment operand
+<br />
+&nbsp;#define Py_REFCNT(ob) _Py_REFCNT(_PyObject_CAST_CONST(ob))
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:20303:7: note: in expansion of macro �Py_REFCNT�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++Py_REFCNT(o);
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/object.h:133:58: error: lvalue required as decrement operand
+<br />
+&nbsp;#define Py_REFCNT(ob) _Py_REFCNT(_PyObject_CAST_CONST(ob))
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:20305:7: note: in expansion of macro �Py_REFCNT�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--Py_REFCNT(o);
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp: In function �void __pyx_tp_dealloc__memoryviewslice(PyObject*)�:
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/object.h:133:58: error: lvalue required as increment operand
+<br />
+&nbsp;#define Py_REFCNT(ob) _Py_REFCNT(_PyObject_CAST_CONST(ob))
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:20553:7: note: in expansion of macro �Py_REFCNT�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++Py_REFCNT(o);
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/object.h:133:58: error: lvalue required as decrement operand
+<br />
+&nbsp;#define Py_REFCNT(ob) _Py_REFCNT(_PyObject_CAST_CONST(ob))
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:20555:7: note: in expansion of macro �Py_REFCNT�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--Py_REFCNT(o);
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+In file included from /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/unicodeobject.h:1046:0,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/Python.h:83,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from pytraj/utils/cyutils.cpp:18:
+<br />
+pytraj/utils/cyutils.cpp: In function �int __Pyx_ParseOptionalKeywords(PyObject*, PyObject***, PyObject*, PyObject**, Py_ssize_t, const char*)�:
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:35: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:261:7: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op) :                    \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22200:22: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**name) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:75: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:261:7: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op) :                    \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22200:22: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**name) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:262:14: warning: �Py_UNICODE* PyUnicode_AsUnicode(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:580) [-Wdeprecated-declarations]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((void)PyUnicode_AsUnicode(_PyObject_CAST(op)),\
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22200:22: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**name) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:262:52: warning: �Py_UNICODE* PyUnicode_AsUnicode(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:580) [-Wdeprecated-declarations]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((void)PyUnicode_AsUnicode(_PyObject_CAST(op)),\
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22200:22: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**name) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:35: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:264:8: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op)))
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22200:22: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**name) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:75: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:264:8: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op)))
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22200:22: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**name) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:35: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:261:7: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op) :                    \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22200:52: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**name) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:75: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:261:7: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op) :                    \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22200:52: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**name) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:262:14: warning: �Py_UNICODE* PyUnicode_AsUnicode(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:580) [-Wdeprecated-declarations]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((void)PyUnicode_AsUnicode(_PyObject_CAST(op)),\
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22200:52: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**name) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:262:52: warning: �Py_UNICODE* PyUnicode_AsUnicode(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:580) [-Wdeprecated-declarations]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((void)PyUnicode_AsUnicode(_PyObject_CAST(op)),\
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22200:52: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**name) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:35: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:264:8: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op)))
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22200:52: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**name) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:75: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:264:8: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op)))
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22200:52: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**name) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:35: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:261:7: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op) :                    \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22216:26: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**argname) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:75: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:261:7: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op) :                    \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22216:26: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**argname) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:262:14: warning: �Py_UNICODE* PyUnicode_AsUnicode(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:580) [-Wdeprecated-declarations]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((void)PyUnicode_AsUnicode(_PyObject_CAST(op)),\
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22216:26: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**argname) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:262:52: warning: �Py_UNICODE* PyUnicode_AsUnicode(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:580) [-Wdeprecated-declarations]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((void)PyUnicode_AsUnicode(_PyObject_CAST(op)),\
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22216:26: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**argname) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:35: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:264:8: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op)))
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22216:26: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**argname) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:75: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:264:8: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op)))
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22216:26: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**argname) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:35: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:261:7: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op) :                    \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22216:59: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**argname) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:75: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:261:7: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op) :                    \
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22216:59: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**argname) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:262:14: warning: �Py_UNICODE* PyUnicode_AsUnicode(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:580) [-Wdeprecated-declarations]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((void)PyUnicode_AsUnicode(_PyObject_CAST(op)),\
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22216:59: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**argname) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:262:52: warning: �Py_UNICODE* PyUnicode_AsUnicode(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:580) [-Wdeprecated-declarations]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((void)PyUnicode_AsUnicode(_PyObject_CAST(op)),\
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22216:59: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**argname) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:35: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:264:8: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op)))
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22216:59: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**argname) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:451:75: warning: �Py_ssize_t _PyUnicode_get_wstr_length(PyObject*)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:446) [-Wdeprecated-declarations]
+<br />
+&nbsp;#define PyUnicode_WSTR_LENGTH(op) _PyUnicode_get_wstr_length((PyObject*)op)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+/homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:264:8: note: in expansion of macro �PyUnicode_WSTR_LENGTH�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PyUnicode_WSTR_LENGTH(op)))
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:22216:59: note: in expansion of macro �PyUnicode_GET_SIZE�
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(PyUnicode_GET_SIZE(**argname) != PyUnicode_GET_SIZE(key)) ? 1 :
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp: In function �PyObject* __Pyx_decode_c_string(const char*, Py_ssize_t, Py_ssize_t, const char*, const char*, PyObject* (*)(const char*, Py_ssize_t, const char*))�:
+<br />
+pytraj/utils/cyutils.cpp:23832:16: warning: �PyObject* PyUnicode_FromUnicode(const Py_UNICODE*, Py_ssize_t)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:551) [-Wdeprecated-declarations]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return PyUnicode_FromUnicode(NULL, 0);
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:23832:45: warning: �PyObject* PyUnicode_FromUnicode(const Py_UNICODE*, Py_ssize_t)� is deprecated (declared at /homes/taceysa/amber/amber20_src/build/CMakeFiles/miniconda/install/include/python3.10/cpython/unicodeobject.h:551) [-Wdeprecated-declarations]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return PyUnicode_FromUnicode(NULL, 0);
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp: In function �PyObject* __Pyx_Coroutine_Send(PyObject*, PyObject*)�:
+<br />
+pytraj/utils/cyutils.cpp:27782:80: error: �_PyGen_Send� was not declared in this scope
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret = _PyGen_Send((PyGenObject*)yf, value == Py_None ? NULL : value);
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp:27787:80: error: �_PyGen_Send� was not declared in this scope
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret = _PyGen_Send((PyGenObject*)yf, value == Py_None ? NULL : value);
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+pytraj/utils/cyutils.cpp: In function �PyObject* __Pyx_Generator_Next(PyObject*)�:
+<br />
+pytraj/utils/cyutils.cpp:27871:53: error: �_PyGen_Send� was not declared in this scope
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret = _PyGen_Send((PyGenObject*)yf, NULL);
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+<br />
+error: command '/usr/bin/gcc' failed with exit code 1
+<br />
+make[2]: *** [AmberTools/src/pytraj/CMakeFiles/python-build/pytraj-build.stamp] Error 1
+<br />
+make[1]: *** [AmberTools/src/pytraj/CMakeFiles/pytraj.dir/all] Error 2
+<br />
+make: *** [all] Error 2
+<br />
+%%%%%%%%%
+<br />
+<br />Any thoughts on how to resolve these issues?
+<br />
+<br />Thanks!
+<br />
+Sean
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Jan 10 2023 - 11:30:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0048.html" title="Next message in the list">Javier Carmona Garcia via AMBER: "[AMBER]  Increase maximum of atoms in COM distance restraint"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0046.html" title="Previous message in the list">Carlos Simmerling via AMBER: "Re: [AMBER] Distance restraints"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0070.html" title="Next message in this discussion thread">David A Case via AMBER: "Re: [AMBER] Amber Install Error"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0070.html" title="Message sent in reply to this message">David A Case via AMBER: "Re: [AMBER] Amber Install Error"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg47" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg47" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg47" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg47" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

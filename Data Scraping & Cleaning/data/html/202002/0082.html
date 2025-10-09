@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Regarding RMSD calculation and Clustering from Manish Kumar Mohanty on 2020-02-08 (Amber Archive Feb 2020)</title>
+<meta name="Author" content="Manish Kumar Mohanty (mkmohanty.iiserb.ac.in)" />
+<meta name="Subject" content="[AMBER] Regarding RMSD calculation and Clustering" />
+<meta name="Date" content="2020-02-08" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Regarding RMSD calculation and Clustering</h1>
+<!-- received="Sat Feb  8 21:30:01 2020" -->
+<!-- isoreceived="20200209053001" -->
+<!-- sent="Sun, 9 Feb 2020 10:40:09 +0530" -->
+<!-- isosent="20200209051009" -->
+<!-- name="Manish Kumar Mohanty" -->
+<!-- email="mkmohanty.iiserb.ac.in" -->
+<!-- subject="[AMBER] Regarding RMSD calculation and Clustering" -->
+<!-- id="CAJz5302-H8suRh4jiYFmsbjMruYeQvJy-B3syQ1Xio_dw2BXAw.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0083.html" accesskey="d" title="Hosein Geraili Daronkola: &quot;[AMBER] TI on pmemd CUDA, AMBER18&quot;">Next message</a> ]
+[ <a href="0081.html" title="Debarati DasGupta: &quot;[AMBER] query on a script called getdvdl.py in AMBER TI tutorial section&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg82" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg82" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg82" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg82" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Manish Kumar Mohanty &lt;<a href="mailto:mkmohanty.iiserb.ac.in?Subject=Re%3A%20%5BAMBER%5D%20Regarding%20RMSD%20calculation%20and%20Clustering">mkmohanty.iiserb.ac.in</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 9 Feb 2020 10:40:09 +0530</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear AMBERites,
+<br />
+<br />I am very new to AMBER and currently using AMBER 18. So, please forgive me,
+<br />
+if my questions are too basic.
+<br />
+<br />1- Before RMSD calculation and clustering, I used the following code in
+<br />
+cpptraj to remove all translational and rotational motions of DNA
+<br />
+moiety during the simulation, according to the link:
+<br />
+<a href="https://amberhub.chpc.utah.edu/combining-multiple-trajectory-files-into-a-single-trajectory-and-remove-water-molecules-to-save-space/">https://amberhub.chpc.utah.edu/combining-multiple-trajectory-files-into-a-single-trajectory-and-remove-water-molecules-to-save-space/</a>
+<br />
+&nbsp;*parm topology-file.prmtop*
+<br />
+* trajin trajectory*.nc 1 last 10 *
+<br />
+* autoimage*
+<br />
+* strip :WAT *
+<br />
+* rms fit :1-24*
+<br />
+* trajout nowater.nc &lt;<a href="http://nowater.nc">http://nowater.nc</a>&gt;*
+<br />
+* go  *
+<br />
+<br />Now, if I want to do rmsd calculation for the DNA 12-mer, will the data
+<br />
+present in nowater.nc be fine?  Or should I use this and proceed?
+<br />
+* rms ToFirst :1-24&amp;!.H  *
+<br />
+<br />If possible, can someone clarify the difference between *rms fit* and* rms
+<br />
+ToFirst* command?
+<br />
+*2- *I have a single trajectory of 1 μsec long DNA duplex simulation. Is it
+<br />
+reliable to do clustering for the same after RMSD calculation to sample all
+<br />
+the possible conformations or should clustering be done for multiple
+<br />
+trajectories using different starting structures only? Then is it ok to do
+<br />
+Markov State Modelling using the clusters obtained?
+<br />
+<br />Thanks
+<br />
+Manish
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sat Feb 08 2020 - 21:30:01 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0083.html" title="Next message in the list">Hosein Geraili Daronkola: "[AMBER] TI on pmemd CUDA, AMBER18"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0081.html" title="Previous message in the list">Debarati DasGupta: "[AMBER] query on a script called getdvdl.py in AMBER TI tutorial section"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg82" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg82" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg82" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg82" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] cpptraj normal mode visualization from Prithviraj Nandigrami via AMBER on 2022-12-12 (Amber Archive Dec 2022)</title>
+<meta name="Author" content="Prithviraj Nandigrami via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] cpptraj normal mode visualization" />
+<meta name="Date" content="2022-12-12" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] cpptraj normal mode visualization</h1>
+<!-- received="Mon Dec 12 08:00:03 2022" -->
+<!-- isoreceived="20221212160003" -->
+<!-- sent="Mon, 12 Dec 2022 10:51:28 -0500" -->
+<!-- isosent="20221212155128" -->
+<!-- name="Prithviraj Nandigrami via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] cpptraj normal mode visualization" -->
+<!-- id="CABh86xOVC8MHhmpDp2FVSh8aVGkBHj78yL-i-Fy+ydi7PyipZA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0049.html" accesskey="d" title="Matthew Guberman-Pfeffer via AMBER: &quot;[AMBER] NMR-based restraints&quot;">Next message</a> ]
+[ <a href="0047.html" title="Prithviraj Nandigrami via AMBER: &quot;Re: [AMBER] tleap for RNA&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0063.html" accesskey="t" title="Prithviraj Nandigrami via AMBER: &quot;Re: [AMBER] cpptraj normal mode visualization&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg48" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg48" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg48" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg48" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Prithviraj Nandigrami via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20cpptraj%20normal%20mode%20visualization">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 12 Dec 2022 10:51:28 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear AMBER Experts,
+<br />
+<br />I am trying to perform PCA using cpptraj using the following script
+<br />
+(combining multiple trajectories from independent MD runs):
+<br />
+<br /># RMS-Fit to first frame to remove global translation/rotation
+<br />
+parm REF/OPEN_WT/run1/step5_input.parm7
+<br />
+trajin REF/OPEN_WT/run1/combined_longrun.nc
+<br />
+trajin REF/OPEN_WT/run2/combined_longrun.nc
+<br />
+trajin REF/OPEN_WT/run3/combined_longrun.nc
+<br />
+center
+<br />
+autoimage
+<br />
+rms ToFirst :1-438&amp;!.H=
+<br />
+average crdset avg_set
+<br />
+createcrd traj_set
+<br />
+run
+<br />
+<br />crdaction traj_set rms ref avg_set
+<br />
+:4-34,51-90,121-150,155-183,241-271,280-306,333-360,366-394.CA&amp;!.H=
+<br />
+<br />crdaction traj_set matrix covar \
+<br />
+&nbsp;:4-34,51-90,121-150,155-183,241-271,280-306,333-360,366-394.CA&amp;!.H= name
+<br />
+WT_covar \
+<br />
+&nbsp;out output_combined.PCA_backbone/OPEN_WT/WT_covmat.dat #Write covariance
+<br />
+matrix based on given selection mask
+<br />
+<br /><br /><br />*runanalysis diagmatrix WT_covar out
+<br />
+output_combined.PCA_backbone/OPEN_WT/WT_evecs.dat \   vecs 5 name myevecs
+<br />
+nmwiz nmwizvecs 5 nmwizfile
+<br />
+output_combined.PCA_backbone/OPEN_WT/WT_porcupine.nmd \   nmwizmask
+<br />
+:4-34,51-90,121-150,155-183,241-271,280-306,333-360,366-394.CA&amp;!.H=*
+<br />
+<br />crdaction traj_set projection p1 modes myevecs beg 1 end 5
+<br />
+:4-34,51-90,121-150,155-183,241-271,280-306,333-360,366-394.CA&amp;!.H= \
+<br />
+&nbsp;out output_combined.PCA_backbone/OPEN_WT/WT_open_pca-5.dat #write
+<br />
+projections of first 5 PCs
+<br />
+<br />hist p1:1 bins 100 out output_combined.PCA_backbone/OPEN_WT/WT-hist.agr
+<br />
+norm name WT-1
+<br />
+hist p1:2 bins 100 out output_combined.PCA_backbone/OPEN_WT/WT-hist.agr
+<br />
+norm name WT-2
+<br />
+hist p1:3 bins 100 out output_combined.PCA_backbone/OPEN_WT/WT-hist.agr
+<br />
+norm name WT-3
+<br />
+hist p1:4 bins 100 out output_combined.PCA_backbone/OPEN_WT/WT-hist.agr
+<br />
+norm name WT-4
+<br />
+hist p1:5 bins 100 out output_combined.PCA_backbone/OPEN_WT/WT-hist.agr
+<br />
+norm name WT-5
+<br />
+<br />run
+<br />
+<br />clear all
+<br />
+<br />readdata output_combined.PCA_backbone/OPEN_WT/WT_evecs.dat name Evecs
+<br />
+<br />parm REF/OPEN_WT/run1/step5_input.parm7
+<br />
+parmstrip !(:4-34,51-90,121-150,155-183,241-271,280-306,333-360,366-394.CA
+<br />
+&amp;!.H=)
+<br />
+parmwrite out output_combined.PCA_backbone/OPEN_WT/modes.prmtop
+<br />
+<br />runanalysis modes name Evecs trajout
+<br />
+output_combined.PCA_backbone/OPEN_WT/WT-mode1.nc \
+<br />
+&nbsp;&nbsp;pcmin -100 pcmax 100 tmode 1 trajoutmask
+<br />
+::4-34,51-90,121-150,155-183,241-271,280-306,333-360,366-394.CA&amp;!.H=
+<br />
+trajoutfmt netcdf
+<br />
+<br /><br /><br />I am running this script for different systems (wild-type protein, mutant
+<br />
+etc.). Instead of the default &quot;porcupine&quot; visualization showing the
+<br />
+direction and variance of different PCs, I was interested in calculating a
+<br />
+&quot;difference&quot; vector between the single mutant and WT by changing the bold
+<br />
+highlighted lines above where I print out a difference in vectors between
+<br />
+the mutant and WT systems from within the script directly. Is there a way
+<br />
+to do this inside the script or do I have to post-process it after writing
+<br />
+out the vectors for the WT and mutant systems?
+<br />
+<br />Any help/guidance would be greatly appreciated.
+<br />
+<br />Best regards,
+<br />
+P.N.
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Dec 12 2022 - 08:00:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0049.html" title="Next message in the list">Matthew Guberman-Pfeffer via AMBER: "[AMBER] NMR-based restraints"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0047.html" title="Previous message in the list">Prithviraj Nandigrami via AMBER: "Re: [AMBER] tleap for RNA"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0063.html" title="Next message in this discussion thread">Prithviraj Nandigrami via AMBER: "Re: [AMBER] cpptraj normal mode visualization"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0063.html" title="Message sent in reply to this message">Prithviraj Nandigrami via AMBER: "Re: [AMBER] cpptraj normal mode visualization"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg48" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg48" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg48" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg48" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Using average frame for nmode entropy calculation? from Liao on 2021-03-31 (Amber Archive Mar 2021)</title>
+<meta name="Author" content="Liao (liaojunzhuo.aliyun.com)" />
+<meta name="Subject" content="Re: [AMBER] Using average frame for nmode entropy calculation?" />
+<meta name="Date" content="2021-03-31" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Using average frame for nmode entropy calculation?</h1>
+<!-- received="Wed Mar 31 20:30:02 2021" -->
+<!-- isoreceived="20210401033002" -->
+<!-- sent="Wed, 31 Mar 2021 22:07:49 -0500" -->
+<!-- isosent="20210401030749" -->
+<!-- name="Liao" -->
+<!-- email="liaojunzhuo.aliyun.com" -->
+<!-- subject="Re: [AMBER] Using average frame for nmode entropy calculation?" -->
+<!-- id="435CCB4A-6923-455E-AD4D-2313C694E930.aliyun.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="b1bc5664-1b41-fdb2-ec17-e4188ba90a51.ufl.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0315.html" title="Matias Machado: &quot;Re: [AMBER] Convert SIRAH coarse-grained model back to all-atomic pdb file format?&quot;">Previous message</a> ]
+[ <a href="0304.html" title="Adrian Roitberg: &quot;Re: [AMBER] Using average frame for nmode entropy calculation?&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg316" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg316" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg316" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg316" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Liao &lt;<a href="mailto:liaojunzhuo.aliyun.com?Subject=Re%3A%20%5BAMBER%5D%20Using%20average%20frame%20for%20nmode%20entropy%20calculation%3F">liaojunzhuo.aliyun.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 31 Mar 2021 22:07:49 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Thanks for the explanation, Dr David Case also explained so I’ve got the idea. If only there could be a faster way to calculate entropy that would be what I’m looking for for quite a while. 513 amino acid residues is what I’m facing, though I have even larger systems which I just gave up. In nmode using the average frame as tested doesn’t give close enough values to the results from the separate frames which generated the average frame. Looks like pruning the protein is still the best option so far.
+<br />
+<br /><em class="quotelev1">&gt; On Mar 30, 2021, at 11:22 AM, Adrian Roitberg &lt;roitberg.ufl&#46;<!--nospam-->edu&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ﻿Hi
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; This is NOT correct.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; The way quasi harmonic analysis works (you should read the original 
+</em><br />
+<em class="quotelev1">&gt; papers and some reviews) is to FIRST compute the average structure after 
+</em><br />
+<em class="quotelev1">&gt; rotation and translations removed, and THEN compute the matrix of cross 
+</em><br />
+<em class="quotelev1">&gt; correlations in that frame of reference. Then, that matrix is mass 
+</em><br />
+<em class="quotelev1">&gt; weighted and diagonalized, providing the QH modes and frequencies.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; There is no such thing as &quot;doing the quasi-harmonic calculation on that 
+</em><br />
+<em class="quotelev1">&gt; single frame&quot;
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Adrian
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; On 3/28/21 10:48 AM, Liao wrote:
+</em><br />
+<em class="quotelev2">&gt;&gt; [External Email]
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Thanks for the answer there,
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; So from what I see, MMPBSA.py is calling cpptraj and seems to be generating an average frame over all the selected frames, and doing the quasi-harmonic calculation on that single frame.
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; I guess now I’ll try to first manually generate an average in cpptraj, and use that single frame as the nmode calculation input to see what I get.
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; On Mar 28, 2021, at 7:37 AM, David A Case &lt;david.case.rutgers&#46;<!--nospam-->edu&gt; wrote:
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; ﻿On Sat, Mar 27, 2021, Liao wrote:
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; I’ve been comparing my entropy results from Quasi-Harmonic calculations
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; and normal mode calculations, both from MMPBSA.py. A major difference
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; in the results from I got was in the vibrational term, not talking
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; about delta, just the total for each component of complex, receptor
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; and ligand. Quasi-harmonic results were ~4 kcal/mol, while nmode was
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; ~3500. The delta values are quite similar, but I’m also concerned about the
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; entropy and total G energy values of the components themselves, so using
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; quasi-harmonic method seems to be a problem to me?
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; I have to guess here, but your quasiharmonic calculations are probably only
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; computing a few of the low-frequency modes, whereas the normal mode
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; calculations are getting all of them.  If that is the case, you are getting
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; tons of contributions from high-frequency modes in the normal mode case,
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; which will indeed approximately cancel.
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; The quasi-harmonic approach was attractive because of the much lower
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; calculation cost. It doesn’t have a minimization stage, and it takes in
+</em><br />
+<em class="quotelev4">&gt;&gt;&gt;&gt; only an average frame.
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; I'm not sure what you mean by &quot;takes in only a average frame&quot;.
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; Quasiharmonic calculations average over the entire trajectory to get a
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; estimate of the effective force constants.
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; For normal modes, the results will not vary a lot from snapshot to snapshot.
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; You can run some tests to see how many frames you need to analyze to get a
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; good average -- that will vary from system to system.
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; ...good luck...dac
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; <a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=dl7Zd5Rzbdvo14I2ndQf4w&amp;m=Lq5He_kPxj3exXf1CVhAf1OmuagPNvznGJplej6K8Vc&amp;s=otFLnAfDAXiQQQvc8Ep3v2hv5KpNfxwgosbqZe5WDnM&amp;e">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=dl7Zd5Rzbdvo14I2ndQf4w&amp;m=Lq5He_kPxj3exXf1CVhAf1OmuagPNvznGJplej6K8Vc&amp;s=otFLnAfDAXiQQQvc8Ep3v2hv5KpNfxwgosbqZe5WDnM&amp;e</a>=
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt;&gt; <a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=dl7Zd5Rzbdvo14I2ndQf4w&amp;m=Lq5He_kPxj3exXf1CVhAf1OmuagPNvznGJplej6K8Vc&amp;s=otFLnAfDAXiQQQvc8Ep3v2hv5KpNfxwgosbqZe5WDnM&amp;e">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwIGaQ&amp;c=sJ6xIWYx-zLMB3EPkvcnVg&amp;r=dl7Zd5Rzbdvo14I2ndQf4w&amp;m=Lq5He_kPxj3exXf1CVhAf1OmuagPNvznGJplej6K8Vc&amp;s=otFLnAfDAXiQQQvc8Ep3v2hv5KpNfxwgosbqZe5WDnM&amp;e</a>=
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; -- 
+</em><br />
+<em class="quotelev1">&gt; Dr. Adrian E. Roitberg
+</em><br />
+<em class="quotelev1">&gt; V.T. and Louise Jackson Professor in Chemistry
+</em><br />
+<em class="quotelev1">&gt; Department of Chemistry
+</em><br />
+<em class="quotelev1">&gt; University of Florida
+</em><br />
+<em class="quotelev1">&gt; roitberg.ufl.edu
+</em><br />
+<em class="quotelev1">&gt; 352-392-6972
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Mar 31 2021 - 20:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Previous message</dfn>: <a href="0315.html" title="Previous message in the list">Matias Machado: "Re: [AMBER] Convert SIRAH coarse-grained model back to all-atomic pdb file format?"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0304.html" title="Message to which this message replies">Adrian Roitberg: "Re: [AMBER] Using average frame for nmode entropy calculation?"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg316" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg316" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg316" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg316" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

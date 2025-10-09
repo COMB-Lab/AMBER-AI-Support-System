@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] mmpbsa divalent ion bug from Jason Swails on 2022-04-02 (Amber Archive Apr 2022)</title>
+<meta name="Author" content="Jason Swails (jason.swails.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] mmpbsa divalent ion bug" />
+<meta name="Date" content="2022-04-02" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] mmpbsa divalent ion bug</h1>
+<!-- received="Sat Apr  2 05:30:02 2022" -->
+<!-- isoreceived="20220402123002" -->
+<!-- sent="Sat, 2 Apr 2022 08:26:16 -0400" -->
+<!-- isosent="20220402122616" -->
+<!-- name="Jason Swails" -->
+<!-- email="jason.swails.gmail.com" -->
+<!-- subject="Re: [AMBER] mmpbsa divalent ion bug" -->
+<!-- id="A6D8BB05-0886-4D5A-A9B4-54341B623018.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="AN2AZQC0E51kUvCssrWV04pJ.1.1648193218396.Hmail.t21714030.stu.ahu.edu.cn" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0013.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] MMPBSA.py.MPI and pytraj bugs&quot;">Next message</a> ]
+[ <a href="0011.html" title="Erdem Yeler: &quot;Re: [AMBER] MDGX Error Problem with Recognizing Torsion Type&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg12" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg12" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg12" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg12" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Jason Swails &lt;<a href="mailto:jason.swails.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20mmpbsa%20divalent%20ion%20bug">jason.swails.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 2 Apr 2022 08:26:16 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+You need to specify a custom strip_mask that does not delete the atom you want to keep. 
+<br />
+<br /><pre>
+--
+Jason M. Swails 
+&gt; On Mar 25, 2022, at 3:27 AM, xiangyu &lt;t21714030.stu&#46;<!--nospam-->ahu.edu.cn&gt; wrote:
+&gt; 
+&gt; ﻿Hello amber users，
+&gt; I think there may be a bug when amber dealing with striped prmtop files during running of mmpbsa.py.  In my system there are one protein and two ligands:  ligand 2(GDP), and a Mg2+, together with protein are considered as Receptor. Ligand 1 is defined as ligand.  I correctly formed stripped prmtops using ante-MMPBSA.py -p Cmp.prmtop -c Cmp_vac.prmtop -s :WAT,Na+ -r Rec_vac.prmtop -m &#64;1-2682,&#64;2760-2799 -l Lig_vac&#46;<!--nospam-->prmtop   But when running mmpbsa.py, it forms wrong inpcrd file(_MMPBSA_dummycomplex.inpcrd) corresponding to the Cmp_vac.prmtop. The Mg2+ ion is automatically removed in the inpcrd causing the 'NATOM mismatch in coord and topology files' error.  Is there any way to let amber not delete Mg ion? 
+&gt; 
+&gt; 
+&gt; Thank you,
+&gt; Tao
+&gt; 
+&gt; 
+&gt; 
+&gt; 
+&gt; _______________________________________________
+&gt; AMBER mailing list
+&gt; AMBER.ambermd.org
+&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Sat Apr 02 2022 - 05:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0013.html" title="Next message in the list">David A Case: "Re: [AMBER] MMPBSA.py.MPI and pytraj bugs"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0011.html" title="Previous message in the list">Erdem Yeler: "Re: [AMBER] MDGX Error Problem with Recognizing Torsion Type"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg12" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg12" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg12" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg12" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

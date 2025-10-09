@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] What does the UVV file output for a LJ only system and why cant I recreate it? from Daniel Fowles on 2021-06-07 (Amber Archive Jun 2021)</title>
+<meta name="Author" content="Daniel Fowles (daniel.fowles.2014.uni.strath.ac.uk)" />
+<meta name="Subject" content="[AMBER] What does the UVV file output for a LJ only system and why cant I recreate it?" />
+<meta name="Date" content="2021-06-07" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] What does the UVV file output for a LJ only system and why cant I recreate it?</h1>
+<!-- received="Mon Jun  7 05:00:03 2021" -->
+<!-- isoreceived="20210607120003" -->
+<!-- sent="Mon, 7 Jun 2021 11:59:26 +0000" -->
+<!-- isosent="20210607115926" -->
+<!-- name="Daniel Fowles" -->
+<!-- email="daniel.fowles.2014.uni.strath.ac.uk" -->
+<!-- subject="[AMBER] What does the UVV file output for a LJ only system and why cant I recreate it?" -->
+<!-- id="DB7PR05MB5493F33423A0FAC761EF1F71BA389.DB7PR05MB5493.eurprd05.prod.outlook.com" -->
+<!-- charset="Windows-1252" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0040.html" accesskey="d" title="sabrine kh: &quot;[AMBER] [MCPB.py]_KeyError: &#0039;HZ3&#0039;&quot;">Next message</a> ]
+[ <a href="0038.html" title="sabrine kh: &quot;[AMBER] [MCPB.py]_KeyError: &#0039;HZ2&#0039;&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0061.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] What does the UVV file output for a LJ only system and why cant I recreate it?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg39" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg39" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg39" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg39" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Fowles &lt;<a href="mailto:daniel.fowles.2014.uni.strath.ac.uk?Subject=Re%3A%20%5BAMBER%5D%20What%20does%20the%20UVV%20file%20output%20for%20a%20LJ%20only%20system%20and%20why%20cant%20I%20recreate%20it%3F">daniel.fowles.2014.uni.strath.ac.uk</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 7 Jun 2021 11:59:26 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />I�ve created a system with two identical atoms These two atoms are represented by LJ sigma (5.05) and epsilon (0.85) values only. I can output a uvv file showing the interactions between these two atoms with respect to the distance between them. As these atoms are only made up of LJ parameters, the energy at any distance should be equal to the vdW energy calculated using any of the three formula given in the amber manual:
+<br />
+<br />[V_(LJ_1)=4e[(s/r)^12-(s/r)^6 ]]
+<br />
+<br />[V_(LJ_2)=4e[1/4 (r_0/r)^12-1/2 (r_0/r)^6 ]]
+<br />
+<br />[V_(LJ_3)=((er_0^12 ))/r^12 -((2er_0^6 ))/r^6]
+<br />
+<br />These three formula all give the same energy values, but they are still off the value given in the uvv file. Am i using the correct formula, or is there something I have missed out? See below a portion of the uvv output.
+<br />
+<br />Distance      energy
+<br />
+4.50E+00
+<br />
+6.80E+00
+<br />
+4.53E+00
+<br />
+6.14E+00
+<br />
+4.55E+00
+<br />
+5.54E+00
+<br />
+4.58E+00
+<br />
+4.99E+00
+<br />
+4.60E+00
+<br />
+4.48E+00
+<br />
+4.63E+00
+<br />
+4.02E+00
+<br />
+4.65E+00
+<br />
+3.59E+00
+<br />
+4.68E+00
+<br />
+3.19E+00
+<br />
+4.70E+00
+<br />
+2.83E+00
+<br />
+4.73E+00
+<br />
+2.50E+00
+<br />
+4.75E+00
+<br />
+2.19E+00
+<br />
+4.78E+00
+<br />
+1.91E+00
+<br />
+4.80E+00
+<br />
+1.65E+00
+<br />
+4.83E+00
+<br />
+1.41E+00
+<br />
+4.85E+00
+<br />
+1.20E+00
+<br />
+4.88E+00
+<br />
+9.96E-01
+<br />
+4.90E+00
+<br />
+8.13E-01
+<br />
+4.93E+00
+<br />
+6.46E-01
+<br />
+4.95E+00
+<br />
+4.93E-01
+<br />
+4.98E+00
+<br />
+3.53E-01
+<br />
+5.00E+00
+<br />
+2.25E-01
+<br />
+5.03E+00
+<br />
+1.09E-01
+<br />
+5.05E+00
+<br />
+2.72E-03
+<br />
+5.08E+00
+<br />
+-9.40E-02
+<br />
+5.10E+00
+<br />
+-1.82E-01
+<br />
+5.13E+00
+<br />
+-2.62E-01
+<br />
+5.15E+00
+<br />
+-3.34E-01
+<br />
+5.18E+00
+<br />
+-3.99E-01
+<br />
+5.20E+00
+<br />
+-4.58E-01
+<br />
+5.23E+00
+<br />
+-5.11E-01
+<br />
+5.25E+00
+<br />
+-5.59E-01
+<br />
+5.28E+00
+<br />
+-6.02E-01
+<br />
+5.30E+00
+<br />
+-6.40E-01
+<br />
+5.33E+00
+<br />
+-6.74E-01
+<br />
+5.35E+00
+<br />
+-7.04E-01
+<br />
+5.38E+00
+<br />
+-7.30E-01
+<br />
+5.40E+00
+<br />
+-7.53E-01
+<br />
+5.43E+00
+<br />
+-7.73E-01
+<br />
+5.45E+00
+<br />
+-7.90E-01
+<br />
+5.48E+00
+<br />
+-8.05E-01
+<br />
+5.50E+00
+<br />
+-8.17E-01
+<br />
+5.53E+00
+<br />
+-8.27E-01
+<br />
+5.55E+00
+<br />
+-8.35E-01
+<br />
+5.58E+00
+<br />
+-8.41E-01
+<br />
+5.60E+00
+<br />
+-8.46E-01
+<br />
+5.63E+00
+<br />
+-8.49E-01
+<br />
+5.65E+00
+<br />
+-8.50E-01
+<br />
+5.68E+00
+<br />
+-8.51E-01
+<br />
+5.70E+00
+<br />
+-8.50E-01
+<br />
+5.73E+00
+<br />
+-8.48E-01
+<br />
+5.75E+00
+<br />
+-8.45E-01
+<br />
+5.78E+00
+<br />
+-8.41E-01
+<br />
+5.80E+00
+<br />
+-8.37E-01
+<br />
+5.83E+00
+<br />
+-8.31E-01
+<br />
+5.85E+00
+<br />
+-8.26E-01
+<br />
+5.88E+00
+<br />
+-8.19E-01
+<br />
+5.90E+00
+<br />
+-8.12E-01
+<br />
+5.93E+00
+<br />
+-8.05E-01
+<br />
+5.95E+00
+<br />
+-7.97E-01
+<br />
+5.98E+00
+<br />
+-7.88E-01
+<br />
+6.00E+00
+<br />
+-7.80E-01
+<br />
+6.03E+00
+<br />
+-7.71E-01
+<br />
+6.05E+00
+<br />
+-7.62E-01
+<br />
+6.08E+00
+<br />
+-7.53E-01
+<br />
+6.10E+00
+<br />
+-7.43E-01
+<br />
+6.13E+00
+<br />
+-7.33E-01
+<br />
+6.15E+00
+<br />
+-7.24E-01
+<br />
+6.18E+00
+<br />
+-7.14E-01
+<br />
+6.20E+00
+<br />
+-7.04E-01
+<br />
+6.23E+00
+<br />
+-6.94E-01
+<br />
+6.25E+00
+<br />
+-6.84E-01
+<br />
+6.28E+00
+<br />
+-6.74E-01
+<br />
+6.30E+00
+<br />
+-6.64E-01
+<br />
+6.33E+00
+<br />
+-6.53E-01
+<br />
+6.35E+00
+<br />
+-6.43E-01
+<br />
+6.38E+00
+<br />
+-6.33E-01
+<br />
+6.40E+00
+<br />
+-6.23E-01
+<br />
+6.43E+00
+<br />
+-6.13E-01
+<br />
+6.45E+00
+<br />
+-6.04E-01
+<br />
+6.48E+00
+<br />
+-5.94E-01
+<br />
+6.50E+00
+<br />
+-5.84E-01
+<br />
+6.53E+00
+<br />
+-5.74E-01
+<br />
+6.55E+00
+<br />
+-5.65E-01
+<br />
+6.58E+00
+<br />
+-5.55E-01
+<br />
+6.60E+00
+<br />
+-5.46E-01
+<br />
+6.63E+00
+<br />
+-5.37E-01
+<br />
+6.65E+00
+<br />
+-5.28E-01
+<br />
+6.68E+00
+<br />
+-5.19E-01
+<br />
+6.70E+00
+<br />
+-5.10E-01
+<br />
+6.73E+00
+<br />
+-5.01E-01
+<br />
+6.75E+00
+<br />
+-4.92E-01
+<br />
+6.78E+00
+<br />
+-4.84E-01
+<br />
+6.80E+00
+<br />
+-4.75E-01
+<br />
+6.83E+00
+<br />
+-4.67E-01
+<br />
+6.85E+00
+<br />
+-4.59E-01
+<br />
+6.88E+00
+<br />
+-4.51E-01
+<br />
+6.90E+00
+<br />
+-4.43E-01
+<br />
+6.93E+00
+<br />
+-4.35E-01
+<br />
+6.95E+00
+<br />
+-4.27E-01
+<br />
+6.98E+00
+<br />
+-4.20E-01
+<br />
+7.00E+00
+<br />
+-4.12E-01
+<br />
+<br />Any help would be much appreciated,
+<br />
+Thanks
+<br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<p><img src="att-0039/677E3D2D19CB40DFA823CAD6A3101A29.png" alt="677E3D2D19CB40DFA823CAD6A3101A29.png
+" />
+<br />
+(image/png attachment: <a href="att-0039/677E3D2D19CB40DFA823CAD6A3101A29.png">677E3D2D19CB40DFA823CAD6A3101A29.png</a>)</p>
+<!-- attachment="677E3D2D19CB40DFA823CAD6A3101A29.png" -->
+<p><img src="att-0039/DD03843984994C1C80A1E97B861ACB01.png" alt="DD03843984994C1C80A1E97B861ACB01.png
+" />
+<br />
+(image/png attachment: <a href="att-0039/DD03843984994C1C80A1E97B861ACB01.png">DD03843984994C1C80A1E97B861ACB01.png</a>)</p>
+<!-- attachment="DD03843984994C1C80A1E97B861ACB01.png" -->
+<p><img src="att-0039/DB9019300A074F32B8EF9270DB7D9ACC.png" alt="DB9019300A074F32B8EF9270DB7D9ACC.png
+" />
+<br />
+(image/png attachment: <a href="att-0039/DB9019300A074F32B8EF9270DB7D9ACC.png">DB9019300A074F32B8EF9270DB7D9ACC.png</a>)</p>
+<!-- attachment="DB9019300A074F32B8EF9270DB7D9ACC.png" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Mon Jun 07 2021 - 05:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0040.html" title="Next message in the list">sabrine kh: "[AMBER] [MCPB.py]_KeyError: &#0039;HZ3&#0039;"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0038.html" title="Previous message in the list">sabrine kh: "[AMBER] [MCPB.py]_KeyError: &#0039;HZ2&#0039;"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0061.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] What does the UVV file output for a LJ only system and why cant I recreate it?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0061.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] What does the UVV file output for a LJ only system and why cant I recreate it?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg39" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg39" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg39" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg39" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Ambertools18 tleap scripts not working when run on Ambertools21 from Daniel Fowles on 2021-10-21 (Amber Archive Oct 2021)</title>
+<meta name="Author" content="Daniel Fowles (daniel.fowles.2014.uni.strath.ac.uk)" />
+<meta name="Subject" content="[AMBER] Ambertools18 tleap scripts not working when run on Ambertools21" />
+<meta name="Date" content="2021-10-21" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Ambertools18 tleap scripts not working when run on Ambertools21</h1>
+<!-- received="Thu Oct 21 04:30:03 2021" -->
+<!-- isoreceived="20211021113003" -->
+<!-- sent="Thu, 21 Oct 2021 11:21:32 +0000" -->
+<!-- isosent="20211021112132" -->
+<!-- name="Daniel Fowles" -->
+<!-- email="daniel.fowles.2014.uni.strath.ac.uk" -->
+<!-- subject="[AMBER] Ambertools18 tleap scripts not working when run on Ambertools21" -->
+<!-- id="DB7PR05MB5493BA46B8F53EF247B2C1BFBABF9.DB7PR05MB5493.eurprd05.prod.outlook.com" -->
+<!-- charset="windows-1252" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0163.html" accesskey="d" title="Jason Swails: &quot;Re: [AMBER] Ambertools18 tleap scripts not working when run on Ambertools21&quot;">Next message</a> ]
+[ <a href="0161.html" title="vivek rabha: &quot;Re: [AMBER] Fwd: topology file and co-ordinate file making by amber tool (gaff.dat)&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0163.html" accesskey="t" title="Jason Swails: &quot;Re: [AMBER] Ambertools18 tleap scripts not working when run on Ambertools21&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg162" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg162" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg162" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg162" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Fowles &lt;<a href="mailto:daniel.fowles.2014.uni.strath.ac.uk?Subject=Re%3A%20%5BAMBER%5D%20Ambertools18%20tleap%20scripts%20not%20working%20when%20run%20on%20Ambertools21">daniel.fowles.2014.uni.strath.ac.uk</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 21 Oct 2021 11:21:32 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />Ive recently updated from Ambertools18 to Ambertools21, and have found that the scripts I used to run tleap and antechamber no longer work even when run on the same systems. I have gone through the manual and cannot see what is going wrong.
+<br />
+<br />Ambertools18 and 21 scripts:
+<br />
+General commands �
+<br />
+antechamber -i 0001met.pdb -fi pdb -o gen.mol2 -fo mol2 -c bcc -s 2 -nc -1 2&gt;&amp;1 | tee antechamber.log
+<br />
+parmchk2 -i gen.mol2 -f mol2 -o gen.frcmod 2&gt;&amp;1 | tee parmchk2.log
+<br />
+tleap -f runleap2.sh &gt; tleap.out
+<br />
+<br />runleap2.sh �
+<br />
+source oldff/leaprc.ff14SB
+<br />
+source leaprc.gaff
+<br />
+SUS = loadmol2 gen.mol2
+<br />
+check SUS
+<br />
+loadamberparams gen.frcmod
+<br />
+saveoff SUS sus.lib
+<br />
+saveamberparm SUS gen.prmtop gen.inpcrd
+<br />
+quit
+<br />
+<br />Ambertools18 output:
+<br />
+Running: /opt/software/ambertools/intel_2017.1/18.0/bin/bondtype -j full -i ANTECHAMBER_BOND_TYPE.AC0 -o ANTECHAMBER_BOND_TYPE.AC -f ac
+<br />
+Running: /opt/software/ambertools/intel_2017.1/18.0/bin/atomtype -i ANTECHAMBER_AC.AC0 -o ANTECHAMBER_AC.AC -p gaff
+<br />
+Info: Total number of electrons: 10; net charge: 0
+<br />
+Running: /opt/software/ambertools/intel_2017.1/18.0/bin/sqm -O -i sqm.in -o sqm.out
+<br />
+Running: /opt/software/ambertools/intel_2017.1/18.0/bin/am1bcc -i ANTECHAMBER_AM1BCC_PRE.AC -o ANTECHAMBER_AM1BCC.AC -f ac -p /opt/software/ambertools/intel_2017.1/18.0/dat/antechamber/BCCPARM.DAT -s 2 -j 1
+<br />
+Running: /opt/software/ambertools/intel_2017.1/18.0/bin/atomtype -f ac -p bcc -o ANTECHAMBER_AM1BCC.AC -i ANTECHAMBER_AM1BCC_PRE.AC
+<br />
+<br />Ambertools21 output:
+<br />
+Running: /opt/software/ambertools/intel-2020.4/20.0/bin/bondtype -j full -i ANTECHAMBER_BOND_TYPE.AC0 -o ANTECHAMBER_BOND_TYPE.AC -f ac
+<br />
+Running: /opt/software/ambertools/intel-2020.4/20.0/bin/atomtype -i ANTECHAMBER_AC.AC0 -o ANTECHAMBER_AC.AC -p gaff
+<br />
+Info: Total number of electrons: 11; net charge: -1
+<br />
+Info: The number of electrons is odd (11).
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please check the total charge (-nc flag) and spin multiplicity (-m flag).
+<br />
+Running: /opt/software/ambertools/intel-2020.4/20.0/bin/sqm -O -i sqm.in -o sqm.out
+<br />
+/opt/software/ambertools/intel-2020.4/20.0/bin/wrapped_progs/antechamber: Fatal Error!
+<br />
+Cannot properly run &quot;/opt/software/ambertools/intel-2020.4/20.0/bin/sqm -O -i sqm.in -o sqm.out&quot;.
+<br />
+Cannot open file (gen.mol2) with mode (r).
+<br />
+No such file or directory
+<br />
+<br />Any help in what is going wrong would be much appreciated, thanks.
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Oct 21 2021 - 04:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0163.html" title="Next message in the list">Jason Swails: "Re: [AMBER] Ambertools18 tleap scripts not working when run on Ambertools21"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0161.html" title="Previous message in the list">vivek rabha: "Re: [AMBER] Fwd: topology file and co-ordinate file making by amber tool (gaff.dat)"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0163.html" title="Next message in this discussion thread">Jason Swails: "Re: [AMBER] Ambertools18 tleap scripts not working when run on Ambertools21"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0163.html" title="Message sent in reply to this message">Jason Swails: "Re: [AMBER] Ambertools18 tleap scripts not working when run on Ambertools21"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg162" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg162" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg162" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg162" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

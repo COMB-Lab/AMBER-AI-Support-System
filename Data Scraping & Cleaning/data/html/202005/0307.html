@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Missing bond parameters after MCPB.py from Oleksandr Kravchenko on 2020-05-27 (Amber Archive May 2020)</title>
+<meta name="Author" content="Oleksandr Kravchenko (okr.kth.se)" />
+<meta name="Subject" content="[AMBER] Missing bond parameters after MCPB.py" />
+<meta name="Date" content="2020-05-27" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Missing bond parameters after MCPB.py</h1>
+<!-- received="Wed May 27 03:30:03 2020" -->
+<!-- isoreceived="20200527103003" -->
+<!-- sent="Wed, 27 May 2020 10:29:31 +0000" -->
+<!-- isosent="20200527102931" -->
+<!-- name="Oleksandr Kravchenko" -->
+<!-- email="okr.kth.se" -->
+<!-- subject="[AMBER] Missing bond parameters after MCPB.py" -->
+<!-- id="1590575371011.87016.kth.se" -->
+<!-- charset="iso-8859-1" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0308.html" accesskey="d" title="David Cerutti: &quot;Re: [AMBER] Amber20 pmemd.cuda installation and performance problems&quot;">Next message</a> ]
+[ <a href="0306.html" title="Filip Fratev: &quot;Re: [AMBER] Amber20 pmemd.cuda installation and performance problems&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg307" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg307" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg307" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg307" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Oleksandr Kravchenko &lt;<a href="mailto:okr.kth.se?Subject=Re%3A%20%5BAMBER%5D%20Missing%20bond%20parameters%20after%20MCPB.py">okr.kth.se</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 27 May 2020 10:29:31 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi!
+<br />
+<br /><br />I would like to use Amber18 for the simulation of a ruthenium complex in water. Fir this, I need to parametrize the complex with a bonded model, which I am trying to do using MCPB.py. So far I have succesfully made it to the last step which is running tleap. However, some bond parameters are missing:
+<br />
+<br /><br />/software/sse/manual/Amber/18/i17/bin/teLeap: Error!
+<br />
+Could not find bond parameter for: ca - hc
+<br />
+<br />/software/sse/manual/Amber/18/i17/bin/teLeap: Error!
+<br />
+Could not find bond parameter for: c3 - ha
+<br />
+<br />/software/sse/manual/Amber/18/i17/bin/teLeap: Error!
+<br />
+Could not find bond parameter for: c3 - ha
+<br />
+<br />/software/sse/manual/Amber/18/i17/bin/teLeap: Error!
+<br />
+Could not find bond parameter for: ca - hc
+<br />
+Building angle parameters.
+<br />
+<br />/software/sse/manual/Amber/18/i17/bin/teLeap: Error!
+<br />
+Could not find angle parameter: ca - ca - hc
+<br />
+<br />/software/sse/manual/Amber/18/i17/bin/teLeap: Error!
+<br />
+Could not find angle parameter: ha - c3 - hc
+<br />
+<br />... and some more angle parameters. The rest seems to proceed well, but this looks odd to me. I would expect that these [default] bond/angle parameters should exist in the force field (ff14SB as it is the default MCPB uses) as these are the common GAFF types. If you look closely, these are also bonds and angles that should not normally be bonded (like c3 and ha - aliphatic carbon and aromatic hydrogen).
+<br />
+<br />And there is another strange thing. In step 2 of MCPB new bond/angle parameters are built, namely several metal-ligand bonds (like M1-Y6) and angles that include at least two of new atom types (like M1-Y6-ca). However, in the tleap output I get these errors:
+<br />
+<br />/software/sse/manual/Amber/18/i17/bin/teLeap: Error!
+<br />
+Could not find angle parameter: Y6 - ca - ha
+<br />
+<br />This angle does exist in the structure - but why does MCPB not add a parameter for it then? Hope for you competence to help! Files are attached for your reference.
+<br />
+<br />Best wishes,
+<br />
+Alexander?
+<br />
+<br /><br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>application/octet-stream attachment: <a href="att-0307/biqa_tleap.out">biqa_tleap.out</a></li>
+</ul>
+<!-- attachment="biqa_tleap.out" -->
+<ul>
+<li>application/x-zip-compressed attachment: <a href="att-0307/tleap_input_files.zip">tleap_input_files.zip</a></li>
+</ul>
+<!-- attachment="tleap_input_files.zip" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Wed May 27 2020 - 03:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0308.html" title="Next message in the list">David Cerutti: "Re: [AMBER] Amber20 pmemd.cuda installation and performance problems"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0306.html" title="Previous message in the list">Filip Fratev: "Re: [AMBER] Amber20 pmemd.cuda installation and performance problems"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg307" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg307" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg307" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg307" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

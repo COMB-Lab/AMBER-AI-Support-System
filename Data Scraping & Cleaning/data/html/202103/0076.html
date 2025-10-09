@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] How to define COM for groups in ASMD from Kellon Belfon on 2021-03-09 (Amber Archive Mar 2021)</title>
+<meta name="Author" content="Kellon Belfon (kellonbelfon.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] How to define COM for groups in ASMD" />
+<meta name="Date" content="2021-03-09" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] How to define COM for groups in ASMD</h1>
+<!-- received="Tue Mar  9 19:00:02 2021" -->
+<!-- isoreceived="20210310030002" -->
+<!-- sent="Tue, 9 Mar 2021 21:37:38 -0500" -->
+<!-- isosent="20210310023738" -->
+<!-- name="Kellon Belfon" -->
+<!-- email="kellonbelfon.gmail.com" -->
+<!-- subject="Re: [AMBER] How to define COM for groups in ASMD" -->
+<!-- id="CAJmoJGkGGLyqRFHMuiz+3nDn2dAMDquL9P1wZDr+tODEd9iUPQ.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="B5564FF5-1E19-4DB9-9E51-A035E78B859B.uconn.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0077.html" accesskey="d" title="Dr. Anselm Horn: &quot;Re: [AMBER] Pair interaction energy&quot;">Next message</a> ]
+[ <a href="0075.html" title="David A Case: &quot;Re: [AMBER] makeDIST_RST&quot;">Previous message</a> ]
+[ <a href="0044.html" title="Matthew Guberman-Pfeffer: &quot;[AMBER] How to define COM for groups in ASMD&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg76" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg76" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg76" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg76" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Kellon Belfon &lt;<a href="mailto:kellonbelfon.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20How%20to%20define%20COM%20for%20groups%20in%20ASMD">kellonbelfon.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 9 Mar 2021 21:37:38 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Matthew,
+<br />
+<br />The form you mentioned first should work for COM distances between two
+<br />
+groups of atoms specified by igr1 and igr2. While the manual does mention
+<br />
+coordinate-averaged position is being used, however, when ir6 =0 (which is
+<br />
+the default) then the averaged position is calculated using center-of mass
+<br />
+averaging. So what you have listed here should work as CoM distance
+<br />
+between the two groups (igr1 and igr2). You need to add the atom numbers to
+<br />
+igr1 and igr2 that correspond to the group.
+<br />
+<br />&nbsp;&nbsp;&amp;rst
+<br />
+iat=-1,-1
+<br />
+r2=15.,
+<br />
+r2a=20.
+<br />
+rk2 = 5000
+<br />
+igr1=...
+<br />
+igr2=…
+<br />
+/
+<br />
+<br />Also if you are varying the distance over some number of steps (using r2
+<br />
+and r2a) then you will have to define ifvari=1). Check out page 549 in the
+<br />
+manual for more information.
+<br />
+<br />The other form (natural language) is used for sander.
+<br />
+<br />On Sat, Mar 6, 2021 at 3:13 AM Matthew Guberman-Pfeffer &lt;
+<br />
+matthew.guberman-pfeffer.uconn&#46;<!--nospam-->edu&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Dear Amber Community,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Similar to a recent post, I want to pull apart two proteins by applying a
+</em><br />
+<em class="quotelev1">&gt; distance restraint to their centers of mass. I know that a distance
+</em><br />
+<em class="quotelev1">&gt; restraint of the form
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; &amp;rst
+</em><br />
+<em class="quotelev1">&gt; iat=-1,-1
+</em><br />
+<em class="quotelev1">&gt; r2=15.,
+</em><br />
+<em class="quotelev1">&gt; r2a=20.
+</em><br />
+<em class="quotelev1">&gt; rk2 = 5000
+</em><br />
+<em class="quotelev1">&gt; igr1=...
+</em><br />
+<em class="quotelev1">&gt; igr2=…
+</em><br />
+<em class="quotelev1">&gt; /
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; would apply to the coordinate-averaged positions of the groups. Would a
+</em><br />
+<em class="quotelev1">&gt; work around to instead use COMs be (I’m not sure what to do with the iat
+</em><br />
+<em class="quotelev1">&gt; variable):
+</em><br />
+<em class="quotelev1">&gt; &amp;rst
+</em><br />
+<em class="quotelev1">&gt; restraint = &quot;distance( COM(...) COM(...) )”
+</em><br />
+<em class="quotelev1">&gt; /
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Or, is there no way to implement this?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best regards,
+</em><br />
+<em class="quotelev1">&gt; Matthew
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br /><br /><pre>
+-- 
+Kellon A. A. Belfon, Graduate Student
+Carlos Simmerling Laboratory
+The Laufer Center for Physical and Quantitative Biology
+The Department of Chemistry, Stony Brook University
+Stony Brook, New York 11794
+Phone: (347) 546-4237 &lt;(347)+546+4237&gt;  Email:  kellon.belfon.stonybrook&#46;<!--nospam-->
+&lt;kellon.belfon.stonybrook.edu&gt;edu
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Mar 09 2021 - 19:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0077.html" title="Next message in the list">Dr. Anselm Horn: "Re: [AMBER] Pair interaction energy"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0075.html" title="Previous message in the list">David A Case: "Re: [AMBER] makeDIST_RST"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0044.html" title="Message to which this message replies">Matthew Guberman-Pfeffer: "[AMBER] How to define COM for groups in ASMD"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg76" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg76" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg76" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg76" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

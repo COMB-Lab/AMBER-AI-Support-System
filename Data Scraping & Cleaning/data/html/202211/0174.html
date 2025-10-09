@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Questions about reading the right LJ_Acoef values in *.prmtop file from ChenXin via AMBER on 2022-11-25 (Amber Archive Nov 2022)</title>
+<meta name="Author" content="ChenXin via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Questions about reading the right LJ_Acoef values in *.prmtop file" />
+<meta name="Date" content="2022-11-25" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Questions about reading the right LJ_Acoef values in *.prmtop file</h1>
+<!-- received="Fri Nov 25 23:30:02 2022" -->
+<!-- isoreceived="20221126073002" -->
+<!-- sent="Sat, 26 Nov 2022 15:04:15 +0800 (GMT+08:00)" -->
+<!-- isosent="20221126070415" -->
+<!-- name="ChenXin via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Questions about reading the right LJ_Acoef values in *.prmtop file" -->
+<!-- id="4340d87.4be1.184b2c041ec.Coremail.chanyann06.stu.scu.edu.cn" -->
+<!-- charset="UTF-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0175.html" accesskey="d" title="Piia Bartos via AMBER: &quot;Re: [AMBER] OPC3-pol&quot;">Next message</a> ]
+[ <a href="0173.html" title="Enrico Martinez via AMBER: &quot;Re: [AMBER] Applying position restraint on ligand&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0176.html" accesskey="t" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] Questions about reading the right LJ_Acoef values in *.prmtop file&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg174" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg174" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg174" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg174" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: ChenXin via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Questions%20about%20reading%20the%20right%20LJ_Acoef%20values%20in%20*.prmtop%20file">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 26 Nov 2022 15:04:15 +0800 (GMT+08:00)</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello everyone,
+<br />
+&nbsp;It says in the Appendix of Amber Reference Manual that &quot;The index for two atoms i and j into the LENNARD JONES ACOEF and LENNARD JONES BCOEF arrays is calculated as index = NONBONDED PARM INDEX [NTYPES × (ATOM TYPE INDEX(i) − 1) + ATOM TYPE INDEX(j)].&quot; I wonder that the range of index number for each section, which should affect the read values.
+<br />
+For example, we want to obtain the LJ_ACOEF value between the first atom and the 15th atom for the a.prmtop file with 4731 atoms and 14 atom types.
+<br />
+<br />%FLAG ATOM_TYPE_INDEX                                                           
+<br />
+%FORMAT(10I8)                                                                   
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1       2       2       2       3       4       3       5       5       3
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6       6       7       3       6       6       6       8       9       1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2       3       6       3       5       3       5       5       5       3
+<br />
+.......
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1
+<br />
+%FLAG NONBONDED_PARM_INDEX                                                      
+<br />
+%FORMAT(10I8)                                                                   
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1       2       4       7      11      16      22      29      37      46
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;56      67      79      92       2       3       5       8      12      17
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;23      30      38      47      57      68      80      93       4       5
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6       9      13      18      24      31      39      48      58      69
+<br />
+&nbsp;
+<br />
+......
+<br />
+<br />%FLAG LENNARD_JONES_ACOEF                                                       
+<br />
+%FORMAT(5E16.8)                                                                 
+<br />
+&nbsp;&nbsp;9.44293233E+05  2.12601181E+03  1.39982777E-01  9.95480466E+05  2.56678134E+03
+<br />
+&nbsp;&nbsp;1.04308023E+06  2.01791425E+04  9.14716912E+00  2.27401052E+04  2.01823541E+02
+<br />
+&nbsp;&nbsp;8.96776989E+04  1.07193646E+02  9.71708117E+04  1.41077189E+03  7.51607703E+03
+<br />
+&nbsp;&nbsp;6.20665997E+04  5.94667300E+01  6.78771368E+04  8.79040886E+02  4.98586848E+03
+<br />
+&nbsp;&nbsp;3.25969625E+03  2.01562190E+06  5.97860700E+03  2.09861767E+06  4.93469320E+04
+<br />
+&nbsp;&nbsp;2.02461849E+05  1.42791446E+05  4.19430400E+06  8.82619071E+05  2.27577561E+03
+<br />
+&nbsp;&nbsp;9.24822270E+05  2.01619733E+04  8.61541883E+04  6.01816484E+04  1.86068943E+06
+<br />
+&nbsp;&nbsp;8.19971662E+05  6.06829342E+05  1.02595236E+03  6.47841731E+05  1.12780457E+04
+<br />
+......
+<br />
+If the index number for each section ranges from 1, we can know that the ATOM_TYPE_INDEX for the first atom (i=1) and the 15th atom (j=15) is 1 and 6, respectively.
+<br />
+<br />Then according to the equation, the pointer for NONBONDED_PARM_INDEX is calculated as 14*(1-1)+6=6.According to the pointer, we can read the 6th number in NONBONDED_PARM_INDEX section, which is 16. And the corresponding LJ Acoef in the LENNARD_JONES_ACOEF should be the 16th number, 6.20665997E+04.
+<br />
+<br />However, if the index number for each section ranges from 0, though the ATOM_TYPE_INDEX for the first atom (i=0) and the 15th atom (j=14) is still 1 and 6,and the pointer calculated for the NONBONDED_PARM_INDEX is still 6, the pointer for LENNARD_JONES_ACOEF section read from NONBONDED_PARM_INDEX section should be the 7th number, 22. And the corresponding LJ Acoef should be the 23th number, 5.97860700E+03.
+<br />
+<br />The started number (0 and 1) can obviously affect the resulted pointer and subsequently affect the reading of LJ_Acoef.
+<br />
+<br />I would wonder which is the correct way.
+<br />
+<br />To make it clear, the a.prmtop with specific sections is provided as the attachment.
+<br />
+<br />Looking forward to the replys and thanks a lot.
+<br />
+<br /><br />All the best,
+<br />
+Chanyan<br />
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>application/octet-stream attachment: <a href="att-0174/a.prmtop">a.prmtop</a></li>
+</ul>
+<!-- attachment="a.prmtop" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Fri Nov 25 2022 - 23:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0175.html" title="Next message in the list">Piia Bartos via AMBER: "Re: [AMBER] OPC3-pol"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0173.html" title="Previous message in the list">Enrico Martinez via AMBER: "Re: [AMBER] Applying position restraint on ligand"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0176.html" title="Next message in this discussion thread">Carlos Simmerling via AMBER: "Re: [AMBER] Questions about reading the right LJ_Acoef values in *.prmtop file"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0176.html" title="Message sent in reply to this message">Carlos Simmerling via AMBER: "Re: [AMBER] Questions about reading the right LJ_Acoef values in *.prmtop file"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg174" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg174" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg174" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg174" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

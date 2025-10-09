@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] questions for mdgx-virtual site from David Cerutti on 2020-05-29 (Amber Archive May 2020)</title>
+<meta name="Author" content="David Cerutti (dscerutti.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] questions for mdgx-virtual site" />
+<meta name="Date" content="2020-05-29" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] questions for mdgx-virtual site</h1>
+<!-- received="Fri May 29 03:00:02 2020" -->
+<!-- isoreceived="20200529100002" -->
+<!-- sent="Fri, 29 May 2020 05:42:42 -0400" -->
+<!-- isosent="20200529094242" -->
+<!-- name="David Cerutti" -->
+<!-- email="dscerutti.gmail.com" -->
+<!-- subject="Re: [AMBER] questions for mdgx-virtual site" -->
+<!-- id="CAEmzWj1n-DX_UodrWv9srcjbPRDDb03vmabfuFwTo5Rau6SO3w.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="59110ff3.e289d.1725f8d21aa.Coremail.21919039.zju.edu.cn" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0335.html" accesskey="d" title="David Cerutti: &quot;Re: [AMBER] questions for mdgx-virtual site&quot;">Next message</a> ]
+[ <a href="0333.html" title="Gao J: &quot;[AMBER] questions for mdgx-virtual site&quot;">Previous message</a> ]
+[ <a href="0333.html" title="Gao J: &quot;[AMBER] questions for mdgx-virtual site&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0335.html" accesskey="t" title="David Cerutti: &quot;Re: [AMBER] questions for mdgx-virtual site&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg334" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg334" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg334" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg334" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David Cerutti &lt;<a href="mailto:dscerutti.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20questions%20for%20mdgx-virtual%20site">dscerutti.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 29 May 2020 05:42:42 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+OK, so good evening!  mdgx is not going to be FAST simulator but if you
+<br />
+just need to get a system running a few thousand (or even million) steps of
+<br />
+MD then it'll do fine.  I am working right now to enable this virtual site
+<br />
+functionality in pmemd and also tleap, so with luck it'll be possible to
+<br />
+create more interesting molecular models in the standard MD engines soon.
+<br />
+<br />For the &amp;rule namelist, it's... a &amp;namelist, just like &amp;cntrl or &amp;ewald in
+<br />
+the sander and pmemd programs.  The parser I wrote for it is not
+<br />
+technically the Fortran standard, but it gets things pretty well and lets
+<br />
+you have some flexibility.  I would try writing this first:
+<br />
+<br />&amp;rule
+<br />
+&nbsp;&nbsp;frame1 = &quot;C1&quot;,
+<br />
+&nbsp;&nbsp;frame2 = &quot;C2&quot;,
+<br />
+&nbsp;&nbsp;epname = &quot;VSB&quot;,
+<br />
+&nbsp;&nbsp;style = 1,
+<br />
+&nbsp;&nbsp;v12 = 0.5,
+<br />
+&nbsp;&nbsp;sig = 2.1,
+<br />
+&nbsp;&nbsp;eps = 0.05,
+<br />
+&nbsp;&nbsp;residue = &quot;UNK&quot;,
+<br />
+&amp;end
+<br />
+<br />In your input, you have lots of colon punctuation (:) that mdgx won't know
+<br />
+how to parse (nor will sander or pmemd).  And I've written the above in
+<br />
+shorthand.  There are aliases for all those keywords if you find one or the
+<br />
+other easier to remember (&quot;sig&quot; can also be &quot;Sigma&quot;), but the keywords ARE
+<br />
+case-sensitive.  The &quot;epname&quot; keyword actually has four aliases, &quot;epname&quot;,
+<br />
+&quot;atom&quot;, &quot;AtomName&quot;, and &quot;ExtraPoint.&quot; (I went a little overboard there.)
+<br />
+<br />The excl2 keyword is an ATTEMPT at a glaring problem with some extra
+<br />
+points: if they're right on the middle of a bond, or equally close to more
+<br />
+than one real atom in general, how do we count their exclusions? (This is a
+<br />
+reason that one of the experienced force field developers I work with
+<br />
+demands that all of these extra points be close to their ONE parent atom
+<br />
+(which I refer to in mdgx as frame1) to make a tight association.) By
+<br />
+definition, an extra point is 1:1 to its parent atom, so all non-bonded
+<br />
+exclusions of the frame1 atom will be inherited by the extra point.  But if
+<br />
+you specify excl2, it's going to take your frame2 atom and say that the
+<br />
+extra point is also 1:1 to that.  Ditto for excl3, so the extra point is
+<br />
+accumulating more and more exclusions, atoms that it will not count
+<br />
+interactions with.
+<br />
+<br />This makes me realize that I need to document this part of the code a bit
+<br />
+better, specifically in the onboard manual.  There are descriptions for all
+<br />
+mdgx &amp;namelists available by typing, i.e. mdgx -PARAM on the command line.
+<br />
+But not for &amp;rule...
+<br />
+<br />Happy to help more, and you are not the first to make use of mdgx to create
+<br />
+some very unorthodox (not unusual, just not what the typical programs
+<br />
+simulate) molecular models.  It HAS been done before, and not just by me :-)
+<br />
+<br />Dave
+<br />
+<br /><br />On Fri, May 29, 2020 at 4:30 AM Gao J &lt;21919039.zju.edu.cn&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hello
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I want to perform mix-solvent MD in amber and to prevent aggregation
+</em><br />
+<em class="quotelev1">&gt; ofbenzene probes, I need to set virtual sites on the probes with L-J
+</em><br />
+<em class="quotelev1">&gt; repulsions between themselves merely. My parameters for &amp;rule were as
+</em><br />
+<em class="quotelev1">&gt; follows and I got an error said &quot;ReadEPRuleFile &gt;&gt; Error.  Extra point name
+</em><br />
+<em class="quotelev1">&gt; unspecified.&quot; So I wonder what the correct format of &quot;epname&quot; or &quot;atom&quot;
+</em><br />
+<em class="quotelev1">&gt; required. What's more, I am a little confused if any parameters needed for
+</em><br />
+<em class="quotelev1">&gt; &quot;excl[1,2]&quot;.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I really appreciate for your help!
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; &amp;rule
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   frame[1,2]: C1 C4
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   epname: VSB
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   atom: VSB
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   style: 1
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   excl[1,2]
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   v12: 0.5
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   Sig: 21
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   eps: 0.01
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   residue: UNK
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; &amp;end
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri May 29 2020 - 03:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0335.html" title="Next message in the list">David Cerutti: "Re: [AMBER] questions for mdgx-virtual site"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0333.html" title="Previous message in the list">Gao J: "[AMBER] questions for mdgx-virtual site"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0333.html" title="Message to which this message replies">Gao J: "[AMBER] questions for mdgx-virtual site"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0335.html" title="Next message in this discussion thread">David Cerutti: "Re: [AMBER] questions for mdgx-virtual site"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0335.html" title="Message sent in reply to this message">David Cerutti: "Re: [AMBER] questions for mdgx-virtual site"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg334" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg334" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg334" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg334" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

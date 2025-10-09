@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] gremd_acyc keyword for H-REMD from Brian Radak via AMBER on 2022-08-16 (Amber Archive Aug 2022)</title>
+<meta name="Author" content="Brian Radak via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] gremd_acyc keyword for H-REMD" />
+<meta name="Date" content="2022-08-16" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] gremd_acyc keyword for H-REMD</h1>
+<!-- received="Tue Aug 16 11:30:03 2022" -->
+<!-- isoreceived="20220816183003" -->
+<!-- sent="Tue, 16 Aug 2022 14:00:04 -0400" -->
+<!-- isosent="20220816180004" -->
+<!-- name="Brian Radak via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] gremd_acyc keyword for H-REMD" -->
+<!-- id="CABqZBC5JyOCfayNU3mqbSkH1L070==bbW1j9-4d7NvR0YEFqSg.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="702a5cca-e763-f6a3-79e2-3af0c77f7db3.ufl.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0076.html" accesskey="d" title="Suchetana Gupta via AMBER: &quot;[AMBER] Question about histograms analysis with multiple values&quot;">Next message</a> ]
+[ <a href="0074.html" title="Adrian Roitberg via AMBER: &quot;Re: [AMBER] gremd_acyc keyword for H-REMD&quot;">Previous message</a> ]
+[ <a href="0074.html" title="Adrian Roitberg via AMBER: &quot;Re: [AMBER] gremd_acyc keyword for H-REMD&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0077.html" accesskey="t" title="accuratefreeenergy--- via AMBER: &quot;Re: [AMBER] gremd_acyc keyword for H-REMD&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg75" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg75" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg75" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg75" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Brian Radak via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20gremd_acyc%20keyword%20for%20H-REMD">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 16 Aug 2022 14:00:04 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Actually (though this may be outdated advice), one might still want to use
+<br />
+the keyword in certain cases when using the GPU code and you know exchanges
+<br />
+should never occur.
+<br />
+<br />At one point we observed that large energy differences in the GTI
+<br />
+alchemical code were tricking the PRNG routines into incorrectly accepting
+<br />
+exchanges when they definitely should not have been. It seemed to be a
+<br />
+mixture of overflow in the energy code and odd behavior in the PRNG (which
+<br />
+produces overly regular values in exchange for reproducible behavior across
+<br />
+GPU architectures).
+<br />
+<br />Maybe this was fixed...
+<br />
+BKR
+<br />
+<br />On Tue, Aug 16, 2022, 11:45 AM Adrian Roitberg via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt; Yes, you are right, that is what that keyword is supposed to do.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; However, if you do not use it, the only thing that happens is that the
+</em><br />
+<em class="quotelev1">&gt; remd will try to exchange the first and last replicas, as you mentioned.
+</em><br />
+<em class="quotelev1">&gt; If they are too far apart, they will &quot;never&quot; exchange, which is the
+</em><br />
+<em class="quotelev1">&gt; correct behavior.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Bottom-line, there is nothing to gain from using it if you have an even
+</em><br />
+<em class="quotelev1">&gt; number of replicas.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; adrian
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On 8/15/22 4:42 PM, Zhuoran Long wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt; *[External Email]*
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Hi Adrian,
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; The md can run after removing the gremd_acyc keyword. However it
+</em><br />
+<em class="quotelev2">&gt; &gt; involving exchange between the first and last replicas. In my case,
+</em><br />
+<em class="quotelev2">&gt; &gt; the generalized distance reaction coordinates are restrained to about
+</em><br />
+<em class="quotelev2">&gt; &gt; -2 Angstrom and +2 Angstrom in these two replicas.
+</em><br />
+<em class="quotelev2">&gt; &gt; The amber 2021 manual says, &quot; gremd_acyc (H-REMD only) When set to 1,
+</em><br />
+<em class="quotelev2">&gt; &gt; the exchange between the first and the last replicas will not be
+</em><br />
+<em class="quotelev2">&gt; &gt; considered and odd numbers of replicas are allowed. Default: 0&quot;.
+</em><br />
+<em class="quotelev2">&gt; &gt; That's why I want to use this keyword.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Thank you,
+</em><br />
+<em class="quotelev2">&gt; &gt; Zhuoran
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Adrian Roitberg via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt; 于2022年8月15日周一
+</em><br />
+<em class="quotelev2">&gt; &gt; 16:01写道：
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     Hi
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     As far as I know, that keyword has nothing to do with periodicity.
+</em><br />
+<em class="quotelev2">&gt; &gt;     It is
+</em><br />
+<em class="quotelev2">&gt; &gt;     there to enable an odd number of replicas, instead of the usual
+</em><br />
+<em class="quotelev2">&gt; &gt;     even_number
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     So, try to use an even number of replicas without gremd_acyc=1 and
+</em><br />
+<em class="quotelev2">&gt; &gt;     see
+</em><br />
+<em class="quotelev2">&gt; &gt;     what happens.
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     adrian
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     On 8/15/22 3:48 PM, Zhuoran Long via AMBER wrote:
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; [External Email]
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; Hi,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; I‘m trying to use the H-REMD for umbrella sampling. I'm using a
+</em><br />
+<em class="quotelev2">&gt; &gt;     generalized
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; distance reaction coordinate, which is not periodic. Therefore I
+</em><br />
+<em class="quotelev2">&gt; &gt;     tried the
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; gremd_acyc keyword. However, it gives the &quot;error in reading
+</em><br />
+<em class="quotelev2">&gt; &gt;     namelist cntrl&quot;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; using sander.MPI and amber version 20.11. This error disappears
+</em><br />
+<em class="quotelev2">&gt; &gt;     when not
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; including this keyword. I also tried version 20.06 and 22.00 but
+</em><br />
+<em class="quotelev2">&gt; &gt;     neither
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; version works. I need to use the semiempirical QM/MM so I can't
+</em><br />
+<em class="quotelev2">&gt; &gt;     switch to
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; pmemd.MPI.
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; I notice that this keyword is introduced in Sept 2019. I can't
+</em><br />
+<em class="quotelev2">&gt; &gt;     find any
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; examples including the amber test codes.
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; I paste my input file below. Any suggestions or examples are
+</em><br />
+<em class="quotelev2">&gt; &gt;     appreciated.
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; Best,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; Zhuoran
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; HREMD-Umbrella sampling
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; &amp;cntrl
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      imin  = 0,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      irest = 1,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      iwrap = 1,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      ntx = 5,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      ntxo= 1,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      nstlim= 100,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      dt  = 0.001,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      ntc = 1,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      ntf = 1,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      cut = 8,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      ntb = 2,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      ntp = 1,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      pres0 = 1.0,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      taup= 5.0,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      ntpr= 500,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      ntwx= 500,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      ntt = 3,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      gamma_ln = 1.0,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      temp0 = 300.0,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      ioutfm= 1,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      ifqnt = 1,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      nmropt= 1,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      ig = 4746,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      numexchg = 5,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;      gremd_acyc=1
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; /
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; &amp;qmmm
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;    qmmask=':1',
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;    qmcharge=-2,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;    qm_theory='PM3',
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;    qmshake=1,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;    qm_ewald=1, qm_pme=1,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; /
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; &amp;wt
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;    type='DUMPFREQ', istep1=500,
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; /
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; &amp;wt
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;    type='END',
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; /
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; DISANG=disang_cocc_001.in
+</em><br />
+<em class="quotelev2">&gt; &gt;     &lt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://nam10.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdisang_cocc_001.in%2F&amp;data=05%7C01%7Croitberg%40ufl.edu%7C69d8c9334abc498ce99408da7efeb8d9%7C0d4da0f84a314d76ace60a62331e1b84%7C0%7C0%7C637961929800309591%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDA">https://nam10.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdisang_cocc_001.in%2F&amp;data=05%7C01%7Croitberg%40ufl.edu%7C69d8c9334abc498ce99408da7efeb8d9%7C0d4da0f84a314d76ace60a62331e1b84%7C0%7C0%7C637961929800309591%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDA</a>iLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=ljdxwGn2r1JB9u%2B2LMRRmVBegr%2FAtbmLhLoRIuQBM5I%3D&amp;reserved=0
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; DUMPAVE=cocc_001.dat
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; _______________________________________________
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; AMBER mailing list
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt; AMBER.ambermd&#46;<!--nospam-->org
+</em><br />
+<em class="quotelev3">&gt; &gt;     &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://urldefense.com/v3/__https://nam10.safelinks.protection.outlook.com/?url=http*3A*2F*2Flists.ambermd.org*2Fmailman*2Flistinfo*2Famber&amp;amp;data=05*7C01*7Croitberg*40ufl.edu*7C61ed6b01d3e445fd25fa08da7ef763cd*7C0d4da0f84a314d76ace60a62331e1b84*7C0*7C0*7C63796">https://urldefense.com/v3/__https://nam10.safelinks.protection.outlook.com/?url=http*3A*2F*2Flists.ambermd.org*2Fmailman*2Flistinfo*2Famber&amp;amp;data=05*7C01*7Croitberg*40ufl.edu*7C61ed6b01d3e445fd25fa08da7ef763cd*7C0d4da0f84a314d76ace60a62331e1b84*7C0*7C0*7C63796</a>1898246393685*7CUnknown*7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0*3D*7C3000*7C*7C*7C&amp;amp;sdata=1*2B7TDF8o151aq2JZoJxZB*2FfH*2FNgP9X4IV*2FHuYiNnR2k*3D&amp;amp;reserved=0__;JSUlJSUlJSUlJSUlJSUlJSUlJSUlJSUlJSU!!BhJSzQqDqA!T5GBkXB835_rWxWnwz5PosVwB4iXL9fdgPRMgP5ryQQRwPaHckdWOI8VT64p_-6ImcFLiojeCyLbaprA$
+</em><br />
+<em class="quotelev2">&gt; &gt;     &lt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://urldefense.com/v3/__https://nam10.safelinks.protection.outlook.com/?url=http*3A*2F*2Flists.ambermd.org*2Fmailman*2Flistinfo*2Famber&amp;amp;data=05*7C01*7Croitberg*40ufl.edu*7C61ed6b01d3e445fd25fa08da7ef763cd*7C0d4da0f84a314d76ace60a62331e1b84*7C0*7C0*7C63796">https://urldefense.com/v3/__https://nam10.safelinks.protection.outlook.com/?url=http*3A*2F*2Flists.ambermd.org*2Fmailman*2Flistinfo*2Famber&amp;amp;data=05*7C01*7Croitberg*40ufl.edu*7C61ed6b01d3e445fd25fa08da7ef763cd*7C0d4da0f84a314d76ace60a62331e1b84*7C0*7C0*7C63796</a>1898246393685*7CUnknown*7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0*3D*7C3000*7C*7C*7C&amp;amp;sdata=1*2B7TDF8o151aq2JZoJxZB*2FfH*2FNgP9X4IV*2FHuYiNnR2k*3D&amp;amp;reserved=0__;JSUlJSUlJSUlJSUlJSUlJSUlJSUlJSUlJSU!!BhJSzQqDqA!T5GBkXB835_rWxWnwz5PosVwB4iXL9fdgPRMgP5ryQQRwPaHckdWOI8VT64p_-6ImcFLiojeCyLbaprA$
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     --
+</em><br />
+<em class="quotelev2">&gt; &gt;     Dr. Adrian E. Roitberg (he/him/el)
+</em><br />
+<em class="quotelev2">&gt; &gt;     V.T. and Louise Jackson Professor in Chemistry
+</em><br />
+<em class="quotelev2">&gt; &gt;     Department of Chemistry
+</em><br />
+<em class="quotelev2">&gt; &gt;     University of Florida
+</em><br />
+<em class="quotelev2">&gt; &gt;     roitberg.ufl.edu
+</em><br />
+<em class="quotelev2">&gt; &gt;     352-392-6972
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;     _______________________________________________
+</em><br />
+<em class="quotelev2">&gt; &gt;     AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt; &gt;     AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!BhJSzQqDqA!T5GBkXB835_rWxWnwz5PosVwB4iXL9fdgPRMgP5ryQQRwPaHckdWOI8VT64p_-6ImcFLiojeC6kZ0qN">https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!BhJSzQqDqA!T5GBkXB835_rWxWnwz5PosVwB4iXL9fdgPRMgP5ryQQRwPaHckdWOI8VT64p_-6ImcFLiojeC6kZ0qN</a>-$
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev1">&gt; --
+</em><br />
+<em class="quotelev1">&gt; Dr. Adrian E. Roitberg (he/him/el)
+</em><br />
+<em class="quotelev1">&gt; V.T. and Louise Jackson Professor in Chemistry
+</em><br />
+<em class="quotelev1">&gt; Department of Chemistry
+</em><br />
+<em class="quotelev1">&gt; University of Florida
+</em><br />
+<em class="quotelev1">&gt; roitberg.ufl.edu
+</em><br />
+<em class="quotelev1">&gt; 352-392-6972
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd&#46;<!--nospam-->org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Aug 16 2022 - 11:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0076.html" title="Next message in the list">Suchetana Gupta via AMBER: "[AMBER] Question about histograms analysis with multiple values"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0074.html" title="Previous message in the list">Adrian Roitberg via AMBER: "Re: [AMBER] gremd_acyc keyword for H-REMD"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0074.html" title="Message to which this message replies">Adrian Roitberg via AMBER: "Re: [AMBER] gremd_acyc keyword for H-REMD"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0077.html" title="Next message in this discussion thread">accuratefreeenergy--- via AMBER: "Re: [AMBER] gremd_acyc keyword for H-REMD"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg75" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg75" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg75" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg75" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

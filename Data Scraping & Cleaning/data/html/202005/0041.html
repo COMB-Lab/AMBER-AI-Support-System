@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] creating parameters for a thioglycoside from Karl Kirschner on 2020-05-04 (Amber Archive May 2020)</title>
+<meta name="Author" content="Karl Kirschner (k.n.kirschner.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] creating parameters for a thioglycoside" />
+<meta name="Date" content="2020-05-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] creating parameters for a thioglycoside</h1>
+<!-- received="Mon May  4 11:30:01 2020" -->
+<!-- isoreceived="20200504183001" -->
+<!-- sent="Mon, 4 May 2020 20:28:22 +0200" -->
+<!-- isosent="20200504182822" -->
+<!-- name="Karl Kirschner" -->
+<!-- email="k.n.kirschner.gmail.com" -->
+<!-- subject="Re: [AMBER] creating parameters for a thioglycoside" -->
+<!-- id="CAF=D-byzE2E-yC0HWSGsSVoJ5PkCo8ias6yta4+igXWNP7rzyQ.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20200504185939.150515ysiu1dp2ij.inbox.unina.it" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0042.html" accesskey="d" title="Schr&#0246;der, David Christopher: &quot;[AMBER] cpptraj PCA PC-mode pseudo traj&quot;">Next message</a> ]
+[ <a href="0040.html" title="rosaester.forgione.unina.it: &quot;[AMBER] creating parameters for a thioglycoside&quot;">Previous message</a> ]
+[ <a href="0040.html" title="rosaester.forgione.unina.it: &quot;[AMBER] creating parameters for a thioglycoside&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0136.html" accesskey="t" title="rosaester.forgione.unina.it: &quot;Re: [AMBER] creating parameters for a thioglycoside&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg41" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg41" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg41" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg41" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Karl Kirschner &lt;<a href="mailto:k.n.kirschner.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20creating%20parameters%20for%20a%20thioglycoside">k.n.kirschner.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 4 May 2020 20:28:22 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello Rosa,
+<br />
+<br />&nbsp;&nbsp;I'm guessing that you need to create these parameters by hand, such that
+<br />
+the atom types for the two force fields are accounted for. I think the
+<br />
+problem likes at the parmchk2 step, which doesn't cobble force-field
+<br />
+together that have different atom types (e.g. gaff and Glycam06). For
+<br />
+example, assuming that you are using gaff for the sulfur atom (e.g. s2),
+<br />
+then you need a bond parameter that is called s2-Cg. A first approximation
+<br />
+would be to take an equivalent parameter out of gaff.dat (of gaff2.dat) and
+<br />
+rename the atom types. Another way to do this would be to generate some QM
+<br />
+target potential energy curves, optimize the force-field parameters that
+<br />
+are missing, and then validate them using some test molecules and
+<br />
+experimental data. But that takes some time to do. Your molecule looks
+<br />
+pretty rigid around the sulfur atom (i.e. three rings), where puckering
+<br />
+would give you the most conformational flexibility. In this case, using the
+<br />
+gaff-Glycam06 combination might be sufficient. But note that this isn't a
+<br />
+&quot;standard&quot; procedure, so keep that in mind when you try to interpret the
+<br />
+resulting data.
+<br />
+<br />Bests,
+<br />
+Karl
+<br />
+<br />On Mon, May 4, 2020 at 6:59 PM &lt;rosaester.forgione.unina.it&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Good afternoon,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I need to run a MD simulation using a ligand which is a Sialyl T
+</em><br />
+<em class="quotelev1">&gt; antigen analogue.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The ligand is constituted by 0SA and 6LB which is connected to a five
+</em><br />
+<em class="quotelev1">&gt; member heterocyclic molecule.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The connection of Galactose to the organic moiety are a sulphur bridge
+</em><br />
+<em class="quotelev1">&gt; to C1 and a glycosidic likage to C2 (of Gal).
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I followed amber tutorials and employed antechamber to build the
+</em><br />
+<em class="quotelev1">&gt; organic moiety,usig as input the .mol2 file of the structure to create
+</em><br />
+<em class="quotelev1">&gt; a .prepi file
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I used the .prepi file to run parmchk2 and create the .frcmod file.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Then I ran tleap loading the .prepi and .frcmod files to create the
+</em><br />
+<em class="quotelev1">&gt; .inpcrd .prmtop parameters for the molecule and succeeded.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; To connect the organic part to the 0SA-6LB part, I loaded the ffs, the
+</em><br />
+<em class="quotelev1">&gt; .prepi and .frcmod files and the pdb constituted by the digal and the
+</em><br />
+<em class="quotelev1">&gt; organic moiety in close proximity and used the bond command to connect
+</em><br />
+<em class="quotelev1">&gt; the two moieties.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I ran tleap to calculate the parms for the entire molecule and I got
+</em><br />
+<em class="quotelev1">&gt; FATAL error messages saying that leap could not find the bond, angle
+</em><br />
+<em class="quotelev1">&gt; and dihedral parameters for the S-C bond between the two moieties.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; How could I solve the problem? Are there other ways to parametrize
+</em><br />
+<em class="quotelev1">&gt; this molecule?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Please find attached the PDB of the structure
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Many thanks in advance,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Cordially,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Rosa
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon May 04 2020 - 11:30:01 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0042.html" title="Next message in the list">Schr&#0246;der, David Christopher: "[AMBER] cpptraj PCA PC-mode pseudo traj"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0040.html" title="Previous message in the list">rosaester.forgione.unina.it: "[AMBER] creating parameters for a thioglycoside"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0040.html" title="Message to which this message replies">rosaester.forgione.unina.it: "[AMBER] creating parameters for a thioglycoside"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0136.html" title="Next message in this discussion thread">rosaester.forgione.unina.it: "Re: [AMBER] creating parameters for a thioglycoside"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0136.html" title="Message sent in reply to this message">rosaester.forgione.unina.it: "Re: [AMBER] creating parameters for a thioglycoside"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg41" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg41" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg41" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg41" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Amber20 sander speed difference between cmake and old configure method from Charo del Genio on 2020-05-06 (Amber Archive May 2020)</title>
+<meta name="Author" content="Charo del Genio (the.paraw.gmail.com)" />
+<meta name="Subject" content="[AMBER] Amber20 sander speed difference between cmake and old configure method" />
+<meta name="Date" content="2020-05-06" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Amber20 sander speed difference between cmake and old configure method</h1>
+<!-- received="Wed May  6 05:30:02 2020" -->
+<!-- isoreceived="20200506123002" -->
+<!-- sent="Wed, 6 May 2020 13:07:51 +0100" -->
+<!-- isosent="20200506120751" -->
+<!-- name="Charo del Genio" -->
+<!-- email="the.paraw.gmail.com" -->
+<!-- subject="[AMBER] Amber20 sander speed difference between cmake and old configure method" -->
+<!-- id="262da2fa-5bc5-e1c6-24d2-d6675d8f2e97.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0070.html" accesskey="d" title="Brent Krueger: &quot;Re: [AMBER] FRCMOD FILE DATABASE&quot;">Next message</a> ]
+[ <a href="0068.html" title="Renato Araujo: &quot;[AMBER] MMGBSA-DECOM calculation&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0086.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] Amber20 sander speed difference between cmake and old configure method&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg69" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg69" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg69" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg69" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Charo del Genio &lt;<a href="mailto:the.paraw.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Amber20%20sander%20speed%20difference%20between%20cmake%20and%20old%20configure%20method">the.paraw.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 6 May 2020 13:07:51 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear all,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on my machine, sander from AmberTools20 run much slower when compiled using the cmake system versus the old configure script. In fact, on the same input, the speed is literally halved. I have tested 
+<br />
+this fairly extensively, and I can exclude any effect due to choice of BLA vendor as well as system vs. bundled libraries (including all sort of combinations). At this stage, I really can't figure out 
+<br />
+the origin of the problem. However, by comparing the output of ldd on the sander executables obtained with the two method, I notice that the cmake one links some libraries that are not found in the 
+<br />
+&quot;traditionally compiled&quot; one. Specifically, these are
+<br />
+<br />libfftw3
+<br />
+libemil
+<br />
+libsff_fortran
+<br />
+libnetcdff
+<br />
+libnetcdf
+<br />
+libarpack
+<br />
+liblapack
+<br />
+libblas
+<br />
+<br />and their MPI versions, wherever appropriate. Am I right in assuming these are compiled in the traditional executable statically? If so, could this be the origin of the problem? If not, does anyone 
+<br />
+have any idea of what causes it?
+<br />
+<br />By the way, why doesn't libatlas get linked even though I explicitly set -DBLA_VENDOR=ATLAS?
+<br />
+<br /><br />Cheers,
+<br />
+<br />Charo
+<br />
+<br /><br /><br /><br /><pre>
+-- 
+Dr. Charo I. del Genio
+Senior Lecturer in Statistical Physics
+Applied Mathematics Research Centre (AMRC)
+Design Hub
+Coventry University Technology Park
+Coventry CV1 5FB
+UK
+<a href="https://charodelgenio.weebly.com">https://charodelgenio.weebly.com</a>
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Wed May 06 2020 - 05:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0070.html" title="Next message in the list">Brent Krueger: "Re: [AMBER] FRCMOD FILE DATABASE"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0068.html" title="Previous message in the list">Renato Araujo: "[AMBER] MMGBSA-DECOM calculation"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0086.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] Amber20 sander speed difference between cmake and old configure method"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0086.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Amber20 sander speed difference between cmake and old configure method"</a></li>
+<li><dfn>Reply</dfn>: <a href="0149.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Amber20 sander speed difference between cmake and old configure method"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg69" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg69" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg69" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg69" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

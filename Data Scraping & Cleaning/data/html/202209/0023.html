@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Fwd: Failed TI heating simulation (RBFE) using Amber22 from Pengfei Li via AMBER on 2022-09-04 (Amber Archive Sep 2022)</title>
+<meta name="Author" content="Pengfei Li via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Fwd: Failed TI heating simulation (RBFE) using Amber22" />
+<meta name="Date" content="2022-09-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Fwd: Failed TI heating simulation (RBFE) using Amber22</h1>
+<!-- received="Sun Sep  4 19:30:02 2022" -->
+<!-- isoreceived="20220905023002" -->
+<!-- sent="Mon, 5 Sep 2022 09:59:56 +0800" -->
+<!-- isosent="20220905015956" -->
+<!-- name="Pengfei Li via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Fwd: Failed TI heating simulation (RBFE) using Amber22" -->
+<!-- id="CAJWbKD4gvy6Dh8vxtiJS7=aukkQaOzveisJhZsPxD8CxAR0vGA.mail.gmail.com" -->
+<!-- charset="UTF-8" -->
+<!-- inreplyto="mailman.14623.1662105343.30225.amber.ambermd.org" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0024.html" accesskey="d" title="He, Amy via AMBER: &quot;[AMBER] ATOMIC NUMBER section in prmtop file - sulfur atom in ligand is -1?&quot;">Next message</a> ]
+[ <a href="0022.html" title="Jiaan Zhu via AMBER: &quot;Re: [AMBER] Segmentation fault when starting parmchk2 for an artificial nucleotide&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg23" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg23" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg23" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg23" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Pengfei Li via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Fwd%3A%20Failed%20TI%20heating%20simulation%20(RBFE)%20using%20Amber22">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 5 Sep 2022 09:59:56 +0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear all,
+<br />
+<br />When we performed one relative binding free energy simulation using
+<br />
+Amber22, one error log (please see attached heating.log.png) occurred.
+<br />
+Then, we checked the md output files (heating.0.out.png &amp;
+<br />
+heating.1.out.png), and we found that there is a wired issue where VDW
+<br />
+energy appears to be too large, although both ligands have been aligned
+<br />
+well for their linear atoms. We also used the same md input files to do the
+<br />
+same simulations using Amber20, then everything worked well.
+<br />
+<br />We found that it should be caused by missing one loop for linear atoms' xyz
+<br />
+coordinates copy from TI region 1 to TI region 2 as seen from line 970 of
+<br />
+ti.F90 file (CodeSnippet_TI.png) of Amber22. After we fixed this point,
+<br />
+everything also can work well now.
+<br />
+<br />Please take a look at this issue here. Thanks!
+<br />
+Best regards，
+<br />
+<br />Pengfei Li
+<br />
+----------------------------------------
+<br />
+Senior Application Scientist at
+<br />
+Single Particle, LLC
+<br />
+pengfei.li.singleparticle.com
+<br />
+<a href="https://www.singleparticle.com">https://www.singleparticle.com</a> &lt;<a href="http://singleparticle.cn/">http://singleparticle.cn/</a>&gt;
+<br />
+<a href="https://twitter.com/singleparticle">https://twitter.com/singleparticle</a>
+<br />
+Single Particle, your one-stop shop for structural biology needs
+<br />
+[image: image.png]
+<br />
+STATEMENT OF CONFIDENTIALITY: The information contained in this electronic
+<br />
+message and any attachments to this message are intended for the exclusive
+<br />
+use of the addressee(s) and may contain confidential or privileged
+<br />
+information. Legal privilege may apply and is not waived for unintended
+<br />
+recipients. Any unauthorized review, use, disclosure or distribution is
+<br />
+prohibited. If you are not the intended recipient, please notify the sender
+<br />
+as soon as possible, and destroy all copies of this message and any
+<br />
+attachments whether stored electronically, physically, or otherwise. Please
+<br />
+be advised that the content of this message is subject to access, review
+<br />
+and disclosure by the sender's email system administrator. Single Particle
+<br />
+LLC accepts no liability for any damage caused by any virus or malware
+<br />
+transmitted by this email.
+<br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<p><img src="att-0023/image.png" alt="image.png" />
+<br />
+(image/png attachment: <a href="att-0023/image.png">image.png</a>)</p>
+<!-- attachment="image.png" -->
+<p><img src="att-0023/CodeSnippet_TI.png" alt="CodeSnippet_TI.png" />
+<br />
+(image/png attachment: <a href="att-0023/CodeSnippet_TI.png">CodeSnippet_TI.png</a>)</p>
+<!-- attachment="CodeSnippet_TI.png" -->
+<p><img src="att-0023/heating.0.out.png" alt="heating.0.out.png" />
+<br />
+(image/png attachment: <a href="att-0023/heating.0.out.png">heating.0.out.png</a>)</p>
+<!-- attachment="heating.0.out.png" -->
+<p><img src="att-0023/heating.1.out.png" alt="heating.1.out.png" />
+<br />
+(image/png attachment: <a href="att-0023/heating.1.out.png">heating.1.out.png</a>)</p>
+<!-- attachment="heating.1.out.png" -->
+<p><img src="att-0023/heating.log.png" alt="heating.log.png" />
+<br />
+(image/png attachment: <a href="att-0023/heating.log.png">heating.log.png</a>)</p>
+<!-- attachment="heating.log.png" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Sun Sep 04 2022 - 19:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0024.html" title="Next message in the list">He, Amy via AMBER: "[AMBER] ATOMIC NUMBER section in prmtop file - sulfur atom in ligand is -1?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0022.html" title="Previous message in the list">Jiaan Zhu via AMBER: "Re: [AMBER] Segmentation fault when starting parmchk2 for an artificial nucleotide"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg23" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg23" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg23" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg23" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

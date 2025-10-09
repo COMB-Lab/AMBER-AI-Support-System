@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Generating parameters for unnatural amino acids from Suchetana Gupta via AMBER on 2022-11-10 (Amber Archive Nov 2022)</title>
+<meta name="Author" content="Suchetana Gupta via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Generating parameters for unnatural amino acids" />
+<meta name="Date" content="2022-11-10" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Generating parameters for unnatural amino acids</h1>
+<!-- received="Thu Nov 10 18:00:03 2022" -->
+<!-- isoreceived="20221111020003" -->
+<!-- sent="Thu, 10 Nov 2022 17:44:18 -0800" -->
+<!-- isosent="20221111014418" -->
+<!-- name="Suchetana Gupta via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Generating parameters for unnatural amino acids" -->
+<!-- id="CAHd6=8gjYAFtH3ajw3LfV0TeS+G0Hnf8HYDe=NfUU2OqoiPYOw.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0077.html" accesskey="d" title="Suchetana Gupta via AMBER: &quot;Re: [AMBER] Generating parameters for unnatural amino acids&quot;">Next message</a> ]
+[ <a href="0075.html" title="Carol Pacheco via AMBER: &quot;Re: [AMBER] Simulating a Protein - cyclic peptide complex - question&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0077.html" accesskey="t" title="Suchetana Gupta via AMBER: &quot;Re: [AMBER] Generating parameters for unnatural amino acids&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg76" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg76" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg76" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg76" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Suchetana Gupta via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Generating%20parameters%20for%20unnatural%20amino%20acids">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 10 Nov 2022 17:44:18 -0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello
+<br />
+I am trying to generate parameters for some unnatural amino acids following
+<br />
+the instructions here at
+<br />
+<a href="https://ambermd.org/tutorials/basic/tutorial4b/index.html">https://ambermd.org/tutorials/basic/tutorial4b/index.html</a>
+<br />
+<br />The commands used are:
+<br />
+<br />antechamber -i abc.pdb -fi pdb -o abc.mol2 -fo mol2 -c bcc -s 2
+<br />
+<br />parmchk2 -i abc.mol2 -f mol2 -o abc.frcmod
+<br />
+<br /><br />leap_abc.in:
+<br />
+<br />source leaprc.protein.ff14SB
+<br />
+<br />source leaprc.gaff
+<br />
+<br />ABC = loadmol2 abc.mol2
+<br />
+<br />check ABC
+<br />
+<br />loadamberparams abc.frcmod
+<br />
+<br />saveoff ABC abc.lib
+<br />
+<br />saveamberparm ABC abc.prmtop abc.inpcrd
+<br />
+<br />quit
+<br />
+<br /><br />antechamber -i xyz.pdb -fi pdb -oxyz.mol2 -fo mol2 -c bcc -s 2
+<br />
+<br />parmchk2 -i xyz.mol2 -f mol2 -o xyz.frcmod
+<br />
+<br />leap_xyz.in:
+<br />
+<br />source leaprc.protein.ff14SB
+<br />
+<br />source leaprc.gaff
+<br />
+<br />XYZ = loadmol2 xyz.mol2
+<br />
+<br />check XYZ
+<br />
+<br />loadamberparams xyz.frcmod
+<br />
+<br />saveoff XYZ abc.lib
+<br />
+<br />saveamberparm XYZ xyz.prmtop xyz.inpcrd
+<br />
+<br />quit
+<br />
+<br />My peptide has two unnaturals and I am using the following Leap input file:
+<br />
+<br />source leaprc.protein.ff14SB
+<br />
+source leaprc.gaff
+<br />
+loadamberparams xyz.frcmod
+<br />
+loadamberparams abc.frcmod
+<br />
+loadoff xyz.lib
+<br />
+loadoff abc.lib
+<br />
+seq = { A B C D E F G }
+<br />
+cycpep = loadPDBusingseq peptide.pdb seq
+<br />
+bond cycpep.1.N cycpep.8.C
+<br />
+savepdb cycpep peptide_out.pdb
+<br />
+saveAmberParm cycpep peptide.top peptide.crd
+<br />
+quit
+<br />
+<br /><br /><br />However, the leap output PDB and hence subsequent structures from
+<br />
+minimization etc show no connection/bonds between the unnatural amino acids
+<br />
+residues and the other residues.
+<br />
+<br />Where am I going wrong?
+<br />
+I have used this similar approach for other general cyclic peptides and
+<br />
+hence I am guessing I may have made a mistake in the parameter generation.
+<br />
+<br />Can someone please help me here?
+<br />
+<br />Thanks!
+<br />
+<br />Suchetana
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Nov 10 2022 - 18:00:03 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0077.html" title="Next message in the list">Suchetana Gupta via AMBER: "Re: [AMBER] Generating parameters for unnatural amino acids"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0075.html" title="Previous message in the list">Carol Pacheco via AMBER: "Re: [AMBER] Simulating a Protein - cyclic peptide complex - question"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0077.html" title="Next message in this discussion thread">Suchetana Gupta via AMBER: "Re: [AMBER] Generating parameters for unnatural amino acids"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0077.html" title="Message sent in reply to this message">Suchetana Gupta via AMBER: "Re: [AMBER] Generating parameters for unnatural amino acids"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg76" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg76" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg76" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg76" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

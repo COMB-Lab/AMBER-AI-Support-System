@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Setting PME cutoff in Crystal Simulations from David A Case on 2021-01-04 (Amber Archive Jan 2021)</title>
+<meta name="Author" content="David A Case (david.case.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] Setting PME cutoff in Crystal Simulations" />
+<meta name="Date" content="2021-01-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Setting PME cutoff in Crystal Simulations</h1>
+<!-- received="Mon Jan  4 05:30:02 2021" -->
+<!-- isoreceived="20210104133002" -->
+<!-- sent="Mon, 4 Jan 2021 08:14:34 -0500" -->
+<!-- isosent="20210104131434" -->
+<!-- name="David A Case" -->
+<!-- email="david.case.rutgers.edu" -->
+<!-- subject="Re: [AMBER] Setting PME cutoff in Crystal Simulations" -->
+<!-- id="20210104131434.r26mnu5pfb3l7i25.ipo3912l295.rad.rutgers.edu" -->
+<!-- charset="iso-8859-1" -->
+<!-- inreplyto="E84B1C49-2971-43F1-BAA0-B76D10596E81.uconn.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0027.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] PROTEIN-DNA rmsd plot&quot;">Next message</a> ]
+[ <a href="0025.html" title="MYRIAN TORRES RICO: &quot;Re: [AMBER] error...&quot;">Previous message</a> ]
+[ <a href="0017.html" title="Matthew Guberman-Pfeffer: &quot;[AMBER] Setting PME cutoff in Crystal Simulations&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0037.html" accesskey="t" title="Matthew Guberman-Pfeffer: &quot;Re: [AMBER] Setting PME cutoff in Crystal Simulations&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg26" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg26" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg26" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg26" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case &lt;<a href="mailto:david.case.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20Setting%20PME%20cutoff%20in%20Crystal%20Simulations">david.case.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 4 Jan 2021 08:14:34 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Sun, Jan 03, 2021, Matthew Guberman-Pfeffer wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;However, when running the NPT
+</em><br />
+<em class="quotelev1">&gt;equilibration on GPUs, I got an error message that the cutoff was too
+</em><br />
+<em class="quotelev1">&gt;small, that using GPUs was unsafe, and that this issue would be corrected
+</em><br />
+<em class="quotelev1">&gt;in a future release. I tried increasing the cutoff from 10 to 20 �,
+</em><br />
+<br />There is no direct fix to this problem, and it is unlikely (in spite of the
+<br />
+error message) that anything will change soon.  You have a couple of
+<br />
+options:
+<br />
+<br />1. You could try to slightly *decrease* the cutoff (say to 9 or even 8 �).
+<br />
+It is the ratio of the cell size to the cutoff that is important here.
+<br />
+The default cutoff is 8 �, and that value is OK for many protein crystal
+<br />
+simulations.
+<br />
+<br />[Aside: could you quote the exact error message, so that I could look for it
+<br />
+in the code?  I don't think(?) it should be saying that the cutoff is too
+<br />
+small, but maybe I don't know exactly what error message you actually
+<br />
+triggered.]
+<br />
+<br />2. If you are (understanably) leery about ignoring some Lennard-Jones
+<br />
+interactions beyond a smaller cutoff, you need to simulate a bigger system.
+<br />
+The usual procedure is to create a supercell consisting of several unit
+<br />
+cells.  The advantage here is that you are now simulating N proteins
+<br />
+simultaneously, and so get better statistics and more sampling.  The
+<br />
+physical realism is also greater: on average, the structure of the protein
+<br />
+is the same in each unit cell, but at any given point in time, each unit
+<br />
+cell will have its own conformation.
+<br />
+<br />[Substitute the word &quot;protein&quot; above as appropriate.]
+<br />
+<br />...good luck...dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jan 04 2021 - 05:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0027.html" title="Next message in the list">David A Case: "Re: [AMBER] PROTEIN-DNA rmsd plot"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0025.html" title="Previous message in the list">MYRIAN TORRES RICO: "Re: [AMBER] error..."</a></li>
+<li><dfn>In reply to</dfn>: <a href="0017.html" title="Message to which this message replies">Matthew Guberman-Pfeffer: "[AMBER] Setting PME cutoff in Crystal Simulations"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0037.html" title="Next message in this discussion thread">Matthew Guberman-Pfeffer: "Re: [AMBER] Setting PME cutoff in Crystal Simulations"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg26" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg26" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg26" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg26" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

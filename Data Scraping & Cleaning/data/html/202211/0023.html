@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] compile AMBER 22 with non-default gcc from Vlad Cojocaru via AMBER on 2022-11-04 (Amber Archive Nov 2022)</title>
+<meta name="Author" content="Vlad Cojocaru via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] compile AMBER 22 with non-default gcc" />
+<meta name="Date" content="2022-11-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] compile AMBER 22 with non-default gcc</h1>
+<!-- received="Fri Nov  4 16:30:02 2022" -->
+<!-- isoreceived="20221104233002" -->
+<!-- sent="Sat, 5 Nov 2022 00:08:11 +0100" -->
+<!-- isosent="20221104230811" -->
+<!-- name="Vlad Cojocaru via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] compile AMBER 22 with non-default gcc" -->
+<!-- id="b38a7a8a-375f-88b7-440c-31526a1f1072.mpi-muenster.mpg.de" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0024.html" accesskey="d" title="Prithviraj Nandigrami via AMBER: &quot;Re: [AMBER] AMBER20 GPU error&quot;">Next message</a> ]
+[ <a href="0022.html" title="Alessandro Contini via AMBER: &quot;[AMBER]  Do RTX 3080Ti video cards supported by the amber20?&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0028.html" accesskey="t" title="Scott Brozell via AMBER: &quot;Re: [AMBER] compile AMBER 22 with non-default gcc&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg23" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg23" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg23" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg23" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Vlad Cojocaru via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20compile%20AMBER%2022%20with%20non-default%20gcc">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 5 Nov 2022 00:08:11 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear all,
+<br />
+<br />On an openSUSE Tumbleweed machine, I am trying to compile AMBER 22 with 
+<br />
+a non-default gcc. It worked with the default gcc (which points to 
+<br />
+gcc-12) but I cannot build the CUDA enabled executables because CUDA 
+<br />
+only supports gcc up to 11. So, I am trying to use &quot;gcc-11&quot; instead.
+<br />
+<br />I tried modifying the run_cmake file to include the options 
+<br />
+&quot;-DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 
+<br />
+-DCMAKE_FORTRAN_COMPILER=gfortran-11&quot;
+<br />
+<br />I also tried setting the CC, CXX. FC environment variables (export 
+<br />
+CC=gcc-11 ... ). However, run_cmake still tries to compile with the 
+<br />
+default gcc ignoring all these settings.
+<br />
+<br />Does anyone have any idea how to stop cmake from using the default gcc 
+<br />
+version ?
+<br />
+<br />Thanks
+<br />
+Vlad
+<br />
+<br /><br /><pre>
+-- 
+Dr. Vlad Cojocaru (PD, Habil.)
+----------------------------------------------
+Guest Scientist / Fmr. Project Group Leader
+Max Planck Institute for Molecular Biomedicine
+Röntgenstrasse 20, 48149 Münster, Germany
+----------------------------------------------
+Email:vlad.cojocaru.mpi-muenster.mpg.de
+<a href="http://www.mpi-muenster.mpg.de/43241/cojocaru">http://www.mpi-muenster.mpg.de/43241/cojocaru</a>
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Fri Nov 04 2022 - 16:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0024.html" title="Next message in the list">Prithviraj Nandigrami via AMBER: "Re: [AMBER] AMBER20 GPU error"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0022.html" title="Previous message in the list">Alessandro Contini via AMBER: "[AMBER]  Do RTX 3080Ti video cards supported by the amber20?"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0028.html" title="Next message in this discussion thread">Scott Brozell via AMBER: "Re: [AMBER] compile AMBER 22 with non-default gcc"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0028.html" title="Message sent in reply to this message">Scott Brozell via AMBER: "Re: [AMBER] compile AMBER 22 with non-default gcc"</a></li>
+<li><dfn>Reply</dfn>: <a href="0030.html" title="Message sent in reply to this message">David A Case via AMBER: "Re: [AMBER] compile AMBER 22 with non-default gcc"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg23" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg23" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg23" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg23" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

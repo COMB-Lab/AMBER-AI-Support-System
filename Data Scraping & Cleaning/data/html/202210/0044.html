@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Separation of protein and ligand during TI simulation. from Fanyu Zhao via AMBER on 2022-10-13 (Amber Archive Oct 2022)</title>
+<meta name="Author" content="Fanyu Zhao via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Separation of protein and ligand during TI simulation." />
+<meta name="Date" content="2022-10-13" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Separation of protein and ligand during TI simulation.</h1>
+<!-- received="Thu Oct 13 06:30:02 2022" -->
+<!-- isoreceived="20221013133002" -->
+<!-- sent="Thu, 13 Oct 2022 21:20:35 +0800" -->
+<!-- isosent="20221013132035" -->
+<!-- name="Fanyu Zhao via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Separation of protein and ligand during TI simulation." -->
+<!-- id="CACeQDqx1GDVSjQEoKt15D=ApDn=1T5gw-zSX6uCAeEw9L3yN_w.mail.gmail.com" -->
+<!-- charset="UTF-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0045.html" accesskey="d" title="Carlos Navarro via AMBER: &quot;[AMBER] Amber22 on Red Hat Enterprise Linux 8&quot;">Next message</a> ]
+[ <a href="0043.html" title="SATYAJIT KHATUA via AMBER: &quot;Re: [AMBER] Question about sasa values&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0053.html" accesskey="t" title="David A Case via AMBER: &quot;Re: [AMBER] Separation of protein and ligand during TI simulation.&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg44" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg44" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg44" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg44" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Fanyu Zhao via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Separation%20of%20protein%20and%20ligand%20during%20TI%20simulation.">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 13 Oct 2022 21:20:35 +0800</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber developers and users,
+<br />
+<br />I encountered a separation of protein and ligand during TI simulation.
+<br />
+<br />I chose 12 windows for lambda. At the 6th window, the ligand is separated
+<br />
+from the protein and almost out of the water box. It may not be related to
+<br />
+the periodicity because I tried to drag it back with autoimage but failed.
+<br />
+<br />I affixed the picture of the structure with lambda as 0.43738 here, which
+<br />
+should have the ligand at the center of the protein (water box is hiden). I
+<br />
+also affixed my input files below the picture. I was wondering if you could
+<br />
+give me any suggestions on this. I really appreciate your help!
+<br />
+<br />[image: image.png]
+<br />
+<br />*The following are my MD input files and tleap input file.*
+<br />
+<br />*minimization*
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;imin = 1, ntmin = 2, maxcyc = 1000,
+<br />
+&nbsp;&nbsp;ntpr = 100, ntwe = 100,
+<br />
+&nbsp;&nbsp;dx0 = 1.0D-7,
+<br />
+&nbsp;&nbsp;ntb = 1,cut=10,
+<br />
+&nbsp;&nbsp;icfe = 1, ifsc = 1, logdvdl = 0,
+<br />
+&nbsp;&nbsp;timask1=':1',
+<br />
+&nbsp;&nbsp;timask2=':2',
+<br />
+&nbsp;&nbsp;scmask1=':1.C15,C16,C17,C18,C19,N4,H14,H15,H16,H17',
+<br />
+&nbsp;&nbsp;scmask2=':2.C15,C16,C17,C18,C19,N4,H14,H15,H16,F1',
+<br />
+&nbsp;&nbsp;clambda=0.43738,
+<br />
+&amp;end
+<br />
+/
+<br />
+<br />*Heating*
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;imin = 0, nstlim = 10000, irest = 0, ntx = 1, dt = 0.002,
+<br />
+&nbsp;&nbsp;ntt = 1, temp0 = 300.0, tempi = 0.0, tautp = 1.0,
+<br />
+&nbsp;&nbsp;ntc = 2, ntf = 1,
+<br />
+&nbsp;&nbsp;ntb = 1, cut=10,
+<br />
+&nbsp;&nbsp;iwrap=1, ioutfm = 1, iwrap = 1,
+<br />
+&nbsp;&nbsp;ntwe = 1000, ntwx = 1000, ntpr = 1000, ntwr = 1000,
+<br />
+&nbsp;&nbsp;restraint_wt = 5.0,
+<br />
+&nbsp;&nbsp;restraintmask = '!:WAT &amp; !.H= ',
+<br />
+&nbsp;&nbsp;icfe = 1, ifsc = 1, logdvdl = 0,
+<br />
+&nbsp;&nbsp;timask1=':1',
+<br />
+&nbsp;&nbsp;timask2=':2',
+<br />
+&nbsp;&nbsp;scmask1=':1.C15,C16,C17,C18,C19,N4,H14,H15,H16,H17',
+<br />
+&nbsp;&nbsp;scmask2=':2.C15,C16,C17,C18,C19,N4,H14,H15,H16,F1',
+<br />
+&nbsp;&nbsp;clambda=0.43738,
+<br />
+&amp;end
+<br />
+/
+<br />
+&amp;wt type='TEMP0', istep1=0, istep2=8000,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value1=0.0, value2=300.0/
+<br />
+&amp;wt type='END'/
+<br />
+&amp;ewald
+<br />
+/
+<br />
+<br /><br />*Equilibriation*
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;imin = 0, nstlim = 10000, irest = 1, ntx = 5, dt = 0.002,
+<br />
+&nbsp;&nbsp;ntt = 3, temp0 = 300.0, gamma_ln = 2.0, ig = -1,
+<br />
+&nbsp;&nbsp;ntc = 2, ntf = 1,
+<br />
+&nbsp;&nbsp;ntb = 2, cut = 10, ntr = 0,
+<br />
+&nbsp;&nbsp;ntp = 1, pres0 = 1.0, taup = 2.0,
+<br />
+&nbsp;&nbsp;ioutfm = 1, ntxo = 2, iwrap = 0,
+<br />
+&nbsp;&nbsp;ntwx = 2000, ntpr = 500, ntwr = 2000,
+<br />
+&nbsp;&nbsp;iwrap=1, ioutfm=1, ntwv=-1,ntave=1000,
+<br />
+&nbsp;&nbsp;icfe = 1, ifsc = 1,logdvdl = 0,
+<br />
+&nbsp;&nbsp;timask1=':1',
+<br />
+&nbsp;&nbsp;timask2=':2',
+<br />
+&nbsp;&nbsp;scmask1=':1.C15,C16,C17,C18,C19,N4,H14,H15,H16,H17',
+<br />
+&nbsp;&nbsp;scmask2=':2.C15,C16,C17,C18,C19,N4,H14,H15,H16,F1',
+<br />
+&nbsp;&nbsp;clambda=0.43738,
+<br />
+&amp;end
+<br />
+<br />&nbsp;/
+<br />
+<br />*Production*
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;imin = 0, ntx = 5, irest  = 1,
+<br />
+&nbsp;&nbsp;ntpr = 1000,  ntwx = 10000, ntwe = 1000, ntwr = 1000, ig = -1,
+<br />
+&nbsp;&nbsp;ntp = 1, pres0 = 1.0, ntf = 1, ntb = 2, cut = 10.0,
+<br />
+&nbsp;&nbsp;iwrap  = 1, nsnb = 10,
+<br />
+&nbsp;&nbsp;nstlim = 500000, t = 0.0, nscm = 1000, dt = 0.002,
+<br />
+&nbsp;&nbsp;temp0 = 300.0, tempi = 300.0, ntt = 3,
+<br />
+&nbsp;&nbsp;gamma_ln = 2.0, tautp = 2.0,
+<br />
+&nbsp;&nbsp;ntc = 2, ioutfm=1, ntwv = -1, ntave = 1000,
+<br />
+&nbsp;&nbsp;icfe = 1, ifsc = 1,ntxo = 2,
+<br />
+&nbsp;&nbsp;scalpha = 0.5, scbeta = 12.0, logdvdl = 0,
+<br />
+&nbsp;&nbsp;ifmbar = 1, mbar_states = 12, mbar_lambda = 0.00922, 0.04794, 0.11505,
+<br />
+0.20634, 0.31608, 0.43738, 0.56262, 0.68392, 0.79366, 0.88495, 0.95206,
+<br />
+0.99078,
+<br />
+&nbsp;&nbsp;timask1=':1',
+<br />
+&nbsp;&nbsp;timask2=':2',
+<br />
+&nbsp;&nbsp;scmask1=':1.C15,C16,C17,C18,C19,N4,H14,H15,H16,H17',
+<br />
+&nbsp;&nbsp;scmask2=':2.C15,C16,C17,C18,C19,N4,H14,H15,H16,F1',
+<br />
+&nbsp;&nbsp;clambda=0.43738,
+<br />
+&amp;end
+<br />
+<br />&nbsp;/
+<br />
+<br />*Also, I affixed the tleap input file for creating dual-topology structures
+<br />
+for complex and ligand.*
+<br />
+<br />*leap.in &lt;<a href="http://leap.in/">http://leap.in/</a>&gt;*
+<br />
+source leaprc.protein.ff14SB
+<br />
+source leaprc.gaff
+<br />
+source leaprc.water.tip3p
+<br />
+<br />loadamberprep L4O.prepi
+<br />
+loadamberprep L4J.prepi
+<br />
+loadamberparams L4O.frcmod
+<br />
+loadamberparams L4J.frcmod
+<br />
+<br />l1=loadpdb L4J.pdb
+<br />
+l2=loadpdb L4O.pdb
+<br />
+p=loadpdb Bace_protein_h.pdb
+<br />
+com=combine {l1 l2 p}
+<br />
+lig=combine {l1 l2}
+<br />
+<br />set default nocenter on
+<br />
+<br />solvateoct lig TIP3PBOX 15.0
+<br />
+addions lig Cl- 1
+<br />
+savepdb lig ligands_vdw_bonded.pdb
+<br />
+saveamberparm lig ligands_vdw_bonded.prmtop ligands_vdw_bonded.inpcrd
+<br />
+<br />solvateoct com TIP3PBOX 15.0
+<br />
+addions com Cl- 0
+<br />
+addions com Na+ 10
+<br />
+charge com
+<br />
+savepdb com complex_vdw_bonded.pdb
+<br />
+saveamberparm com complex_vdw_bonded.prmtop complex_vdw_bonded.inpcrd
+<br />
+quit
+<br />
+<br />Thank you so much for reading this!
+<br />
+<br />Best,
+<br />
+Fanyu Zhao
+<br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<p><img src="att-0044/image.png" alt="image.png" />
+<br />
+(image/png attachment: <a href="att-0044/image.png">image.png</a>)</p>
+<!-- attachment="image.png" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Thu Oct 13 2022 - 06:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0045.html" title="Next message in the list">Carlos Navarro via AMBER: "[AMBER] Amber22 on Red Hat Enterprise Linux 8"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0043.html" title="Previous message in the list">SATYAJIT KHATUA via AMBER: "Re: [AMBER] Question about sasa values"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0053.html" title="Next message in this discussion thread">David A Case via AMBER: "Re: [AMBER] Separation of protein and ligand during TI simulation."</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0053.html" title="Message sent in reply to this message">David A Case via AMBER: "Re: [AMBER] Separation of protein and ligand during TI simulation."</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0063.html" title="Message sent in reply to this message">Fanyu Zhao via AMBER: "Re: [AMBER] Separation of protein and ligand during TI simulation."</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0073.html" title="Message sent in reply to this message">Fanyu Zhao via AMBER: "Re: [AMBER] Separation of protein and ligand during TI simulation."</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg44" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg44" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg44" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg44" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

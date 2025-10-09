@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] RMSD of residues within 3A of ligand from Daniel Roe on 2021-12-01 (Amber Archive Dec 2021)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] RMSD of residues within 3A of ligand" />
+<meta name="Date" content="2021-12-01" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] RMSD of residues within 3A of ligand</h1>
+<!-- received="Wed Dec  1 09:00:02 2021" -->
+<!-- isoreceived="20211201170002" -->
+<!-- sent="Wed, 1 Dec 2021 11:30:24 -0500" -->
+<!-- isosent="20211201163024" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] RMSD of residues within 3A of ligand" -->
+<!-- id="CAAC0qOb4QWcsCSHYWA-Bq+FU_XuL1fnQeK49uzjdP3OSiXmEgA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAH9Uu9NxZmG6k0dxyD_=Z4kRWhk=dFBP_5eK3ZwJSdP6UKtrog.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0018.html" accesskey="d" title="King Wu: &quot;Re: [AMBER] Equilibrate and Production Run Membrane-protein complex&quot;">Next message</a> ]
+[ <a href="0016.html" title="Daniel Roe: &quot;Re: [AMBER] How is correlation computed in cpptraj&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg17" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg17" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg17" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg17" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20RMSD%20of%20residues%20within%203A%20of%20ligand">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 1 Dec 2021 11:30:24 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br /><em class="quotelev1">&gt;From the Amber/Cpptraj manual:
+</em><br />
+```
+<br />
+Distance-based Masks
+<br />
+There are two very important things to keep in mind when using
+<br />
+distance based masks:
+<br />
+1. Distance-based masks that update each frame are currently only
+<br />
+supported by the mask action.
+<br />
+2. Selection by distance for everything but the mask action requires
+<br />
+defining a reference frame with reference;
+<br />
+distances are then calculated using the specified reference frame
+<br />
+only. This reference frame can be changed
+<br />
+using the activeref command.
+<br />
+```
+<br />
+The problem with distance-based masks for most commands is that the
+<br />
+number of atoms selected each frame can change, which requires setting
+<br />
+everything up for the new selection which can get expensive. It's
+<br />
+particularly difficult for something like RMSD where the # of atoms
+<br />
+selected in the reference and target need to match in order for the
+<br />
+RMSD to be meaningful. You could script it so that you loop over every
+<br />
+input frame in the trajectory and try to change the active reference
+<br />
+accordingly, but again if you select different #s of atoms in the
+<br />
+target and reference you can't calculate the RMSD anyway.
+<br />
+<br />TL;DR unfortunately, there's no easy way to do what you want.
+<br />
+<br />-Dan
+<br />
+<br />On Fri, Oct 22, 2021 at 9:57 AM Sadaf Rani &lt;sadafrani6.gmail.com&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Dear Amber users
+</em><br />
+<em class="quotelev1">&gt; I want to calculate rmsd of the residues within 3 A of the ligand for which
+</em><br />
+<em class="quotelev1">&gt; I used the following syntax
+</em><br />
+<em class="quotelev1">&gt; rms to first :490&lt;.3 first out rmsd_lig3A.dat
+</em><br />
+<em class="quotelev1">&gt; rms tofirst1:490 first out rmsd_lig3A.dat
+</em><br />
+<em class="quotelev1">&gt; However, I am getting the same curve for both which shows that the syntax
+</em><br />
+<em class="quotelev1">&gt; for 3A has not been taken up by the cpptraj.
+</em><br />
+<em class="quotelev1">&gt; Could you please correct me where I am doing wrong?
+</em><br />
+<em class="quotelev1">&gt; Thanks in advance.
+</em><br />
+<em class="quotelev1">&gt; Regards
+</em><br />
+<em class="quotelev1">&gt; sadaf
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Dec 01 2021 - 09:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0018.html" title="Next message in the list">King Wu: "Re: [AMBER] Equilibrate and Production Run Membrane-protein complex"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0016.html" title="Previous message in the list">Daniel Roe: "Re: [AMBER] How is correlation computed in cpptraj"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg17" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg17" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg17" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg17" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

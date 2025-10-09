@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] system preparation error from Renato Araujo on 2021-08-11 (Amber Archive Aug 2021)</title>
+<meta name="Author" content="Renato Araujo (renatoacufpa.gmail.com)" />
+<meta name="Subject" content="[AMBER] system preparation error" />
+<meta name="Date" content="2021-08-11" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] system preparation error</h1>
+<!-- received="Wed Aug 11 21:00:02 2021" -->
+<!-- isoreceived="20210812040002" -->
+<!-- sent="Thu, 12 Aug 2021 00:49:11 -0300" -->
+<!-- isosent="20210812034911" -->
+<!-- name="Renato Araujo" -->
+<!-- email="renatoacufpa.gmail.com" -->
+<!-- subject="[AMBER] system preparation error" -->
+<!-- id="CALoSBpjSQp4vkpbkx_NDw5S5LZZW++eR3PggmvW6PjaCCMqnFw.mail.gmail.com" -->
+<!-- charset="UTF-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0063.html" accesskey="d" title="Abhik Ghosh Moulick: &quot;[AMBER] constant ph md&quot;">Next message</a> ]
+[ <a href="0061.html" title="Carlos Simmerling: &quot;Re: [AMBER] Developing Parameters for Bad Atom Types&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0067.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] system preparation error&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg62" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg62" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg62" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg62" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Renato Araujo &lt;<a href="mailto:renatoacufpa.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20system%20preparation%20error">renatoacufpa.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 12 Aug 2021 00:49:11 -0300</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+dear amber users
+<br />
+<br />I'm trying to run a molecular diamic simulation with the SARS-CoV-2 Spike
+<br />
+Protein protein.
+<br />
+<br />In preparing my system I'm using:
+<br />
+<br />source leaprc.protein.ff14SB
+<br />
+source leaprc.gaff2
+<br />
+source leaprc.water.tip3p
+<br />
+loadamberparams frcmod.ionsjc_tip3p
+<br />
+set default PBRadii mbondi2
+<br />
+loadamberparams lig_resp.frcmod
+<br />
+loadoff ON.lib
+<br />
+rec = loadpdb pro.pdb
+<br />
+LIG = loadmol2 lig_resp.mol2
+<br />
+com = combine {rec ON}
+<br />
+savepdb ON binding.pdb
+<br />
+saveamberparm ON ligand.prmtop ligand.inpcrd
+<br />
+savepdb rec receiver.pdb
+<br />
+saveamberparm rec receiver.prmtop receiver.inpcrd
+<br />
+savepdb with complex.pdb
+<br />
+saveamberparm with complex.prmtop complex.inpcrd
+<br />
+cartoon with
+<br />
+additions with Na+ 0
+<br />
+additions with Cl- 0
+<br />
+cartoon with
+<br />
+solvateoct with TIP3PBOX 20.0
+<br />
+savepdb with complex_solv.pdb
+<br />
+saveamberparm with complex_solv.prmtop complex_solv.inpcrd
+<br />
+quit
+<br />
+<br />When I open the system in the VMD I have the following image attached.
+<br />
+<br />Could someone tell me what mistake I'm making so that my complex doesn't
+<br />
+get into the water tank?
+<br />
+<br />Thanks
+<br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<p><img src="att-0062/Captura_de_ecr___de_2021-08-12_00-48-42.png" alt="Captura_de_ecr___de_2021-08-12_00-48-42.png" />
+<br />
+(image/png attachment: <a href="att-0062/Captura_de_ecr___de_2021-08-12_00-48-42.png">Captura_de_ecr___de_2021-08-12_00-48-42.png</a>)</p>
+<!-- attachment="Captura_de_ecr___de_2021-08-12_00-48-42.png" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Wed Aug 11 2021 - 21:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0063.html" title="Next message in the list">Abhik Ghosh Moulick: "[AMBER] constant ph md"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0061.html" title="Previous message in the list">Carlos Simmerling: "Re: [AMBER] Developing Parameters for Bad Atom Types"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0067.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] system preparation error"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0067.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] system preparation error"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0068.html" title="Message sent in reply to this message">Stephan Schott: "Re: [AMBER] system preparation error"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg62" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg62" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg62" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg62" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

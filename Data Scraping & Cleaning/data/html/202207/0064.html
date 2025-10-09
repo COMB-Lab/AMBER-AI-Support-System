@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] [amber.ambermd.org: Amber22 test suite results on a cray with AMD cores and A100 GPUs] from accuratefreeenergy--- via AMBER on 2022-07-21 (Amber Archive Jul 2022)</title>
+<meta name="Author" content="accuratefreeenergy--- via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] [amber.ambermd.org: Amber22 test suite results on a cray with AMD cores and A100 GPUs]" />
+<meta name="Date" content="2022-07-21" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] [amber.ambermd.org: Amber22 test suite results on a cray with AMD cores and A100 GPUs]</h1>
+<!-- received="Thu Aug  4 13:35:21 2022" -->
+<!-- isoreceived="20220804203521" -->
+<!-- sent="Thu, 21 Jul 2022 08:45:16 -0400" -->
+<!-- isosent="20220721124516" -->
+<!-- name="accuratefreeenergy&ndash;&ndash;&ndash; via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] [amber.ambermd.org: Amber22 test suite results on a cray with AMD cores and A100 GPUs]" -->
+<!-- id="000e01d89cff$bac58510$30508f30$.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20220720143727.aey3csv6boiwutjc.41grscansl04.rad.rutgers.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0065.html" accesskey="d" title="Gert Kruger via AMBER: &quot;[AMBER] Ambertools21 installation problems&quot;">Next message</a> ]
+[ <a href="0063.html" title="David A Case via AMBER: &quot;Re: [AMBER] How to avoid SHAKE on a specific QM hydrogen atom in QM/MM simulations without compromising qmshake=1 flag&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg64" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg64" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg64" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg64" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: accuratefreeenergy--- via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20%5Bamber.ambermd.org%3A%20Amber22%20test%20suite%20results%20on%20a%20cray%20with%20AMD%20cores%20and%20A100%20GPUs%5D">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 21 Jul 2022 08:45:16 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Chris,
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thanks a lot for your detailed test reports.  I looked your results
+<br />
+and I don't think there is any really bad.  Nevertheless, we will correct
+<br />
+them soon if necessary:
+<br />
+<br />1. the missing SPFP test baselines in under cuda/gti directory:  the is
+<br />
+probably my bad.  The DPFP and SPFP versions of pmemd.cuda TI part basically
+<br />
+use the same code path except some constants/intrinsic functions with
+<br />
+different precisions, hence I didn't pay too much attention to SPFP test
+<br />
+cases and some of them in fact are missing in the current release.
+<br />
+<br />2. The &quot; Running CUDA GTI Lambda Replica exchange Scheduling&quot; case.  Again,
+<br />
+this is my bad...  In this test cases, different numbers of windows are
+<br />
+tested.  Hence &quot;DO_PARALLEL&quot; is not used, instead it has its own preset
+<br />
+variables.  Workaround: you can manually change the script to use mpirun or
+<br />
+whatever you have.
+<br />
+<br />3. SPFP results are more sensitive to GPU architectures.  We don't have A100
+<br />
+to test but your results seem to be fine.  Also keep in mind that MPI job
+<br />
+&quot;errors&quot; sometimes are misleading as MPI-parallel implementations are
+<br />
+usually not bit-wise reproducible.  
+<br />
+<br />Best,
+<br />
+<br />Taisung
+<br />
+<br />-----Original Message-----
+<br />
+From: David A Case &lt;david.case.rutgers.edu&gt; 
+<br />
+Sent: Wednesday, July 20, 2022 10:37 AM
+<br />
+To: Taisung Lee &lt;taisung.gmail.com&gt;
+<br />
+Subject: [amber.ambermd.org: [AMBER] Amber22 test suite results on a cray
+<br />
+with AMD cores and A100 GPUs]
+<br />
+<br />----- Forwarded message from &quot;Neale, Christopher Andrew via AMBER&quot;
+<br />
+&lt;amber.ambermd.org&gt; -----
+<br />
+<br />Date: Mon, 11 Jul 2022 20:42:31 +0000
+<br />
+From: &quot;Neale, Christopher Andrew via AMBER&quot; &lt;amber.ambermd.org&gt;
+<br />
+To: &quot;amber.ambermd.org&quot; &lt;amber.ambermd.org&gt;
+<br />
+Subject: [AMBER] Amber22 test suite results on a cray with AMD cores and
+<br />
+A100
+<br />
+&nbsp;&nbsp;GPUs
+<br />
+<br />Hello,
+<br />
+<br /><br /><br />I ran the test suite on amber22 on a cray machine with AMD EPYC cores and
+<br />
+NVIDIA A100 GPUs. Results are largely as I expected (i.e., pass or fail with
+<br />
+least significant digit rounding differences for CPU or DPFP cuda; lots of
+<br />
+rounding differences for SPFP, most of which are small, some larger issues
+<br />
+with parallel cuda SPFP). I figured it could be useful to put this on the
+<br />
+list in case others are looking for points of comparison. Please note that I
+<br />
+have no way of verifying that these results indicate a perfect compilation,
+<br />
+but clearly nothing has gone way out of bounds other than some enhanced
+<br />
+sampling methods with parallel cuda SPFP (which may just be based on
+<br />
+different exchanges of replicas or something).
+<br />
+<br /><br /><br /><br /><br />##################### serial CPU has no unexpected mismatches:
+<br />
+<br /><br /><br />176 file comparisons passed
+<br />
+<br />1 file comparisons failed (1 of which can be ignored)
+<br />
+<br />0 tests experienced errors
+<br />
+<br /><br /><br /><br /><br />##################### parallel CPU (4 processes) has 1 unexpected mismatch,
+<br />
+but it looks like rounding errors:
+<br />
+<br /><br /><br />167 file comparisons passed
+<br />
+<br />2 file comparisons failed (1 of which can be ignored)
+<br />
+<br />0 tests experienced an error
+<br />
+<br /><br /><br />possible FAILURE:  check mdout.MPI.dif
+<br />
+<br />test/kmmd/kmmd_pmemd
+<br />
+<br /><br /><br />322c322
+<br />
+<br />&lt;  BOND   =        49.40  ANGLE   =       105.00  DIHED      =       168.64
+<br />
+<br /><pre>
+---
+&gt;  BOND   =        49.40  ANGLE   =       104.99  DIHED      =       168.64
+370c370
+&lt;  BOND   =        43.16  ANGLE   =        91.49  DIHED      =       162.17
+---
+&gt;  BOND   =        43.16  ANGLE   =        91.48  DIHED      =       162.17
+419c419
+&lt;  1-4 NB =        37.13  1-4 EEL =      -806.07  VDWAALS    =       112.45
+---
+&gt;  1-4 NB =        37.13  1-4 EEL =      -806.06  VDWAALS    =       112.45
+738c738
+&lt;  BOND   =        30.69  ANGLE   =        88.18  DIHED      =       143.54
+---
+&gt;  BOND   =        30.68  ANGLE   =        88.18  DIHED      =       143.54
+786c786
+&lt;  BOND   =        29.81  ANGLE   =        80.79  DIHED      =       148.47
+---
+&gt;  BOND   =        29.81  ANGLE   =        80.78  DIHED      =       148.47
+833c833
+&lt;  Etot   =   4007330.54  EKtot   =       496.58  EPtot      =   4006833.95
+---
+&gt;  Etot   =   4007330.53  EKtot   =       496.58  EPtot      =   4006833.95
+873c873
+&lt;  Etot   =   4007365.58  EKtot   =       543.15  EPtot      =   4006822.43
+---
+&gt;  Etot   =   4007365.58  EKtot   =       543.15  EPtot      =   4006822.42
+918,919c918,919
+&lt;  EELEC  =        90.41  EHBOND  =         0.  RESTRAINT  =         0.40
+&lt;  EAMBER (non-restraint)  =       124.59
+---
+&gt;  EELEC  =        90.41  EHBOND  =         0.  RESTRAINT  =         0.37
+&gt;  EAMBER (non-restraint)  =       124.61
+##################### serial cuda DPFP has some mismatches, but they look
+like rounding errors:
+291 file comparisons passed
+6 file comparisons failed (2 of which can be ignored)
+0 tests experienced errors
+possible FAILURE:  check md_SC_NVT_SC_0.o.dif
+exec/test/cuda/gti/SC_Correction/ligand
+2607c2607
+&lt; lambda = 0.350 : Total dU/dl:   -6.033113  L:    0.32664  NL:   -6.35975
+PI:    0.
+&gt; lambda = 0.350 : Total dU/dl:   -6.033114  L:    0.32664  NL:   -6.35975
+PI:    0.
+### Maximum absolute error in matching lines = 1.00e-06 at line 2607 field 7
+### Maximum relative error in matching lines = 1.66e-07 at line 2607 field 7
+---------------------------------------
+possible FAILURE:  check md_SC_NVT_SC_-1.o.dif
+exec/test/cuda/gti/SC_Correction/ligand
+2607c2607
+&lt; lambda = 0.350 : Total dU/dl:   -6.033113  L:    0.32664  NL:   -6.35975
+PI:    0.
+&gt; lambda = 0.350 : Total dU/dl:   -6.033114  L:    0.32664  NL:   -6.35975
+PI:    0.
+### Maximum absolute error in matching lines = 1.00e-06 at line 2607 field 7
+### Maximum relative error in matching lines = 1.66e-07 at line 2607 field 7
+---------------------------------------
+possible FAILURE:  check md_SC_NVT_SC_1.o.dif
+exec/test/cuda/gti/SC_Correction/ligand
+2607c2607
+&lt; lambda = 0.350 : Total dU/dl:   -6.033113  L:    0.32664  NL:   -6.35975
+PI:    0.
+&gt; lambda = 0.350 : Total dU/dl:   -6.033114  L:    0.32664  NL:   -6.35975
+PI:    0.
+### Maximum absolute error in matching lines = 1.00e-06 at line 2607 field 7
+### Maximum relative error in matching lines = 1.66e-07 at line 2607 field 7
+---------------------------------------
+possible FAILURE:  check md_SC_NVT_SC_2.o.dif
+exec/test/cuda/gti/SC_Correction/complex
+737c737
+&lt; lambda = 0.350 : Elec-Rec H=    1473.9986 dU/dL: L=    1.9745 NL=    0.
+Tot=    1.97453
+&gt; lambda = 0.350 : Elec-Rec H=    1473.9986 dU/dL: L=    1.9745 NL=    0.
+Tot=    1.97454
+### Maximum absolute error in matching lines = 1.00e-05 at line 737 field 14
+### Maximum relative error in matching lines = 5.06e-06 at line 737 field 14
+##################### serial cuda SPFP has a lot of mismatches, but they
+look like rounding errors:
+207 file comparisons passed
+90 file comparisons failed (5 of which can be ignored)
+0 tests experienced errors
+$ cat 2022-07-11_12-36-25.diff |grep &quot;Maximum absolute&quot;|sort -g -k 9
+### Maximum absolute error in matching lines = 2.63e-05 at line 1413 field 4
+### Maximum absolute error in matching lines = 3.00e-05 at line 118 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 1058 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 1070 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 1175 field
+10
+### Maximum absolute error in matching lines = 1.00e-04 at line 1175 field
+10
+### Maximum absolute error in matching lines = 1.00e-04 at line 1175 field
+10
+### Maximum absolute error in matching lines = 1.00e-04 at line 1304 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 1362 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 139 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 147 field 6
+### Maximum absolute error in matching lines = 1.00e-04 at line 148 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 156 field 9
+### Maximum absolute error in matching lines = 1.00e-04 at line 1583 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 163 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 178 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 181 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 2232 field
+10
+### Maximum absolute error in matching lines = 1.00e-04 at line 2259 field 7
+### Maximum absolute error in matching lines = 1.00e-04 at line 2437 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 2437 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 2437 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 252 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 298 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 3060 field
+10
+### Maximum absolute error in matching lines = 1.00e-04 at line 3060 field
+10
+### Maximum absolute error in matching lines = 1.00e-04 at line 3060 field
+10
+### Maximum absolute error in matching lines = 1.00e-04 at line 3223 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 423 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 528 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 592 field 7
+### Maximum absolute error in matching lines = 2.00e-04 at line 202 field 6
+### Maximum absolute error in matching lines = 3.00e-04 at line 824 field 9
+### Maximum absolute error in matching lines = 3.00e-04 at line 830 field 9
+### Maximum absolute error in matching lines = 4.00e-04 at line 145 field 3
+### Maximum absolute error in matching lines = 5.00e-04 at line 218 field 3
+### Maximum absolute error in matching lines = 6.00e-04 at line 384 field 3
+### Maximum absolute error in matching lines = 1.50e-03 at line 607 field 3
+### Maximum absolute error in matching lines = 5.90e-03 at line 292 field 3
+### Maximum absolute error in matching lines = 1.00e-02 at line 175 field 9
+### Maximum absolute error in matching lines = 1.00e-02 at line 213 field 9
+### Maximum absolute error in matching lines = 1.00e-02 at line 215 field 9
+### Maximum absolute error in matching lines = 1.00e-02 at line 328 field 10
+### Maximum absolute error in matching lines = 1.00e-02 at line 360 field 9
+### Maximum absolute error in matching lines = 1.00e-02 at line 500 field 9
+### Maximum absolute error in matching lines = 1.00e-02 at line 551 field 9
+### Maximum absolute error in matching lines = 1.00e-02 at line 604 field 9
+### Maximum absolute error in matching lines = 1.00e-02 at line 665 field 9
+### Maximum absolute error in matching lines = 4.78e-02 at line 306 field 6
+### Maximum absolute error in matching lines = 6.08e-02 at line 100 field 7
+### Maximum absolute error in matching lines = 1.00e-01 at line 168 field 12
+### Maximum absolute error in matching lines = 1.00e-01 at line 207 field 12
+### Maximum absolute error in matching lines = 1.00e-01 at line 402 field 12
+### Maximum absolute error in matching lines = 1.52e+00 at line 556 field 3
+### Maximum absolute error in matching lines = 1.52e+00 at line 591 field 3
+### Maximum absolute error in matching lines = 1.96e+00 at line 591 field 6
+### Maximum absolute error in matching lines = 2.36e+00 at line 482 field 10
+### Maximum absolute error in matching lines = 2.36e+00 at line 482 field 10
+### Maximum absolute error in matching lines = 2.36e+00 at line 482 field 10
+The mismatches &gt; 0.1 are:
+test/cuda/gti/NMR_Restraint/SimpleTorsion
+591c591
+&lt;  Etot   =    -17775.6420  EKtot   =      1210.4690  EPtot      =
+-18986.1110
+&gt;  Etot   =    -17775.6324  EKtot   =      1212.4244  EPtot      =
+-18988.0568
+test/cuda/gti/SC_Correction/methane_2_methanol
+482c482
+&lt;   Softcore part of the system:       1 atoms,       TEMP(K)    =
+535.52
+&gt;   Softcore part of the system:       1 atoms,       TEMP(K)    =
+537.88
+##################### parallel cuda DPFP (4 processes) has more mismatches
+than I expected, but the few with automatically parsed error sizes look like
+rounding errors:
+207 file comparisons passed
+53 file comparisons failed (0 of which can be ignored)
+11 tests experienced errors
+$ cat 2022-07-11_13-06-00.diff |grep &quot;Maximum absolute&quot;|sort -g -k 9
+### Maximum absolute error in matching lines = 1.70e-05 at line 2355 field 7
+### Maximum absolute error in matching lines = 8.51e-05 at line 974 field 5
+### Maximum absolute error in matching lines = 1.15e-04 at line 20 field 3
+### Maximum absolute error in matching lines = 4.39e-04 at line 4 field 3
+### Maximum absolute error in matching lines = 1.70e-03 at line 395 field 6
+### Maximum absolute error in matching lines = 1.70e-03 at line 395 field 6
+### Maximum absolute error in matching lines = 1.70e-03 at line 395 field 6
+### Maximum absolute error in matching lines = 2.00e-02 at line 191 field 9
+##################### parallel cuda SPFP (4 processes) has even more
+mismatches, and some are quite large (though all &gt;=1.0 are from enhanced
+sampling methods):
+154 file comparisons passed
+106 file comparisons failed (0 of which can be ignored)
+11 tests experienced errors
+$ cat 2022-07-11_13-32-43.diff|grep &quot;Maximum absolute&quot;|sort -g -k 9
+### Maximum absolute error in matching lines = 1.70e-05 at line 2355 field 7
+### Maximum absolute error in matching lines = 8.51e-05 at line 974 field 5
+### Maximum absolute error in matching lines = 1.00e-04 at line 139 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 156 field 9
+### Maximum absolute error in matching lines = 1.00e-04 at line 159 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 255 field 6
+### Maximum absolute error in matching lines = 1.00e-04 at line 291 field 9
+### Maximum absolute error in matching lines = 1.00e-04 at line 298 field 3
+### Maximum absolute error in matching lines = 1.00e-04 at line 348 field 6
+### Maximum absolute error in matching lines = 1.15e-04 at line 20 field 3
+### Maximum absolute error in matching lines = 4.00e-04 at line 139 field 3
+### Maximum absolute error in matching lines = 4.39e-04 at line 4 field 3
+### Maximum absolute error in matching lines = 5.00e-04 at line 102 field 9
+### Maximum absolute error in matching lines = 5.00e-04 at line 218 field 3
+### Maximum absolute error in matching lines = 6.00e-04 at line 384 field 3
+### Maximum absolute error in matching lines = 8.00e-04 at line 140 field 3
+### Maximum absolute error in matching lines = 1.10e-03 at line 102 field 9
+### Maximum absolute error in matching lines = 1.20e-03 at line 92 field 6
+### Maximum absolute error in matching lines = 1.60e-03 at line 106 field 3
+### Maximum absolute error in matching lines = 3.20e-03 at line 182 field 4
+### Maximum absolute error in matching lines = 9.70e-03 at line 299 field 6
+### Maximum absolute error in matching lines = 1.00e-02 at line 175 field 9
+### Maximum absolute error in matching lines = 1.00e-02 at line 213 field 9
+### Maximum absolute error in matching lines = 1.00e-02 at line 215 field 9
+### Maximum absolute error in matching lines = 1.00e-02 at line 91 field 9
+### Maximum absolute error in matching lines = 2.68e-02 at line 266 field 6
+### Maximum absolute error in matching lines = 3.01e-02 at line 141 field 6
+### Maximum absolute error in matching lines = 3.01e-02 at line 141 field 6
+### Maximum absolute error in matching lines = 4.00e-02 at line 137 field 9
+### Maximum absolute error in matching lines = 4.00e-02 at line 137 field 9
+### Maximum absolute error in matching lines = 4.00e-02 at line 154 field 9
+### Maximum absolute error in matching lines = 4.00e-02 at line 154 field 9
+### Maximum absolute error in matching lines = 4.53e-02 at line 693 field 11
+### Maximum absolute error in matching lines = 5.18e-02 at line 292 field 6
+### Maximum absolute error in matching lines = 6.40e-02 at line 684 field 6
+### Maximum absolute error in matching lines = 6.61e-02 at line 148 field 3
+### Maximum absolute error in matching lines = 6.61e-02 at line 148 field 3
+### Maximum absolute error in matching lines = 1.00e-01 at line 144 field 12
+### Maximum absolute error in matching lines = 1.00e-01 at line 144 field 12
+### Maximum absolute error in matching lines = 1.00e-01 at line 168 field 12
+### Maximum absolute error in matching lines = 1.00e-01 at line 177 field 12
+### Maximum absolute error in matching lines = 1.00e-01 at line 207 field 12
+### Maximum absolute error in matching lines = 1.00e-01 at line 402 field 12
+### Maximum absolute error in matching lines = 1.00e-01 at line 87 field 12
+### Maximum absolute error in matching lines = 1.80e-01 at line 172 field 9
+### Maximum absolute error in matching lines = 2.00e-01 at line 262 field 12
+### Maximum absolute error in matching lines = 4.90e-01 at line 191 field 9
+### Maximum absolute error in matching lines = 1.00e+00 at line 16 field 9
+### Maximum absolute error in matching lines = 1.38e+00 at line 451 field 6
+### Maximum absolute error in matching lines = 1.38e+00 at line 451 field 6
+### Maximum absolute error in matching lines = 1.38e+00 at line 451 field 6
+### Maximum absolute error in matching lines = 9.20e+00 at line 205 field 9
+### Maximum absolute error in matching lines = 1.06e+01 at line 138 field 9
+### Maximum absolute error in matching lines = 1.14e+01 at line 120 field 9
+### Maximum absolute error in matching lines = 1.38e+01 at line 128 field 3
+### Maximum absolute error in matching lines = 1.65e+01 at line 63 field 4
+### Maximum absolute error in matching lines = 2.60e+01 at line 120 field 9
+### Maximum absolute error in matching lines = 2.23e+02 at line 175 field 3
+### Maximum absolute error in matching lines = 2.40e+02 at line 143 field 3
+### Maximum absolute error in matching lines = 7.66e+02 at line 175 field 3
+### Maximum absolute error in matching lines = 9.65e+02 at line 175 field 3
+The largest are:
+test/cuda/remd/rem_4rep_hybridsolvent
+175c175
+&lt;  Etot   =    -18169.8890  EKtot   =      4825.4002  EPtot      =
+-22995.2892
+&gt;  Etot   =    -19134.8327  EKtot   =      4461.8784  EPtot      =
+-23596.7112
+test/cuda/remd/rem_4rep_hybridsolvent
+175c175
+&lt;  Etot   =    -19019.3863  EKtot   =      4439.8305  EPtot      =
+-23459.2169
+&gt;  Etot   =    -18253.5016  EKtot   =      4738.1294  EPtot      =
+-22991.6310
+test/cuda/remd/rem_4rep_hybridsolvent
+143c143
+&lt;  EELEC  =    -27860.1563  EHBOND  =         0.  RESTRAINT  =         0.
+&gt;  EELEC  =    -28099.6793  EHBOND  =         0.  RESTRAINT  =         0.
+test/cuda/remd/rem_4rep_hybridsolvent
+175c175
+&lt;  Etot   =    -19607.3804  EKtot   =      4232.7075  EPtot      =
+-23840.0878
+&gt;  Etot   =    -19384.8766  EKtot   =      4388.3340  EPtot      =
+-23773.2106
+test/cuda/remd/mrem_4rep_gb
+120c120
+&lt;  NSTEP =      600   TIME(PS) =    1102.600  TEMP(K) =   352.85  PRESS =
+0.
+&gt;  NSTEP =      600   TIME(PS) =    1102.600  TEMP(K) =   326.81  PRESS =
+0.
+test/cuda/remd/mrem_4rep_gb
+63c63
+&lt;      2     1    350.00    -52.75    -46.13    -19.08    -19.14    F
+0.
+&gt;      2     1    350.00    -69.22    -46.13    -19.44    -19.14    F
+0.
+test/cuda/remd/mrem_4rep_gb
+128c128
+&lt;  1     -1.00    308.72    -67.55    300.00    300.00      0.21       0
+&gt;  1     -1.00    294.90    -66.88    300.00    300.00      0.21       0
+test/cuda/remd/mrem_4rep_gb
+120c120
+&lt;  NSTEP =      600   TIME(PS) =    1002.600  TEMP(K) =   263.53  PRESS =
+0.
+&gt;  NSTEP =      600   TIME(PS) =    1002.600  TEMP(K) =   274.96  PRESS =
+0.
+test/cuda/remd/mrem_4rep_gb
+138c138
+&lt;  NSTEP =      800   TIME(PS) =    1102.800  TEMP(K) =   338.23  PRESS =
+0.
+&gt;  NSTEP =      800   TIME(PS) =    1102.800  TEMP(K) =   327.67  PRESS =
+0.
+test/cuda/neb-testcases/neb_gb_full
+205c205
+&lt;  NSTEP =        8   TIME(PS) =       0.004  TEMP(K) =   107.24  PRESS =
+0.
+&gt;  NSTEP =        8   TIME(PS) =       0.004  TEMP(K) =   116.44  PRESS =
+0.
+test/cuda/neb-testcases/neb_gb_full
+451c451
+&lt; Energy for replicate   3 =       51.0773
+&gt; Energy for replicate   3 =       52.4552
+test/cuda/remd/hrem_4rep_gb
+16c16
+&lt;      4     3    300.00    -67.63    -67.60    -14.02    -14.52    T
+0.
+&gt;      4     3    300.00    -67.63    -67.60    -14.02    -14.52    T
+1.00
+Thank you,
+Chris.
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="https://nam02.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.amber">https://nam02.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.amber</a>
+md.org%2Fmailman%2Flistinfo%2Famber&amp;amp;data=05%7C01%7Cdavid.case%40rutgers.
+edu%7Ca8fc4fdcf2aa42165e8d08da637dfa41%7Cb92d2b234d35447093ff69aca6632ffe%7C
+1%7C0%7C637931689969214269%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQI
+joiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;amp;sdata=JomkpIBf
+VnO%2B%2Fxu3VH5mQVC5MO6jRodOCPxxkmgf91g%3D&amp;amp;reserved=0
+----- End forwarded message -----
+-- 
+====================================================================
+David A. Case                         |       david.case.rutgers.edu
+Dept. of Chemistry &amp; Chemical Biology |
+Rutgers University                    |   skype:              dacase
+174 Frelinghuysen Road, Rm. 208b      |   cell:      +1-609-751-8668
+Piscataway, NJ 08854        USA       |   web: casegroup.rutgers.edu
+====================================================================
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Thu Aug 04 2022 - 13:35:21 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0065.html" title="Next message in the list">Gert Kruger via AMBER: "[AMBER] Ambertools21 installation problems"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0063.html" title="Previous message in the list">David A Case via AMBER: "Re: [AMBER] How to avoid SHAKE on a specific QM hydrogen atom in QM/MM simulations without compromising qmshake=1 flag"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg64" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg64" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg64" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg64" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Summit compile and &quot;Attempted to read inpcrd as a NetCDF restart file, but failed&quot; from Derek M Shore on 2021-11-22 (Amber Archive Nov 2021)</title>
+<meta name="Author" content="Derek M Shore (des2037.med.cornell.edu)" />
+<meta name="Subject" content="Re: [AMBER] Summit compile and &quot;Attempted to read inpcrd as a NetCDF restart file, but failed&quot;" />
+<meta name="Date" content="2021-11-22" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Summit compile and &quot;Attempted to read inpcrd as a NetCDF restart file, but failed&quot;</h1>
+<!-- received="Mon Nov 22 17:00:02 2021" -->
+<!-- isoreceived="20211123010002" -->
+<!-- sent="Tue, 23 Nov 2021 00:53:53 +0000" -->
+<!-- isosent="20211123005353" -->
+<!-- name="Derek M Shore" -->
+<!-- email="des2037.med.cornell.edu" -->
+<!-- subject="Re: [AMBER] Summit compile and &quot;Attempted to read inpcrd as a NetCDF restart file, but failed&quot;" -->
+<!-- id="FD065EB0-EAD5-42F5-85D7-FE5A0536B38B.med.cornell.edu" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="20211120140306.bzwyiwuk4tarf4aq.godel.fios-router.home" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0219.html" accesskey="d" title="Chris Lee: &quot;[AMBER] &#0034;unknown flag: filename.top&#0034; error with PMEMD and topology file from CHARMM-GUI&quot;">Next message</a> ]
+[ <a href="0217.html" title="Carlos Simmerling: &quot;Re: [AMBER] How to create a MOH box (only methanol molecules)&quot;">Previous message</a> ]
+[ <a href="0209.html" title="David A Case: &quot;Re: [AMBER] Summit compile and &#0034;Attempted to read inpcrd as a NetCDF restart file, but failed&#0034;&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg218" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg218" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg218" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg218" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Derek M Shore &lt;<a href="mailto:des2037.med.cornell.edu?Subject=Re%3A%20%5BAMBER%5D%20Summit%20compile%20and%20%22Attempted%20to%20read%20inpcrd%20as%20a%20NetCDF%20restart%20file%2C%20but%20failed%22">des2037.med.cornell.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 23 Nov 2021 00:53:53 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Thanks very much for your suggestions, Prof. Case!
+<br />
+
+<br />
+I think your suggestions that there is a problem with DetectBinaryFile() makes a lot of sense; the reason is because the majority of my errors are related to mdgx, and most have the same initial error:
+<br />
+<em class="quotelev1">&gt;ReadRst &gt;&gt; Attempted to read inpcrd as a NetCDF
+</em><br />
+<em class="quotelev1">&gt;ReadRst &gt;&gt; restart file, but failed.
+</em><br />
+
+<br />
+Here is a list of all the test that fail with this error:
+<br />
+cd mdgx/1p7e &amp;&amp; ./Test.1p7e
+<br />
+cd mdgx/MLE &amp;&amp; ./Test.mle
+<br />
+cd mdgx/Settle &amp;&amp; ./Test.settle
+<br />
+cd mdgx/CMAP &amp;&amp; ./Test.cmap
+<br />
+cd mdgx/MCBarostat &amp;&amp; ./Test.mcb
+<br />
+cd mdgx/TIP4P &amp;&amp; ./Test.tip4p
+<br />
+cd mdgx/ForceCalc &amp;&amp; ./Test.frcc
+<br />
+cd mdgx/AddEP &amp;&amp; ./Test.addep
+<br />
+cd mdgx/Triclinic &amp;&amp; ./Test.triclinic
+<br />
+cd mdgx/Peptides &amp;&amp; ./Test.peptides
+<br />
+cd mdgx/Topology &amp;&amp; ./Test.prmtop_vs
+<br />
+cd mdgx/Topology &amp;&amp; ./Test.tip4p
+<br />
+cd mdgx/Topology &amp;&amp; ./Test.tip5p
+<br />
+cd mdgx/Topology &amp;&amp; ./Test.methanol
+<br />
+
+<br />
+(many of the above test scripts have multiple parts/failures)
+<br />
+
+<br />
+I am attaching the first inpcrd (for Test.1p7e); it's not a binary file, and it looks normal to me. Just for fun, I tried loading a inpcrd &amp; prmtop created by CHARMM-GUI for a completely different system (changing mdgx.in as needed), and I got the same error. (the point was to see if mdgx could handle an arbitrary inpcrd/prmtop, and it could not.
+<br />
+
+<br />
+Any advice or suggestions on how to resolve is most appreciated. Please let me know if I can provide any additional info that could be helpful.
+<br />
+
+<br />
+Best,
+<br />
+Derek
+<br />
+
+<br />
+Derek M. Shore, Ph.D.       
+<br />
+Scientific Computing Technology Engineer     
+<br />
+Institute for Computational Biomedicine
+<br />
+Department of Physiology and Biophysics
+<br />
+
+<br />
+Weill Cornell Medicine 
+<br />
+Department of Physiology and Biophysics 
+<br />
+1300 York Avenue, Room LC501A 
+<br />
+New York, NY 10065     
+<br />
+T: 212-746-6386 
+<br />
+des2037.med.cornell.edu
+<br />
+&nbsp;
+<br />
+&nbsp;
+<br />
+
+<br />
+﻿On 11/20/21, 9:03 AM, &quot;David A Case&quot; &lt;david.case.rutgers&#46;<!--nospam-->edu&gt; wrote:
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;On Fri, Nov 19, 2021, Derek M Shore wrote:
+<br />
+<em class="quotelev1">    &gt;
+</em><br />
+<em class="quotelev1">    &gt;I am trying to compile/test Amber20 (tools + GPU-accelerated MD), on Summit
+</em><br />
+<em class="quotelev1">    &gt;at ORNL (IBM POWER9, NVIDIA V100s). The compile seems to run without a
+</em><br />
+<em class="quotelev1">    &gt;problem. When I `make test.serial`, most of the tests pass, but I see
+</em><br />
+<em class="quotelev1">    &gt;several errors similar to this one:
+</em><br />
+<em class="quotelev1">    &gt;*/amber20/AmberTools/test/mdgx/1p7e$ ./Test.1p7e
+</em><br />
+<em class="quotelev1">    &gt;ReadRst &gt;&gt; Attempted to read inpcrd as a NetCDF
+</em><br />
+<em class="quotelev1">    &gt;ReadRst &gt;&gt; restart file, but failed.
+</em><br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Do the errors all happen with mdgx?  If so, you may be able to ignore
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;them for the time being, if you are not planning to use mdgx.
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;The inpcrd file in the test you cite is indeed a formatted restart file, and
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;not a NetCDF file.  So the problem may be with mdgx, and not with NetCDF.
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;(This is just speculation: it depends on whether you see the same error with
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;pememd.)  Maybe Dave Cerutti has some insight into how mdgx decides how to
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;try to open a restart file, but it's odd that this fails only on Summit.
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;My WAG is that the DetectBinaryFile() may not be working on the Summit file
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;system.  To help, you could (a) comment out the final line of the
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;/amber20/AmberTools/test/mdgx/1p7e/Test.1p7e script, and (b) post (as an
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;attachment!) the inpcrd file that the test creates.
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Thanks for the report....dac
+<br />
+
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;_______________________________________________
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;AMBER mailing list
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;AMBER.ambermd&#46;<!--nospam-->org
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwICAg&amp;c=lb62iw4YL4RFalcE2hQUQealT9-RXrryqt9KZX2qu2s&amp;r=X5Sc7H5NSWV3agvbxBXvARVirdVlt5y-nKiETDcG3R8&amp;m=falYyFfqOlpxG-cP5tpVOJ7PZYcZ5dOFs05fU6fr2QePx8L5-Y5BZPaTT2I7V9aD&amp;s">https://urldefense.proofpoint.com/v2/url?u=http-3A__lists.ambermd.org_mailman_listinfo_amber&amp;d=DwICAg&amp;c=lb62iw4YL4RFalcE2hQUQealT9-RXrryqt9KZX2qu2s&amp;r=X5Sc7H5NSWV3agvbxBXvARVirdVlt5y-nKiETDcG3R8&amp;m=falYyFfqOlpxG-cP5tpVOJ7PZYcZ5dOFs05fU6fr2QePx8L5-Y5BZPaTT2I7V9aD&amp;s</a>=K4IXuCOT6BVfLkDTOj0iL-jNKt-mNfqCyb5pwrrnI_8&amp;e= 
+<br />
+
+<br />
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>application/octet-stream attachment: <a href="att-0218/inpcrd">inpcrd</a></li>
+</ul>
+<!-- attachment="inpcrd" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Mon Nov 22 2021 - 17:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0219.html" title="Next message in the list">Chris Lee: "[AMBER] &#0034;unknown flag: filename.top&#0034; error with PMEMD and topology file from CHARMM-GUI"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0217.html" title="Previous message in the list">Carlos Simmerling: "Re: [AMBER] How to create a MOH box (only methanol molecules)"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0209.html" title="Message to which this message replies">David A Case: "Re: [AMBER] Summit compile and &#0034;Attempted to read inpcrd as a NetCDF restart file, but failed&#0034;"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg218" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg218" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg218" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg218" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

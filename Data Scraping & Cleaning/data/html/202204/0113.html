@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Compiling Amber18 on Scientific Linux 7.7 (CentOS 7) with gcc-7.5.0 and cuda-10.0 / cuda-11.4 from Gerald Keller on 2022-04-26 (Amber Archive Apr 2022)</title>
+<meta name="Author" content="Gerald Keller (gerald.keller.uni-wuerzburg.de)" />
+<meta name="Subject" content="[AMBER] Compiling Amber18 on Scientific Linux 7.7 (CentOS 7) with gcc-7.5.0 and cuda-10.0 / cuda-11.4" />
+<meta name="Date" content="2022-04-26" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Compiling Amber18 on Scientific Linux 7.7 (CentOS 7) with gcc-7.5.0 and cuda-10.0 / cuda-11.4</h1>
+<!-- received="Tue Apr 26 00:30:03 2022" -->
+<!-- isoreceived="20220426073003" -->
+<!-- sent="Tue, 26 Apr 2022 07:18:20 +0000" -->
+<!-- isosent="20220426071820" -->
+<!-- name="Gerald Keller" -->
+<!-- email="gerald.keller.uni-wuerzburg.de" -->
+<!-- subject="[AMBER] Compiling Amber18 on Scientific Linux 7.7 (CentOS 7) with gcc-7.5.0 and cuda-10.0 / cuda-11.4" -->
+<!-- id="cc6aa43cc3e5435fb45139e703bea6a3.uni-wuerzburg.de" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0114.html" accesskey="d" title="David A Case: &quot;[AMBER] Release of Amber22 and AmberTools22&quot;">Next message</a> ]
+[ <a href="0112.html" title="&#0304;mren Bay&#0305;l: &quot;[AMBER] Segmentation fault (core dumped) amber Tleap&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg113" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg113" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg113" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg113" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gerald Keller &lt;<a href="mailto:gerald.keller.uni-wuerzburg.de?Subject=Re%3A%20%5BAMBER%5D%20Compiling%20Amber18%20on%20Scientific%20Linux%207.7%20(CentOS%207)%20with%20gcc-7.5.0%20and%20cuda-10.0%20%2F%20cuda-11.4">gerald.keller.uni-wuerzburg.de</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 26 Apr 2022 07:18:20 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi there,
+<br />
+<br />due to a GPU update from RTX 2080 TI to RTX 3080 TI, our compiled version of Amber18's pmemd.cuda isn't working any more.
+<br />
+I am on a Scientific Linux 7.7 (CentOS 7) machine with a installed nvidia driver version 510.54 including CUDA version 11.6.
+<br />
+<br />I found the following, that has the same error message that occurs when running pmemd.cuda with RTX 3080 TI:
+<br />
+<a href="http://archive.ambermd.org/202012/0366.html">http://archive.ambermd.org/202012/0366.html</a>
+<br />
+<br />Unfortunately this is a solution for compiling  Amber20 with CUDA 11.1, but gave me the hint to try to recompile Amber18.
+<br />
+For this I used all available updates for Amber18 and AmberTools19, the gcc-7.5.0 compiler and the cuda-toolkit 10.0.
+<br />
+<br />'./configure -cuda gnu' passes just fine, but 'make install' fails  after executing:
+<br />
+<br />'/usr/local/cuda-10.0/bin/nvcc -gencode arch=compute_30,code=sm_30 -gencode arch=compute_35,code=sm_35 -gencode arch=compute_37,code=sm_37 -gencode arch=compute_50,code=sm_50 -gencode arch=compute_52,code=sm_52 -gencode arch=compute_53,code=sm_53 -gencode arch=compute_60,code=sm_60 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_70, -gencode arch=compute_61,code=sm_70 -Wno-deprecated-declarations -use_fast_math -O3  -ccbin /usr/local/gcc-7.5.0/bin/g++ -o cuda_pb.o -c cuda_pb.cu'
+<br />
+<br />In the link above there is mentioned, that the RTX 3080 TI would require sm_86. So I edited the config.h file, where I changed the path of nvcc from cuda-10.0 to cuda-11.4, added compute_86 and sm_86 and removed compute_30 and sm_30. So my entry for NVCC looks like this now - Just to point this out, from here I am using the cuda-toolkit 11.4!:
+<br />
+<br />NVCC=/usr/local/cuda-11.4/bin/nvcc -gencode arch=compute_35,code=sm_35 -gencode arch=compute_37,code=sm_37 -gencode arch=compute_50,code=sm_50 -gencode arch=compute_52,code=sm_52 -gencode arch=compute_53,code=sm_53 -gencode arch=compute_60,code=sm_60 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_70, -gencode arch=compute_61,code=sm_70 -gencode arch=compute_86,code=sm_86 -Wno-deprecated-declarations -use_fast_math -O3
+<br />
+<br />The compiliation fails now with the errors:
+<br />
+<br />cusparse_LinearSolvers.cu(89): error: identifier &quot;cusparseScsrmv&quot; is undefined
+<br />
+cusparse_LinearSolvers.cu(199): error: identifier &quot;cusparseScsrmv&quot; is undefined
+<br />
+<br />After the execution of:
+<br />
+<br />/usr/local/cuda-11.4/bin/nvcc -gencode arch=compute_35,code=sm_35 -gencode arch=compute_37,code=sm_37 -gencode arch=compute_50,code=sm_50 -gencode arch=compute_52,code=sm_52 -gencode arch=compute_53,code=sm_53 -gencode arch=compute_60,code=sm_60 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_70, -gencode arch=compute_61,code=sm_70 -gencode arch=compute_86,code=sm_86 -Wno-deprecated-declarations -use_fast_math -O3  -ccbin /usr/local/gcc-7.5.0/bin/g++ -o cuda_pb.o -c cuda_pb.cu
+<br />
+nvcc warning : The 'compute_35', 'compute_37', 'compute_50', 'sm_35', 'sm_37' and 'sm_50' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+<br />
+/usr/local/cuda-11.4/bin/nvcc -gencode arch=compute_35,code=sm_35 -gencode arch=compute_37,code=sm_37 -gencode arch=compute_50,code=sm_50 -gencode arch=compute_52,code=sm_52 -gencode arch=compute_53,code=sm_53 -gencode arch=compute_60,code=sm_60 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_70, -gencode arch=compute_61,code=sm_70 -gencode arch=compute_86,code=sm_86 -Wno-deprecated-declarations -use_fast_math -O3  -ccbin /usr/local/gcc-7.5.0/bin/g++ -o kLinearSolvers.o -c kLinearSolvers.cu
+<br />
+nvcc warning : The 'compute_35', 'compute_37', 'compute_50', 'sm_35', 'sm_37' and 'sm_50' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+<br />
+/usr/local/cuda-11.4/bin/nvcc -gencode arch=compute_35,code=sm_35 -gencode arch=compute_37,code=sm_37 -gencode arch=compute_50,code=sm_50 -gencode arch=compute_52,code=sm_52 -gencode arch=compute_53,code=sm_53 -gencode arch=compute_60,code=sm_60 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_70, -gencode arch=compute_61,code=sm_70 -gencode arch=compute_86,code=sm_86 -Wno-deprecated-declarations -use_fast_math -O3  -ccbin /usr/local/gcc-7.5.0/bin/g++ -I../cusplibrary-cuda9 -o cuda_LinearSolvers.o -c cuda_LinearSolvers.cu
+<br />
+nvcc warning : The 'compute_35', 'compute_37', 'compute_50', 'sm_35', 'sm_37' and 'sm_50' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+<br />
+/usr/local/cuda-11.4/bin/nvcc -gencode arch=compute_35,code=sm_35 -gencode arch=compute_37,code=sm_37 -gencode arch=compute_50,code=sm_50 -gencode arch=compute_52,code=sm_52 -gencode arch=compute_53,code=sm_53 -gencode arch=compute_60,code=sm_60 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_70, -gencode arch=compute_61,code=sm_70 -gencode arch=compute_86,code=sm_86 -Wno-deprecated-declarations -use_fast_math -O3  -ccbin /usr/local/gcc-7.5.0/bin/g++ -o cusparse_LinearSolvers.o -c cusparse_LinearSolvers.cu
+<br />
+nvcc warning : The 'compute_35', 'compute_37', 'compute_50', 'sm_35', 'sm_37' and 'sm_50' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+<br />
+<br />Now, my question is, if it is possible to get Amber18 compiled for use with RTX 3080 TI at all? And what do I have to modify to get everything working in the end?
+<br />
+<br />Thanks for any assistance in advance regarding to this topic.
+<br />
+<br />Best regards,
+<br />
+Gerald
+<br />
+<br /><br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Apr 26 2022 - 00:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0114.html" title="Next message in the list">David A Case: "[AMBER] Release of Amber22 and AmberTools22"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0112.html" title="Previous message in the list">&#0304;mren Bay&#0305;l: "[AMBER] Segmentation fault (core dumped) amber Tleap"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg113" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg113" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg113" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg113" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

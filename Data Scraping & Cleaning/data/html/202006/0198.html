@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] GPU error in the heating step of PMEMD.CUDA from rosaester.forgione.unina.it on 2020-06-22 (Amber Archive Jun 2020)</title>
+<meta name="Author" content="rosaester.forgione.unina.it (rosaester.forgione.unina.it)" />
+<meta name="Subject" content="Re: [AMBER] GPU error in the heating step of PMEMD.CUDA" />
+<meta name="Date" content="2020-06-22" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] GPU error in the heating step of PMEMD.CUDA</h1>
+<!-- received="Mon Jun 22 04:30:04 2020" -->
+<!-- isoreceived="20200622113004" -->
+<!-- sent="Mon, 22 Jun 2020 13:22:22 +0200" -->
+<!-- isosent="20200622112222" -->
+<!-- name="rosaester.forgione.unina.it" -->
+<!-- email="rosaester.forgione.unina.it" -->
+<!-- subject="Re: [AMBER] GPU error in the heating step of PMEMD.CUDA" -->
+<!-- id="20200622132222.21176z7l0w7uy7hq.inbox.unina.it" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20200622130551.24093q0psmd2vkpb.inbox.unina.it" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0199.html" accesskey="d" title="Gerardo Zerbetto De Palma: &quot;Re: [AMBER] GPU error in the heating step of PMEMD.CUDA&quot;">Next message</a> ]
+[ <a href="0197.html" title="rosaester.forgione.unina.it: &quot;[AMBER] GPU error in the heating step of PMEMD.CUDA&quot;">Previous message</a> ]
+[ <a href="0197.html" title="rosaester.forgione.unina.it: &quot;[AMBER] GPU error in the heating step of PMEMD.CUDA&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0199.html" accesskey="t" title="Gerardo Zerbetto De Palma: &quot;Re: [AMBER] GPU error in the heating step of PMEMD.CUDA&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg198" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg198" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg198" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg198" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: &lt;<a href="mailto:rosaester.forgione.unina.it?Subject=Re%3A%20%5BAMBER%5D%20GPU%20error%20in%20the%20heating%20step%20of%20PMEMD.CUDA">rosaester.forgione.unina.it</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 22 Jun 2020 13:22:22 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+I want to add that after some steps of the production the same error  
+<br />
+appears 2/3 times and then the calculation stops :
+<br />
+<br />PRODUCTION
+<br />
+Mon 22 Jun 2020 01:12:04 PM WEST 1 ns
+<br />
+Mon 22 Jun 2020 01:15:26 PM WEST 2 ns
+<br />
+Mon 22 Jun 2020 01:18:49 PM WEST 3 ns
+<br />
+ERROR: Calculation halted.  Periodic box dimensions have changed too  
+<br />
+much from their initial values.
+<br />
+&nbsp;&nbsp;&nbsp;Your system density has likely changed by a large amount, probably from
+<br />
+&nbsp;&nbsp;&nbsp;starting the simulation from a structure a long way from equilibrium.
+<br />
+<br />&nbsp;&nbsp;&nbsp;[Although this error can also occur if the simulation has blown up  
+<br />
+for some reason]
+<br />
+<br />&nbsp;&nbsp;&nbsp;The GPU code does not automatically reorganize grid cells and thus you
+<br />
+&nbsp;&nbsp;&nbsp;will need to restart the calculation from the previous restart file.
+<br />
+&nbsp;&nbsp;&nbsp;This will generate new grid cells and allow the calculation to continue.
+<br />
+&nbsp;&nbsp;&nbsp;It may be necessary to repeat this restarting multiple times if your system
+<br />
+&nbsp;&nbsp;&nbsp;is a long way from an equilibrated density.
+<br />
+<br />&nbsp;&nbsp;&nbsp;Alternatively you can run with the CPU code until the density has converged
+<br />
+&nbsp;&nbsp;&nbsp;and then switch back to the GPU code.
+<br />
+<br />Mon 22 Jun 2020 01:19:58 PM WEST 4 ns
+<br />
+ERROR: Calculation halted.  Periodic box dimensions have changed too  
+<br />
+much from their initial values.
+<br />
+&nbsp;&nbsp;&nbsp;Your system density has likely changed by a large amount, probably from
+<br />
+&nbsp;&nbsp;&nbsp;starting the simulation from a structure a long way from equilibrium.
+<br />
+<br />&nbsp;&nbsp;&nbsp;[Although this error can also occur if the simulation has blown up  
+<br />
+for some reason]
+<br />
+<br />&nbsp;&nbsp;&nbsp;The GPU code does not automatically reorganize grid cells and thus you
+<br />
+&nbsp;&nbsp;&nbsp;will need to restart the calculation from the previous restart file.
+<br />
+&nbsp;&nbsp;&nbsp;This will generate new grid cells and allow the calculation to continue.
+<br />
+&nbsp;&nbsp;&nbsp;It may be necessary to repeat this restarting multiple times if your system
+<br />
+&nbsp;&nbsp;&nbsp;is a long way from an equilibrated density.
+<br />
+<br />&nbsp;&nbsp;&nbsp;Alternatively you can run with the CPU code until the density has converged
+<br />
+&nbsp;&nbsp;&nbsp;and then switch back to the GPU code.
+<br />
+<br />Mon 22 Jun 2020 01:20:00 PM WEST 5 ns
+<br />
+<br />&nbsp;&nbsp;&nbsp;Unit    9 Error on OPEN: PRODUCTION-4.restrt
+<br />
+STOP PMEMD Terminated Abnormally!
+<br />
+<br /><br /><br />Quoting rosaester.forgione.unina.it:
+<br />
+<br /><em class="quotelev1">&gt;  Hi,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I am facing problems in running MD dynamics by using PMEMD.CUDA
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; During the 300 K heating step (NPT) the following error appears:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ERROR: Calculation halted.  Periodic box dimensions have changed too  
+</em><br />
+<em class="quotelev1">&gt; much from their initial values.
+</em><br />
+<em class="quotelev1">&gt;   Your system density has likely changed by a large amount, probably from
+</em><br />
+<em class="quotelev1">&gt;   starting the simulation from a structure a long way from equilibrium.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   [Although this error can also occur if the simulation has blown up  
+</em><br />
+<em class="quotelev1">&gt; for some reason]
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   The GPU code does not automatically reorganize grid cells and thus you
+</em><br />
+<em class="quotelev1">&gt;   will need to restart the calculation from the previous restart file.
+</em><br />
+<em class="quotelev1">&gt;   This will generate new grid cells and allow the calculation to continue.
+</em><br />
+<em class="quotelev1">&gt;   It may be necessary to repeat this restarting multiple times if your system
+</em><br />
+<em class="quotelev1">&gt;   is a long way from an equilibrated density.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;   Alternatively you can run with the CPU code until the density has converged
+</em><br />
+<em class="quotelev1">&gt;   and then switch back to the GPU code.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; However, the MD simulations goes on passing to the production steps.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I tried to restart the simulation from the previous restart file, as  
+</em><br />
+<em class="quotelev1">&gt; suggested by the error message, but it doesn't work since the same  
+</em><br />
+<em class="quotelev1">&gt; error appears.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I  used the same equilibration protocol that I routinely use to  
+</em><br />
+<em class="quotelev1">&gt; carry on MDs on ligands alone (glycans) and protein-ligand complex.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I tried to run a MD simulation on an &quot;old&quot; system, already analyzed  
+</em><br />
+<em class="quotelev1">&gt; with amber without any issue, and the same error appears. Thus, it  
+</em><br />
+<em class="quotelev1">&gt; seems that the problem is not strictly related to the parameters of  
+</em><br />
+<em class="quotelev1">&gt; the system.
+</em><br />
+<em class="quotelev1">&gt; I also run the simulation on GPU 0 and then on 1 and the error is  
+</em><br />
+<em class="quotelev1">&gt; still there.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Anyone can suggest how to fix this problem?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks in advance,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Rosa
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br /><br /><br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jun 22 2020 - 04:30:04 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0199.html" title="Next message in the list">Gerardo Zerbetto De Palma: "Re: [AMBER] GPU error in the heating step of PMEMD.CUDA"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0197.html" title="Previous message in the list">rosaester.forgione.unina.it: "[AMBER] GPU error in the heating step of PMEMD.CUDA"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0197.html" title="Message to which this message replies">rosaester.forgione.unina.it: "[AMBER] GPU error in the heating step of PMEMD.CUDA"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0199.html" title="Next message in this discussion thread">Gerardo Zerbetto De Palma: "Re: [AMBER] GPU error in the heating step of PMEMD.CUDA"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0199.html" title="Message sent in reply to this message">Gerardo Zerbetto De Palma: "Re: [AMBER] GPU error in the heating step of PMEMD.CUDA"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg198" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg198" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg198" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg198" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

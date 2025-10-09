@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Missing (ATTN, need revision) and poor parameters (high penalty score) for small molecule parameters and hard time with paramfit from Állan Ferrari on 2020-08-22 (Amber Archive Aug 2020)</title>
+<meta name="Author" content="Állan Ferrari (ajrferrari.gmail.com)" />
+<meta name="Subject" content="[AMBER] Missing (ATTN, need revision) and poor parameters (high penalty score) for small molecule parameters and hard time with paramfit" />
+<meta name="Date" content="2020-08-22" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Missing (ATTN, need revision) and poor parameters (high penalty score) for small molecule parameters and hard time with paramfit</h1>
+<!-- received="Sat Aug 22 14:30:03 2020" -->
+<!-- isoreceived="20200822213003" -->
+<!-- sent="Sat, 22 Aug 2020 17:59:45 -0300" -->
+<!-- isosent="20200822205945" -->
+<!-- name="Állan Ferrari" -->
+<!-- email="ajrferrari.gmail.com" -->
+<!-- subject="[AMBER] Missing (ATTN, need revision) and poor parameters (high penalty score) for small molecule parameters and hard time with paramfit" -->
+<!-- id="CAO48HDRg6QoSOhqfzWWxW0MOsfc28Pzj+usNbvwB5E1WD-URTw.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0160.html" accesskey="d" title="Carlos: &quot;[AMBER] amber14 cuda code does not work&quot;">Next message</a> ]
+[ <a href="0158.html" title="Jonee Lillard: &quot;Re: [AMBER] Time numbering problem with constant-pH simulations&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0166.html" accesskey="t" title="David Cerutti: &quot;Re: [AMBER] Missing (ATTN, need revision) and poor parameters (high penalty score) for small molecule parameters and hard time with paramfit&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg159" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg159" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg159" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg159" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Állan Ferrari &lt;<a href="mailto:ajrferrari.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Missing%20(ATTN%2C%20need%20revision)%20and%20poor%20parameters%20(high%20penalty%20score)%20for%20small%20molecule%20parameters%20and%20hard%20time%20with%20paramfit">ajrferrari.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 22 Aug 2020 17:59:45 -0300</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber user community,
+<br />
+<br />I am interested in simulating a protein - small molecule inhibitor
+<br />
+interaction.
+<br />
+I optimized the small molecule geometry with Gaussian and derived RESP
+<br />
+charges.
+<br />
+Also, with parmchk2 I derived frcmod files containing small molecule
+<br />
+parameters to prepare the system for simulation using both parm10 and gaff.
+<br />
+However, there are still some missing parameters or parameters with high
+<br />
+penalty score totalizing 12 parameters among one bond, couple angles and
+<br />
+dihedrals.
+<br />
+<br />I have tried for days to use paramfit following this tutorial (
+<br />
+<a href="http://ambermd.org/tutorials/advanced/tutorial23/">http://ambermd.org/tutorials/advanced/tutorial23/</a> ) but with no success.
+<br />
+In my first attempt, I have tried to generate a large number of conformers
+<br />
+(&gt; 1000) with random values for the angles and dihedrals I am interested in
+<br />
+parametrizing. Then, I runned Gaussian to evaluate its energy (constrained,
+<br />
+single point energy calculation). When I tried to derive K (the
+<br />
+difference between Amber energy and quantum energy, in Hartree) using
+<br />
+paramfit the fit was horrible (R2 was negative!).
+<br />
+<br />In a second attempt, I tried to generate only the r_eq and bond force
+<br />
+constant for one bond. I generaeed 50 conformers with random distances
+<br />
+between the two atoms of interest (0.5 to 3.5 A), runned gaussian single
+<br />
+energy point calculation for each and when it came to derive K again an
+<br />
+horrible fit (r2 &lt; 0.05)!  I tried to continue the tutorial regardless of
+<br />
+the poor fit but it didn't work, as expected. It complained I had
+<br />
+insufficient bond information in sample structures. Definitely not the case.
+<br />
+<br />Finally, I was hoping that I could derive manually the parameters, once I
+<br />
+have the energies as a function of the distance between the atoms.
+<br />
+I fit k*(r-r0) function to the derived (E, r) data points. The k, however,
+<br />
+is equal to 4.5 while the k for bonds already found from parm10 and gaff
+<br />
+files are in the 200-600 value range.
+<br />
+<br />Questions:
+<br />
+1) Is this last attempt a valid approach, that is, vary the degree of
+<br />
+freedom I am interested in parametrize and then manually fit to obtain the
+<br />
+missing parameters?
+<br />
+2) Is there a multiplying factor for this parameter (10E-2?) that would
+<br />
+justify the difference I am observing (4.5 to 200-600)?
+<br />
+<br />If (1) is not an option, I would really appreciate a better
+<br />
+tutorial/documentation for paramfit or other source for small molecule
+<br />
+amber parametrization...
+<br />
+<br />Kind regards,
+<br />
+Állan
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sat Aug 22 2020 - 14:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0160.html" title="Next message in the list">Carlos: "[AMBER] amber14 cuda code does not work"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0158.html" title="Previous message in the list">Jonee Lillard: "Re: [AMBER] Time numbering problem with constant-pH simulations"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0166.html" title="Next message in this discussion thread">David Cerutti: "Re: [AMBER] Missing (ATTN, need revision) and poor parameters (high penalty score) for small molecule parameters and hard time with paramfit"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0166.html" title="Message sent in reply to this message">David Cerutti: "Re: [AMBER] Missing (ATTN, need revision) and poor parameters (high penalty score) for small molecule parameters and hard time with paramfit"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg159" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg159" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg159" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg159" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

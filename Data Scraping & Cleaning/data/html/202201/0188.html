@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] ghost pmemd.cuda process ? from Jordi Bujons on 2022-01-22 (Amber Archive Jan 2022)</title>
+<meta name="Author" content="Jordi Bujons (jordi.bujons.iqac.csic.es)" />
+<meta name="Subject" content="[AMBER] ghost pmemd.cuda process ?" />
+<meta name="Date" content="2022-01-22" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] ghost pmemd.cuda process ?</h1>
+<!-- received="Sat Jan 22 13:30:02 2022" -->
+<!-- isoreceived="20220122213002" -->
+<!-- sent="Sat, 22 Jan 2022 22:02:53 +0100" -->
+<!-- isosent="20220122210253" -->
+<!-- name="Jordi Bujons" -->
+<!-- email="jordi.bujons.iqac.csic.es" -->
+<!-- subject="[AMBER] ghost pmemd.cuda process ?" -->
+<!-- id="000901d80fd3$6cc78200$46568600$.iqac.csic.es" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0189.html" accesskey="d" title="Gerald Monard: &quot;Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)&quot;">Next message</a> ]
+[ <a href="0187.html" title="Michael Coleman: &quot;[AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0199.html" accesskey="t" title="Ross Walker: &quot;Re: [AMBER] ghost pmemd.cuda process ?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg188" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg188" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg188" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg188" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Jordi Bujons &lt;<a href="mailto:jordi.bujons.iqac.csic.es?Subject=Re%3A%20%5BAMBER%5D%20ghost%20pmemd.cuda%20process%20%3F">jordi.bujons.iqac.csic.es</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 22 Jan 2022 22:02:53 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear all,
+<br />
+<br />&nbsp;
+<br />
+<br />I am running a series of simulations on several nodes of a cluster which are
+<br />
+equipped with different number and type of GPUs. I had done this in the past
+<br />
+and it used to be very simple since all nodes are set with Persistence and
+<br />
+Compute Exclusive modes on, such that any number of GPU jobs could be
+<br />
+launched through the queue system (SGE 6.2) and the jobs would be
+<br />
+distributed among the nodes with available GPUs, using a single GPU per job
+<br />
+and without doing anything else on the user side.
+<br />
+<br />&nbsp;
+<br />
+<br />However, more recently I found that this is not possible anymore because
+<br />
+each GPU job seems to initiate 2 pmemd.cuda processes: one which performs
+<br />
+the actual calculation and a second one that remains without doing much but
+<br />
+keeping one GPU busy and not available for other jobs. Thus, if I run the
+<br />
+command nvidia-smi after launching a single pmemd.cuda calculation, this is
+<br />
+the output:
+<br />
+<br />&nbsp;
+<br />
+<br />+---------------------------------------------------------------------------
+<br />
+--+
+<br />
+<br />| NVIDIA-SMI 460.27.04    Driver Version: 460.27.04    CUDA Version: 11.2
+<br />
+|
+<br />
+<br />|-------------------------------+----------------------+--------------------
+<br />
+--+
+<br />
+<br />| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr.
+<br />
+ECC |
+<br />
+<br />| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute
+<br />
+M. |
+<br />
+<br />|                               |                      |               MIG
+<br />
+M. |
+<br />
+<br />|===============================+======================+====================
+<br />
+==|
+<br />
+<br />|   0  GeForce GTX 108...  On   | 00000000:03:00.0 Off |
+<br />
+N/A |
+<br />
+<br />| 20%   36C    P8     9W / 250W |    226MiB / 11176MiB |      0%   E.
+<br />
+Process |
+<br />
+<br />|                               |                      |
+<br />
+N/A |
+<br />
+<br />+-------------------------------+----------------------+--------------------
+<br />
+--+
+<br />
+<br />|   1  GeForce GTX 108...  On   | 00000000:81:00.0 Off |
+<br />
+N/A |
+<br />
+<br />| 67%   84C    P2   212W / 250W |    627MiB / 11178MiB |     98%   E.
+<br />
+Process |
+<br />
+<br />|                               |                      |
+<br />
+N/A |
+<br />
+<br />+-------------------------------+----------------------+--------------------
+<br />
+--+
+<br />
+<br />&nbsp;
+<br />
+<br />+---------------------------------------------------------------------------
+<br />
+--+
+<br />
+<br />| Processes:
+<br />
+|
+<br />
+<br />|  GPU   GI   CI        PID   Type   Process name                  GPU
+<br />
+Memory |
+<br />
+<br />|        ID   ID                                                   Usage
+<br />
+|
+<br />
+<br />|===========================================================================
+<br />
+==|
+<br />
+<br />|    0   N/A  N/A      2121      G   /usr/bin/X
+<br />
+35MiB |
+<br />
+<br />|    0   N/A  N/A      2165      G   /usr/bin/sddm-greeter
+<br />
+29MiB |
+<br />
+<br />|    0   N/A  N/A     31248      C   ...ms/amber21/bin/pmemd.cuda
+<br />
+155MiB |
+<br />
+<br />|    1   N/A  N/A     31248      C   ...ms/amber21/bin/pmemd.cuda
+<br />
+623MiB |
+<br />
+<br />+---------------------------------------------------------------------------
+<br />
+--+
+<br />
+<br />&nbsp;
+<br />
+<br />As shown, GPU ID 0 is busy with a pmemd.cuda process that shows 0% GPU-Util,
+<br />
+while GPU ID 1 is running at almost 100%. The calculation runs just fine but
+<br />
+trying to launch a second job in this node fails because no available GPUs.
+<br />
+<br />&nbsp;
+<br />
+<br />The only way that I found to use all the available GPUs is by setting the
+<br />
+CUDA_VISIBLE_DEVICES parameter. Doing this, each job runs a single
+<br />
+pmemd.cuda process and occupies a single GPU. The inconvenience of this is
+<br />
+that trying to launch a relatively large number of simulations through the
+<br />
+queue system requires to set the CUDA_VISIBLE_DEVICES parameter in each
+<br />
+case, and it is possible that jobs won't run even if there are GPUs
+<br />
+available because they have a different IDs than the one set.
+<br />
+<br />&nbsp;
+<br />
+<br />I do not know if this a problem of a wrong compilation or of the Nvidia
+<br />
+driver or something else. I wonder if somebody has found the same problem
+<br />
+and if there is any fix for this. Any suggestion will be appreciated.
+<br />
+<br />&nbsp;
+<br />
+<br />Regards,
+<br />
+<br />&nbsp;
+<br />
+<br />Jordi
+<br />
+<br />&nbsp;
+<br />
+<br />&nbsp;
+<br />
+<br />----------------------------------------------------------------------------
+<br />
+----------
+<br />
+Jordi Bujons, PhD
+<br />
+Dept. of Biological Chemistry (QB)
+<br />
+Institute of Advanced Chemistry of Catalonia (IQAC)
+<br />
+National Research Council of Spain (CSIC)
+<br />
+Address: Jordi Girona 18-26, 08034 Barcelona, Spain
+<br />
+Phone:  &lt;tel:%2B34%20934006100%20ext.%201291&gt; +34 934006100 ext. 1291
+<br />
+FAX:  &lt;tel:%2B34%20932045904&gt; +34 932045904
+<br />
+&nbsp;&lt;mailto:jordi.bujons.iqac.csic.es&gt; jordi.bujons.iqac.csic.es
+<br />
+&nbsp;&lt;<a href="http://www.iqac.csic.es">http://www.iqac.csic.es</a>&gt; <a href="http://www.iqac.csic.es">http://www.iqac.csic.es</a>
+<br />
+<br />&nbsp;
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sat Jan 22 2022 - 13:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0189.html" title="Next message in the list">Gerald Monard: "Re: [AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0187.html" title="Previous message in the list">Michael Coleman: "[AMBER] any working singularity or docker recipe? (esp for CUDA and MPI)"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0199.html" title="Next message in this discussion thread">Ross Walker: "Re: [AMBER] ghost pmemd.cuda process ?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0199.html" title="Message sent in reply to this message">Ross Walker: "Re: [AMBER] ghost pmemd.cuda process ?"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0217.html" title="Message sent in reply to this message">Jordi Bujons: "Re: [AMBER] ghost pmemd.cuda process ?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg188" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg188" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg188" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg188" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

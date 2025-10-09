@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Solution to the replica exchange SGLD restart bug from Charo del Genio on 2021-02-01 (Amber Archive Feb 2021)</title>
+<meta name="Author" content="Charo del Genio (the.paraw.gmail.com)" />
+<meta name="Subject" content="[AMBER] Solution to the replica exchange SGLD restart bug" />
+<meta name="Date" content="2021-02-01" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Solution to the replica exchange SGLD restart bug</h1>
+<!-- received="Mon Feb  1 14:00:02 2021" -->
+<!-- isoreceived="20210201220002" -->
+<!-- sent="Mon, 1 Feb 2021 21:40:41 +0000" -->
+<!-- isosent="20210201214041" -->
+<!-- name="Charo del Genio" -->
+<!-- email="the.paraw.gmail.com" -->
+<!-- subject="[AMBER] Solution to the replica exchange SGLD restart bug" -->
+<!-- id="02161869-c1ef-421a-4872-30ac5679e5f2.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="c808cb8b-67d0-8c39-b3de-85f9285c35c4.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0009.html" accesskey="d" title="Pinky Mazumder: &quot;Re: [AMBER] max pairlist cutoff must be less than unit cell max sphere radius!&quot;">Next message</a> ]
+[ <a href="0007.html" title="David A Case: &quot;Re: [AMBER] erro free energy calculation&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg8" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg8" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg8" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg8" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Charo del Genio &lt;<a href="mailto:the.paraw.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Solution%20to%20the%20replica%20exchange%20SGLD%20restart%20bug">the.paraw.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 1 Feb 2021 21:40:41 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear all,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;after some more work, I finally produced some patches that work for the problem of the restart of RXSGLD runs. I verified that they are correct by checking trajectories literally step by step and 
+<br />
+outputting a certain amount of debug information.
+<br />
+<br />Please find attached the patches (for sander, remd and getcor). The idea is that now getcor detects whether there is a stage ID in the restart files and, if so, propagates it to remd1d_setup, which 
+<br />
+then takes care for changing tempsg and sgft to the correct values for that stage.
+<br />
+<br />Right now, I am virtually sure that it works correctly. However, once more, I would greatly appreciate comments from the developers, because it is always possible that I made some subtle mistake.
+<br />
+<br /><br />Cheers,
+<br />
+<br />Charo
+<br />
+<br /><br /><br /><br /><pre>
+-- 
+Dr. Charo I. del Genio
+Senior Lecturer in Statistical Physics
+Applied Mathematics Research Centre (AMRC)
+Design Hub
+Coventry University Technology Park
+Coventry CV1 5FB
+UK
+<a href="https://charodelgenio.weebly.com">https://charodelgenio.weebly.com</a>
+
+
+
+
+</pre>
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>text/x-patch attachment: <a href="att-0008/getcor.patch">getcor.patch</a></li>
+</ul>
+<!-- attachment="getcor.patch" -->
+<ul>
+<li>text/x-patch attachment: <a href="att-0008/remd.patch">remd.patch</a></li>
+</ul>
+<!-- attachment="remd.patch" -->
+<ul>
+<li>text/x-patch attachment: <a href="att-0008/sander.patch">sander.patch</a></li>
+</ul>
+<!-- attachment="sander.patch" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Mon Feb 01 2021 - 14:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0009.html" title="Next message in the list">Pinky Mazumder: "Re: [AMBER] max pairlist cutoff must be less than unit cell max sphere radius!"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0007.html" title="Previous message in the list">David A Case: "Re: [AMBER] erro free energy calculation"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg8" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg8" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg8" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg8" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

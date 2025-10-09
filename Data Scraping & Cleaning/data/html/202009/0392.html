@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] A100 and RTX3090 Benchmarks from Hashemi, Mohtadin on 2020-09-30 (Amber Archive Sep 2020)</title>
+<meta name="Author" content="Hashemi, Mohtadin (mohtadin.hashemi.unmc.edu)" />
+<meta name="Subject" content="Re: [AMBER] A100 and RTX3090 Benchmarks" />
+<meta name="Date" content="2020-09-30" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] A100 and RTX3090 Benchmarks</h1>
+<!-- received="Wed Sep 30 09:00:03 2020" -->
+<!-- isoreceived="20200930160003" -->
+<!-- sent="Wed, 30 Sep 2020 15:43:03 +0000" -->
+<!-- isosent="20200930154303" -->
+<!-- name="Hashemi, Mohtadin" -->
+<!-- email="mohtadin.hashemi.unmc.edu" -->
+<!-- subject="Re: [AMBER] A100 and RTX3090 Benchmarks" -->
+<!-- id="DM6PR05MB5850E76D1CE1A6D48718BFE0F4330.DM6PR05MB5850.namprd05.prod.outlook.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="202009291729450377224.126.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0393.html" accesskey="d" title="Vaibhav Dixit: &quot;Re: [AMBER] AmberMdPrep github cpptraj not sourced&quot;">Next message</a> ]
+[ <a href="0391.html" title="Vaibhav Dixit: &quot;Re: [AMBER] AmberMdPrep github cpptraj not sourced&quot;">Previous message</a> ]
+[ <a href="0372.html" title="xmgign.126.com: &quot;Re: [AMBER] A100 and RTX3090 Benchmarks&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg392" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg392" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg392" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg392" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Hashemi, Mohtadin &lt;<a href="mailto:mohtadin.hashemi.unmc.edu?Subject=Re%3A%20%5BAMBER%5D%20A100%20and%20RTX3090%20Benchmarks">mohtadin.hashemi.unmc.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 30 Sep 2020 15:43:03 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Not at all. A few weeks ago I answered a question regarding whether Amber18 would support the GPUs based on Ampere architecture and how big the performance gain would be.
+<br />
+<br />Briefly, the core count is not the most critical metric for compute performance. For the same number of shaders (cuda cores) but different memory bandwidths you have different performance (see the previous email). From Ross' data: lower core count but higher bandwidth outperforms higher core count and lower bandwidth: 3090 vs A100, 10496 vs 6912 cores, 936 vs 1555 GB/s bandwidth (~66%), 58.31 vs 77.98 ns/day (~34%). For the 2080Ti vs 3090, bandwidth is 616 vs 936 GB/s (~51%), so an actual ~43% performance increase (40.77 vs 58.31 ns/day) is very good.
+<br />
+<br />Communication speed is very very important; simplistically the compute performance is limited by how fast the cores can send/receive data to/from the memory (there are other factors, but this is a simple approximation). Amber does not frequently transmit data between the CPU and the GPU, otherwise there would be another bottleneck.
+<br />
+<br />If you want to see for yourself, try this: take one of the benchmark systems from http://ambermd.org/GPUPerformance.php (or one of your production systems), run it on a GPU with different output frequencies, e.g. no output, every timestep, every 1,000 timestep, and every 10,000 timestep. What happens with the performance?
+<br />
+<br />/MH
+<br />
+<br />-----Original Message-----
+<br />
+From: xmgign.126.com &lt;xmgign.126.com&gt;
+<br />
+Sent: Tuesday, September 29, 2020 4:30 AM
+<br />
+To: amber &lt;amber.ambermd.org&gt;
+<br />
+Subject: Re: [AMBER] A100 and RTX3090 Benchmarks
+<br />
+<br />&nbsp;Non-UNMC email
+<br />
+<br />It is strange that RTX3090 is only about 20% faster than RTX2080ti. The number of CUDA cores of RTX3090 (10496 CUDA cores) is 2.5 times that of 2080ti (4352).
+<br />
+<br /><br /><br />xmgign.126.com
+<br />
+<br />From: Ross Walker
+<br />
+Date: 2020-09-28 07:30
+<br />
+To: AMBER Mailing List
+<br />
+Subject: [AMBER] A100 and RTX3090 Benchmarks Hi Amberites,
+<br />
+<br />For those who are interested here's benchmarks for Amber 20 on the latest GPUs. I'll add this to the website shortly.
+<br />
+<br />CUDA 11.1
+<br />
+Amber 20 Update 6
+<br />
+AmberTools 20 Update 9
+<br />
+Driver 455.23.04
+<br />
+<br />Throughput ns/day GPU Model
+<br />
+Benchmark RTX2080TI RTX6000 A100 PCIe RTX3090 JAC Production NVE 4fs 970.51 1034.88 1199.22 1196.5 JAC Production NPT 4fs 940.61 1004.03 1194.5 1157.76 JAC Production NVE 2fs 510.21 540.17 611.08 632.19 JAC Production NPT 2fs 488.36 515.86 610.09 595.28 FactorIX Production NVE 2fs 205.92 217.25 271.36 264.78 FactorIX Production NPT 2fs 189.99 206.00 252.87 248.65 Cellulose Production NVE 2fs 43.89 47.41 85.23 63.23 Cellulose Production NPT 2fs 40.77 45.24 77.98 58.31 STMV Production NPT 4fs 25.21 28.49 52.02 38.65 TRPCage GB 2fs 1151.74 1189.25 1040.61 1225.53 Myoglobin GB 2fs 505.93 600.83 661.22 621.73 Nucleosome GB 2fs 15.22 16.81 29.66 21.08
+<br />
+<br />RTX3080 coming in a few days.
+<br />
+<br />All the best
+<br />
+Ross
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!JkUDQA!fTDuQOhVuSiF3hmdEjREbrDL_ox__4fp4prOwn8-p_1MS_LwohNkyNpQWkuujazby5Ovlw">https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!JkUDQA!fTDuQOhVuSiF3hmdEjREbrDL_ox__4fp4prOwn8-p_1MS_LwohNkyNpQWkuujazby5Ovlw</a>$
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!JkUDQA!fTDuQOhVuSiF3hmdEjREbrDL_ox__4fp4prOwn8-p_1MS_LwohNkyNpQWkuujazby5Ovlw">https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!JkUDQA!fTDuQOhVuSiF3hmdEjREbrDL_ox__4fp4prOwn8-p_1MS_LwohNkyNpQWkuujazby5Ovlw</a>$
+<br />
+<br />The information in this e-mail may be privileged and confidential, intended only for the use of the addressee(s) above. Any unauthorized use or disclosure of this information is prohibited. If you have received this e-mail by mistake, please delete it and immediately contact the sender.
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Sep 30 2020 - 09:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0393.html" title="Next message in the list">Vaibhav Dixit: "Re: [AMBER] AmberMdPrep github cpptraj not sourced"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0391.html" title="Previous message in the list">Vaibhav Dixit: "Re: [AMBER] AmberMdPrep github cpptraj not sourced"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0372.html" title="Message to which this message replies">xmgign.126.com: "Re: [AMBER] A100 and RTX3090 Benchmarks"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg392" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg392" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg392" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg392" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

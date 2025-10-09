@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] error while building Amber20 with Intel + CUDA from Susan Chacko on 2021-02-02 (Amber Archive Feb 2021)</title>
+<meta name="Author" content="Susan Chacko (susan.chacko.nih.gov)" />
+<meta name="Subject" content="[AMBER] error while building Amber20 with Intel + CUDA" />
+<meta name="Date" content="2021-02-02" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] error while building Amber20 with Intel + CUDA</h1>
+<!-- received="Tue Feb  2 12:30:02 2021" -->
+<!-- isoreceived="20210202203002" -->
+<!-- sent="Tue, 2 Feb 2021 15:20:43 -0500" -->
+<!-- isosent="20210202202043" -->
+<!-- name="Susan Chacko" -->
+<!-- email="susan.chacko.nih.gov" -->
+<!-- subject="[AMBER] error while building Amber20 with Intel + CUDA" -->
+<!-- id="7b6ec89a-edf3-b861-1ebb-c2f39aee4d11.nih.gov" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0019.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] error while building Amber20 with Intel + CUDA&quot;">Next message</a> ]
+[ <a href="0017.html" title="Maria Nagan: &quot;Re: [AMBER] Hydrogen bond analysis tutorial&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0019.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] error while building Amber20 with Intel + CUDA&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg18" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg18" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg18" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg18" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Susan Chacko &lt;<a href="mailto:susan.chacko.nih.gov?Subject=Re%3A%20%5BAMBER%5D%20error%20while%20building%20Amber20%20with%20Intel%20%2B%20CUDA">susan.chacko.nih.gov</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 2 Feb 2021 15:20:43 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />I compiled Amber 20 with gcc + CUDA + MPI on our Centos7 cluster, and 
+<br />
+everything worked fine.
+<br />
+<br />I also tried compiling with the Intel compilers, but am getting an 
+<br />
+error. The Amber config process reports
+<br />
+<br /># Only ICC 15.0, ICC 16.0, ICC 17.0, ICC 18.0 allowed
+<br />
+<br /># CUDA 7.5, 8.0, 9.0, 9.1, and 9.2 have been tested and are supported.
+<br />
+<br />so I tried Intel 2018.3.222 and CUDA 9.2.
+<br />
+<br />'configure -cuda intel' completed, but the following 'make install' died 
+<br />
+with
+<br />
+<br /><pre>
+----
+In file included from gpuContext.h(6),
+                  from gpu.cpp(23):
+gti_gpuContext.h(47): error: qualified name is not allowed
+     std::unique_ptr&lt; GpuBuffer&lt;bool&gt;&gt; pbTLNeedNewNeighborList;
+     ^
+In file included from gpuContext.h(6),
+                  from gpu.cpp(23):
+gti_gpuContext.h(47): error #77: this declaration has no storage class 
+or type specifier
+     std::unique_ptr&lt; GpuBuffer&lt;bool&gt;&gt; pbTLNeedNewNeighborList;
+     ^
+In file included from gpuContext.h(6),
+                  from gpu.cpp(23):
+gti_gpuContext.h(47): error: expected a &quot;;&quot;
+     std::unique_ptr&lt; GpuBuffer&lt;bool&gt;&gt; pbTLNeedNewNeighborList;
+                    ^
+In file included from gpuContext.h(6),
+                  from gpu.cpp(23):
+gti_gpuContext.h(63): warning #12: parsing restarts here after previous 
+syntax error
+     std::unique_ptr&lt; GpuBuffer&lt;unsigned long long int&gt;&gt; 
+pbPMEChargeGrid;      // Atom charge grid
+                                                                        ^
+In file included from gpuContext.h(6),
+                  from gpu.cpp(23):
+gti_gpuContext.h(64): error: qualified name is not allowed
+     std::unique_ptr&lt; GpuBuffer&lt;double&gt;&gt; pbOrigAtomCharge;       // Atom 
+charge storage
+     ^
+In file included from gpuContext.h(6),
+                  from gpu.cpp(23):
+gti_gpuContext.h(64): error #77: this declaration has no storage class 
+or type specifier
+     std::unique_ptr&lt; GpuBuffer&lt;double&gt;&gt; pbOrigAtomCharge;       // Atom 
+charge storage
+     ^
+In file included from gpuContext.h(6),
+                  from gpu.cpp(23):
+gti_gpuContext.h(64): error: expected a &quot;;&quot;
+     std::unique_ptr&lt; GpuBuffer&lt;double&gt;&gt; pbOrigAtomCharge;       // Atom 
+charge storage
+                    ^
+In file included from gpuContext.h(6),
+                  from gpu.cpp(23):
+gti_gpuContext.h(108): warning #12: parsing restarts here after previous 
+syntax error
+     std::unique_ptr&lt; GpuBuffer&lt;PMEFloat&gt;&gt; pbMBARWeight;  // weight 
+values for states
+                                                       ^
+In file included from gpuContext.h(6),
+                  from gpu.cpp(23):
+gti_gpuContext.h(111): error: qualified name is not allowed
+     std::unique_ptr&lt; GpuBuffer&lt;unsigned long long int&gt;&gt; 
+pbNumberLJ1264NBEntries;
+     ^
+In file included from gpuContext.h(6),
+                  from gpu.cpp(23):
+gti_gpuContext.h(111): error #77: this declaration has no storage class 
+or type specifier
+     std::unique_ptr&lt; GpuBuffer&lt;unsigned long long int&gt;&gt; 
+pbNumberLJ1264NBEntries;
+     ^
+In file included from gpuContext.h(6),
+                  from gpu.cpp(23):
+gti_gpuContext.h(111): error: expected a &quot;;&quot;
+     std::unique_ptr&lt; GpuBuffer&lt;unsigned long long int&gt;&gt; 
+pbNumberLJ1264NBEntries;
+                    ^
+In file included from gpuContext.h(6),
+                  from gpu.cpp(23):
+gti_gpuContext.h(117): warning #12: parsing restarts here after previous 
+syntax error
+     void CleanUp();
+                   ^
+compilation aborted for gpu.cpp (code 2)
+make[5]: *** [gpu.o] Error 2
+make[5]: Leaving directory `amber20.intel/src/pmemd/src/cuda'
+make[4]: *** [cuda_spfp_libs] Error 2
+make[4]: Leaving directory `amber20.intel/src/pmemd/src'
+make[3]: *** [cuda_SPFP] Error 2
+make[3]: Leaving directory `amber20.intel/src/pmemd/src'
+make[2]: *** [cuda_serial] Error 2
+make[2]: Leaving directory `amber20.intel/src/pmemd'
+make[1]: *** [cuda_serial] Error 2
+make[1]: Leaving directory `amber20.intel/src'
+make: *** [install] Error 2
+---
+Any suggestions? The gcc build works well, but in general we get better 
+performance with our Intel builds, so I'd like to complete the Intel 
+build if possible.
+Susan.
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Tue Feb 02 2021 - 12:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0019.html" title="Next message in the list">David A Case: "Re: [AMBER] error while building Amber20 with Intel + CUDA"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0017.html" title="Previous message in the list">Maria Nagan: "Re: [AMBER] Hydrogen bond analysis tutorial"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0019.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] error while building Amber20 with Intel + CUDA"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0019.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] error while building Amber20 with Intel + CUDA"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg18" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg18" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg18" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg18" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

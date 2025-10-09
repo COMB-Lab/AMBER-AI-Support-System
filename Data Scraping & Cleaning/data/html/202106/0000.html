@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Error in pca analysis from Daniel Roe on 2021-06-01 (Amber Archive Jun 2021)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Error in pca analysis" />
+<meta name="Date" content="2021-06-01" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Error in pca analysis</h1>
+<!-- received="Tue Jun  1 06:30:03 2021" -->
+<!-- isoreceived="20210601133003" -->
+<!-- sent="Tue, 1 Jun 2021 09:03:11 -0400" -->
+<!-- isosent="20210601130311" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] Error in pca analysis" -->
+<!-- id="CAAC0qOZTLjdFtJrnV=ODSTSEuawdXbv4CEj0pN8R96mXKCTwww.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAG8eZXzuHU=JpS1BcY0r0u+Q=p2+ecFW2zRnEd+bw3+UVRWq9Q.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0001.html" accesskey="d" title="Sruthi Sudhakar: &quot;Re: [AMBER] Error in pca analysis&quot;">Next message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0001.html" accesskey="t" title="Sruthi Sudhakar: &quot;Re: [AMBER] Error in pca analysis&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg0" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg0" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg0" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg0" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Error%20in%20pca%20analysis">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 1 Jun 2021 09:03:11 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />You are likely running out of memory. This is why your problems during
+<br />
+clustering went away when you reduced the number of input frames by a
+<br />
+factor of 5. The solution is to do everything on disk. So instead of
+<br />
+loading all coordinates into memory, separate the principal component
+<br />
+analysis into three separate phases:
+<br />
+<br />1) Create average coordinates.
+<br />
+2) Rms fit your trajectory to average coordinates, calculate the
+<br />
+covariance matrix, write out the fit trajectory, diagonalize the
+<br />
+matrix and write out the &quot;modes&quot; data (i.e. eigenvectors and
+<br />
+eigenvalues).
+<br />
+3) Read in the &quot;modes&quot; data, calculate principal component projections
+<br />
+from the fit trajectory, do the Kullback-Leibler divergence analysis.
+<br />
+<br />This way, the most memory you need is to store the covariance matrix,
+<br />
+modes, and other data of that type. Hope this helps,
+<br />
+<br />-Dan
+<br />
+<br />PS - Note that there appears to be a small error in the input you
+<br />
+posted (in pca.in). The 'nmwiz' keyword should be part of the
+<br />
+diagmatrix command, not on a separate line.
+<br />
+<br /><br />On Mon, May 31, 2021 at 1:22 PM Sruthi Sudhakar
+<br />
+&lt;sruthisudhakarraji.gmail.com&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Dear all,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I have been doing pca analysis on an accelerated MD trajectory of 500ns
+</em><br />
+<em class="quotelev1">&gt; (250,000 frames). I have attached the input file I have used for the study.
+</em><br />
+<em class="quotelev1">&gt; The job stops at the createcrd stage. Basically, the job gets killed at
+</em><br />
+<em class="quotelev1">&gt; 30%. The same happened during the cluster analysis reading every frames.
+</em><br />
+<em class="quotelev1">&gt; The clustering error was solved when I changed the input to read every 5th
+</em><br />
+<em class="quotelev1">&gt; frame. Now since this is repeating in pca analysis, kindly help regarding
+</em><br />
+<em class="quotelev1">&gt; the same.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Regards,
+</em><br />
+<em class="quotelev1">&gt; Sruthi Sudhakar
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Jun 01 2021 - 06:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0001.html" title="Next message in the list">Sruthi Sudhakar: "Re: [AMBER] Error in pca analysis"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0001.html" title="Next message in this discussion thread">Sruthi Sudhakar: "Re: [AMBER] Error in pca analysis"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0001.html" title="Message sent in reply to this message">Sruthi Sudhakar: "Re: [AMBER] Error in pca analysis"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg0" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg0" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg0" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg0" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

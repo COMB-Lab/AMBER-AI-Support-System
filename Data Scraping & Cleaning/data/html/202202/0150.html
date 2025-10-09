@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] How to run 3drism.snglpnt calculations in amber20 without rst or traj files from tluchko on 2022-02-15 (Amber Archive Feb 2022)</title>
+<meta name="Author" content="tluchko (tluchko.protonmail.com)" />
+<meta name="Subject" content="Re: [AMBER] How to run 3drism.snglpnt calculations in amber20 without rst or traj files" />
+<meta name="Date" content="2022-02-15" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] How to run 3drism.snglpnt calculations in amber20 without rst or traj files</h1>
+<!-- received="Tue Feb 15 12:30:02 2022" -->
+<!-- isoreceived="20220215203002" -->
+<!-- sent="Tue, 15 Feb 2022 20:02:11 +0000" -->
+<!-- isosent="20220215200211" -->
+<!-- name="tluchko" -->
+<!-- email="tluchko.protonmail.com" -->
+<!-- subject="Re: [AMBER] How to run 3drism.snglpnt calculations in amber20 without rst or traj files" -->
+<!-- id="Hx65Co2eh_8j_9CubkqAFvFYxwfGhKpfl_HKUL_JZp5kQeItfVwVjxxcq37w9qsaQsvY7dh7ruKgKlWPCDtFaHQj22D7IV7rCO_63d14gqc=.protonmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="LO4P265MB5913AFAC30D4DA942FC0079ACF349.LO4P265MB5913.GBRP265.PROD.OUTLOOK.COM" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0151.html" accesskey="d" title="King Wu: &quot;Re: [AMBER] MD simulations for POPC membrane&quot;">Next message</a> ]
+[ <a href="0149.html" title="King Wu: &quot;Re: [AMBER] MD simulations for POPC membrane&quot;">Previous message</a> ]
+[ <a href="0141.html" title="Daniel Fowles: &quot;[AMBER] How to run 3drism.snglpnt calculations in amber20 without rst or traj files&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg150" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg150" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg150" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg150" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: tluchko &lt;<a href="mailto:tluchko.protonmail.com?Subject=Re%3A%20%5BAMBER%5D%20How%20to%20run%203drism.snglpnt%20calculations%20in%20amber20%20without%20rst%20or%20traj%20files">tluchko.protonmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 15 Feb 2022 20:02:11 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+You now need a restart or trajectory file to use rism3d.snglpnt. Since you have a prmtop for your PDB, you can quickly get a restart or trajectory file using cpptraj. For example,
+<br />
+<br />cpptraj -p in.prmtop -y in.pdb -x out.nc
+<br />
+<br />where in.prmtop is your prmtop file, in.pdb is your PDB file and out.nc is the new trajectory.  The suffixes matter here as cpptraj will use them to determine the file types.
+<br />
+<br />I've made a note to update the manual to reflect these changes.
+<br />
+<br />Hope this helps,
+<br />
+<br />Tyler
+<br />
+<br />Sent with ProtonMail Secure Email.
+<br />
+<br />------- Original Message -------
+<br />
+<br />On Tuesday, February 15th, 2022 at 4:41 AM, Daniel Fowles &lt;daniel.fowles.strath.ac.uk&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; In older versions of Ambertools you could run a 3drism.snglpnt calculation with a solute pdb and prmtop files, and a solute xvv file. In the most recent version of ambertools20 I cannot run these calculations without also including a rst or traj file: ERROR: a RESTART or TRAJ file is required
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Here is the command I am submitting which worked fine in previous versions:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; rism3d.snglpnt --pdb 0001met.pdb --prmtop gen.prmtop --closure kh --maxstep 12000 --pc+ --gf --guv 3DRISM_0001met --cuv 3DRISM_0001met --huv 3DRISM_0001met --uuv 3DRISM_0001met --xvv SPC_NaCl.xvv 2&gt;&amp;1 | tee rism3d.log
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; In the amber manual it is stated that these files are only required if a pdb file is not given. However I am receiving this error even when a pdb file is present. Does anyone know if there is a workaround to this issue or how to obtain a traj or rst file for use in a 3drism.snglpnt calculation?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks in advance
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Feb 15 2022 - 12:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0151.html" title="Next message in the list">King Wu: "Re: [AMBER] MD simulations for POPC membrane"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0149.html" title="Previous message in the list">King Wu: "Re: [AMBER] MD simulations for POPC membrane"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0141.html" title="Message to which this message replies">Daniel Fowles: "[AMBER] How to run 3drism.snglpnt calculations in amber20 without rst or traj files"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg150" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg150" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg150" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg150" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] [AMBER ] cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered. from Anita Meena on 2022-03-23 (Amber Archive Mar 2022)</title>
+<meta name="Author" content="Anita Meena (Anita.Meena.cys20.chemistry.iitd.ac.in)" />
+<meta name="Subject" content="[AMBER] [AMBER ] cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered." />
+<meta name="Date" content="2022-03-23" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] [AMBER ] cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered.</h1>
+<!-- received="Wed Mar 23 22:30:02 2022" -->
+<!-- isoreceived="20220324053002" -->
+<!-- sent="Thu, 24 Mar 2022 10:35:29 +0530" -->
+<!-- isosent="20220324050529" -->
+<!-- name="Anita Meena" -->
+<!-- email="Anita.Meena.cys20.chemistry.iitd.ac.in" -->
+<!-- subject="[AMBER] [AMBER ] cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered." -->
+<!-- id="82126c2f7d3b1fed1824f6456183fa50.chemistry.iitd.ac.in" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0149.html" accesskey="d" title="Thomas Cheatham: &quot;Re: [AMBER] [AMBER ] cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered.&quot;">Next message</a> ]
+[ <a href="0147.html" title="Sruthi Sudhakar: &quot;[AMBER] ** NFE-Error ** : Selection weight overflows, try smaller selection constant&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0149.html" accesskey="t" title="Thomas Cheatham: &quot;Re: [AMBER] [AMBER ] cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered.&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg148" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg148" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg148" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg148" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Anita Meena &lt;<a href="mailto:Anita.Meena.cys20.chemistry.iitd.ac.in?Subject=Re%3A%20%5BAMBER%5D%20%5BAMBER%20%5D%20cudaMemcpy%20GpuBuffer%3A%3ADownload%20failed%20an%20illegal%20memory%20access%20was%20encountered.">Anita.Meena.cys20.chemistry.iitd.ac.in</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 24 Mar 2022 10:35:29 +0530</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber users,
+<br />
+<br />I am trying to simulate a protein in water. I have successfully 
+<br />
+generated the topology (.top) and coordinate (.rst) files using tleap.
+<br />
+I am getting the following error while minimization, particularly in the 
+<br />
+minimization of water.
+<br />
+<br />cudaMemcpy GpuBuffer::Download failed an illegal memory access was 
+<br />
+encountered.
+<br />
+And this didn't give results in the output file (min_wat.out) and didn't 
+<br />
+generate the coordinate file.
+<br />
+<br />I used the following command for minimization:
+<br />
+<br />pmemd.cuda -O -i min_wat.in -o min_wat.out -p job_solv.top -c 
+<br />
+job_solv.rst -r min_wat.rst -ref job_solv.rst.
+<br />
+----------------------------------------------------------------------------------------------------
+<br />
+Here is the min_wat.in, I used
+<br />
+<br />Minimize water
+<br />
+&nbsp;&nbsp;System minimization:
+<br />
+&amp;cntrl
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;imin=1, ntmin=1, nmropt=0, drms=0.1,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;maxcyc=10000, ncyc=7000,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntx=1, irest=0,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntpr=500, ntwr=500, iwrap=0,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntf=1, ntb=1, cut=5.0,   nsnb=5,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;igb=0,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ibelly=0, ntr=1,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;restraintmask=&quot;!:WAT&quot;, restraint_wt=10.0,
+<br />
+&amp;end
+<br />
+&nbsp;&nbsp;/
+<br />
+----------------------------------------------------------------------------------------------------
+<br />
+I also tried the same for 3 steps using pmemd.cuda (setting ntpr=ntwr=1) 
+<br />
+but the same problem popped up.
+<br />
+<br />When I did it using the sander.MPI and it worked.
+<br />
+<br />Can someone explain, why it's showing problems with pmemd.cuda.
+<br />
+<br />Thanks and regards,
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Mar 23 2022 - 22:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0149.html" title="Next message in the list">Thomas Cheatham: "Re: [AMBER] [AMBER ] cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered."</a></li>
+<li><dfn>Previous message</dfn>: <a href="0147.html" title="Previous message in the list">Sruthi Sudhakar: "[AMBER] ** NFE-Error ** : Selection weight overflows, try smaller selection constant"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0149.html" title="Next message in this discussion thread">Thomas Cheatham: "Re: [AMBER] [AMBER ] cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered."</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0149.html" title="Message sent in reply to this message">Thomas Cheatham: "Re: [AMBER] [AMBER ] cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered."</a></li>
+<li><dfn>Reply</dfn>: <a href="0153.html" title="Message sent in reply to this message">Daniel Roe: "Re: [AMBER] [AMBER ] cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered."</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg148" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg148" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg148" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg148" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

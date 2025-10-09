@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] vlimit=10 compromise for Amber 20 error: &quot;an illegal memory access was encountered launching kernel kClearForces&quot;? from David Cerutti on 2020-12-09 (Amber Archive Dec 2020)</title>
+<meta name="Author" content="David Cerutti (dscerutti.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] vlimit=10 compromise for Amber 20 error: &quot;an illegal memory access was encountered launching kernel kClearForces&quot;?" />
+<meta name="Date" content="2020-12-09" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] vlimit=10 compromise for Amber 20 error: &quot;an illegal memory access was encountered launching kernel kClearForces&quot;?</h1>
+<!-- received="Wed Dec  9 01:00:04 2020" -->
+<!-- isoreceived="20201209090004" -->
+<!-- sent="Wed, 9 Dec 2020 03:57:45 -0500" -->
+<!-- isosent="20201209085745" -->
+<!-- name="David Cerutti" -->
+<!-- email="dscerutti.gmail.com" -->
+<!-- subject="Re: [AMBER] vlimit=10 compromise for Amber 20 error: &quot;an illegal memory access was encountered launching kernel kClearForces&quot;?" -->
+<!-- id="CAEmzWj08-Bzn2_pL+K5ku_Fz57NqX5oYu1YXznG36TiqW9viow.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="20201123021723.2f3fwcsxonor3jx2.sasd8d0902e1062.rad.rutgers.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0099.html" accesskey="d" title="DHEERAJ CHITARA: &quot;[AMBER] Regarding Ions renumbering.&quot;">Next message</a> ]
+[ <a href="0097.html" title="David Cerutti: &quot;Re: [AMBER] An error during NPT/production (GPU run)&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0231.html" accesskey="t" title="Liao: &quot;Re: [AMBER] vlimit=10 compromise for Amber 20 error: &#0034;an illegal memory access was encountered launching kernel kClearForces&#0034;?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg98" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg98" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg98" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg98" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David Cerutti &lt;<a href="mailto:dscerutti.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20vlimit%3D10%20compromise%20for%20Amber%2020%20error%3A%20%22an%20illegal%20memory%20access%20was%20encountered%20launching%20kernel%20kClearForces%22%3F">dscerutti.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 9 Dec 2020 03:57:45 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+I have just found a bug in the CMAP setup for bond work units that would
+<br />
+appear in some systems and cause random crashes after 35k, 55k, or even
+<br />
+100k steps.  The solution is to go into
+<br />
+${AMBERHOME}/src/pmemd/src/cuda/bondRemap.cpp, and at or about line 395
+<br />
+change the following code to read:
+<br />
+<br />&nbsp;&nbsp;if (objcode == ANGL_CODE || objcode == NMR3_CODE || objcode == CMAP_CODE)
+<br />
+{
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;if ((objcode == ANGL_CODE &amp;&amp; ispresent[2] == 0) ||
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(objcode == CMAP_CODE &amp;&amp; ispresent[4] == 0)) {
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bw-&gt;atomList[nunitatom] = p1atm[objID];
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nunitatom++;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;if (unitMapCounts == NULL) {
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;itmp = unitMap-&gt;data;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;itmp[p1atm[objID]] = unitID;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;else {
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unitMap-&gt;map[p1atm[objID]][unitMapCounts-&gt;data[p1atm[objID]]] =
+<br />
+unitID;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unitMapCounts-&gt;data[p1atm[objID]] += 1;
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />
+&nbsp;&nbsp;}
+<br />
+<br />The crucial detail is that &quot;if (ispresent[2] == 0)&quot; changes to two pairs of
+<br />
+conditions involving the objcode and the array recording whether the
+<br />
+object's atom is already present in the bond work unit's import group.  I
+<br />
+will be patching the code ASAP, but if you can make this change and
+<br />
+recompile, then let us know whether this solves your problem, that would be
+<br />
+ideal. (And, please get the patched version when it is available, there is
+<br />
+a __syncwarp() I've added that may or may not be important which I added
+<br />
+while I was looking at this as a pure race condition.) I think that the bug
+<br />
+in the C++ layer causes some bad tables to be set up for the GPU which then
+<br />
+leads to a race condition that causes what you are probably seeing.  The
+<br />
+rest of the code is probably fine, but the __syncwarp() I added is not
+<br />
+going to affect performance and makes me feel better, so make the above
+<br />
+change, see how that goes, and then DL the patch when we have it.
+<br />
+<br />Dave
+<br />
+<br /><br /><br />On Sun, Nov 22, 2020 at 9:21 PM David A Case &lt;david.case.rutgers.edu&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; On Mon, Nov 23, 2020, Liao wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;The starting structures have been docked ligands in a crystal structure,
+</em><br />
+<em class="quotelev2">&gt; &gt;that I had added back in missing amino acid residues manually
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I don't have an answer, but here are some ideas/questions:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; 1.  How did you parameterize the ligand?  If with GAFF, did you use
+</em><br />
+<em class="quotelev1">&gt; version 1 or version 2 of gaff?  The reason is that GAFF1 has zero LJ
+</em><br />
+<em class="quotelev1">&gt; terms on some hydrogens, whereas GAFF2 avoids this.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Have you ever encountered what looks like the same protein with just
+</em><br />
+<em class="quotelev1">&gt; protain + water (+ions), but no ligand?  (I'm just trying to narrow down
+</em><br />
+<em class="quotelev1">&gt; the problem, and enable as simple as possible a test case to look at.)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; 2. you might try the &quot;lmod&quot; action in parmed to create a revised prmtop
+</em><br />
+<em class="quotelev1">&gt; file -- this removes all zero LJ terms, whereever they might come from.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; 3. Since GPU runs should be deterministic, can you look at the structure
+</em><br />
+<em class="quotelev1">&gt; at exactly step 15979?  Does the &quot;check&quot; action in cpptraj offer any
+</em><br />
+<em class="quotelev1">&gt; clues for that structure?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; If it doesn't crash at exactly the same step every time, that's also a
+</em><br />
+<em class="quotelev1">&gt; bit odd -- would be good to know, one way or another.  Also worth
+</em><br />
+<em class="quotelev1">&gt; knowing: does this happen with different GPU cards?  I understand that
+</em><br />
+<em class="quotelev1">&gt; it is odd that only ff19SB has this problem, but it's possible to have
+</em><br />
+<em class="quotelev1">&gt; either a hardware or software bug that comes into play when CMAP is
+</em><br />
+<em class="quotelev1">&gt; turned on.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; Now, working on a new protein-ligand system, I started out with ff14SB,
+</em><br />
+<em class="quotelev2">&gt; &gt; runs normally as expected (Implicit water, HMR prmtop files used). When
+</em><br />
+<em class="quotelev2">&gt; &gt; I decided to try ff19SB also, the simulation blows up again quite
+</em><br />
+<em class="quotelev2">&gt; &gt; quickly.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Can you say a bit more here: what does &quot;quite quickly&quot; mean?  What would
+</em><br />
+<em class="quotelev1">&gt; be ideal would to have two prmtop files (one for ff14SB, one for
+</em><br />
+<em class="quotelev1">&gt; ff19SB), a common (restart) input file, an mdin file, precise information
+</em><br />
+<em class="quotelev1">&gt; on
+</em><br />
+<em class="quotelev1">&gt; what GPU was being used, and information about what step to expect the
+</em><br />
+<em class="quotelev1">&gt; odd behavior at.  For this exercise, don't use ig=-1, but choose a
+</em><br />
+<em class="quotelev1">&gt; random seed so that others can try to reproduce the problem.  (Apologies
+</em><br />
+<em class="quotelev1">&gt; if I am mis-remembering symptoms you have reported before.)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ...thx...dac
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Dec 09 2020 - 01:00:04 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0099.html" title="Next message in the list">DHEERAJ CHITARA: "[AMBER] Regarding Ions renumbering."</a></li>
+<li><dfn>Previous message</dfn>: <a href="0097.html" title="Previous message in the list">David Cerutti: "Re: [AMBER] An error during NPT/production (GPU run)"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0231.html" title="Next message in this discussion thread">Liao: "Re: [AMBER] vlimit=10 compromise for Amber 20 error: &#0034;an illegal memory access was encountered launching kernel kClearForces&#0034;?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0231.html" title="Message sent in reply to this message">Liao: "Re: [AMBER] vlimit=10 compromise for Amber 20 error: &#0034;an illegal memory access was encountered launching kernel kClearForces&#0034;?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg98" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg98" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg98" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg98" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

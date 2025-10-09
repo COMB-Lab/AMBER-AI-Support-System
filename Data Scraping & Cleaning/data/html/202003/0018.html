@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] CUDA single gpu usage issue from David A Case on 2020-03-03 (Amber Archive Mar 2020)</title>
+<meta name="Author" content="David A Case (david.case.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] CUDA single gpu usage issue" />
+<meta name="Date" content="2020-03-03" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] CUDA single gpu usage issue</h1>
+<!-- received="Tue Mar  3 07:30:02 2020" -->
+<!-- isoreceived="20200303153002" -->
+<!-- sent="Tue, 3 Mar 2020 10:09:18 -0500" -->
+<!-- isosent="20200303150918" -->
+<!-- name="David A Case" -->
+<!-- email="david.case.rutgers.edu" -->
+<!-- subject="Re: [AMBER] CUDA single gpu usage issue" -->
+<!-- id="20200303150918.rx345buxnylx76ga.godel.rutgers.edu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAFsJ2aZ0vJ0Foj+JeigFVT=M-2xJKMaCOjcgDf5LzpDEbm8oVA.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0019.html" accesskey="d" title="Debarati DasGupta: &quot;[AMBER] dvdl.dat file details  AMBER18 TI&quot;">Next message</a> ]
+[ <a href="0017.html" title="Nicholas Moyer: &quot;[AMBER] CUDA single gpu usage issue&quot;">Previous message</a> ]
+[ <a href="0017.html" title="Nicholas Moyer: &quot;[AMBER] CUDA single gpu usage issue&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0021.html" accesskey="t" title="Nicholas Moyer: &quot;Re: [AMBER] CUDA single gpu usage issue&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg18" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg18" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg18" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg18" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case &lt;<a href="mailto:david.case.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20CUDA%20single%20gpu%20usage%20issue">david.case.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 3 Mar 2020 10:09:18 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Tue, Mar 03, 2020, Nicholas Moyer wrote:
+<br />
+<br /><em class="quotelev1">&gt;so ive been having an error with CUDA. I have been dealing with an annoying
+</em><br />
+<em class="quotelev1">&gt;CUDA issue where basically i have Amber18/ambertools19 installed and set
+</em><br />
+<em class="quotelev1">&gt;with multiple gpu's but when i try to configure amber for single GPU usage
+</em><br />
+<em class="quotelev1">&gt;compiles but when trying to make install it gives me a huge error block
+</em><br />
+<br />The error involves pbsa.cuda, which may not be the program you really
+<br />
+want (most people are more eager to run pmemd.cuda).  If that is the
+<br />
+case, after the configure step, do this:
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd src/pmemd
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;make install
+<br />
+<br />That will install just pmemd.cuda, whose installation is better tested.
+<br />
+(Of course, you may still have problems, since for most people, building
+<br />
+pbsa.cuda gives no problems.  If things still don't work, provide some
+<br />
+details about your OS, compiler and CUDA toolkit versions.  Also, since
+<br />
+you apparently previously installed the cuda.MPI versions, and are now
+<br />
+trying to get the cuda serial codes, start from a completely fresh
+<br />
+directory tree, just in case something left over from the MPI install
+<br />
+is causing problems.)
+<br />
+<br />I'm cc-ing this to Ray Luo, in case he may have a better handle on
+<br />
+recognizing the problem.
+<br />
+<br />...good luck...dac
+<br />
+<br /><br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;/usr/bin/ld: warning: libcublasLt.so.10, needed by
+</em><br />
+<em class="quotelev1">&gt;/opt/CUDA/cuda-toolkit/targets/x86_64-linux/lib/libcublas.so, not found
+</em><br />
+<em class="quotelev1">&gt;(try using -rpath or -rpath-link)
+</em><br />
+<em class="quotelev1">&gt;/opt/CUDA/cuda-toolkit/targets/x86_64-linux/lib/libcublas.so: undefined
+</em><br />
+<em class="quotelev1">&gt;reference to `cublasLtShutdownCtx.libcublasLt.so.10'
+</em><br />
+<em class="quotelev1">&gt;/opt/CUDA/cuda-toolkit/targets/x86_64-linux/lib/libcublas.so: undefined
+</em><br />
+<em class="quotelev1">&gt;reference to `cublasLtGetProperty.libcublasLt.so.10'
+</em><br />
+<em class="quotelev1">&gt;/opt/CUDA/cuda-toolkit/targets/x86_64-linux/lib/libcublas.so: undefined
+</em><br />
+<em class="quotelev1">&gt;reference to `init_gemm_select.libcublasLt.so.10'
+</em><br />
+<em class="quotelev1">&gt;/opt/CUDA/cuda-toolkit/targets/x86_64-linux/lib/libcublas.so: undefined
+</em><br />
+<em class="quotelev1">&gt;reference to `runGemmShortApi.libcublasLt.so.10'
+</em><br />
+<em class="quotelev1">&gt;/opt/CUDA/cuda-toolkit/targets/x86_64-linux/lib/libcublas.so: undefined
+</em><br />
+<em class="quotelev1">&gt;reference to `cublasLtMatmulAlgoGetHeuristic.libcublasLt.so.10'
+</em><br />
+<em class="quotelev1">&gt;/opt/CUDA/cuda-toolkit/targets/x86_64-linux/lib/libcublas.so: undefined
+</em><br />
+<em class="quotelev1">&gt;reference to `gemm_utilization.libcublasLt.so.10'
+</em><br />
+<em class="quotelev1">&gt;/opt/CUDA/cuda-toolkit/targets/x86_64-linux/lib/libcublas.so: undefined
+</em><br />
+<em class="quotelev1">&gt;reference to `cublasLtMatmul.libcublasLt.so.10'
+</em><br />
+<em class="quotelev1">&gt;/opt/CUDA/cuda-toolkit/targets/x86_64-linux/lib/libcublas.so: undefined
+</em><br />
+<em class="quotelev1">&gt;reference to `free_gemm_select.libcublasLt.so.10'
+</em><br />
+<em class="quotelev1">&gt;/opt/CUDA/cuda-toolkit/targets/x86_64-linux/lib/libcublas.so: undefined
+</em><br />
+<em class="quotelev1">&gt;reference to `cublasLtCtxInit.libcublasLt.so.10'
+</em><br />
+<em class="quotelev1">&gt;/opt/CUDA/cuda-toolkit/targets/x86_64-linux/lib/libcublas.so: undefined
+</em><br />
+<em class="quotelev1">&gt;reference to `cublasLtMatmulAlgoInit.libcublasLt.so.10'
+</em><br />
+<em class="quotelev1">&gt;/opt/CUDA/cuda-toolkit/targets/x86_64-linux/lib/libcublas.so: undefined
+</em><br />
+<em class="quotelev1">&gt;reference to `runGemmApi.libcublasLt.so.10'
+</em><br />
+<em class="quotelev1">&gt;/opt/CUDA/cuda-toolkit/targets/x86_64-linux/lib/libcublas.so: undefined
+</em><br />
+<em class="quotelev1">&gt;reference to `cublasLtGetCudartVersion.libcublasLt.so.10'
+</em><br />
+<em class="quotelev1">&gt;/opt/CUDA/cuda-toolkit/targets/x86_64-linux/lib/libcublas.so: undefined
+</em><br />
+<em class="quotelev1">&gt;reference to `cublasLtGetVersion.libcublasLt.so.10'
+</em><br />
+<em class="quotelev1">&gt;collect2: error: ld returned 1 exit status
+</em><br />
+<em class="quotelev1">&gt;Makefile:156: recipe for target 'pbsa.cuda' failed
+</em><br />
+<em class="quotelev1">&gt;make[2]: *** [pbsa.cuda] Error 1
+</em><br />
+<em class="quotelev1">&gt;make[2]: Leaving directory '/opt/amber18/AmberTools/src/pbsa'
+</em><br />
+<em class="quotelev1">&gt;Makefile:447: recipe for target 'cuda_serial' failed
+</em><br />
+<em class="quotelev1">&gt;make[1]: *** [cuda_serial] Error 2
+</em><br />
+<em class="quotelev1">&gt;make[1]: Leaving directory '/opt/amber18/AmberTools/src'
+</em><br />
+<em class="quotelev1">&gt;Makefile:7: recipe for target 'install' failed
+</em><br />
+<em class="quotelev1">&gt;make: *** [install] Error 2
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Mar 03 2020 - 07:30:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0019.html" title="Next message in the list">Debarati DasGupta: "[AMBER] dvdl.dat file details  AMBER18 TI"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0017.html" title="Previous message in the list">Nicholas Moyer: "[AMBER] CUDA single gpu usage issue"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0017.html" title="Message to which this message replies">Nicholas Moyer: "[AMBER] CUDA single gpu usage issue"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0021.html" title="Next message in this discussion thread">Nicholas Moyer: "Re: [AMBER] CUDA single gpu usage issue"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0021.html" title="Message sent in reply to this message">Nicholas Moyer: "Re: [AMBER] CUDA single gpu usage issue"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg18" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg18" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg18" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg18" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Making sense of tip3p.frcmod from David A Case on 2021-02-18 (Amber Archive Feb 2021)</title>
+<meta name="Author" content="David A Case (david.case.rutgers.edu)" />
+<meta name="Subject" content="Re: [AMBER] Making sense of tip3p.frcmod" />
+<meta name="Date" content="2021-02-18" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Making sense of tip3p.frcmod</h1>
+<!-- received="Thu Feb 18 18:30:01 2021" -->
+<!-- isoreceived="20210219023001" -->
+<!-- sent="Thu, 18 Feb 2021 21:24:39 -0500" -->
+<!-- isosent="20210219022439" -->
+<!-- name="David A Case" -->
+<!-- email="david.case.rutgers.edu" -->
+<!-- subject="Re: [AMBER] Making sense of tip3p.frcmod" -->
+<!-- id="20210219022439.e4wc7v3f3fos5kbd.oredkbe204bl02.rad.rutgers.edu" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="MN2PR07MB7136B656C4D7DF8155E9615FC8849.MN2PR07MB7136.namprd07.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0161.html" accesskey="d" title="Rinsha Chk: &quot;Re: [AMBER] High value for force constant is acceptable?&quot;">Next message</a> ]
+[ <a href="0159.html" title="Paul, Austin: &quot;[AMBER] Making sense of tip3p.frcmod&quot;">Previous message</a> ]
+[ <a href="0159.html" title="Paul, Austin: &quot;[AMBER] Making sense of tip3p.frcmod&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg160" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg160" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg160" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg160" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case &lt;<a href="mailto:david.case.rutgers.edu?Subject=Re%3A%20%5BAMBER%5D%20Making%20sense%20of%20tip3p.frcmod">david.case.rutgers.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 18 Feb 2021 21:24:39 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Fri, Feb 19, 2021, Paul, Austin wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;BOND
+</em><br />
+<em class="quotelev1">&gt;OW-HW  553.0    0.9572      TIP3P water
+</em><br />
+<em class="quotelev1">&gt;HW-HW  553.0    1.5136      TIP3P water
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Yet, TIP3P is a rigid model, so are these values even relevant?
+</em><br />
+<br />You are correct: the force constants are not relevant for a rigid water.
+<br />
+If you want to use tip3p, you should always ask for SHAKE (ntc=2), which
+<br />
+actually becomes SETTLE for water.
+<br />
+<br />Sometimes, one wants to minimize a conformation with TIP3P waters using
+<br />
+an algorithm that is not compatible with SHAKE/SETTLE.  The the force
+<br />
+constants above keep the molecule &quot;pretty&quot; rigid.  It's not longer really
+<br />
+TIP3P, but is often close enough for such purposes.
+<br />
+<br /><em class="quotelev1">&gt;What would happen if someone ran a simulation without using the SETTLE
+</em><br />
+<em class="quotelev1">&gt;algorithm to keep the water rigid?
+</em><br />
+<br />I don't know the answer here.  It's probably been done by accident,
+<br />
+presumably even by me, but I don't have any real recollection.  Things
+<br />
+would look obviously bad if one used a usual time step of 2 to 4 fs, since
+<br />
+a non-rigid water simulation would need a very short time step, probably on
+<br />
+the order of 0.5 fs.
+<br />
+<br />....dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Feb 18 2021 - 18:30:01 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0161.html" title="Next message in the list">Rinsha Chk: "Re: [AMBER] High value for force constant is acceptable?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0159.html" title="Previous message in the list">Paul, Austin: "[AMBER] Making sense of tip3p.frcmod"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0159.html" title="Message to which this message replies">Paul, Austin: "[AMBER] Making sense of tip3p.frcmod"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg160" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg160" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg160" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg160" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

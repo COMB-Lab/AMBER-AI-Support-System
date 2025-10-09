@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] number of waters near a mask (K+) cpptraj from Vaibhav Dixit on 2022-01-13 (Amber Archive Jan 2022)</title>
+<meta name="Author" content="Vaibhav Dixit (vaibhavadixit.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] number of waters near a mask (K+) cpptraj" />
+<meta name="Date" content="2022-01-13" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] number of waters near a mask (K+) cpptraj</h1>
+<!-- received="Thu Jan 13 07:00:02 2022" -->
+<!-- isoreceived="20220113150002" -->
+<!-- sent="Thu, 13 Jan 2022 20:02:58 +0530" -->
+<!-- isosent="20220113143258" -->
+<!-- name="Vaibhav Dixit" -->
+<!-- email="vaibhavadixit.gmail.com" -->
+<!-- subject="Re: [AMBER] number of waters near a mask (K+) cpptraj" -->
+<!-- id="CAO6-0TmtWex14wkGM65pg_EGfUnrHqMLWaLfBURzqPuZdsfDwQ.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAAC0qOZEASYrEv6VgvJkwtfng6QZXOzHM6XVcSi3EhSm_v0Grw.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0111.html" accesskey="d" title="Manuel Fernandez Merino: &quot;Re: [AMBER] Running AmberTools21 on HPC cluster using distributed memory&quot;">Next message</a> ]
+[ <a href="0109.html" title="David A Case: &quot;Re: [AMBER] QM / MM module query&quot;">Previous message</a> ]
+[ <a href="0105.html" title="Daniel Roe: &quot;Re: [AMBER] number of waters near a mask (K+) cpptraj&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg110" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg110" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg110" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg110" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Vaibhav Dixit &lt;<a href="mailto:vaibhavadixit.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20number%20of%20waters%20near%20a%20mask%20(K%2B)%20cpptraj">vaibhavadixit.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 13 Jan 2022 20:02:58 +0530</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Dan,
+<br />
+Yes, I have checked the trajectory, pdb created in tleap step (after water
+<br />
+addition), and your suggestion to check resinfo.
+<br />
+All these confirm that indeed there are waters with resname WAT in the
+<br />
+trajectory (truncated output of resinfo :WAT for loaded trajectory in
+<br />
+cpptraj is given below).
+<br />
+Thus it is strange that :WAT mask is not working as expected.
+<br />
+<br />Nonetheless, I ran the watershell command in cpptraj and it gives an output
+<br />
+like the following.
+<br />
+Thus I'm interpreting this such that
+<br />
+the 44 K+ ions are bonded to 311 waters in total for the first hydration
+<br />
+shell that within 3A and
+<br />
+within 5A there are 779 i.e. 779 - 311 = 468 waters are in the second
+<br />
+hydration shell.
+<br />
+<br />This gives 311/44 = 7 water per K+ ion in the first frame.
+<br />
+Avg for 2000 frames is 7.29.
+<br />
+I think these numbers are meaningful and show give the analysis I want.
+<br />
+Please let me know what you think.
+<br />
+thank you and best regards
+<br />
+<br />CPPTRAJ: Version V4.14.0 (AmberTools V19.11)
+<br />
+<br />$ head 1bvy-af-KWATshell.dat
+<br />
+#Frame   WS_00001[lower] WS_00001[upper]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1             311             779
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2             318             769
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3             314             779
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4             316             787
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5             325             782
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6             308             792
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7             325             791
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8             312             811
+<br />
+<br />23270 WAT  77554 77556     3 23270 22658
+<br />
+23271 WAT  77557 77559     3 23271 22659
+<br />
+23272 WAT  77560 77562     3 23272 22660
+<br />
+23273 WAT  77563 77565     3 23273 22661
+<br />
+23274 WAT  77566 77568     3 23274 22662
+<br />
+23275 WAT  77569 77571     3 23275 22663
+<br />
+23276 WAT  77572 77574     3 23276 22664
+<br />
+23277 WAT  77575 77577     3 23277 22665
+<br />
+23278 WAT  77578 77580     3 23278 22666
+<br />
+23279 WAT  77581 77583     3 23279 22667
+<br />
+23280 WAT  77584 77586     3 23280 22668
+<br />
+23281 WAT  77587 77589     3 23281 22669
+<br />
+23282 WAT  77590 77592     3 23282 22670
+<br />
+23283 WAT  77593 77595     3 23283 22671
+<br />
+23284 WAT  77596 77598     3 23284 22672
+<br />
+23285 WAT  77599 77601     3 23285 22673
+<br />
+23286 WAT  77602 77604     3 23286 22674
+<br />
+23287 WAT  77605 77607     3 23287 22675
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; watershell :K+ out 1bvy-af-KWATshell.dat
+</em><br />
+&nbsp;&nbsp;[watershell :K+ out 1bvy-af-KWATshell.dat]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WATERSHELL: Output to 1bvy-af-KWATshell.dat
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The first shell will contain solvent &lt; 3.400 angstroms from
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the solute; the second shell &lt; 5.000 angstroms...
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Solute atoms will be specified by [:K+]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# solvent molecules in 'lower' shell stored in set 'WS_00001[lower]'
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# solvent molecules in 'upper' shell stored in set 'WS_00001[upper]'
+<br />
+<em class="quotelev1">&gt; run
+</em><br />
+&nbsp;&nbsp;[run]
+<br />
+---------- RUN BEGIN -------------------------------------------------
+<br />
+<br />PARAMETER FILES (1 total):
+<br />
+&nbsp;0: 1bvy-af-solv.prmtop, 77607 atoms, 23287 res, box: Orthogonal, 22675
+<br />
+mol, 22614 solvent
+<br />
+<br />INPUT TRAJECTORIES (1 total):
+<br />
+&nbsp;0: '1bvy-af-solv-prod.nc' is a NetCDF AMBER trajectory with coordinates,
+<br />
+time, box, Parm 1bvy-af-solv.prmtop (Orthogonal box) (reading 2000 of 2000)
+<br />
+&nbsp;&nbsp;Coordinate processing will occur on 2000 frames.
+<br />
+<br />BEGIN TRAJECTORY PROCESSING:
+<br />
+.....................................................
+<br />
+ACTION SETUP FOR PARM '1bvy-af-solv.prmtop' (1 actions):
+<br />
+&nbsp;&nbsp;0: [watershell :K+ out 1bvy-af-KWATshell.dat]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mask [:K+] corresponds to 44 atoms.
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selecting all solvent atoms (67842 total)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Imaging is on.
+<br />
+----- 1bvy-af-solv-prod.nc (1-2000, 1) -----
+<br />
+&nbsp;0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100% Complete.
+<br />
+<br />Read 2000 frames and processed 2000 frames.
+<br />
+TIME: Avg. throughput= 26.3706 frames / second.
+<br />
+<br />ACTION OUTPUT:
+<br />
+TIME: Analyses took 0.0000 seconds.
+<br />
+<br />DATASETS (2 total):
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_00001[lower] &quot;WS_00001[lower]&quot; (integer), size is 2000 (8.000 kB)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_00001[upper] &quot;WS_00001[upper]&quot; (integer), size is 2000 (8.000 kB)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Total data set memory usage is at least 16.000 kB
+<br />
+<br />DATAFILES (1 total):
+<br />
+&nbsp;&nbsp;1bvy-af-KWATshell.dat (Standard Data File):  WS_00001[lower]
+<br />
+WS_00001[upper]
+<br />
+<br />RUN TIMING:
+<br />
+TIME:           Init               : 0.0003 s (  0.00%)
+<br />
+TIME:           Trajectory Process : 75.8420 s ( 99.99%)
+<br />
+TIME:           Action Post        : 0.0000 s (  0.00%)
+<br />
+TIME:           Analysis           : 0.0000 s (  0.00%)
+<br />
+TIME:           Data File Write    : 0.0044 s (  0.01%)
+<br />
+TIME:           Other              : 0.0001 s (  0.00%)
+<br />
+TIME:   Run Total 75.8469 s
+<br />
+<br />---------- RUN END ---------------------------------------------------
+<br />
+<br /><br />Regards,
+<br />
+<br />Dr. Vaibhav A. Dixit,
+<br />
+<br />Asst. Prof., Department of Medicinal Chemistry,
+<br />
+<br />National Institute of Pharmaceutical Education and Research, Guwahati
+<br />
+(NIPER-G), Sila Katamur (Halugurisuk), P.O.: Changsari, Dist: Kamrup, Pin:
+<br />
+781101, Assam, India
+<br />
+<br />Mob. No. +91-7709129400,
+<br />
+Email: vaibhav.niperguwahati.in; vaibhavadixit.gmail.com
+<br />
+<a href="https://niperguwahati.ac.in/DOC/profile/dixit.pdf">https://niperguwahati.ac.in/DOC/profile/dixit.pdf</a>
+<br />
+<a href="https://www.linkedin.com/in/vaibhav-dixit-b1a07a39/">https://www.linkedin.com/in/vaibhav-dixit-b1a07a39/</a>
+<br />
+<br />ORCID ID: https://orcid.org/0000-0003-4015-2941
+<br />
+<br />NCBI bibliography:
+<br />
+<a href="https://www.ncbi.nlm.nih.gov/myncbi/1Jgo56b26_AYKd/bibliography/public/">https://www.ncbi.nlm.nih.gov/myncbi/1Jgo56b26_AYKd/bibliography/public/</a>
+<br />
+<br /><a href="http://scholar.google.co.in/citations?user=X876BKcAAAAJ&amp;hl=en&amp;oi=sra">http://scholar.google.co.in/citations?user=X876BKcAAAAJ&amp;hl=en&amp;oi=sra</a>
+<br />
+<br />Please consider the environment before printing this e-mail
+<br />
+<br /><br />On Thu, Jan 13, 2022 at 7:13 PM Daniel Roe &lt;daniel.r.roe.gmail.com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hi,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Thu, Jan 13, 2022 at 1:39 AM Vaibhav Dixit &lt;vaibhavadixit.gmail.com&gt;
+</em><br />
+<em class="quotelev1">&gt; wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt; I want to find the number of water molecules that are in direct contact
+</em><br />
+<em class="quotelev2">&gt; &gt; with the K+ ions in each frame during the simulation.  I think this is
+</em><br />
+<em class="quotelev1">&gt; not
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Off the top of my head, I would try either the 'watershell' command
+</em><br />
+<em class="quotelev1">&gt; (which will do a simple distance-cutoff-based count of waters near
+</em><br />
+<em class="quotelev1">&gt; specified atoms, in this case your ions) or the 'hbond' command
+</em><br />
+<em class="quotelev1">&gt; specifying the ions and using the solventdonor/solventacceptor
+</em><br />
+<em class="quotelev1">&gt; keywords.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt; &gt; nativecontacts name KWAT :K+ :WAT byresidue out KWATcontacts.dat mindist
+</em><br />
+<em class="quotelev2">&gt; &gt; maxdist distance 4.0 first map mapout KWATresmap.gnu
+</em><br />
+<em class="quotelev2">&gt; &gt; contactpdb KWATcontactmap.pdb series seriesout KWATnativecontacts.dat
+</em><br />
+<em class="quotelev2">&gt; &gt; writecontacts KWATwritecontacts.dat
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;         Mask [:K+] corresponds to 145 atoms.
+</em><br />
+<em class="quotelev2">&gt; &gt;         Mask [:WAT] corresponds to 0 atoms.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Are you absolutely certain the topology you have has water in it? And
+</em><br />
+<em class="quotelev1">&gt; if so, are you sure it's called WAT? I ask because a mask parser
+</em><br />
+<em class="quotelev1">&gt; failure would be very unusual. What happens if you just load the
+</em><br />
+<em class="quotelev1">&gt; topology and type &quot;resinfo :WAT&quot;? Also, it would be helpful to know
+</em><br />
+<em class="quotelev1">&gt; the version of cpptraj you are using.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; -Dan
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Jan 13 2022 - 07:00:02 PST</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0111.html" title="Next message in the list">Manuel Fernandez Merino: "Re: [AMBER] Running AmberTools21 on HPC cluster using distributed memory"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0109.html" title="Previous message in the list">David A Case: "Re: [AMBER] QM / MM module query"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0105.html" title="Message to which this message replies">Daniel Roe: "Re: [AMBER] number of waters near a mask (K+) cpptraj"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg110" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg110" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg110" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg110" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

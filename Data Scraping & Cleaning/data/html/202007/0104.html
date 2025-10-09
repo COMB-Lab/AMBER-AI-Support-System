@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Strip water job is killed after 10-40% completion from Daniel Roe on 2020-07-07 (Amber Archive Jul 2020)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Strip water job is killed after 10-40% completion" />
+<meta name="Date" content="2020-07-07" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Strip water job is killed after 10-40% completion</h1>
+<!-- received="Tue Jul  7 07:30:03 2020" -->
+<!-- isoreceived="20200707143003" -->
+<!-- sent="Tue, 7 Jul 2020 10:11:16 -0400" -->
+<!-- isosent="20200707141116" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] Strip water job is killed after 10-40% completion" -->
+<!-- id="CAAC0qOacA76cjs_vey122-bSm0uHkqrbTCfb+_-47HhD7M6kOA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAKC64zOd0YTu33b=Udef8TghCHQMU57DH4cn=5zKwS4y8EuNYQ.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0105.html" accesskey="d" title="&#36763;&#24535;&#23439;: &quot;[AMBER] Amber prmtop and inpcrd of complex file with a water molecular cutoff&quot;">Next message</a> ]
+[ <a href="0103.html" title="Dr. Anselm Horn: &quot;Re: [AMBER] Strip water job is killed after 10-40% completion&quot;">Previous message</a> ]
+[ <a href="0095.html" title="Shreeramesh: &quot;[AMBER] Strip water job is killed after 10-40% completion&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg104" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg104" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg104" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg104" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Strip%20water%20job%20is%20killed%20after%2010-40%25%20completion">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 7 Jul 2020 10:11:16 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />In addition to trying Anselm's advice, are you running this via a
+<br />
+queue (e.g. SLURM or PBS etc)? If so, you may need to increase the
+<br />
+requested walltime for your job. You could also try to speed up the
+<br />
+job by using cpptraj.MPI and 2-4 processes (benchmark on a smaller set
+<br />
+of frames to get an idea of the speedup you can achieve). In general,
+<br />
+I've found that using a number of MPI processes per node equal to the
+<br />
+number of CPU sockets seems to work well.
+<br />
+<br />-Dan
+<br />
+<br /><br />On Mon, Jul 6, 2020 at 12:23 PM Shreeramesh &lt;shreeramesh.gmail.com&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Dear AMBER Users,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I want to strip water and ions from md.mdcrd file (10000 frames) in cpptraj
+</em><br />
+<em class="quotelev1">&gt; and I used the following script. My job is killed after the 10-40% of
+</em><br />
+<em class="quotelev1">&gt; completion. I request you to kindly help me to fix this error.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; trajin md.mdcrd
+</em><br />
+<em class="quotelev1">&gt; autoimage
+</em><br />
+<em class="quotelev1">&gt; strip :WAT,Cl-,Na+ outprefix stripped
+</em><br />
+<em class="quotelev1">&gt; trajout md_dry.mdcrd
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Error:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; PARAMETER FILES:
+</em><br />
+<em class="quotelev1">&gt;  0: 'com_solvated.top', 15805 atoms, 4008 res, box: Orthogonal, 3725 mol,
+</em><br />
+<em class="quotelev1">&gt; 3721 solvent, 10000 frames
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; INPUT TRAJECTORIES:
+</em><br />
+<em class="quotelev1">&gt;  0: 'md.mdcrd' is an AMBER trajectory, Parm com_solvated.top (Orthogonal
+</em><br />
+<em class="quotelev1">&gt; box) (reading 10000 of 10000)
+</em><br />
+<em class="quotelev1">&gt;   Coordinate processing will occur on 10000 frames.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; OUTPUT TRAJECTORIES:
+</em><br />
+<em class="quotelev1">&gt;   'md_dry.mdcrd' is an AMBER trajectory, Parm com_solvated.top: Writing
+</em><br />
+<em class="quotelev1">&gt; 10000 frames (1-Last, 1)
+</em><br />
+<em class="quotelev1">&gt; TIME: Run Initialization took 0.0001 seconds.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; BEGIN TRAJECTORY PROCESSING:
+</em><br />
+<em class="quotelev1">&gt; .....................................................
+</em><br />
+<em class="quotelev1">&gt; ACTION SETUP FOR PARM 'com_solvated.top' (2 actions):
+</em><br />
+<em class="quotelev1">&gt;   0: [autoimage]
+</em><br />
+<em class="quotelev1">&gt;         Anchor molecule is 1
+</em><br />
+<em class="quotelev1">&gt;         The following molecules are fixed to anchor: 2
+</em><br />
+<em class="quotelev1">&gt;         3723 molecules are mobile.
+</em><br />
+<em class="quotelev1">&gt;   1: [strip :WAT,Cl-,Na+ outprefix stripped]
+</em><br />
+<em class="quotelev1">&gt;         Stripping 11165 atoms.
+</em><br />
+<em class="quotelev1">&gt;         Stripped parm: 'com_solvated.top', 4640 atoms, 285 res, box:
+</em><br />
+<em class="quotelev1">&gt; Orthogonal, 2 mol
+</em><br />
+<em class="quotelev1">&gt;         Writing topology 0 (com_solvated.top) to
+</em><br />
+<em class="quotelev1">&gt; 'stripped.com_solvated.top' with format Amber Topology
+</em><br />
+<em class="quotelev1">&gt; ----- md.mdcrd (1-10000, 1) -----
+</em><br />
+<em class="quotelev1">&gt;  0% 10% 20% 30% Killed
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; *Thanks &amp; Regards*
+</em><br />
+<em class="quotelev1">&gt; *Ramesh M*
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Email: shreeramesh.gmail.com Mob.: +91-9542200332
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Jul 07 2020 - 07:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0105.html" title="Next message in the list">&#36763;&#24535;&#23439;: "[AMBER] Amber prmtop and inpcrd of complex file with a water molecular cutoff"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0103.html" title="Previous message in the list">Dr. Anselm Horn: "Re: [AMBER] Strip water job is killed after 10-40% completion"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0095.html" title="Message to which this message replies">Shreeramesh: "[AMBER] Strip water job is killed after 10-40% completion"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg104" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg104" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg104" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg104" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] How to recopile with new version of CUDA from David Cerutti on 2020-09-21 (Amber Archive Sep 2020)</title>
+<meta name="Author" content="David Cerutti (dscerutti.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] How to recopile with new version of CUDA" />
+<meta name="Date" content="2020-09-21" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] How to recopile with new version of CUDA</h1>
+<!-- received="Mon Sep 21 15:30:02 2020" -->
+<!-- isoreceived="20200921223002" -->
+<!-- sent="Mon, 21 Sep 2020 18:05:11 -0400" -->
+<!-- isosent="20200921220511" -->
+<!-- name="David Cerutti" -->
+<!-- email="dscerutti.gmail.com" -->
+<!-- subject="Re: [AMBER] How to recopile with new version of CUDA" -->
+<!-- id="CAEmzWj289ZRH1Ot2AsQtbaUBdxeEUZ8Xq43UWhZPUuXuVgK=bw.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CA+a7G8Mizm_cKzXrp1mV7dSUvOKHv+=Mxa=gNru75Or+XKYXFQ.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0274.html" accesskey="d" title="Nisha Amarnath Jonniya: &quot;[AMBER] amber18 installation error&quot;">Next message</a> ]
+[ <a href="0272.html" title="Camila Clemente: &quot;[AMBER] How to recopile with new version of CUDA&quot;">Previous message</a> ]
+[ <a href="0272.html" title="Camila Clemente: &quot;[AMBER] How to recopile with new version of CUDA&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg273" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg273" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg273" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg273" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David Cerutti &lt;<a href="mailto:dscerutti.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20How%20to%20recopile%20with%20new%20version%20of%20CUDA">dscerutti.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 21 Sep 2020 18:05:11 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+If you got things working earlier, the new CUDA installation should not
+<br />
+present a problem.  What version is it?  We recently made a patch to
+<br />
+support CUDA11, but that was tied together with some Ampere-specific
+<br />
+improvements.  Last I knew, compiling with CUDA11 required accepting a
+<br />
+bunch of __syncwarp() operations which caused some slowdowns on older
+<br />
+architectures, but this is the wages of technological advancement.  The
+<br />
+code is correct, it just ran noticeably slower on Turing and to a lesser
+<br />
+extent Volta and Pascal.  There may have been other changes that kept the
+<br />
+performance up for older architectures while still compiling with the
+<br />
+necessary synchronization for Ampere, but I am not sure on that.
+<br />
+<br />Barring any other changes, you should be able to do this:
+<br />
+<br />(enter the build directory)
+<br />
+make clean
+<br />
+make uninstall
+<br />
+(re-run your customized run_cmake script from the build directory)
+<br />
+(check build report)
+<br />
+make install -j
+<br />
+<br />Alternatively, the older configure script still works.  Enter the
+<br />
+installation directory, which could be the same as the source directory but
+<br />
+ideally is established as a separate directory with &quot;lndir ../${AMBERHOME}
+<br />
+. &quot; to create symbolic links to all files.  This will allow you to do a
+<br />
+configure-style build while still keeping the original source directory
+<br />
+clean for a cmake build.
+<br />
+<br />make clean
+<br />
+make uninstall
+<br />
+./confiugre -noX11 gnu
+<br />
+make install -j
+<br />
+make clean
+<br />
+./configure -noX11 -cuda gnu
+<br />
+make install -j
+<br />
+<br />Dave
+<br />
+<br /><br />On Mon, Sep 21, 2020 at 5:25 PM Camila Clemente &lt;
+<br />
+camilamaraclemente.gmail.com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hi!
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The cluster where I run has updated a new version of cuda and I must
+</em><br />
+<em class="quotelev1">&gt; compile again. How should I do it?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thank you
+</em><br />
+<em class="quotelev1">&gt; --
+</em><br />
+<em class="quotelev1">&gt; *Camila*
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Sep 21 2020 - 15:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0274.html" title="Next message in the list">Nisha Amarnath Jonniya: "[AMBER] amber18 installation error"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0272.html" title="Previous message in the list">Camila Clemente: "[AMBER] How to recopile with new version of CUDA"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0272.html" title="Message to which this message replies">Camila Clemente: "[AMBER] How to recopile with new version of CUDA"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg273" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg273" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg273" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg273" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

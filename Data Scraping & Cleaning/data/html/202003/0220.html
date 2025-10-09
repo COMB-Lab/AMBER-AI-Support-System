@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] ** NFE-Error ** : Cannot read &amp;colvar namelist! from Feng Pan on 2020-03-23 (Amber Archive Mar 2020)</title>
+<meta name="Author" content="Feng Pan (fpan3.ncsu.edu)" />
+<meta name="Subject" content="Re: [AMBER] ** NFE-Error ** : Cannot read &amp;colvar namelist!" />
+<meta name="Date" content="2020-03-23" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] ** NFE-Error ** : Cannot read &amp;colvar namelist!</h1>
+<!-- received="Mon Mar 23 12:30:02 2020" -->
+<!-- isoreceived="20200323193002" -->
+<!-- sent="Mon, 23 Mar 2020 15:18:32 -0400" -->
+<!-- isosent="20200323191832" -->
+<!-- name="Feng Pan" -->
+<!-- email="fpan3.ncsu.edu" -->
+<!-- subject="Re: [AMBER] ** NFE-Error ** : Cannot read &amp;colvar namelist!" -->
+<!-- id="CAHZ=aZdY6VqZAcu1rZVFxxwb3J7TVxV2yW2D16kD4nRHsJnH2w.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="TY2PR04MB2848FD15A3A76C0CA694E5579CF00.TY2PR04MB2848.apcprd04.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0221.html" accesskey="d" title="ttz: &quot;Re: [AMBER] questions about paramfit and frcmod file&quot;">Next message</a> ]
+[ <a href="0219.html" title="David A Case: &quot;Re: [AMBER] Installation problem for a parallel version of Amber18/AmberTools19&quot;">Previous message</a> ]
+[ <a href="0218.html" title="Vishal Reddy: &quot;[AMBER] ** NFE-Error ** :  Cannot read &#0038;colvar namelist!&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg220" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg220" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg220" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg220" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Feng Pan &lt;<a href="mailto:fpan3.ncsu.edu?Subject=Re%3A%20%5BAMBER%5D%20**%20NFE-Error%20**%20%3A%20Cannot%20read%20%26colvar%20namelist!">fpan3.ncsu.edu</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 23 Mar 2020 15:18:32 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello, Vishal
+<br />
+<br />The reason for this error is that there is an internal limit for the number
+<br />
+of elements in cv_i and cv_r,
+<br />
+it is set to 20000 since for most cases 20000 should be fairly enough.
+<br />
+<br />To solve the problem one way is that you can define several CV entries in
+<br />
+cv2.in, within each the number of
+<br />
+elements in cv_i not exceeding 20000, then you just sum up all the
+<br />
+N_OF_BONDS in output file to get the total
+<br />
+number.
+<br />
+Another way is to go to $AMBERHOME/src/pmemd/src/nfe_colvar.F90(if you use
+<br />
+pmemd) or $AMBERHOME/AmberTools/src/sander/nfe-colvar-type.F90
+<br />
+(if you use sander), and change 20000 to some big number you need. Then
+<br />
+recompile and use the new sander or pmemd.
+<br />
+<br />Ps: change the cv_i to multiple lines, if you put more  than 50000 number
+<br />
+in one line, it is very hard to read and count.
+<br />
+<br />Best
+<br />
+Feng
+<br />
+<br />On Mon, Mar 23, 2020 at 8:57 AM Vishal Reddy &lt;
+<br />
+vishal.reddy.research.iiit.ac.in&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hello everyone
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; i was trying to print N_OF_BONDS values for the prod run between 10
+</em><br />
+<em class="quotelev1">&gt; protein atoms and all the water molecules of the system.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; But i was getting the error ** NFE-Error ** : Cannot read &amp;colvar
+</em><br />
+<em class="quotelev1">&gt; namelist! unable to solve it .
+</em><br />
+<em class="quotelev1">&gt; If anyone knows solutionn to this or was in similar situation can you
+</em><br />
+<em class="quotelev1">&gt; please share methods you used to overcome this problem
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br /><br /><pre>
+-- 
+Feng Pan
+PostDoc
+Florida State University
+Department of Statistics
+Email:  fpan3.ncsu.edu; fpan.fsu.edu
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Mon Mar 23 2020 - 12:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0221.html" title="Next message in the list">ttz: "Re: [AMBER] questions about paramfit and frcmod file"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0219.html" title="Previous message in the list">David A Case: "Re: [AMBER] Installation problem for a parallel version of Amber18/AmberTools19"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0218.html" title="Message to which this message replies">Vishal Reddy: "[AMBER] ** NFE-Error ** :  Cannot read &#0038;colvar namelist!"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg220" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg220" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg220" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg220" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

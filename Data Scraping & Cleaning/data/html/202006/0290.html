@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Problems with RMSF calculations from Kenneth Huang on 2020-06-27 (Amber Archive Jun 2020)</title>
+<meta name="Author" content="Kenneth Huang (kennethneltharion.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Problems with RMSF calculations" />
+<meta name="Date" content="2020-06-27" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Problems with RMSF calculations</h1>
+<!-- received="Sat Jun 27 16:00:04 2020" -->
+<!-- isoreceived="20200627230004" -->
+<!-- sent="Sat, 27 Jun 2020 18:58:53 -0400" -->
+<!-- isosent="20200627225853" -->
+<!-- name="Kenneth Huang" -->
+<!-- email="kennethneltharion.gmail.com" -->
+<!-- subject="Re: [AMBER] Problems with RMSF calculations" -->
+<!-- id="CALeh7kDwjdiO3=evX_P3uz_ivD8wEdqcTxV6rUaxdaQSPovG4g.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="7958CF1D-C21C-4C4C-B03F-05085DFDAD6D.hxcore.ol" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0291.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] Error in Antechamber&quot;">Next message</a> ]
+[ <a href="0289.html" title="kartik.lakshmi.gmail.com: &quot;Re: [AMBER] Problems with RMSF calculations&quot;">Previous message</a> ]
+[ <a href="0289.html" title="kartik.lakshmi.gmail.com: &quot;Re: [AMBER] Problems with RMSF calculations&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0314.html" accesskey="t" title="Daniel Roe: &quot;Re: [AMBER] Problems with RMSF calculations&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg290" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg290" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg290" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg290" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Kenneth Huang &lt;<a href="mailto:kennethneltharion.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Problems%20with%20RMSF%20calculations">kennethneltharion.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 27 Jun 2020 18:58:53 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />I don’t think cpptraj RMSF script is
+<br />
+<em class="quotelev1">&gt;    actually giving me the anticipated ‘average’ value of the RMSF when
+</em><br />
+<em class="quotelev1">&gt; using
+</em><br />
+<em class="quotelev1">&gt;    two 250 ns simulations.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br />So the thing that jumps to mind- when you RMS the individual 250 portions,
+<br />
+I'm guessing it goes something like
+<br />
+<br />parm *.prmtop
+<br />
+trajin prod1.nc 1 last 1
+<br />
+rms .CA first
+<br />
+rmsf .CA out rmsf_1.dat
+<br />
+<br />parm *.prmtop
+<br />
+trajin prod2.nc 1 last 1
+<br />
+rms .CA first
+<br />
+rmsf .CA out rmsf_1.dat
+<br />
+<br />So the trick is that the point of reference you RMS to for each portion
+<br />
+varies, ie the first frame of that 250 ns portion is going to vary between
+<br />
+the two unless you've specifically load up the same frame to work as a
+<br />
+reference. So to keep a 'consistent' comparison it might be something more
+<br />
+like
+<br />
+<br />parm *.prmtop
+<br />
+trajin first_ref.pdb 1 1 1
+<br />
+trajin prod2.nc 1 last 1
+<br />
+rms &#64;CA first
+<br />
+rmsf .CA out rmsf_1.dat
+<br />
+<br />That said, taking an average of two averages is a little tricky, especially
+<br />
+if they're subsections of the same time series.
+<br />
+<br />Best,
+<br />
+<br />Kenneth
+<br />
+<br /><br />On Sat, Jun 27, 2020 at 3:56 PM &lt;kartik.lakshmi.gmail.com&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    Hi Kenneth,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    Thanks for your suggestion! I tried to use the rms &#64;CA first out
+</em><br />
+<em class="quotelev1">&gt; rms.out to
+</em><br />
+<em class="quotelev1">&gt;    ensure that I am using the first frame as a reference and my results
+</em><br />
+<em class="quotelev1">&gt; look
+</em><br />
+<em class="quotelev1">&gt;    exactly  as the one from the older version of the cpptraj script (with
+</em><br />
+<em class="quotelev1">&gt;    reference ../../prod/pd1/wt_pd.nc 1 statement ). The attached graph
+</em><br />
+<em class="quotelev1">&gt; can show
+</em><br />
+<em class="quotelev1">&gt;    that it is identical to the one I send earlier.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    Hence  my  problem still remains. I don’t think cpptraj RMSF script is
+</em><br />
+<em class="quotelev1">&gt;    actually giving me the anticipated ‘average’ value of the RMSF when
+</em><br />
+<em class="quotelev1">&gt; using
+</em><br />
+<em class="quotelev1">&gt;    two 250 ns simulations.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    I would appreciate any suggestions and explanations!
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    Thanks a lot in advance,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    Kartik
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    From: [1]Kenneth Huang
+</em><br />
+<em class="quotelev1">&gt;    Sent: 26 June 2020 14:50
+</em><br />
+<em class="quotelev1">&gt;    To: [2]AMBER Mailing List
+</em><br />
+<em class="quotelev1">&gt;    Subject: Re: [AMBER] Problems with RMSF calculations
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    Hi,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    My guess is the it might not be fitting to to the first frame- you can
+</em><br />
+<em class="quotelev1">&gt; try
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    parm ../../prod/pd1/wt.prmtop
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    trajin ../../prod/pd1/[1]wt_[2]pd.nc
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    trajin ../../prod/pd2/[3]wt_[4]pd.nc
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    rms .CA first out rms.out
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    atomicfluct out RMSF.dat &#64;CA byres
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    Which should avoid any ambiguity of if it's fetching the wrong frame.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    Best,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    Kenneth
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    On Fri, Jun 26, 2020 at 2:49 PM &lt;kartik.lakshmi.gmail&#46;<!--nospam-->com&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    I have a total of 500 ns trajectory - 250 + 250 ns - starting from
+</em><br />
+<em class="quotelev1">&gt; the
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt; same
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    eq.rst file. I calculated the RMSF (wrt to the first frame as the
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt; reference)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    for this 500 ns using this cpptraj script:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    parm ../../prod/pd1/wt.prmtop
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    trajin ../../prod/pd1/[1]wt_[2]pd.nc
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    trajin ../../prod/pd2/[3]wt_[4]pd.nc
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    reference ../../prod/pd1/[5]wt_[6]pd.nc 1
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    rms .CA reference
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    atomicfluct out RMSF.dat &#64;CA byres
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    run
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;     I would expect the RMSF calculated using this script to give the
+</em><br />
+<em class="quotelev1">&gt;    average
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    RMSF from the two production runs but it seems that the RMSF
+</em><br />
+<em class="quotelev1">&gt; calculated
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    using the input above is not the true average of the two
+</em><br />
+<em class="quotelev1">&gt; trajectories.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    The attached graph will make it clearer.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    comp_mean.png contains the RMSF calculated using cpptraj for the
+</em><br />
+<em class="quotelev1">&gt; entire
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt; PD1
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    and PD2 and for PD1 + PD2. I have also plotted here the mean RMSFs
+</em><br />
+<em class="quotelev1">&gt; (for
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt; 10ns
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    chunks) for PD 1 and PD 2 that I calculated using python. Am I
+</em><br />
+<em class="quotelev1">&gt; using
+</em><br />
+<em class="quotelev1">&gt;    the
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    RMSF script incorrectly? I want to calculate the residue-wise
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt; fluctuations
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    of the Ca atoms of the peptide backbone of my entire simulation
+</em><br />
+<em class="quotelev1">&gt; (i.e.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt; PD 1
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    and 2 combined).
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    Thanks a lot in advance for all the help!
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    Kartik Lakshmi Rallapalli
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt; References
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    1.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://urldefense.com/v3/__http:/wt_pd.nc__;!!Mih3wA!RkWVHZ9uzYaTsfRwSkKOl8">https://urldefense.com/v3/__http:/wt_pd.nc__;!!Mih3wA!RkWVHZ9uzYaTsfRwSkKOl8</a>
+</em><br />
+<em class="quotelev1">&gt;    GwVSF_aGB56sRRlI2gEzyf_i_Lj7VJPgwZCZ9m$
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    2. <a href="http://pd.nc/">http://pd.nc/</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    3.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://urldefense.com/v3/__http:/wt_pd.nc__;!!Mih3wA!RkWVHZ9uzYaTsfRwSkKOl8">https://urldefense.com/v3/__http:/wt_pd.nc__;!!Mih3wA!RkWVHZ9uzYaTsfRwSkKOl8</a>
+</em><br />
+<em class="quotelev1">&gt;    GwVSF_aGB56sRRlI2gEzyf_i_Lj7VJPgwZCZ9m$
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    4. <a href="http://pd.nc/">http://pd.nc/</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    5.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://urldefense.com/v3/__http:/wt_pd.nc__;!!Mih3wA!RkWVHZ9uzYaTsfRwSkKOl8">https://urldefense.com/v3/__http:/wt_pd.nc__;!!Mih3wA!RkWVHZ9uzYaTsfRwSkKOl8</a>
+</em><br />
+<em class="quotelev1">&gt;    GwVSF_aGB56sRRlI2gEzyf_i_Lj7VJPgwZCZ9m$
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;    6. <a href="http://pd.nc/">http://pd.nc/</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;    &gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    --
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    Ask yourselves, all of you, what power would hell have if those
+</em><br />
+<em class="quotelev1">&gt; imprisoned
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    here could not dream of heaven?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    _______________________________________________
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; References
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;    1. mailto:<a href="mailto:kennethneltharion.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Problems%20with%20RMSF%20calculations">kennethneltharion.gmail.com</a>
+</em><br />
+<em class="quotelev1">&gt;    2. mailto:amber.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br /><br /><pre>
+-- 
+Ask yourselves, all of you, what power would hell have if those imprisoned
+here could not dream of heaven?
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Sat Jun 27 2020 - 16:00:04 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0291.html" title="Next message in the list">David A Case: "Re: [AMBER] Error in Antechamber"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0289.html" title="Previous message in the list">kartik.lakshmi.gmail.com: "Re: [AMBER] Problems with RMSF calculations"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0289.html" title="Message to which this message replies">kartik.lakshmi.gmail.com: "Re: [AMBER] Problems with RMSF calculations"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0314.html" title="Next message in this discussion thread">Daniel Roe: "Re: [AMBER] Problems with RMSF calculations"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg290" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg290" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg290" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg290" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

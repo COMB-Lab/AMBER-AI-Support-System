@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Confusion regarding Center of mass coordinates for protein, with CPPTRAJ from Prathit Chatterjee on 2020-08-27 (Amber Archive Aug 2020)</title>
+<meta name="Author" content="Prathit Chatterjee (prathit.biophysics.gmail.com)" />
+<meta name="Subject" content="[AMBER] Confusion regarding Center of mass coordinates for protein, with CPPTRAJ" />
+<meta name="Date" content="2020-08-27" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Confusion regarding Center of mass coordinates for protein, with CPPTRAJ</h1>
+<!-- received="Thu Aug 27 05:00:02 2020" -->
+<!-- isoreceived="20200827120002" -->
+<!-- sent="Thu, 27 Aug 2020 20:58:48 +0900" -->
+<!-- isosent="20200827115848" -->
+<!-- name="Prathit Chatterjee" -->
+<!-- email="prathit.biophysics.gmail.com" -->
+<!-- subject="[AMBER] Confusion regarding Center of mass coordinates for protein, with CPPTRAJ" -->
+<!-- id="CAH3AqM5d4+PuuOiUxcv2zrYJ2QU_tCQ79-tq7CPMnRO3AfPBqQ.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0218.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] Help for building cross linking polymer using graphic antechamber&quot;">Next message</a> ]
+[ <a href="0216.html" title="Gustaf Olsson: &quot;[AMBER] Tutorial B0&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg217" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg217" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg217" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg217" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Prathit Chatterjee &lt;<a href="mailto:prathit.biophysics.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Confusion%20regarding%20Center%20of%20mass%20coordinates%20for%20protein%2C%20with%20CPPTRAJ">prathit.biophysics.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 27 Aug 2020 20:58:48 +0900</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear AMBER Experts,
+<br />
+<br />This is regarding calculating the center of mass coordinates of protein,
+<br />
+with CPPTRAJ.
+<br />
+<br />I have basically followed the CPPTRAJ section of the AMBER Manual as
+<br />
+follows:
+<br />
+vector [&lt;name&gt;] &lt;Type&gt; [out &lt;filename&gt; [ptrajoutput]] [&lt;mask1&gt;] [&lt;mask2&gt;]
+<br />
+[magnitude] [ired]
+<br />
+&lt;Type&gt; = { mask | minimage | dipole | center | corrplane |
+<br />
+box | boxcenter | ucellx | ucelly | ucellz
+<br />
+principal [x|y|z] }...
+<br />
+...[magnitude] Store the magnitude of the vector with aspect [Mag].
+<br />
+<br />I have loaded one frame and have tried to calculate it :
+<br />
+parm DM_1.top
+<br />
+reference DM_1_md0000.rst [FIRST]
+<br />
+trajin  DM_1_md0001.crd  50 50
+<br />
+#centering
+<br />
+strip :WAT
+<br />
+strip :Na+
+<br />
+strip :Cl-
+<br />
+center :1-43 mass origin
+<br />
+image origin center familiar
+<br />
+vector center out com_test9_Tau.dat :1-43 magnitude
+<br />
+<br />The results obtained is as follows:
+<br />
+#Frame                                               Vec_00002
+<br />
+Vec_00002[Mag]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1  -5.1339 -46.4399   4.2386   0.0000   0.0000   0.0000
+<br />
+46.915
+<br />
+<br />But, the same thing which when I try to calculate with vmd for
+<br />
+cross-checking, is giving different results as follows (I am sure about the
+<br />
+technicalities I am using in VMD, and therefore presume the data obtained
+<br />
+from VMD is correct). Please see below:
+<br />
+vmd &gt; mol new DM_1_000050.pdb
+<br />
+Info) Using plugin pdb for structure file DM_1_000050.pdb
+<br />
+Info) Using plugin pdb for coordinates from file DM_1_000050.pdb
+<br />
+Info) Determining bond structure from distance search ...
+<br />
+Info) Analyzing structure ...
+<br />
+Info)    Atoms: 1288
+<br />
+Info)    Bonds: 1300
+<br />
+Info)    Angles: 0  Dihedrals: 0  Impropers: 0  Cross-terms: 0
+<br />
+Info)    Bondtypes: 0  Angletypes: 0  Dihedraltypes: 0  Impropertypes: 0
+<br />
+Info)    Residues: 86
+<br />
+Info)    Waters: 0
+<br />
+Info)    Segments: 1
+<br />
+Info)    Fragments: 2   Protein: 2   Nucleic: 0
+<br />
+0
+<br />
+Info) Finished with coordinate file DM_1_000050.pdb.
+<br />
+vmd &gt; set a [atomselect top &quot;protein and resid 1 to 43&quot;]
+<br />
+atomselect0
+<br />
+vmd &gt; measure center $a weight mass
+<br />
+-0.3192976117134094 -24.074199676513672 0.9994136691093445
+<br />
+<br />I therefore wanted to know whether the CPPTRAJ technical commands I am
+<br />
+using are correct or not, and would want to implement the proper commands
+<br />
+for calculating the center of mass.
+<br />
+Any suggestions in this regard will be deeply appreciated.
+<br />
+<br />Thank you in advance,
+<br />
+Regards,
+<br />
+Prathit Chatterjee
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Aug 27 2020 - 05:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0218.html" title="Next message in the list">David A Case: "Re: [AMBER] Help for building cross linking polymer using graphic antechamber"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0216.html" title="Previous message in the list">Gustaf Olsson: "[AMBER] Tutorial B0"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg217" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg217" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg217" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg217" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

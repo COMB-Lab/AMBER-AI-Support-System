@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Antechamber with QM software other than Gaussian from Alexander Izvorski via AMBER on 2022-10-29 (Amber Archive Oct 2022)</title>
+<meta name="Author" content="Alexander Izvorski via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Antechamber with QM software other than Gaussian" />
+<meta name="Date" content="2022-10-29" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Antechamber with QM software other than Gaussian</h1>
+<!-- received="Sat Oct 29 13:30:02 2022" -->
+<!-- isoreceived="20221029203002" -->
+<!-- sent="Sat, 29 Oct 2022 13:06:31 -0700" -->
+<!-- isosent="20221029200631" -->
+<!-- name="Alexander Izvorski via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Antechamber with QM software other than Gaussian" -->
+<!-- id="CABwbVQN4iyHmi-ipWhrBotxXPoSzj6OaxPEWGneNXMrEOeS9Cg.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CADC_4sWSneT5j9xe7DYF5c30YZAed-5tQ-oE0wD6zR5rsEU8BA.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0143.html" accesskey="d" title="James Kress via AMBER: &quot;Re: [AMBER] Antechamber with QM software other than Gaussian&quot;">Next message</a> ]
+[ <a href="0141.html" title="3163490855--- via AMBER: &quot;[AMBER] &#20320;&#22909;amber@ambermd.org&#20320;&#22909;&quot;">Previous message</a> ]
+[ <a href="0077.html" title="Shiji Zhao via AMBER: &quot;Re: [AMBER] Antechamber with QM software other than Gaussian&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0143.html" accesskey="t" title="James Kress via AMBER: &quot;Re: [AMBER] Antechamber with QM software other than Gaussian&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg142" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg142" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg142" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg142" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Alexander Izvorski via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Antechamber%20with%20QM%20software%20other%20than%20Gaussian">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 29 Oct 2022 13:06:31 -0700</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Shiji,
+<br />
+<br />Yes, it seems like antechamber does accept GAMESS outputs, using the -fi
+<br />
+gamess option.  This option is mostly undocumented, antechamber -L lists it
+<br />
+but the Amber manual does not.
+<br />
+<br />The complete command is something like this:
+<br />
+<br />antechamber -i test.dat -fi gamess -o resp.mol2 -fo mol2 -c resp -eq 2
+<br />
+<br />The same input works in espgen -i test.dat -o test.esp (the format is
+<br />
+apparently autodetected).  I've tested with ambertools=22.0 and 20.9.
+<br />
+<br />Here test.dat is what GAMESS calls a &quot;punch&quot; file.  I have some examples of
+<br />
+the file format, please let me know if you'd like to have a look.  GAMESS
+<br />
+generates its own points at which to evaluate the potential, these seem
+<br />
+very similar to Gaussian.
+<br />
+<br />I am happy I got this working, but would still really like to be able to do
+<br />
+the same thing for other QM software, especially the software already
+<br />
+bundled with Amber, and software which can be installed directly from
+<br />
+conda-forge :)
+<br />
+<br />The tricky part is generating the points - Orca, Psi4, etc can easily
+<br />
+calculate potential-at-a-point, but don't have any builtin function to find
+<br />
+the points on Connoly-type surfaces around the provided atoms.  Do you have
+<br />
+any example code which calculates the coordinates of the points?
+<br />
+<br />Best,
+<br />
+Alex
+<br />
+<br /><br /><br /><br /><br />On Tue, Oct 18, 2022 at 12:34 AM Shiji Zhao &lt;shijiz.uci.edu&gt; wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hi Alexander,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I read the source code of espgen.c in AmberTools and noticed it has added
+</em><br />
+<em class="quotelev1">&gt; support to GAMESS. The espgen version is 1.1.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I have never used GAMESS before. Maybe you can give it a try and let me
+</em><br />
+<em class="quotelev1">&gt; know if espgen can handle GAMESS output files. This information will also
+</em><br />
+<em class="quotelev1">&gt; be helpful to me since I am considering adding more features to the
+</em><br />
+<em class="quotelev1">&gt; espgen code.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Best,
+</em><br />
+<em class="quotelev1">&gt; Shiji
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Thu, Jul 7, 2022 at 5:58 PM Alexander Izvorski via AMBER &lt;
+</em><br />
+<em class="quotelev1">&gt; amber.ambermd.org&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; Hello Amber folks,
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; I'd like to use antechamber and espgen/respgen to fit RESP charges without
+</em><br />
+<em class="quotelev2">&gt;&gt; using Gaussian.
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; I'd be potentially interested in any other QM software: QUICK (which is
+</em><br />
+<em class="quotelev2">&gt;&gt; nice because it's now bundled with ambertools), Psi4, CP2K, GAMESS, Orca
+</em><br />
+<em class="quotelev2">&gt;&gt; etc.  It just seems a bit limiting to have Gaussian be the only choice for
+</em><br />
+<em class="quotelev2">&gt;&gt; this type of calculation.
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; The latest Amber22 manual seems to assume Gaussian-only in a few places:
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; 15.3.5. espgen
+</em><br />
+<em class="quotelev3">&gt;&gt; &gt; Espgen reads in a gaussian (92,94,98,03) output file and extracts the
+</em><br />
+<em class="quotelev2">&gt;&gt; ESP
+</em><br />
+<em class="quotelev3">&gt;&gt; &gt; information
+</em><br />
+<em class="quotelev3">&gt;&gt; &gt;
+</em><br />
+<em class="quotelev3">&gt;&gt; &gt; 15.1.1. antechamber
+</em><br />
+<em class="quotelev3">&gt;&gt; &gt; -ge gaussian esp file generated by iop(6/50=1), default is g09.gesp
+</em><br />
+<em class="quotelev3">&gt;&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; Has anyone successfully used non-Gaussian software for RESP?  Are there
+</em><br />
+<em class="quotelev2">&gt;&gt; any
+</em><br />
+<em class="quotelev2">&gt;&gt; supported options?
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; If not, could someone describe the expected output file format from
+</em><br />
+<em class="quotelev2">&gt;&gt; Gaussian?  I can probably try to write a format converter, since most of
+</em><br />
+<em class="quotelev2">&gt;&gt; the tools mentioned above can calculate and save electrostatic potential.
+</em><br />
+<em class="quotelev2">&gt;&gt; For example Psi4 has the GRID_ESP
+</em><br />
+<em class="quotelev2">&gt;&gt; &lt;
+</em><br />
+<em class="quotelev2">&gt;&gt; <a href="https://urldefense.com/v3/__https://psicode.org/psi4manual/master/oeprop.html__;!!CzAuKJ42GuquVTTmVmPViYEvSg!O17LEeXQ1OBXwzTktJhx4KPTeYr_tNx1yFOLRLOc5cdl2zCjZKuSgxK1Mn6bAUVS0-pDwyFA1PkLTw">https://urldefense.com/v3/__https://psicode.org/psi4manual/master/oeprop.html__;!!CzAuKJ42GuquVTTmVmPViYEvSg!O17LEeXQ1OBXwzTktJhx4KPTeYr_tNx1yFOLRLOc5cdl2zCjZKuSgxK1Mn6bAUVS0-pDwyFA1PkLTw</a>$
+</em><br />
+<em class="quotelev3">&gt;&gt; &gt; option.  I just don't
+</em><br />
+<em class="quotelev2">&gt;&gt; have any idea what the espgen or respgen-compatible format should look
+</em><br />
+<em class="quotelev2">&gt;&gt; like.
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; Best,
+</em><br />
+<em class="quotelev2">&gt;&gt; Alex
+</em><br />
+<em class="quotelev2">&gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; <a href="https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!CzAuKJ42GuquVTTmVmPViYEvSg!O17LEeXQ1OBXwzTktJhx4KPTeYr_tNx1yFOLRLOc5cdl2zCjZKuSgxK1Mn6bAUVS0-pDwyHUuc7TsA">https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!CzAuKJ42GuquVTTmVmPViYEvSg!O17LEeXQ1OBXwzTktJhx4KPTeYr_tNx1yFOLRLOc5cdl2zCjZKuSgxK1Mn6bAUVS0-pDwyHUuc7TsA</a>$
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sat Oct 29 2022 - 13:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0143.html" title="Next message in the list">James Kress via AMBER: "Re: [AMBER] Antechamber with QM software other than Gaussian"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0141.html" title="Previous message in the list">3163490855--- via AMBER: "[AMBER] &#20320;&#22909;amber@ambermd.org&#20320;&#22909;"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0077.html" title="Message to which this message replies">Shiji Zhao via AMBER: "Re: [AMBER] Antechamber with QM software other than Gaussian"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0143.html" title="Next message in this discussion thread">James Kress via AMBER: "Re: [AMBER] Antechamber with QM software other than Gaussian"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0143.html" title="Message sent in reply to this message">James Kress via AMBER: "Re: [AMBER] Antechamber with QM software other than Gaussian"</a></li>
+<li><dfn>Reply</dfn>: <a href="0148.html" title="Message sent in reply to this message">Shiji Zhao via AMBER: "Re: [AMBER] Antechamber with QM software other than Gaussian"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg142" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg142" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg142" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg142" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

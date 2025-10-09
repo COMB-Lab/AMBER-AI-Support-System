@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Combining MCPB.py results using tleap from Anthony Nash on 2021-08-18 (Amber Archive Aug 2021)</title>
+<meta name="Author" content="Anthony Nash (anthony.nash.ndcn.ox.ac.uk)" />
+<meta name="Subject" content="[AMBER] Combining MCPB.py results using tleap" />
+<meta name="Date" content="2021-08-18" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Combining MCPB.py results using tleap</h1>
+<!-- received="Wed Aug 18 12:30:02 2021" -->
+<!-- isoreceived="20210818193002" -->
+<!-- sent="Wed, 18 Aug 2021 19:12:55 +0000" -->
+<!-- isosent="20210818191255" -->
+<!-- name="Anthony Nash" -->
+<!-- email="anthony.nash.ndcn.ox.ac.uk" -->
+<!-- subject="[AMBER] Combining MCPB.py results using tleap" -->
+<!-- id="LO0P265MB2604B3EBC282567BD5A752E589FF9.LO0P265MB2604.GBRP265.PROD.OUTLOOK.COM" -->
+<!-- charset="iso-8859-1" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0124.html" accesskey="d" title="Sarah Lefave: &quot;Re: [AMBER] [UCE]  Combining MCPB.py results using tleap&quot;">Next message</a> ]
+[ <a href="0122.html" title="Matthew Guberman-Pfeffer: &quot;[AMBER] CPPTRAJ and data from PQR files&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0124.html" accesskey="t" title="Sarah Lefave: &quot;Re: [AMBER] [UCE]  Combining MCPB.py results using tleap&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg123" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg123" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg123" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg123" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Anthony Nash &lt;<a href="mailto:anthony.nash.ndcn.ox.ac.uk?Subject=Re%3A%20%5BAMBER%5D%20Combining%20MCPB.py%20results%20using%20tleap">anthony.nash.ndcn.ox.ac.uk</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 18 Aug 2021 19:12:55 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi all,
+<br />
+<br />A long time MD user, but with close to zero Amber experience.
+<br />
+<br />Using MCPB.py and GAMESS-US, I've derived the force constants for 6 metal ions and their corresponding ligand side chains. I've got all the way to have 6 unique .pdb, .prmtop, .inpcrd along with all the mol2 and frcmod files.
+<br />
+<br />The problem I now have is combining the six sets of topology data into one (recap: 6 metals, 6 directories, 6 complete sets of files).
+<br />
+<br />I don't quite know how to do this using tleap. So, putting files and my experience together, I decided to keep one &quot;master.pdb&quot; file, rename all the affected residue names e.g., residue HE1.mol2 to Z1A .mol2(for the first of two zincs and the first ligand(A)) and propagate those through the master.pdb. Long story short, I will have renamed around 30 residues so they match the mol2 files.
+<br />
+<br />I thought this would work. In truth, I don't know how this is going to affect reading in the frcmod files.
+<br />
+<br />My merged tleap input file (just merged both zinc data sets as a test) contains:
+<br />
+<br />source oldff/leaprc.ff99
+<br />
+source leaprc.gaff
+<br />
+source leaprc.water.opc
+<br />
+addAtomTypes {
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ &quot;M1&quot;  &quot;Zn&quot; &quot;sp3&quot; }
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ &quot;Y1&quot;  &quot;N&quot; &quot;sp3&quot; }
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ &quot;Y2&quot;  &quot;O&quot; &quot;sp3&quot; }
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ &quot;Y3&quot;  &quot;N&quot; &quot;sp3&quot; }
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ &quot;Y4&quot;  &quot;N&quot; &quot;sp3&quot; }
+<br />
+}
+<br />
+Z1A = loadmol2 Z1A.mol2
+<br />
+Z1B = loadmol2 Z1B.mol2
+<br />
+Z1C = loadmol2 Z1C.mol2
+<br />
+Z1D = loadmol2 Z1D.mol2
+<br />
+Z1E = loadmol2 Z1E.mol2
+<br />
+<br />Z2A = loadmol2 Z2A.mol2
+<br />
+Z2B = loadmol2 Z2B.mol2
+<br />
+Z2C = loadmol2 Z2C.mol2
+<br />
+Z2D = loadmol2 Z2D.mol2
+<br />
+<br /><br />loadamberparams frcmod.ionslm_126_opc
+<br />
+loadamberparams MMP1_zn_1201_mcpbpy.frcmod
+<br />
+loadamberparams MMP1_zn_1202_mcpbpy.frcmod
+<br />
+mol = loadpdb adjusted.pdb
+<br />
+bond mol.179.SG mol.367.SG
+<br />
+bond mol.69.NE2 mol.368.ZN
+<br />
+bond mol.71.OD2 mol.368.ZN
+<br />
+bond mol.84.NE2 mol.368.ZN
+<br />
+bond mol.97.ND1 mol.368.ZN
+<br />
+bond mol.68.C mol.69.N
+<br />
+bond mol.69.C mol.70.N
+<br />
+bond mol.70.C mol.71.N
+<br />
+bond mol.71.C mol.72.N
+<br />
+bond mol.83.C mol.84.N
+<br />
+bond mol.84.C mol.85.N
+<br />
+bond mol.96.C mol.97.N
+<br />
+bond mol.97.C mol.98.N
+<br />
+<br />bond mol.119.NE2 mol.368.ZN
+<br />
+bond mol.123.NE2 mol.368.ZN
+<br />
+bond mol.129.NE2 mol.368.ZN
+<br />
+bond mol.118.C mol.119.N
+<br />
+bond mol.119.C mol.120.N
+<br />
+bond mol.122.C mol.123.N
+<br />
+bond mol.123.C mol.124.N
+<br />
+bond mol.128.C mol.129.N
+<br />
+bond mol.129.C mol.130.N
+<br />
+<br /><br />savepdb mol combined_dry.pdb
+<br />
+saveamberparm mol combined.prmtop combined.inpcrd
+<br />
+solvatebox mol OPCBOX 10.0
+<br />
+addions mol Na+ 0
+<br />
+addions mol Cl- 0
+<br />
+savepdb mol combined_solv.pdb
+<br />
+saveamberparm mol combined_solv.prmtop combined_solv.inpcrd
+<br />
+quit
+<br />
+<br /><br />I see lots of these warnings:
+<br />
+<br />/home/ubuntu/miniconda3/envs/AmberTools21/bin/teLeap: Warning!
+<br />
+One sided connection. Residue (Z1A) missing connect0 atom.
+<br />
+<br /><br />And then loads of these errors:
+<br />
+<br />Building topology.
+<br />
+Building atom parameters.
+<br />
+Building bond parameters.
+<br />
+Building angle parameters.
+<br />
+<br />/home/ubuntu/miniconda3/envs/AmberTools21/bin/teLeap: Error!
+<br />
+Could not find angle parameter: Y1 - M1 - Y1
+<br />
+<br />/home/ubuntu/miniconda3/envs/AmberTools21/bin/teLeap: Error!
+<br />
+Could not find angle parameter: Y2 - M1 - Y2
+<br />
+<br />/home/ubuntu/miniconda3/envs/AmberTools21/bin/teLeap: Error!
+<br />
+Could not find angle parameter: Y3 - M1 - Y3
+<br />
+Building proper torsion parameters.
+<br />
+<br />/home/ubuntu/miniconda3/envs/AmberTools21/bin/teLeap: Error!
+<br />
+&nbsp;** No torsion terms for  CV-Y1-M1-Y1
+<br />
+<br /><br />I could hack away, but I've spent hours finally getting the force constant data. Now, combining them into one topology involves me holding my hands up for a bit and hoping those with more experience can help.
+<br />
+<br />Many thanks
+<br />
+Anthony
+<br />
+<br /><br /><br /><br />Kind regards
+<br />
+Dr Anthony Nash PhD MRSC
+<br />
+<br />Senior Research Scientist
+<br />
+Nuffield Department of Clinical Neurosciences
+<br />
+RMCR Kellogg College
+<br />
+University of Oxford
+<br />
+<a href="http://www.kellogg.ox.ac.uk/">http://www.kellogg.ox.ac.uk/</a>
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Aug 18 2021 - 12:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0124.html" title="Next message in the list">Sarah Lefave: "Re: [AMBER] [UCE]  Combining MCPB.py results using tleap"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0122.html" title="Previous message in the list">Matthew Guberman-Pfeffer: "[AMBER] CPPTRAJ and data from PQR files"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0124.html" title="Next message in this discussion thread">Sarah Lefave: "Re: [AMBER] [UCE]  Combining MCPB.py results using tleap"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0124.html" title="Message sent in reply to this message">Sarah Lefave: "Re: [AMBER] [UCE]  Combining MCPB.py results using tleap"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg123" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg123" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg123" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg123" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

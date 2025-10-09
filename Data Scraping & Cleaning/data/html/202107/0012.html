@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] MD with emap restraints, restraints have no effect from Will Gerrard on 2021-07-03 (Amber Archive Jul 2021)</title>
+<meta name="Author" content="Will Gerrard (will.gerrard.kuano.ai)" />
+<meta name="Subject" content="[AMBER] MD with emap restraints, restraints have no effect" />
+<meta name="Date" content="2021-07-03" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] MD with emap restraints, restraints have no effect</h1>
+<!-- received="Sat Jul  3 03:00:02 2021" -->
+<!-- isoreceived="20210703100002" -->
+<!-- sent="Sat, 3 Jul 2021 10:51:42 +0100" -->
+<!-- isosent="20210703095142" -->
+<!-- name="Will Gerrard" -->
+<!-- email="will.gerrard.kuano.ai" -->
+<!-- subject="[AMBER] MD with emap restraints, restraints have no effect" -->
+<!-- id="CAGauDhKA_fGP5qSvfkEzb0OdO4AZjC2kEJS86BkDsJA=8mGCgA.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0013.html" accesskey="d" title="Elvis A F Martis: &quot;Re: [AMBER] To build a single covalent bond in a protein-ligand complex using AMBER18.&quot;">Next message</a> ]
+[ <a href="0011.html" title="PRIYANKA PUROHIT: &quot;[AMBER] To build a single covalent bond in a protein-ligand complex using AMBER18.&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0021.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] MD with emap restraints, restraints have no effect&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg12" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg12" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg12" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg12" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Will Gerrard &lt;<a href="mailto:will.gerrard.kuano.ai?Subject=Re%3A%20%5BAMBER%5D%20MD%20with%20emap%20restraints%2C%20restraints%20have%20no%20effect">will.gerrard.kuano.ai</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 3 Jul 2021 10:51:42 +0100</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />I am attempting to run a short MD simulation where the position of a serine
+<br />
+residue and a ligand are constrained in order to force them into a
+<br />
+conformation obtained from a different structure. The coordinates in the
+<br />
+restraint are a small distance from the starting coordinates in the
+<br />
+simulation, but the restraints seem to have absolutely no effect, even with
+<br />
+very high force constant.
+<br />
+<br />I am hoping this is a simple issue with my input file, but i can't seem to
+<br />
+fix it, any advice would be greatly appreciated,
+<br />
+<br />Thanks,
+<br />
+<br />Will
+<br />
+<br />Here is the sander input file i am using:
+<br />
+<br />MD with only ntr restraint on atoms outside sphere
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;imin=0, irest=1,         !(imin=0, run md with no minimisation, irest=1,
+<br />
+restart simulation using velocities from input file)
+<br />
+&nbsp;ntx=5,                   !(ntx=5, read coordinates and velocities from
+<br />
+coordinate file (NetCDF))
+<br />
+&nbsp;nstlim=100000, dt=0.001,    !(nstlim=500, perform 500 MD steps, dt=0.001
+<br />
+use time step of 0.001 psec)
+<br />
+&nbsp;ntpr=100,                  !(print energy every n step)
+<br />
+&nbsp;ntwx=100,                  !(write coordinates to crd file every n step)
+<br />
+&nbsp;ioutfm=1,                !(write traj file as formatted ASCII (1 for
+<br />
+binary)
+<br />
+&nbsp;ntwr=10,                 !(write restart file every 10 steps (set to
+<br />
+negative to write to separate files))
+<br />
+&nbsp;ntc = 2, tol = 0.0000005,  !(use shake to constrain hydrogen bonds only,
+<br />
+with tolerance 0.0000005)
+<br />
+&nbsp;ntb=0, cut=10,             !(no periodic boundary, nonbonded cutoff of 10)
+<br />
+&nbsp;iemap=1,                   !(use emap)
+<br />
+&nbsp;ntt=1, tautp=4.0, temp0=300.0, !(ntt=1 use constant temperature (of temp0)
+<br />
+using weak-coupling algorithm, using tautp time constant for heat bath
+<br />
+coupling, )
+<br />
+&nbsp;/
+<br />
+&nbsp;&amp;emap
+<br />
+&nbsp;mapfile='../minimize/Protein_lig_solvated.pdb', atmask=&quot;!.H= &amp; :356&quot;,
+<br />
+!(constrain residue 356 (SER) to coordinates where it connects to Lig)
+<br />
+&nbsp;fcons=1000000,                                     !(use force constant
+<br />
+0.1)
+<br />
+&nbsp;/
+<br />
+&nbsp;&amp;emap
+<br />
+&nbsp;mapfile='../minimize/Protein_lig_solvated.pdb', atmask=&quot;!.H= &amp; :364&quot;,
+<br />
+!(constrain residue 364 (Lig) to coordinates where it connects to SER)
+<br />
+&nbsp;fcons=1000000,                                     !(use force constant
+<br />
+0.1)
+<br />
+&nbsp;/
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sat Jul 03 2021 - 03:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0013.html" title="Next message in the list">Elvis A F Martis: "Re: [AMBER] To build a single covalent bond in a protein-ligand complex using AMBER18."</a></li>
+<li><dfn>Previous message</dfn>: <a href="0011.html" title="Previous message in the list">PRIYANKA PUROHIT: "[AMBER] To build a single covalent bond in a protein-ligand complex using AMBER18."</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0021.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] MD with emap restraints, restraints have no effect"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0021.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] MD with emap restraints, restraints have no effect"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0024.html" title="Message sent in reply to this message">Will Gerrard: "Re: [AMBER] MD with emap restraints, restraints have no effect"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg12" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg12" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg12" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg12" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

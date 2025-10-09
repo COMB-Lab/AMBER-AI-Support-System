@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Hack to install AmberTools20 on macOS from Gustaf Olsson on 2021-04-19 (Amber Archive Apr 2021)</title>
+<meta name="Author" content="Gustaf Olsson (gustaf.olsson.lnu.se)" />
+<meta name="Subject" content="Re: [AMBER] Hack to install AmberTools20 on macOS" />
+<meta name="Date" content="2021-04-19" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Hack to install AmberTools20 on macOS</h1>
+<!-- received="Tue Apr 20 00:00:02 2021" -->
+<!-- isoreceived="20210420070002" -->
+<!-- sent="Tue, 20 Apr 2021 06:44:36 +0000" -->
+<!-- isosent="20210420064436" -->
+<!-- name="Gustaf Olsson" -->
+<!-- email="gustaf.olsson.lnu.se" -->
+<!-- subject="Re: [AMBER] Hack to install AmberTools20 on macOS" -->
+<!-- id="F3CEAFE2-6B18-4C8C-AD95-83D71387EE29.lnu.se" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="20210419132713.ykcocoikzf4275vk.obfa-l03.rad.rutgers.edu" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0157.html" accesskey="d" title="Vaibhav Dixit: &quot;Re: [AMBER] unusually high entropy values MMPBSA quasi-harmonic&quot;">Next message</a> ]
+[ <a href="0155.html" title="h_sahakyan.mb.sci.am: &quot;[AMBER]  2.5 fs integration time step&quot;">Previous message</a> ]
+[ <a href="0144.html" title="David A Case: &quot;Re: [AMBER] Hack to install AmberTools20 on macOS&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg156" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg156" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg156" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg156" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gustaf Olsson &lt;<a href="mailto:gustaf.olsson.lnu.se?Subject=Re%3A%20%5BAMBER%5D%20Hack%20to%20install%20AmberTools20%20on%20macOS">gustaf.olsson.lnu.se</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 20 Apr 2021 06:44:36 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+I suppose this makes me a stickler here but you’ve actually helped solve a very likely related issue on February 9th
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Sorry that I was looking at the development branch code.  Still, try adding
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;the following two lines right after line 199 above:
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;int    yyerror( char *sStr );
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;int    yylex();
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;...thx…dac
+<br />
+
+<br />
+The workaround suggested at that time was to not edit the files after build failure but rather edit the parser.y file:
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gsed -i '/\extern  int     yyparse();/a int    yyerror( char *sStr );\nint    yylex();' AmberTools/src/leap/src/leap/parser.y
+<br />
+
+<br />
+After which compilation was successful. I suppose this point got lost in the discussion regarding using the homebrew gfortran compiler.
+<br />
+
+<br />
+Best regards
+<br />
+// Gustaf
+<br />
+
+<br />
+
+<br />
+<em class="quotelev1">&gt; On 19 Apr 2021, at 15:27, David A Case &lt;david.case.rutgers&#46;<!--nospam-->edu&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; On Sun, Apr 18, 2021, Otto Sievert wrote:
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Today I helped someone install AmberTools20 on his macOS computer. I wanted
+</em><br />
+<em class="quotelev2">&gt;&gt; to report a problem with this, and my hacky work-around. At a minimum, this
+</em><br />
+<em class="quotelev2">&gt;&gt; work-around might help others.
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; The issue: after installing prerequisites (Xcode command line tools,
+</em><br />
+<em class="quotelev2">&gt;&gt; gfortran 8.2, cmake) the build fails to compile the file
+</em><br />
+<em class="quotelev2">&gt;&gt; build/AmberTools/src/leap/src/leap/y.tab.c file (a generated source file)
+</em><br />
+<em class="quotelev2">&gt;&gt; because the C compiler requires a forward declaration of the two functions
+</em><br />
+<em class="quotelev2">&gt;&gt; yylex() and yyerror() before they are referenced.
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; My hacky work-around: after getting that build failure, I edited the
+</em><br />
+<em class="quotelev2">&gt;&gt; generated y.tab.c file, added these two forward declaration lines near the
+</em><br />
+<em class="quotelev2">&gt;&gt; top of the file, and re-ran &quot;make&quot;:
+</em><br />
+<em class="quotelev2">&gt;&gt;   int yylex();
+</em><br />
+<em class="quotelev2">&gt;&gt;   int yyerror(char *sStr);
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Thanks for the report.  This is fixed in the development version, and will
+</em><br />
+<em class="quotelev1">&gt; be in AmberTools21, which will be released soon.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; It's odd that no one else has reported this (which is why we haven't
+</em><br />
+<em class="quotelev1">&gt; released an update patch).  It used to be flagged as a warning for some
+</em><br />
+<em class="quotelev1">&gt; compilers, but it seems that other compilers are now issuing an error rather
+</em><br />
+<em class="quotelev1">&gt; than a warning, and are no longer allowing implicit declarations.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ....regards....dac
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Apr 20 2021 - 00:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0157.html" title="Next message in the list">Vaibhav Dixit: "Re: [AMBER] unusually high entropy values MMPBSA quasi-harmonic"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0155.html" title="Previous message in the list">h_sahakyan.mb.sci.am: "[AMBER]  2.5 fs integration time step"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0144.html" title="Message to which this message replies">David A Case: "Re: [AMBER] Hack to install AmberTools20 on macOS"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg156" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg156" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg156" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg156" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

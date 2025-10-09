@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] usage of nmr (between COMs) restraints with pmem.cuda from Dmitry Karlov on 2020-10-04 (Amber Archive Oct 2020)</title>
+<meta name="Author" content="Dmitry Karlov (dmitry.s.karlov.yandex.ru)" />
+<meta name="Subject" content="[AMBER] usage of nmr (between COMs) restraints with pmem.cuda" />
+<meta name="Date" content="2020-10-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] usage of nmr (between COMs) restraints with pmem.cuda</h1>
+<!-- received="Sun Oct  4 07:00:04 2020" -->
+<!-- isoreceived="20201004140004" -->
+<!-- sent="Sun, 04 Oct 2020 16:57:55 +0300" -->
+<!-- isosent="20201004135755" -->
+<!-- name="Dmitry Karlov" -->
+<!-- email="dmitry.s.karlov.yandex.ru" -->
+<!-- subject="[AMBER] usage of nmr (between COMs) restraints with pmem.cuda" -->
+<!-- id="265251601819839.mail.yandex.ru" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="603211600870467.mail.yandex.ru" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0046.html" accesskey="d" title="Vaibhav Dixit: &quot;Re: [AMBER] cpptraj unable to write pdb files using&quot;">Next message</a> ]
+[ <a href="0044.html" title="Daniel Roe: &quot;Re: [AMBER] image protein complex iwrap=1&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg45" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg45" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg45" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg45" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Dmitry Karlov &lt;<a href="mailto:dmitry.s.karlov.yandex.ru?Subject=Re%3A%20%5BAMBER%5D%20usage%20of%20nmr%20(between%20COMs)%20restraints%20with%20pmem.cuda">dmitry.s.karlov.yandex.ru</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 04 Oct 2020 16:57:55 +0300</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+&nbsp;&nbsp;&nbsp;Dear Amber users,
+<br />
+&nbsp;&nbsp;&nbsp;I am trying to perform SILCS simulation
+<br />
+&nbsp;&nbsp;&nbsp;([1]<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4685950/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4685950/</a>) using Amber18
+<br />
+&nbsp;&nbsp;&nbsp;(all patches have been applied).
+<br />
+&nbsp;&nbsp;&nbsp;Currently, I prepared a water box containing benzene, propane, acetate.
+<br />
+&nbsp;&nbsp;&nbsp;methylammonium, formamide and methanol molecules distributed across the box
+<br />
+&nbsp;&nbsp;&nbsp;(400  copies  for each item). I tried to use nmr restraints to prevent
+<br />
+&nbsp;&nbsp;&nbsp;aggregation between benzene/benzene, benzene/propane and propane/propane
+<br />
+&nbsp;&nbsp;&nbsp;molecules. Â The examples of restraint syntax used you can see below:
+<br />
+&nbsp;&nbsp;&nbsp;geometric center of carbon atoms of benzene 1 / geometric center of carbon
+<br />
+&nbsp;&nbsp;&nbsp;atoms of benzene 2
+<br />
+&nbsp;&nbsp;&nbsp;&amp;rst iat=-1,-1, r1=6.0, r2=7.5, r3=10000., r4=20000., rk2=15., rk3=50., igr1
+<br />
+&nbsp;&nbsp;&nbsp;= 1,2,3,4,5,6, igr2 = 13,14,15,16,17,18, &amp;end
+<br />
+&nbsp;&nbsp;&nbsp;geometric center of carbon atoms of benzene 1 / central carbon atom of
+<br />
+&nbsp;&nbsp;&nbsp;propane 2
+<br />
+&nbsp;&nbsp;&nbsp;&amp;rst iat=-1,-1, r1=6.0, r2=7.5, r3=10000., r4=20000., rk2=15., rk3=50., igr1
+<br />
+&nbsp;&nbsp;&nbsp;= 3553,3554,3555,3556,3557,3558, igr2 = 7111,0,0,0,0,0, &amp;end
+<br />
+&nbsp;&nbsp;&nbsp;central carbon atom of propane 1 / central carbon atom of propane 2
+<br />
+&nbsp;&nbsp;&nbsp;&amp;rst iat=6462,7584, r1=6.0, r2=7.5, r3=10000., r4=20000., rk2=15., rk3=50.,
+<br />
+&nbsp;&nbsp;&nbsp;&amp;end
+<br />
+&nbsp;&nbsp;&nbsp;Â
+<br />
+&nbsp;&nbsp;&nbsp;The meaningful is only lower bound while the upper bound I set was big
+<br />
+&nbsp;&nbsp;&nbsp;enough compared to box size
+<br />
+&nbsp;&nbsp;&nbsp;Â
+<br />
+&nbsp;&nbsp;&nbsp;On this way I get about 500000 individual restraints and it works fine
+<br />
+&nbsp;&nbsp;&nbsp;serial version of amber. But at the same time the gpu version of pmemd do
+<br />
+&nbsp;&nbsp;&nbsp;not work with more than 30 individual restraints yielding an error:
+<br />
+&nbsp;&nbsp;&nbsp;cudaMemcpy  GpuBuffer::Download  failed  an  illegal memory access was
+<br />
+&nbsp;&nbsp;&nbsp;encountered.
+<br />
+&nbsp;&nbsp;&nbsp;Do you have any idea about how to deal with it?
+<br />
+&nbsp;&nbsp;&nbsp;Â
+<br />
+<br />&nbsp;&nbsp;&nbsp;DK
+<br />
+<br />References
+<br />
+<br />&nbsp;&nbsp;&nbsp;1. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4685950/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4685950/</a>)
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Oct 04 2020 - 07:00:04 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0046.html" title="Next message in the list">Vaibhav Dixit: "Re: [AMBER] cpptraj unable to write pdb files using"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0044.html" title="Previous message in the list">Daniel Roe: "Re: [AMBER] image protein complex iwrap=1"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg45" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg45" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg45" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg45" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

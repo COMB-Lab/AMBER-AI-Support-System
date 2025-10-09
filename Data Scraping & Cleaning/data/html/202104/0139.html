@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Distance restraints not working from jacob wick on 2021-04-19 (Amber Archive Apr 2021)</title>
+<meta name="Author" content="jacob wick (jacobwick.la.gmail.com)" />
+<meta name="Subject" content="[AMBER] Distance restraints not working" />
+<meta name="Date" content="2021-04-19" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Distance restraints not working</h1>
+<!-- received="Mon Apr 19 02:30:02 2021" -->
+<!-- isoreceived="20210419093002" -->
+<!-- sent="Mon, 19 Apr 2021 11:10:44 +0200" -->
+<!-- isosent="20210419091044" -->
+<!-- name="jacob wick" -->
+<!-- email="jacobwick.la.gmail.com" -->
+<!-- subject="[AMBER] Distance restraints not working" -->
+<!-- id="CACFUrFpHykpgC=9KUPFBSQe3q7gYzJB=ZW4fTg9j5JaDw_i_cg.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0140.html" accesskey="d" title="Alan: &quot;Re: [AMBER] Antechamber and mol2 file with .&#0060;TRIPOS&#0062;UNITY_ATOM_ATTR&quot;">Next message</a> ]
+[ <a href="0138.html" title="Otto Sievert: &quot;[AMBER] Hack to install AmberTools20 on macOS&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0160.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] Distance restraints not working&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg139" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg139" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg139" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg139" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: jacob wick &lt;<a href="mailto:jacobwick.la.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Distance%20restraints%20not%20working">jacobwick.la.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 19 Apr 2021 11:10:44 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear AMBER community,
+<br />
+<br />I am trying to set up a control system where *molecule 1 *(*M1*) should not
+<br />
+interact with *ion 1 (I1)*. When keeping  I1 in bulk, during the
+<br />
+simulations there is an M1-I1 inclusion complex formation.
+<br />
+<br />I wanted to set up a control system so that there is no overall interaction
+<br />
+between M1 and I1. After scanning through the AMBER archive, I found that
+<br />
+distance restraint could be helpful. I tried to maintain a minimum distance
+<br />
+of 5 Angstrom between M1  and I1 using the following script.
+<br />
+<br />###
+<br />
+&nbsp;&amp;cntrl
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;imin=0, ntx=7, ntpr=50, ntwr=2500, ntwx=25000,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;nscm=5000,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntf=2, ntc=2,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntb=2, ntp=1, tautp=5.0, taup=5.0,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;nstlim=25000000, t=0.0, dt=0.002, nmropt=1,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;cut=9.0,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ntt=1,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;iwrap=1,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;irest=1
+<br />
+/
+<br />
+&amp;wt
+<br />
+type='DUMPFREQ', istep1=50, /
+<br />
+&amp;wt
+<br />
+type='END',
+<br />
+&amp;end
+<br />
+DISANG=restraints.dat
+<br />
+<br />###
+<br />
+###The content of restraints.dat file:
+<br />
+&amp;rst
+<br />
+iat=-1,-1,
+<br />
+r1=0.0, r2=5.0, r3=5.0, r4=40.0, rk2=10.0, rk3 =0.0001,
+<br />
+igr1=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,
+<br />
+igr2=77,
+<br />
+&amp;end
+<br />
+##
+<br />
+Where M1 (atom: 1-76) and I1 (atom: 77) should be at least 5 Angstrom
+<br />
+apart.
+<br />
+<br />I found that during simulations the inclusion complex still forms and the
+<br />
+output file reads:
+<br />
+<br />&nbsp;&quot;RESTRAINTS:
+<br />
+&nbsp;&nbsp;No valid redirection requests found
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;** No restraint defined **&quot;
+<br />
+###
+<br />
+I believe something is not correct with the script and the restraining is
+<br />
+not working.
+<br />
+So, I would like to ask:
+<br />
+<br />1. Am I using a correct approach to achieve no interaction between M1 and
+<br />
+I1 during the course of simulations?
+<br />
+<br />2. If using distance restraints is the right approach,  how to correct my
+<br />
+input script.
+<br />
+<br />Any help would be highly appreciated!
+<br />
+<br />Thanks and best,
+<br />
+Jac
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Apr 19 2021 - 02:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0140.html" title="Next message in the list">Alan: "Re: [AMBER] Antechamber and mol2 file with .&#0060;TRIPOS&#0062;UNITY_ATOM_ATTR"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0138.html" title="Previous message in the list">Otto Sievert: "[AMBER] Hack to install AmberTools20 on macOS"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0160.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] Distance restraints not working"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0160.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Distance restraints not working"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg139" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg139" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg139" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg139" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

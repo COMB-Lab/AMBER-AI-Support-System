@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Fw: [josiah.bones.anu.edu.au: Calculation of ligand restraints in TI] from accuratefreeenergy.gmail.com on 2021-06-21 (Amber Archive Jun 2021)</title>
+<meta name="Author" content="accuratefreeenergy.gmail.com (accuratefreeenergy.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Fw: [josiah.bones.anu.edu.au: Calculation of ligand restraints in TI]" />
+<meta name="Date" content="2021-06-21" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Fw: [josiah.bones.anu.edu.au: Calculation of ligand restraints in TI]</h1>
+<!-- received="Mon Jun 21 11:00:02 2021" -->
+<!-- isoreceived="20210621180002" -->
+<!-- sent="Mon, 21 Jun 2021 13:46:33 -0400" -->
+<!-- isosent="20210621174633" -->
+<!-- name="accuratefreeenergy.gmail.com" -->
+<!-- email="accuratefreeenergy.gmail.com" -->
+<!-- subject="Re: [AMBER] Fw: [josiah.bones.anu.edu.au: Calculation of ligand restraints in TI]" -->
+<!-- id="000001d766c5$6064fae0$212ef0a0$.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="SY4P282MB16765B8722B1AD80924BD4C2AD0E9.SY4P282MB1676.AUSP282.PROD.OUTLOOK.COM" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0172.html" accesskey="d" title="David A Case: &quot;Re: [AMBER] Amber20 installation, Amber.pip file broken&quot;">Next message</a> ]
+[ <a href="0170.html" title="aishen: &quot;Re: [AMBER] Amber20 installation, Amber.pip file broken&quot;">Previous message</a> ]
+[ <a href="0142.html" title="Josiah Bones: &quot;[AMBER] Fw: [josiah.bones.anu.edu.au: Calculation of ligand restraints in TI]&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0230.html" accesskey="t" title="Josiah Bones: &quot;Re: [AMBER] Fw: [josiah.bones.anu.edu.au: Calculation of ligand restraints in TI]&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg171" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg171" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg171" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg171" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: &lt;<a href="mailto:accuratefreeenergy.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Fw%3A%20%5Bjosiah.bones.anu.edu.au%3A%20Calculation%20of%20ligand%20restraints%20in%20TI%5D">accuratefreeenergy.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 21 Jun 2021 13:46:33 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Josiah,
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is what I know/believe:
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The 6DOF restraints on the bound ligand at its dummy state (i.e.,
+<br />
+lambda=1; not interacting w/ protein except the restraints), if correctly
+<br />
+set up, are similar to restraining the COM of the ligand in bulk solution.
+<br />
+Your ligand has 6DOF to move without changing anything in its dynamics or
+<br />
+free energy state.  However, at the real state (i.e., the ligand is
+<br />
+interacting w/ protein in addition to the restraints), the restraints will
+<br />
+have effects on its dynamics and free energy state and hence you need to do
+<br />
+some corrections. 
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When turning on gti_output=1, you will get the restraint energy for
+<br />
+each window.  However, it is still not the correction term.  Remember, what
+<br />
+you miss is the free energy of restraining ligand in the protein
+<br />
+environment.  One quick thing you could do is: check the printed restraint
+<br />
+energy of the real state (lambda=0).  If the standard deviation of the
+<br />
+restraint energy distribution is small, e.g., less than 2kcal/mol, you can
+<br />
+directly calculate the restraint free energy through Zwanzig equation.  In
+<br />
+most cases, you should be able to get a good estimate.
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A classic reference to start with is &quot; Absolute Binding Free
+<br />
+Energies: A Quantitative Approach for Their Calculation&quot; 2003 J Phys Chem B
+<br />
+107(35).  If I find good recent references, I will let you know.
+<br />
+<br />Best,
+<br />
+<br />Taisung
+<br />
+<br />-----Original Message-----
+<br />
+From: Josiah Bones &lt;josiah.bones.anu.edu.au&gt; 
+<br />
+Sent: Thursday, June 17, 2021 6:09 PM
+<br />
+To: accuratefreeenergy.gmail.com; amber.ambermd.org
+<br />
+Subject: [AMBER] Fw: [josiah.bones.anu.edu.au: Calculation of ligand
+<br />
+restraints in TI]
+<br />
+<br /><br />Hi Taisung, thanks for your reply.
+<br />
+<br />I'll give a very quick overview of what I'm trying to do, to try and get an
+<br />
+idea if I am on the right track.
+<br />
+<br />I'm attempting a single simulation where V0=ligand in bulk solution, and
+<br />
+V1=ligand bound to protein. This is due to charges on the ligands. I intend
+<br />
+to use the 6DOF restraints on the bound ligand, while only restraining the
+<br />
+COM of the ligand in bulk solution to ensure it doesn't interact with the
+<br />
+nearby protein, but not limit its internal degrees of freedom. I believe the
+<br />
+COM restraints don't need to be accounted for in any special way in the
+<br />
+thermodynamic cycle?
+<br />
+<br />In this particular case, I believe you are saying I would still need an
+<br />
+additional simulation to calculate the dG of turning on the Boresch
+<br />
+restraints for the bound state, and then use the analytical equation for
+<br />
+these Boresch restraints. I refer to the recent paper, regarding these
+<br />
+restraints:
+<br />
+<br />&quot;Additionally, Boresch restraints have been implemented, which can be used
+<br />
+in an automated fashion for ABFE simulations with many diverse ligands.&quot;
+<br />
+<br />and
+<br />
+<br />&quot;The implementation in AMBER20 also permits these restraints to be included
+<br />
+in the overall alchemical transformation such that the component of the free
+<br />
+energy arising from the restraints in the bound state can be computed in the
+<br />
+same way as other force field terms.&quot;
+<br />
+<br />I saw the option gti_output in the Amber20 manual, and wondered if this
+<br />
+provided the contribution of the restraints within the single calculation.
+<br />
+If this is not the case, would you have any recommendations for what
+<br />
+settings I need to include in the different steps in order to capture the
+<br />
+thermodynamic cycle correctly, and to automate the use of the Boresch
+<br />
+restraints as detailed in the recent paper? I am comfortable with the
+<br />
+overall running of the primary simulation (capturing dG of binding in one
+<br />
+step) but not with the additional method required for capturing the Boresch
+<br />
+restraints. Any help would be greatly appreciated.
+<br />
+<br />Thanks again,
+<br />
+<br />Josiah
+<br />
+<br /><br />________________________________
+<br />
+From: accuratefreeenergy.gmail.com &lt;accuratefreeenergy.gmail.com&gt;
+<br />
+Sent: Thursday, 17 June 2021 10:22 PM
+<br />
+To: amber.ambermd.org &lt;amber.ambermd.org&gt;; Josiah Bones
+<br />
+&lt;josiah.bones.anu.edu.au&gt;
+<br />
+Cc: 'David A Case' &lt;david.case.rutgers.edu&gt;; abir.ganguly.rutgers.edu
+<br />
+&lt;abir.ganguly.rutgers.edu&gt;; 'Darrin York' &lt;york.chem.rutgers.edu&gt;
+<br />
+Subject: RE: [josiah.bones.anu.edu.au: [AMBER] Calculation of ligand
+<br />
+restraints in TI]
+<br />
+<br />Hi Josiah,
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the current AMBER20 TI implementation, restraints involving atoms
+<br />
+in the scmasks will be scaled with respect to lambda, i.e., if an atom
+<br />
+disappears at lambda=1 state, all restraints involving this atom will become
+<br />
+zero at lambda=1 state.  This implementation was designed for relative
+<br />
+binding free energy--so that Ligand A and Ligand B can keep independent sets
+<br />
+of restraints when doing A--&gt;B.
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This behavior, however, does not change what you need to do for
+<br />
+absolute binding free energy.  I believe that a proper 6-DOF-restraint will
+<br />
+not have any effect on the free energy of a non-interacting ligand.  You
+<br />
+still need to calculate the free energy of turning on the restraints of the
+<br />
+ligand to the protein
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You also can recover the pre-AMBER20 behavior through changing the
+<br />
+restraint lambda-dependence by enabling lambda-scheduling of &quot;TypeRestBA&quot;
+<br />
+(AMBER manual Section 23.1.7).  Let me know if you want to do so.
+<br />
+<br />Best,
+<br />
+<br />Taisung
+<br />
+<br />Date: Thu, 17 Jun 2021 01:13:46 +0000
+<br />
+From: Josiah Bones &lt;josiah.bones.anu.edu.au&gt;
+<br />
+To: &quot;amber.ambermd.org&quot; &lt;amber.ambermd.org&gt;
+<br />
+Subject: [AMBER] Calculation of ligand restraints in TI
+<br />
+<br />Hi there!
+<br />
+<br />I am just reaching out for some help as to the behaviour of AMBER20
+<br />
+pmemd.cuda in how it deals with the 6DoF restraints commonly employed in
+<br />
+absolute binding free energy calculations, where the ligand's movement is
+<br />
+restrained in a binding pocket. These calculations typically utilise two
+<br />
+main simulations (one to decouple ligand from protein, and another for
+<br />
+decoupling the ligand in water). From my understanding, there is then the
+<br />
+requirement of running an additional simulation to capture the free energy
+<br />
+of turning on the restraints of the ligand to the protein, and finally an
+<br />
+analytical calculation to remove them.
+<br />
+<br /><em class="quotelev1">&gt;From reading recent works examining the changes in AMBER20 to the TI
+</em><br />
+capabilities, I am suspecting, but not certain, that the restraints are
+<br />
+already calculated in the ligand+complex simulation, removing the need for
+<br />
+an additional simulation. Is this assumption correct, and is anything needed
+<br />
+to be done to ensure the correct behaviour? And does this contract the
+<br />
+requirements of such an ABFE calculation in a single smoothstep process
+<br />
+using only two simulations: complex+ligand(restrained),
+<br />
+water+ligand(unrestrained), and then the analytical calculation to account
+<br />
+for the restraints?
+<br />
+<br />Thank you kindly for any assistance,
+<br />
+<br />Josiah
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br />----- End forwarded message -----
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jun 21 2021 - 11:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0172.html" title="Next message in the list">David A Case: "Re: [AMBER] Amber20 installation, Amber.pip file broken"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0170.html" title="Previous message in the list">aishen: "Re: [AMBER] Amber20 installation, Amber.pip file broken"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0142.html" title="Message to which this message replies">Josiah Bones: "[AMBER] Fw: [josiah.bones.anu.edu.au: Calculation of ligand restraints in TI]"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0230.html" title="Next message in this discussion thread">Josiah Bones: "Re: [AMBER] Fw: [josiah.bones.anu.edu.au: Calculation of ligand restraints in TI]"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0230.html" title="Message sent in reply to this message">Josiah Bones: "Re: [AMBER] Fw: [josiah.bones.anu.edu.au: Calculation of ligand restraints in TI]"</a></li>
+<li><dfn>Reply</dfn>: <a href="0232.html" title="Message sent in reply to this message">Josiah Bones: "Re: [AMBER] Fw: [josiah.bones.anu.edu.au: Calculation of ligand restraints in TI]"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg171" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg171" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg171" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg171" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

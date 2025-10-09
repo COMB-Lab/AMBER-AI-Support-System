@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] saving pdb and rst at specific frames in trajectory from Gustaf Olsson on 2021-03-18 (Amber Archive Mar 2021)</title>
+<meta name="Author" content="Gustaf Olsson (gustaf.olsson.lnu.se)" />
+<meta name="Subject" content="Re: [AMBER] saving pdb and rst at specific frames in trajectory" />
+<meta name="Date" content="2021-03-18" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] saving pdb and rst at specific frames in trajectory</h1>
+<!-- received="Thu Mar 18 02:00:02 2021" -->
+<!-- isoreceived="20210318090002" -->
+<!-- sent="Thu, 18 Mar 2021 08:39:51 +0000" -->
+<!-- isosent="20210318083951" -->
+<!-- name="Gustaf Olsson" -->
+<!-- email="gustaf.olsson.lnu.se" -->
+<!-- subject="Re: [AMBER] saving pdb and rst at specific frames in trajectory" -->
+<!-- id="EFDB6E0B-1D0B-4F40-B4FC-CC6FA53E02E9.lnu.se" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAH9Uu9M67AnjMXt8b33g4bFYH9sUEE=quv-xNNO3MVVeN8PQ9g.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0173.html" accesskey="d" title="Gustaf Olsson: &quot;Re: [AMBER] saving pdb and rst at specific frames in trajectory&quot;">Next message</a> ]
+[ <a href="0171.html" title="Sadaf Rani: &quot;Re: [AMBER] saving pdb and rst at specific frames in trajectory&quot;">Previous message</a> ]
+[ <a href="0162.html" title="Sadaf Rani: &quot;Re: [AMBER] saving pdb and rst at specific frames in trajectory&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0173.html" accesskey="t" title="Gustaf Olsson: &quot;Re: [AMBER] saving pdb and rst at specific frames in trajectory&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg172" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg172" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg172" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg172" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gustaf Olsson &lt;<a href="mailto:gustaf.olsson.lnu.se?Subject=Re%3A%20%5BAMBER%5D%20saving%20pdb%20and%20rst%20at%20specific%20frames%20in%20trajectory">gustaf.olsson.lnu.se</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 18 Mar 2021 08:39:51 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+So, now looking at the manual. As usual there are numerous ways to achieve the same goal. I have not tested any of the suggestions so you need to consult the manual and edit as needed.
+<br />
+
+<br />
+I am assuming you are looking for a single PDB file per frame and not a multimodal PDB file with all three frames in one file. In that case, select a method using “multi” but replace multi with model, or just remove multi as model is the default.
+<br />
+
+<br />
+You can read in only the frames you are looking for defining only to read the three frames in question, then you can use “multi” to dump every frame as a separate pdb file. Then you do not need start/stop/step or onlyframes
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;trajin somefile 500 500 1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;trajin somefile 1500 1500 1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;trajin somefile 2000 2000 1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;trajout output-filename pdb nobox multi
+<br />
+
+<br />
+You can use the onlyframes and specify a range
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;trajin somefile
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;trajout output-filename pdb onlyframes 500,1500,2000 multi
+<br />
+
+<br />
+This should create 3 PDB files with frame numbers added to the filename. Finally, just write every desired single frame as a PDB file
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;trajin somefile
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;trajout output-filename-500 pdb nobox 500 500 1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;trajout output-filename-1500 pdb nobox 1500 1500 1
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;trajout output-filename-2000 pdb nobox 2000 2000 1
+<br />
+
+<br />
+These are the interesting sections of the manual
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;32.3.3. Ranges
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;32.10.4. trajin
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;32.10.5. trajout
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;32.10.5.1. Options for pdb format
+<br />
+
+<br />
+Best regards
+<br />
+// Gustaf
+<br />
+
+<br />
+<em class="quotelev1">&gt; On 17 Mar 2021, at 15:09, Sadaf Rani &lt;sadafrani6.gmail&#46;<!--nospam-->com&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Dear Gustaf
+</em><br />
+<em class="quotelev1">&gt; Thank you for your kind reply.
+</em><br />
+<em class="quotelev1">&gt; I did following:-
+</em><br />
+<em class="quotelev1">&gt; trajout out_frame-500.pdb pdb multi nobox onlyframes 500,500,1
+</em><br />
+<em class="quotelev1">&gt; and get this message in cpptraj:-
+</em><br />
+<em class="quotelev1">&gt; Saving frames *1 500*
+</em><br />
+<em class="quotelev1">&gt; Writing 'out_frame-500.pdb' as PDB
+</em><br />
+<em class="quotelev1">&gt; The output file I assume contains both frames 1 and 500.
+</em><br />
+<em class="quotelev1">&gt; Should I use it without the keyword &quot;multi&quot;
+</em><br />
+<em class="quotelev1">&gt; Will it be the right option?
+</em><br />
+<em class="quotelev1">&gt; Also can I same rst file in a similar manner if I am not saving the PDB
+</em><br />
+<em class="quotelev1">&gt; file?
+</em><br />
+<em class="quotelev1">&gt; Regards
+</em><br />
+<em class="quotelev1">&gt; Sadaf
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; On Wed, 17 Mar 2021 at 18:49, Gustaf Olsson &lt;gustaf.olsson.lnu&#46;<!--nospam-->se&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; I’m just guessing here, though the syntax from what I remember is start,
+</em><br />
+<em class="quotelev2">&gt;&gt; stop, step
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Meaning you would want 500,500,1, 1500,1500,1 ….
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; trajout out_frame.pdb pdb multi nobox onlyframes 1,2000
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; trajout out_frame-500.pdb pdb multi nobox onlyframes 500,500,1
+</em><br />
+<em class="quotelev2">&gt;&gt; trajout out_frame-1500.pdb pdb multi nobox onlyframes 1500,1500,1
+</em><br />
+<em class="quotelev2">&gt;&gt; trajout out_frame-2000.pdb pdb multi nobox onlyframes 2000,2000,1
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; One PDB for each frame. You don’t need any rst file for a PDB.
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; I am quite sure there are shorthands for “first” and “last” and
+</em><br />
+<em class="quotelev2">&gt;&gt; potentially a better way to print each frame to a separate PDB. Though this
+</em><br />
+<em class="quotelev2">&gt;&gt; should work and is as much as I could  guess without looking in the manual.
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Best regards
+</em><br />
+<em class="quotelev2">&gt;&gt; // Gustaf
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; On 17 Mar 2021, at 14:23, Sadaf Rani &lt;sadafrani6.gmail&#46;<!--nospam-->com&gt; wrote:
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; Dear Amber users
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; Please correct me on how should I save PDB and rst file at a specific
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; frame. I have a trajectory of 2000 frames and I want to save PDB files at
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; e.g first, 500, 1500, and 2000 frames.
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; I used the following command to save at first and 2000 frames however
+</em><br />
+<em class="quotelev2">&gt;&gt; when
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; I load pdb in vmd it is loaded as a complete trajectory. Could anyone
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; please correct me?
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; I used the following command in cpptraj:-
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; parm complex.prmtop
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; trajin Prod.nc
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; trajout out_frame.pdb pdb multi nobox onlyframes 1,2000
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; 
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; Regards
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; Sadaf
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev3">&gt;&gt;&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; _______________________________________________
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER mailing list
+</em><br />
+<em class="quotelev2">&gt;&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev2">&gt;&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev2">&gt;&gt; 
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Mar 18 2021 - 02:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0173.html" title="Next message in the list">Gustaf Olsson: "Re: [AMBER] saving pdb and rst at specific frames in trajectory"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0171.html" title="Previous message in the list">Sadaf Rani: "Re: [AMBER] saving pdb and rst at specific frames in trajectory"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0162.html" title="Message to which this message replies">Sadaf Rani: "Re: [AMBER] saving pdb and rst at specific frames in trajectory"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0173.html" title="Next message in this discussion thread">Gustaf Olsson: "Re: [AMBER] saving pdb and rst at specific frames in trajectory"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0173.html" title="Message sent in reply to this message">Gustaf Olsson: "Re: [AMBER] saving pdb and rst at specific frames in trajectory"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg172" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg172" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg172" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg172" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

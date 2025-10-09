@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] ff19SB and OPC, process_(min/md)out.perl and LEaP from Gustaf Olsson on 2020-10-26 (Amber Archive Oct 2020)</title>
+<meta name="Author" content="Gustaf Olsson (gustaf.olsson.lnu.se)" />
+<meta name="Subject" content="Re: [AMBER] ff19SB and OPC, process_(min/md)out.perl and LEaP" />
+<meta name="Date" content="2020-10-26" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] ff19SB and OPC, process_(min/md)out.perl and LEaP</h1>
+<!-- received="Mon Oct 26 01:30:02 2020" -->
+<!-- isoreceived="20201026083002" -->
+<!-- sent="Mon, 26 Oct 2020 08:21:15 +0000" -->
+<!-- isosent="20201026082115" -->
+<!-- name="Gustaf Olsson" -->
+<!-- email="gustaf.olsson.lnu.se" -->
+<!-- subject="Re: [AMBER] ff19SB and OPC, process_(min/md)out.perl and LEaP" -->
+<!-- id="0D1676CE-6F3E-4D58-8502-2F951D3B329C.lnu.se" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAGk3s-Q4g_x_K0NkWBe-R4mFgZtBnuSk9t6Wnc43Rf+uGyWDLA.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0356.html" accesskey="d" title="MYRIAN TORRES RICO: &quot;Re: [AMBER] doubt charges&quot;">Next message</a> ]
+[ <a href="0354.html" title="Gustaf Olsson: &quot;Re: [AMBER] ff19SB and OPC, process_(min/md)out.perl and LEaP&quot;">Previous message</a> ]
+[ <a href="0352.html" title="Carlos Simmerling: &quot;Re: [AMBER] ff19SB and OPC, process_(min/md)out.perl and LEaP&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg355" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg355" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg355" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg355" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Gustaf Olsson &lt;<a href="mailto:gustaf.olsson.lnu.se?Subject=Re%3A%20%5BAMBER%5D%20ff19SB%20and%20OPC%2C%20process_(min%2Fmd)out.perl%20and%20LEaP">gustaf.olsson.lnu.se</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 26 Oct 2020 08:21:15 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Monday morning started with a bit of celebration. I did not have access to GUI evaluation over the weekend so I based my judgement regarding the failed minimisation on the output of the perl scripts.
+<br />
+
+<br />
+Looking at the system with VMD shows water and peptide molecules moving around as expected and a box that equilibrates nicely even prior to barostat=2 and a short taup. It seems that the order of sourcing in leap really was the issue and switching the order solved the problem.
+<br />
+
+<br />
+Apparently, the perl script is not very forgiving so the CMAP apparently effects some indexing. I have not worked with perl at all so I have no idea where the problem lies though at some point in time when I have time I will try to fix this.
+<br />
+
+<br />
+Meanwhile, the usual horrible oneliner solved the problem intermediately:
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;paste &lt;(grep &quot;TIME(PS)&quot; eqPres.out | awk '{print $6}') &lt;(grep &quot;Density&quot; eqPres.out | awk '{print $3}') | column -s $'\t' -t | head -n $(( $(grep &quot;TIME(PS)&quot; eqPres.out | awk '{print $6}' | wc -l)-2 )) &gt;&gt; summary.DENSITY
+<br />
+
+<br />
+[cid:9F5AB618-40CC-4EF1-AB97-42B5EC652952.client.lnu.se]
+<br />
+
+<br />
+Thank you both for all you help, feedback and input.
+<br />
+
+<br />
+Best regards
+<br />
+// Gustaf
+<br />
+
+<br />
+
+<br />
+On 24 Oct 2020, at 21:58, Carlos Simmerling &lt;carlos.simmerling.gmail&#46;<!--nospam-->com&lt;mailto:carlos.simmerling.gmail&#46;<!--nospam-->com&gt;&gt; wrote:
+<br />
+
+<br />
+is the problem now just in extracting things from the mdout file?
+<br />
+use of ff19SB does add a &quot;CMAP&quot; term to the energy output. so anything that
+<br />
+assumes all of the energy terms are in specific places might not work.
+<br />
+I imagine if you look at the file and compare to the other one you might be
+<br />
+able to adjust the script, or use a combination of grep and awk to extract
+<br />
+what you want. I don't use that perl script so can't really comment on how
+<br />
+flexible it is.
+<br />
+
+<br />
+here is an example from a system where did MD with both force fields:
+<br />
+
+<br />
+ff14SB:
+<br />
+
+<br />
+NSTEP =     1000   TIME(PS) =    2101.000  TEMP(K) =   298.75  PRESS =
+<br />
+15.9
+<br />
+Etot   =    -44184.4117  EKtot   =     10921.8008  EPtot      =
+<br />
+-55106.2125
+<br />
+BOND   =       442.7755  ANGLE   =      1161.2657  DIHED      =
+<br />
+1903.5578
+<br />
+1-4 NB =       552.1177  1-4 EEL =      4678.8785  VDWAALS    =
+<br />
+5871.5787
+<br />
+EELEC  =    -69716.3864  EHBOND  =         0.0000  RESTRAINT  =
+<br />
+0.0000
+<br />
+EKCMT  =      4641.7222  VIRIAL  =      4581.2633  VOLUME     =
+<br />
+175735.8591
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Density    =
+<br />
+1.0355
+<br />
+------------------------------------------------------------------------------
+<br />
+
+<br />
+ff19SB:
+<br />
+
+<br />
+NSTEP =     1000   TIME(PS) =    3001.000  TEMP(K) =   296.65  PRESS =
+<br />
+58.2
+<br />
+Etot   =    -59114.2876  EKtot   =     10887.3496  EPtot      =
+<br />
+-70001.6372
+<br />
+BOND   =       439.2101  ANGLE   =      1197.8938  DIHED      =
+<br />
+908.4324
+<br />
+UB     =         0.0000  IMP     =         0.0000  CMAP       =
+<br />
+135.9763
+<br />
+1-4 NB =       560.3848  1-4 EEL =      4715.4626  VDWAALS    =
+<br />
+7598.8540
+<br />
+EELEC  =    -85557.8511  EHBOND  =         0.0000  RESTRAINT  =
+<br />
+0.0000
+<br />
+EKCMT  =      4645.2896  VIRIAL  =      4425.1982  VOLUME     =
+<br />
+175073.8963
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Density    =
+<br />
+1.0436
+<br />
+------------------------------------------------------------------------------
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+<br />
+On Sat, Oct 24, 2020 at 3:49 PM Gustaf Olsson &lt;gustaf.olsson.lnu&#46;<!--nospam-->se&lt;mailto:gustaf.olsson.lnu&#46;<!--nospam-->se&gt;&gt; wrote:
+<br />
+
+<br />
+So, I corrected the priority order, rebuilt and tried.
+<br />
+
+<br />
+
+<br />
+Nothing has finished yet though as I am looking at a completely blank
+<br />
+output from energy minimization with &quot;process_m*.perl&quot; I think there will
+<br />
+be no difference from before.
+<br />
+
+<br />
+
+<br />
+The only thing left that I can think of is the amber version. Obviously, I
+<br />
+can optimize my input in more than one way and try different combinations
+<br />
+of barostat and taup settings though if nothing is moving at all, even at
+<br />
+40 bar and a taup of 0.1, then I don't think this tweaking the input
+<br />
+settings will change much.
+<br />
+
+<br />
+
+<br />
+I also checked and I am up to date on patches and updates for amber18.
+<br />
+
+<br />
+
+<br />
+So, the OPC water model works just fine. However, the combination with
+<br />
+ff19SB breaks something. Both of you managed to run the simulations, are
+<br />
+you using amber20? If so, I suppose I will have to start asking for a
+<br />
+license to be purchased and potentially this will solve my problems(?).
+<br />
+
+<br />
+
+<br />
+If either of you could be so kind as to look in the newly added &quot;4
+<br />
+desperation/ff19SB_opc&quot; folder and just try to run the content of
+<br />
+&quot;cloudJobEQ.sh&quot; &quot;as is&quot;, preferably as CPU run, I would be extremely
+<br />
+grateful. To really push the boundaries here, if you manage to run the
+<br />
+provided files &quot;as is&quot;, could you also run the &quot;process_m*.perl&quot; scripts
+<br />
+and see of you get the expected output?
+<br />
+
+<br />
+
+<br />
+You should both have read/write access to the resources so you can
+<br />
+download/upload any files there and provide notes/feedback.
+<br />
+
+<br />
+
+<br />
+Thank you in advance and have a fantastic rest of your weekend.
+<br />
+
+<br />
+Best regards
+<br />
+
+<br />
+// Gustaf
+<br />
+
+<br />
+________________________________
+<br />
+Från: Carlos Simmerling &lt;carlos.simmerling.gmail&#46;<!--nospam-->com&lt;mailto:carlos.simmerling.gmail&#46;<!--nospam-->com&gt;&gt;
+<br />
+Skickat: den 23 oktober 2020 19:28:58
+<br />
+Till: AMBER Mailing List
+<br />
+Ämne: Re: [AMBER] ff19SB and OPC, process_(min/md)out.perl and LEaP
+<br />
+
+<br />
+to follow up on Dave's suggestion - I tried Gustaf's low density input
+<br />
+coordinate with barostat=1 + taup=0.1, and also barostat=2.
+<br />
+Barostat=2 gave about 5-10x increase in the slope of density vs time.
+<br />
+carlos
+<br />
+
+<br />
+On Thu, Oct 22, 2020 at 8:48 AM David A Case &lt;david.case.rutgers&#46;<!--nospam-->edu&lt;mailto:david.case.rutgers&#46;<!--nospam-->edu&gt;&gt;
+<br />
+wrote:
+<br />
+
+<br />
+On Wed, Oct 21, 2020, Carlos Simmerling wrote:
+<br />
+
+<br />
+what is your pressure coupling constant? I often get vacuum bubbles
+<br />
+unless
+<br />
+I include a step in my equilibration with tight coupling, taup around
+<br />
+0.1
+<br />
+or smaller.
+<br />
+
+<br />
+Carlos: have you ever tried barostat=2?  It would be interesting to know
+<br />
+if that makes a difference.  Also, what is your starting density?  If
+<br />
+you use a closeness parameter of 0.7--0.8 (in solvateBox or solvateOct),
+<br />
+you'll get a higher starting density, which might(?) reduce the tendency
+<br />
+to get bubbles.
+<br />
+
+<br />
+....dac
+<br />
+
+<br />
+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+<a href="mailto:AMBER.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20ff19SB%20and%20OPC%2C%20process_(min%2Fmd)out.perl%20and%20LEaP">AMBER.ambermd.org</a>&lt;mailto:<a href="mailto:AMBER.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20ff19SB%20and%20OPC%2C%20process_(min%2Fmd)out.perl%20and%20LEaP">AMBER.ambermd.org</a>&gt;
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org&lt;mailto:<a href="mailto:AMBER.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20ff19SB%20and%20OPC%2C%20process_(min%2Fmd)out.perl%20and%20LEaP">AMBER.ambermd.org</a>&gt;
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org&lt;mailto:AMBER.ambermd.org&gt;
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+
+<br />
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<p><img src="att-0355/Screenshot_2020-10-26_at_09.19.50.png" alt="Screenshot 2020-10-26 at 09.19.50.png
+" />
+<br />
+(image/png attachment: <a href="att-0355/Screenshot_2020-10-26_at_09.19.50.png">Screenshot_2020-10-26_at_09.19.50.png</a>)</p>
+<!-- attachment="Screenshot_2020-10-26_at_09.19.50.png" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Mon Oct 26 2020 - 01:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0356.html" title="Next message in the list">MYRIAN TORRES RICO: "Re: [AMBER] doubt charges"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0354.html" title="Previous message in the list">Gustaf Olsson: "Re: [AMBER] ff19SB and OPC, process_(min/md)out.perl and LEaP"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0352.html" title="Message to which this message replies">Carlos Simmerling: "Re: [AMBER] ff19SB and OPC, process_(min/md)out.perl and LEaP"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg355" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg355" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg355" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg355" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Installation problem for a parallel version of Amber18/AmberTools19 from Kosuke Tachibana on 2020-03-22 (Amber Archive Mar 2020)</title>
+<meta name="Author" content="Kosuke Tachibana (tachibana-kosuke.oita-u.ac.jp)" />
+<meta name="Subject" content="[AMBER] Installation problem for a parallel version of Amber18/AmberTools19" />
+<meta name="Date" content="2020-03-22" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Installation problem for a parallel version of Amber18/AmberTools19</h1>
+<!-- received="Sun Mar 22 21:30:02 2020" -->
+<!-- isoreceived="20200323043002" -->
+<!-- sent="Mon, 23 Mar 2020 13:02:09 +0900" -->
+<!-- isosent="20200323040209" -->
+<!-- name="Kosuke Tachibana" -->
+<!-- email="tachibana-kosuke.oita-u.ac.jp" -->
+<!-- subject="[AMBER] Installation problem for a parallel version of Amber18/AmberTools19" -->
+<!-- id="ff3fd322-353b-5eb0-ae89-c1db92812298.oita-u.ac.jp" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0217.html" accesskey="d" title="David Cerutti: &quot;Re: [AMBER] questions about paramfit and frcmod file&quot;">Next message</a> ]
+[ <a href="0215.html" title="ttz: &quot;[AMBER] questions about paramfit and frcmod file&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0219.html" accesskey="t" title="David A Case: &quot;Re: [AMBER] Installation problem for a parallel version of Amber18/AmberTools19&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg216" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg216" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg216" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg216" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Kosuke Tachibana &lt;<a href="mailto:tachibana-kosuke.oita-u.ac.jp?Subject=Re%3A%20%5BAMBER%5D%20Installation%20problem%20for%20a%20parallel%20version%20of%20Amber18%2FAmberTools19">tachibana-kosuke.oita-u.ac.jp</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 23 Mar 2020 13:02:09 +0900</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber users
+<br />
+<br />I have some possible failures and errors when I did &quot;make test&quot; for a 
+<br />
+parallel (MPI) version of Amber18/AmberTools19.
+<br />
+I wonder if someone could let me what to do in order to solve this problem.
+<br />
+<br />Here is a situation I have:
+<br />
+1. I installed a serial version of amber to a Linux workstation. It 
+<br />
+seems that the installation was successfully completed, and I confirmed 
+<br />
+that I did not have any possible failures and errors in the test for the 
+<br />
+serial version.
+<br />
+2. I installed MPICH 3.3.2 to the workstation, following an instruction 
+<br />
+of the reference manual of amber 2019 (p. 25).
+<br />
+3. I installed the parallel version of amber. It seems that the 
+<br />
+installation was successfully completed. I defined &quot;DO_PARALLEL&quot; as 
+<br />
+&quot;mpirun -np 8&quot; and did &quot;make test&quot;. Then, I got some possible failures 
+<br />
+and errors in this test.
+<br />
+<br />I have attached log and diff files to this e-mail. I found that the 
+<br />
+primary failures came from the test carried out in a directory of 
+<br />
+phmd_remd/implicit.
+<br />
+However, I am not sure what to do to solve this problem...
+<br />
+<br />I also did &quot;make test&quot; for different MPI libraries, such as MPICH 3.1.4, 
+<br />
+OpenMPI 4.0.3, and OpenMPI 2.1.1.
+<br />
+Though calculated values were changed by using the different MPI 
+<br />
+library, I still found the same possible failures and errors in the test 
+<br />
+results.
+<br />
+<br />The similar problem was reported by Zoran, which were posted to the 
+<br />
+Amber Mailing List on February 5 2020.
+<br />
+(<a href="http://archive.ambermd.org/202002/0055.html">http://archive.ambermd.org/202002/0055.html</a>)
+<br />
+However, I could not find any answers for the problem in this post.
+<br />
+<br />The specifications of the workstation I am using are shown below:
+<br />
+OS: CentOS 7.7.1908
+<br />
+Kernel: 3.10.0-1062.12.1.el7.x86_64
+<br />
+CPU: Intel Xeon Silver 4216 * 2
+<br />
+Memory: 96GB (16GB * 6)
+<br />
+<br />It would be appreciated if you could let me know how to solve this problem.
+<br />
+<br />Sincerely,
+<br />
+<br />Kosuke Tachibana
+<br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>text/plain attachment: <a href="att-0216/2020-03-11_16-05-59.log">2020-03-11_16-05-59.log</a></li>
+</ul>
+<!-- attachment="2020-03-11_16-05-59.log" -->
+<ul>
+<li>text/plain attachment: <a href="att-0216/2020-03-11_16-05-59_failures_and_errors_extracted.log">2020-03-11_16-05-59_failures_and_errors_extracted.log</a></li>
+</ul>
+<!-- attachment="2020-03-11_16-05-59_failures_and_errors_extracted.log" -->
+<ul>
+<li>text/plain attachment: <a href="att-0216/2020-03-11_16-05-59.diff">2020-03-11_16-05-59.diff</a></li>
+</ul>
+<!-- attachment="2020-03-11_16-05-59.diff" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Sun Mar 22 2020 - 21:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0217.html" title="Next message in the list">David Cerutti: "Re: [AMBER] questions about paramfit and frcmod file"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0215.html" title="Previous message in the list">ttz: "[AMBER] questions about paramfit and frcmod file"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0219.html" title="Next message in this discussion thread">David A Case: "Re: [AMBER] Installation problem for a parallel version of Amber18/AmberTools19"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0219.html" title="Message sent in reply to this message">David A Case: "Re: [AMBER] Installation problem for a parallel version of Amber18/AmberTools19"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0225.html" title="Message sent in reply to this message">Kosuke Tachibana: "Re: [AMBER] Installation problem for a parallel version of Amber18/AmberTools19"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0227.html" title="Message sent in reply to this message">Kosuke Tachibana: "Re: [AMBER] Installation problem for a parallel version of Amber18/AmberTools19"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg216" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg216" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg216" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg216" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

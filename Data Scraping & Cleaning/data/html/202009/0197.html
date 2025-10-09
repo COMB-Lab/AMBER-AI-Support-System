@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Generate deleted .rst file from coordinates? from Daniel Roe on 2020-09-16 (Amber Archive Sep 2020)</title>
+<meta name="Author" content="Daniel Roe (daniel.r.roe.gmail.com)" />
+<meta name="Subject" content="Re: [AMBER] Generate deleted .rst file from coordinates?" />
+<meta name="Date" content="2020-09-16" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Generate deleted .rst file from coordinates?</h1>
+<!-- received="Wed Sep 16 08:30:03 2020" -->
+<!-- isoreceived="20200916153003" -->
+<!-- sent="Wed, 16 Sep 2020 11:05:32 -0400" -->
+<!-- isosent="20200916150532" -->
+<!-- name="Daniel Roe" -->
+<!-- email="daniel.r.roe.gmail.com" -->
+<!-- subject="Re: [AMBER] Generate deleted .rst file from coordinates?" -->
+<!-- id="CAAC0qObiiAteSm=iP02McjtvFdDxVJo6bbdD_do-phUdZXZNrQ.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CACgOer0D+fs9J=5i_x8PRpc0P-xfp1uiL_=jroqL-ReFdEgJTA.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0198.html" accesskey="d" title="Vaibhav Dixit: &quot;Re: [AMBER] expected average fluctuations in amino acid covalent bond distances, angle and torsion during typical md simulations&quot;">Next message</a> ]
+[ <a href="0196.html" title="Billiot, Eugene: &quot;[AMBER] Advice on calculating binding energies of enantiomers&quot;">Previous message</a> ]
+[ <a href="0195.html" title="Alysia Mandato: &quot;[AMBER] Generate deleted .rst file from coordinates?&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0212.html" accesskey="t" title="Alysia Mandato: &quot;Re: [AMBER] Generate deleted .rst file from coordinates?&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg197" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg197" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg197" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg197" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe &lt;<a href="mailto:daniel.r.roe.gmail.com?Subject=Re%3A%20%5BAMBER%5D%20Generate%20deleted%20.rst%20file%20from%20coordinates%3F">daniel.r.roe.gmail.com</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 16 Sep 2020 11:05:32 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />So you can use cpptraj to extract the final frame of your trajectory
+<br />
+and use it as a restart like so:
+<br />
+<br />parm file.prmtop
+<br />
+trajin file.mdcrd lastframe
+<br />
+trajout file.rst7
+<br />
+<br />Be aware though this isn't  &quot;true&quot; restart, since velocity information
+<br />
+will be missing. You can use cpptraj to set velocities from a
+<br />
+Maxwell-Boltzmann distribution with the 'setvelocity' command - again
+<br />
+this won't be a &quot;true&quot; restart but should be OK, especially if your
+<br />
+total simulation time is large enough. The advantage of using cpptraj
+<br />
+to do this instead of sander/pmemd is that currently the latter two
+<br />
+won't correct for constrained atoms. For example:
+<br />
+<br />parm file.prmtop
+<br />
+trajin file.mdcrd lastframe
+<br />
+setvelocity tempi &lt;T&gt; ntc 2 zeromomentum
+<br />
+trajout file.rst7
+<br />
+<br />Replace &lt;T&gt; with your target temperature. The 'ntc 2' argument has the
+<br />
+same meaning as sander/pmemd, and specifies bonds to H are constrained
+<br />
+(likely what you are doing). The 'zeromomentum' keyword just ensures
+<br />
+that the total momentum of the system is zero. Hope this helps,
+<br />
+<br />-Dan
+<br />
+<br />On Wed, Sep 16, 2020 at 9:55 AM Alysia Mandato &lt;alysiamandato.gmail&#46;<!--nospam-->com&gt; wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Hello!
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; My computer broke last week and I lost a lot of data including my .rst
+</em><br />
+<em class="quotelev1">&gt; files for my simulations. I saved the .prmtop and .mdcrd files to an
+</em><br />
+<em class="quotelev1">&gt; external drive, so I have all of those. I need to continue the simulation
+</em><br />
+<em class="quotelev1">&gt; for another 1 us, but I do not have the restart file that I would normally
+</em><br />
+<em class="quotelev1">&gt; use to do this. Is there any way to generate a .rst from coordinate file?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I tried using cpptraj:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; parm file.prmtop
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; trajin file.mdcrd ß this file has 24217 frames
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; trajout file.rst restart 24217
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; go
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; quit
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; This generated 24217 individual files in this format: “file.rst.1,
+</em><br />
+<em class="quotelev1">&gt; file.rst.2,…”.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Can I compile these individual files somehow to make one restart file? Or
+</em><br />
+<em class="quotelev1">&gt; is there a different way to generate the restart file? I realize this may
+</em><br />
+<em class="quotelev1">&gt; not be possible, but thank you for taking the time to try to help!
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thank you,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Alysia
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Sep 16 2020 - 08:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0198.html" title="Next message in the list">Vaibhav Dixit: "Re: [AMBER] expected average fluctuations in amino acid covalent bond distances, angle and torsion during typical md simulations"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0196.html" title="Previous message in the list">Billiot, Eugene: "[AMBER] Advice on calculating binding energies of enantiomers"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0195.html" title="Message to which this message replies">Alysia Mandato: "[AMBER] Generate deleted .rst file from coordinates?"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0212.html" title="Next message in this discussion thread">Alysia Mandato: "Re: [AMBER] Generate deleted .rst file from coordinates?"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0212.html" title="Message sent in reply to this message">Alysia Mandato: "Re: [AMBER] Generate deleted .rst file from coordinates?"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg197" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg197" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg197" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg197" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>
