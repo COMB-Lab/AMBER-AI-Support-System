@@ -5,7 +5,7 @@ Amber Mailing List Scraper — 2020–2025 (per-thread JSON with epoch IDs)
 What it does
 ------------
 - Crawls http://archive.ambermd.org for every month from 2020–2025
-- Loads each month’s thread index (handles directory, index.html, thread.html, etc.)
+- Loads each month’s thread index (handles directory, index.html, thread.html, threads.html)
 - Follows links to individual message pages
 - Groups messages into threads (one JSON per mail chain)
 - IDs are numeric epoch timestamps:
@@ -13,27 +13,28 @@ What it does
     * thread_id   = message_id of the root message
     * in_reply_to = thread_id on replies
 - Writes: data/threads/YYYY-MM/<thread_id>.json
+- **Cross-month reconcile**: after crawling, merges replies whose parent
+  lives in another month using raw Message-ID/In-Reply-To headers.
 
-Dependencies
-------------
-pip install aiohttp aiofiles beautifulsoup4 lxml tqdm
+
 """
 
 from __future__ import annotations
 
 import asyncio
+import glob
 import json
 import os
 import re
 import sys
 from dataclasses import dataclass
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 from typing import List, Optional
 
 import aiofiles
 import aiohttp
 from bs4 import BeautifulSoup
-from email.utils import parsedate_to_datetime
-from datetime import datetime, timezone
 from tqdm import tqdm
 
 # -------------------------------
@@ -41,7 +42,7 @@ from tqdm import tqdm
 # -------------------------------
 BASE_URL = "http://archive.ambermd.org"
 OUTPUT_DIR = os.path.join("data", "threads")
-USER_AGENT = "Mozilla/5.0 (compatible; AmberScraper/1.0; +https://example.org/)"
+USER_AGENT = "Mozilla/5.0 (compatible; AmberScraper/1.2; +https://example.org/)"
 
 MAX_CONCURRENCY = 8
 REQUEST_TIMEOUT = aiohttp.ClientTimeout(total=30)
@@ -52,7 +53,7 @@ RETRY_BASE_DELAY = 0.75  # seconds
 # Utilities
 # -------------------------------
 def eprint(msg):
-    """Best-effort stderr print (portable to older Python)."""
+    """Best-effort stderr print (portable)."""
     try:
         sys.stderr.write(str(msg) + "\n")
     except Exception:
@@ -158,6 +159,11 @@ async def _fetch_month_index(session: aiohttp.ClientSession, month: str) -> str:
 # -------------------------------
 # Parsing helpers
 # -------------------------------
+HEADER_RE = re.compile(r"^([A-Za-z][A-Za-z-]*):\s*(.*)$", re.I | re.M)
+EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
+ANGLE_ID_RE = re.compile(r"<[^>]+>")
+
+
 def _extract_header_value(text: str, header: str) -> Optional[str]:
     m = re.search(rf"^{re.escape(header)}:\s*(.*)$", text, flags=re.I | re.M)
     return m.group(1).strip() if m else None
@@ -165,7 +171,7 @@ def _extract_header_value(text: str, header: str) -> Optional[str]:
 
 @dataclass
 class Message:
-    message_id: str
+    message_id: str           # numeric epoch (filled later)
     url: str
     subject: Optional[str]
     author_name: Optional[str]
@@ -175,9 +181,13 @@ class Message:
     references: List[str]
     raw_html: Optional[str]
     text_clean: str
+    # raw linkage headers captured for cross-month reconcile
+    message_id_hdr: Optional[str] = None
+    in_reply_to_hdr: Optional[str] = None
+    references_hdr: Optional[List[str]] = None
 
 
-def _parse_message_page(url: str, html: str) -> Message:
+def _parse_message_page(url: str, html: str, month: str) -> Message:
     """Extract subject/headers/body from a single message page."""
     soup = _soup(html)
 
@@ -196,7 +206,7 @@ def _parse_message_page(url: str, html: str) -> Message:
     author_email = None
     from_line = _extract_header_value(header_text, "From")
     if from_line:
-        m = re.search(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", from_line)
+        m = EMAIL_RE.search(from_line)
         if m:
             author_email = m.group(0)
             author_name = from_line.replace(author_email, "").strip().strip("<>- ") or None
@@ -207,34 +217,36 @@ def _parse_message_page(url: str, html: str) -> Message:
 
     # Optional headers present in page text
     page_text = soup.get_text("\n")
-    message_id = _extract_header_value(page_text, "Message-ID") or _extract_header_value(page_text, "Message-Id")
-    in_reply_to = _extract_header_value(page_text, "In-Reply-To")
+    message_id_hdr = _extract_header_value(page_text, "Message-ID") or _extract_header_value(page_text, "Message-Id")
+    in_reply_to_hdr = _extract_header_value(page_text, "In-Reply-To")
     refs_line = _extract_header_value(page_text, "References")
-    references = re.findall(r"<[^>]+>", refs_line) if refs_line else []
+    references_list = ANGLE_ID_RE.findall(refs_line) if refs_line else []
 
     # Body
     pre = soup.find("pre")
     raw_text = pre.get_text("\n", strip=False) if pre else soup.get_text("\n")
     text_clean = clean_message_text(raw_text)
 
-    # Synthetic message-id if missing (use month from URL)
-    if not message_id:
+    # Synthetic Message-ID header if missing (for reconcile lookup)
+    if not message_id_hdr:
         stem = _stem_from_url(url)
-        m = re.search(r"/(\d{6})/", url)
-        mon = m.group(1) if m else "000000"
-        message_id = f"<{mon}/{stem}@archive.ambermd.org>"
+        message_id_hdr = f"<{month}/{stem}@archive.ambermd.org>"
 
+    # NOTE: numeric message_id gets computed during bundling via _epoch_from_date
     return Message(
-        message_id=message_id,
+        message_id="0",
         url=url,
         subject=subject,
         author_name=author_name,
         author_email=author_email,
         date=date,
-        in_reply_to=in_reply_to,
-        references=references,
+        in_reply_to=None,
+        references=references_list,
         raw_html=None,
         text_clean=text_clean,
+        message_id_hdr=message_id_hdr,
+        in_reply_to_hdr=in_reply_to_hdr,
+        references_hdr=references_list,
     )
 
 
@@ -335,11 +347,12 @@ async def crawl_month_threads(month: str) -> int:
             messages: List[Message] = []
             for u, html in zip(urls, pages):
                 try:
-                    messages.append(_parse_message_page(u, html))
+                    messages.append(_parse_message_page(u, html, month))
                 except Exception as e:
+                    m_stem = _stem_from_url(u)
                     messages.append(
                         Message(
-                            message_id=f"<{month}/{_stem_from_url(u)}@archive.ambermd.org>",
+                            message_id="0",
                             url=u,
                             subject=None,
                             author_name=None,
@@ -349,6 +362,9 @@ async def crawl_month_threads(month: str) -> int:
                             references=[],
                             raw_html=None,
                             text_clean=f"[PARSE ERROR] {e}",
+                            message_id_hdr=f"<{month}/{m_stem}@archive.ambermd.org>",
+                            in_reply_to_hdr=None,
+                            references_hdr=[],
                         )
                     )
 
@@ -376,6 +392,10 @@ async def crawl_month_threads(month: str) -> int:
                     "date_raw": msg.date,
                     "body": msg.text_clean,
                     "url": msg.url,
+                    # keep raw headers for post-pass reconcile
+                    "message_id_hdr": msg.message_id_hdr,
+                    "in_reply_to_hdr": msg.in_reply_to_hdr,
+                    "references_hdr": msg.references_hdr or [],
                 }
                 if i > 0:
                     entry["in_reply_to"] = thread_epoch
@@ -415,17 +435,99 @@ async def crawl_all_months(year_start=2020, year_end=2025) -> None:
 
 
 # ----------------------
+# Post-pass: cross-month reconcile
+# ----------------------
+
+def reconcile_threads_cross_months(root_dir: str = OUTPUT_DIR) -> None:
+    """Merge replies whose `in_reply_to_hdr` points to a message in another file.
+
+    Process:
+      1) Build lookup: { raw Message-ID -> file path holding that message }
+      2) Move replies into the parent's thread if parent is in a different file
+      3) Sort messages by numeric 'message_id' (epoch) and rewrite files
+      4) Remove any thread file that ends up empty after moves
+    """
+    files = sorted(glob.glob(os.path.join(root_dir, "*", "*.json")))
+    id_to_file = {}
+    file_to_thread = {}
+
+    # Load & index
+    for fp in files:
+        with open(fp, "r", encoding="utf-8") as f:
+            t = json.load(f)
+        file_to_thread[fp] = t
+        for m in t.get("messages", []):
+            rid = m.get("message_id_hdr")
+            if rid and rid not in id_to_file:
+                id_to_file[rid] = fp
+
+    # Plan moves
+    moves = []  # (from_fp, to_fp, message_dict)
+    for fp, t in file_to_thread.items():
+        keep = []
+        for m in t.get("messages", []):
+            parent_raw = m.get("in_reply_to_hdr")
+            if parent_raw and parent_raw in id_to_file:
+                parent_fp = id_to_file[parent_raw]
+                if parent_fp != fp:
+                    moves.append((fp, parent_fp, m))
+                    continue
+            keep.append(m)
+        t["messages"] = keep
+
+    # Apply moves
+    for from_fp, to_fp, m in moves:
+        file_to_thread[to_fp].setdefault("messages", []).append(m)
+
+    # Sort & write back; remove empties
+    for fp, t in list(file_to_thread.items()):
+        t["messages"].sort(key=lambda x: int(x.get("message_id", 0)))
+        with open(fp, "w", encoding="utf-8") as f:
+            json.dump(t, f, ensure_ascii=False, indent=2)
+        if not t.get("messages"):
+            try:
+                os.remove(fp)
+            except Exception as e:
+                eprint(f"Could not remove empty thread file {fp}: {e}")
+
+
+# ----------------------
 # Program entry
 # ----------------------
+
+def _run_coro(coro):
+    """Run an async coroutine in both script and notebook/REPL contexts.
+
+    - Prefers asyncio.run when no loop is running (normal script usage).
+    - If a loop *is* running (e.g., Jupyter), tries `nest_asyncio` so we can
+      nest an event loop safely; otherwise prints a helpful warning.
+    """
+    try:
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            try:
+                import nest_asyncio  # optional dep for notebooks
+                nest_asyncio.apply()
+                return loop.run_until_complete(coro)
+            except Exception:
+                eprint("[warn]: Detected a running event loop. Install 'nest_asyncio' or call me as: `await crawl_all_months(...)`. Skipping run.")
+                return None
+        else:
+
+            return loop.run_until_complete(coro)
+    except RuntimeError:
+
+        return asyncio.run(coro)
+
+
 if __name__ == "__main__":
     try:
-        asyncio.run(crawl_all_months(2020, 2025))
+        _run_coro(crawl_all_months(2020, 2025))
         print(f"Done. Thread JSONs saved under: {OUTPUT_DIR}")
+        reconcile_threads_cross_months(OUTPUT_DIR)
+        print("Cross-month reconciliation complete.")
     except KeyboardInterrupt:
         print("Interrupted.")
     except Exception as e:
         eprint(f"ERROR: {e}")
         sys.exit(1)
-
-
-
