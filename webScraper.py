@@ -1,13 +1,11 @@
 import requests
 import pathlib
 
-def scrape():
-    output = pathlib.Path("data") / "html" / "202204" / "0000.html"
+def scrape(url: str, output: pathlib.Path):
+
     output.parent.mkdir(parents=True, exist_ok=True)
 
     response = None
-    url = "http://archive.ambermd.org/202204/0000.html"
-
 
     for i in range(3):
         try:
@@ -25,8 +23,9 @@ def scrape():
     if response:
         try:
             with open(output, "wb") as f:
-                f.write(response.content)
-            print(f"Successfully saved HTML to '{output}'")
+                # Previously used as a test
+                # f.write(response.content)
+                print(f"Successfully saved HTML to '{output}'")
         except IOError as e:
             print(f"Error saving file: {e}")
 
