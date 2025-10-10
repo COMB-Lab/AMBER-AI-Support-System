@@ -11,7 +11,7 @@ def parse(input_path: pathlib.Path, output_path: pathlib.Path):
         html = f.read()
 
     soup = BeautifulSoup(html, 'html.parser')
-    print(soup.prettify())
+    # print(soup.prettify())
 
     # Dictionary
     data = {

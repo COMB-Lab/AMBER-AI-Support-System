@@ -17,21 +17,19 @@ def main():
 
     for link in sorted(monthly_links):
         scrape_month(link)
-        
 
-
+    # Start Parsing
     pathlist = Path(OUTPUT_DIR).glob('**/*.html')
 
     for path in pathlist:
-        path_output = OUTPUT_DIR / path.name
-        parse(path, path_output )
 
+        # Find path without "Data / html"
         relative_path = path.relative_to(OUTPUT_DIR)
 
-        # 3. Create the full output path.
+        # Create the full output path.
         output_path = (OUTPUT2_DIR / relative_path).with_suffix('.json')
 
-        # 4. Call your parse function with the correct input and output paths.
+        # Call your parse function with the correct input and output paths.
         parse(path, output_path)
 
 
