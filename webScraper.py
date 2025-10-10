@@ -11,7 +11,7 @@ def scrape(url: str, output: pathlib.Path):
         try:
             response = requests.get(url, timeout=10)
             # Previously used as a test
-            print(response.text)
+            # print(response.text)
 
             response.raise_for_status()
 

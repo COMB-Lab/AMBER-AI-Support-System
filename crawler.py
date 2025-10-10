@@ -4,8 +4,6 @@ import requests
 import pathlib
 import time
 from bs4 import BeautifulSoup
-
-# I still need to implement this further
 from webScraper import scrape
 
 
