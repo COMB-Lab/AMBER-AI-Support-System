@@ -36,16 +36,6 @@ def parse(input_path: pathlib.Path, output_path: pathlib.Path):
         }
     }
 
-    # 1. Message ID
-    # This is the year
-    year_month = input_path.parent.name
-    message_num = input_path.stem
-    BASE_URL = "http://archive.ambermd.org"
-    data["url"] = f"{BASE_URL}/{year_month}/{message_num}.html"
-
-    # Concatinate it together.
-    data["message_id"] = f"amber-{year_month}-{message_num}"
-
     # Subject
     # Fetch the raw data
     subject_tag = soup.find('h1')
@@ -85,11 +75,17 @@ def parse(input_path: pathlib.Path, output_path: pathlib.Path):
         # Format: "Fri, 1 Apr 2022 12:17:04 +0300"
         dt_object = datetime.strptime(data["date_raw"], "%a, %d %b %Y %H:%M:%S %z")
 
+        dt_utc = dt_object.astimezone(timezone.utc)
+
         # Format to ISO
         data["date_iso"] = dt_object.isoformat()
 
         # Convert to UTC and format to ISO 8601 with 'Z'
         data["date_utc"] = dt_object.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+
+        # Convert to epoch timestamp (integer)
+        epoch_time = int(dt_utc.timestamp())
+        data["message_id"] = epoch_time
 
     # Body
     # First find the mail tag (This is where the body is located)
@@ -163,3 +159,20 @@ def parse(input_path: pathlib.Path, output_path: pathlib.Path):
         json.dump(data, f, indent=2, ensure_ascii=False)
 
     print(f"Saved JSON to {output_path}")
+
+def main():
+
+    # This test case is AI Generated for simplicity
+
+    # Define the input and output for a single test file
+    # You would change these paths to process any file you want
+    input_file = pathlib.Path("data/html/202204/0000.html")
+    output_file = pathlib.Path("data/json/202204/0000.json")
+
+    print("--- Running single file test ---")
+    parse(input_file, output_file)
+    print("\n--- Test complete ---")
+    print(f"Check the output file at: {output_file}")
+
+if __name__ == "__main__":
+    main()
