@@ -10,6 +10,7 @@ def scrape(url: str, output: pathlib.Path):
     for i in range(3):
         try:
             response = requests.get(url, timeout=10)
+            # Previously used as a test
             print(response.text)
 
             response.raise_for_status()
@@ -23,8 +24,7 @@ def scrape(url: str, output: pathlib.Path):
     if response:
         try:
             with open(output, "wb") as f:
-                # Previously used as a test
-                # f.write(response.content)
+                f.write(response.content)
                 print(f"Successfully saved HTML to '{output}'")
         except IOError as e:
             print(f"Error saving file: {e}")
