@@ -1,4 +1,4 @@
-## AMBER\_WEB\_Scraping
+## 1.) AMBER\_WEB\_Scraping
 
 
 
@@ -20,7 +20,7 @@ Change the values of these Variables to Scrape data from the Amber Website
 
 
 
-## AMBER\_JSON\_Scraping
+## 2.) AMBER\_JSON\_Scraping
 
 
 
@@ -38,7 +38,7 @@ Change the values of these Variables to Scrape data from the JSON file created i
 
 
 
-## AMBER\_Check\_Replies
+## 3.) AMBER\_Check\_Replies
 
 
 
