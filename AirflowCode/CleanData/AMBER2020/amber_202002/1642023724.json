@@ -1,0 +1,77 @@
+{
+  "thread_id": 1642023724,
+  "subject": "[AMBER] Restraint removal doesn't seem to be happening",
+  "messages": [
+    {
+      "message_id": 1642023724,
+      "author": "Daniel Burns",
+      "date_raw": "Wed, 12 Jan 2022 16:42:04 -0500",
+      "body": "Hello,\nI am trying to slowly release restraints that keep a small molecule properly coordinated with an iron atom in a protein active site.\nWhen I run with an input file like I’ve pasted in the simulation continues to look restrained from istep1=50000001, istep2=100000000, value1=0.0, value2=0.0\nprod\n&cntrl\nimin=0, irest=1, ntx=5, iwrap=1,\nnstlim=100000000, dt=0.002,\nntc=2, ntf=2,\ncut=10.0, ntb=2, ntp=1, taup=1.0,\nntpr=2000, ntwx=2000, ntwr= 2000,\nntt=3, gamma_ln=2.0, temp0=303.15,\nntr = 1, restraintmask =\":479<:5&!.H=\",\nrestraint_wt = 1.0,\n&end\n&wt type='REST', istep1=0, istep2=50000000, value1=1.0, value2=0.0, &end\n&owt type='REST', istep1=50000001, istep2=100000000, value1=0.0, value2=0.0, &end\n&wt type='END' &end\n/\nWhen I restart from the end of this simulation with an input file that has no restraint terms, the protein immediately begins diffusing around and my iron pops out of proper coordination.\nIt seems like the above input doesn’t actually remove (or even change) the restraint terms.\nAny ideas?\nThank you,\nDan",
+      "url": "http://archive.ambermd.org/202201/0099.html"
+    },
+    {
+      "message_id": 1642082577,
+      "author": "David A Case",
+      "date_raw": "Thu, 13 Jan 2022 09:02:57 -0500",
+      "body": "On Wed, Jan 12, 2022, Daniel Burns wrote:\n> &owt type='REST', istep1=50000001, istep2=100000000, value1=0.0, value2=0.0, &end\nLooks like you have typo in your input: \"owt\" rather than \"wt\"\n....dac",
+      "url": "http://archive.ambermd.org/202201/0106.html",
+      "in_reply_to": 1642023724
+    },
+    {
+      "message_id": 1642087804,
+      "author": "Daniel Burns",
+      "date_raw": "Thu, 13 Jan 2022 09:30:04 -0600",
+      "body": "That's just a pasting error, sorry.  The typo is not in the actual input\nfile.\nOn Thu, Jan 13, 2022 at 8:03 AM David A Case <david.case.rutgers.edu> wrote:\n> On Wed, Jan 12, 2022, Daniel Burns wrote:\n>\n> > &owt type='REST', istep1=50000001, istep2=100000000, value1=0.0,\n> value2=0.0, &end\n>\n> Looks like you have typo in your input: \"owt\" rather than \"wt\"\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202201/0112.html",
+      "in_reply_to": 1642023724
+    },
+    {
+      "message_id": 1642152262,
+      "author": "Rafał Madaj",
+      "date_raw": "Fri, 14 Jan 2022 10:24:22 +0100",
+      "body": "Don't you have to use nmropt=1?\nRegards,\nRafal\nOn 13.01.2022 16:30, Daniel Burns wrote:\n> That's just a pasting error, sorry.  The typo is not in the actual input\n> file.\n>\n> On Thu, Jan 13, 2022 at 8:03 AM David A Case <david.case.rutgers.\nedu> wrote:\n>\n>> On Wed, Jan 12, 2022, Daniel Burns wrote:\n>>\n>>> &owt type='REST', istep1=50000001, istep2=100000000, value1=0.0,\n>> value2=0.0, &end\n>>\n>> Looks like you have typo in your input: \"owt\" rather than \"wt\"\n>>\n>> ....dac\n>>\n>>\n>>",
+      "url": "http://archive.ambermd.org/202201/0123.html",
+      "in_reply_to": 1642023724
+    },
+    {
+      "message_id": 1642206550,
+      "author": "Daniel Burns",
+      "date_raw": "Fri, 14 Jan 2022 19:29:10 -0500",
+      "body": "Thank you for that.  That’s an easy thing to skip over in the manual for somebody like me.  I just tried that however and it still does not appear that the restraints are released as the restrained residue/small molecule is still maintaining a stiff conformation and the protein does not begin to diffuse around after the step where the restraints are completely released.\nI’ve just deleted the “restraint_wt=1.0” option and started a new run to see what happens.\nI’ve pasted in the input that I just used on the last run.\nThanks again.\nprod\n&cntrl\nimin=0, irest=1, ntx=5, iwrap=1,\nnstlim=15000000, dt=0.002,\nntc=2, ntf=2,\ncut=10.0, ntb=2, ntp=1, taup=1.0,\nntpr=2000, ntwx=2000, ntwr= 2000,\nntt=3, gamma_ln=2.0, temp0=303.15,\nntr = 1, restraintmask =\":479<:5&!.H=\",\nrestraint_wt = 1.0, nmropt=1,\n&end\n&wt type='REST', istep1=0, istep2=10000000, value1=1.0, value2=0.0, &end\n&wt type='REST', istep1=10000001, istep2=15000000, value1=0.0, value2=0.0, &end\n&wt type='END' &end\nDan\n> On Jan 14, 2022, at 4:24 AM, Rafał Madaj <rmadaj.cbmm.\nlodz.pl> wrote:\n>\n> Don't you have to use nmropt=1?\n>\n> Regards,\n>\n> Rafal\n>\n> On 13.01.2022 16:30, Daniel Burns wrote:\n>> That's just a pasting error, sorry.  The typo is not in the actual input\n>> file.\n>>\n>> On Thu, Jan 13, 2022 at 8:03 AM David A Case <david.case.rutgers.\nedu> wrote:\n>>\n>>> On Wed, Jan 12, 2022, Daniel Burns wrote:\n>>>\n>>>> &owt type='REST', istep1=50000001, istep2=100000000, value1=0.0,\n>>> value2=0.0, &end\n>>>\n>>> Looks like you have typo in your input: \"owt\" rather than \"wt\"\n>>>\n>>> ....dac\n>>>\n>>>\n>>>",
+      "url": "http://archive.ambermd.org/202201/0135.html",
+      "in_reply_to": 1642023724
+    },
+    {
+      "message_id": 1642215311,
+      "author": "David A Case",
+      "date_raw": "Fri, 14 Jan 2022 21:55:11 -0500",
+      "body": "On Fri, Jan 14, 2022, Daniel Burns wrote:\n>\n>prod\n> &cntrl\n>  imin=0, irest=1, ntx=5, iwrap=1,\n>  nstlim=15000000, dt=0.002,\n>  ntc=2, ntf=2,\n>  cut=10.0, ntb=2, ntp=1, taup=1.0,\n>  ntpr=2000, ntwx=2000, ntwr= 2000,\n>  ntt=3, gamma_ln=2.0, temp0=303.15,\n>  ntr = 1, restraintmask =\":479<:5&!.H=\",\n>  restraint_wt = 1.0, nmropt=1,\n> &end\n> &wt type='REST', istep1=0, istep2=10000000, value1=1.0, value2=0.0, &end\n> &wt type='REST', istep1=10000001, istep2=15000000, value1=0.0, value2=0.0, &end\n> &wt type='END' &end\nOh, my.  It may be that the REST in the &wt namelist doesn't mean what you\nthink it does.  These refer to \"NMR restraints\"\n(bonds/angles/torsions/etc.).  But you don't appear to have defined any such\nrestraints.\nThe \"restraint_wt\" and \"restraintmask\" refer to Cartesian restraints that\nkeep the atoms near to their positions in the reference structure.  There is\nno way to have restraint_wt depend upon step number.\nI can see how easy it would be to confuse two things that have such similar\nnames.  At a minimum, we need to add an explicit warning to the manual.\nChanging \"restraint_wt\" to something like coordinate_restraint_wt\" would\nhelp, but would have a big backwards-incompatibility downside.  Volunteers\nare solicited to pitch in to make this better.\n....dac",
+      "url": "http://archive.ambermd.org/202201/0136.html",
+      "in_reply_to": 1642023724
+    },
+    {
+      "message_id": 1642256262,
+      "author": "Daniel Burns",
+      "date_raw": "Sat, 15 Jan 2022 09:17:42 -0500",
+      "body": "Ah, that clears things up.  Thank you!\n> On Jan 14, 2022, at 9:55 PM, David A Case <david.case.rutgers.edu> wrote:\n>\n> On Fri, Jan 14, 2022, Daniel Burns wrote:\n>>\n>> prod\n>> &cntrl\n>> imin=0, irest=1, ntx=5, iwrap=1,\n>> nstlim=15000000, dt=0.002,\n>> ntc=2, ntf=2,\n>> cut=10.0, ntb=2, ntp=1, taup=1.0,\n>> ntpr=2000, ntwx=2000, ntwr= 2000,\n>> ntt=3, gamma_ln=2.0, temp0=303.15,\n>> ntr = 1, restraintmask =\":479<:5&!.H=\",\n>> restraint_wt = 1.0, nmropt=1,\n>> &end\n>> &wt type='REST', istep1=0, istep2=10000000, value1=1.0, value2=0.0, &end\n>> &wt type='REST', istep1=10000001, istep2=15000000, value1=0.0, value2=0.0, &end\n>> &wt type='END' &end\n>\n> Oh, my.  It may be that the REST in the &wt namelist doesn't mean what you\n> think it does.  These refer to \"NMR restraints\"\n> (bonds/angles/torsions/etc.).  But you don't appear to have defined any such\n> restraints.\n>\n> The \"restraint_wt\" and \"restraintmask\" refer to Cartesian restraints that\n> keep the atoms near to their positions in the reference structure.  There is\n> no way to have restraint_wt depend upon step number.\n>\n> I can see how easy it would be to confuse two things that have such similar\n> names.  At a minimum, we need to add an explicit warning to the manual.\n> Changing \"restraint_wt\" to something like coordinate_restraint_wt\" would\n> help, but would have a big backwards-incompatibility downside.  Volunteers\n> are solicited to pitch in to make this better.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202201/0138.html",
+      "in_reply_to": 1642023724
+    },
+    {
+      "message_id": 1642268668,
+      "author": "Daniel Burns",
+      "date_raw": "Sat, 15 Jan 2022 12:44:28 -0500",
+      "body": "Just to follow up on this - is it possible to apply distance restraints with pmemd or only with sander?\n>From my reading of the manual it is only with sander.\nThanks,\nDan\n> On Jan 14, 2022, at 9:55 PM, David A Case <david.case.rutgers.edu> wrote:\n>\n> On Fri, Jan 14, 2022, Daniel Burns wrote:\n>>\n>> prod\n>> &cntrl\n>> imin=0, irest=1, ntx=5, iwrap=1,\n>> nstlim=15000000, dt=0.002,\n>> ntc=2, ntf=2,\n>> cut=10.0, ntb=2, ntp=1, taup=1.0,\n>> ntpr=2000, ntwx=2000, ntwr= 2000,\n>> ntt=3, gamma_ln=2.0, temp0=303.15,\n>> ntr = 1, restraintmask =\":479<:5&!.H=\",\n>> restraint_wt = 1.0, nmropt=1,\n>> &end\n>> &wt type='REST', istep1=0, istep2=10000000, value1=1.0, value2=0.0, &end\n>> &wt type='REST', istep1=10000001, istep2=15000000, value1=0.0, value2=0.0, &end\n>> &wt type='END' &end\n>\n> Oh, my.  It may be that the REST in the &wt namelist doesn't mean what you\n> think it does.  These refer to \"NMR restraints\"\n> (bonds/angles/torsions/etc.).  But you don't appear to have defined any such\n> restraints.\n>\n> The \"restraint_wt\" and \"restraintmask\" refer to Cartesian restraints that\n> keep the atoms near to their positions in the reference structure.  There is\n> no way to have restraint_wt depend upon step number.\n>\n> I can see how easy it would be to confuse two things that have such similar\n> names.  At a minimum, we need to add an explicit warning to the manual.\n> Changing \"restraint_wt\" to something like coordinate_restraint_wt\" would\n> help, but would have a big backwards-incompatibility downside.  Volunteers\n> are solicited to pitch in to make this better.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202201/0139.html",
+      "in_reply_to": 1642023724
+    },
+    {
+      "message_id": 1642597587,
+      "author": "David A Case",
+      "date_raw": "Wed, 19 Jan 2022 08:06:27 -0500",
+      "body": "On Sat, Jan 15, 2022, Daniel Burns wrote:\n> Just to follow up on this - is it possible to apply distance restraints\n> with pmemd or only with sander?\n> >From my reading of the manual it is only with sander.\nIt is certainly possible to have distance restraints in pmemd.  If you could\npoint to the specific place in the manual that you found hard to understand,\nwe can try to improve things.\n....dac",
+      "url": "http://archive.ambermd.org/202201/0161.html",
+      "in_reply_to": 1642023724
+    }
+  ]
+}

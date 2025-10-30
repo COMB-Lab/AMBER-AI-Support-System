@@ -1,0 +1,21 @@
+{
+  "thread_id": 1721299988,
+  "subject": "[AMBER] Autocorrelation Function in Amber",
+  "messages": [
+    {
+      "message_id": 1721299988,
+      "author": "Abdelrahman, Noureen",
+      "date_raw": "Thu, 18 Jul 2024 10:53:08 +0000",
+      "body": "Hello,\nHow can I use the autocorr function in cpptraj to measure the correlation between the frames of a trajectory? I extracted two frames in separate rst7 files: frame_99ns.rst7 and  frame_100ns.rst7, and want to measure the correlation between them. I tried the following command, but it didn't work because \"no data sets selected\". What is my command missing?\n> autocorr name files frame_99ns.rst7 frame_100ns.rst7 out corr.dat\nThank you,\nNoureen",
+      "url": "http://archive.ambermd.org/202407/0059.html"
+    },
+    {
+      "message_id": 1721652143,
+      "author": "Daniel Roe",
+      "date_raw": "Mon, 22 Jul 2024 08:42:23 -0400",
+      "body": "Hi,\nOn Thu, Jul 18, 2024 at 6:54 AM Abdelrahman, Noureen via AMBER\n<amber.ambermd.org> wrote:\n> How can I use the autocorr function in cpptraj to measure the correlation between the frames of a trajectory? I extracted two frames in separate rst7 files: frame_99ns.rst7 and  frame_100ns.rst7, and want to measure the correlation between them. I tried the following command, but it didn't work because \"no data sets selected\". What is my command missing?\nI'm not sure autocorrelation is what you want here. Autocorrelation is\nthe correlation of elements in a time series to other elements\nseparated by a time lag; typically you would be interested in the\nautocorrelation of a specific property (like position/velocity\nvectors). It sounds like what you want is to compare how similar the\nstructure in two separate trajectory frames are. Probably the most\npopular way to do this is calculating the best-fit RMSD of the atomic\npositions of each frame to each other or to a common reference\nstructure. You could do that with something like:\nparm myparm.parm7\nreference frame_99ns.rst7\ntrajin frame_100ns.rst7\n# Calculate the RMSD of heavy atoms only\nrms R0 !./H out rmsd.dat\nrun\nDoes this make sense? Let me know if you have more questions.\n-Dan",
+      "url": "http://archive.ambermd.org/202407/0075.html",
+      "in_reply_to": 1721299988
+    }
+  ]
+}

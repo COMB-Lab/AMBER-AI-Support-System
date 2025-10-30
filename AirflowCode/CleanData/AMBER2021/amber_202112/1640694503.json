@@ -1,0 +1,21 @@
+{
+  "thread_id": 1640694503,
+  "subject": "[AMBER] Problem in installation",
+  "messages": [
+    {
+      "message_id": 1640694503,
+      "author": "Guodong",
+      "date_raw": "Tue, 28 Dec 2021 20:28:23 +0800",
+      "body": "Hi,\ni met a problem in installation.\n/usr/bin/ld: /usr/local/lib/libfftw3.a(assert.o): relocation\nR_X86_64_PC32 against symbol `stdout@@GLIBC_2.\n2.5' can not be used when\nmaking a shared object; recompile with -fPIC\n/usr/bin/ld: final link failed: Bad value\ncollect2: error: ld returned 1 exit status\nAmberTools/src/sander/CMakeFiles/libsander.dir/build.make:3282: recipe\nfor target 'AmberTools/src/sander/libsander.so' failed\nmake[2]: *** [AmberTools/src/sander/libsander.so] Error 1\nCMakeFiles/Makefile2:3702: recipe for target\n'AmberTools/src/sander/CMakeFiles/libsander.dir/all' failed\nmake[1]: *** [AmberTools/src/sander/CMakeFiles/libsander.dir/all] Error 2\nMakefile:151: recipe for target 'all' failed\nmake: *** [all] Error 2\nubuntu.los:~/Downloads/amber20_src/build$ make disclean\nmake: *** No rule to make target 'disclean'.  Stop.\nubuntu.los:~/Downloads/amber20_src/build$\nubuntu.los:~/Downloads/amber20_src/build$ make distclean\nmake: *** No rule to make target 'distclean'.  Stop.\nubuntu.los:~/Downloads/amber20_src/build$ cd ..\nubuntu.los:~/Downloads/amber20_src$ make distclean\nMakefile:4: config.h: No such file or directory\nmake: *** No rule to make target 'config.h'.  Stop.\nCould you do me a favor?\nSincerely,\ngd",
+      "url": "http://archive.ambermd.org/202112/0198.html"
+    },
+    {
+      "message_id": 1640702859,
+      "author": "David A Case",
+      "date_raw": "Tue, 28 Dec 2021 09:47:39 -0500",
+      "body": "On Tue, Dec 28, 2021, Guodong wrote:\n>\n>i met a problem in installation.\n>\n>/usr/bin/ld: /usr/local/lib/libfftw3.a(assert.o): relocation\n>R_X86_64_PC32 against symbol `stdout..GLIBC_2.2.5' can not be used\n>when making a shared object; recompile with -fPIC\nIn many cases, you don't want to use the system-supplied fftw libraries, for\nreasons like that shown above.  Add the following to your run_cmake file:\n-DFORCE_INTERNAL_LIBS=\"fftw\"\n...good luck...dac\n[Aside to Amber developers:  above is another reason to be wary of external\ndependencies.  Using the system libfftw3 may work on *your* system, and it\nsaves a minute or two in the build.  But who knows what a user will have\nin /usr/local/lib, or where it came from?]",
+      "url": "http://archive.ambermd.org/202112/0202.html",
+      "in_reply_to": 1640694503
+    }
+  ]
+}

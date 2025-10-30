@@ -1,0 +1,21 @@
+{
+  "thread_id": 1627036681,
+  "subject": "[AMBER] Regarding SHAKE Parameter",
+  "messages": [
+    {
+      "message_id": 1627036681,
+      "author": "Sumon Naskar",
+      "date_raw": "Fri, 23 Jul 2021 16:08:01 +0530",
+      "body": "Dear All,\nI am working on a DNA-protein system. According to the\nprotocol, SHAKE should be applied to H containing bonds from heating\nonwards. The protocol did not mention anything about the minimization in\nparticular. My doubt is if, in the 2 minimization stages, we do not\napply the SHAKE (ntf=1), would it really change the system as a whole? I\ncompleted the production as well and the geometry was fine till the end.\nThere is one minimization with restraints on the biomolecules and one\nwith no restraints at all. Does not applying shake in minimization make\nthe simulation go wrong? What is the general purpose of applying the\nSHAKE algorithm?\nRegards,\nSumon",
+      "url": "http://archive.ambermd.org/202107/0200.html"
+    },
+    {
+      "message_id": 1627046245,
+      "author": "David A Case",
+      "date_raw": "Fri, 23 Jul 2021 09:17:25 -0400",
+      "body": "On Fri, Jul 23, 2021, Sumon Naskar wrote:\n>\n>          I am working on a DNA-protein system. According to the\n>protocol, SHAKE should be applied to H containing bonds from heating\n>onwards. The protocol did not mention anything about the minimization in\n>particular. My doubt is if, in the 2 minimization stages, we do not\n>apply the SHAKE (ntf=1), would it really change the system as a whole? I\n>completed the production as well and the geometry was fine till the end.\n>There is one minimization with restraints on the biomolecules and one\n>with no restraints at all. Does not applying shake in minimization make\n>the simulation go wrong? What is the general purpose of applying the\n>SHAKE algorithm?\nYou should be fine in leaving SHAKE off during an initial minimization step.\nSome notes:\n1. SHAKE constaints the lengths of bonds, generally only to hydrogen.  It is\ncontrolled by the ntc paramter.  You can leave ntf at 1 if you wish.\n2. For dynamics, SHAKE is important, especially for water, since the common\nwater force fields all assume a rigid water molecule, which SHAKE provides,\nsince there is also a \"bond\" between the two hydrogen atoms.  You will get\nwrong behavior for water if you run without SHAKE.\n3. SHAKE is, by construction, an MD algorithm.  Handing similar constraints\nin minimization requires a different approach, and this approach has never\nbeen consistently implemented in sander or pmemd.  Unless you have a bad\ninitial geometry, running short minimizations without SHAKE rarely causes\nproblems.\n...hope this helps...dac",
+      "url": "http://archive.ambermd.org/202107/0201.html",
+      "in_reply_to": 1627036681
+    }
+  ]
+}

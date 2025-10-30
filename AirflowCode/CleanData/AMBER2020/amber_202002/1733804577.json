@@ -1,0 +1,21 @@
+{
+  "thread_id": 1733804577,
+  "subject": "[AMBER] Calculate rmsd for different residue ranges",
+  "messages": [
+    {
+      "message_id": 1733804577,
+      "author": "�ٶ����֡�",
+      "date_raw": "Tue, 10 Dec 2024 12:22:57 +0800",
+      "body": "Professor,\n&nbsp; I want to know how I can calculate rmsd for different residue ranges via amber cpptraj.&nbsp;\nThe following is my input file:\nparm rec_avg.pdb&nbsp;&nbsp;\ntrajin rec_avg.pdb&nbsp;\nparm com_avg.pdb&nbsp;&nbsp;\ntrajin com_avg.pdb&nbsp;&nbsp;\nrms rmsd1 :\n24-39.CA\n,C,N,O :24-39,55-69,\n94-102.CA\n,C,N,O out rmsd_global.\ndat\nThe reference pdb is the second file,com...\nThere are always errors:\nWarning: Number of atoms in target mask (64) does not equal&nbsp;number of atoms in reference mask (160).\nWarning: Setup incomplete for [rms]: Skipping\nWarning: Set 'rmsd1' contains no data.\nWarning: File 'rmsd_global_1C.dat' has no sets containing data.\n�ٶ����֡�\n3121063212.qq.com\n&nbsp;",
+      "url": "http://archive.ambermd.org/202412/0032.html"
+    },
+    {
+      "message_id": 1733830273,
+      "author": "Dr. Anselm Horn",
+      "date_raw": "Tue, 10 Dec 2024 12:31:13 +0100",
+      "body": "�ٶ����֡�,\nyour input line with the rms command contains an error:\nYou specified :24-39 as residues for RMSD calculation, and\n:24-39,55-69,94-102 as reference for that calculation. Since the number\nof atoms in the first and the second set obviously differs, cpptraj\ncomplains about that (\"Number of atoms in target mask (64) does not\nequal&nbsp;number of atoms in reference mask (160)\"): how should cpptraj\ncompute the RMSD between two structrues, one with 64 and the other with\n160 atoms?\nYou need a pairwise correspondence between the two masks, because the\nRMSD is calculated between the respective atoms.\nThus, correct the input line so that the same number of atoms occurs in\nboth masks.\nMaybe that helps.\nGood luck,\nAnselm\nBioinformatik  |  NHR.FAU\nFriedrich-Alexander-Universit�0�1t Erlangen-N��rnberg (FAU)\nGermany\nAm 10.12.2024 um 05:22 schrieb �ٶ����֡� via AMBER:\n> Professor,\n> &nbsp; I want to know how I can calculate rmsd for different residue ranges via amber cpptraj.&nbsp;\n>\n>\n> The following is my input file:\n>\n>\n> parm rec_avg.pdb&nbsp;&nbsp;\n> trajin rec_avg.pdb&nbsp;\n> parm com_avg.pdb&nbsp;&nbsp;\n> trajin com_avg.pdb&nbsp;&nbsp;\n> rms rmsd1 :24-39.CA,C,N,O :24-39,55-69,\n94-102.CA\n,C,N,O out rmsd_global.\ndat\n>\n>\n>\n> The reference pdb is the second file,com...\n> There are always errors:\n> Warning: Number of atoms in target mask (64) does not equal&nbsp;number of atoms in reference mask (160).\n> Warning: Setup incomplete for [rms]: Skipping\n>\n> Warning: Set 'rmsd1' contains no data.\n> Warning: File 'rmsd_global_1C.dat' has no sets containing data.\n>\n>\n>\n>\n>\n> �ٶ����֡�\n> 3121063212.qq.com\n>\n>\n>\n> &nbsp;\n>",
+      "url": "http://archive.ambermd.org/202412/0034.html",
+      "in_reply_to": 1733804577
+    }
+  ]
+}

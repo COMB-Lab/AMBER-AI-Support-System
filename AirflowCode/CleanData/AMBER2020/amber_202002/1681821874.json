@@ -1,0 +1,21 @@
+{
+  "thread_id": 1681821874,
+  "subject": "[AMBER] correlation matrix",
+  "messages": [
+    {
+      "message_id": 1681821874,
+      "author": "Dulal Mondal",
+      "date_raw": "Tue, 18 Apr 2023 18:14:34 +0530",
+      "body": "Dear Users,\nI am trying to calculate the Correlation matrix using the matrix command\nusing cpptraj.\nparm *.prmtop\ntrajin average.pdb  (I generate this pdb using the average command)\nmatrix correl :1-258 :ZN6<:2.55&:WAT&!.H= out cor7.dat byres\nAfter running those command I fet following error.\nError: No reference set, cannot select by distance.\nMask [:ZN6<:2.55&:WAT&!.H*] corresponds to 1 atoms.\nI am trying to calculate correlation matrix between protein residues and\nthe O atom that appear wiin 2.5 angstrom from the zinc.\nThanking you\n-- \n*With regards,*\n*Dulal Mondal,*\n*Research Scholar,*\n*Department of Chemistry,*\n*IIT Kharagpur, Kharagpur 721302.*",
+      "url": "http://archive.ambermd.org/202304/0033.html"
+    },
+    {
+      "message_id": 1681822722,
+      "author": "Steinbrecher, Thomas",
+      "date_raw": "Tue, 18 Apr 2023 14:58:42 +0200",
+      "body": "Hi Mondal,\na very quick guess: Since your mask is distance dependent, you need to\nspecify a reference structure on which the atom mask is evaluated, see the\nreference command in ptraj, manual section 35.10.3.\nThere is another potential issue in case you expect the mask to be dynamic\n(\"any oxygen that happens to come close to the Zn during the simulation\").\nSince the correlation matrix has to have a fixed width, I dont think this\nwill work if the oxygen atom (or atoms, since the number close to Zn can\nchange during the course of the trajectory) in question is not always the\nsame. It may be safer to explicitly specify one oxygen you care about by\ne.g. residue or atom number.\nKind Regards,\nThomas\nOn Tue, Apr 18, 2023 at 2:45 PM Dulal Mondal via AMBER <amber.ambermd.\norg>\nwrote:\n> Dear Users,\n>\n> I am trying to calculate the Correlation matrix using the matrix command\n> using cpptraj.\n> parm *.prmtop\n> trajin average.pdb  (I generate this pdb using the average command)\n>\n> matrix correl :1-258 :ZN6<:2.55&:WAT&!.H= out cor7.\ndat byres\n>\n> After running those command I fet following error.\n>\n> Error: No reference set, cannot select by distance.\n> Mask [:ZN6<:2.55&:WAT&!.H*] corresponds to 1 atoms.\n>\n> I am trying to calculate correlation matrix between protein residues and\n> the O atom that appear wiin 2.5 angstrom from the zinc.\n>\n> Thanking you\n>\n>\n>\n>\n>\n> --\n> *With regards,*\n> *Dulal Mondal,*\n> *Research Scholar,*\n> *Department of Chemistry,*\n> *IIT Kharagpur, Kharagpur 721302.*\n>",
+      "url": "http://archive.ambermd.org/202304/0034.html",
+      "in_reply_to": 1681821874
+    }
+  ]
+}

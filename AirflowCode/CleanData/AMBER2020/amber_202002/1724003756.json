@@ -1,0 +1,29 @@
+{
+  "thread_id": 1724003756,
+  "subject": "[AMBER] remlog in cpptraj for pH-REMD",
+  "messages": [
+    {
+      "message_id": 1724003756,
+      "author": "Guberman-Pfeffer, Matthew",
+      "date_raw": "Sun, 18 Aug 2024 17:55:56 +0000",
+      "body": "Dear AMBER community,\nIs there a way to use the remlog keyword in cpptraj to analyze the rem.log file from pH-REMD simulations? It seems like the keyword only accepts rem.log files from other types (e.g., temperature, Hamiltonian, etc.) of REMD simulations.\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202408/0091.html"
+    },
+    {
+      "message_id": 1724020791,
+      "author": "Daniel Roe",
+      "date_raw": "Sun, 18 Aug 2024 18:39:51 -0400",
+      "body": "You don't specify, but I assume you're trying to use 'remlog' for the\nensemble command - is this the case? Do you get some kind of error\nmessage when you try to use it with pH replica logs?\n-Dan\nOn Sun, Aug 18, 2024 at 1:56 PM Guberman-Pfeffer, Matthew via AMBER\n<amber.ambermd.org> wrote:\n>\n> Dear AMBER community,\n>\n> Is there a way to use the remlog keyword in cpptraj to analyze the rem.log file from pH-REMD simulations? It seems like the keyword only accepts rem.log files from other types (e.g., temperature, Hamiltonian, etc.) of REMD simulations.\n>\n> Best,\n> Matthew\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202408/0096.html",
+      "in_reply_to": 1724003756
+    },
+    {
+      "message_id": 1724022271,
+      "author": "Daniel Roe",
+      "date_raw": "Sun, 18 Aug 2024 19:04:31 -0400",
+      "body": "Hi,\nIf this isn't actually a multidimensional REMD run (it looks like\nthere is only a pH dimension, is that right?) then just don't specify\nthe 'dimfile' keyword (the purpose of that is to map absolute replica\nindices to dimensional ones). It's entirely possible pH in MREMD isn't\nhandled yet, I'll have to check that.\nRemove 'dimfile <file>' and see if that works.\n-Dan\nOn Sun, Aug 18, 2024 at 6:53 PM Guberman-Pfeffer, Matthew\n<Matthew_Guberman-Pfe.baylor.\nedu> wrote:\n>\n> Hi Dan,\n>\n> I was trying to use the remlog command descirbed here: https://amberhub.chpc.utah.edu/remlog/\n>\n> Following the example on that page, I issued:\n>\n> readdata rem.log dimfile Setup/remd.dim.phremd as remlog nosearch\n> remlog rem.log stats reptime reptime.dat\n>\n> where Setup/remd.dim.phremd is:\n>\n> exch_type=‘PH'\n>\n> group(1,:)=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,\n>\n> desc='pH Replica Exchange'\n>\n> /\n>\n>\n> And rem.log looks like:\n>\n> # Replica Exchange log file\n>\n> # numexchg is       5000\n>\n> # REMD filenames:\n>\n> #   remlog= rem.log\n>\n> #   remtype= rem.type\n>\n> # Rep#, N_prot, old_pH, new_pH, Success rate (i,i+1)\n>\n> # exchange        1\n>\n>      1      75  -2.000 -2.000   0.0000\n>\n>      2      75  -1.500 -1.000   2.0000\n>\n>      3      75  -1.000 -1.500   0.0000\n>\n>      4      75  -0.500  0.000   2.0000\n>\n>      5      75   0.000 -0.500   0.0000\n>\n>      6      75   0.500  1.000   2.0000\n>\n>      7      75   1.000  0.500   0.0000\n>\n>      8      75   1.500  1.500   0.0000\n>\n>      9      70   2.000  2.000   0.0000\n>\n>     10      70   2.500  3.000   2.0000\n>\n>     11      69   3.000  2.500   0.0000\n>\n>     12      69   3.500  3.500   0.0000\n>\n>     13      63   4.000  4.000   0.0000\n>\n>     14      63   4.500  4.500   0.0000\n>\n>     15      61   5.000  5.000   0.0000\n>\n>     16      61   5.500  5.500   0.0000\n>\n> # exchange        2\n>\n> …\n>\n> This gives me the error:\n>\n> INPUT: Reading input from 'AnalyzeREMD.in'\n>\n>   [readdata rem.log dimfile Setup/remd.dim.phremd as remlog nosearch]\n>\n> Reading 'rem.log' as Amber REM log with name 'rem.log'\n>\n> Replica dimension file 'remd.dim.phremd' title: &multirem\n>\n> Error: Unrecognized exch_type: exch_type='PH'\n>\n> Error: Reading remd.dim file 'Setup/remd.dim.phremd'\n>\n> Error: reading datafile rem.log\n>\n> Error: Could not read data file 'rem.log'.\n>\n> 1 errors encountered reading input.\n>\n> TIME: Total execution time: 0.0003 seconds.\n>\n> Error: Error(s) occurred during execution.\n>\n>\n> Am I using the command incorrectly?\n> Can it work with the rem.log file from pH-REMD simulations?\n> If not, is it possible to edit the output so it “think” the output is from T-REMD?\n>\n> Best,\n> Matthew\n>\n> On Aug 18, 2024, at 6:39 PM, Daniel Roe <daniel.r.roe.gmail.\ncom> wrote:\n>\n>\n> You don't specify, but I assume you're trying to use 'remlog' for the\n> ensemble command - is this the case? Do you get some kind of error\n> message when you try to use it with pH replica logs?\n>\n> -Dan\n>\n> On Sun, Aug 18, 2024 at 1:56 PM Guberman-Pfeffer, Matthew via AMBER\n> <amber.ambermd.org> wrote:\n>\n>\n> Dear AMBER community,\n>\n> Is there a way to use the remlog keyword in cpptraj to analyze the rem.log file from pH-REMD simulations? It seems like the keyword only accepts rem.log files from other types (e.g., temperature, Hamiltonian, etc.) of REMD simulations.\n>\n> Best,\n> Matthew\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202408/0097.html",
+      "in_reply_to": 1724003756
+    }
+  ]
+}

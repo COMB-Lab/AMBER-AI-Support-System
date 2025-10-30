@@ -1,0 +1,45 @@
+{
+  "thread_id": 1587405961,
+  "subject": "[AMBER] restraining many individual atoms",
+  "messages": [
+    {
+      "message_id": 1587405961,
+      "author": "Ignacio General",
+      "date_raw": "Mon, 20 Apr 2020 15:06:01 -0300",
+      "body": "Dear Amber users,\nI need to do some MD runs with pmemd.cuda, restraining the position of\nseveral hundred atoms. The problem is that they are not sequential, so that\nI can't use ranges of values, but have to list them individually. ntr=1\nwith restraintmask only allows 256 characters, so this is not good enough.\nI thought of using the old group specification but, again, since the atoms\nare not ordered, I need to create a group for each atom. In that case, I\nwill need to have a sequence of several hundred groups, something like this:\nGroup 1:\n10.0\nATOM 265\nEND\nGroup 2:\n10.0\nATOM 267\nEND\n...\nGroup 200:\n10.0\nATOM 5215\nEND\nEND\nAnybody can think of a better way of doing this? And if I do it this way,\nis there a limit to the number of groups that can be given to pmemd.cuda?\nThanks for your help,\nIgnacio",
+      "url": "http://archive.ambermd.org/202004/0232.html"
+    },
+    {
+      "message_id": 1587411464,
+      "author": "James Kress",
+      "date_raw": "Mon, 20 Apr 2020 15:37:44 -0400",
+      "body": "Is there no way you can renumber the atoms to facilitate grouping?\nJames Kress Ph.D., President\nThe KressWorksR Institute\nAn IRS Approved 501 (c)(3) Charitable, Nonprofit Corporation\n\"ENGINEERING THE CURE\" C\n(248) 573-5499\nLearn More and Donate At:\nWebsite: http://www.kressworks.org\nFacebook: https://www.facebook.com/KressWorks.Institute/\nConfidentiality Notice | This e-mail message, including any attachments, is\nfor the sole use of the intended recipient(s) and may contain confidential\nor proprietary information. Any unauthorized review, use, disclosure or\ndistribution is prohibited. If you are not the intended recipient,\nimmediately contact the sender by reply e-mail and destroy all copies of the\noriginal message.\n-----Original Message-----\nFrom: Ignacio General <ijgeneral.gmail.com>\nSent: Monday, April 20, 2020 2:06 PM\nTo: amber.ambermd.org\nSubject: [AMBER] restraining many individual atoms\nDear Amber users,\nI need to do some MD runs with pmemd.cuda, restraining the position of\nseveral hundred atoms. The problem is that they are not sequential, so that\nI can't use ranges of values, but have to list them individually. ntr=1 with\nrestraintmask only allows 256 characters, so this is not good enough.\nI thought of using the old group specification but, again, since the atoms\nare not ordered, I need to create a group for each atom. In that case, I\nwill need to have a sequence of several hundred groups, something like this:\nGroup 1:\n10.0\nATOM 265\nEND\nGroup 2:\n10.0\nATOM 267\nEND\n...\nGroup 200:\n10.0\nATOM 5215\nEND\nEND\nAnybody can think of a better way of doing this? And if I do it this way, is\nthere a limit to the number of groups that can be given to pmemd.cuda?\nThanks for your help,\nIgnacio",
+      "url": "http://archive.ambermd.org/202004/0233.html",
+      "in_reply_to": 1587405961
+    },
+    {
+      "message_id": 1587412116,
+      "author": "Ignacio J. General",
+      "date_raw": "Mon, 20 Apr 2020 16:48:36 -0300",
+      "body": "I could do it one time, but the idea is to apply this to many different\nsystems, so I think its not a good idea. I mean, I can do it if there is no\nother option, but would rather find an option.  Thanks!\nOn Mon, Apr 20, 2020 at 4:38 PM James Kress <jimkress_58.kressworks.org>\nwrote:\n> Is there no way you can renumber the atoms to facilitate grouping?\n>\n> James Kress Ph.D., President\n> The KressWorksR Institute\n> An IRS Approved 501 (c)(3) Charitable, Nonprofit Corporation\n> \"ENGINEERING THE CURE\" C\n> (248) 573-5499\n>\n> Learn More and Donate At:\n> Website: http://www.kressworks.org\n> Facebook: https://www.facebook.com/KressWorks.Institute/\n>\n> Confidentiality Notice | This e-mail message, including any attachments, is\n> for the sole use of the intended recipient(s) and may contain confidential\n> or proprietary information. Any unauthorized review, use, disclosure or\n> distribution is prohibited. If you are not the intended recipient,\n> immediately contact the sender by reply e-mail and destroy all copies of\n> the\n> original message.\n>\n> -----Original Message-----\n> From: Ignacio General <ijgeneral.gmail.com>\n> Sent: Monday, April 20, 2020 2:06 PM\n> To: amber.ambermd.org\n> Subject: [AMBER] restraining many individual atoms\n>\n>  Dear Amber users,\n>\n> I need to do some MD runs with pmemd.cuda, restraining the position of\n> several hundred atoms. The problem is that they are not sequential, so that\n> I can't use ranges of values, but have to list them individually. ntr=1\n> with\n> restraintmask only allows 256 characters, so this is not good enough.\n> I thought of using the old group specification but, again, since the atoms\n> are not ordered, I need to create a group for each atom. In that case, I\n> will need to have a sequence of several hundred groups, something like\n> this:\n> Group 1:\n> 10.0\n> ATOM 265\n> END\n> Group 2:\n> 10.0\n> ATOM 267\n> END\n> ...\n> Group 200:\n> 10.0\n> ATOM 5215\n> END\n> END\n>\n> Anybody can think of a better way of doing this? And if I do it this way,\n> is\n> there a limit to the number of groups that can be given to pmemd.cuda?\n>\n> Thanks for your help,\n>\n> Ignacio\n>",
+      "url": "http://archive.ambermd.org/202004/0234.html",
+      "in_reply_to": 1587405961
+    },
+    {
+      "message_id": 1587412538,
+      "author": "David A Case",
+      "date_raw": "Mon, 20 Apr 2020 15:55:38 -0400",
+      "body": "On Mon, Apr 20, 2020, Ignacio General wrote:\n>\n>I need to do some MD runs with pmemd.cuda, restraining the position of\n>several hundred atoms. The problem is that they are not sequential, so that\n>I can't use ranges of values, but have to list them individually. ntr=1\n>with restraintmask only allows 256 characters,\nIt's certainly worth a try to just edit mdin_ctrl_dat.F90 (in\n$AMBERHOME/src/pmemd/src), and change the size of restrainmask to\nsomething like 3000, or whatever you need.  You will also need to\nedit findmask.F90, and change BUFLEN to the same value.\nYou clearly would need to run some tests to make sure nothing bad is\nhappening.\n....dac",
+      "url": "http://archive.ambermd.org/202004/0235.html",
+      "in_reply_to": 1587405961
+    },
+    {
+      "message_id": 1587414681,
+      "author": "Ignacio J. General",
+      "date_raw": "Mon, 20 Apr 2020 17:31:21 -0300",
+      "body": "Ok, I will try that. Thanks for the advice!\nAnd by the way, do you know why a length of 256 was chosen for\nrestraintmask? Was there a reason for that, or just random choice? I ask\njust to make sure I don't break anything else, but of course, I will run\nsome test to make sure things stay reasonable.\nThanks!\nOn Mon, Apr 20, 2020 at 4:55 PM David A Case <david.case.rutgers.edu> wrote:\n> On Mon, Apr 20, 2020, Ignacio General wrote:\n> >\n> >I need to do some MD runs with pmemd.cuda, restraining the position of\n> >several hundred atoms. The problem is that they are not sequential, so\n> that\n> >I can't use ranges of values, but have to list them individually. ntr=1\n> >with restraintmask only allows 256 characters,\n>\n> It's certainly worth a try to just edit mdin_ctrl_dat.F90 (in\n> $AMBERHOME/src/pmemd/src), and change the size of restrainmask to\n> something like 3000, or whatever you need.  You will also need to\n> edit findmask.F90, and change BUFLEN to the same value.\n>\n> You clearly would need to run some tests to make sure nothing bad is\n> happening.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202004/0236.html",
+      "in_reply_to": 1587405961
+    }
+  ]
+}

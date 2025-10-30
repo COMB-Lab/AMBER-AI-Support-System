@@ -1,0 +1,21 @@
+{
+  "thread_id": 1593618200,
+  "subject": "Re: [AMBER] &quot;Does not have a type&quot; error in tleap",
+  "messages": [
+    {
+      "message_id": 1593618200,
+      "author": "David A Case",
+      "date_raw": "Wed, 1 Jul 2020 11:43:20 -0400",
+      "body": "On Tue, Jun 30, 2020, Jatin Kashyap wrote:\n>Thanks it solved the error. But now I am getting another error in MD run\n>“ERROR: I could not find enough velocities in 01.min.rst7\"\nA minimization run won't have velocities in the restart file.  Be sure\nyou are setting ntx=1, which instructs the code to skip trying to read\nvelocities.\n....dac",
+      "url": "http://archive.ambermd.org/202007/0013.html"
+    },
+    {
+      "message_id": 1593622814,
+      "author": "Jatin Kashyap",
+      "date_raw": "Wed, 1 Jul 2020 13:00:14 -0400",
+      "body": "HI David,\nIs is giving a error about inconsistency[1]. I am pasting my input script here[2].\n[1]\nEwald parameters:\nverbose =       0, ew_type =       0, nbflag  =       1, use_pme =       1\nvdwmeth =       1, eedmeth =       1, netfrc  =       1\nBox X =   95.571   Box Y =   95.571   Box Z =   95.571\nAlpha =  109.471   Beta  =  109.471   Gamma =  109.471\nNFFT1 =   96       NFFT2 =   96       NFFT3 =   96\nCutoff=    8.000   Tol   =0.100E-04\nEwald Coefficient =  0.34864\nInterpolation order =    4\nNTX / IREST inconsistency\n*** input error(s)\n[2]\n&cntrl\nirest=0           ! AMBER thread support\nimin=0,           ! Perform MD\nnstlim=2000      ! Number of MD steps\nntx=1,            ! Positions and velocities read formatted\nirest=1,          ! Restart calculation\nntc=1,            ! No SHAKE on for bonds with hydrogen\ndt=0.001,         ! Timestep (ps)\nntb=2,            ! Constant Pressure\nntp=1,            ! Isotropic pressure scaling\nbarostat=1        ! Berendsen\ntaup=0.5          ! Pressure relaxtion time (ps)\nntf=1,            ! Complete force evaluation\nntt=3,            ! Langevin thermostat\ngamma_ln=2.0      ! Collision Frequency for thermostat\nig=-1,            ! Random seed for thermostat\ntemp0=298.15      ! Simulation temperature (K)\nntwx= 40,       ! Write to trajectory file every ntwx steps\nntpr= 40,       ! Print to mdout every ntpr steps\nntwr= 40,       ! Write a restart file every ntwr steps\ncut=  8.0,        ! Nonbonded cutoff in Angstroms\nntr=1,            ! Turn on restraints\nrestraintmask=\":\n1-131.CA\n,C,N\", ! atoms to be restrained\nrestraint_wt=0.1, ! force constant for restraint\nntxo=1,           ! Write coordinate file in ASCII format\nioutfm=0,         ! Write trajectory file in ASCII format\niwrap=1,          ! iwrap is turned on\n/\n——\n> On Jul 1, 2020, at 11:43 AM, David A Case <david.case.rutgers.\nedu> wrote:\n>\n> On Tue, Jun 30, 2020, Jatin Kashyap wrote:\n>\n>> Thanks it solved the error. But now I am getting another error in MD run\n>> “ERROR: I could not find enough velocities in 01.min.rst7\"\n>\n> A minimization run won't have velocities in the restart file.  Be sure\n> you are setting ntx=1, which instructs the code to skip trying to read\n> velocities.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202007/0015.html",
+      "in_reply_to": 1593618200
+    }
+  ]
+}

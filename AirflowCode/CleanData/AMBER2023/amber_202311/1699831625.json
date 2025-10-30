@@ -1,0 +1,21 @@
+{
+  "thread_id": 1699831625,
+  "subject": "[AMBER] Polarizabilitiy Calculations",
+  "messages": [
+    {
+      "message_id": 1699831625,
+      "author": "Gillispie, Nathan",
+      "date_raw": "Sun, 12 Nov 2023 23:27:05 +0000",
+      "body": "Hello Amber Users,\nI'm an undergraduate researcher and a relatively new Amber user. I added polarizability to my calculations a few months ago and have been trying to find ways to get the most accurate polarizability values in my simulations. My question comes in a few parts.\nFirst, how do Amber's polarizability forces work? I'm aware of the Epol term that's added to the basic potential, but how is that turned into a force on the atoms? Is it the force due to two electric dipoles along with dipole-monopole interactions? I assume this a point induced dipole model, but I thought there were problems with this model which cause the dipoles to blow up in some cases.\nSecond, I have access to Gaussian which allows me to determine the isotropic polarizabilities for molecules. Is this useful in any way, and more generally, are experimental polarizabilities useful in my case? Since the Lennard-Jones potential models van Der Waals interactions, Amber is definitely including some polarizability effects which would lower the values put into the simulation. Polarizabilities of individual atoms in a molecule add together in a very non-linear way to get the total polarizability of the molecule. This leads me to believe you just have to make an educated guess on polarizability and hope the simulation is accurate. So lastly, is there any systematic way of determining what these values may be?\nThanks in advance,\nNathan",
+      "url": "http://archive.ambermd.org/202311/0079.html"
+    },
+    {
+      "message_id": 1699893313,
+      "author": "David A Case",
+      "date_raw": "Mon, 13 Nov 2023 09:35:13 -0700",
+      "body": "On Sun, Nov 12, 2023, Gillispie, Nathan via AMBER wrote:\n>\n>I'm an undergraduate researcher and a relatively new Amber user. I\n>added polarizability to my calculations a few months ago...\nIt's not clear what you really did here.  Did you use the \"ff02\" force\nfield, described in Seciton 3.12.4 of the Reference manual?  Or are you\nusing the polarizable Gaussian multipole (pGM) model described in Section\n21.8?\n>First, how do Amber's polarizability forces work? I'm aware of the Epol\n>term that's added to the basic potential, but how is that turned into a\n>force on the atoms? Is it the force due to two electric dipoles along with\n>dipole-monopole interactions? I assume this a point induced dipole model,\n>but I thought there were problems with this model which cause the dipoles\n>to blow up in some cases.\nThe ff02 force field indeed uses point dipoles, which damping terms to avoid\n\"polarizability catastrophes\".  The pGM model has polarizable Gaussians\nwhich should avoid such problems.  Details would require careful reading\nof the relevant papers -- it's not really easy to answer in an email\n(especially since I am not the right person to do that anyway.)\nTurning these electrostatic interactions into forces is basically an\napplication of differentiation.  This is in priciple straightforward, but in\npractice leads to rather complex expressions.\n>Second, I have access to Gaussian which allows me to determine the\n>isotropic polarizabilities for molecules. Is this useful in any way, and\n>more generally, are experimental polarizabilities useful in my case?\nIt sounds like you want to parametrize your own polarizable force fields,\ne.g for non-proteins.  Is that correct?  The approach really depends on the\nanswer to my first question, above.\n...hope this helps (some)....dac",
+      "url": "http://archive.ambermd.org/202311/0087.html",
+      "in_reply_to": 1699831625
+    }
+  ]
+}

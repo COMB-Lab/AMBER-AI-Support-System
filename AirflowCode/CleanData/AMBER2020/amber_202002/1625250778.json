@@ -1,0 +1,45 @@
+{
+  "thread_id": 1625250778,
+  "subject": "[AMBER] Segmentation Fault",
+  "messages": [
+    {
+      "message_id": 1625250778,
+      "author": "Swisher, Justin S",
+      "date_raw": "Fri, 2 Jul 2021 18:32:58 +0000",
+      "body": "Hi, Everyone\nI'm encountering a segmentation fault whenever I try to run a minimization of a solvated molecule (the solvent being water). I have a total of 465,133 atoms in my system which is on the higher end of simulations most of it the solvent at this point. I did a little research in the AMBER archive to search for a solution and did come across checking my file for bad connections because my bond energy is high, but when I do the checkValidity in parmed it tells me the inpcrd file is OK.\nI will attach my minimization input and output files because seems to me to be the cause of the issue. In all honesty, I'm not sure what is vital for the control aspects of the minimization file and looking at the Amber16 reference manual (the version I'm working on) I have included almost all the minimization qualities listed and some other aspects that I thought would help the situation. I know that I'm trying to create a periodic (PME?) minimization file.\nAny other information you need I will be happy to provide! Thank you for any insight on how to solve this issue!",
+      "url": "http://archive.ambermd.org/202107/0005.html"
+    },
+    {
+      "message_id": 1625251062,
+      "author": "Adrian Roitberg",
+      "date_raw": "Fri, 2 Jul 2021 14:37:42 -0400",
+      "body": "Hard to tell, but I strongly recommend visualizing the system in vmd or\nsomething similar, and look around.\nIndeed, the bond energy is huge, but I am more worried about the vdw and\neelec energies, which point to some overlap between atoms.\nAdrian\nOn 7/2/21 2:32 PM, Swisher, Justin S wrote:\n> [External Email]\n>\n> Hi, Everyone\n>\n> I'm encountering a segmentation fault whenever I try to run a minimization of a solvated molecule (the solvent being water). I have a total of 465,133 atoms in my system which is on the higher end of simulations most of it the solvent at this point. I did a little research in the AMBER archive to search for a solution and did come across checking my file for bad connections because my bond energy is high, but when I do the checkValidity in parmed it tells me the inpcrd file is OK.\n>\n>   I will attach my minimization input and output files because seems to me to be the cause of the issue. In all honesty, I'm not sure what is vital for the control aspects of the minimization file and looking at the Amber16 reference manual (the version I'm working on) I have included almost all the minimization qualities listed and some other aspects that I thought would help the situation. I know that I'm trying to create a periodic (PME?) minimization file.\n>\n> Any other information you need I will be happy to provide! Thank you for any insight on how to solve this issue!\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202107/0006.html",
+      "in_reply_to": 1625250778
+    },
+    {
+      "message_id": 1625257819,
+      "author": "Swisher, Justin S",
+      "date_raw": "Fri, 2 Jul 2021 20:30:19 +0000",
+      "body": "I will! Thank you!\nIf I do see that overlap between atoms how do I go about fixing that? Is that a fairly simple issue to solve?\n-Justin-\n________________________________\nFrom: Adrian Roitberg <roitberg.ufl.edu>\nSent: Friday, July 2, 2021 1:37 PM\nTo: amber.ambermd.org <amber.ambermd.org>\nSubject: Re: [AMBER] Segmentation Fault\nHard to tell, but I strongly recommend visualizing the system in vmd or\nsomething similar, and look around.\nIndeed, the bond energy is huge, but I am more worried about the vdw and\neelec energies, which point to some overlap between atoms.\nAdrian\nOn 7/2/21 2:32 PM, Swisher, Justin S wrote:\n> [External Email]\n>\n> Hi, Everyone\n>\n> I'm encountering a segmentation fault whenever I try to run a minimization of a solvated molecule (the solvent being water). I have a total of 465,133 atoms in my system which is on the higher end of simulations most of it the solvent at this point. I did a little research in the AMBER archive to search for a solution and did come across checking my file for bad connections because my bond energy is high, but when I do the checkValidity in parmed it tells me the inpcrd file is OK.\n>\n>   I will attach my minimization input and output files because seems to me to be the cause of the issue. In all honesty, I'm not sure what is vital for the control aspects of the minimization file and looking at the Amber16 reference manual (the version I'm working on) I have included almost all the minimization qualities listed and some other aspects that I thought would help the situation. I know that I'm trying to create a periodic (PME?) minimization file.\n>\n> Any other information you need I will be happy to provide! Thank you for any insight on how to solve this issue!\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202107/0007.html",
+      "in_reply_to": 1625250778
+    },
+    {
+      "message_id": 1625258028,
+      "author": "Adrian Roitberg",
+      "date_raw": "Fri, 2 Jul 2021 16:33:48 -0400",
+      "body": "well, it depends on the system, etc.\nIf you prepared the system with tleap, it is unlikely (but possible)\nthat tleap will mess something up.\nHowever, most of the time, the problem comes from your initial\ncoordinates, usually a pdb file, which you can also visualize to check.\nAdrian\nOn 7/2/21 4:30 PM, Swisher, Justin S wrote:\n> [External Email]\n>\n> I will! Thank you!\n>\n> If I do see that overlap between atoms how do I go about fixing that? Is that a fairly simple issue to solve?\n>\n> -Justin-\n> ________________________________\n> From: Adrian Roitberg <roitberg.ufl.edu>\n> Sent: Friday, July 2, 2021 1:37 PM\n> To: amber.ambermd.org <amber.ambermd.org>\n> Subject: Re: [AMBER] Segmentation Fault\n>\n> Hard to tell, but I strongly recommend visualizing the system in vmd or\n> something similar, and look around.\n>\n> Indeed, the bond energy is huge, but I am more worried about the vdw and\n> eelec energies, which point to some overlap between atoms.\n>\n> Adrian\n>\n>\n> On 7/2/21 2:32 PM, Swisher, Justin S wrote:\n>> [External Email]\n>>\n>> Hi, Everyone\n>>\n>> I'm encountering a segmentation fault whenever I try to run a minimization of a solvated molecule (the solvent being water). I have a total of 465,133 atoms in my system which is on the higher end of simulations most of it the solvent at this point. I did a little research in the AMBER archive to search for a solution and did come across checking my file for bad connections because my bond energy is high, but when I do the checkValidity in parmed it tells me the inpcrd file is OK.\n>>\n>>    I will attach my minimization input and output files because seems to me to be the cause of the issue. In all honesty, I'm not sure what is vital for the control aspects of the minimization file and looking at the Amber16 reference manual (the version I'm working on) I have included almost all the minimization qualities listed and some other aspects that I thought would help the situation. I know that I'm trying to create a periodic (PME?) minimization file.\n>>\n>> Any other information you need I will be happy to provide! Thank you for any insight on how to solve this issue!\n>>\n>>\n>>\n>>",
+      "url": "http://archive.ambermd.org/202107/0008.html",
+      "in_reply_to": 1625250778
+    },
+    {
+      "message_id": 1625278903,
+      "author": "David A Case",
+      "date_raw": "Fri, 2 Jul 2021 22:21:43 -0400",
+      "body": "On Fri, Jul 02, 2021, Swisher, Justin S wrote:\n>\n>when I do the checkValidity in parmed it tells me the inpcrd file is OK.\nUse checkstructure in cpptraj.  It is what checks for bad bonds and close\ncontacts, and you clearly have lots of both of them.\nOnce you see which atoms are on top of each other, and which bonds have\ncrazy bond lengths, you will probably get some good clues about what to fix\nin your input structure.\n....dac",
+      "url": "http://archive.ambermd.org/202107/0009.html",
+      "in_reply_to": 1625250778
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "thread_id": 1695155006,
+  "subject": "[AMBER] How to get Inherent structure (Minimization energy)",
+  "messages": [
+    {
+      "message_id": 1695155006,
+      "author": "Zafar,Muhammad Saqlain",
+      "date_raw": "Tue, 19 Sep 2023 20:23:26 +0000",
+      "body": "Dear Amber Community,\nI want to get inherent structure after doing my NPT, on trajactory npt.nc file.\ni want to know is steepest descent method is ok to get inherent structure or anyother algorithm i have to use for it ?\nRegards\nSaqlain",
+      "url": "http://archive.ambermd.org/202309/0079.html"
+    },
+    {
+      "message_id": 1695228683,
+      "author": "David A Case",
+      "date_raw": "Wed, 20 Sep 2023 10:51:23 -0600",
+      "body": "On Tue, Sep 19, 2023, Zafar,Muhammad Saqlain via AMBER wrote:\n>\n>I want to get inherent structure after doing my NPT, on trajactory npt.nc\n>file.\n>\n>i want to know is steepest descent method is ok to get inherent structure\n>or anyother algorithm i have to use for it ?\nYou would want to use the \"xmin\" minimizer, ntmin=3 in sander.  See the\nReference Manual for details.  If you have explicit solvent, you would want\nto remove that first, since minimizing the solvent doesn't make good\nphysical sense (not to mention being very difficult to converge.)\nYou should be able to get solvent energies minimized to a very low gradient\n(say 10^-7 or even less if you are patient.)  This will give you the\ninherent structure and its energy. [You may need to turn of SHAKE for this\nminimization...I can't quite remember whether sander treats SHAKE correctly\nwith ntmin=3 -- do some experiments on small systems first.]\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202309/0089.html",
+      "in_reply_to": 1695155006
+    }
+  ]
+}

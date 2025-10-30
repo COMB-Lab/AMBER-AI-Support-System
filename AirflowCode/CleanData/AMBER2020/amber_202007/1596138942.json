@@ -1,0 +1,29 @@
+{
+  "thread_id": 1596138942,
+  "subject": "[AMBER] Erro Amber18 GPU",
+  "messages": [
+    {
+      "message_id": 1596138942,
+      "author": "Renato Araujo",
+      "date_raw": "Thu, 30 Jul 2020 16:55:42 -0300",
+      "body": "Dear Amber users\nI have a GEFORCE GTX 1650 GPU and I'm trying to install amber18 on ubuntu\n18.04 LST.\nI installed the CUDA Toolkit 10.2 version and then followed the\ninstallation steps in the amber18 manual.\nWhen I went to run a DYNAMIC using the following command\npmemd.cuda -O -i prod.in -p complex_solv.prmtop -c prod1.rst -x prod2.mdcrd\n-r prod2.rst -o prod2.out\ngave the following message\ncudaGetDeviceCount failed forward compatibility was attempted on non\nsupported HW.\nAll help is welcome to resolve this error.\n-- \nProf Dr Renato Costa\nInstituto Federal do Pará - IFPA\nGrupo de Modelagem Molecular - UFPA\nTel.+55  91 985484622",
+      "url": "http://archive.ambermd.org/202007/0339.html"
+    },
+    {
+      "message_id": 1596155379,
+      "author": "David A Case",
+      "date_raw": "Thu, 30 Jul 2020 20:29:39 -0400",
+      "body": "On Thu, Jul 30, 2020, Renato Araujo wrote:\n>\n>I have a GEFORCE GTX 1650 GPU and I'm trying to install amber18 on ubuntu\n>18.04 LST.\n>\n>I installed the CUDA Toolkit 10.2 version and then followed the\n>installation steps in the amber18 manual.\n>\n>When I went to run a DYNAMIC using the following command\n>\n>pmemd.cuda -O -i prod.in -p complex_solv.prmtop -c prod1.rst -x prod2.mdcrd\n>-r prod2.rst -o prod2.out\n>\n>gave the following message\n>\n>cudaGetDeviceCount failed forward compatibility was attempted on non\n>supported HW.\nA first step is to type \"nvidia-smi\" at a terminal prompt, and see if it\nfinds all your hardware correctly.\nIf that works, we need to determine if the error is generic, or specific\nto your particular system.  Please go to AMBERHOME and type \"make\ntest.cuda.serial\" and see what happens.  If you get \"nonsupported HW on\nevery test\" (as I suspect you will), then something has gone wrong with at\nleast the cuda install.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202007/0340.html",
+      "in_reply_to": 1596138942
+    },
+    {
+      "message_id": 1596157637,
+      "author": "Renato Araujo",
+      "date_raw": "Thu, 30 Jul 2020 22:07:17 -0300",
+      "body": "Dear David\nI redid the installation of CUDA 10.2 using the following file:\ncuda_10.2.89_440.33.01_linux.run (\nhttps://developer.nvidia.com/cuda-10.2-download-archive?target_os=Linux&target_arch=x86_64&target_distro=Ubuntu&target_version=1804&target_type=runfilelocal\n)\nAfterwards I did the procedure according to the manual\ncd amber18\n./configure -cuda gnu\nmake install\nNow it presents the following message when I try to run the DYNAMIC\npmemd.cuda: error while loading shared libraries: libcurand.so.10: cannot\nopen shared object file: No such file or directory.\nWhat am I doing wrong?\nA first step is to type \"nvidia-smi\" at a terminal prompt, and see if it\nfinds all your hardware correctly.\n[image: imagem.png]\nEm qui., 30 de jul. de 2020 às 21:30, David A Case <david.case.rutgers.edu>\nescreveu:\n> On Thu, Jul 30, 2020, Renato Araujo wrote:\n> >\n> >I have a GEFORCE GTX 1650 GPU and I'm trying to install amber18 on ubuntu\n> >18.04 LST.\n> >\n> >I installed the CUDA Toolkit 10.2 version and then followed the\n> >installation steps in the amber18 manual.\n> >\n> >When I went to run a DYNAMIC using the following command\n> >\n> >pmemd.cuda -O -i prod.in -p complex_solv.prmtop -c prod1.rst -x\n> prod2.mdcrd\n> >-r prod2.rst -o prod2.out\n> >\n> >gave the following message\n> >\n> >cudaGetDeviceCount failed forward compatibility was attempted on non\n> >supported HW.\n>\n> A first step is to type \"nvidia-smi\" at a terminal prompt, and see if it\n> finds all your hardware correctly.\n>\n> If that works, we need to determine if the error is generic, or specific\n> to your particular system.  Please go to AMBERHOME and type \"make\n> test.cuda.serial\" and see what happens.  If you get \"nonsupported HW on\n> every test\" (as I suspect you will), then something has gone wrong with at\n> least the cuda install.\n>\n> ...good luck...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202007/0341.html",
+      "in_reply_to": 1596138942
+    }
+  ]
+}

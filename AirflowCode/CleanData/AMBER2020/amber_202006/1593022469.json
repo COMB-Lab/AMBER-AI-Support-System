@@ -1,0 +1,29 @@
+{
+  "thread_id": 1593022469,
+  "subject": "[AMBER] Amber20 update failure on RHEL7/CentOS7",
+  "messages": [
+    {
+      "message_id": 1593022469,
+      "author": "Peng Wang",
+      "date_raw": "Wed, 24 Jun 2020 18:14:29 +0000",
+      "body": "Hello,\nIn our testing of Amber20, we found that amber_update will give an error on RHEL7 & CentOS7 systems:\n./update_amber --update\nNoInternetAccess: Cannot connect to https://ambermd.org<https://ambermd.org/>\nWe tried 5 different RHEL7 systems and saw the same error.\nThere is no such issue on other Linux systems we tested: RHEL8/SLES15/Ubuntu16/18/20.\nI added a \"print(str(err))\" to the \"has_internet_access\" function in downloader.py and got:\n<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:579)>\nSo this looks like a SSL certification issue on Amber server for RHEL7 & CentOS 7.\nIs this a known issue?\nThanks.",
+      "url": "http://archive.ambermd.org/202006/0232.html"
+    },
+    {
+      "message_id": 1593025553,
+      "author": "David A Case",
+      "date_raw": "Wed, 24 Jun 2020 15:05:53 -0400",
+      "body": "On Wed, Jun 24, 2020, Peng Wang wrote:\n>\n>In our testing of Amber20, we found that amber_update will give an error\n>on RHEL7 & CentOS7 systems:\n>\n>./update_amber --update\n>NoInternetAccess: Cannot connect to https://ambermd.org/\n>I added a \"print(str(err))\" to the \"has_internet_access\" function in downloader.py and got:\n>\n><urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:579)>\n>\n>So this looks like a SSL certification issue on Amber server for RHEL7 & CentOS 7.\ncc-ing to Jason, who is the one who will know what to do.  As a bandaid,\nyou can change \"https\" to \"http\" where the former occurs in the\nupdateutils folder.  That will establish a non-encrypted connection, and\nshould allow you to access updates.  But I'm hoping we can find a better\nsolution.\n...thanks for the report....dac",
+      "url": "http://archive.ambermd.org/202006/0235.html",
+      "in_reply_to": 1593022469
+    },
+    {
+      "message_id": 1593027236,
+      "author": "Ross Walker",
+      "date_raw": "Wed, 24 Jun 2020 15:33:56 -0400",
+      "body": "The https certificate looks to have expired. Replacing https with http in the updateutils python code is a workaround. But fixing the server certificate would be the better option.\n> On Jun 24, 2020, at 14:14, Peng Wang <penwang.nvidia.com> wrote:\n>\n> Hello,\n>\n> In our testing of Amber20, we found that amber_update will give an error on RHEL7 & CentOS7 systems:\n>\n> ./update_amber --update\n> NoInternetAccess: Cannot connect to https://ambermd.org<https://ambermd.org/>\n>\n> We tried 5 different RHEL7 systems and saw the same error.\n>\n> There is no such issue on other Linux systems we tested: RHEL8/SLES15/Ubuntu16/18/20.\n>\n> I added a \"print(str(err))\" to the \"has_internet_access\" function in downloader.py and got:\n>\n> <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:579)>\n>\n> So this looks like a SSL certification issue on Amber server for RHEL7 & CentOS 7.\n>\n> Is this a known issue?\n>\n> Thanks.\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202006/0236.html",
+      "in_reply_to": 1593022469
+    }
+  ]
+}

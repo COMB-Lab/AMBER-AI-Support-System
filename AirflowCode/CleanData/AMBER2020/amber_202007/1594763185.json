@@ -1,0 +1,21 @@
+{
+  "thread_id": 1594763185,
+  "subject": "[AMBER] Clarification of Amber Post on Heating Protocol",
+  "messages": [
+    {
+      "message_id": 1594763185,
+      "author": "Robert Molt",
+      "date_raw": "Tue, 14 Jul 2020 17:46:25 -0400",
+      "body": "Good evening,\nI wanted to clarify a particular post from the esteemed Ross Walker from\n2011:\nhttps://www.google.com/url?client=internal-element-cse&cx=partner-pub-9700140137778662:8927431201&q=http://archive.ambermd.org/201103/0431.html&sa=U&ved=2ahUKEwi1_PLi8MjqAhWDm-AKHQmiBY8QFjABegQIBxAC&usg=AOvVaw1Oh-LJ1qeFKU_VBMgmMPRR\nI noticed that Dr. Walker wrote wrote:\n\"It is critical to initial heat using NVT because at low temperatures the\ncalculation of pressure is inaccurate and can cause the barostat to\novercorrect leading to instabilities. I typically either heat to 100K or so\nand then switch to NPT or I run a short (20ps or so) heating stage. The key\nis not to run for too long initially in NVT (before NPT) or you will get\nvacuum bubbles form in the solvent.\"\nMy confusion is: does one not have a \"discontinuity\" of sorts in heating\nto 100K and then immediately beginning the NPT equilibration at T=300?\nIs the effect perhaps \"small,\" such that it is irrelevant?",
+      "url": "http://archive.ambermd.org/202007/0175.html"
+    },
+    {
+      "message_id": 1594779104,
+      "author": "David A Case",
+      "date_raw": "Tue, 14 Jul 2020 22:11:44 -0400",
+      "body": "On Tue, Jul 14, 2020, Robert Molt wrote:\n>\n>I wanted to clarify a particular post from the esteemed Ross Walker from\n>2011:\n>\n>\n>\"It is critical to initial heat using NVT because at low temperatures the\n>calculation of pressure is inaccurate and can cause the barostat to\n>overcorrect leading to instabilities. I typically either heat to 100K or so\n>and then switch to NPT or I run a short (20ps or so) heating stage. The key\n>is not to run for too long initially in NVT (before NPT) or you will get\n>vacuum bubbles form in the solvent.\"\n>\n>My confusion is: does one not have a \"discontinuity\" of sorts in heating\n>to 100K and then immediately beginning the NPT equilibration at T=300?\n>Is the effect perhaps \"small,\" such that it is irrelevant?\nThere are many ways to equilibrate.  Almost all of them keep restraints on the\nbiomolecule + ligands, allowing only solvent to move for steps getting to a\ngood temperature and density.  Then one can slowly relax the constraints on\nthe solute, before getting to a \"production\" run with no external restraints.\nMy view is that the details don't matter much, but longer is better.  You\nmany need to do a (short) initial minimization to remove bad contacts, but\nafter that, there are no hard rules.  Things that ran for 20 ps in 2011\nwould be much longer now--it can take a *long* time for solvent to become\nreally adjusted to the presence of the solute.\nIf you are concerned about some \"discontinuous\" temperature, run a second\nsimulation with different choices, and see if there are changes in the\nstatistical properties of the second run.  (You should generally be trying\nto get replicated trajectories anyway, to probe for convergence.)\nMaybe others on the list can comment on problems they see with \"poorer\" vs\n\"better\" equilibration protocols.\n...hope this helps....dac\np.s.: a note about GPU runs: if the intial density is far from the final one,\nthen pmemd.cuda NPT runs can have trouble adjusting. The simplest approach is\nto do the initial equilibration (just long enough to get to the target\ntemperature and to near the final density) on the CPU.  This generally doesn't\ntake very long.  You should still then continue \"equilibration\" on the GPU for\nmany tens of nanoseconds (depends on the size of the system and the number of\nmobile ions) before removing restraints on the solute.",
+      "url": "http://archive.ambermd.org/202007/0178.html",
+      "in_reply_to": 1594763185
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "thread_id": 1657856123,
+  "subject": "[AMBER] cpptraj selection mask syntax issue during clustering",
+  "messages": [
+    {
+      "message_id": 1657856123,
+      "author": "Liao",
+      "date_raw": "Fri, 15 Jul 2022 11:35:23 +0800",
+      "body": "Dear List,\nWhen performing clustering analysis with cpptraj, there seems to be a syntax issue, that the same selection when using cpptraj to strip and align trajectories, can't be recognized. Example below:\ndbscan minpoints 1 epsilon 0.8 sievetoframe \\\nrms :529.ND1|:191.NZ|:528.CD|:97.NE2,OE1|:134<:12&.CA&:1-197 nofit \\\nThis gives an error, saying\nError: Mask stack is not empty.\nError: Could not set up mask ':529.ND1|:191.NZ|:528.CD|:97.NE2,OE1|:134<:12&.CA&:1-197' for topology complex.gas.prmtop\nMain problem is that the distance range selection cannot be combined with others. If I switch the order of the selection, it runs, just omitting all the atoms (there are 17 in total) after the first |  , as below\nMask [:134<:12&.CA&:1-197|:529.ND1|:191.NZ|:528.CD|:97.NE2,OE1] corresponds to 12 atoms.\nThis behavior doesn't seem to exist when using cpptraj to strip and align, that the distance selection mask can be combined with other masks by the | with no issue. If I copy and paste the exact selection above it will work properly.\nI wonder if there's any way to get this right? Other than explicitly listing out every single residue in the distance range mask?\nThanks!",
+      "url": "http://archive.ambermd.org/202207/0011.html"
+    },
+    {
+      "message_id": 1657858220,
+      "author": "Liao",
+      "date_raw": "Thu, 14 Jul 2022 23:10:20 -0500",
+      "body": "I think I figured it out, because in the clustering I didn’t add a reference, therefore the distance based mask wasn’t working properly. Adding a reference frame fixed it. Great to know.\nSent from my iPhone\n> On Jul 14, 2022, at 10:35 PM, Liao via AMBER <amber.ambermd.\norg> wrote:\n>\n> ﻿Dear List,\n>\n> When performing clustering analysis with cpptraj, there seems to be a syntax issue, that the same selection when using cpptraj to strip and align trajectories, can't be recognized. Example below:\n>\n> dbscan minpoints 1 epsilon 0.8 sievetoframe \\\n> rms :529.ND1|:\n191.NZ\n|:\n528.CD\n|:97.NE2,OE1|:134<:12&@CA&:1-197 nofit \\\n> This gives an error, saying\n> Error: Mask stack is not empty.\n> Error: Could not set up mask ':529.ND1|:\n191.NZ\n|:\n528.CD\n|:97.NE2,OE1|:134<:12&@CA&:1-197' for topology complex.\ngas.prmtop\n>\n> Main problem is that the distance range selection cannot be combined with others. If I switch the order of the selection, it runs, just omitting all the atoms (there are 17 in total) after the first |  , as below\n> Mask [:134<:12&.CA&:1-197|:529.ND1|:191.NZ|:\n528.CD\n|:97.NE2,OE1] corresponds to 12 atoms.\n>\n> This behavior doesn't seem to exist when using cpptraj to strip and align, that the distance selection mask can be combined with other masks by the | with no issue. If I copy and paste the exact selection above it will work properly.\n>\n> I wonder if there's any way to get this right? Other than explicitly listing out every single residue in the distance range mask?\n>\n> Thanks!\n>",
+      "url": "http://archive.ambermd.org/202207/0012.html",
+      "in_reply_to": 1657856123
+    }
+  ]
+}

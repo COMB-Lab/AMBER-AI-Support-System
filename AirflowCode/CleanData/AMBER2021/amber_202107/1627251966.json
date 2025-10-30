@@ -1,0 +1,21 @@
+{
+  "thread_id": 1627251966,
+  "subject": "[AMBER] Solvate and manipulate order of atoms in Leap",
+  "messages": [
+    {
+      "message_id": 1627251966,
+      "author": "He, Amy",
+      "date_raw": "Sun, 25 Jul 2021 22:26:06 +0000",
+      "body": "Hello Amber Community,\nI�m using Amber/20 and I�m doing system preparation with the leap program. I want to solvate the system, add ions, and I have to change the order of a few atoms in the structure, and generate new inputs with the re-ordered system.\nThus, I tried to do this in three steps.\n1.  Solvate, add ions and save the structure of the solvated system. Here�s the tleap.in:\nsource leaprc.constph\ncomplex = loadPDB cry_system.pdb\nloadAmberParams frcmod.ionsjc_tip3p\nsolvateOct complex TIP3PBOX 12.0 0.75\naddIonsRand complex Na+ 52 Cl- 45\nsavepdb complex solvated_system.pdb\nquit\n1.  Re-order atoms in solvated_system.pdb\n2.  Generate the prmtop and rstart file with the re-ordered system. Here�s the other tleap.in:\nset default reorder_residues off\nsource leaprc.constph\ncomplex = loadPDB reordered_system.pdb\nloadAmberParams frcmod.ionsjc_tip3p\nsaveAmberParm complex reordered_system.parm7 reordered_system.rst7\nquit\nHowever, I didn�t find the BOX information in my parm7 (prmtop) file. And I think it�s because I didn�t set the box in the second leap step, by either �setbox� or �solvatebox��\nMy questions are:\n1.  How can I retrieve the box information of the re-ordered system? Is it ok to copy the box dimensions from the parm7 file which might be generated from the solvation step?\n2.  What do you usually do to obtain the proper box dimensions for an already solvated system (like a custom solvent box)?\nMy apologies for the multiple posts. Thank you for your time and kind advice in advance!\nBest,\nAmy\n--\nAmy He\nChemistry Graduate Teaching Assistant\nHadad Research Group\nOhio State University\nhe.1768.osu.edu",
+      "url": "http://archive.ambermd.org/202107/0211.html"
+    },
+    {
+      "message_id": 1627993232,
+      "author": "David A Case",
+      "date_raw": "Tue, 3 Aug 2021 08:20:32 -0400",
+      "body": "On Sun, Jul 25, 2021, He, Amy wrote:\n>\n>I’m using Amber/20 and I’m doing system preparation with the leap\n>program. I want to solvate the system, add ions, and I have to change the\n>order of a few atoms in the structure, and generate new inputs with the\n>re-ordered system.\nSorry to be slow in replying, and I'm unsure whether this question has\nalready been answered or not.\n>\n>However, I didn’t find the BOX information in my parm7 (prmtop) file. And I\n>think it’s because I didn’t set the box in the second leap step, by either\n>“setbox” or “solvatebox”…\nYou can use the setbox command in tleap to create a box (even though at this\npoint it won't have the correct dimensions.)  Then use the ChBox command\nto get the correct values into the rst7 file.  Use the data in the last line\nof your first rst7 file to get the data to feed to ChBox.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202108/0008.html",
+      "in_reply_to": 1627251966
+    }
+  ]
+}

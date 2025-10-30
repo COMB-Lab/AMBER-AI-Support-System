@@ -1,0 +1,37 @@
+{
+  "thread_id": 1586990581,
+  "subject": "[AMBER] Generating an asymmetric box for Steered MD",
+  "messages": [
+    {
+      "message_id": 1586990581,
+      "author": "Souvik Dey",
+      "date_raw": "Wed, 15 Apr 2020 17:43:01 -0500",
+      "body": "Dear Amber users,\nI am trying to run a steered MD simulation to study protein unbinding\nmechanisms. Now, I can see that my simulation is crashing as the atom I\npull is leaving my periodic box and interacting with its image.\nSo, I wanted to define an asymmetric box such that I can have one of the\naxes to be greater in dimension than the other two. Now, can this be done\nin Amber? Whenever I have used solvateBox it always generates a somewhat\nsymmetric box. I tried to follow the crystal simulation where asymmetric\nboxes can be but I was not so sure if that would be the correct way to do\nand I could not follow it properly as well.\nThis seems like a very trivial problem and someone must have dealt with it\nbefore. I would be very grateful if I could get some suggestions about it.\nThank you in advance.\nRegards,\nSouvik",
+      "url": "http://archive.ambermd.org/202004/0170.html"
+    },
+    {
+      "message_id": 1587038096,
+      "author": "David A Case",
+      "date_raw": "Thu, 16 Apr 2020 07:54:56 -0400",
+      "body": "On Wed, Apr 15, 2020, Souvik Dey wrote:\n>\n>So, I wanted to define an asymmetric box such that I can have one of the\n>axes to be greater in dimension than the other two. Now, can this be done\n>in Amber? Whenever I have used solvateBox it always generates a somewhat\n>symmetric box. I tried to follow the crystal simulation where asymmetric\n>boxes can be but I was not so sure if that would be the correct way to do\n>and I could not follow it properly as well.\nI would use AddToBox, but packmol is another good choice.  We'd have to\nknow more about what the problems was with AddToBox to be of more help.\n....dac",
+      "url": "http://archive.ambermd.org/202004/0176.html",
+      "in_reply_to": 1586990581
+    },
+    {
+      "message_id": 1587065616,
+      "author": "Souvik Dey",
+      "date_raw": "Thu, 16 Apr 2020 14:33:36 -0500",
+      "body": "Hi David,\nWhat I am concerned about is how AddToBox would work. For example, let's\nsay that I want to create a box of 120Å x 60Å x 60Å. and fill it with tip3p\nwater molecules. If I now try to set the box dimensions by setting -X/Y/Z\nAddToBox shows that the identifier -X is unknown.\nMy questions are,\n1. How should I set up my box dimensions before I fill it up with the\nrequired number of solvent molecules by -na flag?\n2. How would the program understand that the water I add is tip3p since all\nI am providing is a PDB file of a single water molecule with the -a flag?\nThank you for your time.\nRegards,\nSouvik",
+      "url": "http://archive.ambermd.org/202004/0193.html",
+      "in_reply_to": 1586990581
+    },
+    {
+      "message_id": 1587107032,
+      "author": "Souvik Dey",
+      "date_raw": "Fri, 17 Apr 2020 02:03:52 -0500",
+      "body": "Hi David,\nI think I solved the problem I was having earlier, setting up an asymmetric\nbox and then filling up it with water using setBox and AddToBox. However,\nthere seems to be a new problem now. There are no bonds shown in the water\nmolecule which I believe is due to incorrect tleap usage. My steps were as\nfollows:\n1. *set mol box { 275.798000335693357 148.5099928379058813\n138.670001983642581 }* to set up the box\n2. *AddToBox -c smd_trial_orient.pdb -a tip3p.pdb -na 95000 -o solv.pdb -RW\n2.25* to fill it up with water\n3. Running the usual tleap scripts to load the 14SB and TIP3P parameters,\nloading the system and then generating the topology as specified in Amber\ntutorial 13.\nI think I am missing something here, probably in the water PDB file that I\nload. Can you please suggest something about how to solve this issue?\nRegards,\nSouvik\nOn Thu, Apr 16, 2020 at 8:12 PM Souvik Dey <sdey8.uic.edu> wrote:\n> >What I am concerned about is how AddToBox would work. For example, let's\n>> >say that I want to create a box of 120Å x 60Å x 60Å. and fill it with\n>> tip3p\n>> >water molecules. If I now try to set the box dimensions by setting -X/Y/Z\n>> >AddToBox shows that the identifier -X is unknown.\n>\n> I'm lost here, and would need to know exactly what commands you used.\n>> AddToBox requires an input pdb file (the -c flag) that has a CRYST1\n>> record giving the box information.\n>>\n>\n> I used the command\n> *$AMBERHOME/AddToBox -c smd_trial_orient.pdb -a tip3p.pdb -na 83000 -o\n> solv.pdb -RW 6.0*\n> with the hope to add 83000 tip3p water molecules to smd_trial_orient.pdb.\n> The top of the PDB files read\n> *CRYST1  253.753  136.423  126.598  90.00  90.00  90.00 P 1           1*\n> However, only 8505 water molecules are added. Why do you think this might\n> be happening?\n>\n>\n>> >\n>> >1. How should I set up my box dimensions before I fill it up with the\n>> >required number of solvent molecules by -na flag?\n>>\n>> See above: this is done with the input pdb file.\n>>\n>> >2. How would the program understand that the water I add is tip3p since\n>> all\n>> >I am providing is a PDB file of a single water molecule with the -a flag?\n>>\n>> It doesn't know that you have TIP3P water: you will specify that later\n>> when you run tleap.  All AddToBox does is set up a pdb file, with the\n>> expectation that you will use loadPdb in tleap later on to actually\n>> build the system\n>>\n>\n> So, after I generate solv.pdb, do I need to run solvateBox again for this?\n>\n>\n> Souvik\n>",
+      "url": "http://archive.ambermd.org/202004/0197.html",
+      "in_reply_to": 1586990581
+    }
+  ]
+}

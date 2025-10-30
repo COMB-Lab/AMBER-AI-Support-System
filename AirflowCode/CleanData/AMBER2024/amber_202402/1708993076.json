@@ -1,0 +1,21 @@
+{
+  "thread_id": 1708993076,
+  "subject": "[AMBER] Improper torsion terms when building covalent bond in leap",
+  "messages": [
+    {
+      "message_id": 1708993076,
+      "author": "Nicole Vita",
+      "date_raw": "Tue, 27 Feb 2024 00:17:56 +0000",
+      "body": "Hi,\nI am trying to parameterize a covalent bond and am having problems with my torsion terms.\nI was able to fix and add all the terms into the *.frcmod file that were missing except for one.\nThe following term continues to give me an error:\nError:  ** No torsion terms for atom types: CO-O2-c3-hc\nfor atom CG at position 5.699000, -24.112000, 5.185000,\natom OD2 at position 6.946000, -24.383000, 5.605000,\natom C55 at position 7.254000, -24.434000, 6.997000,\nand atom HC55 at position 6.327000, -24.636000, 7.534000.\nI went into the gaff2.dat file and tried multiple terms but the terms I added thinking they were the closest representation were:\nCO-O2-c3-hc   2    5.400       180.000           2.000      same as X -c -os-X\nHowever, I am still getting the torsion term error when trying to write the *.inpcrd file.\nAny help to solve this problem would be greatly appreciated.\nCheers,\nNicole\nThis email message is for the sole use of the intended recipient(s) and may contain confidential and privileged information.  Any unauthorized review, use, disclosure or distribution is prohibited.  If you are not the intended recipient, please contact the sender by reply email and destroy all copies of the original message.  If you are the intended recipient, please be advised that the content of this message is subject to access, review and disclosure by the sender's email system administrator",
+      "url": "http://archive.ambermd.org/202402/0118.html"
+    },
+    {
+      "message_id": 1708999503,
+      "author": "He, Amy",
+      "date_raw": "Tue, 27 Feb 2024 02:05:03 +0000",
+      "body": "Hi Nicole,\nI have done similar things before and these specifications worked for me, when I added them in the parameter modification (.frcmod) files. I was doing that because part of my system could not be typed by the standard force field. I did not modify the main parameter (.dat) file.\nThe beginning of my tleap input is like:\nsource leaprc.<some standard force field>\nsource leaprc.gaff2\nloadamberprep <for the modified residues>.prepi\nloadamberparams <for the modified residues>.frcmod\nloadamberparams <parameters specified by mixed types>.frcmod\nIt also worked when I combined the two .frcmod files into one.\nHope this helps!\n--\nAmy He\nHadad Lab . OSU\nHe.1768.osu.edu\nFrom: Nicole Vita via AMBER <amber.ambermd.org>\nDate: Monday, February 26, 2024 at 7:18 PM\nTo: amber.ambermd.org <amber.ambermd.org>\nSubject: [AMBER] Improper torsion terms when building covalent bond in leap\nHi,\nI am trying to parameterize a covalent bond and am having problems with my torsion terms.\nI was able to fix and add all the terms into the *.frcmod file that were missing except for one.\nThe following term continues to give me an error:\n      Error:  ** No torsion terms for atom types: CO-O2-c3-hc\n        for atom CG at position 5.699000, -24.112000, 5.185000,\n            atom OD2 at position 6.946000, -24.383000, 5.605000,\n            atom C55 at position 7.254000, -24.434000, 6.997000,\n        and atom HC55 at position 6.327000, -24.636000, 7.534000.\nI went into the gaff2.dat file and tried multiple terms but the terms I added thinking they were the closest representation were:\n                CO-O2-c3-hc   2    5.400       180.000           2.000      same as X -c -os-X\nHowever, I am still getting the torsion term error when trying to write the *.inpcrd file.\nAny help to solve this problem would be greatly appreciated.\nCheers,\nNicole\nThis email message is for the sole use of the intended recipient(s) and may contain confidential and privileged information.  Any unauthorized review, use, disclosure or distribution is prohibited.  If you are not the intended recipient, please contact the sender by reply email and destroy all copies of the original message.  If you are the intended recipient, please be advised that the content of this message is subject to access, review and disclosure by the sender's email system administrator",
+      "url": "http://archive.ambermd.org/202402/0120.html",
+      "in_reply_to": 1708993076
+    }
+  ]
+}

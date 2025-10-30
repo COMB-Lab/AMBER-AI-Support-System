@@ -1,0 +1,21 @@
+{
+  "thread_id": 1600874923,
+  "subject": "[AMBER] Fwd: usage of nmr (between COMs) restraints with pmem.cuda",
+  "messages": [
+    {
+      "message_id": 1600874923,
+      "author": "Dmitry Karlov",
+      "date_raw": "Wed, 23 Sep 2020 18:28:43 +0300",
+      "body": "Dear Amber users,\nI am trying to perform SILCS simulation (\nhttps://www.ncbi.nlm.nih.gov/\npmc/articles/PMC4685950/) using Amber18 (all patches have been applied).\nCurrently, I prepared a water box containing benzene, propane, acetate.\nmethylammonium, formamide and methanol molecules distributed across the box\n(400 copies for each item). I tried to use nmr restraints to prevent\naggregation between benzene/benzene, benzene/propane and propane/propane\nmolecules.  The examples of restraint syntax used you can see below:\ngeometric center of carbon atoms of benzene 1 / geometric center of carbon\natoms of benzene 2\n&rst iat=-1,-1, r1=6.0, r2=7.5, r3=10000., r4=20000., rk2=15., rk3=50.,\nigr1 = 1,2,3,4,5,6, igr2 = 13,14,15,16,17,18, &end\ngeometric center of carbon atoms of benzene 1 / central carbon atom of\npropane 2\n&rst iat=-1,-1, r1=6.0, r2=7.5, r3=10000., r4=20000., rk2=15., rk3=50.,\nigr1 = 3553,3554,3555,3556,3557,3558, igr2 = 7111,0,0,0,0,0, &end\ncentral carbon atom of propane 1 / central carbon atom of propane 2\n&rst iat=6462,7584, r1=6.0, r2=7.5, r3=10000., r4=20000., rk2=15., rk3=50.,\n&end\nThe meaningful is only lower bound while the upper bound I set was big\nenough compared to box size\nOn this way I get about 500000 individual restraints and it works fine\nserial version of amber. But at the same time the gpu version of pmemd do\nnot work with more than 30 individual restraints yielding an error:\ncudaMemcpy GpuBuffer::Download failed an illegal memory access was\nencountered.\nDo you have any idea about how to deal with it?\nDK\n-- \nDK",
+      "url": "http://archive.ambermd.org/202009/0315.html"
+    },
+    {
+      "message_id": 1600984248,
+      "author": "Dmitry Karlov",
+      "date_raw": "Fri, 25 Sep 2020 00:50:48 +0300",
+      "body": "Dear Amber community,\nI am trying to perform SILCS simulation (\nhttps://www.ncbi.nlm.nih.gov/\npmc/articles/PMC4685950/) using Amber18 (all patches have been applied).\nCurrently, I prepared a water box containing benzene, propane, acetate.\nmethylammonium, formamide and methanol molecules distributed across the box\n(400 copies for each item). I tried to use nmr restraints to prevent\naggregation between benzene/benzene, benzene/propane and propane/propane\nmolecules.  The examples of restraint syntax used you can see below:\ngeometric center of carbon atoms of benzene 1 / geometric center of carbon\natoms of benzene 2\n&rst iat=-1,-1, r1=6.0, r2=7.5, r3=10000., r4=20000., rk2=15., rk3=50.,\nigr1 = 1,2,3,4,5,6, igr2 = 13,14,15,16,17,18, &end\ngeometric center of carbon atoms of benzene 1 / central carbon atom of\npropane 2\n&rst iat=-1,-1, r1=6.0, r2=7.5, r3=10000., r4=20000., rk2=15., rk3=50.,\nigr1 = 3553,3554,3555,3556,3557,3558, igr2 = 7111,0,0,0,0,0, &end\ncentral carbon atom of propane 1 / central carbon atom of propane 2\n&rst iat=6462,7584, r1=6.0, r2=7.5, r3=10000., r4=20000., rk2=15., rk3=50.,\n&end\nThe meaningful is only lower bound while the upper bound I set was big\nenough compared to box size\nOn this way I get about 500000 individual restraints and it works fine\nserial version of amber. But at the same time the gpu version of pmemd do\nnot work with more than 30 individual restraints yielding an error:\ncudaMemcpy GpuBuffer::Download failed an illegal memory access was\nencountered.\nDo you have any idea about how to deal with it?\n-- \nDK",
+      "url": "http://archive.ambermd.org/202009/0333.html",
+      "in_reply_to": 1600874923
+    }
+  ]
+}

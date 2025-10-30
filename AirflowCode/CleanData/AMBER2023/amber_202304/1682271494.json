@@ -1,0 +1,37 @@
+{
+  "thread_id": 1682271494,
+  "subject": "[AMBER] Separating a trajectory by output from clusterdihedral",
+  "messages": [
+    {
+      "message_id": 1682271494,
+      "author": "Osman, Roman",
+      "date_raw": "Sun, 23 Apr 2023 17:38:14 +0000",
+      "body": "Hello,\nI would like to separate a trajectory by the clusters produced by clusterdihedral.\nI have two dihedrals that cluster into two clusters with nearly equal populations because their changes are correlated.\nIn the out file from cpptraj I get a list of frames that belong to each cluster, but because the trajectory has 50000 snapshots the list is quite long (~25,000 entries).\nThe question is whether I can use this list to write the trajectory with onlyframes  and supply this long list.\nOr perhaps is another way to cluster the trajectory by the dihedrals and write the two clusters separately.\nThanks for your help.\nRoman Osman\nProfessor\nDepartment of Pharmacological Sciences\nIcahn School of Medicine at Mount Sinai",
+      "url": "http://archive.ambermd.org/202304/0046.html"
+    },
+    {
+      "message_id": 1682273728,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Sun, 23 Apr 2023 18:15:28 +0000",
+      "body": "Hi Roman,\nThe onlyframes option to trajout takes a range of frames. Maybe you can specify multiple ranges separated by commas. But I imagine it may be difficult to construct comma-separated ranges from the output you have.\nAnother option may be to use a script to write a cpptraj intput file with 25,000 lines like the following:\ntrajin <name_of_traj> <frame #> <frame #> 1\nIn other words, load in each frame for a given cluster separately, and then save all the loaded frames for that cluster to a new (pseudo) trajectory. Repeat for the second cluster. I�ve used this strategy before, but not for so many frames; you may encounter a memory issue.\nI hope these suggestions help.\nBest,\nMatthew\nFrom: Osman, Roman via AMBER <amber.ambermd.org>\nDate: Sunday, April 23, 2023 at 1:39 PM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: {SPAM?} [AMBER] Separating a trajectory by output from clusterdihedral\n*Message sent from a system outside of UConn.*\nHello,\nI would like to separate a trajectory by the clusters produced by clusterdihedral.\nI have two dihedrals that cluster into two clusters with nearly equal populations because their changes are correlated.\nIn the out file from cpptraj I get a list of frames that belong to each cluster, but because the trajectory has 50000 snapshots the list is quite long (~25,000 entries).\nThe question is whether I can use this list to write the trajectory with onlyframes  and supply this long list.\nOr perhaps is another way to cluster the trajectory by the dihedrals and write the two clusters separately.\nThanks for your help.\nRoman Osman\nProfessor\nDepartment of Pharmacological Sciences\nIcahn School of Medicine at Mount Sinai",
+      "url": "http://archive.ambermd.org/202304/0047.html",
+      "in_reply_to": 1682271494
+    },
+    {
+      "message_id": 1682274987,
+      "author": "Osman, Roman",
+      "date_raw": "Sun, 23 Apr 2023 18:36:27 +0000",
+      "body": "Matthew,\nThanks I can try your second suggestion. Looks easier.\nRoman Osman\nIcahn School of Medicine at Mount Sinai\n________________________________\nFrom: Matthew Guberman-Pfeffer <matthew.guberman-pfeffer.uconn.edu>\nSent: Sunday, April 23, 2023 2:15:28 PM\nTo: Osman, Roman <roman.osman.mssm.edu>; AMBER Mailing List <amber.ambermd.org>\nSubject: Re: {SPAM?} [AMBER] Separating a trajectory by output from clusterdihedral\nUSE CAUTION: External Message.\nHi Roman,\nThe onlyframes option to trajout takes a range of frames. Maybe you can specify multiple ranges separated by commas. But I imagine it may be difficult to construct comma-separated ranges from the output you have.\nAnother option may be to use a script to write a cpptraj intput file with 25,000 lines like the following:\ntrajin <name_of_traj> <frame #> <frame #> 1\nIn other words, load in each frame for a given cluster separately, and then save all the loaded frames for that cluster to a new (pseudo) trajectory. Repeat for the second cluster. I�ve used this strategy before, but not for so many frames; you may encounter a memory issue.\nI hope these suggestions help.\nBest,\nMatthew\nFrom: Osman, Roman via AMBER <amber.ambermd.org>\nDate: Sunday, April 23, 2023 at 1:39 PM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: {SPAM?} [AMBER] Separating a trajectory by output from clusterdihedral\n*Message sent from a system outside of UConn.*\nHello,\nI would like to separate a trajectory by the clusters produced by clusterdihedral.\nI have two dihedrals that cluster into two clusters with nearly equal populations because their changes are correlated.\nIn the out file from cpptraj I get a list of frames that belong to each cluster, but because the trajectory has 50000 snapshots the list is quite long (~25,000 entries).\nThe question is whether I can use this list to write the trajectory with onlyframes  and supply this long list.\nOr perhaps is another way to cluster the trajectory by the dihedrals and write the two clusters separately.\nThanks for your help.\nRoman Osman\nProfessor\nDepartment of Pharmacological Sciences\nIcahn School of Medicine at Mount Sinai",
+      "url": "http://archive.ambermd.org/202304/0048.html",
+      "in_reply_to": 1682271494
+    },
+    {
+      "message_id": 1682277070,
+      "author": "Daniel Roe",
+      "date_raw": "Sun, 23 Apr 2023 15:11:10 -0400",
+      "body": "Hi,'\nYou could use the 'outtraj' action with the 'maxmin' keyword to\nextract frames of a specific cluster number from the cluster # vs time\ndata set. For example,\nreaddata clustervtime.dat name CVT\nparm myparm.parm7\ntrajin mytraj.nc\nouttraj cluster1.nc maxmin CVT min .5 max 1.5\nouttraj cluster2.nc maxmin CVT min 1.5 max 2.5\netc for each cluster you want to extract. I haven't tested this but\nthis (or something similar) should work I think.\nHope this helps,\n-Dan\nOn Sun, Apr 23, 2023 at 1:38 PM Osman, Roman via AMBER\n<amber.ambermd.org> wrote:\n>\n> Hello,\n>\n> I would like to separate a trajectory by the clusters produced by clusterdihedral.\n> I have two dihedrals that cluster into two clusters with nearly equal populations because their changes are correlated.\n> In the out file from cpptraj I get a list of frames that belong to each cluster, but because the trajectory has 50000 snapshots the list is quite long (~25,000 entries).\n> The question is whether I can use this list to write the trajectory with onlyframes  and supply this long list.\n>\n> Or perhaps is another way to cluster the trajectory by the dihedrals and write the two clusters separately.\n>\n> Thanks for your help.\n>\n> Roman Osman\n> Professor\n> Department of Pharmacological Sciences\n> Icahn School of Medicine at Mount Sinai\n>\n>",
+      "url": "http://archive.ambermd.org/202304/0049.html",
+      "in_reply_to": 1682271494
+    }
+  ]
+}

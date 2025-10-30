@@ -1,0 +1,37 @@
+{
+  "thread_id": 1604678723,
+  "subject": "[AMBER] Protein preparation error",
+  "messages": [
+    {
+      "message_id": 1604678723,
+      "author": "Ayesha Fatima",
+      "date_raw": "Sat, 7 Nov 2020 00:05:23 +0800",
+      "body": "Dear all,\nGood morning. I am trying to prepare my protein-ligand complex. I prepared\nthe ligand separately and after sevel issues managed to get the ligand\nfiles. For the protein, i first used the pdb4amber tool and got the\nconverted protein file. when i load this file into tleap, i get the\nfollowing errors\n-----------------------------\nCreated a new atom named: HT1 within residue: .R<NSER 1>\nCreated a new atom named: HT2 within residue: .R<NSER 1>\nCreated a new atom named: HT3 within residue: .R<NSER 1>\nCreated a new atom named: HN within residue: .R<THR 2>\nCreated a new atom named: HN within residue: .R<ILE 3>\n----------------------------------------------------------------------\nI looked on the internet and found Dr. Peng Fei's parameter file to solve\nthe \"HN\" residue issue. I am attaching the file (parmff18_0e8) here. Not\nsure if it can solve the issue. Can anyone guide?\nThank you\nAyesha",
+      "url": "http://archive.ambermd.org/202011/0071.html"
+    },
+    {
+      "message_id": 1604681404,
+      "author": "David A Case",
+      "date_raw": "Fri, 6 Nov 2020 11:50:04 -0500",
+      "body": "On Sat, Nov 07, 2020, Ayesha Fatima wrote:\n>Created a new atom named: HT1 within residue: .R<NSER 1>\n>Created a new atom named: HT2 within residue: .R<NSER 1>\n>Created a new atom named: HT3 within residue: .R<NSER 1>\n>Created a new atom named: HN within residue: .R<THR 2>\n>Created a new atom named: HN within residue: .R<ILE 3>\nYour pdb file has non-standard hydrogen names; (you don't say where this\nfile came from.)\nSimplest fix is to use that --nohyd option in pdb4amber to remove all\nthe hydrogens from your pdb file.  Then leap will build them back in\nwith the correct names.  (\"Correct\" here means complying with\nIUPAC/wwPDB standards.)\nIf you think the input hydrogen positions are iportant, you could also use\na text editor to change the atom names in the PDB file, but it is unlikely\nthat this is necessary.)\n....dac",
+      "url": "http://archive.ambermd.org/202011/0073.html",
+      "in_reply_to": 1604678723
+    },
+    {
+      "message_id": 1604682146,
+      "author": "Ayesha Fatima",
+      "date_raw": "Sat, 7 Nov 2020 01:02:26 +0800",
+      "body": "Thank you Dr. Case.\nI didnot realise that could be done. I will try and report back\nThank you again\nOn Sat, Nov 7, 2020 at 12:50 AM David A Case <david.case.rutgers.edu> wrote:\n> On Sat, Nov 07, 2020, Ayesha Fatima wrote:\n>\n> >Created a new atom named: HT1 within residue: .R<NSER 1>\n> >Created a new atom named: HT2 within residue: .R<NSER 1>\n> >Created a new atom named: HT3 within residue: .R<NSER 1>\n> >Created a new atom named: HN within residue: .R<THR 2>\n> >Created a new atom named: HN within residue: .R<ILE 3>\n>\n> Your pdb file has non-standard hydrogen names; (you don't say where this\n> file came from.)\n>\n> Simplest fix is to use that --nohyd option in pdb4amber to remove all\n> the hydrogens from your pdb file.  Then leap will build them back in\n> with the correct names.  (\"Correct\" here means complying with\n> IUPAC/wwPDB standards.)\n>\n> If you think the input hydrogen positions are iportant, you could also use\n> a text editor to change the atom names in the PDB file, but it is unlikely\n> that this is necessary.)\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202011/0074.html",
+      "in_reply_to": 1604678723
+    },
+    {
+      "message_id": 1604687480,
+      "author": "Ayesha Fatima",
+      "date_raw": "Sat, 7 Nov 2020 02:31:20 +0800",
+      "body": "Dear Dr. Case,\nThank you for your guidance. I was able to generate the topology.\nRegards\nOn Sat, Nov 7, 2020 at 1:02 AM Ayesha Fatima <ayeshafatima.69.gmail.com>\nwrote:\n> Thank you Dr. Case.\n> I didnot realise that could be done. I will try and report back\n> Thank you again\n>\n> On Sat, Nov 7, 2020 at 12:50 AM David A Case <david.case.rutgers.edu>\n> wrote:\n>\n>> On Sat, Nov 07, 2020, Ayesha Fatima wrote:\n>>\n>> >Created a new atom named: HT1 within residue: .R<NSER 1>\n>> >Created a new atom named: HT2 within residue: .R<NSER 1>\n>> >Created a new atom named: HT3 within residue: .R<NSER 1>\n>> >Created a new atom named: HN within residue: .R<THR 2>\n>> >Created a new atom named: HN within residue: .R<ILE 3>\n>>\n>> Your pdb file has non-standard hydrogen names; (you don't say where this\n>> file came from.)\n>>\n>> Simplest fix is to use that --nohyd option in pdb4amber to remove all\n>> the hydrogens from your pdb file.  Then leap will build them back in\n>> with the correct names.  (\"Correct\" here means complying with\n>> IUPAC/wwPDB standards.)\n>>\n>> If you think the input hydrogen positions are iportant, you could also use\n>> a text editor to change the atom names in the PDB file, but it is unlikely\n>> that this is necessary.)\n>>\n>> ....dac\n>>\n>>\n>>",
+      "url": "http://archive.ambermd.org/202011/0075.html",
+      "in_reply_to": 1604678723
+    }
+  ]
+}

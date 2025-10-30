@@ -1,0 +1,21 @@
+{
+  "thread_id": 1640557853,
+  "subject": "[AMBER] DE Shaw RNA parameters error",
+  "messages": [
+    {
+      "message_id": 1640557853,
+      "author": "Alexander Izvorski",
+      "date_raw": "Sun, 26 Dec 2021 14:30:53 -0800",
+      "body": "Hello Amber folks - I'd like to try the RNA parameters from leaprc.RNA.Shaw.\nUsing this script in tleap produces an error:\nsource leaprc.RNA.Shaw\ntest = loadPdb 7act_test.pdb\nsaveAmberParm test test.top test.crd\nError: Could not find angle parameter: OH - P - OQ\nError: Could not find angle parameter: OH - P - OQ\nError: Could not find angle parameter: OH - P - OR\nThe same works with leaprc.RNA.OL3.  The input file is attached (it is from\n7ACT in rcsb.org, with just the residue of the first atom changed to OHE).\nMy software version is ambertools=21.11 from conda-forge on Ubuntu 20.04.\nI can't really tell what is going on, or which residue is affected.  Why\nthe difference between Shaw and OL3?  Is there something wrong with either\nmy input file or tleap script?\nThanks!\nAlex",
+      "url": "http://archive.ambermd.org/202112/0195.html"
+    },
+    {
+      "message_id": 1641146610,
+      "author": "David A Case",
+      "date_raw": "Sun, 2 Jan 2022 13:03:30 -0500",
+      "body": "On Sun, Dec 26, 2021, Alexander Izvorski wrote:\n>Hello Amber folks - I'd like to try the RNA parameters from leaprc.RNA.Shaw.\n>\n>Using this script in tleap produces an error:\n>\n>source leaprc.RNA.Shaw\n>test = loadPdb 7act_test.pdb\n>saveAmberParm test test.top test.crd\n>\n>Error: Could not find angle parameter: OH - P - OQ\n>Error: Could not find angle parameter: OH - P - OQ\n>Error: Could not find angle parameter: OH - P - OR\nIt looks like the frcmod.shaw file is just missing parameters for connecting\nOHE to an RNA chain.  You can take values for OH-P -OS and O2-P -OH from\nparm10.dat, change \"OS\" to \"OQ\" and \"O2\" to \"OR\"  (check that I've got this\ncorrect!), and put them into frcmod.shaw.\n....dac\ncc-ing to tec3: can you check this, and twist someone's arm to create a\npatch?  ...thx",
+      "url": "http://archive.ambermd.org/202201/0003.html",
+      "in_reply_to": 1640557853
+    }
+  ]
+}

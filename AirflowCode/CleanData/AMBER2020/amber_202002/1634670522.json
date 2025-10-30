@@ -1,0 +1,29 @@
+{
+  "thread_id": 1634670522,
+  "subject": "Re: [AMBER] cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered",
+  "messages": [
+    {
+      "message_id": 1634670522,
+      "author": "Rangarajan, Amith",
+      "date_raw": "Tue, 19 Oct 2021 19:08:42 +0000",
+      "body": "Dear Group,\nI am encountering this error frequently in a non-specific way ( same system -error on only some replicas, corrects upon retry) . I have checked the systems in VMD and there seems to be nothing wrong with them. It happens mostly during the beginning of the MD run and i dont  find any other error messages.\nPlease suggest regarding the best way to avoid/fix this.\nI found an earlier thread on this in this forum, but there were not many replies , please be kind to tag me the link in case i missed the discussion.\nthanks so much,\nbest\namith",
+      "url": "http://archive.ambermd.org/202110/0148.html"
+    },
+    {
+      "message_id": 1634746654,
+      "author": "David A Case",
+      "date_raw": "Wed, 20 Oct 2021 11:17:34 -0500",
+      "body": "On Tue, Oct 19, 2021, Rangarajan, Amith wrote:\n>\n>I am encountering this error frequently in a non-specific way ( same system\n>-error on only some replicas, corrects upon retry) . I have checked the\n>systems in VMD and there seems to be nothing wrong with them. It happens\n>mostly during the beginning of the MD run and i dont find any other error\n>messages.\nThe actual error message says nothing useful, other than that an error\noccurred.  If it happens at the beginning of MD, you probably have some bad\ncontacts or other problems, even with a partially minimized structure.\nDo a short run (just a 100 MD steps) with ntpr=1, and see if you can learn\nanything.\nYou may need to do more minimization (with the CPU), or run the short MD\ndescribed above on a CPU.\n....dac",
+      "url": "http://archive.ambermd.org/202110/0156.html",
+      "in_reply_to": 1634670522
+    },
+    {
+      "message_id": 1634748296,
+      "author": "Rangarajan, Amith",
+      "date_raw": "Wed, 20 Oct 2021 16:44:56 +0000",
+      "body": "Dear Dac,\nthanks for the tip. It was infact not minimized adequately. I took some time to minimize it carefully and then heat it up carefully ( NVT with dtt = 0.1 , gamma_linc = 15.0, nstlim = 50000) then in subsequent steps reduced the gamma_linc and increased is the dtt as i proceeeded to NPT .\nI ended up doing 6 short equilibrations steps ( NVT --> NPT with decreasing restraints --> NPT with not restraints) . not sure if it was a overkill.\nThese measures fixed my issues  , thanks a lot for pointing me in the right direction.\nthanks\namith\n________________________________\nFrom: David A Case <david.case.rutgers.edu>\nSent: Wednesday, October 20, 2021 9:17 AM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered\nOn Tue, Oct 19, 2021, Rangarajan, Amith wrote:\n>\n>I am encountering this error frequently in a non-specific way ( same system\n>-error on only some replicas, corrects upon retry) . I have checked the\n>systems in VMD and there seems to be nothing wrong with them. It happens\n>mostly during the beginning of the MD run and i dont find any other error\n>messages.\nThe actual error message says nothing useful, other than that an error\noccurred.  If it happens at the beginning of MD, you probably have some bad\ncontacts or other problems, even with a partially minimized structure.\nDo a short run (just a 100 MD steps) with ntpr=1, and see if you can learn\nanything.\nYou may need to do more minimization (with the CPU), or run the short MD\ndescribed above on a CPU.\n....dac",
+      "url": "http://archive.ambermd.org/202110/0158.html",
+      "in_reply_to": 1634670522
+    }
+  ]
+}

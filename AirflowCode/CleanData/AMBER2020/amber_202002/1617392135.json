@@ -1,0 +1,21 @@
+{
+  "thread_id": 1617392135,
+  "subject": "[AMBER] Heat Output File Issue",
+  "messages": [
+    {
+      "message_id": 1617392135,
+      "author": "Swisher, Justin S",
+      "date_raw": "Fri, 2 Apr 2021 19:35:35 +0000",
+      "body": "Hi, All\nI'm working on stringing together a polymer. I recently upgraded to Amber16 and was able to get my polymer solvated in water and save the prmtop and inpcrd files that I needed to proceed to the next step of the tutorial that I've been following (Advanced Tutorial 27 - The PET polymer section). My molecule is a string of polyvinyl caprolactam.\nWhen I go to minimize the structure in water the output file tells me:\n... RESTARTED DUE TO LINMIN FAILURE ...\nwhich I have come to find out that this isn't an error it's just alerting me to the fact that the minimization occurred faster than anticipated (Am I right about this?).\nSo, I continue to the next step which is heating it up and this tells me:\nFlags:\n|    NONPERIODIC   ntb=0 and igb=0: Setting up nonperiodic simulation\n|Largest sphere to fit in unit cell has radius =       NaN\nASSERTion ' n > 0 ' failed in ew_setup.F90 at line    306.\nwith no data after that. Is this an error of some kind? My input file is identical to the one in the tutorial and I am attaching the heating output file and the minimization output file as well for examination.\nI appreciate any insight that you all may have and if more information is needed just let me know.\nThank you!",
+      "url": "http://archive.ambermd.org/202104/0013.html"
+    },
+    {
+      "message_id": 1617410089,
+      "author": "David A Case",
+      "date_raw": "Fri, 2 Apr 2021 20:34:49 -0400",
+      "body": "On Fri, Apr 02, 2021, Swisher, Justin S wrote:\n>\n>I'm working on stringing together a polymer. I recently upgraded to Amber16\n>and was able to get my polymer solvated in water...\nIf you have a solute solvated in water, you (presumably) want to run a\nperiodic simulation.  But you are setting ntb=0.\n>\n>Flags:\n>|    NONPERIODIC   ntb=0 and igb=0: Setting up nonperiodic simulation\n>|Largest sphere to fit in unit cell has radius =       NaN\n>ASSERTion ' n > 0 ' failed in ew_setup.F90 at line    306.\nIt's hard to know what sort of simulation you want to run.  If you truly\nwant a non-periodic, vacuum simulation with a very large cutoff, (999.),\nthen you need to set igb=6.  In fact, in most all cases, vacuum simulations\nshould use igb=6.\nBut as I said, it's not at all clear that this is what you want.  If you\nsystem is \"pvcl20_wat\", and you have explicit solvent, that sounds like a\nperiodic simulation.  Then the maximum cutoff is roughly half the size of\nshortest side of the periodic box.\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202104/0020.html",
+      "in_reply_to": 1617392135
+    }
+  ]
+}

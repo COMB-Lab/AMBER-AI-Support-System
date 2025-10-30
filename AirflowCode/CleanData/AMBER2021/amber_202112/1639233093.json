@@ -1,0 +1,21 @@
+{
+  "thread_id": 1639233093,
+  "subject": "[AMBER] README script from CHARMM-GUI to run PMEDE.CUDA",
+  "messages": [
+    {
+      "message_id": 1639233093,
+      "author": "King Wu",
+      "date_raw": "Sat, 11 Dec 2021 06:31:33 -0800",
+      "body": "Hi AMBER,\nI used charmm-gui to generate a membrane protein complex, and I am testing\nit using the default setup from the README script. it calls for pmemd (CPU)\nto run, which is very slow. I tried to switch to pmemd.cuda and used GPU to\nrun.\n~~~~~~~~\nset CUDA_VISIBLE_DEVICES=3\nset amber = \"$AMBERHOME/bin/pmemd.cuda\"\n$AMBERHOME/bin/pmemd.cuda -O -i ${mini_prefix}.mdin\n~~~~~~~~~~~\nHowever I cannot specify which GPU itl runs, because it calls the first\nGPU card, even though I specified a different GPU card. I am emailing here\nbecause I saw an archive note listed in the website.\nhttp://archive.ambermd.org/202103/att-0292/README",
+      "url": "http://archive.ambermd.org/202112/0088.html"
+    },
+    {
+      "message_id": 1639276971,
+      "author": "David A Case",
+      "date_raw": "Sat, 11 Dec 2021 21:42:51 -0500",
+      "body": "On Sat, Dec 11, 2021, King Wu wrote:\n>set CUDA_VISIBLE_DEVICES=3\n> However I cannot specify which GPU itl runs, because it calls the first\n>GPU card, even though I specified a different GPU card.\nI think you need to export this variable, e.g.\nexport CUDA_VISIBLE_DEVICES=3\nOnly with an export will the variable be visible to other processes (like\npmemd) that you start withing the shell.\n...see if this helps....dac",
+      "url": "http://archive.ambermd.org/202112/0089.html",
+      "in_reply_to": 1639233093
+    }
+  ]
+}

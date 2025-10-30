@@ -1,0 +1,21 @@
+{
+  "thread_id": 1649302977,
+  "subject": "[AMBER] Error during production run - AMBER20",
+  "messages": [
+    {
+      "message_id": 1649302977,
+      "author": "Sathyaseelan C",
+      "date_raw": "Thu, 7 Apr 2022 09:12:57 +0530",
+      "body": "Dear Amber users,\nI have installed AMBER20 with CUDA 9.0 and openmpi-3.0.0. I\ntried running the production run using pmemd.cuda. But it's showing the\nerror which is given below. Any suggestion is highly appreciated.\ncudaMemcpyToSymbol: SetSim copy to cSim failed invalid device symbol\ncudaMemcpyToSymbol: SetSim copy to cSim failed invalid device symbol\n-------------------------------------------------------\nPrimary job  terminated normally, but 1 process returned\na non-zero exit code. Per user-direction, the job has been aborted.\n-------------------------------------------------------\n--------------------------------------------------------------------------\nmpirun detected that one or more processes exited with non-zero status,\nthus causing\nthe job to be terminated. The first process to do so was:\nProcess name: [[58677,1],1]\nExit code:    255\n--------------------------------------------------------------------------\nUnit    9 Error on OPEN: pstep_1.rst\nSTOP PMEMD Terminated Abnormally!\nUnit    9 Error on OPEN: pstep_1.rst\nSTOP PMEMD Terminated Abnormally!\nThanks\nSathyaseelan\n-- \n*Thanks & Regards*\n*C .Sathyaseelan *\n*PhD Research Scholar*\n*C/o Dr. Thenmalarchelvi Rathinavelan*\n*Molecular Biophysics Lab*\n*Dept. of Biotechnology*\n*Indian Institute of Technology (IIT)*\n*Kandi, Hyderabad, Telangana - 502285*\n*Ph.No 6383836804, 8300150807*\n-- \nDisclaimer:- This footer text is to convey that this email is sent by one \nof the users of IITH. So, do not mark it as SPAM.",
+      "url": "http://archive.ambermd.org/202204/0061.html"
+    },
+    {
+      "message_id": 1649328836,
+      "author": "David A Case",
+      "date_raw": "Thu, 7 Apr 2022 06:53:56 -0400",
+      "body": "On Thu, Apr 07, 2022, Sathyaseelan C wrote:\n>\n>             I have installed AMBER20 with CUDA 9.0 and openmpi-3.0.0. I\n>tried running the production run using pmemd.cuda. But it's showing the\n>error which is given below. Any suggestion is highly appreciated.\nAre you trying to use mpirun with pmemd.cuda?  You would need\npmemd.cuda.MPI.   But clearly, try a short serial CPU run, then a short\nserial cuda run before jumping into parallel CUDA.\n>\n>cudaMemcpyToSymbol: SetSim copy to cSim failed invalid device symbol\nWhat is your CUDA_VISIBLE_DEVICES set to?\nDo the test cases work?\n>  Unit    9 Error on OPEN: pstep_1.rst\nIf this is a restart file, and a file with that name already exists, then\nyou need to have the -O flag set, or the program will refuse to overwrite\nand existing file.\nAs you can see, with so little information, there are lots of things that\ncould be going wrong.\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202204/0063.html",
+      "in_reply_to": 1649302977
+    }
+  ]
+}

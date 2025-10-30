@@ -1,0 +1,37 @@
+{
+  "thread_id": 1742479055,
+  "subject": "[AMBER] compiling Amber24 on Rocky9 HPC cluster",
+  "messages": [
+    {
+      "message_id": 1742479055,
+      "author": "Latorraca, Naomi R.",
+      "date_raw": "Thu, 20 Mar 2025 13:57:35 +0000",
+      "body": "Hi all,\nI am attempting to compile Amber24 on our Rock9.1 HPC cluster, but I'm running into an error when cmake attempts to download and build local miniconda:\nI run module load cmake to load the system's cmake (3.24.2). When I run the ./run_cmake command (in step 4 of the installation instructions), cmake hangs indefinitely when it attempts to download and build a local miniconda at the \"unpacking payload\" step.\n-- **************************************************************************\n-- Starting configuration of Amber version 24.0.0...\n-- CMake Version: 3.24.2\n-- For how to use this build system, please read this wiki:\n--\nhttp://ambermd.org/pmwiki/pmwiki.php/Main/CMake\n-- For a list of important CMake variables, check here:\n--\nhttp://ambermd.org/pmwiki/pmwiki.php/Main/CMake-Common-Options\n-- **************************************************************************\n-- Setting C compiler to gcc\n-- Setting CXX compiler to g++\n-- Setting Fortran compiler to gfortran\n-- Amber source found, building AmberTools and Amber\n-- The C compiler identification is GNU 11.5.0\n-- The CXX compiler identification is GNU 11.5.0\n-- The Fortran compiler identification is GNU 11.5.0\n-- Detecting C compiler ABI info\n-- Detecting C compiler ABI info - done\n-- Check for working C compiler: /usr/bin/gcc - skipped\n-- Detecting C compile features\n-- Detecting C compile features - done\n-- Detecting CXX compiler ABI info\n-- Detecting CXX compiler ABI info - done\n-- Check for working CXX compiler: /usr/bin/g++ - skipped\n-- Detecting CXX compile features\n-- Detecting CXX compile features - done\n-- Detecting Fortran compiler ABI info\n-- Detecting Fortran compiler ABI info - done\n-- Check for working Fortran compiler: /usr/bin/gfortran - skipped\n-- Testing if stdlib.h can be included...\n-- Testing if stdlib.h can be included... yes\n-- Downloading Python 3 Miniforge\n-- Detected Linux OS. Downloading the Linux installer\n-- Using 64 bit miniforge3\nDownloading\nhttps://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh\n-> /groups/nl2960_gp/software/amber24_src/build/CMakeFiles/miniconda/download/Miniforge3-Linux-x86_64.sh\n############################################################################################################################################################################################### 100.0%\nInstalling Miniforge Python.\nPREFIX=/groups/nl2960_gp/software/amber24_src/build/CMakeFiles/miniconda/install\nUnpacking payload ...\nI have verified that I don't have conda or miniconda variables in my PATH, but I'm not sure how to proceed from here. Has anyone else encountered this error before?\nThanks so much,\nNaomi",
+      "url": "http://archive.ambermd.org/202503/0030.html"
+    },
+    {
+      "message_id": 1742574111,
+      "author": "David A Case",
+      "date_raw": "Fri, 21 Mar 2025 10:21:51 -0600",
+      "body": "On Thu, Mar 20, 2025, Latorraca, Naomi R. via AMBER wrote:\n>\n>I am attempting to compile Amber24 on our Rock9.1 HPC cluster, but I'm\n>running into an error when cmake attempts to download and build local\n>miniconda:\n>\n>I run module load cmake to load the system's cmake (3.24.2). When I run the\n>./run_cmake command (in step 4 of the installation instructions), cmake\n>hangs indefinitely when it attempts to download and build a local miniconda\n>at the \"unpacking payload\" step.\nI don't have any real solution, but you might try again (internet download\nfailures can be temporary.)  Trying again on a different machine, if that is\npossible, might also provide some information.\nSome people on the list might have detailed notes about how to use an\nexisting python (so that you could set DOWNLOAD_MINICONDA to FALSE).  It's a\nmatter of making sure that your python has all the required imports.\n...hope this helps...although I'm grasping at straws.....dac",
+      "url": "http://archive.ambermd.org/202503/0034.html",
+      "in_reply_to": 1742479055
+    },
+    {
+      "message_id": 1742575209,
+      "author": "SATYAJIT KHATUA",
+      "date_raw": "Fri, 21 Mar 2025 16:40:09 +0000",
+      "body": "Hi,\nIf you want to use the existing conda installation in your system, you can add a line to the run_cmake file as -DUSE_CONDA_LIBS=TRUE. Please make sure setting the -DDOWNLOAD_MINICONDA flag to FALSE.\nBest,\nSatyajit\n________________________________\nFrom: David A Case via AMBER <amber.ambermd.org>\nSent: Friday, March 21, 2025 12:22:14 pm\nTo: Latorraca, Naomi R. <nl2960.cumc.columbia.edu>; AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] compiling Amber24 on Rocky9 HPC cluster\nOn Thu, Mar 20, 2025, Latorraca, Naomi R. via AMBER wrote:\n>\n>I am attempting to compile Amber24 on our Rock9.1 HPC cluster, but I'm\n>running into an error when cmake attempts to download and build local\n>miniconda:\n>\n>I run module load cmake to load the system's cmake (3.24.2). When I run the\n>./run_cmake command (in step 4 of the installation instructions), cmake\n>hangs indefinitely when it attempts to download and build a local miniconda\n>at the \"unpacking payload\" step.\nI don't have any real solution, but you might try again (internet download\nfailures can be temporary.)  Trying again on a different machine, if that is\npossible, might also provide some information.\nSome people on the list might have detailed notes about how to use an\nexisting python (so that you could set DOWNLOAD_MINICONDA to FALSE).  It's a\nmatter of making sure that your python has all the required imports.\n...hope this helps...although I'm grasping at straws.....dac",
+      "url": "http://archive.ambermd.org/202503/0036.html",
+      "in_reply_to": 1742479055
+    },
+    {
+      "message_id": 1742671260,
+      "author": "Patricio Barletta",
+      "date_raw": "Sat, 22 Mar 2025 19:21:00 +0000",
+      "body": "Get your own miniforge from here:\nhttps://github.com/conda-forge/miniforge/releases/tag/24.11.3-2\n[\nhttps://opengraph.githubassets.com/391f1095a82bf37b739da9801acd2ac0a00f1393779a52238f0ec8f76853d1df/conda-forge/miniforge/releases/tag/24.11.3-2\n]<\nhttps://github.com/conda-forge/miniforge/releases/tag/24.11.3-2\n>\nRelease Release 24.11.3-2 · conda-forge/miniforge - GitHub<\nhttps://github.com/conda-forge/miniforge/releases/tag/24.11.3-2\n>\nWhat's Changed Rebuilt with fmt 11.0 since fmt 11.1 was incompatible with the ABI of fmt 11.0. This will improve compatibility with future packages that require fmt. Release 24.11.3 2 by @hmaarrfk.\n..\ngithub.com\nThen create the environment for amber:\n```\nmamba create -n amber \"python<3.12\" \"numpy<2\" scipy matplotlib cython rdkit pyyaml -y\n```\nActivate it:\n```\nconda activate amber\n```\nAnd build amber with the python scripts, but without the built-in miniconda\n```\ncmake <YOUR-OPTIONS> -DDOWNLOAD_MINICONDA=FALSE -DBUILD_PYTHON=ON\n```\nLet me know if it doesn't work.",
+      "url": "http://archive.ambermd.org/202503/0039.html",
+      "in_reply_to": 1742479055
+    }
+  ]
+}

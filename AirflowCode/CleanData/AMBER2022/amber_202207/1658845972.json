@@ -1,0 +1,21 @@
+{
+  "thread_id": 1658845972,
+  "subject": "[AMBER] Creating rst7 file with CHARMM-GUI generated parm7 and pdb files (Charmm36 force field)",
+  "messages": [
+    {
+      "message_id": 1658845972,
+      "author": "Prathit Chatterjee",
+      "date_raw": "Tue, 26 Jul 2022 23:32:52 +0900",
+      "body": "Dear Experts,\nI want to create an rst7 file for restarting a simulation from between my\ntrajectory.\nMy initial systems have been generated with CHARMM-GUI, with Charmm36 force\nfield.\nI have followed the following guidance (\nhttp://archive.ambermd.org/201506/0097.html\n), however, I am getting the\nfollowing error:\n===============\n(base) [Prathit.master]~/APP/OnlyAPP/AlphaFold2/770_res/Charmm-Gui_Dimer-units/E1-E2_75Aenm/charmm-gui-3765059778/amber>cpptraj\n-p step3_input.parm7 -y step5_prot.4_frame2.pdb -x step5_prot.4_frame2.rst7\nCPPTRAJ: Trajectory Analysis. V4.25.6\n___  ___  ___  ___\n| \\/ | \\/ | \\/ |\n_|_/\\_|_/\\_|_/\\_|_\n| Date/time: 07/26/22 19:58:00\n| Available memory: 12.294 GB\nReading 'step3_input.parm7' as Amber Topology\nCHAMBER topology:\nCHARMM36 All-atom Force Field\nWarning: Amber topology flag 'CMAP_COUNT' is unrecognized and will be\nskipped.\nWarning: Amber topology flag 'CMAP_RESOLUTION' is unrecognized and will be\nskipped.\nWarning: Amber topology flag 'CMAP_PARAMETER_01' is unrecognized and will\nbe skipped.\nWarning: Amber topology flag 'CMAP_PARAMETER_02' is unrecognized and will\nbe skipped.\nWarning: Amber topology flag 'CMAP_PARAMETER_03' is unrecognized and will\nbe skipped.\nWarning: Amber topology flag 'CMAP_PARAMETER_04' is unrecognized and will\nbe skipped.\nWarning: Amber topology flag 'CMAP_PARAMETER_05' is unrecognized and will\nbe skipped.\nWarning: Amber topology flag 'CMAP_INDEX' is unrecognized and will be\nskipped.\nReading 'step5_prot.4_frame2.pdb' as PDB\nRead CRYST1 info from PDB: a=240.854 b=240.854 c=240.854 alpha=90\nbeta=90 gamma=90\nError: PDB step5_prot.4_frame2.pdb: No frames read. atom=8418 expected\n1394424.\nError: Could not set up 'step5_prot.4_frame2.pdb' for reading.\nError: Could not set up input trajectory 'step5_prot.4_frame2.pdb'.\nTIME: Total execution time: 2.6554 seconds.\nError: Error(s) occurred during execution.\n===============\nIf you have any suggestions/flow-lines, please let me know kindly.\nAny help will be deeply appreciated.\nThank you,\nSincerely,\nPrathit",
+      "url": "http://archive.ambermd.org/202207/0159.html"
+    },
+    {
+      "message_id": 1659968108,
+      "author": "Daniel Roe",
+      "date_raw": "Mon, 8 Aug 2022 10:15:08 -0400",
+      "body": "Hi,\nThere are a couple of issues here.\nOn Tue, Jul 26, 2022 at 10:33 AM Prathit Chatterjee via AMBER\n<amber.ambermd.org> wrote:\n> CPPTRAJ: Trajectory Analysis. V4.25.6\nPlease upgrade to a more recent version of cpptraj (from AmberTools 22\nor from the GitHub site: https://github.com/Amber-MD/cpptraj). That\nwill get rid of the CMAP etc warnings.\n>\n> Error: PDB step5_prot.4_frame2.pdb: No frames read. atom=8418 expected\n> 1394424.\nYour topology and input trajectory have different #s of atoms. Based\non the file naming I'm guessing that step5_prot.4_frame2.pdb only has\nthe protein, while step3_input.parm7 has the entire system (solvent\netc). If the protein is all you want you can just use the PDB as your\ntopology:\ncpptraj -p  step5_prot.4_frame2.pdb -y step5_prot.4_frame2.pdb -x\nstep5_prot.4_frame2.rst7\nNote also that cpptraj can use PSF files directly as topology files.\n-Dan",
+      "url": "http://archive.ambermd.org/202208/0043.html",
+      "in_reply_to": 1658845972
+    }
+  ]
+}

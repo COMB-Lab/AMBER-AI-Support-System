@@ -1,0 +1,29 @@
+{
+  "thread_id": 1590623261,
+  "subject": "[AMBER] Tool to calculate CSP and NOE for DNA trajectory?",
+  "messages": [
+    {
+      "message_id": 1590623261,
+      "author": "Kenneth Huang",
+      "date_raw": "Wed, 27 May 2020 19:47:41 -0400",
+      "body": "Hi all,\nA general question- does anyone know of tools (assuming there isn't a\ncombined suite) for calculating CSP or NOEs from a trajectory? I know\nthere's SPARTA+ and shiftX2 for protein CSPs for proteins, but with DNA all\nI've seen is the NMR option in Gaussian, which seems prohibitively\nexpensive.\nLikewise for NOEs I know of MD2NOE but haven't ever used it in context of\nDNA, and other than back-calculating from the distance restraints, I was\njust wondering if there had been any other options in cpptraj?\nBest,\nKenneth\n-- \nAsk yourselves, all of you, what power would hell have if those imprisoned\nhere could not dream of heaven?",
+      "url": "http://archive.ambermd.org/202005/0312.html"
+    },
+    {
+      "message_id": 1590669740,
+      "author": "Christina Bergonzo",
+      "date_raw": "Thu, 28 May 2020 08:42:20 -0400",
+      "body": "Hi Kenneth,\nI do not know of any stand alone tools that will calculate NMR observables\nfrom a trajectory.\nI regularly do this without too much hassle using a combination of bash/awk\nscripting and Cpptraj/shifts.\nI also back out NOE distances from distance restraints - if you want to\npredict NOEs using a trajectory, that's a different question (see Henriksen\net al. JPCB,  dx.doi.org/10.1021/jp400530e), but also distance based.\nIf you look at the Cpptraj distance command, there is an option for\nevaluating a distance as an NOE.\nI write a script that takes my atoms of interest from whatever experimental\nfile format I have, and formats them into the distance command:\ndistance d0 :1.H1' :1.H4' type noe bound 0.0 bound 7.0 out\ndist/noe.val.0.dat\n....\ndistance d50 :6.H5'' :6.H6 type noe bound 0.0 bound 7.0 out\ndist/noe.val.50.dat\nanalyze statistics all out noe.dat\nThe last part dumps analysis of each distance into a file (noe.dat)\ncontaining  initial and final values, avg and standard deviation, 1/r^6\naverages, # of violations, etc.\nExample output:\nSTATISTICS :1.H1' and :1.H4'\nAVERAGE:   3.0492 (0.2559 stddev)\nINITIAL:   3.0944\nFINAL:     3.2662\nNOE SERIES: S < 2.9, M < 3.5, W < 5.0, blank otherwise.\n|SMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM|\nNOE < 7.00 for 100.00% of the time\nNOE <r^-6>^(-1/6)= 2.9650\n#Violations: Low= 0 High= 0 Total= 0\nRexp= 7.0000 <Violation>= -4.0350\n< 2.5   2.5-3.5  3.5-4.5  4.5-5.5  5.5-6.5   > 6.5\n-------------------------------------------------------\n%occupied |    2.4 |   95.1 |    2.5 |        |        |        |\naverage   |  2.402 |  3.051 |  3.611 |        |        |        |\nstddev    |  0.084 |  0.223 |  0.103 |        |        |        |\n-------------------------------------------------------",
+      "url": "http://archive.ambermd.org/202005/0314.html",
+      "in_reply_to": 1590623261
+    },
+    {
+      "message_id": 1590724679,
+      "author": "Kenneth Huang",
+      "date_raw": "Thu, 28 May 2020 23:57:59 -0400",
+      "body": "Hi Christina,\nThanks a lot for the insight and script! That more or less covers for what\nI wanted to do NOE and CSP wise, and LAMORD should more or less fill in the\ngap that the protein CSP softwares I found weren't able to do.\nBest,\nKenneth\nOn Thu, May 28, 2020 at 8:42 AM Christina Bergonzo <cbergonzo.gmail.com>\nwrote:\n> Hi Kenneth,\n>\n> I do not know of any stand alone tools that will calculate NMR observables\n> from a trajectory.\n> I regularly do this without too much hassle using a combination of bash/awk\n> scripting and Cpptraj/shifts.\n> I also back out NOE distances from distance restraints - if you want to\n> predict NOEs using a trajectory, that's a different question (see Henriksen\n> et al. JPCB,  dx.doi.org/10.1021/jp400530e), but also distance based.\n>\n> If you look at the Cpptraj distance command, there is an option for\n> evaluating a distance as an NOE.\n> I write a script that takes my atoms of interest from whatever experimental\n> file format I have, and formats them into the distance command:\n>\n> distance d0 :1.H1' :1.H4' type noe bound 0.0 bound 7.0 out\n>  dist/noe.val.0.dat\n> ....\n> distance d50 :6.H5'' :6.H6 type noe bound 0.0 bound 7.0 out\n>  dist/noe.val.50.dat\n> analyze statistics all out noe.dat\n>\n> The last part dumps analysis of each distance into a file (noe.dat)\n> containing  initial and final values, avg and standard deviation, 1/r^6\n> averages, # of violations, etc.\n> Example output:\n>\n> STATISTICS :1.H1' and :1.H4'\n>    AVERAGE:   3.0492 (0.2559 stddev)\n>    INITIAL:   3.0944\n>    FINAL:     3.2662\n>    NOE SERIES: S < 2.9, M < 3.5, W < 5.0, blank otherwise.\n>     |SMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM|\n>    NOE < 7.00 for 100.00% of the time\n>    NOE <r^-6>^(-1/6)= 2.9650\n>    #Violations: Low= 0 High= 0 Total= 0\n>    Rexp= 7.0000 <Violation>= -4.0350\n>\n>                < 2.5   2.5-3.5  3.5-4.5  4.5-5.5  5.5-6.5   > 6.5\n>            -------------------------------------------------------\n>  %occupied |    2.4 |   95.1 |    2.5 |        |        |        |\n>  average   |  2.402 |  3.051 |  3.611 |        |        |        |\n>  stddev    |  0.084 |  0.223 |  0.103 |        |        |        |\n>            -------------------------------------------------------\n>",
+      "url": "http://archive.ambermd.org/202005/0329.html",
+      "in_reply_to": 1590623261
+    }
+  ]
+}

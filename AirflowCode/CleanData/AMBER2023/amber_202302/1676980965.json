@@ -1,0 +1,29 @@
+{
+  "thread_id": 1676980965,
+  "subject": "[AMBER] How to do analysis on specific frames in cpptraj?",
+  "messages": [
+    {
+      "message_id": 1676980965,
+      "author": "XP Chen",
+      "date_raw": "Tue, 21 Feb 2023 20:02:45 +0800 (CST)",
+      "body": "I want to do some analysis (here is `watershell`) on some specific frames.\nI use a not-easy way as follows. However, it will create new trajectory files, and make it not convenient for large trajectories. Is there any elegant way to do analysis on specific frames which do not fulfill `<start> <stop> <offset>` in `trajin`?\n1. First split the trajectory\n```\nparm A.prmtop\ntrajin  A.nc\ntrajout  B1.nc netcdf  onlyframes    1,78,100,101,170\ntrajout  B2.nc netcdf  onlyframes    8,82,88,99,120,125\nrun\n```\n2. Then reload the new trajectory and do the analysis\n```\nparm A.prmtop\ntrajin  B1.nc\nwatershell  :5.SG   out wa.out  lower  3.5  upper  5.0   :WAT\nrun\n``",
+      "url": "http://archive.ambermd.org/202302/0121.html"
+    },
+    {
+      "message_id": 1676984533,
+      "author": "Steinbrecher, Thomas",
+      "date_raw": "Tue, 21 Feb 2023 14:02:13 +0100",
+      "body": "Hi Chen,\nit sounds like half of what you want is built into cpptraj, you can create\nmultiple coordinate sets out of your trajectory with the createcrd command\nwithout writing to disk again. The one thing I didn't find, where someone\nwith more cpptraj experience may need to comment, is a good way to strip\nindividual frames out of a crdset using the onlyframes notation.\nKind Regards,\nThomas\nOn Tue, Feb 21, 2023 at 1:16 PM XP Chen via AMBER <amber.ambermd.org> wrote:\n> I want to do some analysis (here is `watershell`) on some specific frames.\n>\n> I use a not-easy way as follows. However, it will create new trajectory\n> files, and make it not convenient for large trajectories. Is there any\n> elegant way to do analysis on specific frames which do not fulfill `<start>\n> <stop> <offset>` in `trajin`?\n>\n> 1. First split the trajectory\n> ```\n> parm A.prmtop\n> trajin  A.nc\n>\n> trajout  B1.nc netcdf  onlyframes    1,78,100,101,170\n> trajout  B2.nc netcdf  onlyframes    8,82,88,99,120,125\n> run\n> ```\n>\n> 2. Then reload the new trajectory and do the analysis\n> ```\n> parm A.prmtop\n> trajin  B1.nc\n>\n> watershell  :5.SG   out wa.out  lower  3.5  upper  5.0   :WAT\n> run\n> ``\n>\n>",
+      "url": "http://archive.ambermd.org/202302/0122.html",
+      "in_reply_to": 1676980965
+    },
+    {
+      "message_id": 1676985605,
+      "author": "Daniel Roe",
+      "date_raw": "Tue, 21 Feb 2023 08:20:05 -0500",
+      "body": "Hi,\nRight now you can just do it via multiple 'trajin' statements and\nspecifying the beginning and ending frames:\nparm A.prmtop\ntrajin A.nc 1 1\ntrajin A.nc 78 78\ntrajin A.nc 100 101\ntrajin A.nc 170 170\nwatershell ...\nYou could also do it via a 'for' loop:\nparm A.prmtop\nfor FRAME in 1,78,100,101,170\ntrajin A.nc $FRAME $FRAME\ndone\nwatershell ...\nIn the future I hope to make it easier to do via a single 'trajin'\nstatement, but the above should work for now. Hope this helps,\n-Dan\nOn Tue, Feb 21, 2023 at 7:03 AM XP Chen via AMBER <amber.ambermd.org> wrote:\n>\n> I want to do some analysis (here is `watershell`) on some specific frames.\n>\n> I use a not-easy way as follows. However, it will create new trajectory files, and make it not convenient for large trajectories. Is there any elegant way to do analysis on specific frames which do not fulfill `<start> <stop> <offset>` in `trajin`?\n>\n> 1. First split the trajectory\n> ```\n> parm A.prmtop\n> trajin  A.nc\n>\n> trajout  B1.nc netcdf  onlyframes    1,78,100,101,170\n> trajout  B2.nc netcdf  onlyframes    8,82,88,99,120,125\n> run\n> ```\n>\n> 2. Then reload the new trajectory and do the analysis\n> ```\n> parm A.prmtop\n> trajin  B1.nc\n>\n> watershell  :5.SG   out wa.out  lower  3.5  upper  5.0   :WAT\n> run\n> ``\n>\n>",
+      "url": "http://archive.ambermd.org/202302/0123.html",
+      "in_reply_to": 1676980965
+    }
+  ]
+}

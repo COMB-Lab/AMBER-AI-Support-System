@@ -1,0 +1,45 @@
+{
+  "thread_id": 1625838486,
+  "subject": "[AMBER] Fortran runtime error: Bad value during integer read",
+  "messages": [
+    {
+      "message_id": 1625838486,
+      "author": "Sadaf Rani",
+      "date_raw": "Fri, 9 Jul 2021 18:48:06 +0500",
+      "body": "Dear Amber users\nI am getting an error of \"Fortran runtime error: Bad value during integer\nread\" while running minimization. I am giving following command:-\nsander -O -i min1.in -o min1.out -p complex_wild.prmtop -c\ncomplex_wild.inpcrd -r min1.rst -ref complex_wild.prmtop\nMin1.in is as follows:-\nMinimization with Cartesian restraints for the solute\n&cntrl\nimin=1, maxcyc=100000,\nntmin=1, ncyc= 10000,\nntpr=5,\nntr=1,\n&end\nGroup input for restrained atoms\n25.0\nRES 1 492\nEND\nEND\nWhat is wrong in input that I am getting this error?\nAny suggestions would be appreciated, please.\nRegards\nSadaf",
+      "url": "http://archive.ambermd.org/202107/0055.html"
+    },
+    {
+      "message_id": 1625838693,
+      "author": "Adrian Roitberg",
+      "date_raw": "Fri, 9 Jul 2021 09:51:33 -0400",
+      "body": "I am not sure,  but start by moving your &end line one space to the left\nto be aligned with your &cntrl line.\nAdrian\nOn 7/9/21 9:48 AM, Sadaf Rani wrote:\n> [External Email]\n>\n> Dear Amber users\n> I am getting an error of \"Fortran runtime error: Bad value during integer\n> read\" while running minimization. I am giving following command:-\n> sander -O -i min1.in -o min1.out -p complex_wild.prmtop -c\n> complex_wild.inpcrd -r min1.rst -ref complex_wild.prmtop\n>\n> Min1.in is as follows:-\n> Minimization with Cartesian restraints for the solute\n> &cntrl\n>   imin=1, maxcyc=100000,\n>   ntmin=1, ncyc= 10000,\n>   ntpr=5,\n>   ntr=1,\n>   &end\n> Group input for restrained atoms\n> 25.0\n> RES 1 492\n> END\n> END\n>\n> What is wrong in input that I am getting this error?\n> Any suggestions would be appreciated, please.\n> Regards\n> Sadaf\n>",
+      "url": "http://archive.ambermd.org/202107/0056.html",
+      "in_reply_to": 1625838486
+    },
+    {
+      "message_id": 1625839158,
+      "author": "Sadaf Rani",
+      "date_raw": "Fri, 9 Jul 2021 18:59:18 +0500",
+      "body": "Dear Adrian\nThank you for your reply. I have changed as you suggested:-\nMinimization with Cartesian restraints for the solute\n&cntrl\nimin=1, maxcyc=100000,\nntmin=1, ncyc= 10000,\nntpr=5,\nntr=1,\n&end\nGroup input for restrained atoms\n25.0\nRES 1 492\nEND\nEND\nBut getting the same error message as below:-\nAt line 300 of file set.F90\nFortran runtime error: Bad value during integer read\nI have tested the input on already working topology and coordinate files\nbut still getting the same.\nWhat else should I look for?\nRegards\nSadaf\nOn Fri, 9 Jul 2021 at 18:51, Adrian Roitberg <roitberg.ufl.edu> wrote:\n>\n> I am not sure,  but start by moving your &end line one space to the left\n> to be aligned with your &cntrl line.\n>\n> Adrian\n>\n>   On 7/9/21 9:48 AM, Sadaf Rani wrote:\n> > [External Email]\n> >\n> > Dear Amber users\n> > I am getting an error of \"Fortran runtime error: Bad value during integer\n> > read\" while running minimization. I am giving following command:-\n> > sander -O -i min1.in -o min1.out -p complex_wild.prmtop -c\n> > complex_wild.inpcrd -r min1.rst -ref complex_wild.prmtop\n> >\n> > Min1.in is as follows:-\n> > Minimization with Cartesian restraints for the solute\n> > &cntrl\n> >   imin=1, maxcyc=100000,\n> >   ntmin=1, ncyc= 10000,\n> >   ntpr=5,\n> >   ntr=1,\n> >   &end\n> > Group input for restrained atoms\n> > 25.0\n> > RES 1 492\n> > END\n> > END\n> >\n> > What is wrong in input that I am getting this error?\n> > Any suggestions would be appreciated, please.\n> > Regards\n> > Sadaf\n> >",
+      "url": "http://archive.ambermd.org/202107/0057.html",
+      "in_reply_to": 1625838486
+    },
+    {
+      "message_id": 1625850677,
+      "author": "David A Case",
+      "date_raw": "Fri, 9 Jul 2021 13:11:17 -0400",
+      "body": "On Fri, Jul 09, 2021, Sadaf Rani wrote:\n>I am getting an error of \"Fortran runtime error: Bad value during integer\n>read\" while running minimization. I am giving following command:-\n>sander -O -i min1.in -o min1.out -p complex_wild.prmtop -c\n>complex_wild.inpcrd -r min1.rst -ref complex_wild.prmtop\n^^^^^^^^^^^^^^^^^^^^^^^^\nYou are giving the prmtop file as input for the reference coordinates.\nYou need to put coordinates here, probably complex_wild.inpcrd.\nJust a note: if you had included the \"line 300 of set.F90\" part of the\nerror, it would have been much easier for people to spot this sort of error.\nIt' always good to copy and paste the exact error message.\n.....dac",
+      "url": "http://archive.ambermd.org/202107/0060.html",
+      "in_reply_to": 1625838486
+    },
+    {
+      "message_id": 1625883819,
+      "author": "Sadaf Rani",
+      "date_raw": "Sat, 10 Jul 2021 07:23:39 +0500",
+      "body": "Thank you DAC\nIt worked with -ref .inpcrd.\nRegards\nSadaf\nOn Fri, 9 Jul 2021 at 22:11, David A Case <david.case.rutgers.edu> wrote:\n> On Fri, Jul 09, 2021, Sadaf Rani wrote:\n>\n> >I am getting an error of \"Fortran runtime error: Bad value during integer\n> >read\" while running minimization. I am giving following command:-\n> >sander -O -i min1.in -o min1.out -p complex_wild.prmtop -c\n> >complex_wild.inpcrd -r min1.rst -ref complex_wild.prmtop\n>                                   ^^^^^^^^^^^^^^^^^^^^^^^^\n>\n> You are giving the prmtop file as input for the reference coordinates.\n> You need to put coordinates here, probably complex_wild.inpcrd.\n>\n> Just a note: if you had included the \"line 300 of set.F90\" part of the\n> error, it would have been much easier for people to spot this sort of\n> error.\n> It' always good to copy and paste the exact error message.\n>\n> .....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202107/0063.html",
+      "in_reply_to": 1625838486
+    }
+  ]
+}

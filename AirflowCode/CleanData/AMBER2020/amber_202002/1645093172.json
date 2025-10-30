@@ -1,0 +1,37 @@
+{
+  "thread_id": 1645093172,
+  "subject": "Re: [AMBER] Amber simulation of cyclic peptide",
+  "messages": [
+    {
+      "message_id": 1645093172,
+      "author": "saranya.cbmm.lodz.pl",
+      "date_raw": "Thu, 17 Feb 2022 11:19:32 +0100",
+      "body": "Hi,\nI am performing the MD simulation for cyclic 22-residue peptide using\nABMER 20. Initially the structure was minimized for 100ns by using\nGromacs-2021. The conformer structure of the cyclic peptide contains a\nbond between N and C terminus. While I’m using the conformer structure\nto generate the parameter files for the amber simulation by using xleap\ninterface the bond was missing because the amber automatically added the\nhydrogen at the N and C terminals. So I'm using the command \"bond\nprot.1.N prot.22.C\" to manually draw the bond between the terminals, but\nwhen I try to save the settings, I get the following error.\nBuilding topology.\nBuilding atom parameters.\nBuilding bond parameters.\nError: Could not find bond parameter for: N3 - C\nBuilding angle parameters.\nError: Could not find angle parameter: CX - N3 - C\nError: Could not find angle parameter: H - N3 - C\nError: Could not find angle parameter: N3 - C - CX\nError: Could not find angle parameter: N3 - C - O2\nBuilding proper torsion parameters.\nError:  ** No torsion terms for  CX-N3-C-CX\nError:  ** No torsion terms for  CX-N3-C-O2\nError:  ** No torsion terms for  H-N3-C-CX\nError:  ** No torsion terms for  H-N3-C-O2\nBuilding improper torsion parameters.\n** Warning: No sp2 improper torsion term for  CX-O2-C-N3\natoms are: CA O C N\ntotal 65 improper torsions applied\nBuilding H-Bond parameters.\nIncorporating Non-Bonded adjustments.\nWarning: Parameter file was not saved.",
+      "url": "http://archive.ambermd.org/202202/0173.html"
+    },
+    {
+      "message_id": 1645095619,
+      "author": "Carlos Simmerling",
+      "date_raw": "Thu, 17 Feb 2022 06:00:19 -0500",
+      "body": "This has been discussed on the list before and lots of helpful suggestions\nare in the archive (search for cyclic peptides).\nFor example, use clearpdbresmap\nhttp://archive.ambermd.org/202009/0070.html\nOn Thu, Feb 17, 2022, 5:19 AM <saranya.cbmm.\nlodz.pl> wrote:\n> Hi,\n>\n> I am performing the MD simulation for cyclic 22-residue peptide using\n> ABMER 20. Initially the structure was minimized for 100ns by using\n> Gromacs-2021. The conformer structure of the cyclic peptide contains a\n> bond between N and C terminus. While I’m using the conformer structure\n> to generate the parameter files for the amber simulation by using xleap\n> interface the bond was missing because the amber automatically added the\n> hydrogen at the N and C terminals. So I'm using the command \"bond\n> prot.1.N prot.22.C\" to manually draw the bond between the terminals, but\n> when I try to save the settings, I get the following error.\n>\n>\n> Building topology.\n> Building atom parameters.\n> Building bond parameters.\n>\n> Error: Could not find bond parameter for: N3 - C\n> Building angle parameters.\n>\n> Error: Could not find angle parameter: CX - N3 - C\n>\n> Error: Could not find angle parameter: H - N3 - C\n>\n> Error: Could not find angle parameter: N3 - C - CX\n>\n> Error: Could not find angle parameter: N3 - C - O2\n> Building proper torsion parameters.\n>\n> Error:  ** No torsion terms for  CX-N3-C-CX\n>\n> Error:  ** No torsion terms for  CX-N3-C-O2\n>\n> Error:  ** No torsion terms for  H-N3-C-CX\n>\n> Error:  ** No torsion terms for  H-N3-C-O2\n> Building improper torsion parameters.\n>   ** Warning: No sp2 improper torsion term for  CX-O2-C-N3\n>          atoms are: CA O C N\n>   total 65 improper torsions applied\n> Building H-Bond parameters.\n> Incorporating Non-Bonded adjustments.\n>\n> Warning: Parameter file was not saved.\n>\n>",
+      "url": "http://archive.ambermd.org/202202/0174.html",
+      "in_reply_to": 1645093172
+    },
+    {
+      "message_id": 1645099077,
+      "author": "saranya.cbmm.lodz.pl",
+      "date_raw": "Thu, 17 Feb 2022 12:57:57 +0100",
+      "body": "yes, but i tried all the suggestions none of the solutions worked for\nme.",
+      "url": "http://archive.ambermd.org/202202/0176.html",
+      "in_reply_to": 1645093172
+    },
+    {
+      "message_id": 1645096023,
+      "author": "Dr. Anselm Horn",
+      "date_raw": "Thu, 17 Feb 2022 12:07:03 +0100",
+      "body": "Saranya,\nthe problems arise because leap always converts the first and the last\nresidue in a protein chain into terminal ones and then uses the\nstructure and parameters before saving. And then, your additional bond\ndoes not fit into this scheme any more.\nThe solution is to prevent leap from automatically changing the\n'terminal' residues into their terminal instances.\nThis has been asked and answered here in the past already.\nA simple way, at least in my opinion, which also is applicable in your\ncase (small peptide), would be to use the leap command\nloadpdbusingseq (cf Amber manual 14.6.28):\nHere, you specify the amino acid sequence explicitely for your pdb file\nto load; if you do not use the terminal residue names like NALA or CGLY,\ntleap keeps the mid-term residues also at the termini, and your bond\ncommand should work fine.\nBest regards,\nAnselm\nBioinformatik  |  NHR.FAU\nFriedrich-Alexander-Universität Erlangen-Nürnberg (FAU)\nGermany\nAm 17.02.2022 um 11:19 schrieb saranya.cbmm.\nlodz.pl:\n> Hi,\n>\n> I am performing the MD simulation for cyclic 22-residue peptide using\n> ABMER 20. Initially the structure was minimized for 100ns by using\n> Gromacs-2021. The conformer structure of the cyclic peptide contains a\n> bond between N and C terminus. While I’m using the conformer structure\n> to generate the parameter files for the amber simulation by using xleap\n> interface the bond was missing because the amber automatically added the\n> hydrogen at the N and C terminals. So I'm using the command \"bond\n> prot.1.N prot.22.C\" to manually draw the bond between the terminals, but\n> when I try to save the settings, I get the following error.\n>\n>\n> Building topology.\n> Building atom parameters.\n> Building bond parameters.\n>\n> Error: Could not find bond parameter for: N3 - C\n> Building angle parameters.\n>\n> Error: Could not find angle parameter: CX - N3 - C\n>\n> Error: Could not find angle parameter: H - N3 - C\n>\n> Error: Could not find angle parameter: N3 - C - CX\n>\n> Error: Could not find angle parameter: N3 - C - O2\n> Building proper torsion parameters.\n>\n> Error:  ** No torsion terms for  CX-N3-C-CX\n>\n> Error:  ** No torsion terms for  CX-N3-C-O2\n>\n> Error:  ** No torsion terms for  H-N3-C-CX\n>\n> Error:  ** No torsion terms for  H-N3-C-O2\n> Building improper torsion parameters.\n>  ** Warning: No sp2 improper torsion term for  CX-O2-C-N3\n>         atoms are: CA O C N\n>  total 65 improper torsions applied\n> Building H-Bond parameters.\n> Incorporating Non-Bonded adjustments.\n>\n> Warning: Parameter file was not saved.\n>\n>",
+      "url": "http://archive.ambermd.org/202202/0175.html",
+      "in_reply_to": 1645093172
+    }
+  ]
+}

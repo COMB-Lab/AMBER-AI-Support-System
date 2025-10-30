@@ -1,0 +1,29 @@
+{
+  "thread_id": 1590552479,
+  "subject": "[AMBER] installation failed libsanderles.dir amd plumed",
+  "messages": [
+    {
+      "message_id": 1590552479,
+      "author": "Andrew Waight",
+      "date_raw": "Tue, 26 May 2020 21:07:59 -0700",
+      "body": "Hello I am trying to install AmberTools on Ubuntu 18.04 MPI and CUDA\nenabled with cmake 3.17.2 the \"make install\" errors out with.\nCMakeFiles/libsanderles.dir/Plumed.c.o:(.data.rel+0x0): undefined reference\nto `plumedmain_create'\nCMakeFiles/libsanderles.dir/Plumed.c.o:(.data.rel+0x8): undefined reference\nto `plumedmain_cmd'\nCMakeFiles/libsanderles.dir/Plumed.c.o:(.data.rel+0x10): undefined\nreference to `plumedmain_finalize'\nI have PLUMED already installed for use with GROMACS and I dont really want\nto uninstall it. Does anyone have any advice for me to complete the\ninstallation? Thanks so much for any help!\nDrew",
+      "url": "http://archive.ambermd.org/202005/0303.html"
+    },
+    {
+      "message_id": 1590582320,
+      "author": "David A Case",
+      "date_raw": "Wed, 27 May 2020 08:25:20 -0400",
+      "body": "On Tue, May 26, 2020, Andrew Waight wrote:\n>Hello I am trying to install AmberTools on Ubuntu 18.04 MPI and CUDA\n>enabled with cmake 3.17.2 the \"make install\" errors out with.\n>\n>CMakeFiles/libsanderles.dir/Plumed.c.o:(.data.rel+0x0): undefined reference\n>to `plumedmain_create'\n>CMakeFiles/libsanderles.dir/Plumed.c.o:(.data.rel+0x8): undefined reference\n>to `plumedmain_cmd'\n>CMakeFiles/libsanderles.dir/Plumed.c.o:(.data.rel+0x10): undefined\n>reference to `plumedmain_finalize'\n>\n>I have PLUMED already installed for use with GROMACS and I dont really want\n>to uninstall it. Does anyone have any advice for me to complete the\n>installation? Thanks so much for any help!\nSet -DFORCE_DISABLED_LIBS=plumed in your run_cmake script, and see if\nthat helps.  In spite of what it looks like, runtime linking to plumed\nmay still work (?!?)  Viktor Drobot is working on this issue, and I'm\nhoping we can get an update out soon.\n...dac",
+      "url": "http://archive.ambermd.org/202005/0309.html",
+      "in_reply_to": 1590552479
+    },
+    {
+      "message_id": 1590588705,
+      "author": "Andrew Waight",
+      "date_raw": "Wed, 27 May 2020 07:11:45 -0700",
+      "body": "Thanks for your help David,\nActually I uninstalled plumed to try to get the package compiled,\nnow the make install is throwing an error linking CXX\n[ 67%] Linking CXX executable cpptraj.cuda\n/home/drewaight/anaconda3/x86_64-conda_cos6-linux-gnu/sysroot/usr/lib/librt.so:\nundefined reference to `__vdso_clock_gettime.GLIBC_PRIVATE'\nis it a good idea to use the same flag as you mentioned above on this\nlibrary also? Thanks again for your help.\nDrew\nOn Wed, May 27, 2020 at 5:25 AM David A Case <david.case.rutgers.edu> wrote:\n> On Tue, May 26, 2020, Andrew Waight wrote:\n>\n> >Hello I am trying to install AmberTools on Ubuntu 18.04 MPI and CUDA\n> >enabled with cmake 3.17.2 the \"make install\" errors out with.\n> >\n> >CMakeFiles/libsanderles.dir/Plumed.c.o:(.data.rel+0x0): undefined\n> reference\n> >to `plumedmain_create'\n> >CMakeFiles/libsanderles.dir/Plumed.c.o:(.data.rel+0x8): undefined\n> reference\n> >to `plumedmain_cmd'\n> >CMakeFiles/libsanderles.dir/Plumed.c.o:(.data.rel+0x10): undefined\n> >reference to `plumedmain_finalize'\n> >\n> >I have PLUMED already installed for use with GROMACS and I dont really\n> want\n> >to uninstall it. Does anyone have any advice for me to complete the\n> >installation? Thanks so much for any help!\n>\n> Set -DFORCE_DISABLED_LIBS=plumed in your run_cmake script, and see if\n> that helps.  In spite of what it looks like, runtime linking to plumed\n> may still work (?!?)  Viktor Drobot is working on this issue, and I'm\n> hoping we can get an update out soon.\n>\n> ...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202005/0310.html",
+      "in_reply_to": 1590552479
+    }
+  ]
+}

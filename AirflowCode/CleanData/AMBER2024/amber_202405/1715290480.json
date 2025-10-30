@@ -1,0 +1,37 @@
+{
+  "thread_id": 1715290480,
+  "subject": "[AMBER] printcharges using Amber24 GFN2-xtB method",
+  "messages": [
+    {
+      "message_id": 1715290480,
+      "author": "Niven Singh",
+      "date_raw": "Thu, 9 May 2024 21:34:40 +0000",
+      "body": "Hi!\nI'm trying to use QM/MM with Amber24 using the GFN2-xtB method for a single point calculation. I'm trying to print out the Mulliken charges so I can see how the program has spread the qm_charge across the QM subsystem but when I set printcharges to 1, I don't see the charges per atom for my subsystem in the output file.\nI checked the manual and couldn't find what would be wrong with my input, so I've included a zip file that has my input file, output file, and job script. If you need more information for my run (topology files), let me know. I wasn't sure why the charges aren't being outputted, so I thought I would reach out and ask and online it said to send my questions to this email.\nLooking forward to hearing from you!\nThanks!\nNiven 🙂",
+      "url": "http://archive.ambermd.org/202405/0036.html"
+    },
+    {
+      "message_id": 1715788319,
+      "author": "Timothy Giese",
+      "date_raw": "Wed, 15 May 2024 15:51:59 +0000",
+      "body": "The issue being described doesn't appear to be related to GFN2-xTB. The symptom exists when qm_theory is changed to DFTB2, for example. The printcharges=1 output is disabled in runmin.F90 when imin=5. To accomplish your task, you can instead set the following options in &cntrl: \"imin=6, ntpr=1, nstlim=1\". You should then see output that looks like \"Atomic Charges for Step       1 :\".\n-Tim\n> I'm trying to use QM/MM with Amber24 using the GFN2-xtB method for a single point calculation. I'm trying to print out the Mulliken charges so I can see how the program has spread the qm_charge across the QM subsystem but when I set printcharges to 1, I don't see the charges per atom for my subsystem in the output file.",
+      "url": "http://archive.ambermd.org/202405/0063.html",
+      "in_reply_to": 1715290480
+    },
+    {
+      "message_id": 1715988411,
+      "author": "Niven Singh",
+      "date_raw": "Fri, 17 May 2024 23:26:51 +0000",
+      "body": "Hi,\nThanks so much! This prints out mulliken charges for all atoms in the QM region.\nI had another question about xTB in Amber24. When the calculation finishes,  there's a XTBESCF= ___ (floating point) in the qmmm.out file. Is this a single point energy? And what are the units?\nIf I use an older version of amber and interface xTB2 with orca, there is a XTBESCF= in qmmm.out but also a FINAL SINGLE POINT ENERGY in old.orc_job.tpl file. Are these two energies related or separate? And are both in hartrees?\nI'm assuming the two numbers are related but I'm not sure how.\nThanks so much!\nNiven 🙂\n________________________________\nFrom: Timothy Giese via AMBER <amber.ambermd.\norg>\nSent: Wednesday, May 15, 2024 11:51 AM\nTo: amber.ambermd.\norg <amber.ambermd.\norg>\nSubject: Re: [AMBER] printcharges using Amber24 GFN2-xtB method\nThe issue being described doesn't appear to be related to GFN2-xTB. The symptom exists when qm_theory is changed to DFTB2, for example. The printcharges=1 output is disabled in runmin.F90 when imin=5. To accomplish your task, you can instead set the following options in &cntrl: \"imin=6, ntpr=1, nstlim=1\". You should then see output that looks like \"Atomic Charges for Step       1 :\".\n-Tim\n> I'm trying to use QM/MM with Amber24 using the GFN2-xtB method for a single point calculation. I'm trying to print out the Mulliken charges so I can see how the program has spread the qm_charge across the QM subsystem but when I set printcharges to 1, I don't see the charges per atom for my subsystem in the output file.",
+      "url": "http://archive.ambermd.org/202405/0078.html",
+      "in_reply_to": 1715290480
+    },
+    {
+      "message_id": 1716215494,
+      "author": "Timothy Giese",
+      "date_raw": "Mon, 20 May 2024 14:31:34 +0000",
+      "body": "If you wanted the single point energy of the system, set imin=6, ntpr=1, nstlim=0 and look at EPtot (the total potential energy).\nWhen imin=6, ntpr=1, nstlim=1, sander will likely show 2 energies per frame; the first being the potential energy of the coordinates stored in the trajectory file, and the second being the potential energy after 1 step of dynamics. The imin=6 option means: run molecular dynamics departing from each frame in the input trajectory file. I had suggested using imin=6 because the printcharges option is unavailable with imin=5 (run minimization departing from each frame in the input trajectory file). However, the printcharges output will not appear at dynamics step 0 (based on the printing logic in the molecular dynamics code), so I suggested setting nstlim=1 which will run 1 step of dynamics (and thus allow charge printing).\nThe energies in the mdout file are kcal/mol. Note that – unless you turned periodicity off – the value of XTBESCF contains the internal QM energy and the periodic electrostatics with the MM and QM-image charges.  Many QM/MM interfaces evaluate truncated electrostatics rather than full Ewald electrostatics, so a comparison of the numerical values generated from other interfaces will need to take into consideration how the electrostatics are evaluated.  As far as I am aware, Sander is the only program that includes an xTB interface with QM/MM Ewald electrostatics.\n-Tim\n________________________________\nFrom: Niven Singh <niven.singh.duke.edu>\nSent: Friday, May 17, 2024 7:26 PM\nTo: Timothy Giese <giese025.rutgers.edu>; AMBER Mailing List <amber.ambermd.\norg>\nSubject: Re: [AMBER] printcharges using Amber24 GFN2-xtB method\nHi,\nThanks so much! This prints out mulliken charges for all atoms in the QM region.\nI had another question about xTB in Amber24. When the calculation finishes,  there's a XTBESCF= ___ (floating point) in the qmmm.out file. Is this a single point energy? And what are the units?\nIf I use an older version of amber and interface xTB2 with orca, there is a XTBESCF= in qmmm.out but also a FINAL SINGLE POINT ENERGY in old.orc_job.tpl file. Are these two energies related or separate? And are both in hartrees?\nI'm assuming the two numbers are related but I'm not sure how.\nThanks so much!\nNiven 🙂\n________________________________\nFrom: Timothy Giese via AMBER <amber.ambermd.\norg>\nSent: Wednesday, May 15, 2024 11:51 AM\nTo: amber.ambermd.\norg <amber.ambermd.\norg>\nSubject: Re: [AMBER] printcharges using Amber24 GFN2-xtB method\nThe issue being described doesn't appear to be related to GFN2-xTB. The symptom exists when qm_theory is changed to DFTB2, for example. The printcharges=1 output is disabled in runmin.F90 when imin=5. To accomplish your task, you can instead set the following options in &cntrl: \"imin=6, ntpr=1, nstlim=1\". You should then see output that looks like \"Atomic Charges for Step       1 :\".\n-Tim\n> I'm trying to use QM/MM with Amber24 using the GFN2-xtB method for a single point calculation. I'm trying to print out the Mulliken charges so I can see how the program has spread the qm_charge across the QM subsystem but when I set printcharges to 1, I don't see the charges per atom for my subsystem in the output file.",
+      "url": "http://archive.ambermd.org/202405/0088.html",
+      "in_reply_to": 1715290480
+    }
+  ]
+}

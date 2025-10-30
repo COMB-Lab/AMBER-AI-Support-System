@@ -1,0 +1,77 @@
+{
+  "thread_id": 1637744769,
+  "subject": "[AMBER] installation error amber 18 in ubuntu 20.04",
+  "messages": [
+    {
+      "message_id": 1637744769,
+      "author": "Ayesha Fatima",
+      "date_raw": "Wed, 24 Nov 2021 12:06:09 +0300",
+      "body": "Dear all,\nI am trying to install a serial installation of AMBER18 in my Dell G3\nmachine equipped with Intel core7 processor with Ubuntu 20.04\nHowever after several trials, the error still remains.\n....................................................................................\nCopying packmol_memgen.egg-info to\n/home/aesha/Documents/amber18/amber18//lib/python2.7/site-packages/packmol_memgen-0.9.9a0-py2.7.egg-info\nrunning install_scripts\ncopying build/scripts-2.7/packmol-memgen ->\n/home/aesha/Documents/amber18/amber18//bin\nchanging mode of /home/aesha/Documents/amber18/amber18//bin/packmol-memgen\nto 755\ncp: cannot stat 'packmol_memgen/lib/memembed/bin/memembed': No such file or\ndirectory\nmake[2]: *** [Makefile:517: packmol-memgen] Error 1\nmake[2]: Leaving directory\n'/home/aesha/Documents/amber18/amber18/AmberTools/src'\nmake[1]: *** [Makefile:56: serial] Error 2\nmake[1]: Leaving directory\n'/home/aesha/Documents/amber18/amber18/AmberTools/src'\nmake: *** [Makefile:7: install] Error 2\n...................................................................................\nCould you please help understand how to remove this error\nthe environment was already set before configuring\nThank you\nRegards\nAyesha\nBVU, Istanbul, Turkey",
+      "url": "http://archive.ambermd.org/202111/0232.html"
+    },
+    {
+      "message_id": 1637761653,
+      "author": "David A Case",
+      "date_raw": "Wed, 24 Nov 2021 08:47:33 -0500",
+      "body": "On Wed, Nov 24, 2021, Ayesha Fatima wrote:\n>I am trying to install a serial installation of AMBER18 in my Dell G3\n>machine equipped with Intel core7 processor with Ubuntu 20.04\n>running install_scripts\n>copying build/scripts-2.7/packmol-memgen ->\n>/home/aesha/Documents/amber18/amber18//bin\n>changing mode of /home/aesha/Documents/amber18/amber18//bin/packmol-memgen\n>to 755\n>cp: cannot stat 'packmol_memgen/lib/memembed/bin/memembed': No such file or\n>directory\nI've not seen this error before.  Can you look at the entire make log to\nlook for anything else related to packmol_memgen?  (Run \"make install >\nmake.log\" if you don't have a log file.)\nAs a workaround, while this problem is being investigated, you could comment\nout the lines related to packmol_memgen in AmberTools/src/Makefile.\n(I'm assuming, based on the fact that this is Amber18, that you are still\nusing the configure script, and not cmake).  This should get\nyou going if packmol_memgen is the only problem.\n...good luck....dac",
+      "url": "http://archive.ambermd.org/202111/0236.html",
+      "in_reply_to": 1637744769
+    },
+    {
+      "message_id": 1637825692,
+      "author": "Ayesha Fatima",
+      "date_raw": "Thu, 25 Nov 2021 10:34:52 +0300",
+      "body": "Dear Prof David,\nThank you for your response. I am using AMBER 18 with the configure file\nI made the log file which i am attaching. I commented out the\npackmol_memgen line in AmberTools/src/MakeFile. but the error is still\npersisting. I have also not seen the error before. Previously I was using\nUbuntu 18 with no issues.\nLooking forward to your reply\nThank you\nRegards\nAyesha\nOn Wed, Nov 24, 2021 at 4:47 PM David A Case <david.case.rutgers.edu> wrote:\n> On Wed, Nov 24, 2021, Ayesha Fatima wrote:\n>\n> >I am trying to install a serial installation of AMBER18 in my Dell G3\n> >machine equipped with Intel core7 processor with Ubuntu 20.04\n>\n> >running install_scripts\n> >copying build/scripts-2.7/packmol-memgen ->\n> >/home/aesha/Documents/amber18/amber18//bin\n> >changing mode of /home/aesha/Documents/amber18/amber18//bin/packmol-memgen\n> >to 755\n> >cp: cannot stat 'packmol_memgen/lib/memembed/bin/memembed': No such file\n> or\n> >directory\n>\n> I've not seen this error before.  Can you look at the entire make log to\n> look for anything else related to packmol_memgen?  (Run \"make install >\n> make.log\" if you don't have a log file.)\n>\n> As a workaround, while this problem is being investigated, you could\n> comment\n> out the lines related to packmol_memgen in AmberTools/src/Makefile.\n> (I'm assuming, based on the fact that this is Amber18, that you are still\n> using the configure script, and not cmake).  This should get\n> you going if packmol_memgen is the only problem.\n>\n> ...good luck....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202111/0242.html",
+      "in_reply_to": 1637744769
+    },
+    {
+      "message_id": 1637849315,
+      "author": "David A Case",
+      "date_raw": "Thu, 25 Nov 2021 09:08:35 -0500",
+      "body": "On Thu, Nov 25, 2021, Ayesha Fatima wrote:\n>Thank you for your response. I am using AMBER 18 with the configure file\n>I made the log file which i am attaching. I commented out the\n>packmol_memgen line in AmberTools/src/MakeFile. but the error is still\n>persisting. I have also not seen the error before. Previously I was using\n>Ubuntu 18 with no issues.\nThe log file you post doesn't show any errors, and still shows\npackmol_memgen being processed.  It's unclear whether your logfile was\ncreated before or after you commented out the packmol_memgen line.  Were\nthere additional error messages that showed up on the screen that are not in\nthe log file?\nBut since the \"error persists\" (is it *exactly* the same error?) my idea for\nmodifying the Makefile seems to be insufficient.\nMaybe Stephan or someone else on the list will have ideas here.  You could\nconsider getting AmberTools21 to see if you encounter the same problem.\n....dac",
+      "url": "http://archive.ambermd.org/202111/0245.html",
+      "in_reply_to": 1637744769
+    },
+    {
+      "message_id": 1637849965,
+      "author": "Ayesha Fatima",
+      "date_raw": "Thu, 25 Nov 2021 17:19:25 +0300",
+      "body": "Thank you Prof.\nYes Unfortunately it does not show the error but the error is persisting\neven after commenting the line as earlier advised in the make file. has it\ngot to do with the incompatibility of Ubuntu 20 and Amber 18?\nYes we are thinking of it and are looking for grant support.\nThank you again for your advice\nBest regards\nAyesha\nOn Thu, Nov 25, 2021 at 5:09 PM David A Case <david.case.rutgers.edu> wrote:\n> On Thu, Nov 25, 2021, Ayesha Fatima wrote:\n>\n> >Thank you for your response. I am using AMBER 18 with the configure file\n> >I made the log file which i am attaching. I commented out the\n> >packmol_memgen line in AmberTools/src/MakeFile. but the error is still\n> >persisting. I have also not seen the error before. Previously I was using\n> >Ubuntu 18 with no issues.\n>\n> The log file you post doesn't show any errors, and still shows\n> packmol_memgen being processed.  It's unclear whether your logfile was\n> created before or after you commented out the packmol_memgen line.  Were\n> there additional error messages that showed up on the screen that are not\n> in\n> the log file?\n>\n> But since the \"error persists\" (is it *exactly* the same error?) my idea\n> for\n> modifying the Makefile seems to be insufficient.\n>\n> Maybe Stephan or someone else on the list will have ideas here.  You could\n> consider getting AmberTools21 to see if you encounter the same problem.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202111/0246.html",
+      "in_reply_to": 1637744769
+    },
+    {
+      "message_id": 1637890865,
+      "author": "David A Case",
+      "date_raw": "Thu, 25 Nov 2021 20:41:05 -0500",
+      "body": "On Thu, Nov 25, 2021, Ayesha Fatima wrote:\n>Yes Unfortunately it does not show the error but the error is persisting\n>even after commenting the line as earlier advised in the make file. has it\n>got to do with the incompatibility of Ubuntu 20 and Amber 18?\nI doubt that there is a fundamental inconsistency.  I'm sure I have built\nAmber18 on Ubuntu20, but I don't have details.\nHave you commented out every reference to packmol_memgen in the Makefile?\nMaybe having someone else look at the log file would help explain why the\npackmol_memgen error still arises.\n>Yes we are thinking of it and are looking for grant support.\nJust note that AmberTools21 does not have a license fee.\n....dac",
+      "url": "http://archive.ambermd.org/202111/0247.html",
+      "in_reply_to": 1637744769
+    },
+    {
+      "message_id": 1637915239,
+      "author": "Ayesha Fatima",
+      "date_raw": "Fri, 26 Nov 2021 11:27:19 +0300",
+      "body": "Dear Prof,\nThank you once again. I tried once more by blocking all lines with\npackmol-memgen. I am attaching my make file from Amberools/src. Now the\nerror is different\n///// These are the last few lines\n(cd nfe-umbrella-slice && make install)\nmake[2]: Entering directory\n'/home/aesha/Documents/amber18/amber18/AmberTools/src/nfe-umbrella-slice'\ng++ -fPIC       -o nfe-umbrella-slice umbrella.o dimension.o utils.o main.o\n/home/aesha/Documents/amber18/amber18//lib/libnetcdf.a\nmv nfe-umbrella-slice /home/aesha/Documents/amber18/amber18//bin\nmake[2]: Leaving directory\n'/home/aesha/Documents/amber18/amber18/AmberTools/src/nfe-umbrella-slice'\n(if [ \"no\" = \"no\" ]; then \\\nmake python_serial ;\\\nfi;\\\n)\nmake[2]: Entering directory\n'/home/aesha/Documents/amber18/amber18/AmberTools/src'\nmake[2]: *** No rule to make target 'python_serial'.  Stop.\nmake[2]: Leaving directory\n'/home/aesha/Documents/amber18/amber18/AmberTools/src'\nmake[1]: *** [Makefile:56: serial] Error 2\nmake[1]: Leaving directory\n'/home/aesha/Documents/amber18/amber18/AmberTools/src'\nmake: *** [Makefile:7: install] Error 2\n/////\nI hope some solution will be found soon.\nI commented out the packmol-memgen in the Makefile-outer in the main  or\nouter amber folder also. attaching that file too.\nThank you again\nOn Fri, Nov 26, 2021 at 4:41 AM David A Case <david.case.rutgers.edu> wrote:\n> On Thu, Nov 25, 2021, Ayesha Fatima wrote:\n>\n> >Yes Unfortunately it does not show the error but the error is persisting\n> >even after commenting the line as earlier advised in the make file. has it\n> >got to do with the incompatibility of Ubuntu 20 and Amber 18?\n>\n> I doubt that there is a fundamental inconsistency.  I'm sure I have built\n> Amber18 on Ubuntu20, but I don't have details.\n>\n> Have you commented out every reference to packmol_memgen in the Makefile?\n> Maybe having someone else look at the log file would help explain why the\n> packmol_memgen error still arises.\n>\n> >Yes we are thinking of it and are looking for grant support.\n>\n> Just note that AmberTools21 does not have a license fee.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202111/0249.html",
+      "in_reply_to": 1637744769
+    },
+    {
+      "message_id": 1637920302,
+      "author": "Ayesha Fatima",
+      "date_raw": "Fri, 26 Nov 2021 12:51:42 +0300",
+      "body": "Dear Prof.\nI downloaded the AMberTools21. Thank you for the information.\nBest regards\nAyesha\nOn Fri, Nov 26, 2021 at 4:41 AM David A Case <david.case.rutgers.edu> wrote:\n> On Thu, Nov 25, 2021, Ayesha Fatima wrote:\n>\n> >Yes Unfortunately it does not show the error but the error is persisting\n> >even after commenting the line as earlier advised in the make file. has it\n> >got to do with the incompatibility of Ubuntu 20 and Amber 18?\n>\n> I doubt that there is a fundamental inconsistency.  I'm sure I have built\n> Amber18 on Ubuntu20, but I don't have details.\n>\n> Have you commented out every reference to packmol_memgen in the Makefile?\n> Maybe having someone else look at the log file would help explain why the\n> packmol_memgen error still arises.\n>\n> >Yes we are thinking of it and are looking for grant support.\n>\n> Just note that AmberTools21 does not have a license fee.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202111/0251.html",
+      "in_reply_to": 1637744769
+    },
+    {
+      "message_id": 1638396985,
+      "author": "David A Case",
+      "date_raw": "Wed, 1 Dec 2021 17:16:25 -0500",
+      "body": "On Fri, Nov 26, 2021, Ayesha Fatima wrote:\n>Thank you once again. I tried once more by blocking all lines with\n>packmol-memgen. I am attaching my make file from Amberools/src. Now the\n>error is different\nIn lines 475-476, just remove the \"packmol-memgen\" reference, and don't\ncomment out the next line:\npython_serial:: parmed mmpbsa_py pysander pymsmt $(PYTRAJ) pdb4amber\n$(PYTHON) fix_conda_fortran.py\nI hope this will work.  Is there anything that you know of that is unusual\nabout your Ubunutu 20.04 system?\n....dac",
+      "url": "http://archive.ambermd.org/202112/0026.html",
+      "in_reply_to": 1637744769
+    }
+  ]
+}

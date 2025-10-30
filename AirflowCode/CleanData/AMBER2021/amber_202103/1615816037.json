@@ -1,0 +1,21 @@
+{
+  "thread_id": 1615816037,
+  "subject": "[AMBER] hbond cpptraj",
+  "messages": [
+    {
+      "message_id": 1615816037,
+      "author": "Jon Uranga",
+      "date_raw": "Mon, 15 Mar 2021 14:47:17 +0100",
+      "body": "Dear Amber users,\nI am writing with regard to the hbond command of cpptraj (V18.01). I am\ntrying to analyze the H bond interaction between several\nhydrophilic residues in an enzyme and among all these interactions one is\nbetween a glutamine (residue number 358) and an aspartate (residue number\n350). Since there are plenty of interactions and I am only interested in\nthe H bond between different residues I have included 'nointramol'.\nHowever, I am experiencing something unexpected which I would like to ask\nherein.\nIn case that 'nointramol' is present, I do not get the interaction between\nthe glutamine and the aspartate:\n*hbond inter out hbond.dat donormask :358.NE2 acceptormask :350.OD2\nnointramol avgout hbond.av*\nHowever, if I remove 'nointramol', now I do get the value corresponding for\nthis interaction.\nSince this interaction is intermolecular I cannot understand this\nbehaviour. Is there something wrong in the command I have written here?\nThanks a lot!\nBests,\nJon\n-- \n*********************************************************\nJon Uranga\nInstitute of Physical Chemistry\nComputational Chemistry and Biochemistry Group\nTammannstr. 6\n37077 Göttingen\nGermany\nOffice Phone: 33131\nE-mail: jon.uranga.chemie.uni-goettingen.de\n*********************************************************",
+      "url": "http://archive.ambermd.org/202103/0137.html"
+    },
+    {
+      "message_id": 1615847247,
+      "author": "Clorice Reinhardt",
+      "date_raw": "Mon, 15 Mar 2021 18:27:27 -0400",
+      "body": "Hi Jon,\nI didn’t see a reply, and just a disclaimer I’m not a developer, but I think you are confused by the definition of a molecule in amber. Aspartate and glutamine in your protein are part of the same molecule, and although they are different amino acids they still by definition are part of one protein molecule. So your result is exactly what one would expect with the command nointramol. Traditionally, I think people use this when they are trying to detect hydrogen bonds between say, a protein molecule and a small ligand. Those are two separate molecules, and one could use nointramol to only get the values between the protein and the ligand. You can find the hydrogen bond documentation in cpptraj, but you can just pass it a list of residues you are interested in, or alternatively just filter the results with awk, grep, or your favorite bash command.\nAll the best,\nClorice\n> On Mar 15, 2021, at 9:47 AM, Jon Uranga <jonur9.gmail.\ncom> wrote:\n>\n> Dear Amber users,\n>\n> I am writing with regard to the hbond command of cpptraj (V18.01). I am\n> trying to analyze the H bond interaction between several\n> hydrophilic residues in an enzyme and among all these interactions one is\n> between a glutamine (residue number 358) and an aspartate (residue number\n> 350). Since there are plenty of interactions and I am only interested in\n> the H bond between different residues I have included 'nointramol'.\n> However, I am experiencing something unexpected which I would like to ask\n> herein.\n>\n> In case that 'nointramol' is present, I do not get the interaction between\n> the glutamine and the aspartate:\n>\n> *hbond inter out hbond.dat donormask :358.NE2 acceptormask :350.OD2\n> nointramol avgout hbond.av*\n>\n> However, if I remove 'nointramol', now I do get the value corresponding for\n> this interaction.\n>\n> Since this interaction is intermolecular I cannot understand this\n> behaviour. Is there something wrong in the command I have written here?\n>\n> Thanks a lot!\n>\n> Bests,\n>\n> Jon\n>\n> --\n> *********************************************************\n> Jon Uranga\n>\n> Institute of Physical Chemistry\n> Computational Chemistry and Biochemistry Group\n> Tammannstr. 6\n> 37077 Göttingen\n> Germany\n> Office Phone: 33131\n> E-mail: jon.uranga.chemie.uni-goettingen.de\n> *********************************************************\n>",
+      "url": "http://archive.ambermd.org/202103/0140.html",
+      "in_reply_to": 1615816037
+    }
+  ]
+}

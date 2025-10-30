@@ -1,0 +1,29 @@
+{
+  "thread_id": 1709295074,
+  "subject": "[AMBER] Metadynamics question",
+  "messages": [
+    {
+      "message_id": 1709295074,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Fri, 1 Mar 2024 07:11:14 -0500",
+      "body": "Dear AMBER community,\nI’d like to simulate the unbinding of a protein from a receptor complex. My initial thought was to use steered MD, but is there a way in AMBER to instead define a repulsive potential between the two proteins without specifying a specific pulling direction?\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202403/0001.html"
+    },
+    {
+      "message_id": 1709295542,
+      "author": "Carlos Simmerling",
+      "date_raw": "Fri, 1 Mar 2024 07:19:02 -0500",
+      "body": "You can use a distance restraint with  r2 farther than current distance.\nMaybe r1 as well so it isn't too steep.\nOn Fri, Mar 1, 2024, 7:12 AM Matthew Guberman-Pfeffer via AMBER <\namber.ambermd.org> wrote:\n> Dear AMBER community,\n>\n> I’d like to simulate the unbinding of a protein from a receptor complex.\n> My initial thought was to use steered MD, but is there a way in AMBER to\n> instead define a repulsive potential between the two proteins without\n> specifying a specific pulling direction?\n>\n> Best,\n> Matthew\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202403/0002.html",
+      "in_reply_to": 1709295074
+    },
+    {
+      "message_id": 1709573777,
+      "author": "Carlos Simmerling",
+      "date_raw": "Mon, 4 Mar 2024 12:36:17 -0500",
+      "body": "section 29.1 of the Amber 22 manual gives details... basically I would set\nup a COM distance restraint, using whatever set of atoms for each group\nthat you feel makes sense (maybe all or a subset of CA atoms of each\nprotein?). then, look at the R1 and R2 values, R2 will specify the location\nof the minimum. You could either set R2 to the current distance between the\ngroups (measured using cpptraj if needed), and then vary that distance over\ntime (using ifvari), or you could make it constant but set it to a longer\ndistance than the current value so the pair gets pulled apart. Since the\nlatter might cause high initial forces with a parabolic potential, you can\nset R1 closer to R2 so that the restraint is linear, and less likely to\ninduce instability. Varying R2 with time might be easier to set up.\nOn Fri, Mar 1, 2024 at 7:22 AM Matthew Guberman-Pfeffer <\nmatthew.guberman-pfeffer.uconn.edu> wrote:\n> Thanks, Carlos! Can you please show me or point me to the syntax for doing\n> that type of distance restraint?\n>\n> Best,\n> Matthew\n>\n>\n> On Mar 1, 2024, at 7:19 AM, Carlos Simmerling <carlos.simmerling.gmail.\ncom>\n> wrote:\n>\n>\n> *Message sent from a system outside of UConn.*\n>\n>\n> You can use a distance restraint with  r2 farther than current distance.\n> Maybe r1 as well so it isn't too steep.\n>\n> On Fri, Mar 1, 2024, 7:12 AM Matthew Guberman-Pfeffer via AMBER <\n> amber.ambermd.org> wrote:\n>\n>> Dear AMBER community,\n>>\n>> I’d like to simulate the unbinding of a protein from a receptor complex.\n>> My initial thought was to use steered MD, but is there a way in AMBER to\n>> instead define a repulsive potential between the two proteins without\n>> specifying a specific pulling direction?\n>>\n>> Best,\n>> Matthew\n>>\n>>\n>>",
+      "url": "http://archive.ambermd.org/202403/0027.html",
+      "in_reply_to": 1709295074
+    }
+  ]
+}

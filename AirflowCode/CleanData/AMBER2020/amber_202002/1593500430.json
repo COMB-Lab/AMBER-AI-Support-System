@@ -1,0 +1,45 @@
+{
+  "thread_id": 1593500430,
+  "subject": "[AMBER] &quot;Does not have a type&quot; error in tleap",
+  "messages": [
+    {
+      "message_id": 1593500430,
+      "author": "Jatin Kashyap",
+      "date_raw": "Tue, 30 Jun 2020 03:00:30 -0400",
+      "body": "Dear AMBER Users,\nI am trying to follow tutorials provided by one of the research group from Stony Brook University (\nhttp://ringo.ams.stonybrook.edu/index.php/2019_AMBER_tutorial_with_PDBID_2BXF\n).\nWhen I am using Tleap module and issues below commands[1] , It throws the following errors[2] :\n[1]\n###Write Solvated topology and coord file\nsaveamberparm solvcomplex 2BXF.wet.complex.prmtop 2BXF.wet.complex.rst7\n[2]\nCreated a new atom named: HN within residue: .R<THR 304>\nCreated a new atom named: HN within residue: .R<PHE 305>\nCreated a new atom named: HN within residue: .R<CGLN 306>\nAdded missing heavy atom: .R<CGLN 306>.A<OXT 18>\ntotal atoms in file: 2888\nLeap added 2096 missing atoms according to residue templates:\n1 Heavy\n….\n…\n….\nFATAL:  Atom .R<PHE 3>.A<HN 21> does not have a type.\nFATAL:  Atom .R<GLY 2>.A<HN 8> does not have a type.\nFATAL:  Atom .R<NSER 1>.A<HN3 16> does not have a type.\nFATAL:  Atom .R<NSER 1>.A<HN2 15> does not have a type.\nFATAL:  Atom .R<NSER 1>.A<HN1 14> does not have a type.\n/opt/amber/18/bin/teLeap: Fatal Error!\nFailed to generate parameters\nExiting LEaP: Errors = 1; Warnings = 646; Notes = 0.\nCan anybody please help or provide any other tutorial to perform protein-ligand minimization.\nThank you.\n——\nJatin Kashyap",
+      "url": "http://archive.ambermd.org/202006/0342.html"
+    },
+    {
+      "message_id": 1593501012,
+      "author": "Elvis Martis",
+      "date_raw": "Tue, 30 Jun 2020 12:40:12 +0530",
+      "body": "You could try deleting all hydrogens from your protein and then load it in\nleap.\nOn Tuesday, June 30, 2020, Jatin Kashyap <jk435.njit.\nedu> wrote:\n> Dear AMBER Users,\n>\n> I am trying to follow tutorials provided by one of the research group from\n> Stony Brook University (\nhttp://ringo.ams.stonybrook\n.\n> edu/index.php/2019_AMBER_tutorial_with_PDBID_2BXF).\n>\n> When I am using Tleap module and issues below commands[1] , It throws the\n> following errors[2] :\n>\n> [1]\n>\n> ###Write Solvated topology and coord file\n> saveamberparm solvcomplex 2BXF.wet.complex.prmtop 2BXF.wet.complex.rst7\n>\n>\n>\n> [2]\n> Created a new atom named: HN within residue: .R<THR 304>\n> Created a new atom named: HN within residue: .R<PHE 305>\n> Created a new atom named: HN within residue: .R<CGLN 306>\n>   Added missing heavy atom: .R<CGLN 306>.A<OXT 18>\n>   total atoms in file: 2888\n>   Leap added 2096 missing atoms according to residue templates:\n>        1 Heavy\n>\n> ….\n> …\n> ….\n> FATAL:  Atom .R<PHE 3>.A<HN 21> does not have a type.\n> FATAL:  Atom .R<GLY 2>.A<HN 8> does not have a type.\n> FATAL:  Atom .R<NSER 1>.A<HN3 16> does not have a type.\n> FATAL:  Atom .R<NSER 1>.A<HN2 15> does not have a type.\n> FATAL:  Atom .R<NSER 1>.A<HN1 14> does not have a type.\n>\n> /opt/amber/18/bin/teLeap: Fatal Error!\n> Failed to generate parameters\n>\n> Exiting LEaP: Errors = 1; Warnings = 646; Notes = 0.\n>\n>\n> Can anybody please help or provide any other tutorial to perform\n> protein-ligand minimization.\n> Thank you.\n>\n> ——\n> Jatin Kashyap\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202006/0343.html",
+      "in_reply_to": 1593500430
+    },
+    {
+      "message_id": 1593546523,
+      "author": "Jatin Kashyap",
+      "date_raw": "Tue, 30 Jun 2020 15:48:43 -0400",
+      "body": "Thanks it solved the error. But now I am getting another error in MD run “ERROR: I could not find enough velocities in 01.min.rst7\"\nI am following solution provided here “\nhttp://archive.ambermd.org/201611/0394.html”\nby inserting “irest=0” in MD script but it is still throwing the same error.\nThank you.\n——\n> On Jun 30, 2020, at 3:10 AM, Elvis Martis <elvis_bcp.elvismartis.\nin> wrote:\n>\n> You could try deleting all hydrogens from your protein and then load it in\n> leap.\n>\n> On Tuesday, June 30, 2020, Jatin Kashyap <jk435.njit.\nedu> wrote:\n>\n>> Dear AMBER Users,\n>>\n>> I am trying to follow tutorials provided by one of the research group from\n>> Stony Brook University (\nhttp://ringo.ams.stonybrook\n.\n>> edu/index.php/2019_AMBER_tutorial_with_PDBID_2BXF).\n>>\n>> When I am using Tleap module and issues below commands[1] , It throws the\n>> following errors[2] :\n>>\n>> [1]\n>>\n>> ###Write Solvated topology and coord file\n>> saveamberparm solvcomplex 2BXF.wet.complex.prmtop 2BXF.wet.complex.rst7\n>>\n>>\n>>\n>> [2]\n>> Created a new atom named: HN within residue: .R<THR 304>\n>> Created a new atom named: HN within residue: .R<PHE 305>\n>> Created a new atom named: HN within residue: .R<CGLN 306>\n>>  Added missing heavy atom: .R<CGLN 306>.A<OXT 18>\n>>  total atoms in file: 2888\n>>  Leap added 2096 missing atoms according to residue templates:\n>>       1 Heavy\n>>\n>> ….\n>> …\n>> ….\n>> FATAL:  Atom .R<PHE 3>.A<HN 21> does not have a type.\n>> FATAL:  Atom .R<GLY 2>.A<HN 8> does not have a type.\n>> FATAL:  Atom .R<NSER 1>.A<HN3 16> does not have a type.\n>> FATAL:  Atom .R<NSER 1>.A<HN2 15> does not have a type.\n>> FATAL:  Atom .R<NSER 1>.A<HN1 14> does not have a type.\n>>\n>> /opt/amber/18/bin/teLeap: Fatal Error!\n>> Failed to generate parameters\n>>\n>> Exiting LEaP: Errors = 1; Warnings = 646; Notes = 0.\n>>\n>>\n>> Can anybody please help or provide any other tutorial to perform\n>> protein-ligand minimization.\n>> Thank you.\n>>\n>> ——\n>> Jatin Kashyap\n>>\n>>\n>>",
+      "url": "http://archive.ambermd.org/202006/0351.html",
+      "in_reply_to": 1593500430
+    },
+    {
+      "message_id": 1593618200,
+      "author": "David A Case",
+      "date_raw": "Wed, 1 Jul 2020 11:43:20 -0400",
+      "body": "On Tue, Jun 30, 2020, Jatin Kashyap wrote:\n>Thanks it solved the error. But now I am getting another error in MD run\n>“ERROR: I could not find enough velocities in 01.min.rst7\"\nA minimization run won't have velocities in the restart file.  Be sure\nyou are setting ntx=1, which instructs the code to skip trying to read\nvelocities.\n....dac",
+      "url": "http://archive.ambermd.org/202007/0013.html",
+      "in_reply_to": 1593500430
+    },
+    {
+      "message_id": 1593622814,
+      "author": "Jatin Kashyap",
+      "date_raw": "Wed, 1 Jul 2020 13:00:14 -0400",
+      "body": "HI David,\nIs is giving a error about inconsistency[1]. I am pasting my input script here[2].\n[1]\nEwald parameters:\nverbose =       0, ew_type =       0, nbflag  =       1, use_pme =       1\nvdwmeth =       1, eedmeth =       1, netfrc  =       1\nBox X =   95.571   Box Y =   95.571   Box Z =   95.571\nAlpha =  109.471   Beta  =  109.471   Gamma =  109.471\nNFFT1 =   96       NFFT2 =   96       NFFT3 =   96\nCutoff=    8.000   Tol   =0.100E-04\nEwald Coefficient =  0.34864\nInterpolation order =    4\nNTX / IREST inconsistency\n*** input error(s)\n[2]\n&cntrl\nirest=0           ! AMBER thread support\nimin=0,           ! Perform MD\nnstlim=2000      ! Number of MD steps\nntx=1,            ! Positions and velocities read formatted\nirest=1,          ! Restart calculation\nntc=1,            ! No SHAKE on for bonds with hydrogen\ndt=0.001,         ! Timestep (ps)\nntb=2,            ! Constant Pressure\nntp=1,            ! Isotropic pressure scaling\nbarostat=1        ! Berendsen\ntaup=0.5          ! Pressure relaxtion time (ps)\nntf=1,            ! Complete force evaluation\nntt=3,            ! Langevin thermostat\ngamma_ln=2.0      ! Collision Frequency for thermostat\nig=-1,            ! Random seed for thermostat\ntemp0=298.15      ! Simulation temperature (K)\nntwx= 40,       ! Write to trajectory file every ntwx steps\nntpr= 40,       ! Print to mdout every ntpr steps\nntwr= 40,       ! Write a restart file every ntwr steps\ncut=  8.0,        ! Nonbonded cutoff in Angstroms\nntr=1,            ! Turn on restraints\nrestraintmask=\":\n1-131.CA\n,C,N\", ! atoms to be restrained\nrestraint_wt=0.1, ! force constant for restraint\nntxo=1,           ! Write coordinate file in ASCII format\nioutfm=0,         ! Write trajectory file in ASCII format\niwrap=1,          ! iwrap is turned on\n/\n——\n> On Jul 1, 2020, at 11:43 AM, David A Case <david.case.rutgers.\nedu> wrote:\n>\n> On Tue, Jun 30, 2020, Jatin Kashyap wrote:\n>\n>> Thanks it solved the error. But now I am getting another error in MD run\n>> “ERROR: I could not find enough velocities in 01.min.rst7\"\n>\n> A minimization run won't have velocities in the restart file.  Be sure\n> you are setting ntx=1, which instructs the code to skip trying to read\n> velocities.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202007/0015.html",
+      "in_reply_to": 1593618200
+    }
+  ]
+}

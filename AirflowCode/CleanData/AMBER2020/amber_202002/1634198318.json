@@ -1,0 +1,21 @@
+{
+  "thread_id": 1634198318,
+  "subject": "Re: [AMBER] Explicit water molecules in MMPBSA.py: OPC vs TIP3P",
+  "messages": [
+    {
+      "message_id": 1634198318,
+      "author": "Lennart Gundelach",
+      "date_raw": "Thu, 14 Oct 2021 07:58:38 +0000",
+      "body": "Hi Ray,\nSorry for late reply, just found this in my spam folder today.\nThe structures look fine.\nThe problem seems to be that MM-PBSA.py can�t handle the 4-point water model. If I strip out all the 4th �atom� form the OPC model, leaving only the two Hydrogens and the Oxygen,  from the input files (obviously this is a terrible idea), MM-PBSA.py runs without problems, just give pretty silly energies.\nI have re-run my MD simulations with ff19SB + TIP3P and these trajectories cause no issues with MM-PBSA.py.\nSince ff19SB+TIP3P is not recommended, I am now running Md for ff19SB+OPC3 which is also a three point water model and should thus work.\nThanks,\nLennart\nFrom: Ray Luo <rluo.uci.edu>\nDate: Wednesday, 8 September 2021 at 17:36\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] Explicit water molecules in MMPBSA.py: OPC vs TIP3P\nCAUTION: This e-mail originated outside the University of Southampton.\nLennart,\nJust a suggestion to get the debugging going ... Have you tried to\nvisualize the stripped prmtop/traj files in VMD or other similar\nprograms to see whether there is any bonding issue with the remaining\nwater molecules?\nAll the best,\nRay\n--\nRay Luo, Ph.D.\nProfessor of Structural Biology/Biochemistry/Biophysics,\nChemical and Materials Physics, Chemical and Biomolecular Engineering,\nBiomedical Engineering, and Materials Science and Engineering\nDepartment of Molecular Biology and Biochemistry\nUniversity of California, Irvine, CA 92697-3900\nOn Wed, Sep 8, 2021 at 4:35 AM Lennart Gundelach\n<L.Gundelach.soton.ac.uk> wrote:\n>\n> Hi,\n>\n> I have been running MMPBSA.py with a couple of explicit waters defined as part of the complex. This worked fine when working with trajectories (and .prmtop) that had been generated using ff14SB + TIP3P but seems to no longer work when using trajectories generated with ff19SB + OPC.\n>\n> Both the complex and receptor calculations yield �nan� for VdW and EEL while the ligand calculation works just fine (since it has not waters). The only change made to setup is new trajectories generated with ff19SB + OPC instead of ff14SB + TIP3P.\n>\n> Could it be, that due to the 4 point setup of OPC, MMPBSA.py does not know how to handle the  4th point, which does not directly correspond to an atom?\n>\n> From topology files:\n> TIP3P: OW HW HW\n> OPC: OW HW HW EP\n>\n> Could this be the issues? Anny suggestions how to proceed?\n>\n> Thanks,\n>\n> Lennart\n>",
+      "url": "http://archive.ambermd.org/202110/0092.html"
+    },
+    {
+      "message_id": 1634216318,
+      "author": "David A Case",
+      "date_raw": "Thu, 14 Oct 2021 08:58:38 -0400",
+      "body": "On Thu, Oct 14, 2021, Lennart Gundelach wrote:\n>\n>The problem seems to be that MM-PBSA.py can’t handle the 4-point water\n>model.\nThis should get fixed.  I've opened an issue on our gitlab site so at least\nthe information won't get lost.\n>If I strip out all the 4th “atom” form the OPC model, leaving only\n>the two Hydrogens and the Oxygen, from the input files (obviously this is\n>a terrible idea), MM-PBSA.py runs without problems, just give pretty silly\n>energies.\nCan you say exactly what you did to strip out the OPC extra point?\nLogically, the extra point information is not needed, since its position is\ncomputed on the fly from the coordinates of the oxygen and hydrogens.  But\nthe code probably expects it to be there.\nAlso, did you manually strip the waters (except the ones you want to keep)\nfrom the trajectories, or did you rely on the MMPBSA code to do that for\nyou? (Sorry if this doesn't make sense: I don't use this code myself.  But\nif you just have prmtop and trajectory files that include a few OPC waters,\nI don't see why the MMPBSA code should care whether they are three-point or\nfour-point waters; the prmtop files know such details.)\nOf course, if you can come up with a small test case that illustrates the\nproblem, that would be a great help.\n...thx...dac",
+      "url": "http://archive.ambermd.org/202110/0095.html",
+      "in_reply_to": 1634198318
+    }
+  ]
+}

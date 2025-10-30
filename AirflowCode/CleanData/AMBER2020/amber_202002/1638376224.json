@@ -1,0 +1,13 @@
+{
+  "thread_id": 1638376224,
+  "subject": "Re: [AMBER] RMSD of residues within 3A of ligand",
+  "messages": [
+    {
+      "message_id": 1638376224,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 1 Dec 2021 11:30:24 -0500",
+      "body": "Hi,\n>From the Amber/Cpptraj manual:\n```\nDistance-based Masks\nThere are two very important things to keep in mind when using\ndistance based masks:\n1. Distance-based masks that update each frame are currently only\nsupported by the mask action.\n2. Selection by distance for everything but the mask action requires\ndefining a reference frame with reference;\ndistances are then calculated using the specified reference frame\nonly. This reference frame can be changed\nusing the activeref command.\n```\nThe problem with distance-based masks for most commands is that the\nnumber of atoms selected each frame can change, which requires setting\neverything up for the new selection which can get expensive. It's\nparticularly difficult for something like RMSD where the # of atoms\nselected in the reference and target need to match in order for the\nRMSD to be meaningful. You could script it so that you loop over every\ninput frame in the trajectory and try to change the active reference\naccordingly, but again if you select different #s of atoms in the\ntarget and reference you can't calculate the RMSD anyway.\nTL;DR unfortunately, there's no easy way to do what you want.\n-Dan\nOn Fri, Oct 22, 2021 at 9:57 AM Sadaf Rani <sadafrani6.gmail.com> wrote:\n>\n> Dear Amber users\n> I want to calculate rmsd of the residues within 3 A of the ligand for which\n> I used the following syntax\n> rms to first :490<.3 first out rmsd_lig3A.dat\n> rms tofirst1:490 first out rmsd_lig3A.dat\n> However, I am getting the same curve for both which shows that the syntax\n> for 3A has not been taken up by the cpptraj.\n> Could you please correct me where I am doing wrong?\n> Thanks in advance.\n> Regards\n> sadaf\n>",
+      "url": "http://archive.ambermd.org/202112/0017.html"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "thread_id": 1698890345,
+  "subject": "[AMBER] Bug in savepdb command",
+  "messages": [
+    {
+      "message_id": 1698890345,
+      "author": "Ye Mei",
+      "date_raw": "Thu, 2 Nov 2023 09:59:05 +0800",
+      "body": "Dear Amber developers,\nThere is a bug in command savepdb in leap. I found the following lines in\nleap src:\nif (r->pdb.atom.serial_num > 99999)\natom_overflow = 1;\nif (r->pdb.atom.residue.seq_num > 9999)\nresidue_overflow = 1;\nif (atom_overflow  &&  !residue_overflow) {\nfmt =\n\"ATOM  %6d%-4s%C%-3s %C%4d%C   %8.3f%8.3f%8.3f%6.2f%6.2f\n%3D\";\n} else if (!atom_overflow  &&  residue_overflow) {\nfmt =\n\"ATOM  %5d %-4s%C%-3s %C%5d%C  %8.3f%8.3f%8.3f%6.2f%6.2f\n%3D\";\n} else if (atom_overflow  &&  residue_overflow) {\nfmt =\n\"ATOM  %6d%-4s%C%-3s %C%5d%C  %8.3f%8.3f%8.3f%6.2f%6.2f\n%3D\";\n}\nIt has considered the overflow of residue sequence number. However, it can\nonly handle residue number < 100000.\nI am currently working on a large RNA molecule. After adding the solvent\nbox, the maximum residue number arrives at 197778.\nWhen the structure was opened by vmd, only a small number of water\nmolecules could be shown. So I looked at the pdb file and found that the\npositions of some (most) coordinates are wrong, starting from residue\n100000. Shown here:\nATOM  308933 O   WAT  99999      9.731 -99.684 -65.426  1.00  0.00\nATOM  308934 H1  WAT  99999      9.662-100.625 -65.587  1.00  0.00\nATOM  308935 H2  WAT  99999     10.493 -99.593 -64.854  1.00  0.00\nTER\nATOM  308936 O   WAT  100000     10.761-106.876 -65.199  1.00  0.00\nATOM  308937 H1  WAT  100000     11.138-107.749 -65.312  1.00  0.00\nATOM  308938 H2  WAT  100000     10.663-106.541 -66.090  1.00  0.00\nYou can see that the coordinates have been shifted to the right by one\ncolumn. The code above cannot handle this situation when the residue number\n>= 100000.\nIt only affects the saved pdb file. The rst file saved by saveamberparm is\nfine.\nYe Mei, Prof., Dr.\nState Key Laboratory of Precision Spectroscopy\nEast China Normal University\nShanghai 200062 China",
+      "url": "http://archive.ambermd.org/202311/0004.html"
+    }
+  ]
+}

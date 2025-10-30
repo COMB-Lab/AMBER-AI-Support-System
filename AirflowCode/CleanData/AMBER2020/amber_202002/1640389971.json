@@ -1,0 +1,21 @@
+{
+  "thread_id": 1640389971,
+  "subject": "[AMBER] Amber20 CUDA installation error Centos 7",
+  "messages": [
+    {
+      "message_id": 1640389971,
+      "author": "Suguna Sakkiah",
+      "date_raw": "Fri, 24 Dec 2021 23:52:51 +0000",
+      "body": "Hi All,\nI changed the -DCUDA=TRUE in run_cmake file but getting the below error message. export CUDA_HOME=/usr/local/cuda in bashrc file\nMy run_cmake content\ncmake $AMBER_PREFIX/amber20_src \\\n-DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber20 \\\n-DCOMPILER=GNU \\\n-DTRUST_SYSTEM_LIBS=TRUE \\\n-DMPI=FALSE -DCUDA=TRUE -DINSTALL_TESTS=TRUE \\\n-DDOWNLOAD_MINICONDA=TRUE -DMINICONDA_USE_PY3=TRUE \\\n-DINSTALL_TESTS=TRUE \\\n2>&1 | tee  cmake.log\nERROR MESSAGE.\n(base) [root.schrogpu1 build]# make install\n[  1%] Built target readline\n[  2%] Built target dispatch\n[  2%] Built target netcdf3\n[  2%] Built target netcdf\n[  2%] Linking C executable ncgen\n/opt/miniconda3/bin/../lib/gcc/x86_64-conda-linux-gnu/9.3.0/../../../../x86_64-conda-linux-gnu/bin/ld: /usr/lib64/libm.so: undefined reference to `__strtod_nan.GLIBC_PRIVATE'\n/opt/miniconda3/bin/../lib/gcc/x86_64-conda-linux-gnu/9.3.0/../../../../x86_64-conda-linux-gnu/bin/ld: /usr/lib64/libm.so: undefined reference to `__strtof_nan.GLIBC_PRIVATE'\n/opt/miniconda3/bin/../lib/gcc/x86_64-conda-linux-gnu/9.3.0/../../../../x86_64-conda-linux-gnu/bin/ld: /usr/lib64/libz.so: undefined reference to `memcpy.GLIBC_2.14'\n/opt/miniconda3/bin/../lib/gcc/x86_64-conda-linux-gnu/9.3.0/../../../../x86_64-conda-linux-gnu/bin/ld: /usr/lib64/libm.so: undefined reference to `__strtold_nan.GLIBC_PRIVATE'\ncollect2: error: ld returned 1 exit status\nmake[2]: *** [AmberTools/src/netcdf-4.6.1/ncgen/ncgen] Error 1\nmake[1]: *** [AmberTools/src/netcdf-4.6.1/ncgen/CMakeFiles/ncgen.dir/all] Error 2\nmake: *** [all] Error 2\nRegards\nSuguna\n________________________________\nC4 Therapeutics, Inc. Confidentiality Notice: This message is private and may contain confidential and proprietary information. If you have received this message in error, please notify us and remove it from your system and note that you must not copy, distribute or take any action in reliance on it. Any unauthorized use or disclosure of the contents of this message is not permitted and may be unlawful.",
+      "url": "http://archive.ambermd.org/202112/0186.html"
+    },
+    {
+      "message_id": 1640399429,
+      "author": "David A Case",
+      "date_raw": "Fri, 24 Dec 2021 21:30:29 -0500",
+      "body": "On Fri, Dec 24, 2021, Suguna Sakkiah wrote:\n>/opt/miniconda3/bin/../lib/gcc/x86_64-conda-linux-gnu/9.3.0/../../../../x86_64-conda-linux-gnu/bin/ld: /usr/lib64/libm.so: undefined reference to `__strtold_nan.GLIBC_PRIVATE'\n>collect2: error: ld returned 1 exit status\nThis looks like the same problem as before.  You seem to be running GNU\ncompilers from a miniconda installation, and those seem to be incomopatible\nsomehow with what you have in /usr/lib64, which comes from the underlying\nOS.\nWhat do you get with \"which gcc\", \"which gfortran\", \"gcc --version\" and\n\"gfortran --version\"?\nDoes your PATH include anything related to \"/opt/miniconda3...\"?  If so, try\nto get that out of your PATH, and use the compilers that CentOS provides.\nDo you have friend who is good with Linux who can help you try to get around\nthese errors?  Someone experienced with conda may be able to show you how to\ndeactivate a conda environment, if one is active.  This sort of thing is\nquite hard to track down one email at a time...you are failing to compile\nstandard netCDF code, and it failing in ways no one here has ever seen\nbefore.\n....dac",
+      "url": "http://archive.ambermd.org/202112/0187.html",
+      "in_reply_to": 1640389971
+    }
+  ]
+}

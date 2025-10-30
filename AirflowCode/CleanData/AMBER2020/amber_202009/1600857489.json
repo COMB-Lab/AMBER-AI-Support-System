@@ -1,0 +1,29 @@
+{
+  "thread_id": 1600857489,
+  "subject": "[AMBER] Coordinate resetting cannot be accomplished -reg",
+  "messages": [
+    {
+      "message_id": 1600857489,
+      "author": "R A Jeyaram 16PHD0482",
+      "date_raw": "Wed, 23 Sep 2020 16:08:09 +0530",
+      "body": "Dear Amber Users,\nI am doing MD simulation on the protein-ligand complex system.\nDuring the heating stage 2, I got an error: vlimit exceeded for step\n28155; vmax =   147.3455\nCoordinate resetting cannot be accomplished,  deviation is too large\niter_cnt, my_bond_idx, i and j are :       4    2801    5764    5774\nThe simulation details are given below:\nNumber of protein atoms: 5753 (385 residues)\nNumber of ligand atoms: 41 (1 residue)\nNumber of Counter ions: 7\nTIP3P box size : 10 angstroms\nheating stage 2\n&cntrl\nimin=0,irest=1,ntx=5,\nnstlim=100000,dt=0.002,\nntc=2,ntf=2,\ncut=8.0, ntb=2, ntp=1, taup=1.0,\nntpr=500, ntwx=500,\nntt=3, gamma_ln=2.0,\ntemp0=300.0, ig=-1,\nntr=1, restraintmask=':1-393',\nrestraint_wt=2.0,\n/\nHerewith I am attaching the input and output file of the heating stage 2.\nHelp me to solve the issue.\nThanks and Regards\nR. A. Jeyaram\nVellore Institute of Technology\nTamil Nadu, India.",
+      "url": "http://archive.ambermd.org/202009/0301.html"
+    },
+    {
+      "message_id": 1600858275,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 23 Sep 2020 06:51:15 -0400",
+      "body": "Hi,\nI've recently helped develop a protocol for preparing systems for\nexplicitly solvated MD that you may find useful:\nhttps://aip.scitation.org/doi/abs/10.1063/5.0013849\nI've also written a script that implements this protocol for Amber:\nhttps://github.com/drroe/AmberMdPrep\nFeel free to give it a try, it's still fairly rough around the edges,\nso use with caution.\n-Dan\nOn Wed, Sep 23, 2020 at 6:36 AM R A Jeyaram 16PHD0482\n<ra.jeyaram2016.vitstudent.ac.in> wrote:\n>\n> Dear Amber Users,\n>\n>          I am doing MD simulation on the protein-ligand complex system.\n> During the heating stage 2, I got an error: vlimit exceeded for step\n>  28155; vmax =   147.3455\n>\n>      Coordinate resetting cannot be accomplished,  deviation is too large\n>      iter_cnt, my_bond_idx, i and j are :       4    2801    5764    5774\n>\n> The simulation details are given below:\n>                       Number of protein atoms: 5753 (385 residues)\n>                       Number of ligand atoms: 41 (1 residue)\n>                       Number of Counter ions: 7\n>                       TIP3P box size : 10 angstroms\n>\n> heating stage 2\n>  &cntrl\n>   imin=0,irest=1,ntx=5,\n>   nstlim=100000,dt=0.002,\n>   ntc=2,ntf=2,\n>   cut=8.0, ntb=2, ntp=1, taup=1.0,\n>   ntpr=500, ntwx=500,\n>   ntt=3, gamma_ln=2.0,\n>   temp0=300.0, ig=-1,\n>   ntr=1, restraintmask=':1-393',\n>   restraint_wt=2.0,\n>  /\n>\n> Herewith I am attaching the input and output file of the heating stage 2.\n> Help me to solve the issue.\n>\n> Thanks and Regards\n> R. A. Jeyaram\n> Vellore Institute of Technology\n> Tamil Nadu, India.\n>",
+      "url": "http://archive.ambermd.org/202009/0303.html",
+      "in_reply_to": 1600857489
+    },
+    {
+      "message_id": 1600858496,
+      "author": "Bill Ross",
+      "date_raw": "Wed, 23 Sep 2020 03:54:56 -0700",
+      "body": "No obvious problems at step 28000. In general, you could save a restrt\nat that point, then run with ntpr,ntwx=1 so you can analyze what went\nwrong in order to learn the most.\nAfter that recorded step, before the next 500 steps are done, the vlimit\nis exceeded, and the inscrutable \"i and j\" here are atoms,\n> iter_cnt, my_bond_idx, i and j  are :       4    2801    5764    5774\nso likely  there is a bond or superposition/vdw problem.  Typically this\nhas to do with a self-defined residue, and then either it's an error or\na subtle case that you will need to describe to get help (think strongly\nelectronegative atoms).\nBill\n“Don’t think of it as the warmest month of August in California in\nthe last century,” he wrote. “Think of it as one of the coolest\nmonths of August in California in the next century.”\nOn 9/23/20 3:38 AM, R A Jeyaram 16PHD0482 wrote:\n> Dear Amber Users,\n>\n>           I am doing MD simulation on the protein-ligand complex system.\n> During the heating stage 2, I got an error: vlimit exceeded for step\n>   28155; vmax =   147.3455\n>\n>       Coordinate resetting cannot be accomplished,  deviation is too large\n>       iter_cnt, my_bond_idx, i and j are :       4    2801    5764    5774\n>\n> The simulation details are given below:\n>                        Number of protein atoms: 5753 (385 residues)\n>                        Number of ligand atoms: 41 (1 residue)\n>                        Number of Counter ions: 7\n>                        TIP3P box size : 10 angstroms\n>\n> heating stage 2\n>   &cntrl\n>    imin=0,irest=1,ntx=5,\n>    nstlim=100000,dt=0.002,\n>    ntc=2,ntf=2,\n>    cut=8.0, ntb=2, ntp=1, taup=1.0,\n>    ntpr=500, ntwx=500,\n>    ntt=3, gamma_ln=2.0,\n>    temp0=300.0, ig=-1,\n>    ntr=1, restraintmask=':1-393',\n>    restraint_wt=2.0,\n>   /\n>\n> Herewith I am attaching the input and output file of the heating stage 2.\n> Help me to solve the issue.\n>\n> Thanks and Regards\n> R. A. Jeyaram\n> Vellore Institute of Technology\n> Tamil Nadu, India.\n>\n>",
+      "url": "http://archive.ambermd.org/202009/0305.html",
+      "in_reply_to": 1600857489
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "thread_id": 1599242820,
+  "subject": "Re: [AMBER] Change covar matrix precision when crdaction is used",
+  "messages": [
+    {
+      "message_id": 1599242820,
+      "author": "Daniel Roe",
+      "date_raw": "Fri, 4 Sep 2020 14:07:00 -0400",
+      "body": "Hi,\nInstead of writing out the matrix in the ‘crdaction matrix’ step, write it\nout after doing ‘precision’ on the data set, eg\ncrdaction md-traject matrix name md-covar ...\nprecision md-covar 10 6\nwritedata covar-CA.dat md-covar\nOn Wed, Aug 26, 2020 at 3:57 PM Guadalupe Alvarez <gualvarez.unsam.\nedu.ar>\nwrote:\n> Dear AMBER users,\n>\n> I am calculating a covariance matrix with CPPTRAJ that comes with AMBER 18.\n>\n> It is possible that the command *precision* don't work when the *crdaction*\n>\n> command is used?\n>\n> This is my script:\n>\n> parm ./myparm.prmtop\n>\n> trajin ./mytraj.nc\n>\n> autoimage\n>\n> strip :WAT,K+,Cl-\n>\n> rms first :1-405.CA\n>\n>\n>\n> average crdset md-average  ## Create average structure and rms fit to\n>\n> average\n>\n> createcrd md-traject ## save trajectory\n>\n> run\n>\n>\n>\n> crdaction md-traject rms ref md-average :1-405.CA # Fit to average\n>\n>\n>\n> crdaction md-traject matrix covar name md-covar :\n1-405.CA\nout covar-CA.\ndat\n>\n> precision covar-CA.dat 10 6\n>\n>\n>\n> The output covariance matrix I get has three decimals and I need more,\n>\n> because when I do the diagonalization I get more than 6 negative\n>\n> eigenvalues. When I don't use the *crdaction, *I get the number of decimals\n>\n> I ask. I can`t find an answer in the manual. Am I doing something wrong?\n>\n>\n>\n> Thanks very much!\n>\n> Best regards,\n>\n>\n>\n> Guadalupe.\n>\n>",
+      "url": "http://archive.ambermd.org/202009/0055.html"
+    }
+  ]
+}

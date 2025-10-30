@@ -1,0 +1,37 @@
+{
+  "thread_id": 1610421898,
+  "subject": "[AMBER] Amber20 with PLUMED running slow, with GPU utilisation ~40%",
+  "messages": [
+    {
+      "message_id": 1610421898,
+      "author": "Amanda Buyan",
+      "date_raw": "Tue, 12 Jan 2021 03:24:58 +0000",
+      "body": "Dear Amber Users,\nI hope you are able to help me with something.  We have successfully installed Amber20, along with the PLUMED package and libraries.  One of our students as well as me have been using Amber20 with PLUMED, but we have noticed that the performance of Amber20 has decreased with the addition of PLUMED.  Has anyone else had this issue?  Could it be an issue with my installation of either Amber or PLUMED?\nSome other specs that you might need: we are using pmemd.cuda (no MPI option), plumed2.5, and we are loading the single CPU plumed library.\nBest wishes\nAmanda",
+      "url": "http://archive.ambermd.org/202101/0184.html"
+    },
+    {
+      "message_id": 1610473866,
+      "author": "David A Case",
+      "date_raw": "Tue, 12 Jan 2021 12:51:06 -0500",
+      "body": "On Tue, Jan 12, 2021, Amanda Buyan wrote:\n>\n>I hope you are able to help me with something.  We have successfully\n>installed Amber20, along with the PLUMED package and libraries.  One of our\n>students as well as me have been using Amber20 with PLUMED, but we have\n>noticed that the performance of Amber20 has decreased with the addition\n>of PLUMED.  Has anyone else had this issue?  Could it be an issue with my\n>installation of either Amber or PLUMED?\n>\n>Some other specs that you might need: we are using pmemd.cuda (no MPI\n>option), plumed2.5, and we are loading the single CPU plumed library.\nA few days ago, I chastized Bill Ross for guessing, but here goes anyway:\nI think running plumed with pmemd.cuda is expected to slow down GPU runs.\nAs far as I can tell, the plumed part is all done on the CPU, so the GPU\nhas to communicate with the CPU every time it need plumed functionality.\nLook at the PLUMED section in runmd.F90, starting at about line 743.  It has\nto call gpu_download_crd() and gpu_download_frc() before the \"include\nPlumed_force.inc\" statement (line 752), then call gpu_upload_frc() after\nthat.\nThis would be expected to slow things down, probably by quite a bit,\ndepending on the size of the system.\n[Caveat: above is based on a cursory reading of the code; I've not run\nplumed calculations myself.  I hope others with more direct experience will\nchime in.]\n....dac",
+      "url": "http://archive.ambermd.org/202101/0206.html",
+      "in_reply_to": 1610421898
+    },
+    {
+      "message_id": 1610474156,
+      "author": "Adrian Roitberg",
+      "date_raw": "Tue, 12 Jan 2021 12:55:56 -0500",
+      "body": "For what is worth, I agree with Dave Case on this.\nAmber 20 has a new feature (shuttle transfer) where one can download to\nthe cpu only a subset of forces and coordinates. This is useful when one\nneeds to apply plumed restraints to just a subset of atoms in the system.\nThis new feature is in the code itself, so someone from the plumed\ncommunity should look into this.\nAdrian\nOn 1/12/21 12:51 PM, David A Case wrote:\n> [External Email]\n>\n> On Tue, Jan 12, 2021, Amanda Buyan wrote:\n>> I hope you are able to help me with something.  We have successfully\n>> installed Amber20, along with the PLUMED package and libraries.  One of our\n>> students as well as me have been using Amber20 with PLUMED, but we have\n>> noticed that the performance of Amber20 has decreased with the addition\n>> of PLUMED.  Has anyone else had this issue?  Could it be an issue with my\n>> installation of either Amber or PLUMED?\n>>\n>> Some other specs that you might need: we are using pmemd.cuda (no MPI\n>> option), plumed2.5, and we are loading the single CPU plumed library.\n> A few days ago, I chastized Bill Ross for guessing, but here goes anyway:\n>\n> I think running plumed with pmemd.cuda is expected to slow down GPU runs.\n> As far as I can tell, the plumed part is all done on the CPU, so the GPU\n> has to communicate with the CPU every time it need plumed functionality.\n>\n> Look at the PLUMED section in runmd.F90, starting at about line 743.  It has\n> to call gpu_download_crd() and gpu_download_frc() before the \"include\n> Plumed_force.inc\" statement (line 752), then call gpu_upload_frc() after\n> that.\n>\n> This would be expected to slow things down, probably by quite a bit,\n> depending on the size of the system.\n>\n> [Caveat: above is based on a cursory reading of the code; I've not run\n> plumed calculations myself.  I hope others with more direct experience will\n> chime in.]\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202101/0207.html",
+      "in_reply_to": 1610421898
+    },
+    {
+      "message_id": 1610494596,
+      "author": "Amanda Buyan",
+      "date_raw": "Tue, 12 Jan 2021 23:36:36 +0000",
+      "body": "Dear David and Adrian,\nThank you for getting back to me so quickly on this!  Would it be worth writing the authors of PLUMED about this, to see if there are things that can be done to speed up future implementations of PLUMED in Amber?\nBest wishes\nAmanda\n________________________________\nFrom: Adrian Roitberg <roitberg.ufl.edu>\nSent: 13 January 2021 04:55\nTo: amber.ambermd.org <amber.ambermd.org>\nSubject: Re: [AMBER] Amber20 with PLUMED running slow, with GPU utilisation ~40%\nFor what is worth, I agree with Dave Case on this.\nAmber 20 has a new feature (shuttle transfer) where one can download to\nthe cpu only a subset of forces and coordinates. This is useful when one\nneeds to apply plumed restraints to just a subset of atoms in the system.\nThis new feature is in the code itself, so someone from the plumed\ncommunity should look into this.\nAdrian\nOn 1/12/21 12:51 PM, David A Case wrote:\n> [External Email]\n>\n> On Tue, Jan 12, 2021, Amanda Buyan wrote:\n>> I hope you are able to help me with something.  We have successfully\n>> installed Amber20, along with the PLUMED package and libraries.  One of our\n>> students as well as me have been using Amber20 with PLUMED, but we have\n>> noticed that the performance of Amber20 has decreased with the addition\n>> of PLUMED.  Has anyone else had this issue?  Could it be an issue with my\n>> installation of either Amber or PLUMED?\n>>\n>> Some other specs that you might need: we are using pmemd.cuda (no MPI\n>> option), plumed2.5, and we are loading the single CPU plumed library.\n> A few days ago, I chastized Bill Ross for guessing, but here goes anyway:\n>\n> I think running plumed with pmemd.cuda is expected to slow down GPU runs.\n> As far as I can tell, the plumed part is all done on the CPU, so the GPU\n> has to communicate with the CPU every time it need plumed functionality.\n>\n> Look at the PLUMED section in runmd.F90, starting at about line 743.  It has\n> to call gpu_download_crd() and gpu_download_frc() before the \"include\n> Plumed_force.inc\" statement (line 752), then call gpu_upload_frc() after\n> that.\n>\n> This would be expected to slow things down, probably by quite a bit,\n> depending on the size of the system.\n>\n> [Caveat: above is based on a cursory reading of the code; I've not run\n> plumed calculations myself.  I hope others with more direct experience will\n> chime in.]\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202101/0214.html",
+      "in_reply_to": 1610421898
+    }
+  ]
+}

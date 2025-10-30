@@ -1,0 +1,45 @@
+{
+  "thread_id": 1636025889,
+  "subject": "[AMBER] CUDA INSTALLATION FAILED (Error: Symbol ‘atompositions_fce’ at (1) has no IMPLICIT type)",
+  "messages": [
+    {
+      "message_id": 1636025889,
+      "author": "Akash Deep Biswas",
+      "date_raw": "Thu, 04 Nov 2021 12:38:09 +0100",
+      "body": "Dear all,\nI have been trying to install the cuda version of amber20. While I prepare the installation files using run_cmake (of course by changing the -DCUDA=TRUE). I got an error during the installation step (make install).\nThe installation stops at 28% while executing amber_rism_interface.F90.o\n######################### ERROR as follows ############################\n/home/andromeda/CHIMICA/amber20/amber20_src/AmberTools/src/rism/amber_rism_interface.F90:2586:44:\n2586 | if (safemem_dealloc(atomPositions_fce)/= 0) &\n| 1\nError: Symbol ‘atompositions_fce’ at (1) has no IMPLICIT type\n/home/andromeda/CHIMICA/amber20/amber20_src/AmberTools/src/rism/amber_rism_interface.F90:1476:24:\n1476 | atomPositions_fce = atomPositions_md\n| 1\nError: Symbol ‘atompositions_fce’ at (1) has no IMPLICIT type; did you mean ‘atompositions_md’?\n/home/andromeda/CHIMICA/amber20/amber20_src/AmberTools/src/rism/amber_rism_interface.F90:1344:26:\n1344 | atomPositions_fce => safemem_realloc(atomPositions_fce, 3, rism_3d%solute%numAtoms)\n| 1\nError: Symbol ‘atompositions_fce’ at (1) has no IMPLICIT type\n/home/andromeda/CHIMICA/amber20/amber20_src/AmberTools/src/rism/amber_rism_interface.F90:3087:66:\n3087 | *this%solvent%charge(iv)*this%solvent%density(iv), this%guv(1, iv), 1, work, 1)\n| 1\n......\n3418 | solvationEnergy_V_map, 1, solventEntropy_V_map, 1)\n| 2\nWarning: Element of assumed-shape or pointer array as actual argument at (1) cannot correspond to actual argument at (2)\nmake[2]: *** [AmberTools/src/rism/CMakeFiles/sander_rism_interface.dir/build.make:82: AmberTools/src/rism/CMakeFiles/sander_rism_interface.dir/amber_rism_interface.F90.o] Error 1\nmake[1]: *** [CMakeFiles/Makefile2:6918: AmberTools/src/rism/CMakeFiles/sander_rism_interface.dir/all] Error 2\nmake: *** [Makefile:171: all] Error 2\n#########################################################################\nIs there any simple way to jump over this bug?\nI thank you all in advance.\nThanks with Regards\nAkash Deep Biswas, PhD,\nPost Doctorate Researcher,\nDepartment of Pharmaceutical Sciences,\nUniversity of Milan, Italy",
+      "url": "http://archive.ambermd.org/202111/0033.html"
+    },
+    {
+      "message_id": 1636029868,
+      "author": "David A Case",
+      "date_raw": "Thu, 4 Nov 2021 08:44:28 -0400",
+      "body": "On Thu, Nov 04, 2021, Akash Deep Biswas wrote:\n>\n>I have been trying to install the cuda version of amber20. While I\n>prepare the installation files using run_cmake (of course by changing the\n>-DCUDA=TRUE). I got an error during the installation step (make install).\n>\n>The installation stops at 28% while executing amber_rism_interface.F90.o\n>\n>######################### ERROR as follows ############################\n>\n>/home/andromeda/CHIMICA/amber20/amber20_src/AmberTools/src/rism/amber_rism_interface.F90:2586:44:\n>\n> 2586 | if (safemem_dealloc(atomPositions_fce)/= 0) &\n> | 1\n>Error: Symbol ‘atompositions_fce’ at (1) has no IMPLICIT type\nCan you say what OS and compiler (and version) you are using?  The code\nlooks OK to me (atomPositions_fce is declared at line 636 in the\namber_rism_interface module), and I think this is the first report of such\nan error.\nMaybe Tyler can add more info here.\n....thx....dac",
+      "url": "http://archive.ambermd.org/202111/0034.html",
+      "in_reply_to": 1636025889
+    },
+    {
+      "message_id": 1636035579,
+      "author": "Akash Deep Biswas",
+      "date_raw": "Thu, 04 Nov 2021 15:19:39 +0100",
+      "body": "Thank you David for the reply.\nYou are right it is already defined in line 636, which I found in AmberTools/src/rism/amber_rism_interface.F90\nThe configuration are.\nOS: Ubuntu 21.10\nFortran Compiler: gcc version 11.2.0\nPlease let me know in case you need more information.\nRegards\nAkash",
+      "url": "http://archive.ambermd.org/202111/0035.html",
+      "in_reply_to": 1636025889
+    },
+    {
+      "message_id": 1636055617,
+      "author": "David A Case",
+      "date_raw": "Thu, 4 Nov 2021 15:53:37 -0400",
+      "body": "On Thu, Nov 04, 2021, Akash Deep Biswas wrote:\n>\n>OS: Ubuntu 21.10\n>Fortran Compiler: gcc version 11.2.0\nI suspect that you are seeing something with gcc 11.2 that developers have\nnot yet tried.  Ubuntu 21.10 is using a very new software stack -- that's\na characteristic of Ubuntu releases.  I'm at 21.04, and things work fine\nthere.\nOne could devise a workaround for this particular problem, but I suspect\nother glitches would show up elsewhere.  We developers will have to see who\ncan spin up a VM with 20.10 and tackle the issues that appear.  Volunteers\nare welcome.\n...thx...dac",
+      "url": "http://archive.ambermd.org/202111/0040.html",
+      "in_reply_to": 1636025889
+    },
+    {
+      "message_id": 1636118257,
+      "author": "Akash Deep Biswas",
+      "date_raw": "Fri, 05 Nov 2021 14:17:37 +0100",
+      "body": "Hi,\nI avoided the installation through run_cmake and followed the old process of configuring the file, compiling them, and finally installing it.\nI could successfully install all the three, serial, parallel and cuda versions.\nUsing the same OS: Ubuntu 21.10 and Compilers: gcc version 11.2.0\nRegards\nAkash\nPS: If you need any more information or testing, I will remain available.\nOn 04/11/21 20:56, David A Case  <david.case.rutgers.edu> wrote:\n>\n> On Thu, Nov 04, 2021, Akash Deep Biswas wrote:\n> >\n> >OS: Ubuntu 21.10\n> >Fortran Compiler: gcc version 11.2.0\n>\n> I suspect that you are seeing something with gcc 11.2 that developers have\n> not yet tried. Ubuntu 21.10 is using a very new software stack -- that's\n> a characteristic of Ubuntu releases. I'm at 21.04, and things work fine\n> there.\n>\n> One could devise a workaround for this particular problem, but I suspect\n> other glitches would show up elsewhere. We developers will have to see who\n> can spin up a VM with 20.10 and tackle the issues that appear. Volunteers\n> are welcome.\n>\n> ...thx...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202111/0045.html",
+      "in_reply_to": 1636025889
+    }
+  ]
+}

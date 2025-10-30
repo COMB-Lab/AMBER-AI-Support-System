@@ -1,0 +1,21 @@
+{
+  "thread_id": 1604590301,
+  "subject": "[AMBER] Ambertools20 installation",
+  "messages": [
+    {
+      "message_id": 1604590301,
+      "author": "Hrvoje Brkić",
+      "date_raw": "Thu, 5 Nov 2020 16:31:41 +0100",
+      "body": "Dear Amber users,\nI'm trying to install Ambertools20 on my PC with the Ubuntu 20.10 OS. I have followed the instructions in the manual,\nafter typing:\n./configure gnu\nand\nmake install\nI receive the error:\ndnaitr.f:658:35:\n376 |             call dvout (logfil, 1, rnorm, ndigit,\n|                                   2\n......\n658 |             call dvout (logfil, 2, xtemp, ndigit,\n|                                   1\nError: Rank mismatch between actual argument at (1) and actual argument at (2) (scalar and rank-1)\ndnaitr.f:729:39:\n376 |             call dvout (logfil, 1, rnorm, ndigit,\n|                                   2\n......\n729 |                 call dvout (logfil, 2, xtemp, ndigit,\n|                                       1\nError: Rank mismatch between actual argument at (1) and actual argument at (2) (scalar and rank-1)\nthe tame error is received after running ./run_cmake\nUnfortunately I cannot find the solution to this problem searching the forum\nBest regards,\nHrvoje\n-- \n  Hrvoje Brkić\nDepartment of biophysics and radiology\nFaculty of medicine\nJ. J. Strossmayer University of Osijek",
+      "url": "http://archive.ambermd.org/202011/0041.html"
+    },
+    {
+      "message_id": 1604613407,
+      "author": "David A Case",
+      "date_raw": "Thu, 5 Nov 2020 16:56:47 -0500",
+      "body": "On Thu, Nov 05, 2020, Hrvoje Brkić wrote:\n>I'm trying to install Ambertools20 on my PC with the Ubuntu 20.10 OS.\n>Error: Rank mismatch between actual argument at (1) and actual argument at (2) (scalar and rank-1)\nWhat is the result of typing \"gcc --version\"?  It is known that the\ncurrent Amber codes won't work correctly with gcc10, and we are actively\nworking on that.\nThe above error can be avoided by adding '-fallow-argument-mismatch' to\nthe FFLAGS variable in your config.h.  But (assuming you indeed have gcc10\n-- I can't seem to find the default compiler version on the web) there\nwill be lots of other problems, and you'll need to install gcc9 or earlier\nto use Amber.  Do an internet search on \"ubuntu change default compiler\"\nfor instructions on how to do that.\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202011/0046.html",
+      "in_reply_to": 1604590301
+    }
+  ]
+}

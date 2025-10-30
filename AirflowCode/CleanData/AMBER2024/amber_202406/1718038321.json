@@ -1,0 +1,29 @@
+{
+  "thread_id": 1718038321,
+  "subject": "[AMBER] error in reading namelist cntrl when trying to minimize RNA",
+  "messages": [
+    {
+      "message_id": 1718038321,
+      "author": "Collin Nisler",
+      "date_raw": "Mon, 10 Jun 2024 16:52:01 +0000",
+      "body": "Hello Amber community, I apologize for the elementary question, but I have tried everything by reading the manual, checking mailing lists, and modifying the syntax every way I could conceive and still cannot correct the error. I am trying to run a minimization of a solvated RNA complex with the following input file:\nminimization of water/ions holding RNA\n&cntrl\nimin=1, ntx=1, drms=0.01, ntmin=1,\ndielc=1.0, ntrx=1, ntxo=1, nscm=100,\nntwprt=0, ntb=2, ntp=2,\nirest=0, cut=9.0,\nntpr=100, ntwx=100, ntwe=100,\nnsnb=10, maxcyc=10000, ncyc=10000,\nntt=0, ntr=1, scee=1.2, vlimit=20.0,\nrestraintmask = ':1-25',\nrestraint_wt = 200,\n&end\nHold RNA fixed\n200\nRES 1 25\nEND\nEND\nI run using the command\nsander -O -i min1-3.in -o min1-3.out -p NonEnz-DirectCoord-12-6-4-Final-1264-4.prmtop -c NonEnz-DirectCoord-12-6-4-Final-1264-4-2.rst7  -ref NonEnz-DirectCoord-12-6-4-Final-1264-4-2.rst7 -r min1.rst7\nAnd get the classic \"error in reading namelist cntrl\" error.\nI've tried running without the constraints on the RNA just to see if the issue was coming from there, and have changed the syntax of the input file (used / instead of &end, changed the spacing, etc.) and I still get the same error. Any assistance would be greatly appreciated.\nCollin",
+      "url": "http://archive.ambermd.org/202406/0029.html"
+    },
+    {
+      "message_id": 1718039090,
+      "author": "Carlos Simmerling",
+      "date_raw": "Mon, 10 Jun 2024 13:04:50 -0400",
+      "body": "You should be able to use only restraintmask etc and not need the part\nafter &end. Turn off constant pressure for minimization (ntp).\nThen, get rid of anything except things you are sure you want to change\nfrom defaults. For those, check to make aure the spelling is correct.For\nexample, dielc, scee and others should not be necessary unless you eant to\ndo something unusual.  You should be able to set only a few flags. Then,\nwhen it works, add back things you really want.\nAlso check the amber page for working examples in the very first tutorials.\nOn Mon, Jun 10, 2024, 12:55 PM Collin Nisler via AMBER <amber.ambermd.\norg>\nwrote:\n> Hello Amber community, I apologize for the elementary question, but I have\n> tried everything by reading the manual, checking mailing lists, and\n> modifying the syntax every way I could conceive and still cannot correct\n> the error. I am trying to run a minimization of a solvated RNA complex with\n> the following input file:\n>\n> minimization of water/ions holding RNA\n>  &cntrl\n>   imin=1, ntx=1, drms=0.01, ntmin=1,\n>   dielc=1.0, ntrx=1, ntxo=1, nscm=100,\n>   ntwprt=0, ntb=2, ntp=2,\n>   irest=0, cut=9.0,\n>   ntpr=100, ntwx=100, ntwe=100,\n>   nsnb=10, maxcyc=10000, ncyc=10000,\n>   ntt=0, ntr=1, scee=1.2, vlimit=20.0,\n>   restraintmask = ':1-25',\n>   restraint_wt = 200,\n>  &end\n> Hold RNA fixed\n> 200\n> RES 1 25\n> END\n> END\n>\n> I run using the command\n>\n> sander -O -i min1-3.in -o min1-3.out -p\n> NonEnz-DirectCoord-12-6-4-Final-1264-4.prmtop -c\n> NonEnz-DirectCoord-12-6-4-Final-1264-4-2.rst7  -ref\n> NonEnz-DirectCoord-12-6-4-Final-1264-4-2.rst7 -r min1.rst7\n>\n> And get the classic \"error in reading namelist cntrl\" error.\n>\n> I've tried running without the constraints on the RNA just to see if the\n> issue was coming from there, and have changed the syntax of the input file\n> (used / instead of &end, changed the spacing, etc.) and I still get the\n> same error. Any assistance would be greatly appreciated.\n>\n> Collin\n>\n>",
+      "url": "http://archive.ambermd.org/202406/0030.html",
+      "in_reply_to": 1718038321
+    },
+    {
+      "message_id": 1718122269,
+      "author": "David A Case",
+      "date_raw": "Tue, 11 Jun 2024 10:11:09 -0600",
+      "body": "On Mon, Jun 10, 2024, Collin Nisler via AMBER wrote:\n>minimization of water/ions holding RNA\n> &cntrl\n>  imin=1, ntx=1, drms=0.01, ntmin=1,\n>  dielc=1.0, ntrx=1, ntxo=1, nscm=100,\n>  ntwprt=0, ntb=2, ntp=2,\n>  irest=0, cut=9.0,\n>  ntpr=100, ntwx=100, ntwe=100,\n>  nsnb=10, maxcyc=10000, ncyc=10000,\n>  ntt=0, ntr=1, scee=1.2, vlimit=20.0,\n>  restraintmask = ':1-25',\n>  restraint_wt = 200,\n> &end\n>Hold RNA fixed\n>200\n>RES 1 25\n>END\n>END\nThe GNU compilers will tell you the exact line on which the error occurred,\nor at least recent versions will do that.  Otherwise, you have to use divide\nand conquer to fine the problem ( which in you case is the variable \"scee\",\nwhich is not part of the cntrl namelist.\n...hope this helps....dac\np.s. Carlos' advice, about trying to modify only the defaults you really want\nto change, is another good strategy to use.",
+      "url": "http://archive.ambermd.org/202406/0040.html",
+      "in_reply_to": 1718038321
+    }
+  ]
+}

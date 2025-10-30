@@ -1,0 +1,29 @@
+{
+  "thread_id": 1642501544,
+  "subject": "[AMBER] Converting %FLAG XVV array found in .xvv file into a readable format similar to other .*vv files",
+  "messages": [
+    {
+      "message_id": 1642501544,
+      "author": "Daniel Fowles",
+      "date_raw": "Tue, 18 Jan 2022 10:25:44 +0000",
+      "body": "Dear all,\nI�m trying to examine the solvent susceptibility data found within the .xvv file for a solvent, however it�s the only .*vv file that doesn�t present its data in a readable format for each pair. Does anyone know, or have suggestions, of how to convert the %FLAG XVV array found within the .xvv file for a solvent?\nThanks",
+      "url": "http://archive.ambermd.org/202201/0151.html"
+    },
+    {
+      "message_id": 1642595205,
+      "author": "Daniel Fowles",
+      "date_raw": "Wed, 19 Jan 2022 12:26:45 +0000",
+      "body": "Dear all,\nI�m trying to examine the solvent susceptibility data found within the .xvv file for a solvent, however it�s the only .*vv file that doesn�t present its data in a readable format for each pair. Does anyone know, or have suggestions, of how to convert the %FLAG XVV array found within the .xvv file for a solvent?\nThanks",
+      "url": "http://archive.ambermd.org/202201/0160.html",
+      "in_reply_to": 1642501544
+    },
+    {
+      "message_id": 1642688611,
+      "author": "Jason Swails",
+      "date_raw": "Thu, 20 Jan 2022 09:23:31 -0500",
+      "body": "ParmEd has an Amber file parser that parses these kinds of files and loads\nthe flag data into a dict mapping strings (the flag name) to arrays of the\nraw data.  You can use it in a script like so:\n>>> import parmed as pmd\n>>> xvv = pmd.load_file('spc-kh.xvv')\n>>> xvv\n<parmed.amber.amberformat.AmberFormat object at 0x7f195770adf0>\n>>> xvv.flag_list\n['POINTERS', 'THERMO', 'THERMO_DT', 'ATOM_NAME', 'MTV', 'NVSP', 'MASS',\n'RHOV', 'RHOSP', 'QV', 'QSPV', 'EPSV', 'RMIN2V', 'DELHV0', 'DELHV0_DT',\n'COORD', 'XVV', 'XVV_DT']\n>>> xvv.parm_data[\"XVV\"][:10]\n[0.06466321214125481, 0.06466000915586434, 0.06465067465398544,\n0.06463556996418762, 0.06461505641504028, 0.0645894974239124,\n0.06455924954035608, 0.06452466690815684, 0.06448609749148604,\n0.06444388501121923]\nJust as a note, however, that you may have to massage some of the arrays to\ntrim off trailing \"None\"s, since the AmberFormat object only really knows\nhow many elements to truncate each array to for topology files.  For XVV\n(and other %FLAG-type files), ParmEd reads lines and seems to insert \"None\"\nfor missing entries in a partially-filled line.  But it should at least\nhelp provide a head start on writing a script to convert the data for your\nneeds.\nHope this helps,\nJason\nOn Wed, Jan 19, 2022 at 7:27 AM Daniel Fowles <daniel.fowles.strath.\nac.uk>\nwrote:\n> Dear all,\n>\n> I’m trying to examine the solvent susceptibility data found within the\n> .xvv file for a solvent, however it’s the only .*vv file that doesn’t\n> present its data in a readable format for each pair. Does anyone know, or\n> have suggestions, of how to convert the %FLAG XVV array found within the\n> .xvv file for a solvent?\n>\n> Thanks\n>\n>",
+      "url": "http://archive.ambermd.org/202201/0176.html",
+      "in_reply_to": 1642501544
+    }
+  ]
+}

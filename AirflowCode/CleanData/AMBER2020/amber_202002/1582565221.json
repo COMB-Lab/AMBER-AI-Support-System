@@ -1,0 +1,21 @@
+{
+  "thread_id": 1582565221,
+  "subject": "[AMBER] Clustering logistics",
+  "messages": [
+    {
+      "message_id": 1582565221,
+      "author": "Debarati DasGupta",
+      "date_raw": "Mon, 24 Feb 2020 17:27:01 +0000",
+      "body": "Dear Amber users,\nI have been trying to understand the flexibility of transcription mediator protein and I have an NMR ensemble structure downloaded from RCSB. There are 10 conformers in the .pdb file and I have run normal MD simulations (NPT) 100 ns each for each model.\nNow I want to perform clustering of each of my 10 runs (run 1 is model1.pdb, run2 is model2.pdb, so on.. till run 10..model10.pdb) , so that I can get an idea of whether the structures are all converging to an approximate structure or not, and finally calculate RMSDs between the most populated clusters\n**I have not done extensive clustering in AMBER18** so please forgive me if there are errors in my input file\nThis is my input file:\nAll I need to know is what are the results I am expecting once I do a cpptraj command line on my input file. I do not want to run it as a black box. ( I have opted DBSCAN just randomly, please suggest if its not appropriate and any specific algorithms I may be needing to use)\nThank you all.\nparm 2XXX_solvated.prmtop\ntrajin 2XXX_prod1.mdcrd 1 100000 10\n###we are worried about protein conformations, and hence we don�t need to bother about solvents and ions during the clustering procedure!\nstrip :Cl-,Na+,WAT\ncenter mass origin :1-152\nimage origin center\n#Align trajectory to reference structure by minimizing RMSD\nreference 2XXX_imaged_run1.pdb\nrms reference mass out RMSD_CA.txt :2-151.CA,C,N\ncluster cluster_out dbscan minpoints 20 epsilon 1 rms :2-151.CA,C,N out combined.dat summary summary.out info data_run1_water_cluster singlerepout clusters.pdb singlerepfmt pdb\ngo",
+      "url": "http://archive.ambermd.org/202002/0241.html"
+    },
+    {
+      "message_id": 1582567142,
+      "author": "Daniel Roe",
+      "date_raw": "Mon, 24 Feb 2020 12:59:02 -0500",
+      "body": "Hi,\nOn Mon, Feb 24, 2020 at 12:27 PM Debarati DasGupta\n<debarati_dasgupta.hotmail.\ncom> wrote:\n>\n> All I need to know is what are the results I am expecting once I do a cpptraj command line on my input file. I do not want to run it as a black box. ( I have opted DBSCAN just randomly, please suggest if its not appropriate and any specific algorithms I may be needing to use)\nIf I could tell you that, there would be no reason to have cpptraj :-).\nSeriously though, your best bet here is to just make sure you\nunderstand what input you are providing cpptraj with (i.e. read the\nmanual entries for each command and keyword you are using), and\nactually look at the output messages that cpptraj produces - pay\nspecial attention to anything starting with 'Warning:' or 'Error:'.\nLastly, as when running all things for the first time, trying a small\nsubset of your data (ideally something that will complete in less than\n1 minute) is recommended so you can get an idea for what output is\nproduced, run timing, etc. This will also help you catch annoying\nproblems that will waste your time if tried on the larger set of data.\nUnfortunately clustering is very much an art form, not a science, so\nbe prepared for a lot of trial and error. And of course, if you\nhaven't already, I highly recommend you read the *best* paper on\nclustering of MD trajectory data by Shao, Cheatham et al:\nhttps://pubs.acs.org/doi/10.1021/ct700119m\n-Dan\n> Thank you all.\n>\n>\n> parm 2XXX_solvated.prmtop\n> trajin 2XXX_prod1.mdcrd 1 100000 10\n> ###we are worried about protein conformations, and hence we don’t need to bother about solvents and ions during the clustering procedure!\n> strip :Cl-,Na+,WAT\n> center mass origin :1-152\n> image origin center\n> #Align trajectory to reference structure by minimizing RMSD\n> reference 2XXX_imaged_run1.pdb\n> rms reference mass out RMSD_CA.txt :2-151.CA,C,N\n> cluster cluster_out dbscan minpoints 20 epsilon 1 rms :\n2-151.CA\n,C,N out combined.\ndat summary summary.out info data_run1_water_cluster singlerepout clusters.pdb singlerepfmt pdb\n> go\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202002/0242.html",
+      "in_reply_to": 1582565221
+    }
+  ]
+}

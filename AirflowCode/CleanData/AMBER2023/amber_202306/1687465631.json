@@ -1,0 +1,21 @@
+{
+  "thread_id": 1687465631,
+  "subject": "[AMBER] Compiling amber/Tools22 in Ubuntu 22.04",
+  "messages": [
+    {
+      "message_id": 1687465631,
+      "author": "Pablo Galaz-Davison",
+      "date_raw": "Thu, 22 Jun 2023 20:27:11 +0000",
+      "body": "Dear Amber users,\nI am trying to install Amber22 with the CUDA option on, and get this quite noninformative error:\n[ 83%] Building NVCC (Device) object AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/pbsa.cuda_generated_cuda_LinearSolvers.cu.o\n/usr/include/c++/11/bits/std_function.h:435:145: error: parameter packs not expanded with �...�:\n435 |         function(_Functor&& __f)\n|                                                                                                                                                 ^\n/usr/include/c++/11/bits/std_function.h:435:145: note:         �_ArgTypes�\n/usr/include/c++/11/bits/std_function.h:530:146: error: parameter packs not expanded with �...�:\n530 |         operator=(_Functor&& __f)\n|                                                                                                                                                  ^\n/usr/include/c++/11/bits/std_function.h:530:146: note:         �_ArgTypes�\nCMake Error at pbsa.cuda_generated_cuda_LinearSolvers.cu.o.RELEASE.cmake:278 (message):\nError generating file\n/home/pb3titanx1/Documents/compiled/amber22_src/build/AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir//./pbsa.cuda_generated_cuda_LinearSolvers.cu.o\nI succesfully installed Amber22 noCUDA without errors, and this prompts when I activate CUDA in the script. I'm running a machine with a clean install of ubuntu 22.04, nvidia driver 530, CUDA version 12.1, GCC/G++/GFortran 11.3.0, and CMAKE 3.22.1\nThis PC is running a single NVIDIA TITAN Xp, and a quite old i5-4460, but had previously run Amber22 without issues.\nThanks in advance for any help, and please ask if more detailed information is needed.\nCheers,\nPablo",
+      "url": "http://archive.ambermd.org/202306/0102.html"
+    },
+    {
+      "message_id": 1687469663,
+      "author": "David A Case",
+      "date_raw": "Thu, 22 Jun 2023 17:34:23 -0400",
+      "body": "On Thu, Jun 22, 2023, Pablo Galaz-Davison via AMBER wrote:\n>\n>I am trying to install Amber22 with the CUDA option on, and get this quite noninformative error:\n>\n>[ 83%] Building NVCC (Device) object AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/pbsa.cuda_generated_cuda_LinearSolvers.cu.o\n>/usr/include/c++/11/bits/std_function.h:435:145: error: parameter packs not expanded with ‘...’:\n>  435 |         function(_Functor&& __f)\n>      |                                                                                                                                                 ^\n>/usr/include/c++/11/bits/std_function.h:435:145: note:         ‘_ArgTypes’\n>/usr/include/c++/11/bits/std_function.h:530:146: error: parameter packs not expanded with ‘...’:\n>  530 |         operator=(_Functor&& __f)\n>      |                                                                                                                                                  ^\n>/usr/include/c++/11/bits/std_function.h:530:146: note:         ‘_ArgTypes’\n>CMake Error at pbsa.cuda_generated_cuda_LinearSolvers.cu.o.RELEASE.cmake:278 (message):\n>  Error generating file\n>  /home/pb3titanx1/Documents/compiled/amber22_src/build/AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir//./pbsa.cuda_generated_cuda_LinearSolvers.cu.o\n>\nI'm cc-ing this to Ray Luo, but the pbsa.cuda code is somewhat fragile, and\nI'm not sure if it has been tested with CUDA 12.1\nAs a workaround, add -DDISABLE_TOOLS=\"pbsa\" to your run_cmake script.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202306/0103.html",
+      "in_reply_to": 1687465631
+    }
+  ]
+}

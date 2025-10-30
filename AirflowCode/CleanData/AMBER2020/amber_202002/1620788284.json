@@ -1,0 +1,29 @@
+{
+  "thread_id": 1620788284,
+  "subject": "[AMBER] Error Installing Amber20 on group's cluster",
+  "messages": [
+    {
+      "message_id": 1620788284,
+      "author": "Min Chiang Gary Ong",
+      "date_raw": "Tue, 11 May 2021 19:58:04 -0700",
+      "body": "Hello everyone,\nI am trying to install Amber2020 on my group's cluster which is running on\nUbuntu 18.04.\nWhen I was running the installation step (make install), I encounter this\nerror:\n[ 36%] Building C object\nAmberTools/src/sander/CMakeFiles/libsander.dir/qm2_read_adf_results.c.o\n[ 36%] Building C object\nAmberTools/src/sander/CMakeFiles/libsander.dir/KFReader.c.o\n[ 36%] Building C object\nAmberTools/src/sander/CMakeFiles/libsander.dir/ArrayList.c.o\n[ 36%] Building Fortran object\nAmberTools/src/sander/CMakeFiles/libsander.dir/prn_qmmm_dipole.F90.o\n[ 36%] Building C object\nAmberTools/src/sander/CMakeFiles/libsander.dir/Plumed.c.o\n[ 36%] Linking Fortran shared library libsander.so\n/usr/bin/ld: /usr/local/lib/libfftw3.a(assert.o): relocation R_X86_64_PC32\nagainst symbol `stdout..GLIBC_2.2.5' can not be used when making a shared\nobject; recompile with -fPIC\n/usr/bin/ld: final link failed: Bad value\ncollect2: error: ld returned 1 exit status\nAmberTools/src/sander/CMakeFiles/libsander.dir/build.make:5364: recipe for\ntarget 'AmberTools/src/sander/libsander.so' failed\nmake[2]: *** [AmberTools/src/sander/libsander.so] Error 1\nCMakeFiles/Makefile2:2647: recipe for target\n'AmberTools/src/sander/CMakeFiles/libsander.dir/all' failed\nmake[1]: *** [AmberTools/src/sander/CMakeFiles/libsander.dir/all] Error 2\nMakefile:151: recipe for target 'all' failed\nmake: *** [all] Error\nmake: *** [all] Error 2\nAnd the installation ceases by itself. Any help would be appreciated!\nGary",
+      "url": "http://archive.ambermd.org/202105/0099.html"
+    },
+    {
+      "message_id": 1620823835,
+      "author": "David A Case",
+      "date_raw": "Wed, 12 May 2021 08:50:35 -0400",
+      "body": "On Tue, May 11, 2021, Min Chiang Gary Ong wrote:\n>\n>I am trying to install Amber2020 on my group's cluster which is running on\n>Ubuntu 18.04.\n>\n>[ 36%] Linking Fortran shared library libsander.so\n>/usr/bin/ld: /usr/local/lib/libfftw3.a(assert.o): relocation R_X86_64_PC32\n>against symbol `stdout..GLIBC_2.2.5' can not be used when making a shared\n>object; recompile with -fPIC\nPlease edit your run_cmake script, and add the following flag:\n-DFORCE_INTERNAL_LIBS=\"fftw\"\nThen re-run \"run_cmake\" and \"make install\".\nLongish explanation: Amber is looking in /usr/local/lib to try to get\nlibfftw3, but doesn't realize (at the cmake step) that shared libraries,\nwith position-indendepent code (PIC) are not avaialble.\nThere is a long-standing struggle amongst Amber developers.  One side wants\nto try hard to include third-party libraries that might already be on a\nuser's computer, and add checks as needed to weed out libraries that have\nthe right name but content that we can't use.\nThe other side side argues that we will never know all the possible things\nthat might be in /usr/local/lib, and that we are better off just compiling\nlibfftw from source, so the know the right options will get chosen.\nThere are some good arguments on both sides of this issue.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202105/0103.html",
+      "in_reply_to": 1620788284
+    },
+    {
+      "message_id": 1620832277,
+      "author": "Min Chiang Gary Ong",
+      "date_raw": "Wed, 12 May 2021 08:11:17 -0700",
+      "body": "Thanks David, this solved the issue.\nOn Wed, May 12, 2021 at 5:51 AM David A Case <david.case.rutgers.edu> wrote:\n> On Tue, May 11, 2021, Min Chiang Gary Ong wrote:\n> >\n> >I am trying to install Amber2020 on my group's cluster which is running on\n> >Ubuntu 18.04.\n> >\n> >[ 36%] Linking Fortran shared library libsander.so\n> >/usr/bin/ld: /usr/local/lib/libfftw3.a(assert.o): relocation R_X86_64_PC32\n> >against symbol `stdout..GLIBC_2.2.5' can not be used when making a shared\n> >object; recompile with -fPIC\n>\n> Please edit your run_cmake script, and add the following flag:\n>\n>      -DFORCE_INTERNAL_LIBS=\"fftw\"\n>\n> Then re-run \"run_cmake\" and \"make install\".\n>\n> Longish explanation: Amber is looking in /usr/local/lib to try to get\n> libfftw3, but doesn't realize (at the cmake step) that shared libraries,\n> with position-indendepent code (PIC) are not avaialble.\n>\n> There is a long-standing struggle amongst Amber developers.  One side wants\n> to try hard to include third-party libraries that might already be on a\n> user's computer, and add checks as needed to weed out libraries that have\n> the right name but content that we can't use.\n>\n> The other side side argues that we will never know all the possible things\n> that might be in /usr/local/lib, and that we are better off just compiling\n> libfftw from source, so the know the right options will get chosen.\n>\n> There are some good arguments on both sides of this issue.\n>\n> ...good luck...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202105/0110.html",
+      "in_reply_to": 1620788284
+    }
+  ]
+}

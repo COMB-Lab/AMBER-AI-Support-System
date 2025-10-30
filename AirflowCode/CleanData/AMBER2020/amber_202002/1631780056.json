@@ -1,0 +1,37 @@
+{
+  "thread_id": 1631780056,
+  "subject": "[AMBER] Non-integer pbsa surface charge?",
+  "messages": [
+    {
+      "message_id": 1631780056,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Thu, 16 Sep 2021 04:14:16 -0400",
+      "body": "Dear Amber Community,\nI noticed that the surface charge I obtain with he pbsa module is, for example, 28.5572e. Is the deviation from 29e, which is what I expect an issue with numerical accuracy settings, or is there something more fundamental at work that I don’t know.\nThe molecular system I gave to PBSA is just the protein (explicit water and ions stripped off) and has a net charge of -29e.\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202109/0092.html"
+    },
+    {
+      "message_id": 1631794731,
+      "author": "David A Case",
+      "date_raw": "Thu, 16 Sep 2021 08:18:51 -0400",
+      "body": "On Thu, Sep 16, 2021, Matthew Guberman-Pfeffer wrote:\n>\n>I noticed that the surface charge I obtain with he pbsa module is, for\n>example, 28.5572e. Is the deviation from 29e, which is what I expect\n>an issue with numerical accuracy settings, or is there something more\n>fundamental at work that I don’t know.\n>\n>The molecular system I gave to PBSA is just the protein (explicit water and\n>ions stripped off) and has a net charge of -29e.\nThis is exactly what you should expect.  For a finite exterior dielectric,\nthe induced surface charges do not fully screen the molecular charge.\nThe result is that a test charge outside the molecule would still feel a\n(screened) electrostatic interaction with the molecule plus its surface\ncharges.\nThe amount by which the surface charge differ from the molecule charge is a\nfactor of (1 - 1/epsilon), where epsilon is the exterior dieletric.  This\nmatches you result pretty closely.\n...dac",
+      "url": "http://archive.ambermd.org/202109/0093.html",
+      "in_reply_to": 1631780056
+    },
+    {
+      "message_id": 1631818573,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Thu, 16 Sep 2021 14:56:13 -0400",
+      "body": "Thanks, Dr. Case, for the explanation. I'm still a little confused on the\ndifference between an electrically neutral explicit solvent simulation and\nthe slightly charged implicit solvent result. Is the difference because\nsome charges in the explicit solvent are not confined to the surface of the\ncavity?\nBest,\nMatthew\nOn Thu, Sep 16, 2021 at 8:19 AM David A Case <dacase1.gmail.\ncom> wrote:\n> *Message sent from a system outside of UConn.*\n>\n>\n> On Thu, Sep 16, 2021, Matthew Guberman-Pfeffer wrote:\n> >\n> >I noticed that the surface charge I obtain with he pbsa module is, for\n> >example, 28.5572e. Is the deviation from 29e, which is what I expect\n> >an issue with numerical accuracy settings, or is there something more\n> >fundamental at work that I don’t know.\n> >\n> >The molecular system I gave to PBSA is just the protein (explicit water\n> and\n> >ions stripped off) and has a net charge of -29e.\n>\n> This is exactly what you should expect.  For a finite exterior dielectric,\n> the induced surface charges do not fully screen the molecular charge.\n> The result is that a test charge outside the molecule would still feel a\n> (screened) electrostatic interaction with the molecule plus its surface\n> charges.\n>\n> The amount by which the surface charge differ from the molecule charge is a\n> factor of (1 - 1/epsilon), where epsilon is the exterior dieletric.  This\n> matches you result pretty closely.\n>\n> ...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202109/0094.html",
+      "in_reply_to": 1631780056
+    },
+    {
+      "message_id": 1631966486,
+      "author": "David A Case",
+      "date_raw": "Sat, 18 Sep 2021 08:01:26 -0400",
+      "body": "On Thu, Sep 16, 2021, Matthew Guberman-Pfeffer wrote:\n>Thanks, Dr. Case, for the explanation. I'm still a little confused on the\n>difference between an electrically neutral explicit solvent simulation and\n>the slightly charged implicit solvent result. Is the difference because\n>some charges in the explicit solvent are not confined to the surface of the\n>cavity?\nApparent surface charges are one way of describing the effects of an\nimplicit solvent that represented as a continuum dielectric.  One can show\nby Gauss' law that the sum of the surface charges is less than the charge\ninside the surface.  This is a feature of treating the solvent as a\ndielectric, and deciding to represent this through apparent surface charges.\nNeither option is required, and neither is used for explicit solvent\nsimulations.\n...dac",
+      "url": "http://archive.ambermd.org/202109/0106.html",
+      "in_reply_to": 1631780056
+    }
+  ]
+}

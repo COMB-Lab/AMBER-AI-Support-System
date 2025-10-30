@@ -1,0 +1,37 @@
+{
+  "thread_id": 1638774011,
+  "subject": "[AMBER] about RAMD",
+  "messages": [
+    {
+      "message_id": 1638774011,
+      "author": "�����",
+      "date_raw": "Mon, 6 Dec 2021 15:00:11 +0800 (CST)",
+      "body": "Dear Amber Users and Developers,\nI run RAMD with amber20,but I don't know which parameter represent the threshold distance  (rmin).\nIn RAMD, if the ligand does not reach the threshold distance (rmin), a new, randomly chosen direction is given to the force on its center of mass; otherwise, the force direction is maintained.\nPlease help, thanks!\nwith regards\nTian",
+      "url": "http://archive.ambermd.org/202112/0062.html"
+    },
+    {
+      "message_id": 1638809497,
+      "author": "Charles Lin",
+      "date_raw": "Mon, 6 Dec 2021 16:51:37 +0000",
+      "body": "I believe you’re looking for ramdmaxdist which is set in angstroms of how far the CoM between the ligand and the chosen protein center of mass distance is that turns off the simulation (which is generally what you want since you’re using RAMD to try to estimate an off rate).\nFor the most basic run you’’ll need to set the following variables: ramdboost, ramdint, ramdligmask, ramdprotmask, ramdmaxdist.\nIf you never reach the ramdmaxdist, the run will finish when nstlim is hit.\n-Charlie\nFrom: 田佳琪 <tianjq.sjtu.\nedu.cn>\nReply-To: AMBER Mailing List <amber.ambermd.\norg>\nDate: Monday, December 6, 2021 at 2:02 AM\nTo: \"amber.ambermd.org\" <amber.ambermd.org>\nSubject: [AMBER] about RAMD\nDear Amber Users and Developers,\nI run RAMD with amber20,but I don't know which parameter represent the threshold distance (rmin).\nIn RAMD, if the ligand does not reach the threshold distance (rmin), a new, randomly chosen direction is given to the force on its center of mass; otherwise, the force direction is maintained.\nPlease help, thanks!\nwith regards\nTian",
+      "url": "http://archive.ambermd.org/202112/0066.html",
+      "in_reply_to": 1638774011
+    },
+    {
+      "message_id": 1638867275,
+      "author": "�����",
+      "date_raw": "Tue, 7 Dec 2021 16:54:35 +0800 (CST)",
+      "body": "Thanks for your reply. Do you mean i need to calculate the rmin (the threshold distance that determines whether the force direction needs to be changed) with the  parameters ramdmaxdist and ramdint? There is not a parameter directly define the \"rmin\" like in NAMD package.\nwith regards\nTian\n----- ԭʼ�ʼ� -----\n������: \"Charles Lin\" <charles.lin.roivant.\ncom>\n�ռ���: \"amber\" <amber.ambermd.org>\n����ʱ��: ���ڶ�, 2021�� 12 �� 07�� ���� 12:51:37\n����: Re: [AMBER] about RAMD\nI believe you��re looking for ramdmaxdist which is set in angstroms of how far the CoM between the ligand and the chosen protein center of mass distance is that turns off the simulation (which is generally what you want since you��re using RAMD to try to estimate an off rate).\nFor the most basic run you����ll need to set the following variables: ramdboost, ramdint, ramdligmask, ramdprotmask, ramdmaxdist.\nIf you never reach the ramdmaxdist, the run will finish when nstlim is hit.\n-Charlie\nFrom: ����� <tianjq.sjtu.edu.cn>\nReply-To: AMBER Mailing List <amber.ambermd.\norg>\nDate: Monday, December 6, 2021 at 2:02 AM\nTo: \"amber.ambermd.org\" <amber.ambermd.org>\nSubject: [AMBER] about RAMD\nDear Amber Users and Developers,\nI run RAMD with amber20,but I don't know which parameter represent the threshold distance (rmin).\nIn RAMD, if the ligand does not reach the threshold distance (rmin), a new, randomly chosen direction is given to the force on its center of mass; otherwise, the force direction is maintained.\nPlease help, thanks!\nwith regards\nTian",
+      "url": "http://archive.ambermd.org/202112/0069.html",
+      "in_reply_to": 1638774011
+    },
+    {
+      "message_id": 1638926906,
+      "author": "Charles Lin",
+      "date_raw": "Wed, 8 Dec 2021 01:28:26 +0000",
+      "body": "Anything within ramdmaxdist will apply the ramd force if the distance is smaller than the previous distance.  The idea of ramd is that you apply a force until you fall outside of a distance you care about.  There is no “direction” the force is applied in.  It is suppose to be completely random.\nSo here’s an example:\nSay you have a ligand in a protein pocket.  You define the ligand with a residue name LIG.  So you define your ramdligmask=”:LIG” and then you want to compare against residues that you’re currently interacting with your protein so you might do something like ramdprotmask=”:35,36,37”.  The starting distance in your simulation will be the distance between the center of mass of :LIG (residue name) and the center of mass of :35,36,37 (residue ids). We’ll define this starting distance as starting_distance.  Your simulation will terminate when the LIG CoM distance and :35,36,37 CoM distance is bigger than ramdmaxdist + starting_distance.  At every ramdint steps so let’s say you set it to 100, every 100 steps we’ll check if the current distance between LIG CoM and :35,36,37 CoM is bigger than the distance at the last ramdint evaluation.  If it is smaller we’ll apply a random force with a magnitude of ramdboost.\nFrom: 田佳琪 <tianjq.sjtu.edu.cn>\nReply-To: AMBER Mailing List <amber.ambermd.\norg>\nDate: Tuesday, December 7, 2021 at 8:55 AM\nTo: amber <amber.ambermd.org>\nSubject: Re: [AMBER] about RAMD\nThanks for your reply. Do you mean i need to calculate the rmin (the threshold distance that determines whether the force direction needs to be changed) with the parameters ramdmaxdist and ramdint? There is not a parameter directly define the \"rmin\" like in NAMD package.\nwith regards\nTian\n----- 原始邮件 -----\n发件人: \"Charles Lin\" <charles.lin.roivant.\ncom>\n收件人: \"amber\" <amber.ambermd.org>\n发送时间: 星期二, 2021年 12 月 07日 上午 12:51:37\n主题: Re: [AMBER] about RAMD\nI believe you’re looking for ramdmaxdist which is set in angstroms of how far the CoM between the ligand and the chosen protein center of mass distance is that turns off the simulation (which is generally what you want since you’re using RAMD to try to estimate an off rate).\nFor the most basic run you’’ll need to set the following variables: ramdboost, ramdint, ramdligmask, ramdprotmask, ramdmaxdist.\nIf you never reach the ramdmaxdist, the run will finish when nstlim is hit.\n-Charlie\nFrom: 田佳琪 <tianjq.sjtu.\nedu.cn>\nReply-To: AMBER Mailing List <amber.ambermd.\norg>\nDate: Monday, December 6, 2021 at 2:02 AM\nTo: \"amber.ambermd.org\" <amber.ambermd.org>\nSubject: [AMBER] about RAMD\nDear Amber Users and Developers,\nI run RAMD with amber20,but I don't know which parameter represent the threshold distance (rmin).\nIn RAMD, if the ligand does not reach the threshold distance (rmin), a new, randomly chosen direction is given to the force on its center of mass; otherwise, the force direction is maintained.\nPlease help, thanks!\nwith regards\nTian",
+      "url": "http://archive.ambermd.org/202112/0076.html",
+      "in_reply_to": 1638774011
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "thread_id": 1715354565,
+  "subject": "[AMBER] Multiple types of water for SHAKE",
+  "messages": [
+    {
+      "message_id": 1715354565,
+      "author": "Tucker E. Burgin",
+      "date_raw": "Fri, 10 May 2024 15:22:45 +0000",
+      "body": "I am using ZAFF (\nhttps://ambermd.org/tutorials/advanced/tutorial20/ZAFF.php\n) to build an MM model of a Zn-coordinating protein where one of the coordinating centers is the oxygen of a water molecule. The ZAFF.prep file defines a new type of three-point water residue for this purpose. No trouble there.\nThe problem I�m running into is that because, just like e.g., TIP3P, this water molecule includes a bond between its two hydrogen atoms, pmemd complains that there are too many bonds to the hydrogen atoms:\n�2014: 4076 - 4077 and 2016: 4075 - 4077\nHydrogen atom 4077 appears to have multiple bonds to atoms 4076 and 4077 which is illegal for SHAKEH.\nExiting due to the presence of inconsistent SHAKEH hydrogen clusters.�\n(Incidentally, I think there�s an off-by-one error in generating this error message � the second line says 4077 is bound to 4076 and 4077, but probably should say it�s bound to 4075 and 4076, as in the first line).\nI�m pretty sure the �right� thing to do here is to somehow tell Amber to include this special water molecule in its definition of what SHAKE considers to be water molecules. I have tried providing more than one residue name to the WATNAM command in the &cntrl namelist, but no luck. How can I get SHAKE to consider two different residue names to be water? Or is there a workaround I should consider instead (other than just using a default water molecule instead of the special water)?\nThanks!\n-Tucker",
+      "url": "http://archive.ambermd.org/202405/0043.html"
+    }
+  ]
+}

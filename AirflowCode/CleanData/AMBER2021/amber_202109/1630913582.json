@@ -1,0 +1,45 @@
+{
+  "thread_id": 1630913582,
+  "subject": "[AMBER] How to print out implicit solvent charges?",
+  "messages": [
+    {
+      "message_id": 1630913582,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Mon, 6 Sep 2021 03:33:02 -0400",
+      "body": "Dear Amber Community,\nIs there a way to print out the xyz coordinates and charges for an implicit solvent?\nI want to use that charge distribution in a subsequent QM level calculation.\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202109/0021.html"
+    },
+    {
+      "message_id": 1630921495,
+      "author": "Carlos Simmerling",
+      "date_raw": "Mon, 6 Sep 2021 05:44:55 -0400",
+      "body": "Which coordinates do you mean? For the solvent there are no coordinates\nsince it is implicit. You can save the solute coordinates in the restart\nfile, and charges are in the prmtop.  But maybe you meant something else...\nOn Mon, Sep 6, 2021, 3:33 AM Matthew Guberman-Pfeffer <\nmatthew.guberman-pfeffer.uconn.edu> wrote:\n> Dear Amber Community,\n>\n> Is there a way to print out the xyz coordinates and charges for an\n> implicit solvent?\n> I want to use that charge distribution in a subsequent QM level\n> calculation.\n>\n> Best,\n> Matthew\n>",
+      "url": "http://archive.ambermd.org/202109/0022.html",
+      "in_reply_to": 1630913582
+    },
+    {
+      "message_id": 1630922009,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Mon, 6 Sep 2021 05:53:29 -0400",
+      "body": "Thanks for the quick reply. Isn’t the implicit solvent evaluated at specific points in space? I was thinking of the xyz associated with those grid or cavity points at which the implicit solvent is evaluated, and the charges at those points. Or, are the implicit solvent models different in implementation than the picture I have from apparent surface charge or polarizable continuum models in QM calculations?\nAsked another way, is there a way to save the representation of the implicit solvent as a charge distribution?\nBest,\nMatthew\n> On Sep 6, 2021, at 5:44 AM, Carlos Simmerling <carlos.simmerling.gmail.\ncom> wrote:\n>\n> *Message sent from a system outside of UConn.*\n>\n>\n> Which coordinates do you mean? For the solvent there are no coordinates\n> since it is implicit. You can save the solute coordinates in the restart\n> file, and charges are in the prmtop.  But maybe you meant something else...\n>\n> On Mon, Sep 6, 2021, 3:33 AM Matthew Guberman-Pfeffer <\n> matthew.guberman-pfeffer.uconn.edu> wrote:\n>\n>> Dear Amber Community,\n>>\n>> Is there a way to print out the xyz coordinates and charges for an\n>> implicit solvent?\n>> I want to use that charge distribution in a subsequent QM level\n>> calculation.\n>>\n>> Best,\n>> Matthew\n>>",
+      "url": "http://archive.ambermd.org/202109/0023.html",
+      "in_reply_to": 1630913582
+    },
+    {
+      "message_id": 1630932771,
+      "author": "David A Case",
+      "date_raw": "Mon, 6 Sep 2021 08:52:51 -0400",
+      "body": "On Mon, Sep 06, 2021, Matthew Guberman-Pfeffer wrote:\n>Thanks for the quick reply. Isn’t the implicit solvent evaluated at\n>specific points in space? I was thinking of the xyz associated with those\n>grid or cavity points at which the implicit solvent is evaluated, and the\n>charges at those points. Or, are the implicit solvent models different in\n>implementation than the picture I have from apparent surface charge or\n>polarizable continuum models in QM calculations?\nThe standard GB models in Amber don't lead themselves to being changed into a\npoint-charge distribution.  The gbnsr6 model (see Chapter 5 in the Amber\n2021 Reference Manual) can probably to made to do this, but I've never used\nthat.\nThe pbsa (Poisson-Bolztmann) program has an \"isurfchg\" variable that will\ngenerate apparent surface charges.  This doesn't seem(?) to be in the\nReference manual, but you could try to set it to 1 in the &pb namelist and\nexperiment.\nThe afnmr package (\nhttps://github.com/dacase/afnmr\n) has a similar\nfunctionality: it prepares inputs for a variety of quantum chemistry\npackages (Gaussian, ORCA, Jaguar, QChem, deMon,...) that will illustrate how\nthe surface charges are used, although it sounds like you probably already\nknow that.  This uses the MEAD Poisson-Boltzmann package, which is included.\nFor RISM, you can get the solvent charges on the Cartesian grid, which could\nbe put into a quantum program.  It would probably be better to first convert\nthese to apparent surface charges.  Let me know if you want to go this way:\nI have some old code (somewhere) that did this, and it might be worthwhile\nto resurrect it.\nLike Carlos, I'm not sure that this answers your question, but I hope it\nhelps.\n...good luck....dac",
+      "url": "http://archive.ambermd.org/202109/0024.html",
+      "in_reply_to": 1630913582
+    },
+    {
+      "message_id": 1631123974,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Wed, 8 Sep 2021 13:59:34 -0400",
+      "body": "Thank you so much, David, and Carlos, for your very helpful replies.\nDavid, I really appreciated all the options you mentioned for me to explore.\nThe isurfchg keyword for PBSA seems to give me exactly what I wanted— an xyzq formatted file that I can use in a QM package to represent the solvent.\nI’m trying to compare how explicit/implicit representations impact the energetics of cofactors.\nBest,\nMatthew\n> On Sep 6, 2021, at 8:52 AM, David A Case <dacase1.gmail.\ncom> wrote:\n>\n> *Message sent from a system outside of UConn.*\n>\n>\n> On Mon, Sep 06, 2021, Matthew Guberman-Pfeffer wrote:\n>\n>> Thanks for the quick reply. Isn’t the implicit solvent evaluated at\n>> specific points in space? I was thinking of the xyz associated with those\n>> grid or cavity points at which the implicit solvent is evaluated, and the\n>> charges at those points. Or, are the implicit solvent models different in\n>> implementation than the picture I have from apparent surface charge or\n>> polarizable continuum models in QM calculations?\n>\n> The standard GB models in Amber don't lead themselves to being changed into a\n> point-charge distribution.  The gbnsr6 model (see Chapter 5 in the Amber\n> 2021 Reference Manual) can probably to made to do this, but I've never used\n> that.\n>\n> The pbsa (Poisson-Bolztmann) program has an \"isurfchg\" variable that will\n> generate apparent surface charges.  This doesn't seem(?) to be in the\n> Reference manual, but you could try to set it to 1 in the &pb namelist and\n> experiment.\n>\n> The afnmr package (\nhttps://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.com%2Fdacase%2Fafnmr&amp;data=04%7C01%7C%7Cc8fe11d7f0334d8f9ec108d9713556dd%7C17f1a87e2a254eaab9df9d439034b080%7C0%7C0%7C637665296182054405%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIj\noiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=rDOQir7%2B74kdy6FEHT2HyETV9J98zuIE9MpcAQEnswo%3D&amp;reserved=0) has a similar\n> functionality: it prepares inputs for a variety of quantum chemistry\n> packages (Gaussian, ORCA, Jaguar, QChem, deMon,...) that will illustrate how\n> the surface charges are used, although it sounds like you probably already\n> know that.  This uses the MEAD Poisson-Boltzmann package, which is included.\n>\n> For RISM, you can get the solvent charges on the Cartesian grid, which could\n> be put into a quantum program.  It would probably be better to first convert\n> these to apparent surface charges.  Let me know if you want to go this way:\n> I have some old code (somewhere) that did this, and it might be worthwhile\n> to resurrect it.\n>\n> Like Carlos, I'm not sure that this answers your question, but I hope it\n> helps.\n>\n> ...good luck....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202109/0048.html",
+      "in_reply_to": 1630913582
+    }
+  ]
+}

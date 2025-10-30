@@ -1,0 +1,29 @@
+{
+  "thread_id": 1614622063,
+  "subject": "[AMBER] Superimpose",
+  "messages": [
+    {
+      "message_id": 1614622063,
+      "author": "mohamed marzouk",
+      "date_raw": "Mon, 1 Mar 2021 18:07:43 +0000",
+      "body": "Hello AMBER users,\nI want to do superimpose for dissociation trajectory with respect to DNA, How?!\nI check the autoimage parameters, but I have question. My system (DNA, protein, and ions) I want to superimpose the trajectories where DNA keep the same position every frame of the traj. and protein moving without any alignemnt as my target is dissociation of protein and sure Ions and water. The Q?! Anchor : DNA  , mobile region: ions , fixed is protein ?! Are these right parameters for auto images ?!\nGet Outlook for iOS<\nhttps://aka.ms/o0ukef\n>",
+      "url": "http://archive.ambermd.org/202103/0003.html"
+    },
+    {
+      "message_id": 1614884771,
+      "author": "Daniel Roe",
+      "date_raw": "Thu, 4 Mar 2021 14:06:11 -0500",
+      "body": "Hi,\nI think you're conflating imaging with superposition (best-fit\nalignment). Imaging is moving things back into the primary unit cell.\nSuperposition is aligning the system to a reference. Commands like\n'image' and 'autoimage' relate to the former; commands like 'rms' and\n'align' relate to the latter.\nYou can do both, but unless you're running cpptraj version 5 or above\nyou need to do imaging before rms-fitting. So say I have a DNA\ndodecamer in solvent and I want to image and best-fit to the structure\nin the first frame and remove the solvent. I would do something like\nthis in cpptraj:\nparm myparm.parm7\ntrajin mytraj.nc\nstrip :WAT parmout strip.parm7\nautoimage origin\nbox nobox\nalign first :1-24&!.H=\ntrajout strip.image.fit.nc\nrun\nThe resulting trajectory 'strip.image.fit.nc' can be used with the\ncorresponding topology 'strip.parm7'. Hope this helps,\n-Dan\nOn Mon, Mar 1, 2021 at 1:11 PM mohamed marzouk\n<mohamedmarzoukphysics.gmail.com> wrote:\n>\n> Hello AMBER users,\n> I want to do superimpose for dissociation trajectory with respect to DNA, How?!\n>\n> I check the autoimage parameters, but I have question. My system (DNA, protein, and ions) I want to superimpose the trajectories where DNA keep the same position every frame of the traj. and protein moving without any alignemnt as my target is dissociation of protein and sure Ions and water. The Q?! Anchor : DNA  , mobile region: ions , fixed is protein ?! Are these right parameters for auto images ?!\n>\n>\n>\n> Get Outlook for iOS<\nhttps://aka.ms/o0ukef\n>\n>",
+      "url": "http://archive.ambermd.org/202103/0031.html",
+      "in_reply_to": 1614622063
+    },
+    {
+      "message_id": 1616842667,
+      "author": "mohamed marzouk",
+      "date_raw": "Sat, 27 Mar 2021 10:57:47 +0000",
+      "body": "Thank too much.\nVery clear now, much helpful.\nGet Outlook for iOS<\nhttps://aka.ms/o0ukef\n>\n________________________________\nFrom: Daniel Roe <daniel.r.roe.gmail.com>\nSent: Friday, March 5, 2021 4:06:11 AM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] Superimpose\nHi,\nI think you're conflating imaging with superposition (best-fit\nalignment). Imaging is moving things back into the primary unit cell.\nSuperposition is aligning the system to a reference. Commands like\n'image' and 'autoimage' relate to the former; commands like 'rms' and\n'align' relate to the latter.\nYou can do both, but unless you're running cpptraj version 5 or above\nyou need to do imaging before rms-fitting. So say I have a DNA\ndodecamer in solvent and I want to image and best-fit to the structure\nin the first frame and remove the solvent. I would do something like\nthis in cpptraj:\nparm myparm.parm7\ntrajin mytraj.nc\nstrip :WAT parmout strip.parm7\nautoimage origin\nbox nobox\nalign first :1-24&!.H=\ntrajout strip.image.fit.nc\nrun\nThe resulting trajectory 'strip.image.fit.nc' can be used with the\ncorresponding topology 'strip.parm7'. Hope this helps,\n-Dan\nOn Mon, Mar 1, 2021 at 1:11 PM mohamed marzouk\n<mohamedmarzoukphysics.gmail.com> wrote:\n>\n> Hello AMBER users,\n> I want to do superimpose for dissociation trajectory with respect to DNA, How?!\n>\n> I check the autoimage parameters, but I have question. My system (DNA, protein, and ions) I want to superimpose the trajectories where DNA keep the same position every frame of the traj. and protein moving without any alignemnt as my target is dissociation of protein and sure Ions and water. The Q?! Anchor : DNA  , mobile region: ions , fixed is protein ?! Are these right parameters for auto images ?!\n>\n>\n>\n> Get Outlook for iOS<\nhttps://aka.ms/o0ukef\n>\n>",
+      "url": "http://archive.ambermd.org/202103/0276.html",
+      "in_reply_to": 1614622063
+    }
+  ]
+}

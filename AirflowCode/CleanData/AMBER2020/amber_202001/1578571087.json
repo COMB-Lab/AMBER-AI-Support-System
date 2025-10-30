@@ -1,0 +1,37 @@
+{
+  "thread_id": 1578571087,
+  "subject": "[AMBER] Lipid bilayer imaging problem",
+  "messages": [
+    {
+      "message_id": 1578571087,
+      "author": "Bhat Zahoor",
+      "date_raw": "Thu, 9 Jan 2020 17:28:07 +0530",
+      "body": "Hello,\nI have simulated DOPC lipid bilayer model ( Explicit solvent) for 100ns\nusing Lipid14 force field in Amber18. Now I was trying to process the\ntrajectory file using autoimage flag in the CPPTRAJ and keeping center\nresidues of my choice. But it appears that the adjacent cell lipid\nmolecules appear in the simulation unit cell when visualized in the VMD.\nAlthough I have used Periodic boundary condition while running the\nproduction run and simulated the system in NPT ensemble. I have been trying\nto image the trajectory using different options as reported earlier in the\namber mail archive. I have solved the water layer shifting problem but the\nlateral lipid molecules from the adjacent periodic images appear in the\nunit cell. What would be the cause and the possible solution for this\nproblem ?\nThanks\n*Zahoor Ahmad Bhat*\nResearch Scholar\nMultidisciplinary Centre for Advanced Research and Studies\nJamia Millia Islamia\nNew Delhi - 110025\nIndia",
+      "url": "http://archive.ambermd.org/202001/0103.html"
+    },
+    {
+      "message_id": 1578570527,
+      "author": "Chetna Tyagi",
+      "date_raw": "Thu, 9 Jan 2020 12:48:47 +0100",
+      "body": "Dear Zahoor,\nYes, that can happen...Try using \"autoimage origin\" before you trajout the\ntrajectory, if you haven't tried this way yet or \"unwrapping\" the\ntrajectory may also help sometimes.\n\"\nunwrap [center] [{bymol | byres | byatom}] [ reference | ref <name> |\nrefindex <#> ] [<mask>]\n\"\nIf you have already tried these then I don't know further.\nMany times with my membrane simulations, the lipids from adjacent cells\nappear even after autoimaging but after few frames it goes back.\nHope it helps,\nChetna\nOn Thu, Jan 9, 2020 at 12:58 PM Bhat Zahoor <dr.zahoor11.gmail.com> wrote:\n> Hello,\n>\n> I have simulated DOPC lipid bilayer model ( Explicit solvent) for 100ns\n> using Lipid14 force field in Amber18. Now I was trying to process the\n> trajectory file using autoimage flag in the CPPTRAJ and keeping center\n> residues of my choice. But it appears that the adjacent cell lipid\n> molecules appear in the simulation unit cell when visualized in the VMD.\n> Although I have used Periodic boundary condition while running the\n> production run and simulated the system in NPT ensemble. I have been trying\n> to image the trajectory using different options as reported earlier in the\n> amber mail archive. I have solved the water layer shifting problem but the\n> lateral lipid molecules from the adjacent periodic images appear in the\n> unit cell. What would be the cause and the possible solution for this\n> problem ?\n>  Thanks\n>\n> *Zahoor Ahmad Bhat*\n> Research Scholar\n> Multidisciplinary Centre for Advanced Research and Studies\n> Jamia Millia Islamia\n> New Delhi - 110025\n> India\n>",
+      "url": "http://archive.ambermd.org/202001/0104.html",
+      "in_reply_to": 1578571087
+    },
+    {
+      "message_id": 1578574781,
+      "author": "Bhat Zahoor",
+      "date_raw": "Thu, 9 Jan 2020 18:29:41 +0530",
+      "body": "Thank you for your reply,\nBut I have tried 'autoimage origin' as well and the results were same.\nActually I am simulating the permeability of a small molecule through lipid\nbilayer. Molecules from adjacent periodic cells appear in few frames and\nthen disappear again. I have gone through a lot of literature but nothing\nsolid has been given anywhere.\nOn Thu 9 Jan, 2020, 5:43 PM Chetna Tyagi, <cheta231.gmail.com> wrote:\n> Dear Zahoor,\n>\n> Yes, that can happen...Try using \"autoimage origin\" before you trajout the\n> trajectory, if you haven't tried this way yet or \"unwrapping\" the\n> trajectory may also help sometimes.\n> \"\n>\n> unwrap [center] [{bymol | byres | byatom}] [ reference | ref <name> |\n> refindex <#> ] [<mask>]\n>\n> \"\n> If you have already tried these then I don't know further.\n> Many times with my membrane simulations, the lipids from adjacent cells\n> appear even after autoimaging but after few frames it goes back.\n>\n> Hope it helps,\n> Chetna\n>\n> On Thu, Jan 9, 2020 at 12:58 PM Bhat Zahoor <dr.zahoor11.gmail.com> wrote:\n>\n> > Hello,\n> >\n> > I have simulated DOPC lipid bilayer model ( Explicit solvent) for 100ns\n> > using Lipid14 force field in Amber18. Now I was trying to process the\n> > trajectory file using autoimage flag in the CPPTRAJ and keeping center\n> > residues of my choice. But it appears that the adjacent cell lipid\n> > molecules appear in the simulation unit cell when visualized in the VMD.\n> > Although I have used Periodic boundary condition while running the\n> > production run and simulated the system in NPT ensemble. I have been\n> trying\n> > to image the trajectory using different options as reported earlier in\n> the\n> > amber mail archive. I have solved the water layer shifting problem but\n> the\n> > lateral lipid molecules from the adjacent periodic images appear in the\n> > unit cell. What would be the cause and the possible solution for this\n> > problem ?\n> >  Thanks\n> >\n> > *Zahoor Ahmad Bhat*\n> > Research Scholar\n> > Multidisciplinary Centre for Advanced Research and Studies\n> > Jamia Millia Islamia\n> > New Delhi - 110025\n> > India\n> >",
+      "url": "http://archive.ambermd.org/202001/0105.html",
+      "in_reply_to": 1578571087
+    },
+    {
+      "message_id": 1596551341,
+      "author": "Daniel Roe",
+      "date_raw": "Tue, 4 Aug 2020 10:29:01 -0400",
+      "body": "Hi,\nYeah, imaging bilayers can be tough. One option you could try is\n'moveanchor' - once a molecule is imaged this uses the previous one as\nan anchor. It might work for you.\n-Dan\nOn Thu, Jan 9, 2020 at 6:58 AM Bhat Zahoor <dr.zahoor11.gmail.com> wrote:\n>\n> Hello,\n>\n> I have simulated DOPC lipid bilayer model ( Explicit solvent) for 100ns\n> using Lipid14 force field in Amber18. Now I was trying to process the\n> trajectory file using autoimage flag in the CPPTRAJ and keeping center\n> residues of my choice. But it appears that the adjacent cell lipid\n> molecules appear in the simulation unit cell when visualized in the VMD.\n> Although I have used Periodic boundary condition while running the\n> production run and simulated the system in NPT ensemble. I have been trying\n> to image the trajectory using different options as reported earlier in the\n> amber mail archive. I have solved the water layer shifting problem but the\n> lateral lipid molecules from the adjacent periodic images appear in the\n> unit cell. What would be the cause and the possible solution for this\n> problem ?\n>  Thanks\n>\n> *Zahoor Ahmad Bhat*\n> Research Scholar\n> Multidisciplinary Centre for Advanced Research and Studies\n> Jamia Millia Islamia\n> New Delhi - 110025\n> India\n>",
+      "url": "http://archive.ambermd.org/202008/0023.html",
+      "in_reply_to": 1578571087
+    }
+  ]
+}

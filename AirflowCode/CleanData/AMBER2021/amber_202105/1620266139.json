@@ -1,0 +1,37 @@
+{
+  "thread_id": 1620266139,
+  "subject": "[AMBER] Questions about QM/MM simulations",
+  "messages": [
+    {
+      "message_id": 1620266139,
+      "author": "马芳芳",
+      "date_raw": "Thu, 6 May 2021 09:55:39 +0800 (GMT+08:00)",
+      "body": "Hi,\nRecently, I am trying to simulate CF3CF2CO2- anions reaction with superoxide radicals (O2-) in aqueous solution by using QM/MM calculations. The net charges are -2.\nGas phase was firstly employed to simulate the above reactions. When creating the pdb files, I used two different methods to define the charges of the CF3CF2CO2- and O2-. I used antechamber command with -nc to define the charges. However, no charge was defined in the .mol2 files. Therefore, the NBO charges calculated by Gaussian were selected to define the charges. Using the above two methods（antechamber with -nc and NBO charges）to create the pdb files, we got two different QM/MM results. According to my understanding, since the QM part can calculate the charges, charges should not have impacts on the QM/MM results.  Would you please so kind to give me some suggestions?\nSecondly, aqueous solution without adding counterions was used and the NBO charges were used to create the pdb files. I found that it can get the similar results with the gas phase with NBO charges. However, when the  counterions were added, the results are different. Now, I don’t know which result is reliable. Maybe the result of aqueous solution with counterions and NBO charges is more reliable.  Would you please so kind to give me some suggestions about my input files (aqueous solution with counterions and NBO charges)? Does periodic boundary conditions (TIP3PBOX used) affect the results?\nAttached are the input files.\nThank you very much! I am looking forward to your reply.\nBest wishes!\nFangfang Ma",
+      "url": "http://archive.ambermd.org/202105/0045.html"
+    },
+    {
+      "message_id": 1620276035,
+      "author": "Goetz, Andreas",
+      "date_raw": "Thu, 6 May 2021 04:40:35 +0000",
+      "body": "Dear Fangma Ma,\nIt is difficult to help without having more details on how you performed the simulations and how your results for the two simulations in gas phase differ. What I can say is this:\n1) In gas phase, I assume this is a full QM calculation (no MM atoms). In this case the MM parameters including charges do not matter. You must get the same results if you change the force field parameters and then repeat the same simulation.\n2) In bulk solvent, if you get different results when adding counter ions, it is possible that the ions are in vicinity of your charged reactants and have a significant effect on the reaction. In this case it would be expected to observe a difference. This is something that you should be able to judge.\nThe force field charges on atoms in your QM regions do not have any effect on the simulation, unles you choose to use mechanical embedding in a QM/MM simulation. But this is not the case in the input file that you shared.\nAll the best,\nAndy\n—\nDr. Andreas W. Goetz\nAssistant Research Scientist\nSan Diego Supercomputer Center\nTel: +1-858-822-4771\nEmail: agoetz.sdsc.edu\nWeb: www.awgoetz.de\n> On May 5, 2021, at 6:55 PM, 马芳芳 <mafangfang0411.mail.\ndlut.edu.cn> wrote:\n>\n> Hi,\n>\n> Recently, I am trying to simulate CF3CF2CO2- anions reaction with superoxide radicals (O2-) in aqueous solution by using QM/MM calculations. The net charges are -2.\n>\n> Gas phase was firstly employed to simulate the above reactions. When creating the pdb files, I used two different methods to define the charges of the CF3CF2CO2- and O2-. I used antechamber command with -nc to define the charges. However, no charge was defined in the .mol2 files. Therefore, the NBO charges calculated by Gaussian were selected to define the charges. Using the above two methods（antechamber with -nc and NBO charges）to create the pdb files, we got two different QM/MM results. According to my understanding, since the QM part can calculate the charges, charges should not have impacts on the QM/MM results.  Would you please so kind to give me some suggestions?\n>\n> Secondly, aqueous solution without adding counterions was used and the NBO charges were used to create the pdb files. I found that it can get the similar results with the gas phase with NBO charges. However, when the  counterions were added, the results are different. Now, I don’t know which result is reliable. Maybe the result of aqueous solution with counterions and NBO charges is more reliable.  Would you please so kind to give me some suggestions about my input files (aqueous solution with counterions and NBO charges)? Does periodic boundary conditions (TIP3PBOX used) affect the results?\n>\n> Attached are the input files.\n>\n> Thank you very much! I am looking forward to your reply.\n>\n> Best wishes!\n>\n> Fangfang Ma\n>\n>\n>\n>\n>\n>\n>\n>\n>\n>\n>\n> <WATER+counterions+NBO.zip>",
+      "url": "http://archive.ambermd.org/202105/0046.html",
+      "in_reply_to": 1620266139
+    },
+    {
+      "message_id": 1620377301,
+      "author": "马芳芳",
+      "date_raw": "Fri, 7 May 2021 16:48:21 +0800 (GMT+08:00)",
+      "body": "Dear Dr. Goetz,\nThanks for your kind help! I learned a lot. I also want to know whether the periodic boundary conditions have any effect on the results in my reaction system? Do I need to use droplets in the QM/MM simulations of my reaction system?\nBest wishes and stay safe!\nFangfang Ma",
+      "url": "http://archive.ambermd.org/202105/0058.html",
+      "in_reply_to": 1620266139
+    },
+    {
+      "message_id": 1620414334,
+      "author": "Goetz, Andreas",
+      "date_raw": "Fri, 7 May 2021 19:05:34 +0000",
+      "body": "Dear Fangma Ma,\nI also want to know whether the periodic boundary conditions have any effect on the results in my reaction system? Do I need to use droplets in the QM/MM simulations of my reaction system?\nIt depends on the problem you are studying. The best is to test the effect for yourself. You can do this without requirement for major compute resources if you use a semiempirical method or DFTB. For a reaction that mostly depends on local electric fields I would not expect any significant effect. E.g. a free energy profile of a reaction in the center of a large water droplet or large bulk simulation box under periodic boundary conditions should yield equivalent results.\nNote that, currently, when you use an ab initio or DFT method under periodic boundary conditions, then the QM/MM electrostatic coupling is truncated at the cutoff defined in the input file.\nAll the best,\nAndy\n—\nDr. Andreas W. Goetz\nAssistant Research Scientist\nSan Diego Supercomputer Center\nTel: +1-858-822-4771\nEmail: agoetz.sdsc.\nedu<mailto:agoetz.sdsc.\nedu>\nWeb: www.awgoetz.de<http://www.awgoetz.de>\nOn May 7, 2021, at 1:48 AM, 马芳芳 <mafangfang0411.mail.\ndlut.edu.cn<mailto:mafangfang0411.mail.\ndlut.edu.cn>> wrote:\nDear Dr. Goetz,\nThanks for your kind help! I learned a lot. I also want to know whether the periodic boundary conditions have any effect on the results in my reaction system? Do I need to use droplets in the QM/MM simulations of my reaction system?\nBest wishes and stay safe!\nFangfang Ma",
+      "url": "http://archive.ambermd.org/202105/0064.html",
+      "in_reply_to": 1620266139
+    }
+  ]
+}

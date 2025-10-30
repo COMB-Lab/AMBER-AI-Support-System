@@ -1,0 +1,29 @@
+{
+  "thread_id": 1626718461,
+  "subject": "[AMBER] The protonation state model of TYR in CpHMD",
+  "messages": [
+    {
+      "message_id": 1626718461,
+      "author": "He, Amy",
+      "date_raw": "Mon, 19 Jul 2021 18:14:21 +0000",
+      "body": "Dear Amber Community,\nI have been doing constant pH MD simulations with Amber, and I have some questions about the protonation state model of the tyrosine residue.\nI noticed that the tyrosine residue has only two states: protonated and deprotonated. So I wonder how the position of the hydrogen atom HH (the phenyl group hydrogen) is determined, when the anionic tyrosine becomes protonated. According to the description of the protonation state models, a deprotonated residue would have a �ghost� proton at the ionizable position.\nFor the tyrosine residues, is this �ghost� proton still counted in the bonded (bond, angle and torsional) potential and VDW interaction? If the SHAKE algorithm is used for the other hydrogens in the simulation, is the �ghost� proton also constrained by SHAKE?\nThank you for your time and kind advice in advance!\nThanks,\nAmy\n--\nAmy He\nChemistry Graduate Teaching Assistant\nHadad Research Group\nOhio State University\nhe.1768.osu.edu",
+      "url": "http://archive.ambermd.org/202107/0154.html"
+    },
+    {
+      "message_id": 1626730004,
+      "author": "Adrian Roitberg",
+      "date_raw": "Mon, 19 Jul 2021 17:26:44 -0400",
+      "body": "On 7/19/21 2:14 PM, He, Amy wrote:\n> [External Email]\n>\n> Dear Amber Community,\n>\n>\n> I have been doing constant pH MD simulations with Amber, and I have some questions about the protonation state model of the tyrosine residue.\n>\n> I noticed that the tyrosine residue has only two states: protonated and deprotonated. So I wonder how the position of the hydrogen atom HH (the phenyl group hydrogen) is determined, when the anionic tyrosine becomes protonated. According to the description of the protonation state models, a deprotonated residue would have a �ghost� proton at the ionizable position.\n>\n> For the tyrosine residues, is this �ghost� proton still counted in the bonded (bond, angle and torsional) potential and VDW interaction? If the SHAKE algorithm is used for the other hydrogens in the simulation, is the �ghost� proton also constrained by SHAKE?\nHi\nIs all of these cases, when we switch from protonated to unprotonated,\nwhat happenes is that the proton one 'removes' is still there, as you\nsaid, but its charge is zero and so is it vdw parameters.\nBond, angles, torsion s are all still being computed, but by turning off\nelectrostatics and vdw, those energies are not counted when trying to\nchange protonation state or when doing dynamics in the unprotonated state.\nThe proton, even as a ghost, still moves around and it can change\nrotation. Once you protonate it again, it just stays where it is from\nwhen it was a ghost, but now it acquires charge and vdw energies.\nIs this ok ?\nAdrian\n>\n> Thank you for your time and kind advice in advance!\n>\n>\n> Thanks,\n> Amy\n>\n> --\n> Amy He\n> Chemistry Graduate Teaching Assistant\n> Hadad Research Group\n> Ohio State University\n> he.1768.osu.edu\n>\n>",
+      "url": "http://archive.ambermd.org/202107/0157.html",
+      "in_reply_to": 1626718461
+    },
+    {
+      "message_id": 1626732165,
+      "author": "He, Amy",
+      "date_raw": "Mon, 19 Jul 2021 22:02:45 +0000",
+      "body": "Hi Dr. Roitberg,\nYes that is very clear and helpful! Thank you so much for your kind reply.\nThanks,\nAmy\n--\nAmy He\nChemistry Graduate Teaching Assistant\nHadad Research Group\nOhio State University\nhe.1768.osu.edu\nFrom: Adrian Roitberg <roitberg.ufl.edu>\nDate: Monday, July 19, 2021 at 5:29 PM\nTo: amber.ambermd.org <amber.ambermd.org>\nSubject: Re: [AMBER] The protonation state model of TYR in CpHMD\nOn 7/19/21 2:14 PM, He, Amy wrote:\n> [External Email]\n>\n> Dear Amber Community,\n>\n>\n> I have been doing constant pH MD simulations with Amber, and I have some questions about the protonation state model of the tyrosine residue.\n>\n> I noticed that the tyrosine residue has only two states: protonated and deprotonated. So I wonder how the position of the hydrogen atom HH (the phenyl group hydrogen) is determined, when the anionic tyrosine becomes protonated. According to the description of the protonation state models, a deprotonated residue would have a �ghost� proton at the ionizable position.\n>\n> For the tyrosine residues, is this �ghost� proton still counted in the bonded (bond, angle and torsional) potential and VDW interaction? If the SHAKE algorithm is used for the other hydrogens in the simulation, is the �ghost� proton also constrained by SHAKE?\nHi\nIs all of these cases, when we switch from protonated to unprotonated,\nwhat happenes is that the proton one 'removes' is still there, as you\nsaid, but its charge is zero and so is it vdw parameters.\nBond, angles, torsion s are all still being computed, but by turning off\nelectrostatics and vdw, those energies are not counted when trying to\nchange protonation state or when doing dynamics in the unprotonated state.\nThe proton, even as a ghost, still moves around and it can change\nrotation. Once you protonate it again, it just stays where it is from\nwhen it was a ghost, but now it acquires charge and vdw energies.\nIs this ok ?\nAdrian\n>\n> Thank you for your time and kind advice in advance!\n>\n>\n> Thanks,\n> Amy\n>\n> --\n> Amy He\n> Chemistry Graduate Teaching Assistant\n> Hadad Research Group\n> Ohio State University\n> he.1768.osu.edu\n>\n>",
+      "url": "http://archive.ambermd.org/202107/0158.html",
+      "in_reply_to": 1626718461
+    }
+  ]
+}
