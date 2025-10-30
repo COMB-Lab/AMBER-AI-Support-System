@@ -1,0 +1,37 @@
+{
+  "thread_id": 1614002247,
+  "subject": "[AMBER] Odd number of electrons",
+  "messages": [
+    {
+      "message_id": 1614002247,
+      "author": "divyabharathi korlepara",
+      "date_raw": "Mon, 22 Feb 2021 19:27:27 +0530",
+      "body": "Dear Amber experts,\nI am using antechamber to generate GAFF parameters for a ligand\nmolecule. I have used the following command to do that.\nantechamber -fi mol2 -fo mol2 -i ligand.mol2 -o ligand_clean_h.mol2 -rn LIG\n-c bcc -pf y -at gaff2 -ek \"maxcyc=0, ndiis_attempts=700\"\noutput:\nWelcome to antechamber 19.0: molecular input file processor.\nacdoctor mode is on: check and diagnose problems in the input file.\n-- Check Format for mol2 File --\nStatus: pass\n-- Check Unusual Elements --\nStatus: pass\n-- Check Open Valences --\nWarning: The number of bonds (3) for atom (ID: 31, Name: N) does not match\nthe connectivity (2) for atom type (N.2) defined in\nCORR_NAME_TYPE.DAT.\nBut, you may safely ignore the warnings if your molecule\nuses atom names or element names as atom types.\n-- Check Geometry --\nfor those bonded\nfor those not bonded\nStatus: pass\n-- Check Weird Bonds --\n/home/divya/softwares/anaconda3/bin/to_be_dispatched/antechamber: Fatal\nError!\nWeird atomic valence (5) for atom (ID: 31, Name: N).\nPlease check atomic connectivity.\nI opened the pdb file in vmd, the structure seems good, the problem I am\nfacing here is due to automatic bond order, and the image of the molecule\nis attached here.\nPlease help me to figure out the problem.\nThanks,\nDivya.\nDr. Divya Bharathi,\nPost Doctoral Fellow,\nIIIT\nHyderabad-500032.\nINDIA.",
+      "url": "http://archive.ambermd.org/202102/0219.html"
+    },
+    {
+      "message_id": 1614017990,
+      "author": "David A Case",
+      "date_raw": "Mon, 22 Feb 2021 13:19:50 -0500",
+      "body": "On Mon, Feb 22, 2021, divyabharathi korlepara wrote:\n>      I am using antechamber to generate GAFF parameters for a ligand\n>molecule. I have used the following command to do that.\n>\n>antechamber -fi mol2 -fo mol2 -i ligand.mol2 -o ligand_clean_h.mol2 -rn LIG\n>-c bcc -pf y -at gaff2 -ek \"maxcyc=0, ndiis_attempts=700\"\nTry converting your input structure to PDB format, and using that as the\ninput to antechamber.  Antechamber will figure out the connectivity from\nthe structure.\nIf you still have problems, please post the pdb file rather than a\nscreenshot.  It's hard to see where atom #31 is from your figure.\nYou subject of your email was \"odd number of electrons\", but there was\nnothing about this in the body of the email.  If you ligand is charged, you\nwill need to use the \"-nc\" flag in antehchamber to tell it that.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202102/0225.html",
+      "in_reply_to": 1614002247
+    },
+    {
+      "message_id": 1614141805,
+      "author": "divyabharathi korlepara",
+      "date_raw": "Wed, 24 Feb 2021 10:13:25 +0530",
+      "body": "Dear DAC,\nI have tried with the PDB file as input still it is giving me\nthe error. The charge of the system is 0.\nantechamber -fi pdb -fo mol2 -i ligand.pdb -o ligand_clean_h.mol2 -rn LIG\n-c bcc -pf y -at gaff2 -nc 0 -ek \"maxcyc=0, ndiis_attempts=700\"\nThanks,\nDivya.\nDr. Divya Bharathi,\nPost Doctoral Fellow,\nIIIT\nHyderabad-500032.\nINDIA.\nOn Mon, Feb 22, 2021 at 11:50 PM David A Case <david.case.rutgers.edu>\nwrote:\n> On Mon, Feb 22, 2021, divyabharathi korlepara wrote:\n>\n> >      I am using antechamber to generate GAFF parameters for a ligand\n> >molecule. I have used the following command to do that.\n> >\n> >antechamber -fi mol2 -fo mol2 -i ligand.mol2 -o ligand_clean_h.mol2 -rn\n> LIG\n> >-c bcc -pf y -at gaff2 -ek \"maxcyc=0, ndiis_attempts=700\"\n>\n> Try converting your input structure to PDB format, and using that as the\n> input to antechamber.  Antechamber will figure out the connectivity from\n> the structure.\n>\n> If you still have problems, please post the pdb file rather than a\n> screenshot.  It's hard to see where atom #31 is from your figure.\n>\n> You subject of your email was \"odd number of electrons\", but there was\n> nothing about this in the body of the email.  If you ligand is charged, you\n> will need to use the \"-nc\" flag in antehchamber to tell it that.\n>\n> ...good luck...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202102/0238.html",
+      "in_reply_to": 1614002247
+    },
+    {
+      "message_id": 1614154127,
+      "author": "Gustaf Olsson",
+      "date_raw": "Wed, 24 Feb 2021 08:08:47 +0000",
+      "body": "Looking at the PDB provided it is clear that the molecular charge is not zero.\nThere is a “carboxylate” group which, to produce a neutral structure, should be protonated (COOH and not COO-). Furthermore, there is a “nitro” group, while I am not sure regarding the importance of conservation of double bonds in PDB structure files, adding one for good measure might not be a bad idea.\nMaking these changes and performing a fast energy minimisation (not to convergence) successfully produced output using the antechamber input, as you supplied it.\nIf you need the deprotonated form of the acid, then the charge has to be set to -1 (nc -1).\nBest regards\n// Gustaf\n> On 24 Feb 2021, at 05:43, divyabharathi korlepara <divyabharathik938.gmail.\ncom> wrote:\n>\n> Dear DAC,\n>           I have tried with the PDB file as input still it is giving me\n> the error. The charge of the system is 0.\n> antechamber -fi pdb -fo mol2 -i ligand.pdb -o ligand_clean_h.mol2 -rn LIG\n> -c bcc -pf y -at gaff2 -nc 0 -ek \"maxcyc=0, ndiis_attempts=700\"\n>\n>\n> Thanks,\n> Divya.\n> Dr. Divya Bharathi,\n> Post Doctoral Fellow,\n> IIIT\n> Hyderabad-500032.\n> INDIA.\n>\n>\n> On Mon, Feb 22, 2021 at 11:50 PM David A Case <david.case.rutgers.\nedu>\n> wrote:\n>\n>> On Mon, Feb 22, 2021, divyabharathi korlepara wrote:\n>>\n>>>     I am using antechamber to generate GAFF parameters for a ligand\n>>> molecule. I have used the following command to do that.\n>>>\n>>> antechamber -fi mol2 -fo mol2 -i ligand.mol2 -o ligand_clean_h.mol2 -rn\n>> LIG\n>>> -c bcc -pf y -at gaff2 -ek \"maxcyc=0, ndiis_attempts=700\"\n>>\n>> Try converting your input structure to PDB format, and using that as the\n>> input to antechamber.  Antechamber will figure out the connectivity from\n>> the structure.\n>>\n>> If you still have problems, please post the pdb file rather than a\n>> screenshot.  It's hard to see where atom #31 is from your figure.\n>>\n>> You subject of your email was \"odd number of electrons\", but there was\n>> nothing about this in the body of the email.  If you ligand is charged, you\n>> will need to use the \"-nc\" flag in antehchamber to tell it that.\n>>\n>> ...good luck...dac\n>>\n>>\n>>",
+      "url": "http://archive.ambermd.org/202102/0242.html",
+      "in_reply_to": 1614002247
+    }
+  ]
+}

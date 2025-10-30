@@ -1,0 +1,77 @@
+{
+  "thread_id": 1606966169,
+  "subject": "[AMBER] Unsupported CUDA version 11.1 detected during the installation of AMBER20.CUDA",
+  "messages": [
+    {
+      "message_id": 1606966169,
+      "author": "贺俊宏",
+      "date_raw": "Thu, 3 Dec 2020 11:29:29 +0800 (GMT+08:00)",
+      "body": "Just as the title,i'm trying to install AMBER20.cuda,but it seems like AMBER20 could not support CUDA11.1,\nbecause of my GPU RTX3090,the only available version of CUDA is 11.1,this makes the problem seem insurmountable.\nbut after Browsed AMBER20 Official Website,I have found that the newest benchmark of AMBER20 is done with RTX3090 and CUDA11.1.\ncould you help me out?or just clarify the problem is insurmountable,thanks a lot!!",
+      "url": "http://archive.ambermd.org/202012/0036.html"
+    },
+    {
+      "message_id": 1607003272,
+      "author": "David A Case",
+      "date_raw": "Thu, 3 Dec 2020 08:47:52 -0500",
+      "body": "On Thu, Dec 03, 2020, 贺俊宏 wrote:\n>Just as the title,i'm trying to install AMBER20.cuda,but it seems like\n>AMBER20 could not support CUDA11.1,\n>because of my GPU RTX3090,the only available version of CUDA is 11.1,this\n>makes the problem seem insurmountable.\nI answered this question two days ago:\nhttp://archive.ambermd.org/202012/0011.html\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202012/0044.html",
+      "in_reply_to": 1606966169
+    },
+    {
+      "message_id": 1607051189,
+      "author": "贺俊宏",
+      "date_raw": "Fri, 4 Dec 2020 11:06:29 +0800 (GMT+08:00)",
+      "body": "it's helpful,thank you !\nbut just one more question,if I choose to Install with the old (legacy) build system,how to modify this Setting?\n在2020-12-03 21:47:52,贺俊宏<197211005.csu.\nedu.cn>写道：\n> On Thu, Dec 03, 2020, 贺俊宏 wrote:\n>\n> >Just as the title,i'm trying to install AMBER20.cuda,but it seems like\n> >AMBER20 could not support CUDA11.1,\n> >because of my GPU RTX3090,the only available version of CUDA is 11.1,this\n> >makes the problem seem insurmountable.\n>\n> I answered this question two days ago:\n>\n>\nhttp://archive.ambermd.org/202012/0011.html\n>\n> ...hope this helps....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202012/0057.html",
+      "in_reply_to": 1606966169
+    },
+    {
+      "message_id": 1607088241,
+      "author": "David A Case",
+      "date_raw": "Fri, 4 Dec 2020 08:24:01 -0500",
+      "body": "On Fri, Dec 04, 2020, 贺俊宏 wrote:\n>but just one more question,if I choose to Install with the old (legacy)\n>build system,how to modify this Setting?\nEdit $AMBERHOME/AmberTools/src/configure2\nAt about line 1253 change this:\nif [ \"$cudaversion\" = \"11.0\" ]; then\nto this:\nif [ \"$cudaversion\" = \"11.0\" -o \"$cudaversion\" = \"11.1\" ]; then\n...good luck....dac",
+      "url": "http://archive.ambermd.org/202012/0065.html",
+      "in_reply_to": 1606966169
+    },
+    {
+      "message_id": 1607305580,
+      "author": "贺俊宏",
+      "date_raw": "Mon, 7 Dec 2020 09:46:20 +0800 (GMT+08:00)",
+      "body": "Dear David:\nI have listened your advice,but when I performed like that,there is another Error Appear:\ncudaMemcpyTosymbol: SetSim copy to cSim failed invalid device symbol\ncould you help me with it,thank you\n> -----原始邮件-----\n> 发件人: \"David A Case\" <david.case.rutgers.edu>\n> 发送时间: 2020-12-04 21:24:01 (星期五)\n> 收件人: \"AMBER Mailing List\" <amber.ambermd.org>\n> 抄送:\n> 主题: Re: [AMBER] Unsupported CUDA version 11.1 detected during the installation of AMBER20.CUDA\n>\n> On Fri, Dec 04, 2020, 贺俊宏 wrote:\n>\n> >but just one more question,if I choose to Install with the old (legacy)\n> >build system,how to modify this Setting?\n>\n> Edit $AMBERHOME/AmberTools/src/configure2\n>\n> At about line 1253 change this:\n>\n>      if [ \"$cudaversion\" = \"11.0\" ]; then\n>\n> to this:\n>\n>      if [ \"$cudaversion\" = \"11.0\" -o \"$cudaversion\" = \"11.1\" ]; then\n>\n> ...good luck....dac\n>\n>",
+      "url": "http://archive.ambermd.org/202012/0087.html",
+      "in_reply_to": 1606966169
+    },
+    {
+      "message_id": 1607348745,
+      "author": "David A Case",
+      "date_raw": "Mon, 7 Dec 2020 08:45:45 -0500",
+      "body": "On Mon, Dec 07, 2020, 贺俊宏 wrote:\n>I have listened your advice,but when I performed like that,there is another Error Appear:\n>cudaMemcpyTosymbol: SetSim copy to cSim failed invalid device symbol\nWhen did this error appear?  During the build, or a subsequent run?\nHave you run the test suite?\nBasically, we need as much context as we can get.\n...thanks...dac",
+      "url": "http://archive.ambermd.org/202012/0088.html",
+      "in_reply_to": 1606966169
+    },
+    {
+      "message_id": 1607394764,
+      "author": "贺俊宏",
+      "date_raw": "Tue, 8 Dec 2020 10:32:44 +0800 (GMT+08:00)",
+      "body": "> -----原始邮件-----\n> 发件人: \"David A Case\" <david.case.rutgers.\nedu>\n> 发送时间: 2020-12-07 21:45:45 (星期一)\n> 收件人: \"AMBER Mailing List\" <amber.ambermd.\norg>\n> 抄送:\n> 主题: Re: [AMBER] Unsupported CUDA version 11.1 detected during the installation of AMBER20.CUDA\n>\n> On Mon, Dec 07, 2020, 贺俊宏 wrote:\n> When did this error appear?  During the build, or a subsequent run?\n> Have you run the test suite?\n>\n> Basically, we need as much context as we can get.\n>\n> ...thanks...dac\n>\n> sorry for my Insufficient Error infomation,it appears at the test of cuda.\nmy modification of  $AMBERHOME/AmberTools/src/configure2 are below:\ncudaversion=`$nvcc --version | grep 'release' | cut -d' ' -f5 | cut -d',' -f1`\nif [ \"$cudaversion\" = \"11.0\" -o \"$cudaversion\" = \"11.1\" ]; then\n# Implement the standard, not warp synchronous, compilation\nsm75flags='-gencode arch=compute_75,code=sm_75'\nsm70flags='-gencode arch=compute_70,code=sm_70'\necho \"CUDA Version $cudaversion detected\"\necho \"Configuring for SM5.0, SM5.2, SM5.3, SM6.0, SM6.1, SM7.0, SM7.5 and SM8.0\"\nnvccflags=\"$sm50flags $sm52flags $sm53flags $sm60flags $sm61flags $sm70flags $sm75flags $sm80flags -Wno-deprecated-declarations\"\nelif [ \"$cudaversion\" = \"10.0\" -o \"$cudaversion\" = \"10.1\" -o \"$cudaversion\" = \"10.2\" ]; then\necho \"CUDA Version $cudaversion detected\"\necho \"Configuring for SM3.0, SM3.5, SM3.7, SM5.0, SM5.2, SM5.3, SM6.0, SM6.1, SM7.0 and SM7.5\"\nnvccflags=\"$sm30flags $sm35flags $sm37flags $sm50flags $sm52flags $sm53flags $sm60flags $sm61flags $sm70flags $sm75flags -Wno-deprecated-declarations\"\nelif [ \"$cudaversion\" = \"9.0\" -o \"$cudaversion\" = \"9.1\" -o \"$cudaversion\" = \"9.2\" ]; then\necho \"CUDA Version $cudaversion detected\"\necho \"Configuring for SM3.0, SM3.5, SM3.7, SM5.0, SM5.2, SM5.3, SM6.0, SM6.1 and SM7.0\"\nnvccflags=\"$sm30flags $sm35flags $sm37flags $sm50flags $sm52flags $sm53flags $sm60flags $sm61flags $sm70flags -Wno-deprecated-declarations\"\nelif [ \"$cudaversion\" = \"8.0\" ]; then\necho \"CUDA Version $cudaversion detected\"\necho \"Configuring for SM3.0, SM3.5, SM3.7, SM5.0, SM5.2, SM5.3, SM6.0 and SM6.1\"\necho \"BE AWARE: CUDA 8.0 does not support V100, GV100, Titan-V or later GPUs.\"\nnvccflags=\"$sm30flags $sm35flags $sm37flags $sm50flags $sm52flags $sm53flags $sm60flags $sm61flags\"\nelif [ \"$cudaversion\" = \"7.5\" ]; then\necho \"CUDA Version $cudaversion detected\"\necho \"Configuring for SM3.0, SM3.5, SM3.7, SM5.0, SM5.2 and SM5.3\"\necho \"BE AWARE: CUDA 7.5 does not support GTX-1080, Titan-XP, DGX-1, V100 or other Pascal/Volta based or later GPUs.\"\nnvccflags=\"$sm30flags  $sm35flags $sm37flags $sm50flags $sm52flags $sm53flags\"\nelse\necho \"Error: Unsupported CUDA version $cudaversion detected.\"\necho \"       Amber requires CUDA version 7.5, 8.0, 9.0-9.2, or 10.0-10.2\"\nexit 1\nfi\nnvcc=\"$nvcc $nvccflags\"\nmaybe there are some problems of my modification? thanks for your help again.\n>",
+      "url": "http://archive.ambermd.org/202012/0093.html",
+      "in_reply_to": 1606966169
+    },
+    {
+      "message_id": 1607435992,
+      "author": "David A Case",
+      "date_raw": "Tue, 8 Dec 2020 08:59:52 -0500",
+      "body": "On Tue, Dec 08, 2020, 贺俊宏 wrote:\n>\n>> When did this error appear?  During the build, or a subsequent run?\n>> Have you run the test suite?\n>>\n>> sorry for my Insufficient Error infomation,it appears at the test of cuda.\nWe are getting closer.  Did all the cuda tests fail, or just one or a\nfew?  If the latter, which tests failed?\nDid you see the same behavior with the CMake installation?  The legacy\nbuild scripts get very little testing.\nI don't have CUDA 11.1 installed on any machines here.  So, I'm hoping\nsomeone on the list might have some relevant experience to report.\n....dac",
+      "url": "http://archive.ambermd.org/202012/0094.html",
+      "in_reply_to": 1606966169
+    },
+    {
+      "message_id": 1607496617,
+      "author": "贺俊宏",
+      "date_raw": "Wed, 9 Dec 2020 14:50:17 +0800 (GMT+08:00)",
+      "body": "> We are getting closer.  Did all the cuda tests fail, or just one or a\n> few?  If the latter, which tests failed?\n>\n> Did you see the same behavior with the CMake installation?  The legacy\n> build scripts get very little testing.\n>\n> I don't have CUDA 11.1 installed on any machines here.  So, I'm hoping\n> someone on the list might have some relevant experience to report.\n>\n> ....dac\nAll the test of cuda fail,for the same reason:\ncudaMemcpyToSymbol: SetSim copy to cSim failed invalid device symbol\n--------------------------------------------------------------------------\nPrimary job  terminated normally, but 1 process returned\na non-zero exit code. Per user-direction, the job has been aborted.\n--------------------------------------------------------------------------\n--------------------------------------------------------------------------\nmpirun detected that one or more processes exited with non-zero status, thus causing\nthe job to be terminated. The first process to do so was:\nProcess name: [[35541,1],5]\nExit code:    255\n0 file comparisons passed\n0 file comparisons failed\n94 tests experienced errors\nI have try to install with CMake,but for some special reason,the download of Dependency package is too slow to finish and sometimes breakout.\nSo I turned to another install Method. notably,I have successfully completed all installations with GPU 2080ti and CUDA10.0\n>",
+      "url": "http://archive.ambermd.org/202012/0096.html",
+      "in_reply_to": 1606966169
+    }
+  ]
+}

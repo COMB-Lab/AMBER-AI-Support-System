@@ -1,0 +1,37 @@
+{
+  "thread_id": 1611752342,
+  "subject": "[AMBER] technical problems with installing amber20",
+  "messages": [
+    {
+      "message_id": 1611752342,
+      "author": "Игорь Злотников",
+      "date_raw": "Wed, 27 Jan 2021 15:59:02 +0300",
+      "body": "Good afternoon, Dear colleagues!\nI have a licensed version of AMBER 20. Unpacking the source archives is\nsuccessful. An error occurs when executing ./run_cmake:\nÂ\nCMake      Error:     The     current     CMakeCache.txt     directory\n/home/igorzlotnikov_2204/_scratch/data/amber20_src/build/CMakeCache.txtis\ndifferent than the directory\n/home/igorzlotnikov_2204/project/data/amber20_src/buildwhereCMakeCache.txt\nwas created. This may result in binaries being created in the wrong place.\nIf you are not sure, reedit the CMakeCache.txt\nCMake Error: The source\n\"/home/igorzlotnikov_2204/_scratch/data/amber20_src/CMakeLists.txt\"doesnot\nmatch the source\n\"/home/igorzlotnikov_2204/project/data/amber20_src/CMakeLists.txt\"usedto\ngenerate cache. Re-run cmake with a different source directory.\nIf the cmake build report looks OK, you should now do the following:\nmake install\nsource /home/igorzlotnikov_2204/_scratch/data/amber20/amber.sh\nConsider adding the last line to your login startup script, e.g. ~/.bashrc\nÂ\nThen, make install:\nstopped on 96%:\n[ 96%] Building CXX object\nsrc/pmemd/src/cuda/CMakeFiles/pmemd_cuda_DPFP.dir/gpu.cpp.o\nÂ\nproject/data/amber20_src/src/pmemd/src/cuda/gpu.cpp:5890:53: error: âffsâ\nwas not declared in this scope\ngpu->sim.NLAtomsPerWarpBits = ffs(atomsPerWarp) - 1;\nÂ\nPlease tell me what the problem is?\nThank You!\nÂ\n--Â\nBest wishes,\nZlotnikov Igor,\nLomonosov Moscow State University\nÂ",
+      "url": "http://archive.ambermd.org/202101/0363.html"
+    },
+    {
+      "message_id": 1611778903,
+      "author": "David A Case",
+      "date_raw": "Wed, 27 Jan 2021 15:21:43 -0500",
+      "body": "On Wed, Jan 27, 2021, Игорь Злотников wrote:\n>\n>   CMake      Error:     The     current     CMakeCache.txt     directory\n>   /home/igorzlotnikov_2204/_scratch/data/amber20_src/build/CMakeCache.txtis\n>   different than the directory....\nI don't recongize the exact error, but it sounds like you should remove\nthe CMakeCache.txt file from your amber20_src/build directory, and start\nover with ./run_cmake.  See if that eliminates the error message.\n>   [ 96%] Building CXX object\n>   src/pmemd/src/cuda/CMakeFiles/pmemd_cuda_DPFP.dir/gpu.cpp.o\n>   Â\n>   project/data/amber20_src/src/pmemd/src/cuda/gpu.cpp:5890:53: error: âffsâ\n>   was not declared in this scope\n>   gpu->sim.NLAtomsPerWarpBits = ffs(atomsPerWarp) - 1;\nI've not seen this error before.  Can you say what operating system and\ncompiler version you are using?  I don't even see (at a quick glance) where\nffs is supposed to be declared.....\n...thanks...dac",
+      "url": "http://archive.ambermd.org/202101/0369.html",
+      "in_reply_to": 1611752342
+    },
+    {
+      "message_id": 1611779374,
+      "author": "Игорь Злотников",
+      "date_raw": "Wed, 27 Jan 2021 23:29:34 +0300",
+      "body": "Good evening!\nProblem was solved. In some files, it was necessary to add the c++ library\n#include <strings.h>\n--Â\nÐ¡ ÑÐ²Ð°Ð¶ÐµÐ½Ð¸ÐµÐ¼,\nÐÐ»Ð¾ÑÐ½Ð¸ÐºÐ¾Ð² ÐÐ³Ð¾ÑÑ\nÂ\nÂ\nÂ\n27.01.2021, 23:23, \"David A Case\" <david.case.rutgers.\nedu>:\nOn Wed, Jan 27, 2021, ÐÐ³Ð¾ÑÑ ÐÐ»Ð¾ÑÐ½Ð¸ÐºÐ¾Ð² wrote:\nÂ Â Â CMake Error: The current CMakeCache.txt directory\nÂ Â Â /home/igorzlotnikov_2204/_scratch/data/amber20_src/build/CMakeCache.\ntxtis\nÂ Â Â different than the directory....\nI don't recongize the exact error, but it sounds like you should remove\nthe CMakeCache.txt file from your amber20_src/build directory, and start\nover with ./run_cmake. See if that eliminates the error message.\nÂ\nÂ Â Â [ 96%] Building CXX object\nÂ Â Â src/pmemd/src/cuda/CMakeFiles/pmemd_cuda_DPFP.dir/gpu.cpp.o\nÂ Â Â Ã\nÂ Â Â project/data/amber20_src/src/pmemd/src/cuda/gpu.cpp:5890:53:error:\nÃ¢ffsÃ¢\nÂ Â Â was not declared in this scope\nÂ Â Â gpu->sim.NLAtomsPerWarpBits = ffs(atomsPerWarp) - 1;\nI've not seen this error before. Can you say what operating system and\ncompiler version you are using? I don't even see (at a quick glance) where\nffs is supposed to be declared.....\n...thanks...dac",
+      "url": "http://archive.ambermd.org/202101/0370.html",
+      "in_reply_to": 1611752342
+    },
+    {
+      "message_id": 1611846306,
+      "author": "David A Case",
+      "date_raw": "Thu, 28 Jan 2021 10:05:06 -0500",
+      "body": "On Wed, Jan 27, 2021, Игорь Злотников wrote:\n>\n>   Problem was solved. In some files, it was necessary to add the c++ library\n>   #include <strings.h>\nCan you say which files are involved?  That might help other users.  Note\nthat your compiler chain must somehow be different from those most people\nuse, since a large number of people have succeeded with installation without\nthe need to modify the code.  So anything that might help identify your\nenvironment might help.\n...thanks...dac",
+      "url": "http://archive.ambermd.org/202101/0374.html",
+      "in_reply_to": 1611752342
+    }
+  ]
+}

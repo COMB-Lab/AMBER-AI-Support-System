@@ -1,0 +1,29 @@
+{
+  "thread_id": 1602791601,
+  "subject": "[AMBER] cpptraj's hbond shows hbonds with carbon hydrogens",
+  "messages": [
+    {
+      "message_id": 1602791601,
+      "author": "German P. Barletta",
+      "date_raw": "Thu, 15 Oct 2020 16:53:21 -0300",
+      "body": "Dear amber developers & users,\nI'm trying to get a time series of the intramolecular hydrogen bonds\nof titratable residues from a CpH-REMD.\nFor example, the GL4 at the fourth position:\n*hbond donormask :4 series uuseries example_file_donor*\n*hbond acceptormask :4 series uuseries example_file_acceptor*\nGL4 as a donor works fine, but when using the \"acceptormask\", I get columns\nlike these in the \"example_file_acceptor\" outfile:\nGL4_4.HB3-GL4_4.OE2-HE22 ... GL4_4.HB2-GL4_5.N-H .\n.. GL4_4.CA-GL4_4.OE2-HE22\n...\n*HB2 and HB3* are the beta carbon hydrogens, and then the alpha carbon (*CA*)\nshows up too!\nThe amber manual says cpptraj follows this simple criterion:\n*\"...hydrogen bonds are FON”, i.e., hydrogens bonded to F, O, and N atoms\nare considered donors, and F, O, and N atoms are considered acceptors.\". *\nSo, why am I getting these results?\nI know I could just add the atom elements to the *acceptormask*, but I was\nwondering why this happens.\nBest,\nGermán P. Barletta",
+      "url": "http://archive.ambermd.org/202010/0181.html"
+    },
+    {
+      "message_id": 1602802107,
+      "author": "Daniel Roe",
+      "date_raw": "Thu, 15 Oct 2020 18:48:27 -0400",
+      "body": "Hi,\nOn Thu, Oct 15, 2020 at 3:53 PM German P. Barletta <pbarletta.gmail.\ncom> wrote:\n> The amber manual says cpptraj follows this simple criterion:\n>\n> *\"...hydrogen bonds are FON”, i.e., hydrogens bonded to F, O, and N atoms\n> are considered donors, and F, O, and N atoms are considered acceptors.\". *\nYou omitted the first part of that sentence which is actually very\nimportant (asterisk emphasis mine):\n'*Automatic determination* of hydrogen bond donors/acceptors uses the\nsimplistic criterion that “hydrogen bonds are\nFON”,'\nSo that criterion is only in effect for cases where 'donormask' and\n'acceptormask' are *not* specified; there is a list of 4 keyword use\ncases just preceding that sentence that make this clear. The\n'donormask' and 'acceptormask' keywords are so users can fine-tune the\natoms considered for hydrogen bonding if they wish (to look for e.g.\nhalogen bonds), so they assume the mask you give them contains all the\natoms you want. If you want to restrict to F, O, and N atoms you will\nneed to be explicit, e.g.\nhbond acceptormask :4./F,O,N ...\nHopefully this clarifies things,\n-Dan\n>\n> So, why am I getting these results?\n>\n> I know I could just add the atom elements to the *acceptormask*, but I was\n> wondering why this happens.\n>\n> Best,\n> Germán P. Barletta\n>",
+      "url": "http://archive.ambermd.org/202010/0183.html",
+      "in_reply_to": 1602791601
+    },
+    {
+      "message_id": 1602878630,
+      "author": "German P. Barletta",
+      "date_raw": "Fri, 16 Oct 2020 17:03:50 -0300",
+      "body": "Right, so I misunderstood the use case of those 2 functions and that\n\"automatic\" meant using the *mask* option.\nThanks!",
+      "url": "http://archive.ambermd.org/202010/0209.html",
+      "in_reply_to": 1602791601
+    }
+  ]
+}

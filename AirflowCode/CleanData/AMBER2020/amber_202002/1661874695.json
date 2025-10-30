@@ -1,0 +1,21 @@
+{
+  "thread_id": 1661874695,
+  "subject": "[AMBER] Query regarding calculation of peptide-peptide hydrogen bond lifetime",
+  "messages": [
+    {
+      "message_id": 1661874695,
+      "author": "RIMJHIM MORAL",
+      "date_raw": "Tue, 30 Aug 2022 15:51:35 +0000",
+      "body": "Dear All,\nI am trying to calculate the lifetime of HBonds between two peptides using CPPTRAJ. As per the version I am using (Version V4.14.0) it is possible to calculate individually the lifetime for each hydrogen bonding pair. However, I am interested in calculating the average lifetime considering all the site-site combinations. The script I am running is given below:\nparm system.prmtop\ntrajin system.nc\nhbond Backbone :1-48.C,O,N,H avgout BB.avg.dat series uuseries bbhbond.gnu\nrun\nlifetime Backbone[solutehb] out backbone.lifetime.dat\nrun\nexit\nAny sort of help in this matter is highly appreciated.\n---------------------------------------------------------------------------------------------------------------------------------------------------\nRimjhim Moral\nPhD Research Scholar\nDepartment of Chemistry,\nIndian Institute of Technology Guwahati, India",
+      "url": "http://archive.ambermd.org/202208/0155.html"
+    },
+    {
+      "message_id": 1661882801,
+      "author": "Daniel Roe",
+      "date_raw": "Tue, 30 Aug 2022 14:06:41 -0400",
+      "body": "Hi,\nOn Tue, Aug 30, 2022 at 11:52 AM RIMJHIM MORAL via AMBER\n<amber.ambermd.org> wrote:\n> I am trying to calculate the lifetime of HBonds between two peptides using CPPTRAJ. As per the version I am using (Version V4.14.0) it is possible to calculate individually the lifetime for each hydrogen bonding pair. However, I am interested in calculating the average lifetime considering all the site-site combinations. The script I am running is given below:\nIf I understand what you're trying to do correctly, you want the\naverage over all hydrogen bonds? You could use the 'avg oversets'\nanalysis to calculate that; what that will give you is for every frame\nyou'll have a value from 0 to 1 (where 0 is no hydrogen bonds present\nand 1 is all hydrogen bonds present). You can then run lifetime\nanalysis on that set with some cutoff (here I'm using 0.2 or 20% of\nhydrogen bonds present but you may need to experiment), e.g.:\nparm DPDP.parm7\ntrajin DPDP.nc\n# Backbone hydrogen bonds\nhbond BB out nbb.dat .N,H,C,O series uuseries bb.series.dat\nrun\n# Average over all series sets\navg BB[solutehb] oversets name Avg out temp.dat\n# Run lifetime analysis\nlifetime Avg out temp1.dat window 10 cut 0.2\nrunanalysis\nSee the manual for full details. Hope this helps,\n-Dan",
+      "url": "http://archive.ambermd.org/202208/0156.html",
+      "in_reply_to": 1661874695
+    }
+  ]
+}

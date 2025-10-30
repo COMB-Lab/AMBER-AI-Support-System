@@ -1,0 +1,53 @@
+{
+  "thread_id": 1668678552,
+  "subject": "[AMBER] Gradual heating: Linear response pressure?",
+  "messages": [
+    {
+      "message_id": 1668678552,
+      "author": "Hocine EL KHAOUDI ENYOURY",
+      "date_raw": "Thu, 17 Nov 2022 09:49:12 +0000",
+      "body": "Dear all,\nIm performing an MD equilibration of a protein and I got the following problem. I’m heating gradually my system (5K each 100000 steps) using a Langevin thermostat, in the NVT ensemble. When I plot my data to check the properties, I see that my potential energy and pressure don’t increase linearly as other properties like kinetic energies. Is that normal? Would you have any suggestion?\n[cid:5A4704A6D56E46189701EFFA9222B3D5]\nBest regards,\nHocine",
+      "url": "http://archive.ambermd.org/202211/0114.html"
+    },
+    {
+      "message_id": 1668787933,
+      "author": "David A Case",
+      "date_raw": "Fri, 18 Nov 2022 11:12:13 -0500",
+      "body": "On Thu, Nov 17, 2022, Hocine EL KHAOUDI ENYOURY via AMBER wrote:\n>\n>Im performing an MD equilibration of a protein and I got the following\n>problem. I’m heating gradually my system (5K each 100000 steps) using a\n>Langevin thermostat, in the NVT ensemble. When I plot my data to check the\n>properties, I see that my potential energy and pressure don’t increase\n>linearly as other properties like kinetic energies. Is that normal? Would\n>you have any suggestion?\nThe resolution of your tiff file is really very poor, but it looks like\nthe pressure has a jump someplace in the middle, as though you changed from\nNVT to NpT at that point.  Is that possible?  I don't see anything obviously\nwrong with what you report, but this is exceptionally slow heating, compared\nto usual protocols.\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202211/0127.html",
+      "in_reply_to": 1668678552
+    },
+    {
+      "message_id": 1669025810,
+      "author": "Hocine EL KHAOUDI ENYOURY",
+      "date_raw": "Mon, 21 Nov 2022 10:16:50 +0000",
+      "body": "Dear David,\nThanks for your reply. I didn’t changed from NVT no NPT. I am performing a very slow heating of my system. This slow heating is causing vacuum bubbles on my water box. Is this related to Langevin thermostat or it will occur with any thermostat? Would you have any reference to recommend?\nThank in advance\nBest Regards,\nHocine\nLe 18 nov. 2022 à 17:12 +0100, David A Case <david.case.rutgers.\nedu>, a écrit :\nOn Thu, Nov 17, 2022, Hocine EL KHAOUDI ENYOURY via AMBER wrote:\nIm performing an MD equilibration of a protein and I got the following\nproblem. I’m heating gradually my system (5K each 100000 steps) using a\nLangevin thermostat, in the NVT ensemble. When I plot my data to check the\nproperties, I see that my potential energy and pressure don’t increase\nlinearly as other properties like kinetic energies. Is that normal? Would\nyou have any suggestion?\nThe resolution of your tiff file is really very poor, but it looks like\nthe pressure has a jump someplace in the middle, as though you changed from\nNVT to NpT at that point. Is that possible? I don't see anything obviously\nwrong with what you report, but this is exceptionally slow heating, compared\nto usual protocols.\n....good luck....dac",
+      "url": "http://archive.ambermd.org/202211/0142.html",
+      "in_reply_to": 1668678552
+    },
+    {
+      "message_id": 1669047256,
+      "author": "Carlos Simmerling",
+      "date_raw": "Mon, 21 Nov 2022 11:14:16 -0500",
+      "body": "if you did not do any NPT relaxation, then vacuum bubble are expected since\nthe initial model may not have been built with the exact correct density.\nthis is common when adding solvent around a solute. the bubble are not from\nslow heating, but just indicate the need to equilibrate the box volume for\nthe system.\nOn Mon, Nov 21, 2022 at 5:17 AM Hocine EL KHAOUDI ENYOURY via AMBER <\namber.ambermd.org> wrote:\n> Dear David,\n>\n> Thanks for your reply. I didn’t changed from NVT no NPT. I am performing a\n> very slow heating of my system. This slow heating is causing vacuum bubbles\n> on my water box. Is this related to Langevin thermostat or it will occur\n> with any thermostat? Would you have any reference to recommend?\n>\n> Thank in advance\n>\n> Best Regards,\n>\n> Hocine\n>\n> Le 18 nov. 2022 à 17:12 +0100, David A Case <david.case.rutgers.\nedu>, a\n> écrit :\n> On Thu, Nov 17, 2022, Hocine EL KHAOUDI ENYOURY via AMBER wrote:\n>\n> Im performing an MD equilibration of a protein and I got the following\n> problem. I’m heating gradually my system (5K each 100000 steps) using a\n> Langevin thermostat, in the NVT ensemble. When I plot my data to check the\n> properties, I see that my potential energy and pressure don’t increase\n> linearly as other properties like kinetic energies. Is that normal? Would\n> you have any suggestion?\n>\n> The resolution of your tiff file is really very poor, but it looks like\n> the pressure has a jump someplace in the middle, as though you changed from\n> NVT to NpT at that point. Is that possible? I don't see anything obviously\n> wrong with what you report, but this is exceptionally slow heating,\n> compared\n> to usual protocols.\n>\n> ....good luck....dac\n>\n>",
+      "url": "http://archive.ambermd.org/202211/0149.html",
+      "in_reply_to": 1668678552
+    },
+    {
+      "message_id": 1669215320,
+      "author": "Carlos Simmerling",
+      "date_raw": "Wed, 23 Nov 2022 09:55:20 -0500",
+      "body": "you might want to read the tutorial on the Amber web page, it discusses\nthis exact issue (with pictures).\nhttps://ambermd.org/tutorials/basic/tutorial13/index.php\nOn Wed, Nov 23, 2022 at 5:46 AM Hocine EL KHAOUDI ENYOURY <\nhocine.el-khaoudi-enyoury.etu.\nu-paris.fr> wrote:\n> Dear Pr. Simmerling,\n>\n> Thank you for your feedback. In fact, I see the vacuum bubbles. Would be\n> appropriate to heat my system switching NVT and NPT? At he end, after the\n> heating I will do a NPT equilibration to remove progressively the\n> constraints\n>\n> Best Regards,\n>\n> Hocine\n>\n> Le 21 nov. 2022 à 17:14 +0100, Carlos Simmerling <\n> carlos.simmerling.gmail.\ncom>, a écrit :\n>\n> if you did not do any NPT relaxation, then vacuum bubble are expected\n> since the initial model may not have been built with the exact correct\n> density. this is common when adding solvent around a solute. the bubble are\n> not from slow heating, but just indicate the need to equilibrate the box\n> volume for the system.\n>\n> On Mon, Nov 21, 2022 at 5:17 AM Hocine EL KHAOUDI ENYOURY via AMBER <\n> amber.ambermd.org> wrote:\n>\n>> Dear David,\n>>\n>> Thanks for your reply. I didn’t changed from NVT no NPT. I am performing\n>> a very slow heating of my system. This slow heating is causing vacuum\n>> bubbles on my water box. Is this related to Langevin thermostat or it will\n>> occur with any thermostat? Would you have any reference to recommend?\n>>\n>> Thank in advance\n>>\n>> Best Regards,\n>>\n>> Hocine\n>>\n>> Le 18 nov. 2022 à 17:12 +0100, David A Case <david.case.rutgers.\nedu>, a\n>> écrit :\n>> On Thu, Nov 17, 2022, Hocine EL KHAOUDI ENYOURY via AMBER wrote:\n>>\n>> Im performing an MD equilibration of a protein and I got the following\n>> problem. I’m heating gradually my system (5K each 100000 steps) using a\n>> Langevin thermostat, in the NVT ensemble. When I plot my data to check the\n>> properties, I see that my potential energy and pressure don’t increase\n>> linearly as other properties like kinetic energies. Is that normal? Would\n>> you have any suggestion?\n>>\n>> The resolution of your tiff file is really very poor, but it looks like\n>> the pressure has a jump someplace in the middle, as though you changed\n>> from\n>> NVT to NpT at that point. Is that possible? I don't see anything obviously\n>> wrong with what you report, but this is exceptionally slow heating,\n>> compared\n>> to usual protocols.\n>>\n>> ....good luck....dac\n>>\n>>",
+      "url": "http://archive.ambermd.org/202211/0163.html",
+      "in_reply_to": 1668678552
+    },
+    {
+      "message_id": 1669223195,
+      "author": "David A Case",
+      "date_raw": "Wed, 23 Nov 2022 12:06:35 -0500",
+      "body": "On Wed, Nov 23, 2022, Hocine EL KHAOUDI ENYOURY via AMBER wrote:\n>\n>Thank you for your feedback. In fact, I see the vacuum bubbles. Would be\n>appropriate to heat my system switching NVT and NPT?\nYes: the main reason to do any NVT first is that the pressure calculation\ncan be unstable at very low temperatures.  So, heating to somewhere near\nthe final temperature is sometimes required before switching to NpT.  Aside,\nfrom this, you generallywant to get the density correct early on.\n....dac",
+      "url": "http://archive.ambermd.org/202211/0164.html",
+      "in_reply_to": 1668678552
+    }
+  ]
+}

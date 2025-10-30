@@ -1,0 +1,21 @@
+{
+  "thread_id": 1665643671,
+  "subject": "[AMBER] Computing electrostatic interaction",
+  "messages": [
+    {
+      "message_id": 1665643671,
+      "author": "FyD",
+      "date_raw": "Thu, 13 Oct 2022 08:47:51 +0200",
+      "body": "Dear All,\nThe total charge value of the molecular fragments in the Amber force\nfield libraries takes 'most of the time' an integer value. This is the\ncase for the terminal and central fragments of the amino-acids. This\nis also true for the central fragments of the nucleotides. However,\nthis is not correct for the terminal fragments of the nucleotides,\nwhere the sum of the total charges of the 2 terminal fragments has\nthat integer value.\nI wonder if there is an importance of having such an integer value for\na molecular fragment in the electrostatic interaction computation of a\nprotein/polynucleotide for instance, when running MD simulation in\ncondensed phase using the Particle mesh Ewald algorithm/a periodic box.\nI wonder also if there was not not 'something' like that in Amber 5 or\n6... If so, is it still true today with the last versions of the\nsander/pmemd program?\nThank you,\nregards, Francois",
+      "url": "http://archive.ambermd.org/202210/0041.html"
+    },
+    {
+      "message_id": 1665763644,
+      "author": "David A Case",
+      "date_raw": "Fri, 14 Oct 2022 12:07:24 -0400",
+      "body": "On Thu, Oct 13, 2022, FyD via AMBER wrote:\n>\n>The total charge value of the molecular fragments in the Amber force\n>field libraries takes 'most of the time' an integer value. This is the\n>case for the terminal and central fragments of the amino-acids. This\n>is also true for the central fragments of the nucleotides. However,\n>this is not correct for the terminal fragments of the nucleotides,\n>where the sum of the total charges of the 2 terminal fragments has\n>that integer value.\n>\n>I wonder if there is an importance of having such an integer value for\n>a molecular fragment in the electrostatic interaction computation of a\n>protein/polynucleotide for instance, when running MD simulation in\n>condensed phase using the Particle mesh Ewald algorithm/a periodic\n>box.\nPeriodic calculations in Amber use PME, which will add a neutralizing\nbackground charge if the molecule has a net charge.  It doesn't really care\nif the charge is integral or not.\nThe fact that you need both a 5' nucleotide and a 3' nucleotide on the same\nstrand in order to get an integral charge represents our best (simple) guess\nof the actual charge distribution.\n...hope this helps...dac",
+      "url": "http://archive.ambermd.org/202210/0052.html",
+      "in_reply_to": 1665643671
+    }
+  ]
+}

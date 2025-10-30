@@ -1,0 +1,21 @@
+{
+  "thread_id": 1584968197,
+  "subject": "[AMBER] ** NFE-Error ** :  Cannot read &amp;colvar namelist!",
+  "messages": [
+    {
+      "message_id": 1584968197,
+      "author": "Vishal Reddy",
+      "date_raw": "Mon, 23 Mar 2020 12:56:37 +0000",
+      "body": "Hello everyone\ni was trying to print N_OF_BONDS values for the prod run between 10 protein atoms and all the water molecules of the system.\nBut i was getting the error ** NFE-Error ** : Cannot read &colvar namelist! unable to solve it .\nIf anyone knows solutionn to this or was in similar situation can you please share methods you used to overcome this problem\nThanks",
+      "url": "http://archive.ambermd.org/202003/0218.html"
+    },
+    {
+      "message_id": 1584991112,
+      "author": "Feng Pan",
+      "date_raw": "Mon, 23 Mar 2020 15:18:32 -0400",
+      "body": "Hello, Vishal\nThe reason for this error is that there is an internal limit for the number\nof elements in cv_i and cv_r,\nit is set to 20000 since for most cases 20000 should be fairly enough.\nTo solve the problem one way is that you can define several CV entries in\ncv2.in, within each the number of\nelements in cv_i not exceeding 20000, then you just sum up all the\nN_OF_BONDS in output file to get the total\nnumber.\nAnother way is to go to $AMBERHOME/src/pmemd/src/nfe_colvar.F90(if you use\npmemd) or $AMBERHOME/AmberTools/src/sander/nfe-colvar-type.F90\n(if you use sander), and change 20000 to some big number you need. Then\nrecompile and use the new sander or pmemd.\nPs: change the cv_i to multiple lines, if you put more  than 50000 number\nin one line, it is very hard to read and count.\nBest\nFeng\nOn Mon, Mar 23, 2020 at 8:57 AM Vishal Reddy <\nvishal.reddy.research.iiit.ac.in> wrote:\n> Hello everyone\n>\n> i was trying to print N_OF_BONDS values for the prod run between 10\n> protein atoms and all the water molecules of the system.\n>\n> But i was getting the error ** NFE-Error ** : Cannot read &colvar\n> namelist! unable to solve it .\n> If anyone knows solutionn to this or was in similar situation can you\n> please share methods you used to overcome this problem\n>\n> Thanks\n>\n>",
+      "url": "http://archive.ambermd.org/202003/0220.html",
+      "in_reply_to": 1584968197
+    }
+  ]
+}

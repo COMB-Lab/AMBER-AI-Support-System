@@ -1,0 +1,29 @@
+{
+  "thread_id": 1675067433,
+  "subject": "[AMBER] How restart md simulation with amber22",
+  "messages": [
+    {
+      "message_id": 1675067433,
+      "author": "ABDELATIF MESSAOUDI",
+      "date_raw": "Mon, 30 Jan 2023 09:30:33 +0100",
+      "body": "Dear AMBER users,\nI run md simulation, and I want to restart using below file (prod.in) and\ncommands.\nproduction NTP\n&cntrl\nimin=0, nstlim=75000000,\ndt=0.002, ntc=2, ntf=2, nrespa=1,\nntpr=5000, ntwx=5000,\nntt=3, temp0=310, ig=-1,\nirest=1, ntx=5,\niwrap=1, ioutfm=1,\nntb=2, ntp=1,\ngamma_ln=2,\n/\nmpirun -np 10 pmemd -O -i 05_prod.in -o 05_prod.out -c cpx_04_eq_npt.rst -p\nSK.top -r prod_SK.rst -x SK.mdcrd\nnow I use prod_SK.rst file to produce another simulation by using,\nmpirun -np 10 pmemd -O -i 05_prod.in -o 05_prod1.out -c prod_SK.rst -p\nSK.top -r prod_SK.rst -x SK1.mdcrd\nI am getting the error:\nUnit 9 Error on OPEN: prod_SK.rst\nPlease am I right to proceed the process of restarting\nAbdelatif Messaoudi\nLCMVAR, University of Batna 1",
+      "url": "http://archive.ambermd.org/202301/0124.html"
+    },
+    {
+      "message_id": 1675068335,
+      "author": "SATYAJIT KHATUA",
+      "date_raw": "Mon, 30 Jan 2023 08:45:35 +0000",
+      "body": "Hi,\nLook at the second command line input. Your -r flag is similar to the -c flag. -r flag is for generating new restart for the subsequent run. Be careful with that.\nBest,\nSatyajit Khatua\nGet Outlook for Android<\nhttps://aka.ms/AAb9ysg\n>\n________________________________\nFrom: ABDELATIF MESSAOUDI via AMBER <amber.ambermd.org>\nSent: Monday, January 30, 2023 2:00:33 PM\nTo: amber.ambermd.org <amber.ambermd.org>\nSubject: [AMBER] How restart md simulation with amber22\nDear AMBER users,\nI run md simulation, and I want to restart using below file (prod.in) and\ncommands.\nproduction NTP\n&cntrl\nimin=0, nstlim=75000000,\ndt=0.002, ntc=2, ntf=2, nrespa=1,\nntpr=5000, ntwx=5000,\nntt=3, temp0=310, ig=-1,\nirest=1, ntx=5,\niwrap=1, ioutfm=1,\nntb=2, ntp=1,\ngamma_ln=2,\n/\nmpirun -np 10 pmemd -O -i 05_prod.in -o 05_prod.out -c cpx_04_eq_npt.rst -p\nSK.top -r prod_SK.rst -x SK.mdcrd\nnow I use prod_SK.rst file to produce another simulation by using,\nmpirun -np 10 pmemd -O -i 05_prod.in -o 05_prod1.out -c prod_SK.rst -p\nSK.top -r prod_SK.rst -x SK1.mdcrd\nI am getting the error:\nUnit 9 Error on OPEN: prod_SK.rst\nPlease am I right to proceed the process of restarting\nAbdelatif Messaoudi\nLCMVAR, University of Batna 1",
+      "url": "http://archive.ambermd.org/202301/0125.html",
+      "in_reply_to": 1675067433
+    },
+    {
+      "message_id": 1675084189,
+      "author": "SATYAJIT KHATUA",
+      "date_raw": "Mon, 30 Jan 2023 18:39:49 +0530",
+      "body": "Hi ABDELATIF,\nHave you checked the SK.rst file by opening it? Have you been using the\nloop to run the command line inputs? I am asking this as your second\ncommand showing \"STOP PMEMD Terminated Abnormally!\" twice. If that is the\ncase then you have to use a loop inside your script to give a long run.\n*Best,*\n*Satyajit Khatua*\nOn Mon, Jan 30, 2023 at 5:11 PM ABDELATIF MESSAOUDI <\namessaoudi.univ-batna.dz> wrote:\n> Dear SATYAJIT\n> thank you so much for your help. I really appreciate it!\n> I still have the same problem\n> my first run\n>\n> $ mpirun -np 2 pmemd -O -i 05_prod.in -o 05_prod.out -c cpx_04_eq_npt.rst\n> -p SK.top -r SK.rst -x SK.mdcrd &\n>\n> $ grep Completed mdinfo\n> Total steps:  75000000 | Completed:   1955000 (  2.6%) | Remaining:\n>  73045000\n>\n> after restart !!\n>\n> $ mpirun -np 2 pmemd -O -i 05_prod.in -o 06_prod.out -c SK.rst -p SK.top\n> -r SK1.rst -x SK1.mdcrd &\n> [1] 15478\n> $\n>   Unit    9 Error on OPEN: SK.rst\n>\n>\n>\n> STOP PMEMD Terminated Abnormally!\n>\n>   Unit    9 Error on OPEN: SK.rst\n>\n>\n>\n> STOP PMEMD Terminated Abnormally!\n>\n> [1]+  Termine 1               mpirun -np 2 pmemd -O -i 05_prod.in -o\n> 06_prod.out -c SK.rst -p SK.top -r SK1.rst -x SK1.mdcrd\n>\n>\n> Best regards\n>\n> Abdelatif Messaoudi\n> LCMVAR, University of Batna 1\n>\n>\n>\n> Le lun. 30 janv. 2023 à 09:45, SATYAJIT KHATUA <satyajitkhatua09.gmail.\ncom>\n> a écrit :\n>\n>> Hi,\n>>\n>> Look at the second command line input. Your -r flag is similar to the -c\n>> flag. -r flag is for generating new restart for the subsequent run. Be\n>> careful with that.\n>>\n>>\n>> Best,\n>> Satyajit Khatua\n>>\n>> Get Outlook for Android <\nhttps://aka.ms/AAb9ysg\n>\n>> ------------------------------\n>> *From:* ABDELATIF MESSAOUDI via AMBER <\namber.ambermd.org\n>\n>> *Sent:* Monday, January 30, 2023 2:00:33 PM\n>> *To:* amber.ambermd.org <amber.ambermd.org>\n>> *Subject:* [AMBER] How restart md simulation with amber22\n>>\n>> Dear AMBER users,\n>>\n>> I run md simulation, and I want to restart using below file (prod.in) and\n>> commands.\n>>\n>> production NTP\n>>\n>> &cntrl\n>>\n>> imin=0, nstlim=75000000,\n>>\n>> dt=0.002, ntc=2, ntf=2, nrespa=1,\n>>\n>> ntpr=5000, ntwx=5000,\n>>\n>> ntt=3, temp0=310, ig=-1,\n>>\n>> irest=1, ntx=5,\n>>\n>> iwrap=1, ioutfm=1,\n>>\n>> ntb=2, ntp=1,\n>>\n>> gamma_ln=2,\n>>\n>> /\n>>\n>> mpirun -np 10 pmemd -O -i 05_prod.in -o 05_prod.out -c cpx_04_eq_npt.rst\n>> -p\n>> SK.top -r prod_SK.rst -x SK.mdcrd\n>>\n>>\n>> now I use prod_SK.rst file to produce another simulation by using,\n>>\n>> mpirun -np 10 pmemd -O -i 05_prod.in -o 05_prod1.out -c prod_SK.rst -p\n>> SK.top -r prod_SK.rst -x SK1.mdcrd\n>>\n>>\n>> I am getting the error:\n>>\n>>\n>> Unit 9 Error on OPEN: prod_SK.rst\n>>\n>>\n>>\n>> Please am I right to proceed the process of restarting\n>>\n>>\n>>\n>> Abdelatif Messaoudi\n>>\n>> LCMVAR, University of Batna 1\n>>",
+      "url": "http://archive.ambermd.org/202301/0126.html",
+      "in_reply_to": 1675067433
+    }
+  ]
+}

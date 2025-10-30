@@ -1,0 +1,21 @@
+{
+  "thread_id": 1709319220,
+  "subject": "[AMBER] Unable to compile with CUDA",
+  "messages": [
+    {
+      "message_id": 1709319220,
+      "author": "Weatherby,Gerard",
+      "date_raw": "Fri, 1 Mar 2024 18:53:40 +0000",
+      "body": "*** Attention: This is an external email. Use caution responding, opening attachments or clicking on links. ***\nWe�ve successfully compiled AmberTools/Amber without CUDA.\nWe are trying to compile against NVIDIA�s CUDA 11.5 library and getting the following error message:\n[ 69%] Building C object AmberTools/src/fftw-3.3/mpi/CMakeFiles/fftw_mpi.dir/dft-solve.c.o\n/usr/bin/ld: CMakeFiles/mdgx.cuda.dir/mdgx.cuda_generated_ArraySimulator.cu.o: in function `GetGpuSpecs':\ntmpxft_0009c9a2_00000000-6_ArraySimulator.compute_80.cudafe1.cpp:(.text+0x17d): undefined reference to `nvmlDeviceGetComputeRunningProcesses_v2'\ncollect2: error: ld returned 1 exit status\nUsing cmake options:\n-DCOMPILER=GNU -DMPI=TRUE -DCUDA=TRUE -DCMAKE_INSTALL_PREFIX=/usr/software -DDOWNLOAD_MINICONDA=FALSE -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-11.5\nsystem:\nDISTRIB_ID=Ubuntu\nDISTRIB_RELEASE=20.04\nDISTRIB_CODENAME=focal\nDISTRIB_DESCRIPTION=\"Ubuntu 20.04.6 LTS\"\nCompiler\ngcc --version\ngcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0\nCopyright (C) 2019 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n/usr/local/cuda-11.5/version.json beginning:\n\"cuda\" : {\n\"name\" : \"CUDA SDK\",\n\"version\" : \"11.5.20211015\"\n},",
+      "url": "http://archive.ambermd.org/202403/0007.html"
+    },
+    {
+      "message_id": 1709343765,
+      "author": "David A Case",
+      "date_raw": "Fri, 1 Mar 2024 18:42:45 -0700",
+      "body": "On Fri, Mar 01, 2024, Weatherby,Gerard via AMBER wrote:\n>\n>We are trying to compile against NVIDIA’s CUDA 11.5 library and getting\n>the following error message:\n>\n>[ 69%] Building C object AmberTools/src/fftw-3.3/mpi/CMakeFiles/fftw_mpi.dir/dft-solve.c.o\n>/usr/bin/ld: CMakeFiles/mdgx.cuda.dir/mdgx.cuda_generated_ArraySimulator.cu.o: in function `GetGpuSpecs':\n>tmpxft_0009c9a2_00000000-6_ArraySimulator.compute_80.cudafe1.cpp:(.text+0x17d): undefined reference to `nvmlDeviceGetComputeRunningProcesses_v2'\n>collect2: error: ld returned 1 exit status\nTry adding -DDISABLE_TOOLS=\"mdgx\" to your run_cmake script.  That is a\nworkaround, but very, very few people use mdgx.cuda.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202403/0013.html",
+      "in_reply_to": 1709319220
+    }
+  ]
+}

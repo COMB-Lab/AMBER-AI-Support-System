@@ -1,0 +1,29 @@
+{
+  "thread_id": 1606968095,
+  "subject": "[AMBER] Mixing Force Constants In DISANG Files",
+  "messages": [
+    {
+      "message_id": 1606968095,
+      "author": "Sharif Nada",
+      "date_raw": "Thu, 3 Dec 2020 04:01:35 +0000",
+      "body": "Hello all,\nI am working on a project where I am writing my own dihedral restraints\nrather than using makeANG_RST or makeCHIR_RST.  I have copied the\ngeneral syntax of the output of these programs where the first entry\nhas an additional line specifying the force constants:\n&rst     iat = 3, 4, 5, 22,\nr1 = -108.3812, r2 = -38.3812, r3 = -38.3812, r4 = 31.6188,\nrk2 = 1.0, rk3 = 1.0,\t\t\t\t/\nAnd subsequent entries omit the force constant:\n&rst     iat = 5, 6, 7, 9,\nr1 = -108.8825, r2 = -38.8825, r3 = -38.8825, r4 = 31.1175,\n/\nMy question is how the code would interpret an input such as:\n&rst     iat = 3, 4, 5, 22,\nr1 = -108.3812, r2 = -38.3812, r3 = -38.3812, r4 = 31.6188,\nrk2 = 1.0, rk3 = 1.0,\n&rst     iat = 5, 6, 7, 9,\nr1 = -108.8825, r2 = -38.8825, r3 = -38.8825, r4 = 31.1175,\nrk2 = 1.5, rk3 = 1.5,\n/\nWould Amber read only the first or last value specified for rk2 and\nrk3, or is it possible to assign different values of rk2 and rk3 for\neach restraint in this way?\nThanks,\nSharif",
+      "url": "http://archive.ambermd.org/202012/0038.html"
+    },
+    {
+      "message_id": 1606990478,
+      "author": "Carlos Simmerling",
+      "date_raw": "Thu, 3 Dec 2020 05:14:38 -0500",
+      "body": "Yes that's fine to specify the force constants for each, and they can\ndiffer. If not specified, the prior ones are used. You're doing the right\nthing.\nOn Wed, Dec 2, 2020, 11:01 PM Sharif Nada <s.nada.uq.edu.au> wrote:\n> Hello all,\n>\n> I am working on a project where I am writing my own dihedral restraints\n> rather than using makeANG_RST or makeCHIR_RST.  I have copied the\n> general syntax of the output of these programs where the first entry\n> has an additional line specifying the force constants:\n>\n>  &rst     iat = 3, 4, 5, 22,\n>           r1 = -108.3812, r2 = -38.3812, r3 = -38.3812, r4 = 31.6188,\n>           rk2 = 1.0, rk3 = 1.0,                         /\n>\n> And subsequent entries omit the force constant:\n>\n>  &rst     iat = 5, 6, 7, 9,\n>           r1 = -108.8825, r2 = -38.8825, r3 = -38.8825, r4 = 31.1175,\n>         /\n>\n> My question is how the code would interpret an input such as:\n>\n>  &rst     iat = 3, 4, 5, 22,\n>           r1 = -108.3812, r2 = -38.3812, r3 = -38.3812, r4 = 31.6188,\n>           rk2 = 1.0, rk3 = 1.0,\n>\n>  &rst     iat = 5, 6, 7, 9,\n>           r1 = -108.8825, r2 = -38.8825, r3 = -38.8825, r4 = 31.1175,\n>           rk2 = 1.5, rk3 = 1.5,\n>         /\n>\n> Would Amber read only the first or last value specified for rk2 and\n> rk3, or is it possible to assign different values of rk2 and rk3 for\n> each restraint in this way?\n>\n> Thanks,\n> Sharif\n>",
+      "url": "http://archive.ambermd.org/202012/0042.html",
+      "in_reply_to": 1606968095
+    },
+    {
+      "message_id": 1607020995,
+      "author": "Sharif Nada",
+      "date_raw": "Thu, 3 Dec 2020 18:43:15 +0000",
+      "body": "Thank you for your help Carlos.\nRegards,\nSharif\n> On 3 Dec 2020, at 8:18 pm, Carlos Simmerling <carlos.simmerling.gmail.\ncom> wrote:\n>\n> ﻿Yes that's fine to specify the force constants for each, and they can\n> differ. If not specified, the prior ones are used. You're doing the right\n> thing.\n>\n>> On Wed, Dec 2, 2020, 11:01 PM Sharif Nada <s.nada.uq.\nedu.au> wrote:\n>>\n>> Hello all,\n>>\n>> I am working on a project where I am writing my own dihedral restraints\n>> rather than using makeANG_RST or makeCHIR_RST.  I have copied the\n>> general syntax of the output of these programs where the first entry\n>> has an additional line specifying the force constants:\n>>\n>> &rst     iat = 3, 4, 5, 22,\n>>          r1 = -108.3812, r2 = -38.3812, r3 = -38.3812, r4 = 31.6188,\n>>          rk2 = 1.0, rk3 = 1.0,                         /\n>>\n>> And subsequent entries omit the force constant:\n>>\n>> &rst     iat = 5, 6, 7, 9,\n>>          r1 = -108.8825, r2 = -38.8825, r3 = -38.8825, r4 = 31.1175,\n>>        /\n>>\n>> My question is how the code would interpret an input such as:\n>>\n>> &rst     iat = 3, 4, 5, 22,\n>>          r1 = -108.3812, r2 = -38.3812, r3 = -38.3812, r4 = 31.6188,\n>>          rk2 = 1.0, rk3 = 1.0,\n>>\n>> &rst     iat = 5, 6, 7, 9,\n>>          r1 = -108.8825, r2 = -38.8825, r3 = -38.8825, r4 = 31.1175,\n>>          rk2 = 1.5, rk3 = 1.5,\n>>        /\n>>\n>> Would Amber read only the first or last value specified for rk2 and\n>> rk3, or is it possible to assign different values of rk2 and rk3 for\n>> each restraint in this way?\n>>\n>> Thanks,\n>> Sharif\n>>",
+      "url": "http://archive.ambermd.org/202012/0051.html",
+      "in_reply_to": 1606968095
+    }
+  ]
+}

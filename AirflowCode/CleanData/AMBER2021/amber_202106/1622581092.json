@@ -1,0 +1,29 @@
+{
+  "thread_id": 1622581092,
+  "subject": "[AMBER] Nastruct reference file format",
+  "messages": [
+    {
+      "message_id": 1622581092,
+      "author": "Robert Molt",
+      "date_raw": "Tue, 1 Jun 2021 16:58:12 -0400",
+      "body": "Good evening,\nI am confused for the format of custom nucleic acid in cpptraj analysis.\nOn page 687 of the 2020 manual, one can see the input file format. On\nthe second line, one sees\nG G G5 G3\nThe manual states that these are:\n\"used to identify the underlying base type...if none of these, it will\nbe considered an unknown residue (which just means WC hydrogen bonding\nwill not be identified)\"\nI am unclear on what is being said here. Can further explanation be offered?\n1.) \"Underlying\" meaning the custom nucleic acid is \"most like\" one of\nthe traditional nucleic acids? If so, what defines this property? In my\ncase, I have custom nucleic acids which are pretty different from the\nnatural nucleic acids. In fact, in one case, I have an amino acid which\nhas inserted into a DNA helix to replace a nucleic acid (poorly).\n2.) What do \"G G G5 G3\" signify, in the example of guanine? What do each\nof the letters/numbers indicate?\n-- \nDr. Robert Molt Jr.",
+      "url": "http://archive.ambermd.org/202106/0010.html"
+    },
+    {
+      "message_id": 1622821347,
+      "author": "Robert Molt",
+      "date_raw": "Fri, 4 Jun 2021 11:42:27 -0400",
+      "body": "Good evening,\nI am confused for the format of custom nucleic acid in cpptraj analysis.\nOn page 687 of the 2020 manual, one can see the input file format. On\nthe second line, one sees\nG G G5 G3\nThe manual states that these are:\n\"used to identify the underlying base type...if none of these, it will\nbe considered an unknown residue (which just means WC hydrogen bonding\nwill not be identified)\"\nI am unclear on what is being said here. Can further explanation be\noffered?\n1.) \"Underlying\" meaning the custom nucleic acid is \"most like\" one of\nthe traditional nucleic acids? If so, what defines this property? In my\ncase, I have custom nucleic acids which are pretty different from the\nnatural nucleic acids. In fact, in one case, I have an amino acid which\nhas inserted into a DNA helix to replace a nucleic acid (poorly).\n2.) What do \"G G G5 G3\" signify, in the example of guanine? What do each\nof the letters/numbers indicate?\n-- \nDr. Robert Molt Jr.",
+      "url": "http://archive.ambermd.org/202106/0026.html",
+      "in_reply_to": 1622581092
+    },
+    {
+      "message_id": 1622827857,
+      "author": "Daniel Roe",
+      "date_raw": "Fri, 4 Jun 2021 13:30:57 -0400",
+      "body": "Hi, sorry for the delay in replying here.\nOn Fri, Jun 4, 2021 at 11:42 AM Robert Molt <rwmolt07.gmail.com> wrote:\n> 1.) \"Underlying\" meaning the custom nucleic acid is \"most like\" one of\n> the traditional nucleic acids? If so, what defines this property? In my\n> case, I have custom nucleic acids which are pretty different from the\n> natural nucleic acids. In fact, in one case, I have an amino acid which\n> has inserted into a DNA helix to replace a nucleic acid (poorly).\nSo cpptraj will calculate any hydrogen bonds between nucleic acid\nbases using the atoms designated as donor or acceptor. However, it\ncategorizes hydrogen bonds between G-C or A-T/U bases as Watson-Crick\n(WC); if the base is a name not recognized as G, C, A, T, or U it just\nwon't consider any of the hydrogen bonds as WC hydrogen bonds.\n>\n> 2.) What do \"G G G5 G3\" signify, in the example of guanine? What do each\n> of the letters/numbers indicate?\nSo as stated in the manual regarding this line:\n<base character> <res name 0> [<res name 1> ...]\nSo the first character is the \"base character\". It can be anything,\nbut A, C, G, T, and U have significance for determining whether\nhydrogen bonds are WC (as mentioned above). The remaining entries are\nresidue names that map to this reference base, in this case G, G5 (5'\nterminal G) and G3 (3' terminal G). Does that make sense? Let me know\nif not.\n-Dan\n>\n> --\n> Dr. Robert Molt Jr.\n>\n>",
+      "url": "http://archive.ambermd.org/202106/0028.html",
+      "in_reply_to": 1622581092
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "thread_id": 1583847419,
+  "subject": "[AMBER] sieve keyword in cpptraj clustering",
+  "messages": [
+    {
+      "message_id": 1583847419,
+      "author": "Debarati DasGupta",
+      "date_raw": "Tue, 10 Mar 2020 13:36:59 +0000",
+      "body": "Hi All,\nTrying to learn some clustering basics using cpptraj in AMBER18.\nI m trying to analyse flexible regions of my protein in explicit water simulations.\nI have at present tried to do k-means clustering and this is my input file I feed to cpptraj\nparm strip_XXX.prmtop\ntrajin XXX_stripped.mdcrd 1 last 10\ncluster c1 kmeans clusters 20 randompoint maxit 500 rms :2-151.C,N,O,CA,CB&!.H= sieve 1 random out cnumvtime.dat summary summary.dat info info.dat cpopvtime cpopvtime.agr normframe repout rep repfmt pdb singlerepout singlerep.nc singlerepfmt netcdf avgout avg avgfmt pdb\nrun\nAny ideas on �sieve� and �clusters�?\nWhat is the optimum I should keep?\nIf I have no idea what should be the number of clusters should I make it 50 or 80 (a higher number) and what is the functionality of sieve I could not clearly understand from the manual.. Any suggestions?\nThanks everyone.\nRegards",
+      "url": "http://archive.ambermd.org/202003/0098.html"
+    },
+    {
+      "message_id": 1585163803,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 25 Mar 2020 15:16:43 -0400",
+      "body": "Hi,\nOn Tue, Mar 10, 2020 at 9:37 AM Debarati DasGupta\n<debarati_dasgupta.hotmail.\ncom> wrote:\n> Any ideas on “sieve” and “clusters”?\n> What is the optimum I should keep?\n>\n> If I have no idea what should be the number of clusters should I make it 50 or 80 (a higher number) and what is the functionality of sieve I could not clearly understand from the manual.. Any suggestions?\nSo the manual has this: \"Perform clustering only for every <#> frame.\nAfter clustering, all other frames will be added to clusters.\"\nAdmittedly that could be a bit more verbose, but the essential idea is\nthat since the most time-consuming/memory-hungry part of clustering\ntends to be the calculation/storage of the pairwise distance matrix,\nyou do your clustering on a subset of frames to reduce this size.\nHopefully this gives you clustering that is more or less\nrepresentative of what the clustering would be if you used your entire\ntrajectory, and you can then add the frames you didn't cluster back in\nafterwards. This idea is fleshed out much better in the Shao &\nCheatham et al. clustering paper:\nhttps://pubs.acs.org/doi/10.1021/ct700119m\nSo there's no \"right\" answer to what value you should use, but in\ngeneral I would recommend using a value that gives you the largest #\nframes your system can feasibly handle (10-20k frames is probably a\nsafe bet to start, and you can increase from there). Also I recommend\nusing the \"random\" keyword as well, as it should make your sieving\nless prone to any potential periodic (or harmonic) artifacts in the\ntrajectory data.\n-Dan\n> Thanks everyone.\n> Regards\n>\n>",
+      "url": "http://archive.ambermd.org/202003/0236.html",
+      "in_reply_to": 1583847419
+    }
+  ]
+}

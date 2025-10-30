@@ -1,0 +1,53 @@
+{
+  "thread_id": 1594725962,
+  "subject": "[AMBER] Default temperature regulation during production run: Missed to declare ntt option",
+  "messages": [
+    {
+      "message_id": 1594725962,
+      "author": "Jorden Cabal",
+      "date_raw": "Tue, 14 Jul 2020 20:26:02 +0900",
+      "body": "Unfortunately and by mistake, I forgot to use temperature regulating\nparameters during starting simulations. Heating and equilibration are fine.\nI have checked the out file where parameters are detailed and see no line\ndescribing temperature, but when I see the RMS fluctuation in temperature,\nit is maintained almost constant. I was wondering what value of ntt is\ntaken by default. I am running a simulation under the PBC condition applied.\nfor reference please see the input parameters\nMD run\n&cntrl\nimin=0,\nntx=5,\nirest=1,\nnstlim=2500000,\ndt=0.002,\nntc=2,\nntf=2,\nntpr=5000,\nntwx=5000,\ncut=12.0\ntemp0=300\nntp=1,\ntaup=1.0,\nntb=2\n/\nPlease suggest me on this.\nThank you",
+      "url": "http://archive.ambermd.org/202007/0171.html"
+    },
+    {
+      "message_id": 1594744736,
+      "author": "David A Case",
+      "date_raw": "Tue, 14 Jul 2020 12:38:56 -0400",
+      "body": "On Tue, Jul 14, 2020, Jorden Cabal wrote:\n>Unfortunately and by mistake, I forgot to use temperature regulating\n>parameters during starting simulations. Heating and equilibration are fine.\n>I have checked the out file where parameters are detailed and see no line\n>describing temperature, but when I see the RMS fluctuation in temperature,\n>it is maintained almost constant. I was wondering what value of ntt is\n>taken by default.\nThe default value for ntt is zero.  This should be in the manual, but is\nnot.  Check for drift in your temperature: is it staying constant enough\n(for goverment work)?\n...good luck....dac",
+      "url": "http://archive.ambermd.org/202007/0173.html",
+      "in_reply_to": 1594725962
+    },
+    {
+      "message_id": 1594744897,
+      "author": "Carlos Simmerling",
+      "date_raw": "Tue, 14 Jul 2020 12:41:37 -0400",
+      "body": "On Tue, Jul 14, 2020 at 12:39 PM David A Case <david.case.rutgers.edu>\nwrote:\n> On Tue, Jul 14, 2020, Jorden Cabal wrote:\n>\n> >Unfortunately and by mistake, I forgot to use temperature regulating\n> >parameters during starting simulations. Heating and equilibration are\n> fine.\n>\ndid you leave out the T regulation during all of the simulations? Heating\nshould not have worked without a thermostat.\n> >I have checked the out file where parameters are detailed and see no line\n> >describing temperature, but when I see the RMS fluctuation in temperature,\n> >it is maintained almost constant. I was wondering what value of ntt is\n> >taken by default.\n>\n> The default value for ntt is zero.  This should be in the manual, but is\n> not.  Check for drift in your temperature: is it staying constant enough\n> (for goverment work)?\n>\n> ...good luck....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202007/0174.html",
+      "in_reply_to": 1594725962
+    },
+    {
+      "message_id": 1594783334,
+      "author": "Jorden Cabal",
+      "date_raw": "Wed, 15 Jul 2020 12:22:14 +0900",
+      "body": "No, Sir. I restarted from the equilibrated system. I read the velocity from\nthe equilibrated file where I used Langevin (ntt=3).\n*Note:* The temperature of the system through the simulation looks fine.\nRMS fluctuation in the out file is very low and well within 300K range.\nI was also wondering about how it worked. Please help if possible. I could\nhave restarted the simulation but the system has been running for 2 months\nnow and I do not want to waste the data without knowing that the simulation\nis actually wrong.\nThank you\nOn Wed, Jul 15, 2020 at 1:42 AM Carlos Simmerling <\ncarlos.simmerling.gmail.com> wrote:\n> On Tue, Jul 14, 2020 at 12:39 PM David A Case <david.case.rutgers.edu>\n> wrote:\n>\n> > On Tue, Jul 14, 2020, Jorden Cabal wrote:\n> >\n> > >Unfortunately and by mistake, I forgot to use temperature regulating\n> > >parameters during starting simulations. Heating and equilibration are\n> > fine.\n> >\n>\n> did you leave out the T regulation during all of the simulations? Heating\n> should not have worked without a thermostat.\n>\n>\n> > >I have checked the out file where parameters are detailed and see no\n> line\n> > >describing temperature, but when I see the RMS fluctuation in\n> temperature,\n> > >it is maintained almost constant. I was wondering what value of ntt is\n> > >taken by default.\n> >\n> > The default value for ntt is zero.  This should be in the manual, but is\n> > not.  Check for drift in your temperature: is it staying constant enough\n> > (for goverment work)?\n> >\n> > ...good luck....dac\n> >\n> >\n> >",
+      "url": "http://archive.ambermd.org/202007/0179.html",
+      "in_reply_to": 1594725962
+    },
+    {
+      "message_id": 1594783760,
+      "author": "Jorden Cabal",
+      "date_raw": "Wed, 15 Jul 2020 12:29:20 +0900",
+      "body": "Yes sir. It is not there in the manual as far as I have searched.\nSo lets us assume the system took ntt=0 by default and in that case, the\nsimulation will be NVE simulation, and the temperature and pressure should\nvary. In my input file, I have used ntp=1 as well as ntb=2. From the\nmanual, I have figured out that in case ntp>0 and ntb=2, one can not\nperform NVE simulation. Please correct me if I am wrong. Furthermore, the\nout file shows clearly that the RMS in the pressure of the system is 0.0\nand there are adjustments in volume. Please correct me if I am wrong.\nIn my opinion, I think the system has considered ntt=1 or 2 by default in\nmy case. Although, I am not sure. So, I was wondering that how can we find\nthe exact input parameters considered during simulation including ntt.\nThank you\nOn Wed, Jul 15, 2020 at 1:39 AM David A Case <david.case.rutgers.edu> wrote:\n> On Tue, Jul 14, 2020, Jorden Cabal wrote:\n>\n> >Unfortunately and by mistake, I forgot to use temperature regulating\n> >parameters during starting simulations. Heating and equilibration are\n> fine.\n> >I have checked the out file where parameters are detailed and see no line\n> >describing temperature, but when I see the RMS fluctuation in temperature,\n> >it is maintained almost constant. I was wondering what value of ntt is\n> >taken by default.\n>\n> The default value for ntt is zero.  This should be in the manual, but is\n> not.  Check for drift in your temperature: is it staying constant enough\n> (for goverment work)?\n>\n> ...good luck....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202007/0180.html",
+      "in_reply_to": 1594725962
+    },
+    {
+      "message_id": 1594814922,
+      "author": "David A Case",
+      "date_raw": "Wed, 15 Jul 2020 08:08:42 -0400",
+      "body": "On Wed, Jul 15, 2020, Jorden Cabal wrote:\n>Yes sir. It is not there in the manual as far as I have searched.\n>So lets us assume the system took ntt=0 by default and in that case, the\n>simulation will be NVE simulation, and the temperature and pressure should\n>vary. In my input file, I have used ntp=1 as well as ntb=2. From the\n>manual, I have figured out that in case ntp>0 and ntb=2, one can not\n>perform NVE simulation. Please correct me if I am wrong. Furthermore, the\n>out file shows clearly that the RMS in the pressure of the system is 0.0\n>and there are adjustments in volume. Please correct me if I am wrong.\n>In my opinion, I think the system has considered ntt=1 or 2 by default in\n>my case. Although, I am not sure. So, I was wondering that how can we find\n>the exact input parameters considered during simulation including ntt.\nThe default for ntt is zero for both sander and pmemd.  If nothing is printed\nout about temperature, that means that ntt was set to 0 internally.\nDon't look only at the RMS fluctuations in temperature; rather, look at the\nprofile of temperature vs. time.  Depending on the size of your system, the\nlength of the simulation, the value of dt you used, etc., running NVE may be\nfine -- for any sizeable system that one is likely to use Amber for,\ndifferences between the NVE and NVT ensemble should be very small.\nBottom line, if the temperature vs time course looks OK, you should be fine.\n....dac",
+      "url": "http://archive.ambermd.org/202007/0181.html",
+      "in_reply_to": 1594725962
+    }
+  ]
+}

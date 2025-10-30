@@ -1,0 +1,21 @@
+{
+  "thread_id": 1663905812,
+  "subject": "[AMBER] Data set math gives &quot;size is 0&quot;",
+  "messages": [
+    {
+      "message_id": 1663905812,
+      "author": "Chunsheng Lin",
+      "date_raw": "Fri, 23 Sep 2022 12:03:32 +0800 (CST)",
+      "body": "Dear Colleagues,\nI want to calculate two bond lengths as well as their differences with cpptraj. My cpptraj.in file is as following:\ntrajin a18.nc\ndistance dT1_T2 .683 .684 out a18.txt\ndistance dT2_T3 .684 .664 out a18.txt\ncv = dT1_T2 - dT2_T3\nwrite a18.txt cv\nHowever, cpptraj gives such results:\nBEGIN TRAJECTORY PROCESSING:\n.....................................................\nACTION SETUP FOR PARM 'a18.prmtop' (2 actions):\n0: [distance dT1_T2 .683 .684 out a18.txt]\n.683 (1 atoms) to .684 (1 atoms), imaged.\n1: [distance dT2_T3 .684 .664 out a18.txt]\n.684 (1 atoms) to .664 (1 atoms), imaged.\n----- a18.nc (1-6204, 1) -----\n0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100% Complete.\nRead 6204 frames and processed 6204 frames.\nTIME: Avg. throughput= 17658.8126 frames / second.\nACTION OUTPUT:\nTIME: Analyses took 0.0000 seconds.\nDATASETS (3 total):\ndT1_T2 \"dT1_T2\" (double, distance), size is 6204\ndT2_T3 \"dT2_T3\" (double, distance), size is 6204\ncv \"cv\" (double), size is 0\nDATAFILES (1 total):\na18.txt (Standard Data File):  dT1_T2 dT2_T3\n--------------------------\nThe resulted file a18.txt has only dT1_T2 and dT2_T3, and no cv. What is the problem? Why the data set math result \"cv\" size is 0?\nBest regards,\nChunsheng",
+      "url": "http://archive.ambermd.org/202209/0092.html"
+    },
+    {
+      "message_id": 1663908250,
+      "author": "Rodrigo Galindo-Murillo",
+      "date_raw": "Thu, 22 Sep 2022 22:44:10 -0600",
+      "body": "Hello!\nIn order to do operations with datasets, you need to first read the\ndata, so the datasets can be populated with data, and then you can\nperform operations. I made a simple example for the operation you want\nto do:\n----------------------------------------------------------\nparm nowater.topo\ntrajin nowater.nc 1 last 100\ndistance d1 :1 :10 out d1.dat\ndistance d2 :2 :11 out d2.dat\ngo\nresta=d1-d2\nwrite resta.dat resta\ngo\n----------------------------------------------------------\nOutput of resta.dat:\n#Frame          resta\n1      -1.1309\n2      -1.4515\n3      -1.0341\n4      -1.8777\n5       0.3417\n6      -2.1835\n7      -0.2239\n8       0.4551\n9      -0.3705\nThis CPPTRAJ input works for my data. Read the trajectory input, and\nthen do any operations you are interested in.\nHope that helps!\nRodrigo\nOn Thu, Sep 22, 2022 at 10:03 PM Chunsheng Lin via AMBER\n<amber.ambermd.org> wrote:\n>\n> Dear Colleagues,\n>\n>\n> I want to calculate two bond lengths as well as their differences with cpptraj. My cpptraj.in file is as following:\n> trajin a18.nc\n> distance dT1_T2 .683 .684 out a18.txt\n> distance dT2_T3 .684 .664 out a18.txt\n> cv = dT1_T2 - dT2_T3\n> write a18.txt cv\n>\n> However, cpptraj gives such results:\n> BEGIN TRAJECTORY PROCESSING:\n> .....................................................\n> ACTION SETUP FOR PARM 'a18.prmtop' (2 actions):\n>   0: [distance dT1_T2 .683 .684 out a18.txt]\n>         .683 (1 atoms) to .684 (1 atoms), imaged.\n>   1: [distance dT2_T3 .684 .664 out a18.txt]\n>         .684 (1 atoms) to .664 (1 atoms), imaged.\n> ----- a18.nc (1-6204, 1) -----\n>  0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100% Complete.\n>\n> Read 6204 frames and processed 6204 frames.\n> TIME: Avg. throughput= 17658.8126 frames / second.\n>\n> ACTION OUTPUT:\n> TIME: Analyses took 0.0000 seconds.\n>\n> DATASETS (3 total):\n>         dT1_T2 \"dT1_T2\" (double, distance), size is 6204\n>         dT2_T3 \"dT2_T3\" (double, distance), size is 6204\n>         cv \"cv\" (double), size is 0\n>\n> DATAFILES (1 total):\n>   a18.txt (Standard Data File):  dT1_T2 dT2_T3\n> --------------------------\n> The resulted file a18.txt has only dT1_T2 and dT2_T3, and no cv. What is the problem? Why the data set math result \"cv\" size is 0?\n>\n>\n> Best regards,\n> Chunsheng\n>\n>",
+      "url": "http://archive.ambermd.org/202209/0093.html",
+      "in_reply_to": 1663905812
+    }
+  ]
+}

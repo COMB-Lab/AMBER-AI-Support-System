@@ -1,0 +1,61 @@
+{
+  "thread_id": 1623739367,
+  "subject": "[AMBER] Restart the crashed MD run in Amber18",
+  "messages": [
+    {
+      "message_id": 1623739367,
+      "author": "Amir Zeb",
+      "date_raw": "Tue, 15 Jun 2021 15:42:47 +0900",
+      "body": "Hello amber users,\nI need help to know how can I restart the md run from a\npre-mature terminated run?\nI put a production run of POPC membrane for 400 ns while following this\ntutorial \"An Amber Lipid Force Field Tutorial (ambermd.org)\n<\nhttps://ambermd.org/tutorials/advanced/tutorial16/index.php\n>\". My job is\nterminated before its completion, even though I don't kown reason why did\nit crash. Now I want to restart this md run from the last frame while keep\nthe already completed run preserved. Could someone please help me here?\nThis is mdinfo information:\n[image: image.png]\nTIA",
+      "url": "http://archive.ambermd.org/202106/0108.html"
+    },
+    {
+      "message_id": 1623762314,
+      "author": "David A Case",
+      "date_raw": "Tue, 15 Jun 2021 09:05:14 -0400",
+      "body": "On Tue, Jun 15, 2021, Amir Zeb wrote:\n>\n>I need help to know how can I restart the md run from a\n>pre-mature terminated run?\nDepending on your input parameters, it is likely that there will be an\nintermediate restart file written.  You can use that to re-start.  Of\ncourse, you may see the same problem again -- depends on what caused the\nearly termination of the program.\n....dac",
+      "url": "http://archive.ambermd.org/202106/0110.html",
+      "in_reply_to": 1623739367
+    },
+    {
+      "message_id": 1623805387,
+      "author": "Amir Zeb",
+      "date_raw": "Wed, 16 Jun 2021 10:03:07 +0900",
+      "body": "Dear Dr. A. Horn and D.A Case,\nThank you both for your valuable advice,\nWell, I restarted the simulation again by putting the command \"pmemd.cuda\n-O -i Prod.in -o Prod.out -p POPC1.prmtop -c Prod.rst -inf Prod.mdinfo -r\nProd1.rst -x Prod1.nc\", where the Prod.rst is coordinate file generated\nfrom the previous (crashed) simulation, while the Prod1.rst and Prod1.nc\nare assigned to be generated as the new/updated coordinates and trajectory\nfiles, respectively,  in the restrated simulation. The job restarted\nsuccessfully but stopped/crashed again after some time. Would you please\nlet me know how I can find the reason for this crash? Also, the above\nmentioned command line correct or wrong to restart a crashed job?\nDetails of my simulation system: I have generated a POPC (80 x 80) lipid\nbilayer membrane by VMD and then followed the Amber tutorial (An Amber\nLipid Force Field Tutorial (ambermd.org)\n<\nhttps://ambermd.org/tutorials/advanced/tutorial16/index.php\n>) to\nequilibrate this POPC membrane for 400 ns prior to protein insertion (as\nthe literature suggested). The Prod.in and Prod1.mdinfo are given right\nhere for your kind information.\nYour guidance could really help me to fix this issue.\nTIA\nAmir\nLipid production 300K 400ns\n&cntrl\nimin=0,\nntx=5,\nirest=1,\nntc=2,\nntf=2,\ntol=0.0000001,\nnstlim=200000000,\nntt=3,\ngamma_ln=1.0,\ntemp0=300.0,\nntpr=10000,\nntwr=500000,\nntwx=10000,\ndt=0.002,\nig=-1,\nntb=2,\nntp=2,\ncut=10.0,\nioutfm=1,\nntxo=2,\nbarostat=2,\n/\nProd1.mdinfo\nNSTEP =  6940000   TIME(PS) =   27985.000  TEMP(K) =   298.56  PRESS =\n0.0\nEtot   =    -79164.8997  EKtot   =     23897.0117  EPtot      =\n-103061.9115\nBOND   =      1005.2689  ANGLE   =      4191.7907  DIHED      =\n2532.8419\n1-4 NB =       872.1375  1-4 EEL =     -1216.1562  VDWAALS    =\n11383.3811\nEELEC  =   -121831.1753  EHBOND  =         0.0000  RESTRAINT  =\n0.0000\nEKCMT  =         0.0000  VIRIAL  =         0.0000  VOLUME     =\n383289.1295\nDensity    =\n0.9957\n------------------------------------------------------------------------------\n| Current Timing Info\n| -------------------\n| Total steps : 200000000 | Completed :   6940000 | Remaining : 193060000\n|\n| Average timings for last  110000 steps:\n|     Elapsed(s) =      64.97 Per Step(ms) =       0.59\n|         ns/day =     292.58   seconds/ns =     295.31\n|\n| Average timings for all steps:\n|     Elapsed(s) =    4069.51 Per Step(ms) =       0.59\n|         ns/day =     294.69   seconds/ns =     293.19\n|\n|\n| Estimated time remaining:      31.4 hours.\n------------------------------------------------------------------------------\nOn Tue, Jun 15, 2021 at 10:05 PM David A Case <david.case.rutgers.edu>\nwrote:\n> On Tue, Jun 15, 2021, Amir Zeb wrote:\n> >\n> >I need help to know how can I restart the md run from a\n> >pre-mature terminated run?\n>\n> Depending on your input parameters, it is likely that there will be an\n> intermediate restart file written.  You can use that to re-start.  Of\n> course, you may see the same problem again -- depends on what caused the\n> early termination of the program.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202106/0114.html",
+      "in_reply_to": 1623739367
+    },
+    {
+      "message_id": 1623848452,
+      "author": "David A Case",
+      "date_raw": "Wed, 16 Jun 2021 09:00:52 -0400",
+      "body": "On Wed, Jun 16, 2021, Amir Zeb wrote:\n>\n>in the restrated simulation. The job restarted\n>successfully but stopped/crashed again after some time. Would you please\n>let me know how I can find the reason for this crash?\nSo, now it seems that the instability is reproducible.  How long does it\ntake after the restart before you encounter problems?  It's often useful\nto run shorter simulations with small values of ntpr to get more detailed\ninformation.\nOne place to start is to use the \"checkstructure\" action in cpptraj on the\nrestart coordinates.  That might flag problems.\n>  nstlim=200000000,\n>  ntpr=10000,\nConsider *much* shorter runs, setting ntpr to 10 or 100.  Your goal is to\ncollect some information near the point at which the crash happens.\n....dac",
+      "url": "http://archive.ambermd.org/202106/0121.html",
+      "in_reply_to": 1623739367
+    },
+    {
+      "message_id": 1623978279,
+      "author": "Amir Zeb",
+      "date_raw": "Fri, 18 Jun 2021 10:04:39 +0900",
+      "body": "Dear David,\nThanks for the response.\nWell, the snapshot of the md info is attached herewith to let you know the\nnumber of steps completed and remaining, when the job is stopped.\nI don't know exactly how long it runs and then stops but I'll let you know\nmy system setup and how it stops.\nI'm a terminal user of our server, my machine is connected to the server\nvia the mobaxterm.\nWhen I'm leaving the office, I'm locking my machine by pressing Wind+L keys.\nSince, the simulation job which I have submitted from my machine to the\nserver via the terminal is running as the background job but stops after\nsometime.\nI think that this sleeping mode of the machine may cause the crash of the\nsimulation job on the server. I'm thinking that if I could put my machine\non sleep mode as never, the simulation running in the background may not\nstop.\n[image: image.png]\nAmir\nOn Wed, Jun 16, 2021 at 10:01 PM David A Case <david.case.rutgers.edu>\nwrote:\n> On Wed, Jun 16, 2021, Amir Zeb wrote:\n> >\n> >in the restrated simulation. The job restarted\n> >successfully but stopped/crashed again after some time. Would you please\n> >let me know how I can find the reason for this crash?\n>\n> So, now it seems that the instability is reproducible.  How long does it\n> take after the restart before you encounter problems?  It's often useful\n> to run shorter simulations with small values of ntpr to get more detailed\n> information.\n>\n> One place to start is to use the \"checkstructure\" action in cpptraj on the\n> restart coordinates.  That might flag problems.\n>\n> >  nstlim=200000000,\n> >  ntpr=10000,\n>\n> Consider *much* shorter runs, setting ntpr to 10 or 100.  Your goal is to\n> collect some information near the point at which the crash happens.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202106/0144.html",
+      "in_reply_to": 1623739367
+    },
+    {
+      "message_id": 1624018210,
+      "author": "David A Case",
+      "date_raw": "Fri, 18 Jun 2021 08:10:10 -0400",
+      "body": "On Fri, Jun 18, 2021, Amir Zeb wrote:\n>\n>I'm a terminal user of our server, my machine is connected to the server\n>via the mobaxterm.\n>When I'm leaving the office, I'm locking my machine by pressing Wind+L keys.\n>Since, the simulation job which I have submitted from my machine to the\n>server via the terminal is running as the background job but stops after\n>sometime.\n>I think that this sleeping mode of the machine may cause the crash of the\n>simulation job on the server. I'm thinking that if I could put my machine\n>on sleep mode as never, the simulation running in the background may not\n>stop.\nSounds like you want issue a \"disown\" command on the server before leaving\nthe office.  I generally use \"disown\" to make sure jobs don't get\ninterrupted by an accidental disconnect from the server, even when I am\nstill at my desk.  The \"nohup\" command is similar.  For a detailed\ndescription, see:\nhttps://unix.stackexchange.com/questions/3886/difference-between-nohup-disown-and\n....hope this helps....dac",
+      "url": "http://archive.ambermd.org/202106/0150.html",
+      "in_reply_to": 1623739367
+    },
+    {
+      "message_id": 1624236887,
+      "author": "Amir Zeb",
+      "date_raw": "Mon, 21 Jun 2021 09:54:47 +0900",
+      "body": "Thanks DAC,\nIt worked,\nAppreciated!\nOn Fri, Jun 18, 2021 at 9:10 PM David A Case <david.case.rutgers.edu> wrote:\n> On Fri, Jun 18, 2021, Amir Zeb wrote:\n> >\n> >I'm a terminal user of our server, my machine is connected to the server\n> >via the mobaxterm.\n> >When I'm leaving the office, I'm locking my machine by pressing Wind+L\n> keys.\n> >Since, the simulation job which I have submitted from my machine to the\n> >server via the terminal is running as the background job but stops after\n> >sometime.\n> >I think that this sleeping mode of the machine may cause the crash of the\n> >simulation job on the server. I'm thinking that if I could put my machine\n> >on sleep mode as never, the simulation running in the background may not\n> >stop.\n>\n> Sounds like you want issue a \"disown\" command on the server before leaving\n> the office.  I generally use \"disown\" to make sure jobs don't get\n> interrupted by an accidental disconnect from the server, even when I am\n> still at my desk.  The \"nohup\" command is similar.  For a detailed\n> description, see:\n>\n>\n>\nhttps://unix.stackexchange.com/questions/3886/difference-between-nohup-disown-and\n>\n> ....hope this helps....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202106/0163.html",
+      "in_reply_to": 1623739367
+    }
+  ]
+}

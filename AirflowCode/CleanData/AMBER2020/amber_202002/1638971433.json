@@ -1,0 +1,21 @@
+{
+  "thread_id": 1638971433,
+  "subject": "Re: [AMBER] Error for installing the GPU version of Amber20",
+  "messages": [
+    {
+      "message_id": 1638971433,
+      "author": "David A Case",
+      "date_raw": "Wed, 8 Dec 2021 08:50:33 -0500",
+      "body": "On Wed, Dec 08, 2021, jinfeng liu wrote:\n>\n>I come across another problem when I make install the GPU version of\n>Amber20. The error message is in the following,\n>\n>/usr/local/cuda-11.3/include/thrust/detail/cpp11_required.h:23:6: 错误：#error\n>C++11 is required for this Thrust feature; please upgrade your compiler or\n>pass the appropriate -std=c++XX flag to it.\n>\n>It seems like the compiler's problem. I use gcc version 4.8.5 20150623 (Red\n>Hat 4.8.5-44) (GCC). What should I do? or how to enable the -std=c++11\n>option?\n1. Consider upgrading your compiler.  GCC 4.8.5 was released in June, 2015.\nThis may help with things other than the problem listed above, since few\nAmber developers are still using this compiler.  Don't go above gcc/gfortran\n9.\n2. Try the following patch to the CompilerFlags.cmake file in\namber20_src/cmake:\ndiff --git a/cmake/CompilerFlags.cmake b/cmake/CompilerFlags.cmake\nindex fba09518a9..46ea28656a 100644\n--- a/cmake/CompilerFlags.cmake\n+++ b/cmake/CompilerFlags.cmake\n.. -59,6 +59,8 .. endmacro(add_flags)\n#---------------------------------------------------------------------------------------------------------------------------------------------------------------------\nif(\"${CMAKE_C_COMPILER_ID}\" STREQUAL \"GNU\")\n+       add_flags(CXX -std=c++11)\n+\nadd_flags(C -Wall -Wno-unused-function -Wno-unknown-pragmas)\nif(NOT UNUSED_WARNINGS)\n(By hand: just add the lines marked by \"+\" at about line 61 of this file.)\nThis is untested, since I don't have a machine with gcc4, but the Cmake\nbuild report indicates that it does indeed add the flag to the compiler.\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202112/0081.html"
+    },
+    {
+      "message_id": 1639541907,
+      "author": "Joanna Michelle E. Chua",
+      "date_raw": "Wed, 15 Dec 2021 04:18:27 +0000",
+      "body": "Hi David,\nI realized what the problem was. Apparently the recent Amber 20 is not compatible with AmberTools20 anymore. I downloaded AmberTools21 and Amber was successfully installed.\nThank you very much for helping me.\nJoanna\n________________________________\nFrom: David A Case <david.case.rutgers.\nedu>\nSent: Wednesday, December 8, 2021 9:50 PM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] Error for installing the GPU version of Amber20\nOn Wed, Dec 08, 2021, jinfeng liu wrote:\n>\n>I come across another problem when I make install the GPU version of\n>Amber20. The error message is in the following,\n>\n>/usr/local/cuda-11.3/include/thrust/detail/cpp11_required.h:23:6: ����#error\n>C++11 is required for this Thrust feature; please upgrade your compiler or\n>pass the appropriate -std=c++XX flag to it.\n>\n>It seems like the compiler's problem. I use gcc version 4.8.5 20150623 (Red\n>Hat 4.8.5-44) (GCC). What should I do? or how to enable the -std=c++11\n>option?\n1. Consider upgrading your compiler.  GCC 4.8.5 was released in June, 2015.\nThis may help with things other than the problem listed above, since few\nAmber developers are still using this compiler.  Don't go above gcc/gfortran\n9.\n2. Try the following patch to the CompilerFlags.cmake file in\namber20_src/cmake:\ndiff --git a/cmake/CompilerFlags.cmake b/cmake/CompilerFlags.cmake\nindex fba09518a9..46ea28656a 100644\n--- a/cmake/CompilerFlags.cmake\n+++ b/cmake/CompilerFlags.cmake\n.. -59,6 +59,8 .. endmacro(add_flags)\n#---------------------------------------------------------------------------------------------------------------------------------------------------------------------\nif(\"${CMAKE_C_COMPILER_ID}\" STREQUAL \"GNU\")\n+       add_flags(CXX -std=c++11)\n+\nadd_flags(C -Wall -Wno-unused-function -Wno-unknown-pragmas)\nif(NOT UNUSED_WARNINGS)\n(By hand: just add the lines marked by \"+\" at about line 61 of this file.)\nThis is untested, since I don't have a machine with gcc4, but the Cmake\nbuild report indicates that it does indeed add the flag to the compiler.\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202112/0115.html",
+      "in_reply_to": 1638971433
+    }
+  ]
+}

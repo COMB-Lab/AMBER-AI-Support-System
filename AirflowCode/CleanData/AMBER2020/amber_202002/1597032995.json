@@ -1,0 +1,13 @@
+{
+  "thread_id": 1597032995,
+  "subject": "[AMBER] about pressure calculation in Amber18",
+  "messages": [
+    {
+      "message_id": 1597032995,
+      "author": "Li, Min",
+      "date_raw": "Mon, 10 Aug 2020 04:16:35 +0000",
+      "body": "Hello, dear amber developers,\nWhen I want to print the pressure in NVT simulations by the pmemd.MPI (Amber18),\nI found that the pressure calculation is expressed as (runmd.F90 script):\n��..\nif (need_virials) then\npress(m) = (pconv + pconv) * (ekcmt(m) - virial(m)) / si(si_volume)\nsi(si_tot_press) = si(si_tot_press) + press(m)\n���.\nI do not understand the meaning of (pconv + pconv) in the above expression. In my view, the developer want to do this:\npress(m) = (pconv + pconv) * (ekcmt(m) - virial(m)) / si(si_volume)\n-> press(m) = 2* pconv * (ekcmt(m) - virial(m)) / si(si_volume)\n-> press(m) = pconv * (2*ekcmt(m) -2* virial(m)) / si(si_volume)\nThe 2*ekcmt = total (m^2v^2) has no problem, while the 2*virial(m) means what ?\nTh virial term have been multipled by 0.5 in the pme_force.F90 script, then here multiple by a factor of 2, so I can consider it unchange and it equals to addition of all i-j pair-potential. The overlap calculation happen? I search the pressure-calculation reference and the result only involve half of all i-j pair-potential. it is a bug or other reason?\nThank you !",
+      "url": "http://archive.ambermd.org/202008/0082.html"
+    }
+  ]
+}

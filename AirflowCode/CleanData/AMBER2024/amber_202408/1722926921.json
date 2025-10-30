@@ -1,0 +1,29 @@
+{
+  "thread_id": 1722926921,
+  "subject": "Re: [AMBER] SANDER BOMB in subroutine QM_CHECK_PERIODIC&lt;qm_mm.f&gt; in QUICK",
+  "messages": [
+    {
+      "message_id": 1722926921,
+      "author": "Goetz, Andreas",
+      "date_raw": "Tue, 6 Aug 2024 06:48:41 +0000",
+      "body": "vlimit exceeded for step   365; vmax = 228.6675\nvlimit exceeded for step   366; vmax = 33.2803\nThis indicates that something is wrong with your simulation. There are large forces on some atoms that lead to large velocities. Possible reasons are a not well equlibrated system or problems with SCF convergence (often due to bad structures, lack of equilibration, or unsuitable choice of QM region).\nERROR: QM region + cutoff larger than box dimension:\nQM-MM Cutoff = 5.0000\nYour QM region is too large for the simulation box. The QM region plus QM/MM cutoff must fit into the simulation box. Either choose a smaller QM region or increase your simulation box size. A QM/MM cutoff of 5 Angstrom is quite small. You probably should increase it.\nAll the best,\nAndy\n—\nDr. Andreas W. Goetz\nAssociate Research Scientist\nSan Diego Supercomputer Center\nTel: +1-858-822-4771\nEmail: agoetz.sdsc.edu\nWeb: www.awgoetz.de\nOn Aug 5, 2024, at 9:15 AM, Kriti Shukla via AMBER <amber.ambermd.\norg> wrote:\nHey community,\nI'm trying to do a QM/MM calculation with a QM region containing a residue\nside chain towards the bulk. After running some initial simulations and\nthen propagating the run further using the previous restart file, I'm\nencountering the following error:\n```\nNSTEP = 365   TIME(PS) = 6.365   TEMP(K) = 542.70   PRESS = 0.0\nEtot   = -430706.6989  EKtot   = 81677.9591  EPtot   = -512384.6580\nBOND   = 30546.9458  ANGLE   = 4867.6533  DIHED   = 2599.8929\n1-4 NB = 1075.9879  1-4 EEL = 12497.3765  VDWAALS = 26450.2866\nEELEC  = -203658.8153  EHBOND  = 0.0000  RESTRAINT  = 0.0000\nQUICKESCF= -386934.8552\nCMAP   = 170.8694\nEwald error estimate: 0.8459E-02\n------------------------------------------------------------------------------\nvlimit exceeded for step   365; vmax = 228.6675\nvlimit exceeded for step   366; vmax = 33.2803\nvlimit exceeded for step   367; vmax = 30.5074\nvlimit exceeded for step   368; vmax = 27.7543\n****************************************************\nERROR: QM region + cutoff larger than box dimension:\nQM-MM Cutoff = 5.0000\nCoord   Lower     Upper    Size    Radius of largest sphere inside unit cell\nX   -24.957    24.748    49.704    38.284\nY   -38.553    38.242    76.795    38.284\nZ   -26.515    24.544    51.059    38.284\n****************************************************\nSANDER BOMB in subroutine QM_CHECK_PERIODIC<qm_mm.f>\nQM region + cutoff larger than box\ncannot continue, need larger box.\n```\nMy protein is in a cubic box with dimensions of 15 angstroms. I also set\n`iwrap=1`, but I'm still encountering the same error.\nDoes anyone have any suggestions for resolving this issue?\n--\nKriti Shukla\nResearch Scholar\nDepartment of Chemistry\nIndian Institute of Technology, Kharagpur\nIndia. 721302",
+      "url": "http://archive.ambermd.org/202408/0014.html"
+    },
+    {
+      "message_id": 1722952677,
+      "author": "Timothy Giese",
+      "date_raw": "Tue, 6 Aug 2024 13:57:57 +0000",
+      "body": "You're going to have to open the trajectory in VMD and look at what is happening to the QM atoms. You are seeing vlimit (velocity too large) warnings and then a \"box too small\" error. This typically happens when the QM region \"explodes\" because there was a bad contact (for example, some hydrogens do not contribute to the LJ potential which can cause a coulomb catastrophe) or incorrect input settings.  This will only become apparent to you upon looking at the trajectory.",
+      "url": "http://archive.ambermd.org/202408/0018.html",
+      "in_reply_to": 1722926921
+    },
+    {
+      "message_id": 1722953139,
+      "author": "Kriti Shukla",
+      "date_raw": "Tue, 6 Aug 2024 19:35:39 +0530",
+      "body": "Thanks, Timothy.\nBefore starting the QM calculation, I equilibrated the system for 600\nnanoseconds. I have visualized the QMMM trajectory in VMD, and I observed\nthat the residue is getting broken after 1 ps and behaving abruptly. Could\nyou suggest a solution for this issue?\nOn Tue, Aug 6, 2024 at 7:28 PM Timothy Giese <giese025.rutgers.\nedu> wrote:\n> You're going to have to open the trajectory in VMD and look at what is\n> happening to the QM atoms. You are seeing vlimit (velocity too large)\n> warnings and then a \"box too small\" error. This typically happens when the\n> QM region \"explodes\" because there was a bad contact (for example, some\n> hydrogens do not contribute to the LJ potential which can cause a coulomb\n> catastrophe) or incorrect input settings.  This will only become apparent\n> to you upon looking at the trajectory.\n>",
+      "url": "http://archive.ambermd.org/202408/0019.html",
+      "in_reply_to": 1722926921
+    }
+  ]
+}

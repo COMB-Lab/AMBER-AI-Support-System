@@ -1,0 +1,45 @@
+{
+  "thread_id": 1635256773,
+  "subject": "[AMBER] Regarding Amber20 installation",
+  "messages": [
+    {
+      "message_id": 1635256773,
+      "author": "Rajarshi Roy",
+      "date_raw": "Tue, 26 Oct 2021 19:29:33 +0530",
+      "body": "Dear Amber Users and Developers,\nI have been trying to compile Amber20 but keep getting the error message\nbelow. Please help!\n-- Updater done.  If you want to install updates, then set the\nAPPLY_UPDATES variable to true.\n-- Checking whether to use built-in libraries...\n-- Looking for complex.h\n-- Looking for complex.h - found\n--\n* Could NOT find Readline (missing: READLINE_INCLUDE_DIR READLINE_LIBRARY\nREADLINE_WORKS) CMake Error at cmake/3rdPartyTools.cmake:84 (message):  3rd\nparty program readline is not bundled and cannot be built inside Amber.Call\nStack (most recent call first):  cmake/3rdPartyTools.cmake:189\n(set_3rdparty)  CMakeLists.txt:190 (include)*\n-- Configuring incomplete, errors occurred!\nSee also\n\"/home/kar2/software/amber/amber20_src/build/CMakeFiles/CMakeOutput.log\".\nSee also\n\"/home/kar2/software/amber/amber20_src/build/CMakeFiles/CMakeError.log\".\nIf the cmake build report looks OK, you should now do the following:\n    make install\n-- \n*with regards*\n*Rajarshi Roy*\n*PhD Research Scholar*\n*Biosciences and Biomedical Engineering*\n*Indian Institute of Technology, Indore*\n*India*",
+      "url": "http://archive.ambermd.org/202110/0216.html"
+    },
+    {
+      "message_id": 1635369571,
+      "author": "David A Case",
+      "date_raw": "Wed, 27 Oct 2021 16:19:31 -0500",
+      "body": "On Tue, Oct 26, 2021, Rajarshi Roy wrote:\n>* Could NOT find Readline (missing: READLINE_INCLUDE_DIR READLINE_LIBRARY\n>READLINE_WORKS) CMake Error at cmake/3rdPartyTools.cmake:84 (message):  3rd\n>party program readline is not bundled and cannot be built inside Amber.\nCan you say what OS (and which distribution, if it is Linux) your are using?\nAlso, try a Google (or oher search engine) search for \"readline not found\":\nthere you will get installation instructions for many distributions.\n....dac",
+      "url": "http://archive.ambermd.org/202110/0226.html",
+      "in_reply_to": 1635256773
+    },
+    {
+      "message_id": 1635395761,
+      "author": "Rajarshi Roy",
+      "date_raw": "Thu, 28 Oct 2021 10:06:01 +0530",
+      "body": "Dear Sir,\nHere is my description of the OS.\nDistributor ID: Ubuntu\nDescription: Ubuntu 20.04.3 LTS\nRelease: 20.04\nCodename: focal\nOn Thu, Oct 28, 2021 at 2:52 AM David A Case <david.case.rutgers.edu> wrote:\n> On Tue, Oct 26, 2021, Rajarshi Roy wrote:\n>\n> >* Could NOT find Readline (missing: READLINE_INCLUDE_DIR READLINE_LIBRARY\n> >READLINE_WORKS) CMake Error at cmake/3rdPartyTools.cmake:84 (message):\n> 3rd\n> >party program readline is not bundled and cannot be built inside Amber.\n>\n> Can you say what OS (and which distribution, if it is Linux) your are\n> using?\n>\n> Also, try a Google (or oher search engine) search for \"readline not found\":\n> there you will get installation instructions for many distributions.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202110/0227.html",
+      "in_reply_to": 1635256773
+    },
+    {
+      "message_id": 1635542536,
+      "author": "David A Case",
+      "date_raw": "Fri, 29 Oct 2021 17:22:16 -0400",
+      "body": "On Thu, Oct 28, 2021, Rajarshi Roy wrote:\n>Here is my description of the OS.\n>Distributor ID: Ubuntu\n>Description: Ubuntu 20.04.3 LTS\n>Release: 20.04\n>Codename: focal\nIt is quite odd that cmake can't find your readline: I, and many others, use\nthis distro, and have not seen this problem.\nDo a Google search on \"ubuntu install readline\", and follow those\ninstructions.  See if that helps.\nMake sure you have also followed the Ubuntu instructions here:\nhttps://ambermd.org/InstUbuntu.php\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202110/0249.html",
+      "in_reply_to": 1635256773
+    },
+    {
+      "message_id": 1635482787,
+      "author": "Dow Hurst",
+      "date_raw": "Fri, 29 Oct 2021 00:46:27 -0400",
+      "body": "Rajarshi,\nYou are probably missing a prerequisite package in Ubuntu 20.04. I got a\nlot of this info from Jason Swails webpage on installation of amber for\nrunning pmemd on gpus. Most all the info is still very relevant:\nhttp://jswails.wikidot.com/installing-amber14-and-ambertools14\nPackages I checked were installed beforehand for Amber18. Check with \"dpkg\n-l | grep pkgname\" to see if installed or not. (that is lowercase L not a\ncapital I in the grep command)\ngfortran\ngcc\ng++\nflex\nxorg-dev\npatch\ntcsh\nlibzip-dev\nlibbz2-dev\nlibopenmpi-dev\nopenmpi-bin\nThese packages were required by cuda9.2 at the time. If you are installing\nCUDA you should check those docs for the Ubuntu 20.04 prerequisite packages.\nfreeglut3-dev\nlibxi-dev\nlibx11-dev\nlibglu1-mesa-dev\nlibxmu-dev\nI hope this helps.\nDow Hurst\nOn Tue, Oct 26, 2021 at 10:04 AM Rajarshi Roy <phd1701171011.iiti.ac.in>\nwrote:\n> Dear Amber Users and Developers,\n>\n> I have been trying to compile Amber20 but keep getting the error message\n> below. Please help!\n>\n> -- Updater done.  If you want to install updates, then set the\n> APPLY_UPDATES variable to true.\n> -- Checking whether to use built-in libraries...\n> -- Looking for complex.h\n> -- Looking for complex.h - found\n> --\n>\n>\n>\n>\n>\n> * Could NOT find Readline (missing: READLINE_INCLUDE_DIR READLINE_LIBRARY\n> READLINE_WORKS) CMake Error at cmake/3rdPartyTools.cmake:84 (message):  3rd\n> party program readline is not bundled and cannot be built inside Amber.Call\n> Stack (most recent call first):  cmake/3rdPartyTools.cmake:189\n> (set_3rdparty)  CMakeLists.txt:190 (include)*\n>\n> -- Configuring incomplete, errors occurred!\n> See also\n> \"/home/kar2/software/amber/amber20_src/build/CMakeFiles/CMakeOutput.log\".\n> See also\n> \"/home/kar2/software/amber/amber20_src/build/CMakeFiles/CMakeError.log\".\n>\n> If the cmake build report looks OK, you should now do the following:\n>\n>     make install\n>\n> --\n> *with regards*\n>\n> *Rajarshi Roy*\n>\n>\n> *PhD Research Scholar*\n>\n> *Biosciences and Biomedical Engineering*\n>\n> *Indian Institute of Technology, Indore*\n> *India*\n>",
+      "url": "http://archive.ambermd.org/202110/0242.html",
+      "in_reply_to": 1635256773
+    }
+  ]
+}

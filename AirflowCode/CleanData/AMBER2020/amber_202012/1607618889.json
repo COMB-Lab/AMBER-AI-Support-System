@@ -1,0 +1,53 @@
+{
+  "thread_id": 1607618889,
+  "subject": "[AMBER] tleap building a peptide",
+  "messages": [
+    {
+      "message_id": 1607618889,
+      "author": "Seibold, Steve Allan",
+      "date_raw": "Thu, 10 Dec 2020 16:48:09 +0000",
+      "body": "I am attempting to build a peptide using tleap with a disulfide bond. I have no problem making the peptide; however, when I add the CYX to CYX disulfide, I get the error:\n> bond mol.4.SG mol.133.SG\nbond: Argument #1 is type String must be of type: [atom]\nusage:  bond <atom1> <atom2> [order]\nYet the usage is correct here: mol = name.pdb and the atom numbers are 4 and 133 for SG. The problem maybe that the distance between the CYX atom 4 and the CYX atom 133 is long. I was hoping to generated a strained structure (long distance between atom 4.SG and atom 133.SG )and then minimize to a \"real\" conformation; but, this may not be possible in AMBER. If so, does anyone have an idea how to do this?\nThanks Steve",
+      "url": "http://archive.ambermd.org/202012/0125.html"
+    },
+    {
+      "message_id": 1607620114,
+      "author": "Carlos Simmerling",
+      "date_raw": "Thu, 10 Dec 2020 12:08:34 -0500",
+      "body": "length shouldn't matter.\ntry \"desc mol\" to check the atom numbers.\nOn Thu, Dec 10, 2020 at 11:48 AM Seibold, Steve Allan <stevesei.ku.edu>\nwrote:\n> I am attempting to build a peptide using tleap with a disulfide bond. I\n> have no problem making the peptide; however, when I add the CYX to CYX\n> disulfide, I get the error:\n> > bond mol.4.SG mol.133.SG\n> bond: Argument #1 is type String must be of type: [atom]\n> usage:  bond <atom1> <atom2> [order]\n>\n> Yet the usage is correct here: mol = name.pdb and the atom numbers are 4\n> and 133 for SG. The problem maybe that the distance between the CYX atom 4\n> and the CYX atom 133 is long. I was hoping to generated a strained\n> structure (long distance between atom 4.SG and atom 133.SG )and then\n> minimize to a \"real\" conformation; but, this may not be possible in AMBER.\n> If so, does anyone have an idea how to do this?\n>\n> Thanks Steve\n>",
+      "url": "http://archive.ambermd.org/202012/0126.html",
+      "in_reply_to": 1607618889
+    },
+    {
+      "message_id": 1607623413,
+      "author": "Seibold, Steve Allan",
+      "date_raw": "Thu, 10 Dec 2020 18:03:33 +0000",
+      "body": "Hello\nThanks for the response...\nMy peptide is 16 residues long with NCYX  and CCYX at termus\nMy input is:\nsource leaprc.protein.ff14SB\nmol = loadpdb GBP_noH.pdb\nbond mol.8.SG mol.10.SG\nsavepdb mol GBP.pdb\nsaveamberparm mol GBP.prmtop GBP.inpcrd\n--------------------------------------------------------------------------\nwhen I run desc mol.1, I get the SG atom is number 10\nwhen I run desc mol.16 I get the SG atom is number 8\nHowever, I still get the error:\nbond: Argument #1 is type String must be of type: [atom]\nusage:  bond <atom1> <atom2> [order]\nWriting pdb file: GBP.pdb\nConverting N-terminal residue name to PDB format: NCYX -> CYX\nConverting C-terminal residue name to PDB format: CCYX -> CYX\nChecking Unit.\nThanks Steve\n-----Original Message-----\nFrom: Carlos Simmerling <carlos.simmerling.gmail.com>\nSent: Thursday, December 10, 2020 11:09 AM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] tleap building a peptide\nlength shouldn't matter.\ntry \"desc mol\" to check the atom numbers.\nOn Thu, Dec 10, 2020 at 11:48 AM Seibold, Steve Allan <stevesei.ku.edu>\nwrote:\n> I am attempting to build a peptide using tleap with a disulfide bond.\n> I have no problem making the peptide; however, when I add the CYX to\n> CYX disulfide, I get the error:\n> > bond mol.4.SG mol.133.SG\n> bond: Argument #1 is type String must be of type: [atom]\n> usage:  bond <atom1> <atom2> [order]\n>\n> Yet the usage is correct here: mol = name.pdb and the atom numbers are\n> 4 and 133 for SG. The problem maybe that the distance between the CYX\n> atom 4 and the CYX atom 133 is long. I was hoping to generated a\n> strained structure (long distance between atom 4.SG and atom 133.SG\n> )and then minimize to a \"real\" conformation; but, this may not be possible in AMBER.\n> If so, does anyone have an idea how to do this?\n>\n> Thanks Steve\n>",
+      "url": "http://archive.ambermd.org/202012/0129.html",
+      "in_reply_to": 1607618889
+    },
+    {
+      "message_id": 1607621442,
+      "author": "Bill Ross",
+      "date_raw": "Thu, 10 Dec 2020 09:30:42 -0800",
+      "body": "Is the mol from \"mol = loadpdb x.pdb\"? It is being seen as just a string.\nBill\nOn 12/10/20 8:48 AM, Seibold, Steve Allan wrote:\n> I am attempting to build a peptide using tleap with a disulfide bond. I have no problem making the peptide; however, when I add the CYX to CYX disulfide, I get the error:\n>> bond mol.4.SG mol.133.SG\n> bond: Argument #1 is type String must be of type: [atom]\n> usage:  bond <atom1> <atom2> [order]\n>\n> Yet the usage is correct here: mol = name.pdb and the atom numbers are 4 and 133 for SG. The problem maybe that the distance between the CYX atom 4 and the CYX atom 133 is long. I was hoping to generated a strained structure (long distance between atom 4.SG and atom 133.SG )and then minimize to a \"real\" conformation; but, this may not be possible in AMBER. If so, does anyone have an idea how to do this?\n>\n> Thanks Steve\n>",
+      "url": "http://archive.ambermd.org/202012/0127.html",
+      "in_reply_to": 1607618889
+    },
+    {
+      "message_id": 1607623429,
+      "author": "David A Case",
+      "date_raw": "Thu, 10 Dec 2020 13:03:49 -0500",
+      "body": "On Thu, Dec 10, 2020, Seibold, Steve Allan wrote:\n>I am attempting to build a peptide using tleap with a disulfide bond. I\n>have no problem making the peptide; however, when I add the CYX to CYX\n>disulfide, I get the error:\n>> bond mol.4.SG mol.133.SG\n>bond: Argument #1 is type String must be of type: [atom]\n>usage:  bond <atom1> <atom2> [order]\nUse the \"desc\" command to see what you have, e.g. 'desc mol.4'  will\nshow you what is in residue 4.  See if there is an SG atom there.\n>\n>Yet the usage is correct here: mol = name.pdb and the atom numbers are\n>4 and 133 for SG.\nThe second part of 'mol.4.SG' is the *residue* number, not the atom\nnumber.\nThe problem maybe that the distance between the CYX\n>atom 4 and the CYX atom 133 is long.\nNo: tleap will create a bond without looking at the distance.  You\nproblem is the \"mol.4.SG\" does not refer to any atom that tleap knows\nabout.\n....dac",
+      "url": "http://archive.ambermd.org/202012/0130.html",
+      "in_reply_to": 1607618889
+    },
+    {
+      "message_id": 1607623862,
+      "author": "Seibold, Steve Allan",
+      "date_raw": "Thu, 10 Dec 2020 18:11:02 +0000",
+      "body": "Thanks for the help! I should have paid more attention to the manual than the error message. I thought the error message was saying it wanted the atom number and not the name.\nWith that correction, tleap is building the structure correctly...thanks again\nSteve\n-----Original Message-----\nFrom: David A Case <david.case.rutgers.edu>\nSent: Thursday, December 10, 2020 12:04 PM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] tleap building a peptide\nOn Thu, Dec 10, 2020, Seibold, Steve Allan wrote:\n>I am attempting to build a peptide using tleap with a disulfide bond. I\n>have no problem making the peptide; however, when I add the CYX to CYX\n>disulfide, I get the error:\n>> bond mol.4.SG mol.133.SG\n>bond: Argument #1 is type String must be of type: [atom]\n>usage:  bond <atom1> <atom2> [order]\nUse the \"desc\" command to see what you have, e.g. 'desc mol.4'  will show you what is in residue 4.  See if there is an SG atom there.\n>\n>Yet the usage is correct here: mol = name.pdb and the atom numbers are\n>4 and 133 for SG.\nThe second part of 'mol.4.SG' is the *residue* number, not the atom number.\nThe problem maybe that the distance between the CYX\n>atom 4 and the CYX atom 133 is long.\nNo: tleap will create a bond without looking at the distance.  You problem is the \"mol.4.SG\" does not refer to any atom that tleap knows about.\n....dac",
+      "url": "http://archive.ambermd.org/202012/0131.html",
+      "in_reply_to": 1607618889
+    }
+  ]
+}

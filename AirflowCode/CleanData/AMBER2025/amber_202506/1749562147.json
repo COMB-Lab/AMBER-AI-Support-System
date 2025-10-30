@@ -1,0 +1,37 @@
+{
+  "thread_id": 1749562147,
+  "subject": "[AMBER] errors in total energy",
+  "messages": [
+    {
+      "message_id": 1749562147,
+      "author": "Sudipti Priyadarsinee",
+      "date_raw": "Tue, 10 Jun 2025 18:59:07 +0530",
+      "body": "Hi experts,\nI have given production runs in CUDA for an enzyme-inhibitor system in the\nOPC  water model. However, I obtained the following error after a few steps\ndue to a sudden increase in temperature or some other reason:\n*NSTEP =  7900000   TIME(PS) =    8800.000  TEMP(K) =*********  PRESS =\n0.0 Etot   = **************  EKtot   = **************  EPtot      =\n************** BOND   =  45640928.0483  ANGLE   =    401600.0594  DIHED\n=      2120.2028 UB     =         0.0000  IMP     =         0.0000  CMAP\n=       241.5422 1-4 NB =         0.0000  1-4 EEL =         0.0001\nVDWAALS    = ************** EELEC  =    -83478.2065  EHBOND  =\n0.0000  RESTRAINT  =         0.0000*\nA similar error is also observed in the TIP4P-ew water model for the same\nsystem.\nEnzyme-inhibitor system is ribonuclease A with a dinucleotide\nI have used ff19SB forcefield for protein and gaff2 for inhibitor.\nBelow is my input file for your reference:\nProduction\n&cntrl\nimin=0,\nntx=5,\nirest=1,\nnstlim=10000000,\ndt=0.001\ntemp0=300.00,\nntpr=5000,\nntwx=5000,\ncut=10.0,\nntb=1,\nntp=0,\nntt=3,\ngamma_ln=2.0,\nig=-1,\niwrap=1\n/\nPlease give me your suggestions on this.",
+      "url": "http://archive.ambermd.org/202506/0012.html"
+    },
+    {
+      "message_id": 1749562821,
+      "author": "Elvis Martis",
+      "date_raw": "Tue, 10 Jun 2025 15:40:21 +0200",
+      "body": "Hi Sudipti\nThis indicates your system is unstable.\nWith this limited information, it is difficult to say what.\nIt may not be related to the ff you are using.\nBest Regards\nElvis\nOn Tue, 10 Jun 2025 at 15:29, Sudipti Priyadarsinee via AMBER <\namber.ambermd.org> wrote:\n>  Hi experts,\n> I have given production runs in CUDA for an enzyme-inhibitor system in the\n> OPC  water model. However, I obtained the following error after a few steps\n> due to a sudden increase in temperature or some other reason:\n>\n>\n>\n>\n>\n>\n> *NSTEP =  7900000   TIME(PS) =    8800.000  TEMP(K) =*********  PRESS =\n> 0.0 Etot   = **************  EKtot   = **************  EPtot      =\n> ************** BOND   =  45640928.0483  ANGLE   =    401600.0594  DIHED\n>  =      2120.2028 UB     =         0.0000  IMP     =         0.0000  CMAP\n>     =       241.5422 1-4 NB =         0.0000  1-4 EEL =         0.0001\n>  VDWAALS    = ************** EELEC  =    -83478.2065  EHBOND  =\n> 0.0000  RESTRAINT  =         0.0000*\n>\n> A similar error is also observed in the TIP4P-ew water model for the same\n> system.\n> Enzyme-inhibitor system is ribonuclease A with a dinucleotide\n> I have used ff19SB forcefield for protein and gaff2 for inhibitor.\n> Below is my input file for your reference:\n>\n> Production\n>  &cntrl\n>   imin=0,\n>   ntx=5,\n>   irest=1,\n>   nstlim=10000000,\n>   dt=0.001\n>   temp0=300.00,\n>   ntpr=5000,\n>   ntwx=5000,\n>   cut=10.0,\n>   ntb=1,\n>   ntp=0,\n>   ntt=3,\n>   gamma_ln=2.0,\n>   ig=-1,\n>   iwrap=1\n>  /\n>\n> Please give me your suggestions on this.\n>",
+      "url": "http://archive.ambermd.org/202506/0013.html",
+      "in_reply_to": 1749562147
+    },
+    {
+      "message_id": 1749565050,
+      "author": "Carlos Simmerling",
+      "date_raw": "Tue, 10 Jun 2025 10:17:30 -0400",
+      "body": "your vdw energies are off scale, and the bond energies are also very high\n(the water will not have bond energies, so this indicates something in the\nsolute has gone wrong).\nin my experience, nearly every problem people report with instability for a\ncomplex ends up being related to the ligand parameters. I suggest running\nthe same simulation with just your protein in water and see if you get the\nsame problem or not. If not, then carefully examine how you obtained your\ninhibitor force field. If you do have troubles, check your relaxation\nprotocol and the source of the initial coordinates.\nOn Tue, Jun 10, 2025 at 9:29 AM Sudipti Priyadarsinee via AMBER <\namber.ambermd.org> wrote:\n>  Hi experts,\n> I have given production runs in CUDA for an enzyme-inhibitor system in the\n> OPC  water model. However, I obtained the following error after a few steps\n> due to a sudden increase in temperature or some other reason:\n>\n>\n>\n>\n>\n>\n> *NSTEP =  7900000   TIME(PS) =    8800.000  TEMP(K) =*********  PRESS =\n> 0.0 Etot   = **************  EKtot   = **************  EPtot      =\n> ************** BOND   =  45640928.0483  ANGLE   =    401600.0594  DIHED\n>  =      2120.2028 UB     =         0.0000  IMP     =         0.0000  CMAP\n>     =       241.5422 1-4 NB =         0.0000  1-4 EEL =         0.0001\n>  VDWAALS    = ************** EELEC  =    -83478.2065  EHBOND  =\n> 0.0000  RESTRAINT  =         0.0000*\n>\n> A similar error is also observed in the TIP4P-ew water model for the same\n> system.\n> Enzyme-inhibitor system is ribonuclease A with a dinucleotide\n> I have used ff19SB forcefield for protein and gaff2 for inhibitor.\n> Below is my input file for your reference:\n>\n> Production\n>  &cntrl\n>   imin=0,\n>   ntx=5,\n>   irest=1,\n>   nstlim=10000000,\n>   dt=0.001\n>   temp0=300.00,\n>   ntpr=5000,\n>   ntwx=5000,\n>   cut=10.0,\n>   ntb=1,\n>   ntp=0,\n>   ntt=3,\n>   gamma_ln=2.0,\n>   ig=-1,\n>   iwrap=1\n>  /\n>\n> Please give me your suggestions on this.\n>",
+      "url": "http://archive.ambermd.org/202506/0014.html",
+      "in_reply_to": 1749562147
+    },
+    {
+      "message_id": 1749741534,
+      "author": "Daniel Roe",
+      "date_raw": "Thu, 12 Jun 2025 11:18:54 -0400",
+      "body": "Hi,\nYou may want to try the protocol/script here:\nhttps://github.com/drroe/AmberMdPrep\n-Dan\nOn Tue, Jun 10, 2025 at 9:29 AM Sudipti Priyadarsinee via AMBER\n<amber.ambermd.org> wrote:\n>\n>  Hi experts,\n> I have given production runs in CUDA for an enzyme-inhibitor system in the\n> OPC  water model. However, I obtained the following error after a few steps\n> due to a sudden increase in temperature or some other reason:\n>\n>\n>\n>\n>\n>\n> *NSTEP =  7900000   TIME(PS) =    8800.000  TEMP(K) =*********  PRESS =\n> 0.0 Etot   = **************  EKtot   = **************  EPtot      =\n> ************** BOND   =  45640928.0483  ANGLE   =    401600.0594  DIHED\n>  =      2120.2028 UB     =         0.0000  IMP     =         0.0000  CMAP\n>     =       241.5422 1-4 NB =         0.0000  1-4 EEL =         0.0001\n>  VDWAALS    = ************** EELEC  =    -83478.2065  EHBOND  =\n> 0.0000  RESTRAINT  =         0.0000*\n>\n> A similar error is also observed in the TIP4P-ew water model for the same\n> system.\n> Enzyme-inhibitor system is ribonuclease A with a dinucleotide\n> I have used ff19SB forcefield for protein and gaff2 for inhibitor.\n> Below is my input file for your reference:\n>\n> Production\n>  &cntrl\n>   imin=0,\n>   ntx=5,\n>   irest=1,\n>   nstlim=10000000,\n>   dt=0.001\n>   temp0=300.00,\n>   ntpr=5000,\n>   ntwx=5000,\n>   cut=10.0,\n>   ntb=1,\n>   ntp=0,\n>   ntt=3,\n>   gamma_ln=2.0,\n>   ig=-1,\n>   iwrap=1\n>  /\n>\n> Please give me your suggestions on this.\n>",
+      "url": "http://archive.ambermd.org/202506/0021.html",
+      "in_reply_to": 1749562147
+    }
+  ]
+}

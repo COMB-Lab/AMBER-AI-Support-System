@@ -1,0 +1,21 @@
+{
+  "thread_id": 1747640859,
+  "subject": "[AMBER] runtime error in AmberTools25 tests and pmemd24 license for computing center",
+  "messages": [
+    {
+      "message_id": 1747640859,
+      "author": "Motoshi Kamiya",
+      "date_raw": "Mon, 19 May 2025 16:47:39 +0900",
+      "body": "Dear Amber users and developers,\nAmberTools25 tests for rism3d and packmol_memgen aborted with\nfollowing message.\n(test environment: Rocky Linux 8.10, GCC 13.3.1 (gcc-toolset-13))\n==================================================================\ncd rism3d/ala && ./Run.ala\nAt line 1037 of file /*****/ambertools25_src/AmberTools/src/rism/\namber_rism_interface.F90 (unit = 6, file = 'ala.np0.out')\nFortran runtime error: Missing comma between descriptors\n(5x, 2(a15, \"=\", l5), 1(a19 \"=\", l5))\n...\nrunning immers / ppm\nAt line 486 of file\n/******/ambertools25_src/AmberTools/src/packmol_memgen/packmol_memgen/lib/ppm3/opm.f\n(unit = 6, file = 'stdout')\nFortran runtime error: Missing comma between descriptors\n(a10,1x,'emin=',f8.1,' thickn=',f5.1, '+-',f4.1,' tilt=',f7.0'+-\n==================================================================\nThere are actually errors in format strings.\nFor amber_rism_interface.F90:1034, comma is missing after \"a19\".\nFor opm.f:485, comma is missing after \"f7.0\".\nThis error also happens for binary version (dacase::ambertools-dac=25).\nCould you please fix this?\nAnd one question.\nWe have previously obtained computing center license of Amber24.\nHow do we get pmemd24.tar.bz2?\nDo we need to order another license?\nTentatively, we tried to put Amber24 source code (amber24_src/src)\ninto ambertools25_src and built them all at once.\nFortunately, it worked.\nIf this conventional way continues to be supported, there is no problem.\nBest regards,\n-- \nMotoshi Kamiya\nResearch Center for Computational Science,\nNational Institutes of Natural Sciences, Japan",
+      "url": "http://archive.ambermd.org/202505/0039.html"
+    },
+    {
+      "message_id": 1747930199,
+      "author": "David A Case",
+      "date_raw": "Thu, 22 May 2025 10:09:59 -0600",
+      "body": "On Mon, May 19, 2025, Motoshi Kamiya via AMBER wrote:\n>\n>\n>==================================================================\n>cd rism3d/ala && ./Run.ala\n>At line 1037 of file /*****/ambertools25_src/AmberTools/src/rism/\n>amber_rism_interface.F90 (unit = 6, file = 'ala.np0.out')\n>Fortran runtime error: Missing comma between descriptors\n>(5x, 2(a15, \"=\", l5), 1(a19 \"=\", l5))\n>...\n>running immers / ppm\n>At line 486 of file /******/ambertools25_src/AmberTools/src/packmol_memgen/packmol_memgen/lib/ppm3/opm.f\n>(unit = 6, file = 'stdout')\n>Fortran runtime error: Missing comma between descriptors\n>(a10,1x,'emin=',f8.1,' thickn=',f5.1, '+-',f4.1,' tilt=',f7.0'+-\n>==================================================================\n>\n>There are actually errors in format strings.\nFor the compiled version,  you can simply edit the lines listed above.  I've\nsubmitted a merge request in our development version.\nThe fact that you see these problems where others do not may be related to\nthe libc version you have in  your distro.  Could you do the following:\nactivate your conda environment for ambertools-dac, cd to $CONDA_PREFIX/bin,\nand try the command \"ldd sander | grep libc\"?  I'd be interested to know if\nthe runtime error is simply from a more recent version of some library like\nlibc that is pickier about Fortran format strings.\n>We have previously obtained computing center license of Amber24.\n>How do we get pmemd24.tar.bz2?\nIf you re-download Amber24, using the same credentials, you should now get\npmemd24.tar.bz2.  You then un-tar that (into a pmemd24_src folder) and\nfollow the newer instructions.  Since you have already done things the \"old\"\nway, this may not be needed.\n....regards...dac",
+      "url": "http://archive.ambermd.org/202505/0048.html",
+      "in_reply_to": 1747640859
+    }
+  ]
+}

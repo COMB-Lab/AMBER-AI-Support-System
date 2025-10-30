@@ -1,0 +1,13 @@
+{
+  "thread_id": 1741371291,
+  "subject": "[AMBER] Another way to disable building pbsa.cuda (e.g. for CUDA 12.6)",
+  "messages": [
+    {
+      "message_id": 1741371291,
+      "author": "David A Case",
+      "date_raw": "Fri, 7 Mar 2025 11:14:51 -0700",
+      "body": "On March 5, RUBEN ANTONIO ROMO MANCILLAS wrote:\n> Recently, I have tried to compile Amber in Ubuntu-WSL with cuda 12.6. The\n> serial and parallel versions were compiled without errors, only some\n> warnings on the tests. But when I tried to compile for GPU, at compiling\n> cuda_LinearSolvers.cu, the errors in the attached file prevent the\n> compilation.\nThe error is in making pbsa.cuda, which you may not need.  If so, try the\nfollowing:\nedit $AMBERHOME/AmberTools/src/pbsa/CMakeLists.txt.  At about line 145,\nchange \"if(CUDA)\" to \"if(FALSE)\".  This should turn off building the cuda\nversion of pbsa without disabling all the other CUDA codes that you want.\nCaveat: I've not tested this, but it's worth a try, and is simpler than\nother options.  If it works, we will make this a cmake option in upcoming\nreleases.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202503/0012.html"
+    }
+  ]
+}

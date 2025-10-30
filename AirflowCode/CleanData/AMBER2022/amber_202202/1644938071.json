@@ -1,0 +1,21 @@
+{
+  "thread_id": 1644938071,
+  "subject": "[AMBER] Running amber executable on multiple GPUs",
+  "messages": [
+    {
+      "message_id": 1644938071,
+      "author": "Prithviraj Nandigrami",
+      "date_raw": "Tue, 15 Feb 2022 10:14:31 -0500",
+      "body": "Dear All,\nI am utilizing a GPU with 4 graphics cards to run relatively short amber md\njobs with amber20 pmemd.cuda executable. I have a total of ~ 80,000 such\nshort amber jobs. Each job takes < 30 seconds to complete on a graphics\ncard on the GPU.\nA (potential) problem with this strategy is that currently I can not run\nmultiple jobs at the same time on a particular graphics card. As a result,\nthe queue time is rather long as I am only running four such jobs at a time\n(on four graphics cards).\nIs there a way around this? I am using the SLURM queuing system to submit\nthe jobs on the GPU.\nThank you.\nP. Nandigrami",
+      "url": "http://archive.ambermd.org/202202/0142.html"
+    },
+    {
+      "message_id": 1644938509,
+      "author": "Adrian Roitberg",
+      "date_raw": "Tue, 15 Feb 2022 10:21:49 -0500",
+      "body": "Hi\nDepending on what cards you have, and what version of slurm you have,\nthere is a way to run multiple jobs on a gpu, using Multi-Instance GPU\n(MIG).\nhttps://www.nvidia.com/en-us/technologies/multi-instance-gpu/\nThis is a \"newer\" nvidia feature, and slurm has only recently started\nsupporting it.\nI am not sure anyone in the amber community has truly tested this combo,\nso beware or bumps in the road.\nThe second way is to send MANY jobs inside one single slurm script such as:\npmemd,cuda -O \"job 1 info\"\n.\n.\n.\npmemd,cuda -O \"job N info\"\nThis way the whole thing gets into the queue at once, and runs the jobs\nsequentially.\nYou can even do this is for example job 2 depends on job finishing, etc.\nYou can have a bash script inside your slurm submission file to do this\nautomatically.\nAdrian\nOn 2/15/22 10:14 AM, Prithviraj Nandigrami wrote:\n> [External Email]\n>\n> Dear All,\n>\n> I am utilizing a GPU with 4 graphics cards to run relatively short amber md\n> jobs with amber20 pmemd.cuda executable. I have a total of ~ 80,000 such\n> short amber jobs. Each job takes < 30 seconds to complete on a graphics\n> card on the GPU.\n>\n> A (potential) problem with this strategy is that currently I can not run\n> multiple jobs at the same time on a particular graphics card. As a result,\n> the queue time is rather long as I am only running four such jobs at a time\n> (on four graphics cards).\n>\n> Is there a way around this? I am using the SLURM queuing system to submit\n> the jobs on the GPU.\n>\n> Thank you.\n> P. Nandigrami\n>",
+      "url": "http://archive.ambermd.org/202202/0143.html",
+      "in_reply_to": 1644938071
+    }
+  ]
+}

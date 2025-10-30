@@ -1,0 +1,29 @@
+{
+  "thread_id": 1687929401,
+  "subject": "[AMBER] Energy bumps and structure deformation while minimization of a small molecule",
+  "messages": [
+    {
+      "message_id": 1687929401,
+      "author": "Kotaro TANAKA",
+      "date_raw": "Wed, 28 Jun 2023 14:16:41 +0900",
+      "body": "Hi,\nI performed a 1000 step energy minimization of a small organic molecule,\nwhich is prepared by antechamber with GAFF2 and the RESP-derived charges.\nWhile the final configuration after minimization looks fine, but there\nwere occasional huge bumps in the potential energy in the course of the\nminimization (I attached the energy plot file and the mdout file).\nI looked the trajectory and confirmed that the configurations were also\ndistorted at the timing of the energy bumps.\nHas anyone observed any situation like this? What may be the cause of\nthis behavior?\n# software version: Amber22/AmberTools22\n# Example of the energy bump (line 3952-3997 of the attached min.out\nfile. The corresponding trajectory snapshots are also attached.) :\nNSTEP       ENERGY RMS            GMAX         NAME    NUMBER\n479       4.2420E+01     5.0983E-02     1.3987E-01 C11        15\nBOND    =        1.7474  ANGLE   =       14.0204  DIHED = 9.6009\nVDWAALS =       -3.2458  EEL     =      -60.2337  HBOND = 0.0000\n1-4 VDW =        6.5164  1-4 EEL =       74.0143  RESTRAINT =\n0.0000\nNSTEP       ENERGY          RMS            GMAX NAME    NUMBER\n480       1.4703E+04     1.5718E+04     6.7010E+04 C11        15\nBOND    =     1990.7664  ANGLE   =      737.5050  DIHED = 53.9941\nVDWAALS =       -0.8177  EEL     =      -62.7268  HBOND = 0.0000\n1-4 VDW =    11889.5108  1-4 EEL =       95.2040  RESTRAINT =\n0.0000\nNSTEP       ENERGY          RMS            GMAX NAME    NUMBER\n481       9.9038E+02     2.5920E+02     9.5956E+02 C11        15\nBOND    =      561.1639  ANGLE   =      338.1107  DIHED = 21.0169\nVDWAALS =       -2.3347  EEL     =      -61.6524  HBOND = 0.0000\n1-4 VDW =       53.2071  1-4 EEL =       80.8659  RESTRAINT =\n0.0000\nNSTEP       ENERGY          RMS            GMAX NAME    NUMBER\n482       4.2420E+01     3.8712E-02     1.1602E-01 O1         11\nBOND    =        1.7456  ANGLE   =       14.0208  DIHED = 9.6006\nVDWAALS =       -3.2456  EEL     =      -60.2342  HBOND = 0.0000\n1-4 VDW =        6.5169  1-4 EEL =       74.0157  RESTRAINT =\n0.0000\nBest Regards,\nKotaro",
+      "url": "http://archive.ambermd.org/202306/0130.html"
+    },
+    {
+      "message_id": 1687954840,
+      "author": "David A Case",
+      "date_raw": "Wed, 28 Jun 2023 08:20:40 -0400",
+      "body": "On Wed, Jun 28, 2023, Kotaro TANAKA via AMBER wrote:\n>\n>I performed a 1000 step energy minimization of a small organic\n>molecule, which is prepared by antechamber with GAFF2 and the\n>RESP-derived charges.\n>\n>While the final configuration after minimization looks fine, but there\n>were occasional huge bumps in the potential energy in the course of\n>the minimization (I attached the energy plot file and the mdout file).\nThis is expected: almost all minimization algorithms occasionally take steps\nthat produce clashes and spikes in the energy.  It recognizes what is\nhappening, and returns to conformations with low energy.  It is rarely a\nproblem.\n....dac",
+      "url": "http://archive.ambermd.org/202306/0136.html",
+      "in_reply_to": 1687929401
+    },
+    {
+      "message_id": 1687957443,
+      "author": "Kotaro TANAKA",
+      "date_raw": "Wed, 28 Jun 2023 22:04:03 +0900",
+      "body": "Thank you for the clarification!\nKotaro\nOn 2023/06/28 21:20, David A Case wrote:\n> On Wed, Jun 28, 2023, Kotaro TANAKA via AMBER wrote:\n>>\n>> I performed a 1000 step energy minimization of a small organic\n>> molecule, which is prepared by antechamber with GAFF2 and the\n>> RESP-derived charges.\n>>\n>> While the final configuration after minimization looks fine, but\n>> there were occasional huge bumps in the potential energy in the\n>> course of the minimization (I attached the energy plot file and the\n>> mdout file).\n>\n> This is expected: almost all minimization algorithms occasionally take\n> steps\n> that produce clashes and spikes in the energy.  It recognizes what is\n> happening, and returns to conformations with low energy.  It is rarely a\n> problem.\n>\n> ....dac\n>",
+      "url": "http://archive.ambermd.org/202306/0139.html",
+      "in_reply_to": 1687929401
+    }
+  ]
+}

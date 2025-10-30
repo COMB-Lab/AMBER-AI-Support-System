@@ -1,0 +1,37 @@
+{
+  "thread_id": 1749049255,
+  "subject": "[AMBER] spc/fw water model",
+  "messages": [
+    {
+      "message_id": 1749049255,
+      "author": "Dulal Mondal",
+      "date_raw": "Wed, 4 Jun 2025 20:30:55 +0530",
+      "body": "Dear Experts,\nI am trying to use spc/fw water.\nMy tleap file is like below.\nsource leaprc.protein.ff14SB\nsource leaprc.water.spce\naddAtomTypes { { \"ZN\" \"Zn\" \"sp3\" } { \"N5\" \"N\" \"sp3\" } { \"N6\" \"N\" \"sp3\" }  {\n\"N7\" \"N\" \"sp3\" } { \"O1\" \"O\" \"sp3\" } }\n#loadamberparams frcmod.ions1lm_126_tip3p\n#HOH = SPG\nloadAmberParams frcmod.spcfw\nloadamberprep ZAFF.prep\nloadamberparams ZAFF.frcmod\nmol = loadpdb 2ili_protein+ZN6+waters.pdb\nbond mol.259.ZN mol.92.NE2\nbond mol.259.ZN mol.94.NE2\nbond mol.259.ZN mol.117.ND1\nbond mol.259.ZN mol.260.O\nsavepdb mol 2ili_dry.pdb\nsaveamberparm mol 2ili_dry.prmtop 2ili_dry.inpcrd\nsolvatebox mol SPCFWBOX 15.0\nsavepdb mol 2ili_spcfw.pdb\n#addions mol Cl-  Na+\n#savepdb mol 2ili_solv.pdb\n#saveamberparm mol 2ili_solv.prmtop 2ili_solv.inpcrd\nBut during the minimization run I got the following error.\nError: A residue defined as a \"fast 3-point water\"\nis not defined by a triangle of three bonds.\nResidue      315 contains        2 bonds.\n-- \n*With regards,*\n*Dulal Mondal,*\n*Research Scholar,*\n*Department of Chemistry,*\n*IIT Kharagpur, Kharagpur 721302.*",
+      "url": "http://archive.ambermd.org/202506/0001.html"
+    },
+    {
+      "message_id": 1749052730,
+      "author": "Timothy Giese",
+      "date_raw": "Wed, 4 Jun 2025 15:58:50 +0000",
+      "body": "Some ideas to try...\nAdd the following to your tleap input\nset default FlexibleWater on\nAdd the following to the &cntrl section of your mdin file\njfastw=4",
+      "url": "http://archive.ambermd.org/202506/0002.html",
+      "in_reply_to": 1749049255
+    },
+    {
+      "message_id": 1749059021,
+      "author": "Dulal Mondal",
+      "date_raw": "Wed, 4 Jun 2025 23:13:41 +0530",
+      "body": "Thank for your suggestion.\n*With regards,*\n*Dulal Mondal,*\n*Research Scholar,*\n*Department of Chemistry,*\n*IIT Kharagpur, Kharagpur 721302.*\nOn Wed, 4 Jun, 2025, 9:28 pm Timothy Giese, <giese025.rutgers.\nedu> wrote:\n> Some ideas to try...\n>\n> Add the following to your tleap input\n> set default FlexibleWater on\n>\n> Add the following to the &cntrl section of your mdin file\n> jfastw=4\n>\n>",
+      "url": "http://archive.ambermd.org/202506/0003.html",
+      "in_reply_to": 1749049255
+    },
+    {
+      "message_id": 1749106384,
+      "author": "Dulal Mondal",
+      "date_raw": "Thu, 5 Jun 2025 12:23:04 +0530",
+      "body": "Thank you for your response. It works.\n*With regards,*\n*Dulal Mondal,*\n*Research Scholar,*\n*Department of Chemistry,*\n*IIT Kharagpur, Kharagpur 721302.*\nOn Wed, 4 Jun, 2025, 11:13 pm Dulal Mondal, <\nbabunmondal.chem.kgpian.iitkgp.ac.in> wrote:\n> Thank for your suggestion.\n>\n> *With regards,*\n> *Dulal Mondal,*\n> *Research Scholar,*\n> *Department of Chemistry,*\n> *IIT Kharagpur, Kharagpur 721302.*\n>\n> On Wed, 4 Jun, 2025, 9:28 pm Timothy Giese, <giese025.rutgers.\nedu> wrote:\n>\n>> Some ideas to try...\n>>\n>> Add the following to your tleap input\n>> set default FlexibleWater on\n>>\n>> Add the following to the &cntrl section of your mdin file\n>> jfastw=4\n>>\n>>",
+      "url": "http://archive.ambermd.org/202506/0004.html",
+      "in_reply_to": 1749049255
+    }
+  ]
+}

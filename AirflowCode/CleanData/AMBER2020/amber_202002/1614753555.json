@@ -1,0 +1,69 @@
+{
+  "thread_id": 1614753555,
+  "subject": "[AMBER] MMPBSA/ Parmed error",
+  "messages": [
+    {
+      "message_id": 1614753555,
+      "author": "Jenny 148",
+      "date_raw": "Wed, 3 Mar 2021 12:09:15 +0530",
+      "body": "Dear all,\nI had recently started using AMBER 18 in our new system. Everything worked\nfine so far. But today when I tried to use MMPBSA.py, I get the following\nerror:\nraceback (most recent call last):\nFile \"/apps/amber18/bin/MMPBSA.py\", line 41, in <module>\nfrom MMPBSA_mods import main\nFile \"/apps/amber18/lib/python3.7/site-packages/MMPBSA_mods/main.py\",\nline 43, in <module>\nfrom MMPBSA_mods.createinput import create_inputs\nFile\n\"/apps/amber18/lib/python3.7/site-packages/MMPBSA_mods/createinput.py\",\nline 43, in <module>\nfrom parmed.amber.mdin import Mdin\nModuleNotFoundError: No module named 'parmed'\nDuring handling of the above exception, another exception occurred:\nTraceback (most recent call last):\nFile \"/apps/amber18/bin/MMPBSA.py\", line 48, in <module>\n(amberhome, amberhome))\nImportError: Could not import Amber Python modules. Please make sure you\nhave sourced /apps/amber18/amber.sh (if you are using sh/ksh/bash/zsh) or\n/apps/amber18/amber.csh (if you are using csh/tcsh).\nI did source /apps/amber18/amber.sh\nEven then I am repeatedly getting the same error. Kindly help how to solve\nthis.\n-- \nJenny R.S",
+      "url": "http://archive.ambermd.org/202103/0016.html"
+    },
+    {
+      "message_id": 1614778252,
+      "author": "David A Case",
+      "date_raw": "Wed, 3 Mar 2021 08:30:52 -0500",
+      "body": "On Wed, Mar 03, 2021, Jenny 148 wrote:\n>ModuleNotFoundError: No module named 'parmed'\n>I did source /apps/amber18/amber.sh\nJust to check:\nwhat is the result of \"echo $PYTHONPATH\" ?\ndo you have a parmed file in /apps/amber18/bin ?\nif you type \"/apps/amber18/bin/pdb4amber\" do you get a usage statement?\n...dac",
+      "url": "http://archive.ambermd.org/202103/0018.html",
+      "in_reply_to": 1614753555
+    },
+    {
+      "message_id": 1614781126,
+      "author": "Jenny 148",
+      "date_raw": "Wed, 3 Mar 2021 19:48:46 +0530",
+      "body": "Sir,\nHere are the answers of your questions\n> what is the result of \"echo $PYTHONPATH\" ?\n/apps/amber18/lib/python3.7/site-packages:/opt/amber18/lib/python3.7/site-packages\n>  do you have a parmed file in /apps/amber18/bin ?\nYes, we do have a parmed file in /apps/amber18/bin\n> if you type \"/apps/amber18/bin/pdb4amber\" do you get a usage\nstatement?\n$ /apps/amber18/bin/pdb4amber\nThe result :\nTraceback (most recent call last):\nFile \"/apps/amber18/bin/pdb4amber\", line 33, in <module>\nsys.exit(load_entry_point('pdb4amber==1.7.dev0', 'console_scripts',\n'pdb4amber')())\nFile \"/apps/amber18/bin/pdb4amber\", line 22, in importlib_load_entry_point\nfor entry_point in distribution(dist_name).entry_points\nFile\n\"/apps/amber18/miniconda/lib/python3.7/site-packages/importlib_metadata/__init__.py\",\nline 558, in distribution\nreturn Distribution.from_name(distribution_name)\nFile\n\"/apps/amber18/miniconda/lib/python3.7/site-packages/importlib_metadata/__init__.py\",\nline 215, in from_name\nraise PackageNotFoundError(name)\nimportlib_metadata.PackageNotFoundError: No package metadata was found for\npdb4amber\nOn Wed, 3 Mar 2021 at 19:01, David A Case <david.case.rutgers.edu> wrote:\n> On Wed, Mar 03, 2021, Jenny 148 wrote:\n>\n> >ModuleNotFoundError: No module named 'parmed'\n> >I did source /apps/amber18/amber.sh\n>\n> Just to check:\n>\n>     what is the result of \"echo $PYTHONPATH\" ?\n>     do you have a parmed file in /apps/amber18/bin ?\n>     if you type \"/apps/amber18/bin/pdb4amber\" do you get a usage statement?\n>\n> ...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202103/0021.html",
+      "in_reply_to": 1614753555
+    },
+    {
+      "message_id": 1614781944,
+      "author": "Sruthi Sudhakar",
+      "date_raw": "Wed, 3 Mar 2021 20:02:24 +0530",
+      "body": "I am facing an exactly same issue. I have this error for parmed, MMPBSA.py\nand pdb4amber.\nWhen I type pdb4amber -h, I am getting this message:\nTraceback (most recent call last):\nFile \"/opt/amber18/bin/pdb4amber\", line 33, in <module>\nsys.exit(load_entry_point('pdb4amber==1.7.dev0', 'console_scripts',\n'pdb4amber')())\nFile \"/opt/amber18/bin/pdb4amber\", line 22, in importlib_load_entry_point\nfor entry_point in distribution(dist_name).entry_points\nFile\n\"/opt/amber18/miniconda/lib/python3.7/site-packages/importlib_metadata/__init__.py\",\nline 558, in distribution\nreturn Distribution.from_name(distribution_name)\nFile\n\"/opt/amber18/miniconda/lib/python3.7/site-packages/importlib_metadata/__init__.py\",\nline 215, in from_name\nraise PackageNotFoundError(name)\nimportlib_metadata.PackageNotFoundError: No package metadata was found for\npdb4amber\nAnd for pamed -h\nFile \"/opt/amber18/bin/parmed\", line 33, in <module>\nsys.exit(load_entry_point('ParmEd==3.2.0', 'console_scripts',\n'parmed')())\nFile \"/opt/amber18/bin/parmed\", line 22, in importlib_load_entry_point\nfor entry_point in distribution(dist_name).entry_points\nFile\n\"/opt/amber18/miniconda/lib/python3.7/site-packages/importlib_metadata/__init__.py\",\nline 558, in distribution\nreturn Distribution.from_name(distribution_name)\nFile\n\"/opt/amber18/miniconda/lib/python3.7/site-packages/importlib_metadata/__init__.py\",\nline 215, in from_name\nraise PackageNotFoundError(name)\nimportlib_metadata.PackageNotFoundError: No package metadata was found for\nParmEd\nKindly help.\nRegards,\nSruthi Sudhakar\nOn Wed, Mar 3, 2021 at 7:01 PM David A Case <david.case.rutgers.edu> wrote:\n> On Wed, Mar 03, 2021, Jenny 148 wrote:\n>\n> >ModuleNotFoundError: No module named 'parmed'\n> >I did source /apps/amber18/amber.sh\n>\n> Just to check:\n>\n>     what is the result of \"echo $PYTHONPATH\" ?\n>     do you have a parmed file in /apps/amber18/bin ?\n>     if you type \"/apps/amber18/bin/pdb4amber\" do you get a usage statement?\n>\n> ...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202103/0023.html",
+      "in_reply_to": 1614753555
+    },
+    {
+      "message_id": 1614824333,
+      "author": "Hai Nguyen",
+      "date_raw": "Wed, 3 Mar 2021 21:18:53 -0500",
+      "body": "What's your setuptools version?\ne.g: amber.python -c 'import setuptools as s; print(s.__version))'\nMeanwhile, you can try the non-official fixes here:\nhttps://github.com/Amber-MD/pdb4amber/issues/85#issuecomment-723529395\nHai\nOn Wed, Mar 3, 2021 at 9:33 AM Sruthi Sudhakar <sruthisudhakarraji.gmail.com>\nwrote:\n> I am facing an exactly same issue. I have this error for parmed, MMPBSA.py\n> and pdb4amber.\n> When I type pdb4amber -h, I am getting this message:\n>\n> Traceback (most recent call last):\n>   File \"/opt/amber18/bin/pdb4amber\", line 33, in <module>\n>     sys.exit(load_entry_point('pdb4amber==1.7.dev0', 'console_scripts',\n> 'pdb4amber')())\n>   File \"/opt/amber18/bin/pdb4amber\", line 22, in importlib_load_entry_point\n>     for entry_point in distribution(dist_name).entry_points\n>   File\n>\n> \"/opt/amber18/miniconda/lib/python3.7/site-packages/importlib_metadata/__init__.py\",\n> line 558, in distribution\n>     return Distribution.from_name(distribution_name)\n>   File\n>\n> \"/opt/amber18/miniconda/lib/python3.7/site-packages/importlib_metadata/__init__.py\",\n> line 215, in from_name\n>     raise PackageNotFoundError(name)\n> importlib_metadata.PackageNotFoundError: No package metadata was found for\n> pdb4amber\n>\n> And for pamed -h\n>\n>   File \"/opt/amber18/bin/parmed\", line 33, in <module>\n>     sys.exit(load_entry_point('ParmEd==3.2.0', 'console_scripts',\n> 'parmed')())\n>   File \"/opt/amber18/bin/parmed\", line 22, in importlib_load_entry_point\n>     for entry_point in distribution(dist_name).entry_points\n>   File\n>\n> \"/opt/amber18/miniconda/lib/python3.7/site-packages/importlib_metadata/__init__.py\",\n> line 558, in distribution\n>     return Distribution.from_name(distribution_name)\n>   File\n>\n> \"/opt/amber18/miniconda/lib/python3.7/site-packages/importlib_metadata/__init__.py\",\n> line 215, in from_name\n>     raise PackageNotFoundError(name)\n> importlib_metadata.PackageNotFoundError: No package metadata was found for\n> ParmEd\n>\n> Kindly help.\n>\n> Regards,\n> Sruthi Sudhakar\n>\n>\n> On Wed, Mar 3, 2021 at 7:01 PM David A Case <david.case.rutgers.edu>\n> wrote:\n>\n> > On Wed, Mar 03, 2021, Jenny 148 wrote:\n> >\n> > >ModuleNotFoundError: No module named 'parmed'\n> > >I did source /apps/amber18/amber.sh\n> >\n> > Just to check:\n> >\n> >     what is the result of \"echo $PYTHONPATH\" ?\n> >     do you have a parmed file in /apps/amber18/bin ?\n> >     if you type \"/apps/amber18/bin/pdb4amber\" do you get a usage\n> statement?\n> >\n> > ...dac\n> >\n> >\n> >",
+      "url": "http://archive.ambermd.org/202103/0025.html",
+      "in_reply_to": 1614753555
+    },
+    {
+      "message_id": 1615014176,
+      "author": "Jenny 148",
+      "date_raw": "Sat, 6 Mar 2021 12:32:56 +0530",
+      "body": "I still could not fix the issue. Could someone suggest a method to overcome\nthis?\nOn Thu, 4 Mar 2021 at 07:56, Hai Nguyen <nhai.qn.gmail.com> wrote:\n> What's your setuptools version?\n>\n> e.g: amber.python -c 'import setuptools as s; print(s.__version))'\n>\n> Meanwhile, you can try the non-official fixes here:\n>\nhttps://github.com/Amber-MD/pdb4amber/issues/85#issuecomment-723529395\n>\n> Hai\n>\n> On Wed, Mar 3, 2021 at 9:33 AM Sruthi Sudhakar <\n> sruthisudhakarraji.gmail.com>\n> wrote:\n>\n> > I am facing an exactly same issue. I have this error for parmed,\n> MMPBSA.py\n> > and pdb4amber.\n> > When I type pdb4amber -h, I am getting this message:\n> >\n> > Traceback (most recent call last):\n> >   File \"/opt/amber18/bin/pdb4amber\", line 33, in <module>\n> >     sys.exit(load_entry_point('pdb4amber==1.7.dev0', 'console_scripts',\n> > 'pdb4amber')())\n> >   File \"/opt/amber18/bin/pdb4amber\", line 22, in\n> importlib_load_entry_point\n> >     for entry_point in distribution(dist_name).entry_points\n> >   File\n> >\n> >\n> \"/opt/amber18/miniconda/lib/python3.7/site-packages/importlib_metadata/__init__.py\",\n> > line 558, in distribution\n> >     return Distribution.from_name(distribution_name)\n> >   File\n> >\n> >\n> \"/opt/amber18/miniconda/lib/python3.7/site-packages/importlib_metadata/__init__.py\",\n> > line 215, in from_name\n> >     raise PackageNotFoundError(name)\n> > importlib_metadata.PackageNotFoundError: No package metadata was found\n> for\n> > pdb4amber\n> >\n> > And for pamed -h\n> >\n> >   File \"/opt/amber18/bin/parmed\", line 33, in <module>\n> >     sys.exit(load_entry_point('ParmEd==3.2.0', 'console_scripts',\n> > 'parmed')())\n> >   File \"/opt/amber18/bin/parmed\", line 22, in importlib_load_entry_point\n> >     for entry_point in distribution(dist_name).entry_points\n> >   File\n> >\n> >\n> \"/opt/amber18/miniconda/lib/python3.7/site-packages/importlib_metadata/__init__.py\",\n> > line 558, in distribution\n> >     return Distribution.from_name(distribution_name)\n> >   File\n> >\n> >\n> \"/opt/amber18/miniconda/lib/python3.7/site-packages/importlib_metadata/__init__.py\",\n> > line 215, in from_name\n> >     raise PackageNotFoundError(name)\n> > importlib_metadata.PackageNotFoundError: No package metadata was found\n> for\n> > ParmEd\n> >\n> > Kindly help.\n> >\n> > Regards,\n> > Sruthi Sudhakar\n> >\n> >\n> > On Wed, Mar 3, 2021 at 7:01 PM David A Case <david.case.rutgers.edu>\n> > wrote:\n> >\n> > > On Wed, Mar 03, 2021, Jenny 148 wrote:\n> > >\n> > > >ModuleNotFoundError: No module named 'parmed'\n> > > >I did source /apps/amber18/amber.sh\n> > >\n> > > Just to check:\n> > >\n> > >     what is the result of \"echo $PYTHONPATH\" ?\n> > >     do you have a parmed file in /apps/amber18/bin ?\n> > >     if you type \"/apps/amber18/bin/pdb4amber\" do you get a usage\n> > statement?\n> > >\n> > > ...dac\n> > >\n> > >\n> > >",
+      "url": "http://archive.ambermd.org/202103/0043.html",
+      "in_reply_to": 1614753555
+    },
+    {
+      "message_id": 1615038535,
+      "author": "David A Case",
+      "date_raw": "Sat, 6 Mar 2021 08:48:55 -0500",
+      "body": "On Sat, Mar 06, 2021, Jenny 148 wrote:\n>I still could not fix the issue. Could someone suggest a method to overcome\n>this?\nThe real answer, and probably the only one: upgrade to AmberTools20.\nIf you have the time, you could answer the following questions:\n>> What's your setuptools version?\n>> e.g: amber.python -c 'import setuptools as s; print(s.__version))'\nPlus, what version of python are you using?  (type python --version).\n...thx...dac",
+      "url": "http://archive.ambermd.org/202103/0045.html",
+      "in_reply_to": 1614753555
+    },
+    {
+      "message_id": 1615216562,
+      "author": "Jenny 148",
+      "date_raw": "Mon, 8 Mar 2021 20:46:02 +0530",
+      "body": "Thank you everyone. Upgrading to AmberTools20 fixed the issue.\nOn Sat, 6 Mar 2021 at 7:19 PM, David A Case <david.case.rutgers.edu> wrote:\n> On Sat, Mar 06, 2021, Jenny 148 wrote:\n>\n> >I still could not fix the issue. Could someone suggest a method to\n> overcome\n> >this?\n>\n> The real answer, and probably the only one: upgrade to AmberTools20.\n>\n> If you have the time, you could answer the following questions:\n>\n> >> What's your setuptools version?\n> >> e.g: amber.python -c 'import setuptools as s; print(s.__version))'\n>\n> Plus, what version of python are you using?  (type python --version).\n>\n> ...thx...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202103/0055.html",
+      "in_reply_to": 1614753555
+    }
+  ]
+}

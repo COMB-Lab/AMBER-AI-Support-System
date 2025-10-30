@@ -1,0 +1,29 @@
+{
+  "thread_id": 1658399932,
+  "subject": "[AMBER] How to avoid SHAKE on a specific QM hydrogen atom in QM/MM simulations without compromising qmshake=1 flag",
+  "messages": [
+    {
+      "message_id": 1658399932,
+      "author": "Amit, Amit \\(amit.amit&ndash;&ndash;&ndash;",
+      "date_raw": "Thu, 21 Jul 2022 10:38:52 +0000",
+      "body": "Dear Amber Community,\nI hope you all are safe and healthy,\nPlease help me for : How to avoid SHAKE on a specific QM atom in QM/MM simulations?\nI tried \"noshakemask=.12\" flag but than sander asked for \"qmshake=0\". I don't want to avoid SHAKE for all of my QM atoms, instead I want to avoid SHAKE only for a specific H atom, that is being transferred from atom A to B. Aim is to capture the energy barrier for hydride transfer, and for that I don't want to restrain this particular bond involve this H atom.\nAny suggestions or experience regarding this would be highly appreciated.\nThank you very much in advance!\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nAmit Singh MSc\nDoctoral Researcher\nInstitute of Molecular Biosciences\nKarl-Franzens-University Graz\nHumboldtstrasse 50/3         e-mail: amit.amit.uni-graz.at<mailto:amit.amit.uni-graz.at>\nA-8010 Graz                  Mobile: (+43 688) 640 648 38\nAUSTRIA\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+      "url": "http://archive.ambermd.org/202207/0062.html"
+    },
+    {
+      "message_id": 1658406468,
+      "author": "David A Case",
+      "date_raw": "Thu, 21 Jul 2022 08:27:48 -0400",
+      "body": "On Thu, Jul 21, 2022, Amit, Amit (amit.amit--- via AMBER wrote:\n>Please help me for : How to avoid SHAKE on a specific QM atom in QM/MM\n>simulations?\n>\n>\n>I tried \"noshakemask=.12\" flag but than sander asked for \"qmshake=0\". I\n>don't want to avoid SHAKE for all of my QM atoms, instead I want to avoid\n>SHAKE only for a specific H atom, that is being transferred from atom A to\n>B. Aim is to capture the energy barrier for hydride transfer, and for that\n>I don't want to restrain this particular bond involve this H atom.\nThe manual implies, and the code agrees, that shaking hydrogens in the qm\nregion is an all-or-nothing proposition.  You can't shake most of them, but\nleave one out.\nYou could play with the code starting at line 782 of set.F90, removing the\ntest that qmmm_nml%qmshake == 0 (lines 798 and 806) and see if bad things\nhappen.  Try a small system first, and critically examine what is going on.\nOr, be conservative: if have a hydrogen that is being transfered, you might\nwant to have a 1 fs time step anyway, since the forces near the trasnfer\npoint might be changing very quickly.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202207/0063.html",
+      "in_reply_to": 1658399932
+    },
+    {
+      "message_id": 1658479595,
+      "author": "Amit, Amit \\(amit.amit&ndash;&ndash;&ndash;",
+      "date_raw": "Fri, 22 Jul 2022 08:46:35 +0000",
+      "body": "Thank you very much David.\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nAmit Singh MSc\nDoctoral Researcher\nInstitute of Molecular Biosciences\nKarl-Franzens-University Graz\nHumboldtstrasse 50/3         e-mail: amit.amit.uni-graz.at\nA-8010 Graz                  Mobile: (+43 688) 640 648 38\nAUSTRIA\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n________________________________________\nFrom: David A Case <david.case.rutgers.edu>\nSent: 21 July 2022 14:27\nTo: Amit, Amit (amit.amit.uni-graz.at); AMBER Mailing List\nSubject: Re: [AMBER] How to avoid SHAKE on a specific QM hydrogen atom in QM/MM simulations without compromising qmshake=1 flag\nOn Thu, Jul 21, 2022, Amit, Amit (amit.amit--- via AMBER wrote:\n>Please help me for : How to avoid SHAKE on a specific QM atom in QM/MM\n>simulations?\n>\n>\n>I tried \"noshakemask=.12\" flag but than sander asked for \"qmshake=0\". I\n>don't want to avoid SHAKE for all of my QM atoms, instead I want to avoid\n>SHAKE only for a specific H atom, that is being transferred from atom A to\n>B. Aim is to capture the energy barrier for hydride transfer, and for that\n>I don't want to restrain this particular bond involve this H atom.\nThe manual implies, and the code agrees, that shaking hydrogens in the qm\nregion is an all-or-nothing proposition.  You can't shake most of them, but\nleave one out.\nYou could play with the code starting at line 782 of set.F90, removing the\ntest that qmmm_nml%qmshake == 0 (lines 798 and 806) and see if bad things\nhappen.  Try a small system first, and critically examine what is going on.\nOr, be conservative: if have a hydrogen that is being transfered, you might\nwant to have a 1 fs time step anyway, since the forces near the trasnfer\npoint might be changing very quickly.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202207/0066.html",
+      "in_reply_to": 1658399932
+    }
+  ]
+}

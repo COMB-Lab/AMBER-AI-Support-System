@@ -1,0 +1,37 @@
+{
+  "thread_id": 1620814309,
+  "subject": "[AMBER] Amber stuck on Control data for the run",
+  "messages": [
+    {
+      "message_id": 1620814309,
+      "author": "Victoria E Hill",
+      "date_raw": "Wed, 12 May 2021 11:11:49 +0100",
+      "body": "Hi,\nI am trying to run a minimisation\npmemd -O -i minw1.in -o minw1.out -inf minw1.inf -c v32_w.crd -ref\nv32_w.crd -r v32_w.min1 -p v32_w.top\nThis is my input file\nInitial minimization solvent + ions\n&cntrl\nimin   = 1,\nmaxcyc = 10000,\nncyc   = 5000,\nntb    = 1,\nntr    = 1,\ncut    = 12.0\nrestraint_wt=50.0,\nrestraintmask=':1-678'\n/\nBut it keeps getting stuck in the output file at the 2. Control data for\nthe run part\n--------------------------------------------------------------------------------\n2.  CONTROL  DATA  FOR  THE  RUN\n--------------------------------------------------------------------------------\ndefault_name\nGeneral flags:\nimin    =       1, nmropt  =       0\nNature and format of input:\nntx     =       1, irest   =       0, ntrx    =       1\nNature and format of output:\nntxo    =       2, ntpr    =      50, ntrx    =       1, ntwr    =\n1\niwrap   =       0, ntwx    =       0, ntwv    =       0, ntwe    =\n0\nCan anybody advise? I am using Amber20.\nThanks,\nVictoria\n-- \n*Victoria Hill*\nPhD student, Craggs lab\nDepartment of Chemistry\nUniversity of Sheffield",
+      "url": "http://archive.ambermd.org/202105/0102.html"
+    },
+    {
+      "message_id": 1620824821,
+      "author": "David A Case",
+      "date_raw": "Wed, 12 May 2021 09:07:01 -0400",
+      "body": "On Wed, May 12, 2021, Victoria E Hill wrote:\n>\n>I am trying to run a minimisation\n>pmemd -O -i minw1.in -o minw1.out -inf minw1.inf -c v32_w.crd -ref\n>v32_w.crd -r v32_w.min1 -p v32_w.top\n>\n>But it keeps getting stuck in the output file at the 2. Control data for\n>the run part\nTry a short run (say maxcyc=10, ntpr=1) with sander, to see if you get any\ndifferent information about the problem.  Try altering some inputs (e.g.\nntr=0, or cut=8.0) to see if something changes.\nI'm assuming here that you have run the pmemd test cases, or at least have\nrun pmemd successfully on other systems.  If not, be sure to do that.\n....dac",
+      "url": "http://archive.ambermd.org/202105/0105.html",
+      "in_reply_to": 1620814309
+    },
+    {
+      "message_id": 1620827257,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 12 May 2021 09:47:37 -0400",
+      "body": "Hi,\nTry adding a comma after ‘cut = 12.0’.\n-Dan\nOn Wed, May 12, 2021 at 6:12 AM Victoria E Hill <vehill1.sheffield.\nac.uk>\nwrote:\n> Hi,\n>\n> I am trying to run a minimisation\n> pmemd -O -i minw1.in -o minw1.out -inf minw1.inf -c v32_w.crd -ref\n> v32_w.crd -r v32_w.min1 -p v32_w.top\n> This is my input file\n>\n> Initial minimization solvent + ions\n>  &cntrl\n>   imin   = 1,\n>   maxcyc = 10000,\n>   ncyc   = 5000,\n>   ntb    = 1,\n>   ntr    = 1,\n>   cut    = 12.0\n>   restraint_wt=50.0,\n>   restraintmask=':1-678'\n>  /\n>\n> But it keeps getting stuck in the output file at the 2. Control data for\n> the run part\n>\n>\n> --------------------------------------------------------------------------------\n>    2.  CONTROL  DATA  FOR  THE  RUN\n>\n> --------------------------------------------------------------------------------\n>\n> default_name\n>\n> General flags:\n>      imin    =       1, nmropt  =       0\n>\n> Nature and format of input:\n>      ntx     =       1, irest   =       0, ntrx    =       1\n>\n> Nature and format of output:\n>      ntxo    =       2, ntpr    =      50, ntrx    =       1, ntwr    =\n>   1\n>      iwrap   =       0, ntwx    =       0, ntwv    =       0, ntwe    =\n>   0\n>\n> Can anybody advise? I am using Amber20.\n>\n> Thanks,\n> Victoria\n> --\n> *Victoria Hill*\n>\n> PhD student, Craggs lab\n> Department of Chemistry\n> University of Sheffield\n>",
+      "url": "http://archive.ambermd.org/202105/0107.html",
+      "in_reply_to": 1620814309
+    },
+    {
+      "message_id": 1620828041,
+      "author": "Matias Machado",
+      "date_raw": "Wed, 12 May 2021 11:00:41 -0300 (UYT)",
+      "body": "Dear Victoria,\nIs it possible you are missing a ',' at the end of the 'cut = 12' statement in the input file?\nBest,\nMatías\n------------------------------------\nPhD.\nResearcher at Biomolecular Simulations Lab.\nInstitut Pasteur de Montevideo | Uruguay\n[\nhttp://pasteur.uy/en/labs/biomolecular-simulations-laboratory\n]\n[\nhttp://www.sirahff.com\n]\n----- Mensaje original -----\nDe: \"Victoria E Hill\" <vehill1.sheffield.\nac.uk>\nPara: \"AMBER Mailing List\" <AMBER.ambermd.org>\nEnviados: Miércoles, 12 de Mayo 2021 7:11:49\nAsunto: [AMBER] Amber stuck on Control data for the run\nHi,\nI am trying to run a minimisation\npmemd -O -i minw1.in -o minw1.out -inf minw1.inf -c v32_w.crd -ref\nv32_w.crd -r v32_w.min1 -p v32_w.top\nThis is my input file\nInitial minimization solvent + ions\n&cntrl\nimin   = 1,\nmaxcyc = 10000,\nncyc   = 5000,\nntb    = 1,\nntr    = 1,\ncut    = 12.0\nrestraint_wt=50.0,\nrestraintmask=':1-678'\n/\nBut it keeps getting stuck in the output file at the 2. Control data for\nthe run part\n--------------------------------------------------------------------------------\n2.  CONTROL  DATA  FOR  THE  RUN\n--------------------------------------------------------------------------------\ndefault_name\nGeneral flags:\nimin    =       1, nmropt  =       0\nNature and format of input:\nntx     =       1, irest   =       0, ntrx    =       1\nNature and format of output:\nntxo    =       2, ntpr    =      50, ntrx    =       1, ntwr    =\n1\niwrap   =       0, ntwx    =       0, ntwv    =       0, ntwe    =\n0\nCan anybody advise? I am using Amber20.\nThanks,\nVictoria\n-- \n*Victoria Hill*\nPhD student, Craggs lab\nDepartment of Chemistry\nUniversity of Sheffield",
+      "url": "http://archive.ambermd.org/202105/0109.html",
+      "in_reply_to": 1620814309
+    }
+  ]
+}

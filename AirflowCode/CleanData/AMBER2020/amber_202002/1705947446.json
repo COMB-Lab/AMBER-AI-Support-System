@@ -1,0 +1,21 @@
+{
+  "thread_id": 1705947446,
+  "subject": "[AMBER] Why the Order of ATOM_TYPE_INDEX Section Matters 1-4 VdWaals",
+  "messages": [
+    {
+      "message_id": 1705947446,
+      "author": "Ge Song",
+      "date_raw": "Mon, 22 Jan 2024 18:17:26 +0000",
+      "body": "Dear Amber Community,\nI met a problem when modifying the topology file. I have a system containing a protein and a dipeptide. What I'm trying to do in the topology file is to set the LJ interaction between the protein and the dipeptide to zero.\nMy strategy is: assign new indexes for the dipeptide atoms in the ATOM_TYPE_INDEX section, then assign new indexes for atom types pairs in the NONBONDED_PARM_INDEX section and then add the corresponding LJ_ACOEF and LJ_BCOEF. I'm very confident that my topology gives me the right LJ coefficients because its calculated VdW energy for the whole system equals to the summation of VdW energy of the protein and  the dipeptide. However, this perfect match does not apply to the 1-4 VdWaals energy, which is weird. So I made some attempts, but it went more weird when I assigned the new indexes for dipeptide atoms in a different order, in this case, the calculated VdW still holds the same while the 1-4 VdWaals changes. I understand that for 1-4 VdWaals, Amber will use the dihedral indexes to get a scaling factor, but in principle this should not be related with the indexes in ATOM_TYPE_INDEX. Looking for some comments or suggestion.\nBest,\nGe Song",
+      "url": "http://archive.ambermd.org/202401/0103.html"
+    },
+    {
+      "message_id": 1705947728,
+      "author": "Carlos Simmerling",
+      "date_raw": "Mon, 22 Jan 2024 13:22:08 -0500",
+      "body": "this is far easier in parmed, I suggest using that instead.\nOn Mon, Jan 22, 2024 at 1:18 PM Ge Song via AMBER <amber.ambermd.\norg> wrote:\n> Dear Amber Community,\n>\n> I met a problem when modifying the topology file. I have a system\n> containing a protein and a dipeptide. What I'm trying to do in the topology\n> file is to set the LJ interaction between the protein and the dipeptide to\n> zero.\n> My strategy is: assign new indexes for the dipeptide atoms in the\n> ATOM_TYPE_INDEX section, then assign new indexes for atom types pairs in\n> the NONBONDED_PARM_INDEX section and then add the corresponding LJ_ACOEF\n> and LJ_BCOEF. I'm very confident that my topology gives me the right LJ\n> coefficients because its calculated VdW energy for the whole system equals\n> to the summation of VdW energy of the protein and  the dipeptide. However,\n> this perfect match does not apply to the 1-4 VdWaals energy, which is\n> weird. So I made some attempts, but it went more weird when I assigned the\n> new indexes for dipeptide atoms in a different order, in this case, the\n> calculated VdW still holds the same while the 1-4 VdWaals changes. I\n> understand that for 1-4 VdWaals, Amber will use the dihedral indexes to get\n> a scaling factor, but in principle this should not be related with the\n> indexes in ATOM_TYPE_INDEX. Looking for some comments or suggestion.\n>\n> Best,\n> Ge Song\n>",
+      "url": "http://archive.ambermd.org/202401/0104.html",
+      "in_reply_to": 1705947446
+    }
+  ]
+}

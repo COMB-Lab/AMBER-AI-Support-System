@@ -1,0 +1,21 @@
+{
+  "thread_id": 1702726472,
+  "subject": "[AMBER] calculating average number of water in the binding site:",
+  "messages": [
+    {
+      "message_id": 1702726472,
+      "author": "Kankana Bhattacharjee",
+      "date_raw": "Sat, 16 Dec 2023 17:04:32 +0530",
+      "body": "Dear AMBER users,\nI would like to compute the average number of water molecules in the\nbinding site. How can I do that job ?\nYour suggestions would be appreciated.\nThanks & Regards\nKankana Bhattacharjee\nPh.D. Scholar\nDepartment of Chemistry\nAshoka University\nSonipat, Haryana",
+      "url": "http://archive.ambermd.org/202312/0087.html"
+    },
+    {
+      "message_id": 1702756836,
+      "author": "Skanda Sastry",
+      "date_raw": "Sat, 16 Dec 2023 12:00:36 -0800",
+      "body": "Hello Kankana,\nI was working on a similar problem recently.\nOne thing you can do is a GIST simulation. Essentially, you fully restrain\nthe solute/macromolecule and do 10-20 ns of conventional MD, then the post\nprocessing method considers the full system as a group of voxels (small\ncubes that allow us to grid and organize 3-D space) and computes a bunch of\nstatistics about solvent molecules in each voxel (e.g. number of solvent\nmolecules, rotational entropy, translational entropy, and others). You\ncould run GIST and look at voxels near the binding site - this would give\nyou the total number of water molecules that visited the binding site\nvoxels as well as information about their entropy (more entropy = closer to\nbulk solvent, less entropy = solvent molecule movement is restricted, maybe\nassociating with the protein). Refer to amber manual pages 738-745 and\nthis cpptraj\nGIST entry <\nhttps://amberhub.chpc.utah.edu/gist/\n> for more information.\nIf you want frame-by-frame counts, and not just average over the whole\nsimulation, another approach would be to directly compute the number of\nwater molecules in a voxel of interest frame-by-frame. I wrote a pytraj\nfunction to do this recently, and you can use it by cloning the latest\ncommit of the pytraj repo <\nhttps://github.com/Amber-MD/pytraj\n> and\ninstalling from source code. Here\n<\nhttps://github.com/Amber-MD/pytraj/pull/1643\n> is the pull request that\ndetails the function I wrote. After loading the correct version of pytraj\nyou could write a script like I've written below. The third line counts the\nnumber of water oxygen atoms in a voxel centered at coordinates (25.00,\n25.00, 25.00) for a voxel of length/width/height 10.0 Angstroms. It returns\na list of lists, with each list at index *j *corresponding to the number of\nwater oxygen atoms in the voxel at frame *j* in the trajectory.\nimport pytraj as pt\ntraj = pt.load(\"traj.nc\", \"parm.top\")\npop = pt.count_in_voxel(traj, \":WAT.O\", (25.\n00, 25.00, 25.00), 10)\nHope this helps! Apologies if the email was a bit long-winded, please reach\nout if you have questions.\nRegards,\nSkanda\nOn Sat, Dec 16, 2023 at 3:35 AM Kankana Bhattacharjee via AMBER <\namber.ambermd.org> wrote:\n> Dear AMBER users,\n>\n> I would like to compute the average number of water molecules in the\n> binding site. How can I do that job ?\n>\n> Your suggestions would be appreciated.\n>\n> Thanks & Regards\n> Kankana Bhattacharjee\n> Ph.D. Scholar\n> Department of Chemistry\n> Ashoka University\n> Sonipat, Haryana\n>",
+      "url": "http://archive.ambermd.org/202312/0089.html",
+      "in_reply_to": 1702726472
+    }
+  ]
+}

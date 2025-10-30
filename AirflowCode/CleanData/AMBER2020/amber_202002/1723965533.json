@@ -1,0 +1,21 @@
+{
+  "thread_id": 1723965533,
+  "subject": "[AMBER] Multiple Replicas per GPU?",
+  "messages": [
+    {
+      "message_id": 1723965533,
+      "author": "Guberman-Pfeffer, Matthew",
+      "date_raw": "Sun, 18 Aug 2024 07:18:53 +0000",
+      "body": "Dear AMBER Community,\nHow can I run multiple replicas for constant pH MD on the same GPU? My system is only ~68K atoms and I have GPUs with ~24 GB of memory, so, if doable, this seems advantageous.\nWhen I set the -ng flag for pmemd.cuda.MPI to be greater than the -np flag for mpirun, AMBER22 complains that np needs to be a multiple of ng. If I set np ≥ ng, the code runs, but it looks like some replicas are distributed among multiple GPUs. For example, if I do:\nexport CUDA_VISIBLE_DEVICES=0,1,2,3\nnohup mpirun -np 8 $AMBERHOME/bin/pmemd.cuda.MPI -ng 8 -groupfile groupfile -rem 4 -remlog rem.log &> output.log &\nTwo replicas run exclusively on GPU0 and 6 replicas each get shared by GPU0 and one of the other GPUs. This seems non-optimal to me because GPU is handling 8 jobs while the other GPUs only have two jobs each.\nWhat is the right command I should be using to run two replicas on each of the four GPUs?\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202408/0090.html"
+    },
+    {
+      "message_id": 1724007724,
+      "author": "Guberman-Pfeffer, Matthew",
+      "date_raw": "Sun, 18 Aug 2024 19:02:04 +0000",
+      "body": "Dear AMBER Community,\nHow can I run multiple replicas for constant pH MD on the same GPU? My system is only ~68K atoms and I have GPUs with ~24 GB of memory, so, if doable, this seems advantageous.\nWhen I set the -ng flag for pmemd.cuda.MPI to be greater than the -np flag for mpirun, AMBER22 complains that np needs to be a multiple of ng. If I set np ≥ ng, the code runs, but it looks like some replicas are distributed among multiple GPUs. For example, if I do:\nexport CUDA_VISIBLE_DEVICES=0,1,2,3\nnohup mpirun -np 8 $AMBERHOME/bin/pmemd.cuda.MPI -ng 8 -groupfile groupfile -rem 4 -remlog rem.log &> output.log &\nTwo replicas run exclusively on GPU0 and 6 replicas each get shared by GPU0 and one of the other GPUs. This seems non-optimal to me because GPU is handling 8 jobs while the other GPUs only have two jobs each.\nWhat is the right command I should be using to run two replicas on each of the four GPUs?\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202408/0092.html",
+      "in_reply_to": 1723965533
+    }
+  ]
+}

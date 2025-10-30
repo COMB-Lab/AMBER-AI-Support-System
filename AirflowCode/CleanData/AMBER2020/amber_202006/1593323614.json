@@ -1,0 +1,21 @@
+{
+  "thread_id": 1593323614,
+  "subject": "[AMBER] Error Message while using GPU",
+  "messages": [
+    {
+      "message_id": 1593323614,
+      "author": "Sivanandam Magudeeswaran",
+      "date_raw": "Sun, 28 Jun 2020 11:23:34 +0530",
+      "body": "Dear Amber User,\nRecently we have installed Amber 20 in\nFujitsu HPC machine. While running amber jobs using pmemd.cuda_DPFP.MPI\nroutine with 4 nodes (each node has 24 processors), it gives the following\nerror. Please  give your valuable suggestions to rectify that error.\n*--------------------------------------------------------------------------By\ndefault, for Open MPI 4.0 and later, infiniband ports on a deviceare not\nused by default.  The intent is to use UCX for these devices.You can\noverride this policy by setting the btl_openib_allow_ib MCA parameterto\ntrue.  Local host:              comp-gpu0  Local adapter:           mlx5_0\nLocal port:\n1----------------------------------------------------------------------------------------------------------------------------------------------------WARNING:\nThere was an error initializing an OpenFabrics device.  Local host:\ncomp-gpu0  Local device:\nmlx5_0--------------------------------------------------------------------------vlimit\nexceeded for step     52; vmax =  5669.1427vlimit exceeded for step     52;\nvmax = 89983.7545vlimit exceeded for step     52; vmax =   394.1534vlimit\nexceeded for step     52; vmax =\n736.8532--------------------------------------------------------------------------MPI_ABORT\nwas invoked on rank 89 in communicator MPI_COMM_WORLDwith errorcode 1.NOTE:\ninvoking MPI_ABORT causes Open MPI to kill all MPI processes.You may or may\nnot see output from other processes, depending onexactly when Open MPI\nkills\nthem.--------------------------------------------------------------------------[comp-gpu0.local:226093]\n95 more processes have sent help message help-mpi-btl-openib.txt / ib port\nnot selected[comp-gpu0.local:226093] Set MCA parameter\n\"orte_base_help_aggregate\" to 0 to see all help / error\nmessages[comp-gpu0.local:226093] 95 more processes have sent help message\nhelp-mpi-btl-openib.txt / error in device init[comp-gpu0.local:226093] 1\nmore process has sent help message help-mpi-api.txt / mpi-abort*\n--------------------------------------------------------\n*Dr. M. SIVANANDAM*\n*Guest Lecturer            *\n*Department of Physics*\n*School of Physical Sciences*\n*Periyar University*\n*Salem-636 011*\n*Mobile- 9965582730.*\n--------------------------------------------------------",
+      "url": "http://archive.ambermd.org/202006/0292.html"
+    },
+    {
+      "message_id": 1593371991,
+      "author": "David A Case",
+      "date_raw": "Sun, 28 Jun 2020 15:19:51 -0400",
+      "body": "On Sun, Jun 28, 2020, Sivanandam Magudeeswaran wrote:\n>                                 Recently we have installed Amber 20 in\n>Fujitsu HPC machine. While running amber jobs using pmemd.cuda_DPFP.MPI\n>routine with 4 nodes (each node has 24 processors), it gives the following\n>error. Please  give your valuable suggestions to rectify that error.\nThis looks like an error with the simulation, that happens very early\non:\nvlimit exceeded for step     52; vmax =  5669.1427\nRe-run the simulation with the serial CPU code, setting ntpr=1 and\nnstlim =100 (say).  See if you can get clues to what is happening from\nthis more detailed output.\nIs this part of a continuing simulation?  (That is, has it run for a\nlong time with apparently correct results, or are you just starting\nout?)   You should generally make sure that your system is stable, and\nhas converged on approximately the correct density, before moving to a\nGPU.  And, you should test whether going to mulitple GPUs actually\nprovides much speed-up over a single GPU run.\nAlso, I'm guessing that you may have incorrectly specified the MPI\nsetup, since you see to have something like 96 MPI threads:\n>95 more processes have sent help message ....\nThis makes no sense for GPU runs: you for sure don't have 96 gpus on\nthose four nodes.  So, (a) make sure that things work on the CPU; (b)\nmove to a single GPU and repeat; (c) carefully expand to multiple GPUs,\nif required, starting with 2.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202006/0298.html",
+      "in_reply_to": 1593323614
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "thread_id": 1735479977,
+  "subject": "[AMBER] amber24 cuda install errors",
+  "messages": [
+    {
+      "message_id": 1735479977,
+      "author": "James Kress",
+      "date_raw": "Sun, 29 Dec 2024 08:46:17 -0500",
+      "body": "Trying to install amber24 with cuda 12.6.  The OS is RHEL 8.10\nserial and MPI versions installed with no problems.  CUDA version failed.  Any help would be appreciated.\nInitial run to install cuda version trapped error since cuda version was > 12.5.  I change the CudaConfig files to accept 12.6\nThen I followed cuda directions in the manual with the following results.\nI modified run_cmake with this:\n#  Assume this is Linux:\ncmake $AMBER_PREFIX/amber24_src \\\n-DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber24 \\\n-DCOMPILER=GNU \\\n-DMPI=FALSE -DCUDA=TRUE -DINSTALL_TESTS=TRUE \\\n-DDOWNLOAD_MINICONDA=TRUE \\\n2>&1 | tee  cmake.log\n./run_cmake\nNo issues\n./make install\nError limit reached.\n100 errors detected in the compilation of \"/work/home/amber24_src/AmberTools/src/pbsa/cuda_LinearSolvers.cu\".\nCompilation terminated.\nCMake Error at pbsa.cuda_generated_cuda_LinearSolvers.cu.o.RELEASE.cmake:278 (message):\nError generating file\n/work/home/amber24_src/build/AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir//./pbsa.cuda_generated_cuda_LinearSolvers.cu.o\nmake[2]: *** [AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/build.make:112: AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/pbsa.cuda_generated_cuda_LinearSolvers.cu.o] Error 1\nmake[1]: *** [CMakeFiles/Makefile2:5370: AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/all] Error 2\nmake: *** [Makefile:156: all] Error 2\ngcc compiler info:\nName         : gcc\nVersion      : 8.5.0\nRelease      : 22.el8_10\nArchitecture : x86_64\nSize         : 59 M\nSource       : gcc-8.5.0-22.el8_10.src.rpm\nRepository   : .System\nFrom repo    : rhel-8-for-x86_64-appstream-rpms\nSummary      : Various compilers (C, C++, Objective-C, ...)\nURL          : http://gcc.gnu.org\nLicense      : GPLv3+ and GPLv3+ with exceptions and GPLv2+ with exceptions and LGPLv2+ and BSD\nDescription  : The gcc package contains the GNU Compiler Collection version 8.\n: You'll need this package in order to compile C code.\nJames Kress Ph.D., President\nThe KressWorks® Foundation\nAn IRS Approved 501 (c)(3) Charitable, Nonprofit Corporation\n“ENGINEERING THE CURE” ©\n(248) 573-5499\nLearn More and Donate At:\nWebsite: http://www.kressworks.org\nConfidentiality Notice | This e-mail message, including any attachments, is for the sole use of the intended recipient(s) and may contain confidential or proprietary information. Any unauthorized review, use, disclosure or distribution is prohibited. If you are not the intended recipient, immediately contact the sender by reply e-mail and destroy all copies of the original message.",
+      "url": "http://archive.ambermd.org/202412/0090.html"
+    },
+    {
+      "message_id": 1735516212,
+      "author": "David A Case",
+      "date_raw": "Sun, 29 Dec 2024 16:50:12 -0700",
+      "body": "On Sun, Dec 29, 2024, James Kress via AMBER wrote:\n>Trying to install amber24 with cuda 12.6.\n>Error limit reached.\n>100 errors detected in the compilation of \"/work/home/amber24_src/AmberTools/src/pbsa/cuda_LinearSolvers.cu\".\nIt might help to provide the first one or two errors that were reported for\nthis file.\nHave you tried setting -DDISABLE_TOOLS=\"pbsa\"?\ncc-ing to Ray Luo.\n....dac",
+      "url": "http://archive.ambermd.org/202412/0091.html",
+      "in_reply_to": 1735479977
+    }
+  ]
+}

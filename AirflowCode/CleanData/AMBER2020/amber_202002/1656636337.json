@@ -1,0 +1,21 @@
+{
+  "thread_id": 1656636337,
+  "subject": "[AMBER] What is the compatible versions of the MKL for Amber22?",
+  "messages": [
+    {
+      "message_id": 1656636337,
+      "author": "Gao Zhenting",
+      "date_raw": "Fri, 1 Jul 2022 08:45:37 +0800",
+      "body": "Dear Amber developers,\nAs my workstation is Intel CPU based, I want to enable MKL during Amber22\ninstallation.\nI installed l_onemkl_p_2022.0.2.136_offline.sh (the latest mkl version),\nand sourced setvars.sh of the installed mkl, but during Amber22\ninstallation, the MKL library can not be found.\nIsn't this MKL version compatible with Amber22? Or I missed something\nduring the run_cmake?\nBest regards\nZhenting",
+      "url": "http://archive.ambermd.org/202207/0001.html"
+    },
+    {
+      "message_id": 1656814174,
+      "author": "Gao Zhenting",
+      "date_raw": "Sun, 3 Jul 2022 10:09:34 +0800",
+      "body": "Hi Dac,\nGood to know that absense of MKL will not affect Amber in most cases. So I\nwill stop trying MKL for now.\nOn the other hand, by adding -DFORCE_EXTERNAL_LIBS=\"mkl\", the run_cmake can\nnot recongnize the installed MKL 2022, with relevant error as\n\"-- Could NOT find MKL (missing: MKL_INTERFACE_LIBRARY\nMKL_GFORTRAN_INTERFACE_LIBRARY MKL_GNU_THREADING_LIBRARY MKL_CORE_LIBRARY)\"\nThe MKL I installed is the latest verion, l_onemkl_p_2022.0.2.136_offline.sh\nBest regards\nZhenting\nDavid A Case <david.case.rutgers.edu> 于2022年7月1日周五 20:08写道：\n> On Fri, Jul 01, 2022, Gao Zhenting via AMBER wrote:\n> >\n> >As my workstation is Intel CPU based, I want to enable MKL during Amber22\n> >installation.\n> >I installed l_onemkl_p_2022.0.2.136_offline.sh (the latest mkl version),\n> >and sourced setvars.sh of the installed mkl, but during Amber22\n> >installation, the MKL library can not be found.\n> >\n> >Isn't this MKL version compatible with Amber22? Or I missed something\n> >during the run_cmake?\n>\n> You can add -DFORCE_EXTERNAL_LIBS=\"mkl\" to your run-cmake script.  Other\n> options are here:\n>\n>\nhttps://ambermd.org/pmwiki/pmwiki.php/Main/CMake-Common-Options\n>\n> Don't expect to see much difference for the vast majority of Amber\n> calculations, but there may be a few places that see speedups.  And Xray\n> refinement in pmemd (CPU version) requires MKL.  MKL is not turned on by\n> default because (at least in the past) there were actually some\n> comptability\n> issues.\n>\n> Others on the list may have more relevant experience.\n>\n> ....dac\n>\n>",
+      "url": "http://archive.ambermd.org/202207/0006.html",
+      "in_reply_to": 1656636337
+    }
+  ]
+}

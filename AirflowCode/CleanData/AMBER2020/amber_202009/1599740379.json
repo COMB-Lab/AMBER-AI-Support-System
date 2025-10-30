@@ -1,0 +1,53 @@
+{
+  "thread_id": 1599740379,
+  "subject": "[AMBER]  SHAKEH hydrogen clusters",
+  "messages": [
+    {
+      "message_id": 1599740379,
+      "author": "Pietro Aronica",
+      "date_raw": "Thu, 10 Sep 2020 20:19:39 +0800",
+      "body": "Hello,\nI have an unusual system that I am trying to simulate with\npmemd.cuda_SPFP. The simulation fails at the start with the following error:\n0: 19 - 20 and 4: 19 - 21\nHydrogen atom 19 appears to have multiple bonds to atoms 20 and 21 which\nis illegal for SHAKEH.\nExiting due to the presence of inconsistent SHAKEH hydrogen clusters.\nThe thing is, 19 isn't a hydrogen: it's carbon, bound to hydrogens 20\nand 21. Parmed confirms that the atom is in no way a hydrogen, either by\nmass, atomic number, etc. Running the same simulation with sander\ninstead works.\nI have tracked down similar answers in the mailing list, and it seems to\nbe due to a difference in computing language between C and Fortran that\nchanges the indices of the atoms. My system is unusual, but it should\nwork, as seen with sander.\nIs there a way to fix the language difference? The previous responses\ndon't point to a solution.\nKind regards\nPietro Aronica",
+      "url": "http://archive.ambermd.org/202009/0146.html"
+    },
+    {
+      "message_id": 1599757621,
+      "author": "David A Case",
+      "date_raw": "Thu, 10 Sep 2020 13:07:01 -0400",
+      "body": "On Thu, Sep 10, 2020, Pietro Aronica wrote:\n>\n>I have an unusual system that I am trying to simulate with\n>pmemd.cuda_SPFP. The simulation fails at the start with the following error:\n>\n>0: 19 - 20 and 4: 19 - 21\n>Hydrogen atom 19 appears to have multiple bonds to atoms 20 and 21 which\n>is illegal for SHAKEH.\n>Exiting due to the presence of inconsistent SHAKEH hydrogen clusters.\n>\n>The thing is, 19 isn't a hydrogen: it's carbon, bound to hydrogens 20\n>and 21.\nCheck atom 20 (numbering starting from 1): is that a hydrogen with more\nthan one bond?  What is it that is \"unusual\" about your system?\n....dac",
+      "url": "http://archive.ambermd.org/202009/0154.html",
+      "in_reply_to": 1599740379
+    },
+    {
+      "message_id": 1599790580,
+      "author": "pietroa.bii.a-star.edu.sg",
+      "date_raw": "Fri, 11 Sep 2020 02:16:20 +0000",
+      "body": "None of the hydrogens in my protein is bound to more than one atom.\nMy system is unusual in that it has extra atoms in an \"alchemical\"\nscheme to grow an extra residue.\nPietro\nQuoting David A Case <david.case.rutgers.edu>:\n> On Thu, Sep 10, 2020, Pietro Aronica wrote:\n>>\n>> I have an unusual system that I am trying to simulate with\n>> pmemd.cuda_SPFP. The simulation fails at the start with the following error:\n>>\n>> 0: 19 - 20 and 4: 19 - 21\n>> Hydrogen atom 19 appears to have multiple bonds to atoms 20 and 21 which\n>> is illegal for SHAKEH.\n>> Exiting due to the presence of inconsistent SHAKEH hydrogen clusters.\n>>\n>> The thing is, 19 isn't a hydrogen: it's carbon, bound to hydrogens 20\n>> and 21.\n>\n> Check atom 20 (numbering starting from 1): is that a hydrogen with more\n> than one bond?  What is it that is \"unusual\" about your system?\n>\n> ....dac\n>\n>",
+      "url": "http://archive.ambermd.org/202009/0161.html",
+      "in_reply_to": 1599740379
+    },
+    {
+      "message_id": 1599838035,
+      "author": "David A Case",
+      "date_raw": "Fri, 11 Sep 2020 11:27:15 -0400",
+      "body": "On Fri, Sep 11, 2020, pietroa.bii.a-star.edu.sg wrote:\n>None of the hydrogens in my protein is bound to more than one atom.\n>My system is unusual in that it has extra atoms in an \"alchemical\"\n>scheme to grow an extra residue.\nCan you make a small example that illustrates the problem?  I think we\nneed prmtop/inpcrd/mdin files that fail in order to track down the\nproblem.  Is there anything you can see that might lead pmemd to think\natom 19 is a hydrogen?  If you remove the \"extra atoms\" does the problem\ngo away?\n...thx...dac",
+      "url": "http://archive.ambermd.org/202009/0173.html",
+      "in_reply_to": 1599740379
+    },
+    {
+      "message_id": 1599888655,
+      "author": "pietroa.bii.a-star.edu.sg",
+      "date_raw": "Sat, 12 Sep 2020 05:30:55 +0000",
+      "body": "Here is a small example. It is a prmtop based alchemical scheme where\nthe system is simulated with progressively different prmtops to alter\nthe geometry of the system. In this case, the intended outcome is to\n\"grow\" a glycine right after the alanine. The system fails with pmemd,\nbut it works perfectly fine with sander. The attached prmtop and\ninpcrd represent the first step of the simulation.\nPietro\nQuoting David A Case <david.case.rutgers.edu>:\n> On Fri, Sep 11, 2020, pietroa.bii.a-star.edu.sg wrote:\n>\n>> None of the hydrogens in my protein is bound to more than one atom.\n>> My system is unusual in that it has extra atoms in an \"alchemical\"\n>> scheme to grow an extra residue.\n>\n> Can you make a small example that illustrates the problem?  I think we\n> need prmtop/inpcrd/mdin files that fail in order to track down the\n> problem.  Is there anything you can see that might lead pmemd to think\n> atom 19 is a hydrogen?  If you remove the \"extra atoms\" does the problem\n> go away?\n>\n> ...thx...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202009/0175.html",
+      "in_reply_to": 1599740379
+    },
+    {
+      "message_id": 1600349095,
+      "author": "David A Case",
+      "date_raw": "Thu, 17 Sep 2020 09:24:55 -0400",
+      "body": "On Sat, Sep 12, 2020, pietroa.bii.a-star.edu.sg wrote:\n>Here is a small example. It is a prmtop based alchemical scheme where\n>the system is simulated with progressively different prmtops to alter\n>the geometry of the system. In this case, the intended outcome is to\n>\"grow\" a glycine right after the alanine. The system fails with pmemd,\n>but it works perfectly fine with sander. The attached prmtop and\n>inpcrd represent the first step of the simulation.\nCan you send an mdin file as well as the exact flags you gave to the\nprograms?  If I run a short simulation with with your files, with\neither sander or pmemd, I see no errors.\n...thx...dac",
+      "url": "http://archive.ambermd.org/202009/0211.html",
+      "in_reply_to": 1599740379
+    }
+  ]
+}

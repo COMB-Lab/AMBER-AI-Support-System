@@ -1,0 +1,61 @@
+{
+  "thread_id": 1599579771,
+  "subject": "[AMBER] Strange RMSD tower appearing in simulation",
+  "messages": [
+    {
+      "message_id": 1599579771,
+      "author": "Jorge da Rocha",
+      "date_raw": "Tue, 8 Sep 2020 17:42:51 +0200",
+      "body": "Dear Amber Users,\nI am running a simulation of a large homodimeric protein (15800 atoms). The\nsimulation mostly runs well, but a large tower/spike of RMSD around 240ns.\nI have tried to address the artefact by using autoimage, and anchoring to\nthe residues of the structure, but the issue persists.\nI am using pmemd.cuda for the simulation.\nHave you any advice of how to resolve this, or ideas of what could be\ncausing this? I will be rerunning that section of simulation in the mean\ntime to see if anything changes.\nWarm Regards\nJorge da Rocha\n-- \nJorge da Rocha (MSc Med)\nPhD Candidate at the Sydney Brenner Institute for Molecular Bioscience\nDivision of Human Genetics, Faculty of Health Sciences\nUniversity of the Witwatersrand\nCell: 082 944 1651",
+      "url": "http://archive.ambermd.org/202009/0110.html"
+    },
+    {
+      "message_id": 1599580727,
+      "author": "Carlos Simmerling",
+      "date_raw": "Tue, 8 Sep 2020 11:58:47 -0400",
+      "body": "Did you visualize the trajectory? That will tell you if it is an imaging\nproblem or not ( most likely it is)\nOn Tue, Sep 8, 2020 at 11:43 AM Jorge da Rocha <jdarocha1.gmail.com> wrote:\n> Dear Amber Users,\n>\n> I am running a simulation of a large homodimeric protein (15800 atoms). The\n> simulation mostly runs well, but a large tower/spike of RMSD around 240ns.\n>\n> I have tried to address the artefact by using autoimage, and anchoring to\n> the residues of the structure, but the issue persists.\n>\n> I am using pmemd.cuda for the simulation.\n>\n> Have you any advice of how to resolve this, or ideas of what could be\n> causing this? I will be rerunning that section of simulation in the mean\n> time to see if anything changes.\n>\n> Warm Regards\n> Jorge da Rocha\n> --\n> Jorge da Rocha (MSc Med)\n> PhD Candidate at the Sydney Brenner Institute for Molecular Bioscience\n> Division of Human Genetics, Faculty of Health Sciences\n> University of the Witwatersrand\n> Cell: 082 944 1651\n>",
+      "url": "http://archive.ambermd.org/202009/0111.html",
+      "in_reply_to": 1599579771
+    },
+    {
+      "message_id": 1599582049,
+      "author": "David Cerutti",
+      "date_raw": "Tue, 8 Sep 2020 12:20:49 -0400",
+      "body": "Yes, this looks like an imaging problem--if you have iwrap = 1 in your\n&cntrl, the homoDIMERIC protein is two molecules, so each will be re-imaged\nseparately.  The same mechanics that are likely creating your spike are\nalso the reason that iwrap = 1 can cause simulations with positional\nrestraints to break unexpectedly hundreds of ns into an otherwise stable\ntrajectory. (Just posting to bring up that second point, which periodically\npops up on the list, no pun intended.)\nDave\nOn Tue, Sep 8, 2020 at 11:59 AM Carlos Simmerling <\ncarlos.simmerling.gmail.com> wrote:\n> Did you visualize the trajectory? That will tell you if it is an imaging\n> problem or not ( most likely it is)\n>\n>\n> On Tue, Sep 8, 2020 at 11:43 AM Jorge da Rocha <jdarocha1.gmail.com>\n> wrote:\n>\n> > Dear Amber Users,\n> >\n> > I am running a simulation of a large homodimeric protein (15800 atoms).\n> The\n> > simulation mostly runs well, but a large tower/spike of RMSD around\n> 240ns.\n> >\n> > I have tried to address the artefact by using autoimage, and anchoring to\n> > the residues of the structure, but the issue persists.\n> >\n> > I am using pmemd.cuda for the simulation.\n> >\n> > Have you any advice of how to resolve this, or ideas of what could be\n> > causing this? I will be rerunning that section of simulation in the mean\n> > time to see if anything changes.\n> >\n> > Warm Regards\n> > Jorge da Rocha\n> > --\n> > Jorge da Rocha (MSc Med)\n> > PhD Candidate at the Sydney Brenner Institute for Molecular Bioscience\n> > Division of Human Genetics, Faculty of Health Sciences\n> > University of the Witwatersrand\n> > Cell: 082 944 1651\n> >",
+      "url": "http://archive.ambermd.org/202009/0112.html",
+      "in_reply_to": 1599579771
+    },
+    {
+      "message_id": 1599589422,
+      "author": "David A Case",
+      "date_raw": "Tue, 8 Sep 2020 14:23:42 -0400",
+      "body": "On Tue, Sep 08, 2020, Dave Cerutti wrote:\n>Yes, this looks like an imaging problem--if you have iwrap = 1 in your\n>&cntrl, the homoDIMERIC protein is two molecules, so each will be re-imaged\n>separately.\nEveryone wants to chime in on this one!\nIt would be good to know if you are indeed using iwrap=1.  If so, you\nsee a reaoson to avoid that in the future.\nYou *should* be able to undo the wrapping in cpptraj, and get a proper\nRMS vs. time plot, without having to re-run any of the simulation.\nCheck out the \"unwrap\" option in cpptraj.\n[This all assumes that this is indeed a wrapping problem -- as Carlos\nsuggests, visualization is your friend here.]\n....dac",
+      "url": "http://archive.ambermd.org/202009/0114.html",
+      "in_reply_to": 1599579771
+    },
+    {
+      "message_id": 1599639176,
+      "author": "Dr. Anselm Horn",
+      "date_raw": "Wed, 9 Sep 2020 10:12:56 +0200",
+      "body": "Following the call to chime in:\n>From the shape of the RMSD plot, I'm pretty sure that this indicates an\nimaging (or wrapping) problem originating from the use of iwrap=1. I\nhave seen many similar graphs in multimeric protein systems in my own\nraw MD runs (, but also in published work).\nVisual inspection of the simulation runs yielded an instantaneous \"jump\"\nof one or more protein chains from one trajectory frame to the other.\nDave's analysis of the problem and David's advice to use the \"unwrap\"\noption in cpptraj worked for me in all the cases.\nNote, however, that you may have to use your original water-containing,\nnot-yet rmsd-fit trajectory for that procedure. But be sure to do the\ndeletion of solvent molecules *prior* to the unwrapping; otherwise you'd\ncreate an unnecessary computational burden for your machine.\nRegards,\nAnselm\nOn 09/08/2020 08:23 PM, David A Case wrote:\n> On Tue, Sep 08, 2020, Dave Cerutti wrote:\n>\n>> Yes, this looks like an imaging problem--if you have iwrap = 1 in your\n>> &cntrl, the homoDIMERIC protein is two molecules, so each will be re-imaged\n>> separately.\n>\n> Everyone wants to chime in on this one!\n>\n> It would be good to know if you are indeed using iwrap=1.  If so, you\n> see a reaoson to avoid that in the future.\n>\n> You *should* be able to undo the wrapping in cpptraj, and get a proper\n> RMS vs. time plot, without having to re-run any of the simulation.\n> Check out the \"unwrap\" option in cpptraj.\n>\n> [This all assumes that this is indeed a wrapping problem -- as Carlos\n> suggests, visualization is your friend here.]\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202009/0123.html",
+      "in_reply_to": 1599579771
+    },
+    {
+      "message_id": 1599653355,
+      "author": "Jorge da Rocha",
+      "date_raw": "Wed, 9 Sep 2020 14:09:15 +0200",
+      "body": "Dear Amber Helpers,\nThank you for the suggestions and advice!\nWe are not using the iwrap function - but we will try to if we\ndon't succeed on correcting the imaging.\nHere is a visualization of the section with the spike, it looks like part\nof the structure moves over to the next periodic box.\nhttps://we.tl/t-b9BQ77u7y2\nThis is what Dr Anselm has described, so we will try to \"unwrap\" in cpptraj\n- we aren't sure if this will work due to us not having used the iwrap\nfunction to begin with.\nAny advice or suggestions are always welcome, and we'll post updates soon.\nThank you all!\nWarm regards\nJorge\nOn Tue, 8 Sep 2020 at 17:42, Jorge da Rocha <jdarocha1.gmail.com> wrote:\n> Dear Amber Users,\n>\n> I am running a simulation of a large homodimeric protein (15800 atoms).\n> The simulation mostly runs well, but a large tower/spike of RMSD around\n> 240ns.\n>\n> I have tried to address the artefact by using autoimage, and anchoring to\n> the residues of the structure, but the issue persists.\n>\n> I am using pmemd.cuda for the simulation.\n>\n> Have you any advice of how to resolve this, or ideas of what could be\n> causing this? I will be rerunning that section of simulation in the mean\n> time to see if anything changes.\n>\n> Warm Regards\n> Jorge da Rocha\n> --\n> Jorge da Rocha (MSc Med)\n> PhD Candidate at the Sydney Brenner Institute for Molecular Bioscience\n> Division of Human Genetics, Faculty of Health Sciences\n> University of the Witwatersrand\n> Cell: 082 944 1651\n>\n-- \nJorge da Rocha (MSc Med)\nPhD Candidate at the Sydney Brenner Institute for Molecular Bioscience\nDivision of Human Genetics, Faculty of Health Sciences\nUniversity of the Witwatersrand\nCell: 082 944 1651",
+      "url": "http://archive.ambermd.org/202009/0126.html",
+      "in_reply_to": 1599579771
+    },
+    {
+      "message_id": 1599663846,
+      "author": "David Cerutti",
+      "date_raw": "Wed, 9 Sep 2020 11:04:06 -0400",
+      "body": "If you are not using the iwrap = 1 feature, don't start now!\nIt is perplexing if this is NOT your issue--because your visualization is\nexactly what we'd expect to see if iwrap = 1 and there is nothing else I\ncan think of that would cause this behavior.\nDave\nOn Wed, Sep 9, 2020 at 8:09 AM Jorge da Rocha <jdarocha1.gmail.com> wrote:\n> Dear Amber Helpers,\n>\n> Thank you for the suggestions and advice!\n>\n> We are not using the iwrap function - but we will try to if we\n> don't succeed on correcting the imaging.\n>\n> Here is a visualization of the section with the spike, it looks like part\n> of the structure moves over to the next periodic box.\n>\n>\nhttps://we.tl/t-b9BQ77u7y2\n>\n> This is what Dr Anselm has described, so we will try to \"unwrap\" in cpptraj\n> - we aren't sure if this will work due to us not having used the iwrap\n> function to begin with.\n>\n> Any advice or suggestions are always welcome, and we'll post updates soon.\n>\n> Thank you all!\n> Warm regards\n> Jorge\n>\n> On Tue, 8 Sep 2020 at 17:42, Jorge da Rocha <jdarocha1.gmail.com> wrote:\n>\n> > Dear Amber Users,\n> >\n> > I am running a simulation of a large homodimeric protein (15800 atoms).\n> > The simulation mostly runs well, but a large tower/spike of RMSD around\n> > 240ns.\n> >\n> > I have tried to address the artefact by using autoimage, and anchoring to\n> > the residues of the structure, but the issue persists.\n> >\n> > I am using pmemd.cuda for the simulation.\n> >\n> > Have you any advice of how to resolve this, or ideas of what could be\n> > causing this? I will be rerunning that section of simulation in the mean\n> > time to see if anything changes.\n> >\n> > Warm Regards\n> > Jorge da Rocha\n> > --\n> > Jorge da Rocha (MSc Med)\n> > PhD Candidate at the Sydney Brenner Institute for Molecular Bioscience\n> > Division of Human Genetics, Faculty of Health Sciences\n> > University of the Witwatersrand\n> > Cell: 082 944 1651\n> >\n>\n>\n> --\n> Jorge da Rocha (MSc Med)\n> PhD Candidate at the Sydney Brenner Institute for Molecular Bioscience\n> Division of Human Genetics, Faculty of Health Sciences\n> University of the Witwatersrand\n> Cell: 082 944 1651\n>",
+      "url": "http://archive.ambermd.org/202009/0132.html",
+      "in_reply_to": 1599579771
+    }
+  ]
+}

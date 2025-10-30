@@ -1,0 +1,21 @@
+{
+  "thread_id": 1658000881,
+  "subject": "[AMBER] Advice on applying restraints",
+  "messages": [
+    {
+      "message_id": 1658000881,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Sat, 16 Jul 2022 15:48:01 -0400",
+      "body": "Dear Amber Community,\nBackground: I have a disordered protein with a missing loop. I added the loop, and it connects well to the rest of the protein after minimization. But, between the added loop and the rest of the protein there is a “pore” and I’m not sure if the loop should be packed into that pore. I want to see if I can at least close the gap somewhat.\nAttempt #1: I defined a moving restraint (centered at 22 Å and goes to 7 Å) between the alpha carbons of the added loop and an alpha carbon of a residue on the other side of the “pore.” This simulation runs fine, except the entire structure distorts at the loop is pulled in.\nAttempt #2: I kept the moving restraint, but added positional restraints to the rest of the backbone. This simulation fails after ~4 steps with NaN energies.\nQuestion: Any thoughts on what I could try next to bring the two parts of the protein closer together so there is not a gaping whole.\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202207/0017.html"
+    },
+    {
+      "message_id": 1658146845,
+      "author": "David A Case",
+      "date_raw": "Mon, 18 Jul 2022 08:20:45 -0400",
+      "body": "On Sat, Jul 16, 2022, Matthew Guberman-Pfeffer via AMBER wrote:\n>\n>Background: I have a disordered protein with a missing loop. I added\n>the loop, and it connects well to the rest of the protein after\n>minimization. But, between the added loop and the rest of the protein there\n>is a “pore” and I’m not sure if the loop should be packed into that pore. I\n>want to see if I can at least close the gap somewhat.\nGenerating models for missing loops in proteins is not something that Amber\nis very good at.  *Refining* these loops after initial coordinates are\navailable is something that often works.  You can see some examples here:\nSystematic comparison of Amber and Rosetta energy functions for protein\nstructure evaluation. J. Chem. Theory Comput. 14, 6015-6025 (2018).\nThis study used Rosetta to generate the initial candidate models, but other\ntools to do this are also available.  Note that you probably want to\ngenerate a significant number of initial structures, then choose good ones\nfrom such an ensemble.\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202207/0022.html",
+      "in_reply_to": 1658000881
+    }
+  ]
+}

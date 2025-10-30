@@ -1,0 +1,53 @@
+{
+  "thread_id": 1600769157,
+  "subject": "[AMBER] autoimage for grid analysis with cpptraj",
+  "messages": [
+    {
+      "message_id": 1600769157,
+      "author": "Gustaf Olsson",
+      "date_raw": "Tue, 22 Sep 2020 10:05:57 +0000",
+      "body": "I am trying to perform a grid analysis with a small peptide and a number of other molecules. I think managed to work out most of the details though one question remains.\nI was recommended to use the “familiar” option with autoimage.\nautoimage :1-11 origin familiar\nrms rms_1-11_ds_of :1-11 out rms_1-11_out_of.dat first\naverage avg1-11_of.pdb :1-11\ngrid out_1-11_AAC_of.xplor 60 0.5 60 0.5 60 0.5 :AAC\nHowever, I have run the same analysis without the “familiar” option and I cannot detect any difference at all. Is this familiar recommendation based on the old “image” methodology and can ignored now or should it indeed remain. Are there any benefits for using the familiar truncated-octahedral shape? The original cell is not a truncated octahedron.\nBest regards\n// Gustaf",
+      "url": "http://archive.ambermd.org/202009/0282.html"
+    },
+    {
+      "message_id": 1600778702,
+      "author": "David A Case",
+      "date_raw": "Tue, 22 Sep 2020 08:45:02 -0400",
+      "body": "On Tue, Sep 22, 2020, Gustaf Olsson wrote:\n>\n>    autoimage :1-11 origin familiar\n>The original cell is not a truncated octahedron.\nDan is probably busy, so I'll try to answer: I pretty sure that\n\"familiar\" is just ignored if you don't have a truncated octahedron.\n(You might inspct the cpptraj log file to see if there is any indication\nthere of what is happening.)\n...dac",
+      "url": "http://archive.ambermd.org/202009/0284.html",
+      "in_reply_to": 1600769157
+    },
+    {
+      "message_id": 1600780227,
+      "author": "Gustaf Olsson",
+      "date_raw": "Tue, 22 Sep 2020 13:10:27 +0000",
+      "body": "I seem to remember there being a referral to GitHub for cpptraj related questions though I hoped someone here had some insight so as not to add to a growing list of \"todos\".\nI ran a couple of analyses and checked with diff. Everything turns out identical so regardless of the function of “familiar” it does not seem to affect my output in this case in any detectable manner.\nI interpreted the manual as seemingly indicating a “re-imaging”\n\"[familiar] Image to familiar truncated-octahedral shape; this is on by default if the original cell i truncated octahedron.”\nI interpreted this as “if the original cell is not in truncated octahedron, use this option to make it truncated-octahedral”. Though as concluded, for these analyses it does not seem to matter anyway as the output with/without “familiar” is identical (maybe there is an extra hyphen ore one missing here).\nThank you for the kind response\n// Gustaf\n> On 22 Sep 2020, at 14:45, David A Case <david.case.rutgers.\nedu> wrote:\n>\n> On Tue, Sep 22, 2020, Gustaf Olsson wrote:\n>>\n>>   autoimage :1-11 origin familiar\n>\n>> The original cell is not a truncated octahedron.\n>\n> Dan is probably busy, so I'll try to answer: I pretty sure that\n> \"familiar\" is just ignored if you don't have a truncated octahedron.\n> (You might inspct the cpptraj log file to see if there is any indication\n> there of what is happening.)\n>\n> ...dac\n>\n>",
+      "url": "http://archive.ambermd.org/202009/0288.html",
+      "in_reply_to": 1600769157
+    },
+    {
+      "message_id": 1600781888,
+      "author": "Daniel Roe",
+      "date_raw": "Tue, 22 Sep 2020 09:38:08 -0400",
+      "body": "Hi,\nThe 'familiar' option turns on some extra code in the imaging routines\nthat ensures each object being imaged is not only in the primary unit\ncell, but as close as possible to the specified center point. For unit\ncells with alpha=beta-gamma angles of 109.47 deg., the effect is to\nmake the general triclinic rhombohedron more \"spherical\" and you end\nup with the \"familiar\" truncated octohedron shape. For other unit cell\ntypes, if the cell is already somewhat \"spherical\" I could see there\nbeing no discernible effect.\nIf you're interested, the code is in ImageRoutines.cpp in one of the\nImage::Nonortho() functions.\nHope this helps,\n-Dan\nOn Tue, Sep 22, 2020 at 6:06 AM Gustaf Olsson <gustaf.olsson.lnu.\nse> wrote:\n>\n>\n> I am trying to perform a grid analysis with a small peptide and a number of other molecules. I think managed to work out most of the details though one question remains.\n>\n> I was recommended to use the “familiar” option with autoimage.\n>\n>     autoimage :1-11 origin familiar\n>     rms rms_1-11_ds_of :1-11 out rms_1-11_out_of.dat first\n>     average avg1-11_of.pdb :1-11\n>     grid out_1-11_AAC_of.xplor 60 0.5 60 0.5 60 0.5 :AAC\n>\n> However, I have run the same analysis without the “familiar” option and I cannot detect any difference at all. Is this familiar recommendation based on the old “image” methodology and can ignored now or should it indeed remain. Are there any benefits for using the familiar truncated-octahedral shape? The original cell is not a truncated octahedron.\n>\n> Best regards\n> // Gustaf\n>",
+      "url": "http://archive.ambermd.org/202009/0290.html",
+      "in_reply_to": 1600769157
+    },
+    {
+      "message_id": 1600844084,
+      "author": "Gustaf Olsson",
+      "date_raw": "Wed, 23 Sep 2020 06:54:44 +0000",
+      "body": "Hi Dan and thank you for getting in touch.\nThe way I interpret this would be that including “familiar” should then almost be done by default, unless there is a good reason to exclude it. Assuming that it can potentially produce more accurate results?\nThank you for the tip as well, I’ll put checking on the code onto my todo list.\nBest regards\n// Gustaf\n> On 22 Sep 2020, at 15:38, Daniel Roe <daniel.r.roe.gmail.\ncom> wrote:\n>\n> Hi,\n>\n> The 'familiar' option turns on some extra code in the imaging routines\n> that ensures each object being imaged is not only in the primary unit\n> cell, but as close as possible to the specified center point. For unit\n> cells with alpha=beta-gamma angles of 109.47 deg., the effect is to\n> make the general triclinic rhombohedron more \"spherical\" and you end\n> up with the \"familiar\" truncated octohedron shape. For other unit cell\n> types, if the cell is already somewhat \"spherical\" I could see there\n> being no discernible effect.\n>\n> If you're interested, the code is in ImageRoutines.cpp in one of the\n> Image::Nonortho() functions.\n>\n> Hope this helps,\n>\n> -Dan\n>\n> On Tue, Sep 22, 2020 at 6:06 AM Gustaf Olsson <gustaf.olsson.lnu.\nse> wrote:\n>>\n>>\n>> I am trying to perform a grid analysis with a small peptide and a number of other molecules. I think managed to work out most of the details though one question remains.\n>>\n>> I was recommended to use the “familiar” option with autoimage.\n>>\n>>    autoimage :1-11 origin familiar\n>>    rms rms_1-11_ds_of :1-11 out rms_1-11_out_of.dat first\n>>    average avg1-11_of.pdb :1-11\n>>    grid out_1-11_AAC_of.xplor 60 0.5 60 0.5 60 0.5 :AAC\n>>\n>> However, I have run the same analysis without the “familiar” option and I cannot detect any difference at all. Is this familiar recommendation based on the old “image” methodology and can ignored now or should it indeed remain. Are there any benefits for using the familiar truncated-octahedral shape? The original cell is not a truncated octahedron.\n>>\n>> Best regards\n>> // Gustaf\n>>",
+      "url": "http://archive.ambermd.org/202009/0298.html",
+      "in_reply_to": 1600769157
+    },
+    {
+      "message_id": 1600856656,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 23 Sep 2020 06:24:16 -0400",
+      "body": "Hi,\nOn Wed, Sep 23, 2020 at 2:55 AM Gustaf Olsson <gustaf.olsson.lnu.\nse> wrote:\n> The way I interpret this would be that including “familiar” should then almost be done by default, unless there is a good reason to exclude it. Assuming that it can potentially produce more accurate results?\nThe 'familiar' option is really just cosmetic (as all imaging is\nreally) - it just depends how you want the final cell to look. If you\nprefer the more \"spherical\" looking truncated octohedron you can use\nit, but functionally the general triclinic cell is the same. It's\nactually a bit slower since there is some extra calculation involved.\nUltimately it's down to user preference.\n-Dan\n>\n> Thank you for the tip as well, I’ll put checking on the code onto my todo list.\n>\n> Best regards\n> // Gustaf\n>\n> > On 22 Sep 2020, at 15:38, Daniel Roe <daniel.r.roe.gmail.\ncom> wrote:\n> >\n> > Hi,\n> >\n> > The 'familiar' option turns on some extra code in the imaging routines\n> > that ensures each object being imaged is not only in the primary unit\n> > cell, but as close as possible to the specified center point. For unit\n> > cells with alpha=beta-gamma angles of 109.47 deg., the effect is to\n> > make the general triclinic rhombohedron more \"spherical\" and you end\n> > up with the \"familiar\" truncated octohedron shape. For other unit cell\n> > types, if the cell is already somewhat \"spherical\" I could see there\n> > being no discernible effect.\n> >\n> > If you're interested, the code is in ImageRoutines.cpp in one of the\n> > Image::Nonortho() functions.\n> >\n> > Hope this helps,\n> >\n> > -Dan\n> >\n> > On Tue, Sep 22, 2020 at 6:06 AM Gustaf Olsson <gustaf.olsson.lnu.\nse> wrote:\n> >>\n> >>\n> >> I am trying to perform a grid analysis with a small peptide and a number of other molecules. I think managed to work out most of the details though one question remains.\n> >>\n> >> I was recommended to use the “familiar” option with autoimage.\n> >>\n> >>    autoimage :1-11 origin familiar\n> >>    rms rms_1-11_ds_of :1-11 out rms_1-11_out_of.dat first\n> >>    average avg1-11_of.pdb :1-11\n> >>    grid out_1-11_AAC_of.xplor 60 0.5 60 0.5 60 0.5 :AAC\n> >>\n> >> However, I have run the same analysis without the “familiar” option and I cannot detect any difference at all. Is this familiar recommendation based on the old “image” methodology and can ignored now or should it indeed remain. Are there any benefits for using the familiar truncated-octahedral shape? The original cell is not a truncated octahedron.\n> >>\n> >> Best regards\n> >> // Gustaf\n> >>",
+      "url": "http://archive.ambermd.org/202009/0300.html",
+      "in_reply_to": 1600769157
+    }
+  ]
+}

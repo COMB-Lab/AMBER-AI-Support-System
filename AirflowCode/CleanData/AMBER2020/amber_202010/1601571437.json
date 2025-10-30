@@ -1,0 +1,37 @@
+{
+  "thread_id": 1601571437,
+  "subject": "[AMBER] Error: Failed to generate parameters",
+  "messages": [
+    {
+      "message_id": 1601571437,
+      "author": "Jatin Kashyap",
+      "date_raw": "Thu, 1 Oct 2020 12:57:17 -0400",
+      "body": "Dear AMBER Community,\nI am new to biological simulations. Can anybody please help me to understand why I am getting below error, and how to solve it.\nThank you.\n> complex = loadpdb complex_H.pdb\nLoading PDB file: ./complex_H.pdb\n-- residue 835: duplicate [ C] atoms (total 18)\n-- residue 835: duplicate [ N] atoms (total 3)\nWarning: Atom names in each residue should be unique.\n(Same-name atoms are handled by using the first\noccurrence and by ignoring the rest.\nFrequently duplicate atom names stem from alternate\nconformations in the PDB file.)\nCreated a new atom named: CL within residue: .R<UNL 835>\nAdded missing heavy atom: .R<UNL 835>.A<C1 5>\nAdded missing heavy atom: .R<UNL 835>.A<C8 12>\nAdded missing heavy atom: .R<UNL 835>.A<Cl 23>\nAdded missing heavy atom: .R<UNL 835>.A<C2 6>\nAdded missing heavy atom: .R<UNL 835>.A<C4 8>\nAdded missing heavy atom: .R<UNL 835>.A<C3 7>\nAdded missing heavy atom: .R<UNL 835>.A<N1 2>\nAdded missing heavy atom: .R<UNL 835>.A<C7 11>\nAdded missing heavy atom: .R<UNL 835>.A<C5 9>\nAdded missing heavy atom: .R<UNL 835>.A<C6 10>\nAdded missing heavy atom: .R<UNL 835>.A<C17 21>\nAdded missing heavy atom: .R<UNL 835>.A<C16 20>\nAdded missing heavy atom: .R<UNL 835>.A<N2 3>\nAdded missing heavy atom: .R<UNL 835>.A<C13 17>\nAdded missing heavy atom: .R<UNL 835>.A<C14 18>\nAdded missing heavy atom: .R<UNL 835>.A<C12 16>\nAdded missing heavy atom: .R<UNL 835>.A<C15 19>\nAdded missing heavy atom: .R<UNL 835>.A<C11 15>\nAdded missing heavy atom: .R<UNL 835>.A<C9 13>\nAdded missing heavy atom: .R<UNL 835>.A<C10 14>\ntotal atoms in file: 13242\nLeap added 45 missing atoms according to residue templates:\n20 Heavy\n25 H / lone pairs\nThe file contained 1 atoms not in residue templates\n> saveamberparm complex complex_H.prmtop complex_H.rst7\nChecking Unit.\nWarning: The unperturbed charge of the unit (-8.001000) is not zero.\nFATAL:  Atom .R<UNL 835>.A<CL 24> does not have a type.\nError: Failed to generate parameters\nWarning: Parameter file was not saved.\n——\nJatin Kashyap\nPh.D. Student\nDr. Dibakar Datta Group\nDepartment of Mechanical and Industrial Engineering\nNew Jersey Institute of Technology (NJIT)\nUniversity Heights\nNewark, NJ 07102-1982\nPhone- (201)889-5783\nEmail- jk435.njit.edu",
+      "url": "http://archive.ambermd.org/202010/0006.html"
+    },
+    {
+      "message_id": 1601585102,
+      "author": "David A Case",
+      "date_raw": "Thu, 1 Oct 2020 16:45:02 -0400",
+      "body": "On Thu, Oct 01, 2020, Jatin Kashyap wrote:\n>\n>I am new to biological simulations. Can anybody please help me to\n>understand why I am getting below error, and how to solve it.\nYou should tell us more about what you did here.  What is \"UNL\"?\n(Unkown ligand?)  Did you do anything to create an Amber library for\nthis?  If not, check out tutorial 2.1.\n>> complex = loadpdb complex_H.pdb\n>Loading PDB file: ./complex_H.pdb\n>-- residue 835: duplicate [ C] atoms (total 18)\n>-- residue 835: duplicate [ N] atoms (total 3)\nAtom names in a given residue (residue 835 in this case) need to be\nunique.  Take a look at your PDB file.  If you are truly beginning with\nAmber, start with a smaller system, and one with no non-standard\nresidues.  Then build up complexity as you gain experience.\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202010/0010.html",
+      "in_reply_to": 1601571437
+    },
+    {
+      "message_id": 1601585714,
+      "author": "Jatin Kashyap",
+      "date_raw": "Thu, 1 Oct 2020 16:55:14 -0400",
+      "body": "Hi David,\nActually, I am following antechamber tutorial(\nhttps://ambermd.org/tutorials/basic/tutorial4b/index.html\n).\nI am sorry for missing the system information, “UNL” stands for the name of the ligand.\nActually I am feeding the result of Vina into AMBER and due to some reason the Vina is changing the name of the ligand to “UNL”.\nAs per given in the above tutorial, I am first creating library & top/parameter file for the ligand(UNL) and then following the tutorial to create top/parameter file for the complex.\nAnd this is where the error shows-up. I am following the same tutorial for another system without any problem, and I followed the same steps here as well.\nThank you.\n——\n> On Oct 1, 2020, at 4:45 PM, David A Case <david.case.rutgers.\nedu> wrote:\n>\n> On Thu, Oct 01, 2020, Jatin Kashyap wrote:\n>>\n>> I am new to biological simulations. Can anybody please help me to\n>> understand why I am getting below error, and how to solve it.\n>\n> You should tell us more about what you did here.  What is \"UNL\"?\n> (Unkown ligand?)  Did you do anything to create an Amber library for\n> this?  If not, check out tutorial 2.1.\n>\n>>> complex = loadpdb complex_H.pdb\n>> Loading PDB file: ./complex_H.pdb\n>> -- residue 835: duplicate [ C] atoms (total 18)\n>> -- residue 835: duplicate [ N] atoms (total 3)\n>\n> Atom names in a given residue (residue 835 in this case) need to be\n> unique.  Take a look at your PDB file.  If you are truly beginning with\n> Amber, start with a smaller system, and one with no non-standard\n> residues.  Then build up complexity as you gain experience.\n>\n> ...hope this helps....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202010/0013.html",
+      "in_reply_to": 1601571437
+    },
+    {
+      "message_id": 1601652398,
+      "author": "David A Case",
+      "date_raw": "Fri, 2 Oct 2020 11:26:38 -0400",
+      "body": "On Thu, Oct 01, 2020, Jatin Kashyap wrote:\n>\n>Actually I am feeding the result of Vina into AMBER and due to some\n>reason the Vina is changing the name of the ligand to “UNL”.\nCheck the pdb file that you are loading -- sounds like it came from\nVina.  All of the atom names in the \"UNL\" ligand must match those in the\nmol2 file you created from antechamber.  You may need to manually edit\nthe PDB file to make sure that this is true.\n....dac",
+      "url": "http://archive.ambermd.org/202010/0025.html",
+      "in_reply_to": 1601571437
+    }
+  ]
+}

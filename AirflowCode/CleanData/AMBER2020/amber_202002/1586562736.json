@@ -1,0 +1,53 @@
+{
+  "thread_id": 1586562736,
+  "subject": "[AMBER] Amber18 compiled with GCC/8.3.0 fails some DPFP tests",
+  "messages": [
+    {
+      "message_id": 1586562736,
+      "author": "Cong Liu",
+      "date_raw": "Fri, 10 Apr 2020 19:52:16 -0400",
+      "body": "Dear Amber Developers,\nI recently compiled Amebr18 with GCC/8.3.0 and CUDA/10.1. The compilation\nwent through well. However, *amber_cuda_serial *testing indicates 5 \"*file\ncomparison failure*\":  DPFP myoglobin_igb7, DPFP myoglobin_igb8, DPFP\nmyoglobin_igb8_gbsa, DPFP irest1_ntt0_igb7_ntc2, DPFP irest1_ntt0_igb8_ntc2\nwith \"IEEE_UNDERFLOW_FLAG IEEE_DENORMAL\" floating-point exceptions.\nThe compile parameters:\n1.  ./configure gnu;\n2. make install;\nCan I ignore this error or I should compile Amber again with different\nsettings?\nBest,\nCong Liu",
+      "url": "http://archive.ambermd.org/202004/0100.html"
+    },
+    {
+      "message_id": 1586606614,
+      "author": "David A Case",
+      "date_raw": "Sat, 11 Apr 2020 08:03:34 -0400",
+      "body": "On Fri, Apr 10, 2020, Cong Liu wrote:\n>\n>I recently compiled Amebr18 with GCC/8.3.0 and CUDA/10.1. The compilation\n>went through well. However, *amber_cuda_serial *testing indicates 5 \"*file\n>comparison failure*\":  DPFP myoglobin_igb7, DPFP myoglobin_igb8, DPFP\n>myoglobin_igb8_gbsa, DPFP irest1_ntt0_igb7_ntc2, DPFP irest1_ntt0_igb8_ntc2\n>with \"IEEE_UNDERFLOW_FLAG IEEE_DENORMAL\" floating-point exceptions.\nThe underflow flag is not worrisome, but you should look at the .dif\nfiles (collected in the logs folder) and see if the discrepancies look\nlike roundoff errors or something more serious.\n....dac",
+      "url": "http://archive.ambermd.org/202004/0115.html",
+      "in_reply_to": 1586562736
+    },
+    {
+      "message_id": 1586615107,
+      "author": "Cong Liu",
+      "date_raw": "Sat, 11 Apr 2020 10:25:07 -0400",
+      "body": "Hi David,\nThanks for your response. Here is the screenshot of one of the failure:\n[image: Screen Shot 2020-04-11 at 10.22.57.png]\nI guess the problem is more serious, since the EPtot and EGB are quite\ndifferent.\nBest,\nCong\nOn Sat, Apr 11, 2020 at 8:03 AM David A Case <david.case.rutgers.edu> wrote:\n> On Fri, Apr 10, 2020, Cong Liu wrote:\n> >\n> >I recently compiled Amebr18 with GCC/8.3.0 and CUDA/10.1. The compilation\n> >went through well. However, *amber_cuda_serial *testing indicates 5 \"*file\n> >comparison failure*\":  DPFP myoglobin_igb7, DPFP myoglobin_igb8, DPFP\n> >myoglobin_igb8_gbsa, DPFP irest1_ntt0_igb7_ntc2, DPFP\n> irest1_ntt0_igb8_ntc2\n> >with \"IEEE_UNDERFLOW_FLAG IEEE_DENORMAL\" floating-point exceptions.\n>\n> The underflow flag is not worrisome, but you should look at the .dif\n> files (collected in the logs folder) and see if the discrepancies look\n> like roundoff errors or something more serious.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202004/0116.html",
+      "in_reply_to": 1586562736
+    },
+    {
+      "message_id": 1586877877,
+      "author": "Cong Liu",
+      "date_raw": "Tue, 14 Apr 2020 11:24:37 -0400",
+      "body": "Does anyone else have this issue when compiling Amber18 with CUDA10.1 and\nGCC/8.3.0? Is there any clue how to fix it?\nThanks,\nCong\nOn Sat, Apr 11, 2020 at 10:25 AM Cong Liu <cong.liu.1.stonybrook.edu> wrote:\n> Hi David,\n>\n> Thanks for your response. Here is the screenshot of one of the failure:\n> [image: Screen Shot 2020-04-11 at 10.22.57.png]\n>\n> I guess the problem is more serious, since the EPtot and EGB are quite\n> different.\n>\n> Best,\n> Cong\n>\n>\n>\n> On Sat, Apr 11, 2020 at 8:03 AM David A Case <david.case.rutgers.edu>\n> wrote:\n>\n>> On Fri, Apr 10, 2020, Cong Liu wrote:\n>> >\n>> >I recently compiled Amebr18 with GCC/8.3.0 and CUDA/10.1. The compilation\n>> >went through well. However, *amber_cuda_serial *testing indicates 5\n>> \"*file\n>> >comparison failure*\":  DPFP myoglobin_igb7, DPFP myoglobin_igb8, DPFP\n>> >myoglobin_igb8_gbsa, DPFP irest1_ntt0_igb7_ntc2, DPFP\n>> irest1_ntt0_igb8_ntc2\n>> >with \"IEEE_UNDERFLOW_FLAG IEEE_DENORMAL\" floating-point exceptions.\n>>\n>> The underflow flag is not worrisome, but you should look at the .dif\n>> files (collected in the logs folder) and see if the discrepancies look\n>> like roundoff errors or something more serious.\n>>\n>> ....dac\n>>\n>>\n>>",
+      "url": "http://archive.ambermd.org/202004/0151.html",
+      "in_reply_to": 1586562736
+    },
+    {
+      "message_id": 1586885808,
+      "author": "Kellon Belfon",
+      "date_raw": "Tue, 14 Apr 2020 13:36:48 -0400",
+      "body": "Hi Cong,\nThe Etot difference is because of the EGB difference.\nWhat kind of GPUs are these? Are the GPUs the volta architecture e.g V100?\nI know there were some issues with racemic conditions on the volta\narchitecture and register spillage from one of my GPU kernels (though this\nkernel is in amber20 and not in amber18) for the GB calculations on the\nGPU.\nDave Cerutti knows more about this since he was been working on it/worked\non it. I know this was happening in newer version of Amber but I think it\nis maybe the same issue in Amber 18 if it is one of the newer GPUs.\nRegards,\nKellon\nOn Tue, Apr 14, 2020 at 11:25 AM Cong Liu <cong.liu.1.stonybrook.edu> wrote:\n> Does anyone else have this issue when compiling Amber18 with CUDA10.1 and\n> GCC/8.3.0? Is there any clue how to fix it?\n>\n> Thanks,\n> Cong\n>\n>\n>\n> On Sat, Apr 11, 2020 at 10:25 AM Cong Liu <cong.liu.1.stonybrook.edu>\n> wrote:\n>\n> > Hi David,\n> >\n> > Thanks for your response. Here is the screenshot of one of the failure:\n> > [image: Screen Shot 2020-04-11 at 10.22.57.png]\n> >\n> > I guess the problem is more serious, since the EPtot and EGB are quite\n> > different.\n> >\n> > Best,\n> > Cong\n> >\n> >\n> >\n> > On Sat, Apr 11, 2020 at 8:03 AM David A Case <david.case.rutgers.edu>\n> > wrote:\n> >\n> >> On Fri, Apr 10, 2020, Cong Liu wrote:\n> >> >\n> >> >I recently compiled Amebr18 with GCC/8.3.0 and CUDA/10.1. The\n> compilation\n> >> >went through well. However, *amber_cuda_serial *testing indicates 5\n> >> \"*file\n> >> >comparison failure*\":  DPFP myoglobin_igb7, DPFP myoglobin_igb8, DPFP\n> >> >myoglobin_igb8_gbsa, DPFP irest1_ntt0_igb7_ntc2, DPFP\n> >> irest1_ntt0_igb8_ntc2\n> >> >with \"IEEE_UNDERFLOW_FLAG IEEE_DENORMAL\" floating-point exceptions.\n> >>\n> >> The underflow flag is not worrisome, but you should look at the .dif\n> >> files (collected in the logs folder) and see if the discrepancies look\n> >> like roundoff errors or something more serious.\n> >>\n> >> ....dac\n> >>\n> >>\n> >>",
+      "url": "http://archive.ambermd.org/202004/0152.html",
+      "in_reply_to": 1586562736
+    },
+    {
+      "message_id": 1586887448,
+      "author": "Cong Liu",
+      "date_raw": "Tue, 14 Apr 2020 14:04:08 -0400",
+      "body": "Add a bit more details. It is the officially released Amber18 with patches.\nThe testing is done with the NVIDIA Quadro RTX 5000 GPU.\nBest,\nCong\nOn Tue, Apr 14, 2020 at 11:24 AM Cong Liu <cong.liu.1.stonybrook.edu> wrote:\n> Does anyone else have this issue when compiling Amber18 with CUDA10.1 and\n> GCC/8.3.0? Is there any clue how to fix it?\n>\n> Thanks,\n> Cong\n>\n>\n>\n> On Sat, Apr 11, 2020 at 10:25 AM Cong Liu <cong.liu.1.stonybrook.edu>\n> wrote:\n>\n>> Hi David,\n>>\n>> Thanks for your response. Here is the screenshot of one of the failure:\n>> [image: Screen Shot 2020-04-11 at 10.22.57.png]\n>>\n>> I guess the problem is more serious, since the EPtot and EGB are quite\n>> different.\n>>\n>> Best,\n>> Cong\n>>\n>>\n>>\n>> On Sat, Apr 11, 2020 at 8:03 AM David A Case <david.case.rutgers.edu>\n>> wrote:\n>>\n>>> On Fri, Apr 10, 2020, Cong Liu wrote:\n>>> >\n>>> >I recently compiled Amebr18 with GCC/8.3.0 and CUDA/10.1. The\n>>> compilation\n>>> >went through well. However, *amber_cuda_serial *testing indicates 5\n>>> \"*file\n>>> >comparison failure*\":  DPFP myoglobin_igb7, DPFP myoglobin_igb8, DPFP\n>>> >myoglobin_igb8_gbsa, DPFP irest1_ntt0_igb7_ntc2, DPFP\n>>> irest1_ntt0_igb8_ntc2\n>>> >with \"IEEE_UNDERFLOW_FLAG IEEE_DENORMAL\" floating-point exceptions.\n>>>\n>>> The underflow flag is not worrisome, but you should look at the .dif\n>>> files (collected in the logs folder) and see if the discrepancies look\n>>> like roundoff errors or something more serious.\n>>>\n>>> ....dac\n>>>\n>>>\n>>>",
+      "url": "http://archive.ambermd.org/202004/0156.html",
+      "in_reply_to": 1586562736
+    }
+  ]
+}

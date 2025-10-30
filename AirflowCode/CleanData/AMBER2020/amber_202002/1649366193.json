@@ -1,0 +1,21 @@
+{
+  "thread_id": 1649366193,
+  "subject": "[AMBER] Output forces or gradients in sqm",
+  "messages": [
+    {
+      "message_id": 1649366193,
+      "author": "Jinzhe Zeng",
+      "date_raw": "Thu, 7 Apr 2022 17:16:33 -0400",
+      "body": "Dear AMBER sqm developers,\nIn sqm module, I found the following codes:\nAmberTools/src/sqm/sqm.F90, line 416-440:\n!NOW PUT THE CALCULATED gradient (not force!) INTO THE SANDER FORCE ARRAY\ndo i=1,qmmm_struct%nquant\nm = qmmm_struct%iqmatoms(i)\nm = (m-1)*3\nforces(m+1) = qmmm_struct%dxyzqm(1,i)\nforces(m+2) = qmmm_struct%dxyzqm(2,i)\nforces(m+3) = qmmm_struct%dxyzqm(3,i)\nenddo\nif (qmmm_mpi%commqmmm_master .AND. qmmm_nml%verbosity > 3) then\n!If verbosity level is greater than 3 we also print the force array\non the QM atoms\nwrite (6,'(\"QMMM:\")')\nwrite (6,'(\"QMMM: Forces on QM atoms from SCF calculation\")')\nwrite (6,'(\"QMMM: Atm \",i6,\": \",3f20.14)')\n(j,qmmm_struct%dxyzqm(1,j), qmmm_struct%dxyzqm(2,j), &\nqmmm_struct%dxyzqm(3,j), j=1,qmmm_struct%nquant_nlink)\nif (qmmm_nml%verbosity > 4) then\n!Also print info in KJ/mol\nwrite (6,'(\"QMMM:\")')\nwrite (6,'(\"QMMM: Forces on QM atoms from SCF calculation\n(KJ/mol)\")')\nwrite (6,'(\"QMMM: Atm \",i6,\": \",3f20.14)')\n(j,qmmm_struct%dxyzqm(1,j)*4.184d0, &\nqmmm_struct%dxyzqm(2,j)*4.184d0,\nqmmm_struct%dxyzqm(3,j)*4.184d0, &\nj=1,qmmm_struct%nquant_nlink)\nend if\nend if\nHere it's confusing to me that, in line 416, a comment indicates\nqmmm_struct%dxyzqm is the gradient but not force. However, in line 429, the\noutput message calls the same variable \"forces\". I want to confirm whether\nit is gradients or forces.\nregards,\nJinzhe",
+      "url": "http://archive.ambermd.org/202204/0070.html"
+    },
+    {
+      "message_id": 1649424902,
+      "author": "David A Case",
+      "date_raw": "Fri, 8 Apr 2022 09:35:02 -0400",
+      "body": "On Thu, Apr 07, 2022, Jinzhe Zeng wrote:\n>\n>In sqm module, I found the following codes:\n>\n>AmberTools/src/sqm/sqm.F90, line 416-440:\n>   !NOW PUT THE CALCULATED gradient (not force!) INTO THE SANDER FORCE ARRAY\n...\n>         write (6,'(\"QMMM:\")')\n>         write (6,'(\"QMMM: Forces on QM atoms from SCF calculation\n>(KJ/mol)\")')\n>         write (6,'(\"QMMM: Atm \",i6,\": \",3f20.14)')\n>(j,qmmm_struct%dxyzqm(1,j)*4.184d0, &\n>              qmmm_struct%dxyzqm(2,j)*4.184d0,\n>qmmm_struct%dxyzqm(3,j)*4.184d0, &\n>              j=1,qmmm_struct%nquant_nlink)\n>      end if\n>   end if\n>\n>Here it's confusing to me that, in line 416, a comment indicates\n>qmmm_struct%dxyzqm is the gradient but not force. However, in line 429, the\n>output message calls the same variable \"forces\". I want to confirm whether\n>it is gradients or forces.\nYou'll probably want to construct a simple example where you know the\ncorrect sign to double check what is printed out.\n...good luck....dac",
+      "url": "http://archive.ambermd.org/202204/0072.html",
+      "in_reply_to": 1649366193
+    }
+  ]
+}

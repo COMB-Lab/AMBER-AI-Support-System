@@ -1,0 +1,21 @@
+{
+  "thread_id": 1707246818,
+  "subject": "[AMBER] GPU perf: RTX3060TI &lt; RTX2060 Super &lt; RTX4090 ?",
+  "messages": [
+    {
+      "message_id": 1707246818,
+      "author": "Thomas C. Bishop",
+      "date_raw": "Tue, 6 Feb 2024 13:13:38 -0600",
+      "body": "Dear Amber,\nI\"m having some difficulty figuring out  amber's GPU performance on 3\ndifferent machines in my lab. Something's not right.\nNOTE the RTX 3060 TI is a LHR version.\nBy the specs the RTX3060TI should be about 1x to 2x faster than the\nRTX2060 Super but it is gets about 1/2x the ns/day.\nAnd the RTX4090 does not seem to get expected speeds regardless if I\ncompare to the 3060Ti or 2060 Super.\n`\nHere's what I've collected when running the exact same GB simulation,\nwith the  same amber22 pmemd.cuda_SPFP executable, libraries, OS-version\netc.. on the three different computers.\nThe system has 47407 atoms and all simulations use\ngbsa=3          :Compute surface area using a fast pairwise approximation\nsuitable for GPU machine.\nThe timings below are from amber's \"inf\" file the number multiprocs and\nfrequency are from amber's log file and the flops (single precision\nflops) from wikipedia. Driver reported by nvidia-smi and libraries by ldd\nGPU    TIME    #MultiProcs Freq  Flops    Driver    libraries\nCUDA Device Name: NVIDIA GeForce RTX 2060 SUPER   4.35 ns/day    34\n1.65Ghz   6.7-7.2 535.113.01   CUDA Version: 12.2(11.7 libraries)\nCUDA Device Name: NVIDIA GeForce RTX 3060 Ti     2.02 ns/day    38\n1.66Ghz  13.7-16.2 545.29.06    CUDA Version: 12.3  (11.7 libraries)\nCUDA Device Name: NVIDIA GeForce RTX 4090   7.38 ns/day    128\n2.52Ghz    73.1-82.6 545.29.06    CUDA Version: 12.3 (11.8 libraries)\nLet me know what more to post and I'll be happy to provide info.\nTom\n-- \n  ***********************************\n          Thomas C. Bishop\n  Hazel Stewart Garner Associate Professor\n         Chemistry & Physics\n          Tel: 318-257-5209\nhttps://dna.engr.latech.edu\nOffice Hrs: Winter 2023-24 Eng Annex Room 207\n       M-F:  1:30-3:30 or by appt\n  ***********************************",
+      "url": "http://archive.ambermd.org/202402/0017.html"
+    },
+    {
+      "message_id": 1707668473,
+      "author": "David A Case",
+      "date_raw": "Sun, 11 Feb 2024 09:21:13 -0700",
+      "body": "On Tue, Feb 06, 2024, Thomas C. Bishop via AMBER wrote:\n>I\"m having some difficulty figuring out� amber's GPU performance on 3\n>different machines in my lab. Something's not right.\n>NOTE the RTX 3060 TI is a LHR version.\n>\n>By the specs the RTX3060TI should be about 1x to 2x faster than the\n>RTX2060 Super but it is gets about 1/2x the ns/day.\n>And the RTX4090 does not seem to get expected speeds regardless if I\n>compare to the 3060Ti or 2060 Super.\n>`\n>The system has 47407 atoms and all simulations use\n>gbsa=3��������� :Compute surface area using a fast pairwise approximation\n>����������������������� suitable for GPU machine.\nI don't think any of the reported benchmarks use gbsa=3, so it may be hard to\nknow what the \"expectations\" should be.\nI'd recommend running at least one of the standard GB benchmarks on your\nhardware, to see if the relative timings you get match what the benchmark\nauthors expect.  (Or, try your system without gbsa=3).  That will help\nnarrow down possible origins of the behavior you describe.\n....dac",
+      "url": "http://archive.ambermd.org/202402/0038.html",
+      "in_reply_to": 1707246818
+    }
+  ]
+}

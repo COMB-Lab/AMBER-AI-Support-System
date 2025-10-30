@@ -1,0 +1,37 @@
+{
+  "thread_id": 1733735859,
+  "subject": "Re: [AMBER] imaging membrane system",
+  "messages": [
+    {
+      "message_id": 1733735859,
+      "author": "Stéphane Téletchéa",
+      "date_raw": "Mon, 9 Dec 2024 10:17:39 +0100",
+      "body": "Dear all,\nBack on this, I think I found a more robust solution.\nWhile looking at the \"autoimage\" function, it turns out that it took my\nproteins (I have two) + some lipids (like 15 additional ones).\nLe 10/03/2024 à 17:46, Daniel Roe via AMBER a écrit :\n> Hi,\n>\n> Try using the moveanchor keyword, which when determining fixed positions\n> uses the previous molecule as an anchor. It’s a bit of a hack but I’ve had\n> it work well with membrane systems.\n>\n> -Dan\nInstead of using autoimage (which was nearly fine to me), I used the\nproteins residues + all the lipids involved in the upper leaflet:\ncenter \":1-569\" mass origin\nimage origin center familiar\ncenter ':PA,PC,OL'\nThis allows to produce a nice imaged system with all the lipids in the\ncorrect box, and the protein centered mostly\nin the middle of the membrane, as expected from the starting coordinates.\nHTH,\nStéphane\n-- \nAssistant Professor, USBB, UMR 6286 CNRS, Bioinformatique Structurale\nUFR Sciences et Techniques, 2, rue de la Houssinière, Bât. 25, 44322 Nantes cedex 03, France\nTél : +33 251 125 636 / Fax : +33 251 125 632\nhttp://www.us2b.univ-nantes.fr/\n-\nhttp://www.steletch.org",
+      "url": "http://archive.ambermd.org/202412/0022.html"
+    },
+    {
+      "message_id": 1733749720,
+      "author": "Daniel Roe",
+      "date_raw": "Mon, 9 Dec 2024 08:08:40 -0500",
+      "body": "Hi,\nNote that as of version 6.29.9 (currently on GitHub) there is a new\nexperimental keyword for ‘autoimage’ that should work much better for\nmembrane systems:\nautoimage mode byvec\nIf you get a chance to try it please let me know how it worked for you!\n-Dan\nOn Mon, Dec 9, 2024 at 4:17 AM Stéphane Téletchéa via AMBER <\namber.ambermd.org> wrote:\n> Dear all,\n>\n> Back on this, I think I found a more robust solution.\n>\n> While looking at the \"autoimage\" function, it turns out that it took my\n> proteins (I have two) + some lipids (like 15 additional ones).\n>\n> Le 10/03/2024 à 17:46, Daniel Roe via AMBER a écrit :\n> > Hi,\n> >\n> > Try using the moveanchor keyword, which when determining fixed positions\n> > uses the previous molecule as an anchor. It’s a bit of a hack but I’ve\n> had\n> > it work well with membrane systems.\n> >\n> > -Dan\n>\n> Instead of using autoimage (which was nearly fine to me), I used the\n> proteins residues + all the lipids involved in the upper leaflet:\n>\n> center \":1-569\" mass origin\n> image origin center familiar\n> center ':PA,PC,OL'\n>\n> This allows to produce a nice imaged system with all the lipids in the\n> correct box, and the protein centered mostly\n> in the middle of the membrane, as expected from the starting coordinates.\n>\n> HTH,\n>\n> Stéphane\n>\n> --\n> Assistant Professor, USBB, UMR 6286 CNRS, Bioinformatique Structurale\n> UFR Sciences et Techniques, 2, rue de la Houssinière, Bât. 25, 44322\n> Nantes cedex 03, France\n> Tél : +33 251 125 636 / Fax : +33 251 125 632\n>\nhttp://www.us2b.univ-nantes.fr/\n-\nhttp://www.steletch.org\n>",
+      "url": "http://archive.ambermd.org/202412/0025.html",
+      "in_reply_to": 1733735859
+    },
+    {
+      "message_id": 1733841153,
+      "author": "Téletchéa Stéphane",
+      "date_raw": "Tue, 10 Dec 2024 15:32:33 +0100",
+      "body": "Le 09/12/2024 à 14:08, Daniel Roe via AMBER a écrit :\n> Hi,\n>\n> Note that as of version 6.29.9 (currently on GitHub) there is a new\n> experimental keyword for ‘autoimage’ that should work much better for\n> membrane systems:\n>\n> autoimage mode byvec\n>\n> If you get a chance to try it please let me know how it worked for you!\n>\n> -Dan\nTried the latest version available (your commit from December 6th), and :\n(a) good news, the protein is correctly packed AND at the center of the\nlipids\n(b) good news, the lipids do not jump from one box to the other like\nthey do on autoimage alone\n(c) bad news, the lipids are in a much bigger box (xy plane is fine), so\nthe membrane seems porous (see screenshot).\nI can share off the list the files and more details if you wish to have\na benchmark.\nBest,\nStéphane\n-- \nMaître de conférences Hors Classe, PEDR, HDR\nUS2B, Nantes Université, CNRS, UMR 6286, Team Structural Bioinformatics, F-44000 Nantes\nhttp://www.us2b.univ-nantes.fr/\n-\nhttp://www.steletch.org",
+      "url": "http://archive.ambermd.org/202412/0037.html",
+      "in_reply_to": 1733735859
+    },
+    {
+      "message_id": 1733926352,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 11 Dec 2024 09:12:32 -0500",
+      "body": "Darn. I was hoping that would work a bit better. One of the current issues\nis that the code still needs the first frame to look “nice” (i.e. how you\nwant it to look).\nIf you could send me the files off list I would be grateful. The more\nexamples I have the better!\nThanks,\n-Dan\nOn Tue, Dec 10, 2024 at 9:30 AM Téletchéa Stéphane via AMBER <\namber.ambermd.org> wrote:\n> Le 09/12/2024 à 14:08, Daniel Roe via AMBER a écrit :\n> > Hi,\n> >\n> > Note that as of version 6.29.9 (currently on GitHub) there is a new\n> > experimental keyword for ‘autoimage’ that should work much better for\n> > membrane systems:\n> >\n> > autoimage mode byvec\n> >\n> > If you get a chance to try it please let me know how it worked for you!\n> >\n> > -Dan\n> Tried the latest version available (your commit from December 6th), and :\n> (a) good news, the protein is correctly packed AND at the center of the\n> lipids\n> (b) good news, the lipids do not jump from one box to the other like\n> they do on autoimage alone\n> (c) bad news, the lipids are in a much bigger box (xy plane is fine), so\n> the membrane seems porous (see screenshot).\n>\n> I can share off the list the files and more details if you wish to have\n> a benchmark.\n>\n> Best,\n>\n> Stéphane\n>\n> --\n> Maître de conférences Hors Classe, PEDR, HDR\n> US2B, Nantes Université, CNRS, UMR 6286, Team Structural Bioinformatics,\n> F-44000 Nantes\n>\nhttp://www.us2b.univ-nantes.fr/\n-\nhttp://www.steletch.org\n>",
+      "url": "http://archive.ambermd.org/202412/0039.html",
+      "in_reply_to": 1733735859
+    }
+  ]
+}

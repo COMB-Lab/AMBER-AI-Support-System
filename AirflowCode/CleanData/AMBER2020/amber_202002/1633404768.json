@@ -1,0 +1,85 @@
+{
+  "thread_id": 1633404768,
+  "subject": "[AMBER] How to superpose the solvated box to the original pdb structure?",
+  "messages": [
+    {
+      "message_id": 1633404768,
+      "author": "Gao Zhenting",
+      "date_raw": "Tue, 5 Oct 2021 11:32:48 +0800",
+      "body": "Dear Amber users,\nAfter solvating the protein into a box, the original coordinates of the\nprotein are changed. Is there any way to superpose the solvated system to\nthe original pdb structure, so that it is easier to compare the trajectory\nwith the original pdb conformation?\nRegards\nZhenting",
+      "url": "http://archive.ambermd.org/202110/0017.html"
+    },
+    {
+      "message_id": 1633408414,
+      "author": "Song, Lin",
+      "date_raw": "Tue, 5 Oct 2021 04:33:34 +0000",
+      "body": "Hi Zhenting,\nYou can take a look at the cpptraj tutorials.\nBest,\nLin\n> On Oct 4, 2021, at 11:32 PM, Gao Zhenting <zhentgpicasa.gmail.com> wrote:\n>\n> Dear Amber users,\n>\n> After solvating the protein into a box, the original coordinates of the\n> protein are changed. Is there any way to superpose the solvated system to\n> the original pdb structure, so that it is easier to compare the trajectory\n> with the original pdb conformation?\n>\n> Regards\n> Zhenting\n>",
+      "url": "http://archive.ambermd.org/202110/0018.html",
+      "in_reply_to": 1633404768
+    },
+    {
+      "message_id": 1633423863,
+      "author": "Dr. Anselm Horn",
+      "date_raw": "Tue, 5 Oct 2021 10:51:03 +0200",
+      "body": "Hi Zhenting,\nif solvation changed your coordinates, this should only affect\ntransitions and rotations of your system, but no internal coordinates.\nThus, when you simply use the solvated structure as reference for\ncpptraj analyses of your trajectory results, it should be fine.\nIf you want to check for yourself, that your original pdb structure and\nthe solvated pdb structure are essentially the same, you could also use\nsuperimposition and RMSD calculation features in common molecular\nviewers like VMD or chimera.\nRegards,\nAnselm\nPD Dr.rer.nat.\nBioinformatik    |    NHR.FAU\nFriedrich-Alexander-Universität Erlangen-Nürnberg\nGermany\nAm 05.10.2021 um 06:33 schrieb Song, Lin:\n> Hi Zhenting,\n>\n> You can take a look at the cpptraj tutorials.\n>\n> Best,\n> Lin\n>\n>> On Oct 4, 2021, at 11:32 PM, Gao Zhenting <zhentgpicasa.gmail.\ncom> wrote:\n>>\n>> Dear Amber users,\n>>\n>> After solvating the protein into a box, the original coordinates of the\n>> protein are changed. Is there any way to superpose the solvated system to\n>> the original pdb structure, so that it is easier to compare the trajectory\n>> with the original pdb conformation?\n>>\n>> Regards\n>> Zhenting\n>>",
+      "url": "http://archive.ambermd.org/202110/0020.html",
+      "in_reply_to": 1633404768
+    },
+    {
+      "message_id": 1633431847,
+      "author": "Gao Zhenting",
+      "date_raw": "Tue, 5 Oct 2021 19:04:07 +0800",
+      "body": "Hi Lin and  Anselm,\nThanks for your help.\nI get your point regarding the cpptraj operations.\nMy goal is to get a solvated box with protein coordinates aligned to the\noriginal pdb file, before MD simulation.\nWhy I want to do this?\nI am learning GIST, and of the tutorial(\nhttps://ambermd.org/tutorials/advanced/tutorial25/section3.php\n), solute\nheavy atoms(protein) are restrained, so there is no translational and\nrotational movement during the simulation.\nWhen it is to define the region for GIST analysis, the ligand is\nco-crystal pdb is used as reference.\nSince the solvated box does not align to the original pdb, I have to\ngenerated the pdb file of the solvated system(use \"ambpdb\"), align the\noriginal PDB to the solvated protein, and then save the coordinates of the\naligned ligand. This is not a big deal, but if I can have the solvated\nprotein aligned to the original pdb at the beginning, then I don't need to\ndo all these stuffs.\nAny further thoughts?\nRegards\nZhenting\nDr. Anselm Horn <anselm.horn.fau.de> 于2021年10月5日周二 下午4:52写道：\n> Hi Zhenting,\n>\n> if solvation changed your coordinates, this should only affect\n> transitions and rotations of your system, but no internal coordinates.\n> Thus, when you simply use the solvated structure as reference for\n> cpptraj analyses of your trajectory results, it should be fine.\n>\n> If you want to check for yourself, that your original pdb structure and\n> the solvated pdb structure are essentially the same, you could also use\n> superimposition and RMSD calculation features in common molecular\n> viewers like VMD or chimera.\n>\n> Regards,\n>\n> Anselm\n>\n> PD Dr.rer.nat.\n> Bioinformatik    |    NHR.FAU\n> Friedrich-Alexander-Universität Erlangen-Nürnberg\n> Germany\n>\n>\n>\n> Am 05.10.2021 um 06:33 schrieb Song, Lin:\n> > Hi Zhenting,\n> >\n> > You can take a look at the cpptraj tutorials.\n> >\n> > Best,\n> > Lin\n> >\n> >> On Oct 4, 2021, at 11:32 PM, Gao Zhenting <zhentgpicasa.gmail.\ncom>\n> wrote:\n> >>\n> >> Dear Amber users,\n> >>\n> >> After solvating the protein into a box, the original coordinates of the\n> >> protein are changed. Is there any way to superpose the solvated system\n> to\n> >> the original pdb structure, so that it is easier to compare the\n> trajectory\n> >> with the original pdb conformation?\n> >>\n> >> Regards\n> >> Zhenting\n> >>",
+      "url": "http://archive.ambermd.org/202110/0021.html",
+      "in_reply_to": 1633404768
+    },
+    {
+      "message_id": 1633432866,
+      "author": "Reyes Nuñez Franco",
+      "date_raw": "Tue, 5 Oct 2021 11:21:06 +0000",
+      "body": "Hi Zhenting,\nI didn't fully understand what you tried to do by aligning the original PDB to the solvated protein, but maybe what you could do is to save a pdb after the GIST calculation, so you have it oriented in the same way as the one used for the calculation.\nYou can try using 'trajout ref-frame.pdb onlyframes 1', in that way you will extract the first frame of your trajectory oriented in the same way as for the GIST calculation.\nI hope this helps you!\nBest,\nReyes\nReyes Núñez Franco (PhD student)\nCIC bioGUNE\n-----Mensaje original-----\nDe: Gao Zhenting <zhentgpicasa.gmail.com>\nEnviado el: 05 October 2021 13:04\nPara: AMBER Mailing List <amber.ambermd.org>\nAsunto: Re: [AMBER] How to superpose the solvated box to the original pdb structure?\nCAUTION: This email originated from outside the organization. Do not click links or open attachments unless you recognize the sender and know the content is safe.\nHi Lin and  Anselm,\nThanks for your help.\nI get your point regarding the cpptraj operations.\nMy goal is to get a solvated box with protein coordinates aligned to the original pdb file, before MD simulation.\nWhy I want to do this?\nI am learning GIST, and of the tutorial(\nhttps://ambermd.org/tutorials/advanced/tutorial25/section3.php\n), solute heavy atoms(protein) are restrained, so there is no translational and rotational movement during the simulation.\nWhen it is to define the region for GIST analysis, the ligand is co-crystal pdb is used as reference.\nSince the solvated box does not align to the original pdb, I have to generated the pdb file of the solvated system(use \"ambpdb\"), align the original PDB to the solvated protein, and then save the coordinates of the aligned ligand. This is not a big deal, but if I can have the solvated protein aligned to the original pdb at the beginning, then I don't need to do all these stuffs.\nAny further thoughts?\nRegards\nZhenting\nDr. Anselm Horn <anselm.horn.fau.de> 于2021年10月5日周二 下午4:52写道：\n> Hi Zhenting,\n>\n> if solvation changed your coordinates, this should only affect\n> transitions and rotations of your system, but no internal coordinates.\n> Thus, when you simply use the solvated structure as reference for\n> cpptraj analyses of your trajectory results, it should be fine.\n>\n> If you want to check for yourself, that your original pdb structure\n> and the solvated pdb structure are essentially the same, you could\n> also use superimposition and RMSD calculation features in common\n> molecular viewers like VMD or chimera.\n>\n> Regards,\n>\n> Anselm\n>\n> PD Dr.rer.nat.\n> Bioinformatik    |    NHR.FAU\n> Friedrich-Alexander-Universität Erlangen-Nürnberg Germany\n>\n>\n>\n> Am 05.10.2021 um 06:33 schrieb Song, Lin:\n> > Hi Zhenting,\n> >\n> > You can take a look at the cpptraj tutorials.\n> >\n> > Best,\n> > Lin\n> >\n> >> On Oct 4, 2021, at 11:32 PM, Gao Zhenting <zhentgpicasa.gmail.\ncom>\n> wrote:\n> >>\n> >> Dear Amber users,\n> >>\n> >> After solvating the protein into a box, the original coordinates of the\n> >> protein are changed. Is there any way to superpose the solvated system\n> to\n> >> the original pdb structure, so that it is easier to compare the\n> trajectory\n> >> with the original pdb conformation?\n> >>\n> >> Regards\n> >> Zhenting\n> >>",
+      "url": "http://archive.ambermd.org/202110/0022.html",
+      "in_reply_to": 1633404768
+    },
+    {
+      "message_id": 1633433223,
+      "author": "Carlos Simmerling",
+      "date_raw": "Tue, 5 Oct 2021 07:27:03 -0400",
+      "body": "you can also save a pdb file from leap when you build the system (savepdb),\nand then it will be the same orientation as the solvated system.\nOn Tue, Oct 5, 2021 at 7:05 AM Gao Zhenting <zhentgpicasa.gmail.\ncom> wrote:\n> Hi Lin and  Anselm,\n>\n> Thanks for your help.\n> I get your point regarding the cpptraj operations.\n>\n> My goal is to get a solvated box with protein coordinates aligned to the\n> original pdb file, before MD simulation.\n> Why I want to do this?\n> I am learning GIST, and of the tutorial(\n>\nhttps://ambermd.org/tutorials/advanced/tutorial25/section3.php\n), solute\n> heavy atoms(protein) are restrained, so there is no translational and\n> rotational movement during the simulation.\n>  When it is to define the region for GIST analysis, the ligand is\n> co-crystal pdb is used as reference.\n>  Since the solvated box does not align to the original pdb, I have to\n> generated the pdb file of the solvated system(use \"ambpdb\"), align the\n> original PDB to the solvated protein, and then save the coordinates of the\n> aligned ligand. This is not a big deal, but if I can have the solvated\n> protein aligned to the original pdb at the beginning, then I don't need to\n> do all these stuffs.\n>\n> Any further thoughts?\n>\n> Regards\n> Zhenting\n>\n> Dr. Anselm Horn <anselm.horn.fau.\nde> 于2021年10月5日周二 下午4:52写道：\n>\n> > Hi Zhenting,\n> >\n> > if solvation changed your coordinates, this should only affect\n> > transitions and rotations of your system, but no internal coordinates.\n> > Thus, when you simply use the solvated structure as reference for\n> > cpptraj analyses of your trajectory results, it should be fine.\n> >\n> > If you want to check for yourself, that your original pdb structure and\n> > the solvated pdb structure are essentially the same, you could also use\n> > superimposition and RMSD calculation features in common molecular\n> > viewers like VMD or chimera.\n> >\n> > Regards,\n> >\n> > Anselm\n> >\n> > PD Dr.rer.nat.\n> > Bioinformatik    |    NHR.FAU\n> > Friedrich-Alexander-Universität Erlangen-Nürnberg\n> > Germany\n> >\n> >\n> >\n> > Am 05.10.2021 um 06:33 schrieb Song, Lin:\n> > > Hi Zhenting,\n> > >\n> > > You can take a look at the cpptraj tutorials.\n> > >\n> > > Best,\n> > > Lin\n> > >\n> > >> On Oct 4, 2021, at 11:32 PM, Gao Zhenting <zhentgpicasa.gmail.\ncom>\n> > wrote:\n> > >>\n> > >> Dear Amber users,\n> > >>\n> > >> After solvating the protein into a box, the original coordinates of\n> the\n> > >> protein are changed. Is there any way to superpose the solvated system\n> > to\n> > >> the original pdb structure, so that it is easier to compare the\n> > trajectory\n> > >> with the original pdb conformation?\n> > >>\n> > >> Regards\n> > >> Zhenting\n> > >>",
+      "url": "http://archive.ambermd.org/202110/0023.html",
+      "in_reply_to": 1633404768
+    },
+    {
+      "message_id": 1633437642,
+      "author": "David A Case",
+      "date_raw": "Tue, 5 Oct 2021 08:40:42 -0400",
+      "body": "On Tue, Oct 05, 2021, Gao Zhenting wrote:\n>\n>After solvating the protein into a box, the original coordinates of the\n>protein are changed. Is there any way to superpose the solvated system to\n>the original pdb structure, so that it is easier to compare the trajectory\n>with the original pdb conformation?\nYou can use \"set default nocenter on\" to keep tleap from moving the\ncoordinates upon setup.  But, of course, the system will \"drift\" as you run\nMD, so something like cpptraj is needed to superpose the system back to the\noriginal coordinates.\n...dac",
+      "url": "http://archive.ambermd.org/202110/0024.html",
+      "in_reply_to": 1633404768
+    },
+    {
+      "message_id": 1633448990,
+      "author": "Gao Zhenting",
+      "date_raw": "Tue, 5 Oct 2021 23:49:50 +0800",
+      "body": "Hi Dac,\nI tested \"set default nocenter on\" in tleap, but the output solvated\nprotein coordinates are still different from the original one.\nCould you help to check?\nHere is the commands I used:\ntleap -f tleap.in\nambpdb -p fxa.prmtop -c fxa.rst7 > fxa_solv.pdb\n#compare fxa.pdb and fxa_solv.pdb in PyMOL\nZhenting\nDavid A Case <david.case.rutgers.edu> 于2021年10月5日周二 下午8:41写道：\n> On Tue, Oct 05, 2021, Gao Zhenting wrote:\n>\n> >\n> >After solvating the protein into a box, the original coordinates of the\n> >protein are changed. Is there any way to superpose the solvated system to\n> >the original pdb structure, so that it is easier to compare the trajectory\n> >with the original pdb conformation?\n>\n> You can use \"set default nocenter on\" to keep tleap from moving the\n> coordinates upon setup.  But, of course, the system will \"drift\" as you run\n> MD, so something like cpptraj is needed to superpose the system back to the\n> original coordinates.\n>\n> ...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202110/0032.html",
+      "in_reply_to": 1633404768
+    },
+    {
+      "message_id": 1634070698,
+      "author": "David A Case",
+      "date_raw": "Tue, 12 Oct 2021 16:31:38 -0400",
+      "body": "On Tue, Oct 05, 2021, Gao Zhenting wrote:\n>\n>I tested \"set default nocenter on\" in tleap, but the output solvated\n>protein coordinates are still different from the original one.\n>Could you help to check?\nLooks like I was wrong: the solvateBox command seems to move the solute,\neven when \"set default nocenter on\" is present.\nBut it's just a rigid translation, so you should be able to use cpptraj to\nsuperimpose the solute on the original structure, then use autoimage to\nre-pack the waters around the solute, which is now in back in its original\nposition.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202110/0083.html",
+      "in_reply_to": 1633404768
+    },
+    {
+      "message_id": 1634221274,
+      "author": "Daniel Roe",
+      "date_raw": "Thu, 14 Oct 2021 10:21:14 -0400",
+      "body": "Hi,\nYou could try aligning the structure to the PDB using C-alpha atoms,\nthen reimaging any solvent/ions. Something like:\n# Load structure from leap\nparm myparm.parm7\ntrajin mycoords.rst7\n# Load original PDB\nparm mypdb.pdb\nreference mypdb.pdb parmindex 1\n# Align coords to PDB using CA atoms\nalign reference .CA\n# Reimage any water/ions. Add the familiar keyword for truncated\noctahedron cell.\nimage :WAT byres\n# Output reimaged coords\ntrajout mycoords.imaged.rst7\nHope this helps,\n-Dan\nOn Mon, Oct 4, 2021 at 11:33 PM Gao Zhenting <zhentgpicasa.gmail.com> wrote:\n>\n> Dear Amber users,\n>\n> After solvating the protein into a box, the original coordinates of the\n> protein are changed. Is there any way to superpose the solvated system to\n> the original pdb structure, so that it is easier to compare the trajectory\n> with the original pdb conformation?\n>\n> Regards\n> Zhenting\n>",
+      "url": "http://archive.ambermd.org/202110/0100.html",
+      "in_reply_to": 1633404768
+    }
+  ]
+}

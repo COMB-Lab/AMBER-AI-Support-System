@@ -1,0 +1,21 @@
+{
+  "thread_id": 1595623469,
+  "subject": "[AMBER] Issue while installing Amber20",
+  "messages": [
+    {
+      "message_id": 1595623469,
+      "author": "Alejandro Cagnoni",
+      "date_raw": "Fri, 24 Jul 2020 17:44:29 -0300",
+      "body": "Hi everybody\nI'm having some issues while installing Amber20. I'm new to Amber and I'm\nfollowing the instructions in the Amber Manual.\nAfter running ./run_cmake, I run: sudo make install. It goes well until 36%\nwhere I receive the following error message:\n[  0%] Built target ucpp\n[  1%] Built target dispatch\n[  2%] Built target netcdf3\n[  2%] Built target netcdf\n[  3%] Built target ncgen\n[  3%] Built target ncgen3\n[  3%] Built target nccopy\n[  3%] Built target ncdump\n[  4%] Built target netcdff\n[  4%] Built target xblas_build\n[  7%] Built target blas\n[ 15%] Built target lapack\n[ 16%] Built target arpack\n[ 16%] Built target PerlMol\n[ 16%] Built target boost_build\n[ 17%] Built target amber_common\n[ 19%] Built target rism\n[ 20%] Built target libpbsa\n[ 20%] Built target sff_rism_interface\n[ 20%] Built target dsarpack_obj\n[ 20%] Built target sff_lex\n[ 21%] Built target sff\n[ 22%] Built target gbnsr6\n[ 22%] Built target cifparse\n[ 23%] Built target addles\n[ 23%] Built target sander_rism_interface\n[ 25%] Built target sqm_common\n[ 26%] Built target libsqm\n[ 26%] Built target sff_fortran\n[ 32%] Built target sander_base_obj\n[ 34%] Built target sebomd\n[ 35%] Built target emil\n[ 36%] Linking Fortran executable sander\n/usr/bin/ld: CMakeFiles/sander_base_obj.dir/Plumed.c.o:(.data.rel+0x0):\nreferencia a `plumedmain_create' sin definir\n/usr/bin/ld: CMakeFiles/sander_base_obj.dir/Plumed.c.o:(.data.rel+0x8):\nreferencia a `plumedmain_cmd' sin definir\n/usr/bin/ld: CMakeFiles/sander_base_obj.dir/Plumed.c.o:(.data.rel+0x10):\nreferencia a `plumedmain_finalize' sin definir\ncollect2: error: ld returned 1 exit status\nmake[2]: *** [AmberTools/src/sander/CMakeFiles/sander.dir/build.make:493:\nAmberTools/src/sander/sander] Error 1\nmake[1]: *** [CMakeFiles/Makefile2:3521:\nAmberTools/src/sander/CMakeFiles/sander.dir/all] Error 2\nmake: *** [Makefile:152: all] Error 2\nI'm sorry that it is in spanish. The error message states that there is\napparently an undefined reference.\nI think I'm having some issues with Plumed. I've uninstalled and\nreinstalled but I keep getting the same error messages.\nCould you please help me with this issue?\nThank you very much\nBest regards\n-- \nDr. Alejandro J. Cagnoni\nInstituto de Biología y Medicina Experimental\nConsejo Nacional de Investigaciones Científicas y Técnicas\nBuenos Aires (1425), Argentina\n(011)47832869. int. 204",
+      "url": "http://archive.ambermd.org/202007/0277.html"
+    },
+    {
+      "message_id": 1595680644,
+      "author": "David A Case",
+      "date_raw": "Sat, 25 Jul 2020 08:37:24 -0400",
+      "body": "On Fri, Jul 24, 2020, Alejandro Cagnoni wrote:\n>[ 36%] Linking Fortran executable sander\n>/usr/bin/ld: CMakeFiles/sander_base_obj.dir/Plumed.c.o:(.data.rel+0x0):\n>referencia a `plumedmain_create' sin definir\n>\nI'm hoping that the plumed and/or cmake gurus can pipe in here.  This seems to\nbe the second such report this week.\nCan you try adding '-DFORCE_DISBLE_LIBS=plumed' to your run_cmake script?\nThe documentation says that you can later add plumed at run-time.  I'm not a\nplumed user, so I don't know if this is correct or not.\nPlease let us know if this works or doesn't help.  If you know anything about\nwhat version of plumed you have, that might also help.\n...thanks for the report...dac",
+      "url": "http://archive.ambermd.org/202007/0284.html",
+      "in_reply_to": 1595623469
+    }
+  ]
+}

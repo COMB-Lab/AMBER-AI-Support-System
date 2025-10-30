@@ -1,0 +1,29 @@
+{
+  "thread_id": 1628559478,
+  "subject": "[AMBER] X-aligned.Box",
+  "messages": [
+    {
+      "message_id": 1628559478,
+      "author": "������",
+      "date_raw": "Tue, 10 Aug 2021 09:37:58 +0800 (GMT+08:00)",
+      "body": "Dear All,\nI met warnings as follows when I try to use cpptraj to analyze netcdf files for every frame:\nWarning: Set 4998; unit cell is not X-aligned. Box cannot be properly stored as Amber NetCDF trajectory.\nWarning: Set 4999; unit cell is not X-aligned. Box cannot be properly stored as Amber NetCDF trajectory.\nWarning: Set 5000; unit cell is not X-aligned. Box cannot be properly stored as Amber NetCDF trajectory.\n100% Complete.\nAnyone can give me some advice? Thank you all.\nall the best,\nLiu",
+      "url": "http://archive.ambermd.org/202108/0047.html"
+    },
+    {
+      "message_id": 1628566341,
+      "author": "Elvis A F Martis",
+      "date_raw": "Tue, 10 Aug 2021 09:02:21 +0530",
+      "body": "Can you try to delete the box using “box nobox” command.\nThis should solve this problem.\nOn Tuesday, 10 August 2021, 刘保艳 <870726grin.163.\ncom> wrote:\n> Dear All,\n>     I met warnings as follows when I try to use cpptraj to analyze netcdf\n> files for every frame:\n>\n>\n> Warning: Set 4998; unit cell is not X-aligned. Box cannot be properly\n> stored as Amber NetCDF trajectory.\n> Warning: Set 4999; unit cell is not X-aligned. Box cannot be properly\n> stored as Amber NetCDF trajectory.\n> Warning: Set 5000; unit cell is not X-aligned. Box cannot be properly\n> stored as Amber NetCDF trajectory.\n> 100% Complete.\n>\n>\n> Anyone can give me some advice? Thank you all.\n>\n>\n>\n>\n> all the best,\n> Liu\n>\n>",
+      "url": "http://archive.ambermd.org/202108/0048.html",
+      "in_reply_to": 1628559478
+    },
+    {
+      "message_id": 1628689154,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 11 Aug 2021 09:39:14 -0400",
+      "body": "Hi,\nThis warning occurs after you have performed a rotation on your\ncoordinates (via e.g. an RMS best-fit). This also rotates your unit\ncell so that it is no longer X-aligned, hence the warning. Note that\nthis has *always* been an issue, it's just that cpptraj is much better\nabout reporting it now.\nWhat does it mean to be X-aligned? It just means that your unit cell A\nB and C vectors are related to the Cartesian X Y and Z axes in a very\nspecific way: the A vector is aligned along the X axis (hence\n\"X-aligned\"), and the B vector is in the X-Y plane. The advantage of\nusing an X-aligned unit cell is that it allows a reduced\nrepresentation of the unit cell vectors. Normally you need 9\ncoordinates, 3 coordinates per unit cell vector (Ax Ay Az Bx By Bz Cx\nCy Cz), but when you are X-aligned the Ay, Az, and Bz components are\nall zero, meaning you can represent the unit cell with only 6\ncoordinates (either Ax Bx By Cx Cy Cz or 3x lengths and 3x angles).\nLots of MD packages use this representation.\nHowever, when you rotate your unit cell you are no longer X-aligned,\nand the Ay Az and Bz components are no longer zero, so you now need\nall 9 unit cell coordinates. Unfortunately many MD trajectory formats\nare not set up to support this (it's on my to-do list for NetCDF); the\ncurrent exceptions are the Gromacs trajectory formats (TRR, XTC) which\nstore all 9 unit cell vector coordinates.\nSo if you don't care about the rotated unit cell you can either remove\nthe box information or ignore the warnings, but be aware you won't be\nable to perform imaging for those coordinates. Or you can write using\nthe TRR format. As I said, NetCDF support is on my to-do\nlist...hopefully soon.\nHope this helps,\n-Dan\nOn Mon, Aug 9, 2021 at 9:38 PM 刘保艳 <870726grin.163.\ncom> wrote:\n>\n> Dear All,\n>     I met warnings as follows when I try to use cpptraj to analyze netcdf files for every frame:\n>\n>\n> Warning: Set 4998; unit cell is not X-aligned. Box cannot be properly stored as Amber NetCDF trajectory.\n> Warning: Set 4999; unit cell is not X-aligned. Box cannot be properly stored as Amber NetCDF trajectory.\n> Warning: Set 5000; unit cell is not X-aligned. Box cannot be properly stored as Amber NetCDF trajectory.\n> 100% Complete.\n>\n>\n> Anyone can give me some advice? Thank you all.\n>\n>\n>\n>\n> all the best,\n> Liu\n>\n>",
+      "url": "http://archive.ambermd.org/202108/0060.html",
+      "in_reply_to": 1628559478
+    }
+  ]
+}

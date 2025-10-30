@@ -1,0 +1,21 @@
+{
+  "thread_id": 1605822429,
+  "subject": "[AMBER] tinker_to_amber",
+  "messages": [
+    {
+      "message_id": 1605822429,
+      "author": "Michael Sonny Miller",
+      "date_raw": "Thu, 19 Nov 2020 21:47:09 +0000",
+      "body": "Hi,\nI'm having trouble getting any version of tinker_to_amber to work.\nI have tried using the Amber18 and the Amber14 versions with Tinker 8 and Tinker 7.1 respectively, and get errors about not finding information in the analout file.\nIs there a guide somewhere or examples of exactly what release of Tinker is required for each Amber release, and how exactly one is supposed to use tinker_to_amber?\nThank you in advance.",
+      "url": "http://archive.ambermd.org/202011/0175.html"
+    },
+    {
+      "message_id": 1606336634,
+      "author": "Emmett Leddin",
+      "date_raw": "Wed, 25 Nov 2020 14:37:14 -0600",
+      "body": "Hello!\nThe Amber14 manual has some very helpful instructions for tinker_to_amber\n(pages 275-277).\nWhich FF are you using? Did analout run just fine? Are you keeping the file\nnaming consistent?\nI just did a test using Tinker7.1 with the tinker_to_amber included in\nAmber18 using the dhfr test case included in Tinker7 and\nthe amoebabio09.prm file included with Tinker7. Using the most current\namoebabio09.prm (included with the latest release) did not work with\nTinker7.\n$ $tinker7/analyze dhfr PC > dhfr.analout\n$ $tinker7/xyzpdb dhfr.xyz\n$ $AMBERHOME/bin/tinker_to_amber -name dhfr -title \"DHFR AmoebaBio09 FF\"\nThe one thing I noticed is that the .prm file can't have the .prm extension\nwhen using tinker_to_amber, as it gets appended as part of the code (so\namoebabio09.prm.prm). It's also crucial that all 3 box lengths are defined\nin the key file (even if it's cubic and 1 would do for Tinker).\nKey files are a little different between Tinker7 and Tinker8 (because of\nthe addition of anglep, if I understand correctly). This means that an\nxyz/key pair in Tinker7 might not work in Tinker8, and one that works for\nTinker8 might not work for Tinker7. Most of the differences between the\nsrc/etc/tinker_to_amber.F90 shipped with AmberTools14 and AmberTools18 deal\nwith indentation.\nSincerely,\nEmmett Leddin\nPronouns: he/him\nChemistry PhD Candidate\nOn Thu, Nov 19, 2020 at 3:47 PM Michael Sonny Miller <millerms.stanford.edu>\nwrote:\n> Hi,\n>\n> I'm having trouble getting any version of tinker_to_amber to work.\n> I have tried using the Amber18 and the Amber14 versions with Tinker 8 and\n> Tinker 7.1 respectively, and get errors about not finding information in\n> the analout file.\n> Is there a guide somewhere or examples of exactly what release of Tinker\n> is required for each Amber release, and how exactly one is supposed to use\n> tinker_to_amber?\n>\n> Thank you in advance.\n>",
+      "url": "http://archive.ambermd.org/202011/0244.html",
+      "in_reply_to": 1605822429
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "thread_id": 1625746334,
+  "subject": "[AMBER] Scripting",
+  "messages": [
+    {
+      "message_id": 1625746334,
+      "author": "ankita mehta",
+      "date_raw": "Thu, 8 Jul 2021 17:42:14 +0530",
+      "body": "*Hello all,*\n*I am running simulation runs in a loop.*\n*In which I want next simulation to run only when my previous run has\ncompleted .*\n*What is the way out for this?*\n*Thanks!*",
+      "url": "http://archive.ambermd.org/202107/0038.html"
+    },
+    {
+      "message_id": 1625746641,
+      "author": "Carlos Simmerling",
+      "date_raw": "Thu, 8 Jul 2021 08:17:21 -0400",
+      "body": "it's hard to give detailed suggestions without knowing more about how you\nsubmit or run your jobs, but when I have multiple steps to run one after\nanother I list them in a script and then run the script or submit it to our\njob queue. The script can look something like this example:\n# step 1: Minimize using the pmemd program (this is the CPU version).\npmemd -O \\\n-i ./min.in \\\n-p ./tc5b.1l2y.hmass.parm7 \\\n-c ./tc5b.1l2y.rst7 \\\n-o ./min.out \\\n-x ./min.crd \\\n-inf ./min.info \\\n-r ./min.rst7\n# step 2: slowly heat the system, with restraints on the protein\nbackbone to keep it from moving too far.\n# use pmemd.cuda, which uses a GPU\npmemd.cuda -O \\\n-i ./heat.in \\\n-p ./tc5b.1l2y.hmass.parm7 \\\n-c ./min.rst7 \\\n-ref ./min.rst7 \\\n-o ./heat.out \\\n-x ./heat.crd \\\n-inf ./heat.info \\\n-r ./heat.rst7\nOn Thu, Jul 8, 2021 at 8:13 AM ankita mehta <mehtaroadies.gmail.com> wrote:\n> *Hello all,*\n>\n> *I am running simulation runs in a loop.*\n>\n> *In which I want next simulation to run only when my previous run has\n> completed .*\n>\n> *What is the way out for this?*\n>\n> *Thanks!*\n>",
+      "url": "http://archive.ambermd.org/202107/0039.html",
+      "in_reply_to": 1625746334
+    }
+  ]
+}

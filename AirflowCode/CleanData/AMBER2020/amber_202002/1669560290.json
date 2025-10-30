@@ -1,0 +1,37 @@
+{
+  "thread_id": 1669560290,
+  "subject": "[AMBER] Inconsistent GPU Results",
+  "messages": [
+    {
+      "message_id": 1669560290,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Sun, 27 Nov 2022 09:44:50 -0500",
+      "body": "Dear AMBER community,\nI ran two identical calculations on (presumably different) GPUs and got completely different results. In the first run, the system blew up; in the second, everything looked fine. I did not change the input at all. How could this happen and are any of my results trustworthy? The output files are attached.\nBackground: I’m running TI simulations at different lambda values in a sequential fashion (e.g., 0.00, then 0.01, etc.) For each window, I’m running a minimization and an equilibration. Because I’m using the smooth softcore potential that is only implemented in pmemd.cuda, I’m running both the minimization and equilibration on GPUs. I know there are numerical issues with running minimizations on GPUs— Should I skip the minimizations or not use the smooth softcore potential for the minimizations so I can run on CPUs?\nSometimes the minimization on GPUs entirely goes awry:\nNSTEP       ENERGY          RMS            GMAX         NAME    NUMBER\n1       6.1827E+08     4.4600E+03     4.3883E+05     H1      70188\nBOND    = *************  ANGLE   =     4854.3827  DIHED      =     7029.8038\nVDWAALS =    93066.3839  EEL     =  -559385.5182  HBOND      =        0.0000\n1-4 VDW =     2030.7940  1-4 EEL =    30573.6921  RESTRAINT  =        0.0700\nEAMBER  = *************\nDV/DL  =        81.9596\nNMR restraints: Bond =    0.000   Angle =     0.000   Torsion =     0.070\n===============================================================================\nSoftcore part of the system:      25 atoms,       TEMP(K)    =           0.00\nSC_Etot=         0.0000  SC_EKtot=         0.0000  SC_EPtot   =        79.4772\nSC_BOND=         1.7211  SC_ANGLE=        13.7642  SC_DIHED   =        18.4959\nSC_14NB=         2.4757  SC_14EEL=        20.1833  SC_VDW     =        -0.0318\nSC_EEL =        22.8688\nSC_RES_DIST=     0.0000  SC_RES_ANG=       0.0000  SC_RES_TORS=         0.0000\nSC_EEL_DER=     56.6513  SC_VDW_DER=      -1.0518  SC_DERIV   =        55.5995\n———————————————————————————————————————\nBut other times, using exactly the same input, it works just fine:\nNSTEP       ENERGY          RMS            GMAX         NAME    NUMBER\n1      -4.4889E+05     1.7372E+01     1.1381E+02     C         218\nBOND    =     1666.4578  ANGLE   =     4854.3626  DIHED      =     7029.8072\nVDWAALS =    59875.1546  EEL     =  -554800.0321  HBOND      =        0.0000\n1-4 VDW =     1906.7559  1-4 EEL =    30573.8373  RESTRAINT  =        0.0700\nEAMBER  =  -448893.6567\nDV/DL  =        79.2240\nNMR restraints: Bond =    0.000   Angle =     0.000   Torsion =     0.070\n===============================================================================\nSoftcore part of the system:      25 atoms,       TEMP(K)    =           0.00\nSC_Etot=         0.0000  SC_EKtot=         0.0000  SC_EPtot   =        79.4772\nSC_BOND=         1.7211  SC_ANGLE=        13.7642  SC_DIHED   =        18.4959\nSC_14NB=         2.4757  SC_14EEL=        20.1833  SC_VDW     =        -0.0318\nSC_EEL =        22.8688\nSC_RES_DIST=     0.0000  SC_RES_ANG=       0.0000  SC_RES_TORS=         0.0000\nSC_EEL_DER=     56.6513  SC_VDW_DER=      -1.0518  SC_DERIV   =        55.5995\n———————————————————————————————————————\nNote that in both cases the minimization seemingly finishes, printing the usual timing information at the end of the output file.\nHow can two identical inputs give these very different outputs? Can I trust the results where the energies look reasonable?\nBest,\nMatthew\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202211/0177.html"
+    },
+    {
+      "message_id": 1669645348,
+      "author": "David A Case",
+      "date_raw": "Mon, 28 Nov 2022 09:22:28 -0500",
+      "body": "On Sun, Nov 27, 2022, Matthew Guberman-Pfeffer via AMBER wrote:\n>\n>   I ran two identical calculations on (presumably different) GPUs and got\n>   completely different results. In the first run, the system blew up; in the\n>   second, everything looked fine.\nIt's certainly possible that there could be some overflow/crash on one GPU\nbut not on another.  Given the fact that you seem not to know which GPU's\nwere involved, it's not likely that any remote person will be able to help\nmuch.\nTry running the job 50 times, and see how many times it fails, and whether\nyou always get the same output in the successful runs.  The output files\ngive lots of information about which GPU is being used, so see if there is\nsome correlation there.\n....dac",
+      "url": "http://archive.ambermd.org/202211/0181.html",
+      "in_reply_to": 1669560290
+    },
+    {
+      "message_id": 1669651078,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Mon, 28 Nov 2022 10:57:58 -0500",
+      "body": "Thanks, dac! The outputs indicate different nodes (v006 and v011) but the same type of GPU (Tesla V100-SXM2-32GB). I’ve run a great deal of additional calculations and this issue happens very rarely. When I get a chance, I’ll do your suggested test of sending many repeats of this job to v006 and v011 to see how reproducible is the problem.\nBest,\nMatthew\n> On Nov 28, 2022, at 9:22 AM, David A Case via AMBER <amber.ambermd.\norg> wrote:\n>\n> *Message sent from a system outside of UConn.*\n>\n>\n> On Sun, Nov 27, 2022, Matthew Guberman-Pfeffer via AMBER wrote:\n>>\n>>  I ran two identical calculations on (presumably different) GPUs and got\n>>  completely different results. In the first run, the system blew up; in the\n>>  second, everything looked fine.\n>\n> It's certainly possible that there could be some overflow/crash on one GPU\n> but not on another.  Given the fact that you seem not to know which GPU's\n> were involved, it's not likely that any remote person will be able to help\n> much.\n>\n> Try running the job 50 times, and see how many times it fails, and whether\n> you always get the same output in the successful runs.  The output files\n> give lots of information about which GPU is being used, so see if there is\n> some correlation there.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202211/0184.html",
+      "in_reply_to": 1669560290
+    },
+    {
+      "message_id": 1669564715,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Sun, 27 Nov 2022 10:58:35 -0500",
+      "body": "More detail:\nInspection of the structure showed that the troublesome H1 in the failed minimization was at the edge of the box (image below). Does this in some way explain how I could get two very different results running the same minimization on GPUs?\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202211/0178.html",
+      "in_reply_to": 1669560290
+    }
+  ]
+}

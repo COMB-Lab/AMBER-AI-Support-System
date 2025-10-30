@@ -1,0 +1,37 @@
+{
+  "thread_id": 1590658910,
+  "subject": "[AMBER] Installing latest ambertools (2020) with conda",
+  "messages": [
+    {
+      "message_id": 1590658910,
+      "author": "Alan",
+      "date_raw": "Thu, 28 May 2020 11:41:50 +0200",
+      "body": "Hi there,\nI'm on macOS 10.15.4 with brew and anaconda (both updated) and I'm trying:\nconda install -c conda-forge ambertools\nIt's printing this:\nCollecting package metadata (current_repodata.json): done\nSolving environment: failed with initial frozen solve. Retrying with\nflexible solve.\nSolving environment: failed with repodata from current_repodata.json, will\nretry with next repodata source.\nCollecting package metadata (repodata.json): done\nSolving environment: failed with initial frozen solve. Retrying with\nflexible solve.\nSolving environment: /\nFound conflicts! Looking for incompatible packages.\nThis can take several minutes.  Press CTRL-C to abort.\nExamining conflict for spyder python-language-server pylint anaconda:  89%\nMore than 2 hours and haven't finished yet. It was not supposed to be like\nthat, right?\nAny help is very much appreciated.\nThanks in advance,\nAlan",
+      "url": "http://archive.ambermd.org/202005/0313.html"
+    },
+    {
+      "message_id": 1590670753,
+      "author": "David A Case",
+      "date_raw": "Thu, 28 May 2020 08:59:13 -0400",
+      "body": "On Thu, May 28, 2020, Alan wrote:\n>\n>I'm on macOS 10.15.4 with brew and anaconda (both updated) and I'm trying:\n>\n>conda install -c conda-forge ambertools\n>\n>It's printing this:\n>\n>Collecting package metadata (current_repodata.json): done\n>Solving environment: failed with initial frozen solve. Retrying with\n>flexible solve.\n>Solving environment: failed with repodata from current_repodata.json, will\n>retry with next repodata source.\n>Collecting package metadata (repodata.json): done\n>Solving environment: failed with initial frozen solve. Retrying with\n>flexible solve.\n>Solving environment: /\n>Found conflicts! Looking for incompatible packages.\n>This can take several minutes.  Press CTRL-C to abort.\n>Examining conflict for spyder python-language-server pylint anaconda:  89%\n>\n>More than 2 hours and haven't finished yet. It was not supposed to be like\n>that, right?\nThis works for me, on MacOS 10.15.4 with conda from a previous miniconda\ninstallation via AmberTools; I'm using python3.7.  (Is it possible you\nare using python2.7?  That may not have been tested, or even work.)\nMy miniconda installation doesn't have any of the conflicts mentioned\nabove, so that might explain things.  But none of those programs should\nconflict with anything in AmberTools (as far as I know).\nGoogle hits suggest that this might be related to an anaconda bug:\nhttps://stackoverflow.com/questions/58216917/create-conda-environment-found-conflicts-when-solving-environment-and-findi\nIt's possible that activating a new conda environment might help:\nhttps://stackoverflow.com/questions/57518050/conda-install-and-update-do-not-work-also-solving-environment-get-errors\nIt's not my intent to blame you or anaconda, and there could well be\nsomething to fix in our AmberTools20 package.  But I've encountered this\n\"found conflicts!\" message in non-Amber-related work, and the search for\nincompatible packages never stopped.\nI'm cc-ing to jaime.rodriguez-guerra.choderalab.org, the creator of the\npackage, and someone who knows way more about conda and conda-forge than\nI do.\n...thansk for the report...dac",
+      "url": "http://archive.ambermd.org/202005/0317.html",
+      "in_reply_to": 1590658910
+    },
+    {
+      "message_id": 1590671088,
+      "author": "Alan",
+      "date_raw": "Thu, 28 May 2020 15:04:48 +0200",
+      "body": "Thanks David,\nIt could be my Mac, it's such a mess with brew, pip and now anaconda. In\nthe end I did:\nconda create --name amber --no-default-packages\nconda activate amber\nconda install -c conda-forge ambertools\nAnd now I have it working.\nOn Thu, 28 May 2020 at 14:59, David A Case <david.case.rutgers.\nedu> wrote:\n> On Thu, May 28, 2020, Alan wrote:\n> >\n> >I'm on macOS 10.15.4 with brew and anaconda (both updated) and I'm trying:\n> >\n> >conda install -c conda-forge ambertools\n> >\n> >It's printing this:\n> >\n> >Collecting package metadata (current_repodata.json): done\n> >Solving environment: failed with initial frozen solve. Retrying with\n> >flexible solve.\n> >Solving environment: failed with repodata from current_repodata.json, will\n> >retry with next repodata source.\n> >Collecting package metadata (repodata.json): done\n> >Solving environment: failed with initial frozen solve. Retrying with\n> >flexible solve.\n> >Solving environment: /\n> >Found conflicts! Looking for incompatible packages.\n> >This can take several minutes.  Press CTRL-C to abort.\n> >Examining conflict for spyder python-language-server pylint anaconda:  89%\n> >\n> >More than 2 hours and haven't finished yet. It was not supposed to be like\n> >that, right?\n>\n> This works for me, on MacOS 10.15.4 with conda from a previous miniconda\n> installation via AmberTools; I'm using python3.7.  (Is it possible you\n> are using python2.7?  That may not have been tested, or even work.)\n>\n> My miniconda installation doesn't have any of the conflicts mentioned\n> above, so that might explain things.  But none of those programs should\n> conflict with anything in AmberTools (as far as I know).\n>\n> Google hits suggest that this might be related to an anaconda bug:\n>\n>\n>\nhttps://stackoverflow.com/questions/58216917/create-conda-environment-found-conflicts-when-solving-environment-and-findi\n>\n> It's possible that activating a new conda environment might help:\n>\n>\n>\nhttps://stackoverflow.com/questions/57518050/conda-install-and-update-do-not-work-also-solving-environment-get-errors\n>\n> It's not my intent to blame you or anaconda, and there could well be\n> something to fix in our AmberTools20 package.  But I've encountered this\n> \"found conflicts!\" message in non-Amber-related work, and the search for\n> incompatible packages never stopped.\n>\n> I'm cc-ing to jaime.rodriguez-guerra.choderalab.\norg, the creator of the\n> package, and someone who knows way more about conda and conda-forge than\n> I do.\n>\n> ...thansk for the report...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202005/0318.html",
+      "in_reply_to": 1590658910
+    },
+    {
+      "message_id": 1590680050,
+      "author": "David A Case",
+      "date_raw": "Thu, 28 May 2020 11:34:10 -0400",
+      "body": "On Thu, May 28, 2020, Alan wrote:\n>\n>conda create --name amber --no-default-packages\n>conda activate amber\n>conda install -c conda-forge ambertools\n>\n>And now I have it working.\nThanks for the update.  This could be a path for others that find\nproblems with the conda install.  Disadvantage is that you have to\nactivate the new environment to get access.\nAs an aside, we think we are getting close to having an AmberTools20.dmg\npackage, that can be installed in the \"normal\" way on a Mac.\n....dac",
+      "url": "http://archive.ambermd.org/202005/0322.html",
+      "in_reply_to": 1590658910
+    }
+  ]
+}

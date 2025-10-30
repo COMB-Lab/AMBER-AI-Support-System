@@ -1,0 +1,29 @@
+{
+  "thread_id": 1583835388,
+  "subject": "[AMBER] AmberTools on Ubuntu 19.04: compilation",
+  "messages": [
+    {
+      "message_id": 1583835388,
+      "author": "emanuele falbo",
+      "date_raw": "Tue, 10 Mar 2020 10:16:28 +0000",
+      "body": "Dear all,\nAfter having update ubuntu to 19.04, I am facing an issue with AmberTools19\ncompilation.\nEssentially, I get the following error from a file sh.f90, which I  assume\nthat's not being compiled.\nHowever, when I try to find it ,\"$ find $AMBERHOME -iname sh.f90\" ,the file\nis not in the Amber directory.\nDo you have any idea about how I should go on ? Thanks for the help\nSFX= BINDIR=/home/emanuele/amber18/bin sh patch.sh\nAt line 42 of file sh.f90 (unit = 1, file = '�\"�')\nFortran runtime error: File 'sh.inp' does not exist\nmake[2]: *** [Makefile:68: dispatch] Error 2\nmake[2]: Leaving directory\n'/home/emanuele/amber18/AmberTools/src/antechamber'\nmake[1]: *** [Makefile:29: serial] Error 2\nmake[1]: Leaving directory '/home/emanuele/amber18/AmberTools/src'\nmake: *** [Makefile:7: install] Error 2\nKind Regards,\nManuele\n-- \n*Emanuele Falbo*\nPhD student\nPenfold group\nSchool of Natural and Environmental Sciences\nBedson Building, Newcastle University\nNewcastle upon Tyne, NE1 7RU\nw: http://tompenfoldresearch.weebly.com/",
+      "url": "http://archive.ambermd.org/202003/0096.html"
+    },
+    {
+      "message_id": 1583843152,
+      "author": "David A Case",
+      "date_raw": "Tue, 10 Mar 2020 08:25:52 -0400",
+      "body": "On Tue, Mar 10, 2020, emanuele falbo wrote:\n>\n>After having update ubuntu to 19.04, I am facing an issue with AmberTools19\n>compilation.\n>Essentially, I get the following error from a file sh.f90, which I  assume\n>that's not being compiled.\n>However, when I try to find it ,\"$ find $AMBERHOME -iname sh.f90\" ,the file\n>is not in the Amber directory.\n>\n>Do you have any idea about how I should go on ? Thanks for the help\n>\n>SFX= BINDIR=/home/emanuele/amber18/bin sh patch.sh\nVery odd.  Please try this:\nIn $AMBERHOME/AmberTools/antechamber/Makefile, find these lines:\ndispatch:\nSFX=$(SFX) BINDIR=$(BINDIR) sh patch.sh\nTry changing the \"sh patch.sh\" part to \"/bin/bash patch.sh\"\nLet us know what happens.\n...thx...dac",
+      "url": "http://archive.ambermd.org/202003/0097.html",
+      "in_reply_to": 1583835388
+    },
+    {
+      "message_id": 1583855012,
+      "author": "emanuele falbo",
+      "date_raw": "Tue, 10 Mar 2020 15:43:32 +0000",
+      "body": "Hi David,\nI tried one more time, this time by sourcing the amber.sh in  the .bashrc\nby \"source $AMBERHOME/amber.sh\" rather than \"source\n/path/to/amber/amber.sh\",\nand it worked. I really do not know why, even because it should be the same.\nSorry for bothering with this question. Thanks anyway for the tip.\nregards,\nManuele\nIl giorno mar 10 mar 2020 alle ore 12:26 David A Case <\ndavid.case.rutgers.edu> ha scritto:\n> On Tue, Mar 10, 2020, emanuele falbo wrote:\n> >\n> >After having update ubuntu to 19.04, I am facing an issue with\n> AmberTools19\n> >compilation.\n> >Essentially, I get the following error from a file sh.f90, which I  assume\n> >that's not being compiled.\n> >However, when I try to find it ,\"$ find $AMBERHOME -iname sh.f90\" ,the\n> file\n> >is not in the Amber directory.\n> >\n> >Do you have any idea about how I should go on ? Thanks for the help\n> >\n> >SFX= BINDIR=/home/emanuele/amber18/bin sh patch.sh\n>\n> Very odd.  Please try this:\n>\n> In $AMBERHOME/AmberTools/antechamber/Makefile, find these lines:\n>\n> dispatch:\n>      SFX=$(SFX) BINDIR=$(BINDIR) sh patch.sh\n>\n> Try changing the \"sh patch.sh\" part to \"/bin/bash patch.sh\"\n>\n> Let us know what happens.\n>\n> ...thx...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202003/0100.html",
+      "in_reply_to": 1583835388
+    }
+  ]
+}

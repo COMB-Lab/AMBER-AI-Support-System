@@ -1,0 +1,37 @@
+{
+  "thread_id": 1734363640,
+  "subject": "[AMBER] What is meant by buffer overflow message when running tleap",
+  "messages": [
+    {
+      "message_id": 1734363640,
+      "author": "Debarati DasGupta",
+      "date_raw": "Mon, 16 Dec 2024 15:40:40 +0000",
+      "body": "[cid:95113c5d-e6f2-4dd2-9719-fc2a9fce082f]\nThis is the first time I encountered this error and I only found one older thread from Dac on this : http://archive.ambermd.org/202110/0087.html",
+      "url": "http://archive.ambermd.org/202412/0066.html"
+    },
+    {
+      "message_id": 1734363745,
+      "author": "Debarati DasGupta",
+      "date_raw": "Mon, 16 Dec 2024 15:42:25 +0000",
+      "body": "This is what my tleap input file looks like at the moment, it is just reading in a RNA structure (NO ligand), I am drafting the leap steps but wanted to run this first..\n[cid:e02685d8-9da7-4e33-9c63-9d77d7ec6352]\n________________________________\nFrom: Debarati DasGupta via AMBER <amber.ambermd.org>\nSent: Monday, December 16, 2024 7:40 AM\nTo: AMBER.ambermd.org <amber.ambermd.org>\nSubject: [AMBER] What is meant by buffer overflow message when running tleap\n[cid:95113c5d-e6f2-4dd2-9719-fc2a9fce082f]\nThis is the first time I encountered this error and I only found one older thread from Dac on this : http://archive.ambermd.org/202110/0087.html",
+      "url": "http://archive.ambermd.org/202412/0067.html",
+      "in_reply_to": 1734363640
+    },
+    {
+      "message_id": 1734368471,
+      "author": "Timothy Giese",
+      "date_raw": "Mon, 16 Dec 2024 17:01:11 +0000",
+      "body": "\"WARNING: buffer overflow detected\" occurs in the function XmuSnprintf defined within AmberTools/src/leap/sac/Xmu/Lower.c\nIt looks like it is a function that writes formatted data from a variable argument list to a fixed size buffer, but the number of characters to be written exceeds the allocated size of the string buffer.  Hard to say what is triggering this, but I wonder if there's long strings of text in receptor.mol2 or the leap input? Just throwing ideas at the wall here: was receptor.mol2 created or edited on a windows machine and the line return characters aren't being handled correctly?\n________________________________\nFrom: Debarati DasGupta via AMBER <amber.ambermd.org>\nSent: Monday, December 16, 2024 10:42 AM\nTo: debarati_dasgupta <debarati_dasgupta.hotmail.com>; AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] What is meant by buffer overflow message when running tleap\nThis is what my tleap input file looks like at the moment, it is just reading in a RNA structure (NO ligand), I am drafting the leap steps but wanted to run this first..\n[cid:e02685d8-9da7-4e33-9c63-9d77d7ec6352]\n________________________________\nFrom: Debarati DasGupta via AMBER <amber.ambermd.org>\nSent: Monday, December 16, 2024 7:40 AM\nTo: AMBER.ambermd.org <amber.ambermd.org>\nSubject: [AMBER] What is meant by buffer overflow message when running tleap\n[cid:95113c5d-e6f2-4dd2-9719-fc2a9fce082f]\nThis is the first time I encountered this error and I only found one older thread from Dac on this : https://nam02.safelinks.protection.outlook.com/?url=http%3A%2F%2Farchive.ambermd.org%2F202110%2F0087.html&data=05%7C02%7Cgiese025%40connect.rutgers.edu%7C175bb64947cc4e16671508dd1de84882%7Cb92d2b234d35447093ff69aca6632ffe%7C1%7C0%7C638699605672980877%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=19LgU2uy1wnX2fuCkeFlU0F2GfzGPqLKHdnxG141zb4%3D&reserved=0<http://archive.ambermd.org/202110/0087.html>",
+      "url": "http://archive.ambermd.org/202412/0069.html",
+      "in_reply_to": 1734363640
+    },
+    {
+      "message_id": 1734379250,
+      "author": "David A Case",
+      "date_raw": "Mon, 16 Dec 2024 13:00:50 -0700",
+      "body": "On Mon, Dec 16, 2024, Timothy Giese via AMBER wrote:\n>\"WARNING: buffer overflow detected\" occurs in the function XmuSnprintf\n>defined within AmberTools/src/leap/sac/Xmu/Lower.c\nI don't think the above is correct, since the line Tim quotes is not\nactually compiled, and tleap should not be using the Xmu code.\nBut that is not important: as Tim has said, what we need is to see the\nreceptor.mol2 file, since loading that file is the step where this\nwarning/error occurs.  The code that implements loadMol2 is pretty\nstraightforward, and it should(!) be fairly straightforward to figure out\nexactly what is going on, as long as we have an input mol2 file that\ntriggers the problem.\n...thx....dac",
+      "url": "http://archive.ambermd.org/202412/0070.html",
+      "in_reply_to": 1734363640
+    }
+  ]
+}

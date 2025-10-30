@@ -1,0 +1,21 @@
+{
+  "thread_id": 1756122983,
+  "subject": "[AMBER] Error in sander.quick.cuda",
+  "messages": [
+    {
+      "message_id": 1756122983,
+      "author": "Kriti Shukla",
+      "date_raw": "Mon, 25 Aug 2025 17:26:23 +0530",
+      "body": "Hi community,\nI have been trying to do a steered QM/MM MD in Amber24, but this type of\nerror is coming:\nsander.quick.cuda:\n/home/23cy91f06/amber24_src/AmberTools/src/quick/src/cuda/cusolver/quick_cusolver.c:212:\ncuda_diag_: Assertion `CUSOLVER_STATUS_SUCCESS == cusolver_status' failed.\nProgram received signal SIGABRT: Process abort signal.\nBacktrace for this error:\n#0  0x7f31695823ff in ???\n#1  0x7f3169582387 in ???\n#2  0x7f3169583a77 in ???\n#3  0x7f316957b1a5 in ???\n#4  0x7f316957b251 in ???\n#5  0x7f31724c5833 in ???\n#6  0x7f3172303c9d in ???\n#7  0x7f3172455cc8 in ???\n#8  0x7f3172333716 in ???\n#9  0x7f3172334c46 in ???\n#10  0x7f31723359d6 in ???\n#11  0x762b67 in ???\n#12  0x707770 in ???\n#13  0x5a1129 in ???\n#14  0x63352e in ???\n#15  0x5e77f0 in ???\n#16  0x5e06ff in ???\n#17  0x5e0755 in ???\n#18  0x7f316956e554 in ???\n#19  0x409cac in ???\n#20  0xffffffffffffffff in ???\n/var/share/slurm/d/job1154457/slurm_script: line 22: 216053 Aborted\n$ambexe -O -i smd_1.in -o smd_1.out -p 2ILI_solv.prmtop -c\nf4080.ncrst -r smd_1.ncrst -x smd_1.nc\nBut this job is executing perfectly in another workstation, where Amber24\nis installed under the same versions of modules. I am unable to interpret\nthe error.\nYour guidance will be greatly appreciated.",
+      "url": "http://archive.ambermd.org/202508/0060.html"
+    },
+    {
+      "message_id": 1756175612,
+      "author": "Goetz, Andreas",
+      "date_raw": "Tue, 26 Aug 2025 02:33:32 +0000",
+      "body": "Hi Kriti,\nThis is a failure of the Fock matrix diagonalization on GPU during the SCF iterations at some time step in your QM/MM MD simulation.\nI do not recall encountered this myself and without additional details it is hard to say why this happened. It could be a hardware issue or it could be a numerical problem (e.g. near linear dependences in the basis set you are using combined with current geometry).\nIf the simulation otherwise proceeds as expected, I suggest to ignore this. If this repeatedly happens on the same GPU but not other GPUs, then you may have a hardware issue. If this keeps happening on different GPUs, then we can investigate it further.\nAll the best,\nAndy\n—\nDr. Andreas W. Goetz\nAssociate Research Scientist\nSan Diego Supercomputer Center\nTel: +1-858-822-4771\nEmail: agoetz.sdsc.edu\nWeb: www.awgoetz.de\nOn Aug 25, 2025, at 4:56 AM, Kriti Shukla via AMBER <amber.ambermd.\norg> wrote:\nHi community,\nI have been trying to do a steered QM/MM MD in Amber24, but this type of\nerror is coming:\nsander.quick.cuda:\n/home/23cy91f06/amber24_src/AmberTools/src/quick/src/cuda/cusolver/quick_cusolver.c:212:\ncuda_diag_: Assertion `CUSOLVER_STATUS_SUCCESS == cusolver_status' failed.\nProgram received signal SIGABRT: Process abort signal.\nBacktrace for this error:\n#0  0x7f31695823ff in ???\n#1  0x7f3169582387 in ???\n#2  0x7f3169583a77 in ???\n#3  0x7f316957b1a5 in ???\n#4  0x7f316957b251 in ???\n#5  0x7f31724c5833 in ???\n#6  0x7f3172303c9d in ???\n#7  0x7f3172455cc8 in ???\n#8  0x7f3172333716 in ???\n#9  0x7f3172334c46 in ???\n#10  0x7f31723359d6 in ???\n#11  0x762b67 in ???\n#12  0x707770 in ???\n#13  0x5a1129 in ???\n#14  0x63352e in ???\n#15  0x5e77f0 in ???\n#16  0x5e06ff in ???\n#17  0x5e0755 in ???\n#18  0x7f316956e554 in ???\n#19  0x409cac in ???\n#20  0xffffffffffffffff in ???\n/var/share/slurm/d/job1154457/slurm_script: line 22: 216053 Aborted\n$ambexe -O -i smd_1.in -o smd_1.out -p 2ILI_solv.prmtop -c\nf4080.ncrst -r smd_1.ncrst -x smd_1.nc\nBut this job is executing perfectly in another workstation, where Amber24\nis installed under the same versions of modules. I am unable to interpret\nthe error.\nYour guidance will be greatly appreciated.",
+      "url": "http://archive.ambermd.org/202508/0062.html",
+      "in_reply_to": 1756122983
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "thread_id": 1665067124,
+  "subject": "[AMBER] ANTECHAMBER: parametrization of charged ligand",
+  "messages": [
+    {
+      "message_id": 1665067124,
+      "author": "Enrico Martinez",
+      "date_raw": "Thu, 6 Oct 2022 16:38:44 +0200",
+      "body": "Dear Amber Users!\nUsing leaprc.gaff force field, I am trying to parametrize an organic\nligand molecule that has +1 total charge due to the presence of an\nextra proton compared to it's uncharged version.\nHere is the error from antechamber:\nRunning: /home/enrico/amber22/bin/atomtype -i ANTECHAMBER_AC.AC0 -o\nANTECHAMBER_AC.AC -p gaff\nInfo: Total number of electrons: 151; net charge: 0\nInfo: The number of electrons is odd (151).\nPlease check the total charge (-nc flag) and spin multiplicity (-m flag).\nRunning: /home/enrico/amber22/bin/sqm -O -i sqm.in -o sqm.out\n/home/enrico/amber22/bin/wrapped_progs/antechamber: Fatal Error!\nCannot properly run \"/home/enrico/amber22/bin/sqm -O -i sqm.in -o sqm.out\".\nWhat is the total charge flag (-nc) and should it be manually modified\nfor the parametrization of the charged ligand in order to resolve such\nan issue ?\nMany thanks in advance\nCheers\nEnrico",
+      "url": "http://archive.ambermd.org/202210/0017.html"
+    },
+    {
+      "message_id": 1665070383,
+      "author": "Dr. Anselm Horn",
+      "date_raw": "Thu, 6 Oct 2022 17:33:03 +0200",
+      "body": "Enrico,\nantechamber assumes a default charge of 0 for the ligand system.\nIf your ligand has a different total molecular charge, you have to tell\nantechamber via the flags the tool mentions itself (see the output).\nWhen applying quantum mechanics it makes a difference if you have a\nclosed-shell system (=even number of electrons) or not. This is, why\nthere is also a flag for multiplicity.\nMost often, however, an odd number of electrons signals a problem with\nthe input, since most ligands are closed-shell systems.\nAnd just from the atomic constitution, the total molecular charge is not\nclear, several electronic configurations are possible - so the tool\nwants you to specify explicitely, which you want.\n>From what you described adjusting the total charge by adding -nc 1\nshould solve the problem.\nMaybe that helps.\nBest,\nAnselm\nAm 06.10.2022 um 16:38 schrieb Enrico Martinez via AMBER:\n> Dear Amber Users!\n> Using leaprc.gaff force field, I am trying to parametrize an organic\n> ligand molecule that has +1 total charge due to the presence of an\n> extra proton compared to it's uncharged version.\n>\n> Here is the error from antechamber:\n> Running: /home/enrico/amber22/bin/atomtype -i ANTECHAMBER_AC.AC0 -o\n> ANTECHAMBER_AC.AC -p gaff\n> Info: Total number of electrons: 151; net charge: 0\n> Info: The number of electrons is odd (151).\n>       Please check the total charge (-nc flag) and spin multiplicity (-m flag).\n>\n> Running: /home/enrico/amber22/bin/sqm -O -i sqm.in -o sqm.out\n> /home/enrico/amber22/bin/wrapped_progs/antechamber: Fatal Error!\n> Cannot properly run \"/home/enrico/amber22/bin/sqm -O -i sqm.in -o sqm.out\".\n>\n> What is the total charge flag (-nc) and should it be manually modified\n> for the parametrization of the charged ligand in order to resolve such\n> an issue ?\n> Many thanks in advance\n> Cheers\n> Enrico\n>\n>",
+      "url": "http://archive.ambermd.org/202210/0018.html",
+      "in_reply_to": 1665067124
+    },
+    {
+      "message_id": 1665070483,
+      "author": "Enrico Martinez",
+      "date_raw": "Thu, 6 Oct 2022 17:34:43 +0200",
+      "body": "Thank you very much for this information!\nSo I've just added -nc =1 and it works fine!\nCould you tell me in what cases should I additionally add the option\nfor multiplicity for the Antechamber ?\nMany thanks in advance\nCheers\nEnrico\nIl giorno gio 6 ott 2022 alle ore 17:33 Dr. Anselm Horn via AMBER\n<amber.ambermd.org> ha scritto:\n>\n> Enrico,\n>\n> antechamber assumes a default charge of 0 for the ligand system.\n> If your ligand has a different total molecular charge, you have to tell\n> antechamber via the flags the tool mentions itself (see the output).\n>\n> When applying quantum mechanics it makes a difference if you have a\n> closed-shell system (=even number of electrons) or not. This is, why\n> there is also a flag for multiplicity.\n> Most often, however, an odd number of electrons signals a problem with\n> the input, since most ligands are closed-shell systems.\n>\n> And just from the atomic constitution, the total molecular charge is not\n> clear, several electronic configurations are possible - so the tool\n> wants you to specify explicitely, which you want.\n>\n> From what you described adjusting the total charge by adding -nc 1\n> should solve the problem.\n>\n> Maybe that helps.\n>\n> Best,\n>\n> Anselm\n>\n>\n>\n> Am 06.10.2022 um 16:38 schrieb Enrico Martinez via AMBER:\n> > Dear Amber Users!\n> > Using leaprc.gaff force field, I am trying to parametrize an organic\n> > ligand molecule that has +1 total charge due to the presence of an\n> > extra proton compared to it's uncharged version.\n> >\n> > Here is the error from antechamber:\n> > Running: /home/enrico/amber22/bin/atomtype -i ANTECHAMBER_AC.AC0 -o\n> > ANTECHAMBER_AC.AC -p gaff\n> > Info: Total number of electrons: 151; net charge: 0\n> > Info: The number of electrons is odd (151).\n> >       Please check the total charge (-nc flag) and spin multiplicity (-m flag).\n> >\n> > Running: /home/enrico/amber22/bin/sqm -O -i sqm.in -o sqm.out\n> > /home/enrico/amber22/bin/wrapped_progs/antechamber: Fatal Error!\n> > Cannot properly run \"/home/enrico/amber22/bin/sqm -O -i sqm.in -o sqm.out\".\n> >\n> > What is the total charge flag (-nc) and should it be manually modified\n> > for the parametrization of the charged ligand in order to resolve such\n> > an issue ?\n> > Many thanks in advance\n> > Cheers\n> > Enrico\n> >\n> >",
+      "url": "http://archive.ambermd.org/202210/0019.html",
+      "in_reply_to": 1665067124
+    },
+    {
+      "message_id": 1665133255,
+      "author": "Enrico Martinez",
+      "date_raw": "Fri, 7 Oct 2022 11:00:55 +0200",
+      "body": "Great, thanks so much David!\nCheers\nEnrico\nIl giorno gio 6 ott 2022 alle ore 18:41 David A Case\n<david.case.rutgers.edu> ha scritto:\n>\n> On Thu, Oct 06, 2022, Enrico Martinez via AMBER wrote:\n>\n> >Could you tell me in what cases should I additionally add the option\n> >for multiplicity for the Antechamber ?\n>\n> Short answer: never.\n>\n> GAFF is calibrated for closed-shell molecules.  I could imagine a very\n> experienced person trying out calculations on radicals.  But then you would\n> be charge of deciding how much to believe the results.\n>\n> ....dac\n>",
+      "url": "http://archive.ambermd.org/202210/0022.html",
+      "in_reply_to": 1665067124
+    }
+  ]
+}

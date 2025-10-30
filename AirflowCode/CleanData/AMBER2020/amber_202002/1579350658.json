@@ -1,0 +1,21 @@
+{
+  "thread_id": 1579350658,
+  "subject": "[AMBER] rror: an illegal memory access was encountered launching kernel kNLSkinTest",
+  "messages": [
+    {
+      "message_id": 1579350658,
+      "author": "Sruthi Sudhakar",
+      "date_raw": "Sat, 18 Jan 2020 18:00:58 +0530",
+      "body": "Respected group members,\nRecently I have asked about converting a DNA into mol2 format using\nantechamber and was advised to directly generate the coordinate and\ntopology files for the same since its not an artificially modified dna. I\ndid that and could successfully do the minimization. But when I had done\nthe heating stage, the following error occurred. I tried including the\nvlimit in the input script but still the error repeated.\npmemd.cuda -O -i nvt_md1.in -c dna_min2.rst7 -p dna.prmtop -o dna_nvt.out\n-r dna_nvt.rst7 -x dna_nvt.nc\nError: an illegal memory access was encountered launching kernel kNLSkinTest\nI have attached both the input script and the incomplete output file along.\nI have tried doing the heating in small stages even then the same error\noccured. Please suggest any possible solution for the same.\nThank you",
+      "url": "http://archive.ambermd.org/202001/0208.html"
+    },
+    {
+      "message_id": 1579354296,
+      "author": "David Case",
+      "date_raw": "Sat, 18 Jan 2020 13:31:36 +0000",
+      "body": "On Sat, Jan 18, 2020, Sruthi Sudhakar wrote:\n>I tried including the\n>vlimit in the input script but still the error repeated.\nYou have atoms in your starting structure that are almost on top of one\nanother.  Use the \"check\" commands in cpptraj or parmed to tell you\nwhich ones they are.  You will need to fix this before proceeding.\nSecond: you should generally plan to do a minimization first before\nrunning MD.\nThird: when problems occur, use the CPU version of pmemd, set ntpr=1 and\nnstlim to 100 (or so): this will provide more useful diagnostic\ninformation.\n....dac",
+      "url": "http://archive.ambermd.org/202001/0212.html",
+      "in_reply_to": 1579350658
+    }
+  ]
+}

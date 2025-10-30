@@ -1,0 +1,21 @@
+{
+  "thread_id": 1683638506,
+  "subject": "[AMBER] Pairwise non-bonded interaction energy calculation",
+  "messages": [
+    {
+      "message_id": 1683638506,
+      "author": "ChenXin",
+      "date_raw": "Tue, 9 May 2023 21:21:46 +0800 (GMT+08:00)",
+      "body": "Hi everyone,\nI am trying to calculate pairwise non-bonded interaction energy for a protein. I have tried two methods.\nFirst I try the MM/GBSA method and the idecomp was set to 4 and dec_verbose was set to 1. However, in the output file in the Total Energy Decomposition part, the TOTAL interaction energy (comprisng all 5 terms) between Res1 and Res1 (itself) is -22 kcal/mol. I think it's strange since there should not be any interaction energy between one residue.\nThen I trid the seconde method, pairwise in CPPTRAJ. Using this method, I might realise why the interaction energy between one residue is non-zero (because they are calculated at atomic level). However, taking Res1 as example, the sum of Eele and Evdw for Res1-Res1 is -35.3044 kcal/mol while MM/GBSA gave 40.5 kcal/mol (only van der Waals and electrostatics terms were summerized).\nThese results confused me since the two method gave inconsistent results. I wonder that which is the \"standard\" method for calculating pairwise non-bonded interaction energy and why these two methods gave different results.\nAlso, I found that it seems not easy to obtain residue level pairwise interaction energy by \"pairwise\". Is there any tricks to easily convert the atom-level pairwise interaction energy to residue level?\nLooking forward to the replys and thanks a lot.\nAll the best,\nChanyan",
+      "url": "http://archive.ambermd.org/202305/0033.html"
+    },
+    {
+      "message_id": 1683765851,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 10 May 2023 20:44:11 -0400",
+      "body": "Hi,\nIt would help if you could post more details about what you're\nactually doing, i.e. the input you're using for mmpbsa and for\ncpptraj. Note that the 'pairwise' command in cpptraj uses an extremely\nsimplistic Coulomb + LJ term with no cutoff - you might have better\nluck replicating MMPBSA results using the 'energy' action.\n-Dan\nOn Tue, May 9, 2023 at 9:27 AM ChenXin via AMBER <amber.ambermd.\norg> wrote:\n>\n> Hi everyone,\n>\n> I am trying to calculate pairwise non-bonded interaction energy for a protein. I have tried two methods.\n>\n> First I try the MM/GBSA method and the idecomp was set to 4 and dec_verbose was set to 1. However, in the output file in the Total Energy Decomposition part, the TOTAL interaction energy (comprisng all 5 terms) between Res1 and Res1 (itself) is -22 kcal/mol. I think it's strange since there should not be any interaction energy between one residue.\n>\n> Then I trid the seconde method, pairwise in CPPTRAJ. Using this method, I might realise why the interaction energy between one residue is non-zero (because they are calculated at atomic level). However, taking Res1 as example, the sum of Eele and Evdw for Res1-Res1 is -35.3044 kcal/mol while MM/GBSA gave 40.5 kcal/mol (only van der Waals and electrostatics terms were summerized).\n>\n> These results confused me since the two method gave inconsistent results. I wonder that which is the \"standard\" method for calculating pairwise non-bonded interaction energy and why these two methods gave different results.\n>\n> Also, I found that it seems not easy to obtain residue level pairwise interaction energy by \"pairwise\". Is there any tricks to easily convert the atom-level pairwise interaction energy to residue level?\n>\n> Looking forward to the replys and thanks a lot.\n>\n>\n>\n> All the best,\n> Chanyan\n>",
+      "url": "http://archive.ambermd.org/202305/0052.html",
+      "in_reply_to": 1683638506
+    }
+  ]
+}

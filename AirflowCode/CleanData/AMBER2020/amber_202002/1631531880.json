@@ -1,0 +1,29 @@
+{
+  "thread_id": 1631531880,
+  "subject": "[AMBER] PARMED Charmber User Warning Quesiton",
+  "messages": [
+    {
+      "message_id": 1631531880,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Mon, 13 Sep 2021 07:18:00 -0400",
+      "body": "Dear Amber Community,\nI’m trying to generate a prmtop from psf/pdb for a heme containing system, and the chamber utility of ParmEd is giving me the below warnings:\nUserWarning: WARNING: Ignoring \"DELETE ACCE NE2\" because entity type ACCE not used.\nUserWarning: WARNING: Ignoring \"DELETE ANGLE 1NA 1FE 1NC  1NB 1FE 1ND\" because entity type ANGLE not used.\nUserWarning: WARNING: Ignoring \"DELETE ANGLE 2NA 2FE 2NC  2NB 2FE 2ND\" because entity type ANGLE not used.\nIs the following interpretation right: The residue definitions says to delete these angles, and Chamber is ignoring these statements precisely because the angles aren’t used.\nCan these warning safely be ignored?\nAlso, what validation step(s) should I take to make sure the generated prmtop is good?\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202109/0066.html"
+    },
+    {
+      "message_id": 1631652579,
+      "author": "Jason Swails",
+      "date_raw": "Tue, 14 Sep 2021 16:49:39 -0400",
+      "body": "On Mon, Sep 13, 2021 at 7:18 AM Matthew Guberman-Pfeffer <\nmatthew.guberman-pfeffer.uconn.edu> wrote:\n> Dear Amber Community,\n>\n> I’m trying to generate a prmtop from psf/pdb for a heme containing system,\n> and the chamber utility of ParmEd is giving me the below warnings:\n> UserWarning: WARNING: Ignoring \"DELETE ACCE NE2\" because entity type ACCE\n> not used.\n> UserWarning: WARNING: Ignoring \"DELETE ANGLE 1NA 1FE 1NC  1NB 1FE 1ND\"\n> because entity type ANGLE not used.\n> UserWarning: WARNING: Ignoring \"DELETE ANGLE 2NA 2FE 2NC  2NB 2FE 2ND\"\n> because entity type ANGLE not used.\n> Is the following interpretation right: The residue definitions says to\n> delete these angles, and Chamber is ignoring these statements precisely\n> because the angles aren’t used.\n> Can these warning safely be ignored?\n>\nYes, these can be safely ignored.  The residue definitions are actually\nirrelevant to `chamber`, since they're just used by CHARMM when building\nthe PSF.  Since chamber requires the PSF to be generated already, they have\nno effect.\nAlso, what validation step(s) should I take to make sure the generated\n> prmtop is good?\nYou can compare the gas phase single-point energies produced by both Amber\nand CHARMM (if those match, the forces will match as well from my\nexperience).  That's really the only way to definitively tell.  Just be\ncareful that the coordinate files you're using in both cases have the same\nprecision.\nA method that is almost as reliable is to compute an energy using ParmEd\n(via OpenMM) using both the Chamber-generated prmtop and the original PSF\nfiles (use the same coordinate file). If those energies match, then the\nconversion is correct.\nHope this helps,\nJason\n-- \nJason M. Swails",
+      "url": "http://archive.ambermd.org/202109/0083.html",
+      "in_reply_to": 1631531880
+    },
+    {
+      "message_id": 1631662270,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Tue, 14 Sep 2021 19:31:10 -0400",
+      "body": "Hi Jason,\nThanks so much for your reply. I have one follow-up question: Are there specific settings I should add to the sander/pmemd input, for example, to modify how 1-4 interactions are treated? I know that if I were to use Amber in NAMD, I’d need to do something like this to get comparable energies.\nBest,\nMatthew\n> On Sep 14, 2021, at 4:49 PM, Jason Swails <jason.swails.gmail.\ncom> wrote:\n>\n> *Message sent from a system outside of UConn.*\n>\n>\n> On Mon, Sep 13, 2021 at 7:18 AM Matthew Guberman-Pfeffer <\n> matthew.guberman-pfeffer.uconn.edu <mailto:\nmatthew.guberman-pfeffer.uconn.edu\n>> wrote:\n>\n>> Dear Amber Community,\n>>\n>> I’m trying to generate a prmtop from psf/pdb for a heme containing system,\n>> and the chamber utility of ParmEd is giving me the below warnings:\n>> UserWarning: WARNING: Ignoring \"DELETE ACCE NE2\" because entity type ACCE\n>> not used.\n>> UserWarning: WARNING: Ignoring \"DELETE ANGLE 1NA 1FE 1NC  1NB 1FE 1ND\"\n>> because entity type ANGLE not used.\n>> UserWarning: WARNING: Ignoring \"DELETE ANGLE 2NA 2FE 2NC  2NB 2FE 2ND\"\n>> because entity type ANGLE not used.\n>\n>\n>> Is the following interpretation right: The residue definitions says to\n>> delete these angles, and Chamber is ignoring these statements precisely\n>> because the angles aren’t used.\n>\n>\n>> Can these warning safely be ignored?\n>>\n>\n> Yes, these can be safely ignored.  The residue definitions are actually\n> irrelevant to `chamber`, since they're just used by CHARMM when building\n> the PSF.  Since chamber requires the PSF to be generated already, they have\n> no effect.\n>\n> Also, what validation step(s) should I take to make sure the generated\n>> prmtop is good?\n>\n>\n> You can compare the gas phase single-point energies produced by both Amber\n> and CHARMM (if those match, the forces will match as well from my\n> experience).  That's really the only way to definitively tell.  Just be\n> careful that the coordinate files you're using in both cases have the same\n> precision.\n>\n> A method that is almost as reliable is to compute an energy using ParmEd\n> (via OpenMM) using both the Chamber-generated prmtop and the original PSF\n> files (use the same coordinate file). If those energies match, then the\n> conversion is correct.\n>\n> Hope this helps,\n> Jason\n>\n> --\n> Jason M. Swails\n>",
+      "url": "http://archive.ambermd.org/202109/0084.html",
+      "in_reply_to": 1631531880
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "thread_id": 1717894939,
+  "subject": "[AMBER] Restarting pH REMD",
+  "messages": [
+    {
+      "message_id": 1717894939,
+      "author": "Abdelrahman, Noureen",
+      "date_raw": "Sun, 9 Jun 2024 01:02:19 +0000",
+      "body": "Hello all,\nIn Jason Swail's pH replica exchange tutorial (linked here: http://jswails.wikidot.com/ph-remd), we generate one cpin file to include in the groupfile for all replicas using the line below:\nbash$ cpinutil.py -p 1AKI.prmtop -resname AS4,GL4,HIP -igb 2 -o 1AKI.cpin\nHowever, in the restart, the cprestrt file from each replica becomes the cpin file for that same replica in the restart. Can someone please explain why we initially use one cpin file for all replicas but then in the restart, we use a different cpin file for each?\nThanks,\nNoureen",
+      "url": "http://archive.ambermd.org/202406/0011.html"
+    },
+    {
+      "message_id": 1717896804,
+      "author": "He, Amy",
+      "date_raw": "Sun, 9 Jun 2024 01:33:24 +0000",
+      "body": "Hi Noureen,\nIn the tutorial all replicas started from the exact same structure and protonation states. But it is also possible to let them start from individually equilibrated structures at different pH, which may have different states. You just have to modify the inputs individually in the group file. Both ways make sense to me. The first is more convenient (needs less equilibrium) but some replicas may experience a drastic conformation change at the beginning, especially if their pHs are further away from the pH of choice in the previous equilibrium calculation.\nTo restart, it makes more sense to proceed from the respective protonation states at the end of the previous trajectories, for a smooth transition from the previous and the new simulations.\nBest regards,\nAmy\nFrom: Abdelrahman, Noureen via AMBER <amber.ambermd.\norg>\nDate: Saturday, June 8, 2024 at 6:03 PM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: [AMBER] Restarting pH REMD\nHello all,\nIn Jason Swail's pH replica exchange tutorial (linked here: https://urldefense.com/v3/__http://jswails.wikidot.com/ph-remd__;!!KGKeukY!wOc8Qyq17CCFYVTtfvM8yYGX6ITnIl6cKzmqY7oj_hcLYHXA1X5SXqshWeglCcB4ZUitmBmu8zMmOrbo3Dr_ZtWrePQ$<https://urldefense.com/v3/__http:/jswails.wikidot.com/ph-remd__;!!KGKeukY!wOc8Qyq17CCFYVTtfvM8yYGX6ITnIl6cKzmqY7oj_hcLYHXA1X5SXqshWeglCcB4ZUitmBmu8zMmOrbo3Dr_ZtWrePQ$> ), we generate one cpin file to include in the groupfile for all replicas using the line below:\nbash$ cpinutil.py -p 1AKI.prmtop -resname AS4,GL4,HIP -igb 2 -o 1AKI.cpin\nHowever, in the restart, the cprestrt file from each replica becomes the cpin file for that same replica in the restart. Can someone please explain why we initially use one cpin file for all replicas but then in the restart, we use a different cpin file for each?\nThanks,\nNoureen",
+      "url": "http://archive.ambermd.org/202406/0013.html",
+      "in_reply_to": 1717894939
+    }
+  ]
+}

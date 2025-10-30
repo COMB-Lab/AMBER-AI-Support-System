@@ -1,0 +1,21 @@
+{
+  "thread_id": 1594913264,
+  "subject": "[AMBER] matching paramters of methane",
+  "messages": [
+    {
+      "message_id": 1594913264,
+      "author": "angad sharma",
+      "date_raw": "Thu, 16 Jul 2020 20:57:44 +0530",
+      "body": "I generated a topology file of methane. And in that file the values of\nACOEFF and BCOEFF are as follows:\n%FLAG LENNARD_JONES_ACOEF\n%FORMAT(5E16.8)\n1.04308023E+06  9.71708117E+04  7.51607703E+03\n%FLAG LENNARD_JONES_BCOEF\n%FORMAT(5E16.8)\n6.75612247E+02  1.26919150E+02  2.17257828E+01\nActually i want to know how these values came so, with parmed i got values\nof LJ parameters which are as:\nATOM    RES  RESNAME  NAME  TYPE   At.#   LJ Radius    LJ Depth      Mass\nCharge GB Radius GB Screen\n1      1      unk    C1    C3      6      1.9080      0.1094\n12.0100   -0.3884    1.7000    0.7200\n2      1      unk    H1    HC      1      1.4870      0.0157\n1.0080    0.0971    1.3000    0.8500\n3      1      unk    H2    HC      1      1.4870      0.0157\n1.0080    0.0971    1.3000    0.8500\n4      1      unk    H3    HC      1      1.4870      0.0157\n1.0080    0.0971    1.3000    0.8500\n5      1      unk    H4    HC      1      1.4870      0.0157\n1.0080    0.0971    1.3000    0.8500\nand I think the units of lj radius(radius) are *kcal/mol* and of\nepsilon(depth) is in *angstrom.*\nafter taking this i calculated the values  of ACOEFF and BCOEFF  and they\nare as\n>From prmtop Aij   1.04308023E+06   9.71708117E+04      7.51607703E+03\nmanually Aij         1018.6330              94.7933\n7.3399\n>From prmtop Bij    6.75612247E+02   1.26919150E+02     2.17257828E+01\nmanually Bij           0.6789\n3.9620                      21.1128\nunits Aij manually (kcal/mol angstrom^12)\nunits Bij manually (kcal/mol angstrom^6)\nI want to know why they are not matching and what units are in A and B\nwhich came from AMBER topology.",
+      "url": "http://archive.ambermd.org/202007/0193.html"
+    },
+    {
+      "message_id": 1594917388,
+      "author": "David A Case",
+      "date_raw": "Thu, 16 Jul 2020 12:36:28 -0400",
+      "body": "On Thu, Jul 16, 2020, angad sharma wrote:\n>I generated a topology file of methane. And in that file the values of\n>ACOEFF and BCOEFF are as follows:\n>%FLAG LENNARD_JONES_ACOEF\n>  1.04308023E+06  9.71708117E+04  7.51607703E+03\n>%FLAG LENNARD_JONES_BCOEF\n>  6.75612247E+02  1.26919150E+02  2.17257828E+01\nCheck the order here: the first value is for C-C interactions; I\nthink(?) the second is for C-H interactions, and the third for H-H\ninteractions.  Parmed can help here.\n>Actually i want to know how these values came so, with parmed i got values\n>of LJ parameters which are as:\n>\n>and I think the units of lj radius(radius) are *kcal/mol* and of\n>epsilon(depth) is in *angstrom.*\nIt's the reverse: radius in Ang, well-depth in kcal/mol.\n>manually Aij         1018.6330              94.7933\n>7.3399\nHow did you do the \"manual\" calculation?  Remember that the Rmin value\nfor a C-C interaction is twice the radius Parmed reports for a single\nC atom.\n>units Aij manually (kcal/mol angstrom^12)\n>units Bij manually (kcal/mol angstrom^6)\nThese are the correct units.\n...dac",
+      "url": "http://archive.ambermd.org/202007/0194.html",
+      "in_reply_to": 1594913264
+    }
+  ]
+}

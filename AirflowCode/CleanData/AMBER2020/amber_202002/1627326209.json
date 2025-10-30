@@ -1,0 +1,37 @@
+{
+  "thread_id": 1627326209,
+  "subject": "[AMBER] SEBOMD topology issue",
+  "messages": [
+    {
+      "message_id": 1627326209,
+      "author": "Daniel Konstantinovsky",
+      "date_raw": "Mon, 26 Jul 2021 15:03:29 -0400",
+      "body": "Hi everyone,\nI am trying to do an AM1 minimization and simulation of a small water box\nusing the SEBOMD plug-in and a topology I made for SPC/Fw simulation of the\nsame box. AMBER throws this error:\n*ERROR: NO PARAMETER FOR ATOM      1 (ATOMIC NUMBER =  8)*\nIt seems something is wrong with the topology. This topology works for\nclassical SPC/Fw runs. How can I fix this?\nMy input file is\n&cntrl\nimin=1,\nmaxcyc=5000,\nncyc=2500,\nnmropt=0,\nntb=1,\ncut=5,\nntwx=500,\nioutfm=1,\niwrap=1,\nifqnt=1,\n/\n&qmmm\nqm_theory='SEBOMD',\n/\n&sebomd\nhamiltonian='AM1',\ncharge=0,\nlongrange=1,     ! PME\n/\nThank you!\nDan Konstantinovsky",
+      "url": "http://archive.ambermd.org/202107/0215.html"
+    },
+    {
+      "message_id": 1627326532,
+      "author": "Adrian Roitberg",
+      "date_raw": "Mon, 26 Jul 2021 15:08:52 -0400",
+      "body": "Are you sure this is a sebomd error?\nCan you try the same input but with ifqnt=0 ?\nAdrian\nOn 7/26/21 3:03 PM, Daniel Konstantinovsky wrote:\n> [External Email]\n>\n> Hi everyone,\n>\n> I am trying to do an AM1 minimization and simulation of a small water box\n> using the SEBOMD plug-in and a topology I made for SPC/Fw simulation of the\n> same box. AMBER throws this error:\n>\n> *ERROR: NO PARAMETER FOR ATOM      1 (ATOMIC NUMBER =  8)*\n>\n> It seems something is wrong with the topology. This topology works for\n> classical SPC/Fw runs. How can I fix this?\n>\n> My input file is\n>\n> &cntrl\n>      imin=1,\n>      maxcyc=5000,\n>      ncyc=2500,\n>      nmropt=0,\n>      ntb=1,\n>      cut=5,\n>      ntwx=500,\n>      ioutfm=1,\n>      iwrap=1,\n>      ifqnt=1,\n> /\n>   &qmmm\n>    qm_theory='SEBOMD',\n> /\n> &sebomd\n>    hamiltonian='AM1',\n>    charge=0,\n>    longrange=1,     ! PME\n> /\n>\n> Thank you!\n> Dan Konstantinovsky\n>",
+      "url": "http://archive.ambermd.org/202107/0216.html",
+      "in_reply_to": 1627326209
+    },
+    {
+      "message_id": 1627327304,
+      "author": "Daniel Konstantinovsky",
+      "date_raw": "Mon, 26 Jul 2021 15:21:44 -0400",
+      "body": "I tried ifqnt=0 and the minimization ran to completion. What could be the\nproblem here?\nOn Mon, Jul 26, 2021 at 3:09 PM Adrian Roitberg <roitberg.ufl.edu> wrote:\n> Are you sure this is a sebomd error?\n>\n> Can you try the same input but with ifqnt=0 ?\n>\n> Adrian\n>\n>\n> On 7/26/21 3:03 PM, Daniel Konstantinovsky wrote:\n> > [External Email]\n> >\n> > Hi everyone,\n> >\n> > I am trying to do an AM1 minimization and simulation of a small water box\n> > using the SEBOMD plug-in and a topology I made for SPC/Fw simulation of\n> the\n> > same box. AMBER throws this error:\n> >\n> > *ERROR: NO PARAMETER FOR ATOM      1 (ATOMIC NUMBER =  8)*\n> >\n> > It seems something is wrong with the topology. This topology works for\n> > classical SPC/Fw runs. How can I fix this?\n> >\n> > My input file is\n> >\n> > &cntrl\n> >      imin=1,\n> >      maxcyc=5000,\n> >      ncyc=2500,\n> >      nmropt=0,\n> >      ntb=1,\n> >      cut=5,\n> >      ntwx=500,\n> >      ioutfm=1,\n> >      iwrap=1,\n> >      ifqnt=1,\n> > /\n> >   &qmmm\n> >    qm_theory='SEBOMD',\n> > /\n> > &sebomd\n> >    hamiltonian='AM1',\n> >    charge=0,\n> >    longrange=1,     ! PME\n> > /\n> >\n> > Thank you!\n> > Dan Konstantinovsky\n> >",
+      "url": "http://archive.ambermd.org/202107/0217.html",
+      "in_reply_to": 1627326209
+    },
+    {
+      "message_id": 1627343831,
+      "author": "Gerald Monard",
+      "date_raw": "Tue, 27 Jul 2021 08:57:11 +0900",
+      "body": "Hello,\nInternally in SEBOMD, there is a table that converts any atom type into an\natomic number. I guess this is where the problem is (SPC/Fw atom types may\nnot have been included).\nCan you send me your topology and coordinate file please so that I can look\ninto it and check if I can provide a patch?\nThanks,\nGerald.\nOn Tue, Jul 27, 2021 at 4:03 AM Daniel Konstantinovsky <\ndaniel.konstantinovsky.yale.edu> wrote:\n> Hi everyone,\n>\n> I am trying to do an AM1 minimization and simulation of a small water box\n> using the SEBOMD plug-in and a topology I made for SPC/Fw simulation of the\n> same box. AMBER throws this error:\n>\n> *ERROR: NO PARAMETER FOR ATOM      1 (ATOMIC NUMBER =  8)*\n>\n> It seems something is wrong with the topology. This topology works for\n> classical SPC/Fw runs. How can I fix this?\n>\n> My input file is\n>\n> &cntrl\n>     imin=1,\n>     maxcyc=5000,\n>     ncyc=2500,\n>     nmropt=0,\n>     ntb=1,\n>     cut=5,\n>     ntwx=500,\n>     ioutfm=1,\n>     iwrap=1,\n>     ifqnt=1,\n> /\n>  &qmmm\n>   qm_theory='SEBOMD',\n> /\n> &sebomd\n>   hamiltonian='AM1',\n>   charge=0,\n>   longrange=1,     ! PME\n> /\n>\n> Thank you!\n> Dan Konstantinovsky\n>",
+      "url": "http://archive.ambermd.org/202107/0218.html",
+      "in_reply_to": 1627326209
+    }
+  ]
+}

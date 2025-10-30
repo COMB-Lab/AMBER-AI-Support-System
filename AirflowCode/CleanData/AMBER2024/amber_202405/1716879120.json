@@ -1,0 +1,21 @@
+{
+  "thread_id": 1716879120,
+  "subject": "[AMBER] Query Regarding AMBER Advanced Thermodynamic Integration calculation:",
+  "messages": [
+    {
+      "message_id": 1716879120,
+      "author": "Kankana Bhattacharjee",
+      "date_raw": "Tue, 28 May 2024 12:22:00 +0530",
+      "body": "Dear AMBER users,\nI am trying to understand the folder details of Advanced thermodynamic\nintegration calculation (Link:\nhttps://ambermd.org/tutorials/advanced/tutorial39/index.php\n). initial/\nfolder is having frcmod, lib,mol2 and pdb files for 2 systems (1h1q~1h1r).\nIn case of rbfe, did FE_workflow create the 1h1q~1h1r transformation\nfolder under CDK2 ? And, transformation folder has aq and com folders\nrespectively. In case of aq folder, is \"stateA.rst7\" belongs to ligand A ?\nThen how to get .rst7 for ligand B ? I mean rst7 for another end state is\nmissing. Also, is \"unisc.parm7\" file belong to merged topology file i.e,\nfor two ligands ?\nIn case of com folder, I find \"stateA.rst7\" and \"stateB.rst7\" files that\nmeans for two end states is present. Why aq and com has different rst7\nformalism ?\nAnd, /rbfe/CDK2/1h1q~1h1r/aq/inputs/ has 23 input files fro each lambda\nwindows. Whatever I understood, 21 different stages performed before TI.\nWhy this is so ? Kindly clarify.\nYour suggestions would be appreciated.\nThanks & Regards\nKankana Bhattacharjee\nPh.D. Scholar\nDepartment of Chemistry\nAshoka University\nSonipat, Haryana",
+      "url": "http://archive.ambermd.org/202405/0123.html"
+    },
+    {
+      "message_id": 1716913989,
+      "author": "Timothy Giese",
+      "date_raw": "Tue, 28 May 2024 16:33:09 +0000",
+      "body": "1.\nYes, FE-Workflow creates all of the green folders, including the rbfe/CDK2/unified/run/1h1q~1h1r folders, displayed in figure 4 shown in the link you provided.\n2.\nState \"A\" refers to the first of the 2 ligands in the transformation A~B; that is, State A is the lambda=0 state. In your example, it refers to the coordinates where 1h1q are \"real\" and the softcore atoms of 1h1r are dummy atoms.  The coordinates should be a member of the ensemble when 1h1q is a real ligand, and the dummy atoms of 1h1r are superimposed on top of it.\n3.\nThis depends on your input settings regarding how to equilibrate the intermediate states. The relevant options are:\ntwostate=true\nbidirection_com=false\nbidirection_aq=false\nIn a \"one-state\" setup, one sequentially equilibrates each window starting from state A. In a \"two-state\" setup, one independently prepares states A and B; the intermediate states are sequentially equilibrated from the nearest end-state. In my understanding, a two-state equilibration implies bidirectional equilibration from the nearest end-state, whereas one can independently choose the directionality of the equilibration when using the one-state protocol.  I think the FE-Workflow developers strongly encourage setting \"twostate=true\". I'm not convinced they run \"twostate=false\" enough to claim that the option is even supported (it doesn't work when I try to use it at least).\n4.\nYes, unisc.parm7 merges the ligands into a single parm7.\n5.\nThe appearance of stateA.rst7 versus stateA.rst7 and stateB.rst7 is likely because of how your equilibration options are set in the input file (see above).\n6.\nEach lambda has 23 input files. The TI production is performed with ${lambda}_ti.mdin. Most of the others are different parts of the sophisticated equilibration procedure, which includes coordinate minimization, heating, pressure equilibration, temperature annealing and equilibration, heavy atom restraint relaxation, etcetera.",
+      "url": "http://archive.ambermd.org/202405/0126.html",
+      "in_reply_to": 1716879120
+    }
+  ]
+}

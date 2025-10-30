@@ -1,0 +1,45 @@
+{
+  "thread_id": 1642554101,
+  "subject": "[AMBER] how to obtain index of atoms based on residue and atom masks",
+  "messages": [
+    {
+      "message_id": 1642554101,
+      "author": "Ming Tang",
+      "date_raw": "Wed, 19 Jan 2022 01:01:41 +0000",
+      "body": "Dear list,\nIs there a command to print out atom indexes (separated by comma) for a large number of residues? I want to use them as cv_i in ABMD.\nThanks,\nTammy",
+      "url": "http://archive.ambermd.org/202201/0155.html"
+    },
+    {
+      "message_id": 1642561951,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Tue, 18 Jan 2022 22:12:31 -0500",
+      "body": "Hello Tammy,\nOne thought is that you can use the mask keyword in cpptraj to generate a file. This file, call it mask.txt, will list the atom numbers in the second column. You then can process this file with a bash script to get a comma separated list, something like the following:\nidx=0\nwhile IFS= read -r F1 <&2;do\nif [ $idx != 0 ];then\natnum=$(echo $F1 | awk '{print $2}')\necho -n “${atnum},\";\nfi\nidx=$((idx+1))\ndone 2< mask.txt\nNote that the line indexing (idx) is to skip the “AtomNum” header in mask.txt.\nHope this work-around helps.\nBest,\nMatthew\n> On Jan 18, 2022, at 8:01 PM, Ming Tang <m21.tang.qut.\nedu.au> wrote:\n>\n> *Message sent from a system outside of UConn.*\n>\n>\n> Dear list,\n>\n> Is there a command to print out atom indexes (separated by comma) for a large number of residues? I want to use them as cv_i in ABMD.\n>\n> Thanks,\n> Tammy\n>",
+      "url": "http://archive.ambermd.org/202201/0158.html",
+      "in_reply_to": 1642554101
+    },
+    {
+      "message_id": 1642587808,
+      "author": "Dr. Anselm Horn",
+      "date_raw": "Wed, 19 Jan 2022 11:23:28 +0100",
+      "body": "Tammy,\nadding to Matthew's idea:\nIf you have the pdb-tools for the command line installed on your system\n(pip install pdb-tools ; cf\nhttp://www.bonvinlab.org/pdb-tools/\n), a pdb\nfile of your system at hand, and a simple residue mask, then a single\ncommand line may also yield almost all you want, provided that you just\nselect standard residues:\npdb_selres -<res_first:res_last> <your.pdb> | grep \"^ATOM\" | awk\n'{printf \"%1d,\", $2} '; echo\nNote that the last index is followed by a comma, too.\n(The selection mask for pdb_selres also allows for more than just one\nresidue range.)\nFor advanced masks, however, it is certainly better to use cpptraj for\npreprocessing, as Matthew suggested.\nBest regards,\nAnselm\nBioinformatik  |  NHR.FAU\nFriedrich-Alexander-Universität Erlangen-Nürnberg (FAU)\nGermany\nAm 19.01.2022 um 04:12 schrieb Matthew Guberman-Pfeffer:\n> Hello Tammy,\n>\n> One thought is that you can use the mask keyword in cpptraj to generate a file. This file, call it mask.txt, will list the atom numbers in the second column. You then can process this file with a bash script to get a comma separated list, something like the following:\n>\n> idx=0\n> while IFS= read -r F1 <&2;do\n>\n>   if [ $idx != 0 ];then\n>     atnum=$(echo $F1 | awk '{print $2}')\n>     echo -n “${atnum},\";\n>   fi\n>\n>   idx=$((idx+1))\n> done 2< mask.txt\n>\n> Note that the line indexing (idx) is to skip the “AtomNum” header in mask.txt.\n>\n> Hope this work-around helps.\n>\n> Best,\n> Matthew\n>\n>\n>\n>> On Jan 18, 2022, at 8:01 PM, Ming Tang <m21.tang.qut.\nedu.au> wrote:\n>>\n>> *Message sent from a system outside of UConn.*\n>>\n>>\n>> Dear list,\n>>\n>> Is there a command to print out atom indexes (separated by comma) for a large number of residues? I want to use them as cv_i in ABMD.\n>>\n>> Thanks,\n>> Tammy\n>>",
+      "url": "http://archive.ambermd.org/202201/0159.html",
+      "in_reply_to": 1642554101
+    },
+    {
+      "message_id": 1642624266,
+      "author": "Hai Nguyen",
+      "date_raw": "Wed, 19 Jan 2022 15:31:06 -0500",
+      "body": "Alternatively, Tammy can use `pytraj` (in AmberTools) (python interface of\ncpptraj)\npython code\n```\nimport pytraj as pt\ntop = pt.load_topology('your.{pdb,parm7,...}')\nprint(top.select(':1')) # get atom index for residue 1\n```\nPS: You can find the document (a bit outdated) here:\nhttps://amber-md.github.io/pytraj/latest/index.html\nHai\nOn Wed, Jan 19, 2022 at 5:24 AM Dr. Anselm Horn <anselm.horn.fau.\nde> wrote:\n> Tammy,\n>\n> adding to Matthew's idea:\n>\n> If you have the pdb-tools for the command line installed on your system\n> (pip install pdb-tools ; cf\nhttp://www.bonvinlab.org/pdb-tools/\n), a pdb\n> file of your system at hand, and a simple residue mask, then a single\n> command line may also yield almost all you want, provided that you just\n> select standard residues:\n>\n> pdb_selres -<res_first:res_last> <your.pdb> | grep \"^ATOM\" | awk\n> '{printf \"%1d,\", $2} '; echo\n>\n> Note that the last index is followed by a comma, too.\n> (The selection mask for pdb_selres also allows for more than just one\n> residue range.)\n>\n> For advanced masks, however, it is certainly better to use cpptraj for\n> preprocessing, as Matthew suggested.\n>\n> Best regards,\n>\n> Anselm\n>\n> Bioinformatik  |  NHR.FAU\n> Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU)\n> Germany\n>\n>\n> Am 19.01.2022 um 04:12 schrieb Matthew Guberman-Pfeffer:\n> > Hello Tammy,\n> >\n> > One thought is that you can use the mask keyword in cpptraj to generate\n> a file. This file, call it mask.txt, will list the atom numbers in the\n> second column. You then can process this file with a bash script to get a\n> comma separated list, something like the following:\n> >\n> > idx=0\n> > while IFS= read -r F1 <&2;do\n> >\n> >   if [ $idx != 0 ];then\n> >     atnum=$(echo $F1 | awk '{print $2}')\n> >     echo -n “${atnum},\";\n> >   fi\n> >\n> >   idx=$((idx+1))\n> > done 2< mask.txt\n> >\n> > Note that the line indexing (idx) is to skip the “AtomNum” header in\n> mask.txt.\n> >\n> > Hope this work-around helps.\n> >\n> > Best,\n> > Matthew\n> >\n> >\n> >\n> >> On Jan 18, 2022, at 8:01 PM, Ming Tang <m21.tang.qut.\nedu.au> wrote:\n> >>\n> >> *Message sent from a system outside of UConn.*\n> >>\n> >>\n> >> Dear list,\n> >>\n> >> Is there a command to print out atom indexes (separated by comma) for a\n> large number of residues? I want to use them as cv_i in ABMD.\n> >>\n> >> Thanks,\n> >> Tammy\n> >>",
+      "url": "http://archive.ambermd.org/202201/0164.html",
+      "in_reply_to": 1642554101
+    },
+    {
+      "message_id": 1642656931,
+      "author": "Ming Tang",
+      "date_raw": "Thu, 20 Jan 2022 05:35:31 +0000",
+      "body": "Hi Matthew, this is helpful. Thanks\n-----Original Message-----\nFrom: Matthew Guberman-Pfeffer <matthew.guberman-pfeffer.uconn.\nedu>\nSent: Wednesday, 19 January 2022 1:13 PM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] how to obtain index of atoms based on residue and atom masks\nHello Tammy,\nOne thought is that you can use the mask keyword in cpptraj to generate a file. This file, call it mask.txt, will list the atom numbers in the second column. You then can process this file with a bash script to get a comma separated list, something like the following:\nidx=0\nwhile IFS= read -r F1 <&2;do\nif [ $idx != 0 ];then\natnum=$(echo $F1 | awk '{print $2}')\necho -n “${atnum},\";\nfi\nidx=$((idx+1))\ndone 2< mask.txt\nNote that the line indexing (idx) is to skip the “AtomNum” header in mask.txt.\nHope this work-around helps.\nBest,\nMatthew\n> On Jan 18, 2022, at 8:01 PM, Ming Tang <m21.tang.qut.edu.au> wrote:\n>\n> *Message sent from a system outside of UConn.*\n>\n>\n> Dear list,\n>\n> Is there a command to print out atom indexes (separated by comma) for a large number of residues? I want to use them as cv_i in ABMD.\n>\n> Thanks,\n> Tammy\n>",
+      "url": "http://archive.ambermd.org/202201/0170.html",
+      "in_reply_to": 1642554101
+    }
+  ]
+}

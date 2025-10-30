@@ -1,0 +1,13 @@
+{
+  "thread_id": 1735754973,
+  "subject": "Re: [AMBER] Regarding polarizable continuum solvation model:",
+  "messages": [
+    {
+      "message_id": 1735754973,
+      "author": "David A Case",
+      "date_raw": "Wed, 1 Jan 2025 11:09:33 -0700",
+      "body": "On Tue, Dec 31, 2024, Kankana Bhattacharjee via AMBER wrote:\n>\n>I have used polarizable water model \"OPC3POL\" as a water model for my\n>calculation. Now, I would like to know, is there any way to include\n>additional polarizable continuum model. I mean PCM model or any other model\n>is present ? As we are trying to mimic polarizability of water.\nThe \"POL\" part of OPC3POL attempts to describe the electronic polarizability\nof water.  This is a small, but potentially important, part of water's\ninteractions with solutes and with other water molecules.  Traditional\n(\"fixed-charge\") water models include such effects, but in a very averaged\nway, since they have fewer adjustable paramters to fit to experimental data.\nPolarizable continuum models (of which generalized Born is one example) are\nvery different.  They are attempting to describe the electrostatic effects\nof water molecules that *are actually present in the physical system, but\nwhich are not present in the model being simulated.*  The language generally\nused contrasts \"explicit solvation\" (where each water molecule contributes two\nhydrogen atoms and one oxygen atom to the model), and \"implicit solvation\"\n(where one tries to account for water without actually modeling it.)\nThe \"polarization\" in a polarizable continuum model arises primarily from\nthe orientation of water dipoles in a liquid, and not from electronic\npolarizability.\n(Apologies if you already knew all this; but your question reflects a point\nof confusion for many.)\nIt *is* possible to add PCM to a system that already has some water\nmolecules, but the point of the PCM is to represent the effect of the\nwaters that are not present in the model.  In general(!), explicit solvent\nmodels seem to be more accurate than implicit ones, so you may want to\nhave a reason to consider the latter: ease of setup, enhanced sampling of\nconformational space, simplicity for docking calcualations, and so on.\n...hope this helps...best wishes for the New Year!....dac",
+      "url": "http://archive.ambermd.org/202501/0001.html"
+    }
+  ]
+}

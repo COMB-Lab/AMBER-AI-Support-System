@@ -1,0 +1,29 @@
+{
+  "thread_id": 1755284448,
+  "subject": "[AMBER] Bug Report: ABFQMMM with DFTBPLUS",
+  "messages": [
+    {
+      "message_id": 1755284448,
+      "author": "Zihao Bai",
+      "date_raw": "Fri, 15 Aug 2025 19:00:48 +0000",
+      "body": "Dear Amber Developers,\nI have encountered a bug when combining ABFQMMM with DFTBPLUS. A minimal test case is provided below, where the prmtop contains only one Na+ ion.\nThe error message is: Program received signal SIGSEGV: Segmentation fault - invalid memory reference.\nThis issue is resolved if qm_theory is set to \"DFTB3\", i.e., using SQM instead of DFTBPLUS. However, I need to use DFTB3 with D3 correction, which is not supported by SQM. On my system, DFTBPLUS also runs without error for standard QM/MM simulations without ABF.\nDoes anyone have any suggestions for addressing this issue?\nBest regards,\nZihao\n####\n&cntrl\nimin=0,\nirest=0, ntx=1,\nntb=1,\ncut=8.0,\nnstlim=100,\ndt=0.002,\nifqnt=1,\n/\n&qmmm\nqm_theory='DFTBPLUS',\nqmcut=8.0,\nqmmm_int=1,\nqm_ewald=1,\nabfqmmm=1,\ncoremask=':Na+',\nqmmask='',\nbuffermask='',\ncorecharge=1,\nqmcharge=0,\nbuffercharge=0,\n/\n&dftbplus\nqm_level = 'DFTB3-D3',\n/",
+      "url": "http://archive.ambermd.org/202508/0055.html"
+    },
+    {
+      "message_id": 1755524345,
+      "author": "Timothy Giese",
+      "date_raw": "Mon, 18 Aug 2025 13:39:05 +0000",
+      "body": "Thank you for the report. This is likely the first time anyone has tried to use sander/dftb+ with abfqmmm. I took a brief look. Right now dftb+ is being initialized during the first call; however, it appears that abfqmmm is an adaptive scheme that requires dftb+ to be deallocated and reinitialized at every step. I will put this on my list of things to do. Hopefully I will get an opportunity to work on this soon, but I don't know when.",
+      "url": "http://archive.ambermd.org/202508/0056.html",
+      "in_reply_to": 1755284448
+    },
+    {
+      "message_id": 1755535035,
+      "author": "Zihao Bai",
+      "date_raw": "Mon, 18 Aug 2025 16:37:15 +0000",
+      "body": "Hi Timothy,\nThank you for your email. I also found that abfqmmm cannot be used together with plumed. For a single Na⁺ ion, the following input fails unless abfqmmm=0. plumed_amber.dat can simply be an empty file. With abfqmmm=1, however, the program stops with the error:\nsander: //ambertools25_src/AmberTools/src/sander/Plumed.h:2605: plumed_gcreate: Assertion `plumed_gmain.p==NULL' failed.\nBest regards,\nZihao\n####\n&cntrl\nimin=0,\nirest=0, ntx=1,\nntb=1,\ncut=8.0,\nnstlim=100,\ndt=0.002,\nifqnt=1,\nplumed=1,\nplumedfile=\"plumed_amber.dat\",\n/\n&qmmm\nqm_theory='DFTB3',\nqmcut=8.0,\nqmmm_int=1,\nqm_ewald=1,\nabfqmmm=1,\ncoremask='',\nqmmask=':Na+',\nbuffermask='',\ncorecharge=,\nqmcharge=1,\nbuffercharge=0,\n/\nFrom: Timothy Giese <giese025.rutgers.\nedu>\nDate: Monday, August 18, 2025 at 8:39 AM\nTo: YASHIKA . via AMBER <amber.ambermd.org>, Zihao Bai <zbai29.wisc.\nedu>\nCc: J.R. Schmidt <schmidt.chem.wisc.edu>\nSubject: Re: Bug Report: ABFQMMM with DFTBPLUS\nThank you for the report. This is likely the first time anyone has tried to use sander/dftb+ with abfqmmm. I took a brief look. Right now dftb+ is being initialized during the first call; however, it appears that abfqmmm is an adaptive scheme that requires dftb+ to be deallocated and reinitialized at every step. I will put this on my list of things to do. Hopefully I will get an opportunity to work on this soon, but I don't know when.",
+      "url": "http://archive.ambermd.org/202508/0057.html",
+      "in_reply_to": 1755284448
+    }
+  ]
+}

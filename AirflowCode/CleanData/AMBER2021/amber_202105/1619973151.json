@@ -1,0 +1,61 @@
+{
+  "thread_id": 1619973151,
+  "subject": "[AMBER] converting gromacs topology to amber",
+  "messages": [
+    {
+      "message_id": 1619973151,
+      "author": "Ayesha Fatima",
+      "date_raw": "Sun, 2 May 2021 19:32:31 +0300",
+      "body": "Dear all,\nI have run a simulation on gromacs.\nI know that we can convert the topology and gro files using parmed to amber\nformat. the script file i think is this\nimport parmed as pmd\ngromacs.GROMACS_TOPDIR = \"/mnt/d/Najwan/cynaroside\"\ngmx_top = pmd.load_file('topol.top', xyz='complex.gro')\ngmx_top.save('complex.top', format='amber')\ngmx_top.save('complex.crd', format='rst7')\nI save it as parmd.in\nmy command line is\nparmed top_to_prm.in > -l convert.log\ni get the file the following\n*parmed.tools.exceptions.ParmError: Could not determine file type of\ntop_to_prm.in <\nhttp://top_to_prm.in\n>*\ncould someone please guide me to the correct usage?\nI also tried using cpptraj but it also throws me the error of\n*Molecule NLU1 is not defined in gromacs topology.*\nNLU1 is the ligand\nis the ligand.itp required or  gro file required\nthanks you\nAyesha Fatima",
+      "url": "http://archive.ambermd.org/202105/0017.html"
+    },
+    {
+      "message_id": 1620046656,
+      "author": "Daniel Roe",
+      "date_raw": "Mon, 3 May 2021 08:57:36 -0400",
+      "body": "Hi,\nOn Sun, May 2, 2021 at 12:32 PM Ayesha Fatima <ayeshafatima.69.gmail.com> wrote:\n>\n> I also tried using cpptraj but it also throws me the error of\n>\n> *Molecule NLU1 is not defined in gromacs topology.*\nFirst, I really don't recommend using cpptraj to do topology\nconversions. Cpptraj is really only intended for trajectory/data\nanalysis; it has *not* been vetted at all for converting parameters\nbetween different formats.\nSecond, by default cpptraj will look for gromacs topology data (that\nis not in the same directory) in the directory defined by the GMXDATA\nenvironment variable; specifically, it expects things to be in the\n\"$GMXDATA/top\" directory. I just realized this is not documented\n(oops).\nHope this helps,\n-Dan\n>\n> NLU1 is the ligand\n>\n> is the ligand.itp required or  gro file required\n>\n> thanks you\n>\n> Ayesha Fatima\n>",
+      "url": "http://archive.ambermd.org/202105/0027.html",
+      "in_reply_to": 1619973151
+    },
+    {
+      "message_id": 1620048612,
+      "author": "Ayesha Fatima",
+      "date_raw": "Mon, 3 May 2021 16:30:12 +0300",
+      "body": "Thank Dr. Roe\nMy first part regarding the script. should it be saved as python script?\nThank you\nOn Mon, May 3, 2021 at 3:58 PM Daniel Roe <daniel.r.roe.gmail.com> wrote:\n> Hi,\n>\n> On Sun, May 2, 2021 at 12:32 PM Ayesha Fatima <ayeshafatima.69.gmail.com>\n> wrote:\n> >\n> > I also tried using cpptraj but it also throws me the error of\n> >\n> > *Molecule NLU1 is not defined in gromacs topology.*\n>\n> First, I really don't recommend using cpptraj to do topology\n> conversions. Cpptraj is really only intended for trajectory/data\n> analysis; it has *not* been vetted at all for converting parameters\n> between different formats.\n>\n> Second, by default cpptraj will look for gromacs topology data (that\n> is not in the same directory) in the directory defined by the GMXDATA\n> environment variable; specifically, it expects things to be in the\n> \"$GMXDATA/top\" directory. I just realized this is not documented\n> (oops).\n>\n> Hope this helps,\n>\n> -Dan\n>\n> >\n> > NLU1 is the ligand\n> >\n> > is the ligand.itp required or  gro file required\n> >\n> > thanks you\n> >\n> > Ayesha Fatima\n> >",
+      "url": "http://archive.ambermd.org/202105/0029.html",
+      "in_reply_to": 1619973151
+    },
+    {
+      "message_id": 1620049240,
+      "author": "Daniel Roe",
+      "date_raw": "Mon, 3 May 2021 09:40:40 -0400",
+      "body": "Hi,\nOn Mon, May 3, 2021 at 9:30 AM Ayesha Fatima <ayeshafatima.69.gmail.com> wrote:\n> My first part regarding the script. should it be saved as python script?\nYou mean your parmed script? I think maybe you need the '-i' command\nline flag, i.e. just execute it like 'parmed -i parmd.in`.\n-Dan\n> Thank you\n>\n> On Mon, May 3, 2021 at 3:58 PM Daniel Roe <daniel.r.roe.gmail.com> wrote:\n>\n> > Hi,\n> >\n> > On Sun, May 2, 2021 at 12:32 PM Ayesha Fatima <ayeshafatima.69.gmail.com>\n> > wrote:\n> > >\n> > > I also tried using cpptraj but it also throws me the error of\n> > >\n> > > *Molecule NLU1 is not defined in gromacs topology.*\n> >\n> > First, I really don't recommend using cpptraj to do topology\n> > conversions. Cpptraj is really only intended for trajectory/data\n> > analysis; it has *not* been vetted at all for converting parameters\n> > between different formats.\n> >\n> > Second, by default cpptraj will look for gromacs topology data (that\n> > is not in the same directory) in the directory defined by the GMXDATA\n> > environment variable; specifically, it expects things to be in the\n> > \"$GMXDATA/top\" directory. I just realized this is not documented\n> > (oops).\n> >\n> > Hope this helps,\n> >\n> > -Dan\n> >\n> > >\n> > > NLU1 is the ligand\n> > >\n> > > is the ligand.itp required or  gro file required\n> > >\n> > > thanks you\n> > >\n> > > Ayesha Fatima\n> > >",
+      "url": "http://archive.ambermd.org/202105/0030.html",
+      "in_reply_to": 1619973151
+    },
+    {
+      "message_id": 1620049763,
+      "author": "Ayesha Fatima",
+      "date_raw": "Mon, 3 May 2021 16:49:23 +0300",
+      "body": "Thank you\nOn Mon, 3 May 2021, 4:41 pm Daniel Roe, <daniel.r.roe.gmail.com> wrote:\n> Hi,\n>\n> On Mon, May 3, 2021 at 9:30 AM Ayesha Fatima <ayeshafatima.69.gmail.com>\n> wrote:\n> > My first part regarding the script. should it be saved as python script?\n>\n> You mean your parmed script? I think maybe you need the '-i' command\n> line flag, i.e. just execute it like 'parmed -i parmd.in`.\n>\n> -Dan\n>\n> > Thank you\n> >\n> > On Mon, May 3, 2021 at 3:58 PM Daniel Roe <daniel.r.roe.gmail.com>\n> wrote:\n> >\n> > > Hi,\n> > >\n> > > On Sun, May 2, 2021 at 12:32 PM Ayesha Fatima <\n> ayeshafatima.69.gmail.com>\n> > > wrote:\n> > > >\n> > > > I also tried using cpptraj but it also throws me the error of\n> > > >\n> > > > *Molecule NLU1 is not defined in gromacs topology.*\n> > >\n> > > First, I really don't recommend using cpptraj to do topology\n> > > conversions. Cpptraj is really only intended for trajectory/data\n> > > analysis; it has *not* been vetted at all for converting parameters\n> > > between different formats.\n> > >\n> > > Second, by default cpptraj will look for gromacs topology data (that\n> > > is not in the same directory) in the directory defined by the GMXDATA\n> > > environment variable; specifically, it expects things to be in the\n> > > \"$GMXDATA/top\" directory. I just realized this is not documented\n> > > (oops).\n> > >\n> > > Hope this helps,\n> > >\n> > > -Dan\n> > >\n> > > >\n> > > > NLU1 is the ligand\n> > > >\n> > > > is the ligand.itp required or  gro file required\n> > > >\n> > > > thanks you\n> > > >\n> > > > Ayesha Fatima\n> > > >",
+      "url": "http://archive.ambermd.org/202105/0031.html",
+      "in_reply_to": 1619973151
+    },
+    {
+      "message_id": 1620165866,
+      "author": "Ayesha Fatima",
+      "date_raw": "Wed, 5 May 2021 01:04:26 +0300",
+      "body": "Dear all,\ni have a gromacs topology and .gro file that I want to convert into amber\nhowever, using several scripts and suggestion on the internet, i am unable\nto do so.  my errors stem from parmed unable to recognise gromacs, i think.\nHow do i put it in its path? my parmed is installed within amber18. i found\nthe gromacsfile. but how to modify it?\ni looked at the scripts and files but there is no gmx_top in the\nparmed/gromacs folder but there is gromacstop. so should i change it the\nthe following script\nfrom parmed import gromacs, amber, unit as u\ngromacstop = GromacsTopologyFile('topol.top')\ngromacsgro = GromacsGroFile.parse('complex.gro')\ngromacstop.box = gromacsgro.box # Needed because .prmtop contains box info\ngromacstop.positions = gromacsgro.positions\namb_prm = AmberParm.from_structure(gromacstop)\namb_prm.write(\"cyn.top\")\namb_inpcrd = amber.AmberAsciiRestart(\"cyn.crd\", mode=\"w\")\namb_inpcrd.coordinates = gmx_mpi_toptop.coordinates\namb_inpcrd.box = gmx_mpi_top.box\namb_inpcrd.close()\n,............................\ni also tried with gromber but no luck. first the preprocessors (define\n[DEFINE=VAR]) could not be defined as I am not sure what to write for the\nvariable. now gromber is not recognised at all.\nAny suggestions would be great?\nThank you\nRegards",
+      "url": "http://archive.ambermd.org/202105/0038.html",
+      "in_reply_to": 1619973151
+    },
+    {
+      "message_id": 1620216277,
+      "author": "David A Case",
+      "date_raw": "Wed, 5 May 2021 08:04:37 -0400",
+      "body": "On Wed, May 05, 2021, Ayesha Fatima wrote:\n>i have a gromacs topology and .gro file that I want to convert into amber\n>however, using several scripts and suggestion on the internet, ....\n>i also tried with gromber but no luck. first the preprocessors (define\n>[DEFINE=VAR]) could not be defined as I am not sure what to write for the\n>variable. now gromber is not recognised at all.\nCan you say what you tried (exactly), and what the result was?  Just saying\n\"no luck\", or \"gromber was not reconized at all\" does not provide much\ninformation.  Please copy and paste exactly what commands you tried, and\nwhat the resulting error message was.\nDo you know the installation prefix ($PREFIX) for your gromacs installation?\nYou may not need to make any defines: the default values will often work,\nassuming that you have \"gmx\" in your PATH.  (Type \"which gmx\" to find out.)\n...hope this helps...dac",
+      "url": "http://archive.ambermd.org/202105/0041.html",
+      "in_reply_to": 1619973151
+    }
+  ]
+}

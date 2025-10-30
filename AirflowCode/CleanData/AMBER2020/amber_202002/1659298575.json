@@ -1,0 +1,21 @@
+{
+  "thread_id": 1659298575,
+  "subject": "[AMBER] Problems with Antechamber leading to failed minimization",
+  "messages": [
+    {
+      "message_id": 1659298575,
+      "author": "Charlotta Lebedenko",
+      "date_raw": "Sun, 31 Jul 2022 16:16:15 -0400",
+      "body": "Hello,\nI am trying to run a simulation of ionic liquids at room temperature.\nMy goals are similar to what is run in this tutorial:\nhttps://ambermd.org/tutorials/advanced/tutorial15/Tutorial2.php\nHowever, when I try to run the first energy minimization of the system with\nSander, I immediately get this error:\nProgram received signal SIGSEGV: Segmentation fault - invalid memory\nreference.\nBacktrace for this error:\n#0  0x7fe9d1d7632a\n#1  0x7fe9d1d75503\n#2  0x7fe9d1790f0f\n#3  0x5569ff4980e0\n#4  0x5569ff3da4eb\n#5  0x5569ff4317cb\n#6  0x5569ff41e760\n#7  0x5569ff417b32\n#8  0x5569ff417b8e\n#9  0x7fe9d1773c86\n#10  0x5569ff26e9e9\n#11  0xffffffffffffffff\n[1]+  Segmentation fault      (core dumped) sander -O -i minim.in -o\nminim.out -p box_solv.prmtop -c box_solv.inpcrd -r minim.rst7 -x minim.nc\n-e minim.dat\nAfter reading about this error in past Amber emails, I tried using the\nCheck function in cpptraj, and this is the beginning of what it gives me:\nThis leads me to believe that the original molecule from Antechamber is\nsomehow wrong. I normally draw and minimize my molecules in Chemdraw and\nthen run that through antechamber, but for some reason these ionic liquid\nmolecules do not run through antechamber well. I have also tried drawing my\nmolecules in Pymol and Maestro, and I have tried using both pdb files and\nmol2 files as input to antechamber, but I always get the same error when I\nattempt energy minimization of the solvated system with Sander. I have\nattached some input pdb and mol2 files as well as the output mol2 files I\nget from antechamber (the ones with sqm in the name). It seems that\nantechamber gets rid of my double bonds and charges. Please let me know if\nyou see anything obviously wrong with these files.\nThis is what I normally run in antechamber:\nantechamber -i choline_pymol.mol2 -fi mol2 -o choline_pymol_sqm.mol2 -fo\nmol2 -c bcc -s 2 -at gaff -nc +1\nThank you so much,\nCharlotta Lebedenko",
+      "url": "http://archive.ambermd.org/202207/0177.html"
+    },
+    {
+      "message_id": 1659357957,
+      "author": "David A Case",
+      "date_raw": "Mon, 1 Aug 2022 08:45:57 -0400",
+      "body": "On Sun, Jul 31, 2022, Charlotta Lebedenko via AMBER wrote:\n>\n>I am trying to run a simulation of ionic liquids at room temperature.\n>\n>However, when I try to run the first energy minimization of the system with\n>Sander, I immediately get this error:\n>\n>Program received signal SIGSEGV: Segmentation fault - invalid memory\n>reference.\nYou molecule and antechamber results look fine to me, so we will need to get\ndetails of how you created the sander prmtop and incpcrd files.\n>After reading about this error in past Amber emails, I tried using the\n>Check function in cpptraj, and this is the beginning of what it gives me:\n[nothing shown here].  Let us know what the check function reports.\n....dac",
+      "url": "http://archive.ambermd.org/202208/0001.html",
+      "in_reply_to": 1659298575
+    }
+  ]
+}

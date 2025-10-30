@@ -1,0 +1,37 @@
+{
+  "thread_id": 1632008509,
+  "subject": "[AMBER] Setting compiler flags w/cmake build? Amber20/AmberTools21",
+  "messages": [
+    {
+      "message_id": 1632008509,
+      "author": "Ryan Novosielski",
+      "date_raw": "Sat, 18 Sep 2021 23:41:49 +0000",
+      "body": "Hi all,\nTrying to build with the Intel compilers and wanted to use auto vectorization, so I set:\n-DCMAKE_C_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" -DCMAKE_CXX_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" \\\n-DCMAKE_FORTRAN_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" -DCMAKE_EXE_LINKER_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" \\\nBut I ended up with this, which is definitely wrong:\n-- **************************************************************************\n--                               Build Report\n--                              Compiler Flags:\n-- C No-Opt:          -O3 -xAVX -axCORE-AVX2 -O0\n-- C Optimized:       -O3 -xAVX -axCORE-AVX2 -ip -O3 -xHost\n--\n-- CXX No-Opt:        -O3 -xAVX -axCORE-AVX2 -O0\n-- CXX Optimized:     -O3 -xAVX -axCORE-AVX2 -O3\n--\n-- Fortran No-Opt:    -O3 -xAVX -axCORE-AVX2 -warn all -warn nounused -warn nointerfaces -O0\n-- Fortran Optimized: -O3 -xAVX -axCORE-AVX2 -warn all -warn nounused -warn nointerfaces -ip -O3 -xHost\n—\nFrom looking at config.h, it seems like there’s a concept of CFLAGS vs. COPTFLAGS, etc. I definitely don’t want -xHost anywhere, because I’m trying to specify instruction sets explicitly, and I definitely don’t want to be adding optimizations to the non-optimized compiles.\nHaving read the manual, I can’t see anything about how to do this properly. Should I revert to the older “configure” style build, or have I just not found the right docs yet?\nThis is for CPU builds; I’m following the docs re: building the GPU builds with GCC. BTW, probably not worth an entire thread about this, but is that supposed to work reliably with GCC 11.x? I get failures on some builds on GCC >10.\n--\n#BlackLivesMatter\n____\n|| \\\\UTGERS,  \t |---------------------------*O*---------------------------\n||_// the State\t |         Ryan Novosielski - novosirj.rutgers.\nedu\n|| \\\\ University | Sr. Technologist - 973/972.0922 (2x0922) ~*~ RBHS Campus\n||  \\\\    of NJ\t | Office of Advanced Research Computing - MSB C630, Newark\n`'",
+      "url": "http://archive.ambermd.org/202109/0107.html"
+    },
+    {
+      "message_id": 1632053899,
+      "author": "David A Case",
+      "date_raw": "Sun, 19 Sep 2021 08:18:19 -0400",
+      "body": "On Sat, Sep 18, 2021, Ryan Novosielski wrote:\n>\n>Trying to build with the Intel compilers and wanted to use auto vectorization, so I set:\n>\n>-DCMAKE_C_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" -DCMAKE_CXX_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" \\\n>-DCMAKE_FORTRAN_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" -DCMAKE_EXE_LINKER_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" \\\n>\nI think you want to set OPT_CFLAGS, OPT_FFLAGS (and, if needed NO_OPT_CFLAGS\nand NO_OPT_FFLAGS).  Look in the amber20_src/cmake/CompilerFlags.cmake file\nfor more information.\n....dac",
+      "url": "http://archive.ambermd.org/202109/0109.html",
+      "in_reply_to": 1632008509
+    },
+    {
+      "message_id": 1632080350,
+      "author": "Ryan Novosielski",
+      "date_raw": "Sun, 19 Sep 2021 19:39:10 +0000",
+      "body": "> On Sep 19, 2021, at 8:18 AM, David A Case <dacase1.gmail.com> wrote:\n>\n> On Sat, Sep 18, 2021, Ryan Novosielski wrote:\n>>\n>> Trying to build with the Intel compilers and wanted to use auto vectorization, so I set:\n>>\n>> -DCMAKE_C_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" -DCMAKE_CXX_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" \\\n>> -DCMAKE_FORTRAN_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" -DCMAKE_EXE_LINKER_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" \\\n>>\n>\n> I think you want to set OPT_CFLAGS, OPT_FFLAGS (and, if needed NO_OPT_CFLAGS\n> and NO_OPT_FFLAGS).  Look in the amber20_src/cmake/CompilerFlags.cmake file\n> for more information.\nThanks, David. What’s not clear to me is where to set those? From reading that file, it looks like I could still set SSE_TYPES and the section of that file around the Intel compiler would make use of it. Same goes for the variables you suggest them, but I’m not clear if I should set those like: OPT_CFLAGS=\"-O3 -xAVX -axCORE-AVX2” ./run_cmake, or if I set those with -D inside the run_cmake script, or what.\nThanks again!\n--\n#BlackLivesMatter\n____\n|| \\\\UTGERS,  \t |---------------------------*O*---------------------------\n||_// the State\t |         Ryan Novosielski - novosirj.rutgers.\nedu\n|| \\\\ University | Sr. Technologist - 973/972.0922 (2x0922) ~*~ RBHS Campus\n||  \\\\    of NJ\t | Office of Advanced Research Computing - MSB C630, Newark\n`'",
+      "url": "http://archive.ambermd.org/202109/0112.html",
+      "in_reply_to": 1632008509
+    },
+    {
+      "message_id": 1632082745,
+      "author": "Ryan Novosielski",
+      "date_raw": "Sun, 19 Sep 2021 20:19:05 +0000",
+      "body": "> On Sep 19, 2021, at 3:39 PM, Ryan Novosielski <novosirj.rutgers.\nedu> wrote:\n>\n>> On Sep 19, 2021, at 8:18 AM, David A Case <dacase1.gmail.\ncom> wrote:\n>>\n>> On Sat, Sep 18, 2021, Ryan Novosielski wrote:\n>>>\n>>> Trying to build with the Intel compilers and wanted to use auto vectorization, so I set:\n>>>\n>>> -DCMAKE_C_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" -DCMAKE_CXX_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" \\\n>>> -DCMAKE_FORTRAN_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" -DCMAKE_EXE_LINKER_FLAGS=\"-O3 -xAVX -axCORE-AVX2\" \\\n>>>\n>>\n>> I think you want to set OPT_CFLAGS, OPT_FFLAGS (and, if needed NO_OPT_CFLAGS\n>> and NO_OPT_FFLAGS).  Look in the amber20_src/cmake/CompilerFlags.cmake file\n>> for more information.\n>\n> Thanks, David. What’s not clear to me is where to set those? From reading that file, it looks like I could still set SSE_TYPES and the section of that file around the Intel compiler would make use of it. Same goes for the variables you suggest them, but I’m not clear if I should set those like: OPT_CFLAGS=\"-O3 -xAVX -axCORE-AVX2” ./run_cmake, or if I set those with -D inside the run_cmake script, or what.\n>\n> Thanks again!\nRealized I could probably get an answer faster through experimentation, and so I discovered that I can add -DSSE_TYPES= to the run_cmake file and that works.\nMy remaining question is if it’s on purpose that this does not affect the CXX flags. It’s applied on both the Fortran and C sections, but you can see the difference here with the CXX flags:\nif(SSE)\nif(\"${CMAKE_Fortran_COMPILER_VERSION}\" VERSION_GREATER 11 OR ${CMAKE_Fortran_COMPILER_VERSION} VERSION_EQUAL 11)\nif(NOT \"${SSE_TYPES}\" STREQUAL \"\")\nlist(APPEND OPT_FFLAGS \"-ax${SSE_TYPES}\")\nelse()\nlist(APPEND OPT_FFLAGS -xHost)\nendif()\nelse()\nlist(APPEND OPT_FFLAGS -axSTPW)\nendif()\nendif()\n…vs.…\nif(\"${CMAKE_CXX_COMPILER_ID}\" STREQUAL \"Intel\")\nset(CMAKE_CXX_FLAGS_DEBUG \"-g -debug all\")\nset(OPT_CXXFLAGS -O3)\nendif()\nI have to figure that that’s intentional? I can’t remember how this worked on Amber 16 (the last one I personally built).\n--\n#BlackLivesMatter\n____\n|| \\\\UTGERS,  \t |---------------------------*O*---------------------------\n||_// the State\t |         Ryan Novosielski - novosirj.rutgers.\nedu\n|| \\\\ University | Sr. Technologist - 973/972.0922 (2x0922) ~*~ RBHS Campus\n||  \\\\    of NJ\t | Office of Advanced Research Computing - MSB C630, Newark\n`'",
+      "url": "http://archive.ambermd.org/202109/0113.html",
+      "in_reply_to": 1632008509
+    }
+  ]
+}

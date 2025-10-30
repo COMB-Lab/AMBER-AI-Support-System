@@ -1,0 +1,21 @@
+{
+  "thread_id": 1585585603,
+  "subject": "[AMBER] Differences in Lennard-Jones interactions in CPU vs GPU pmemd?",
+  "messages": [
+    {
+      "message_id": 1585585603,
+      "author": "Hanne Antila",
+      "date_raw": "Mon, 30 Mar 2020 16:26:43 +0000",
+      "body": "Dear experts,\nI'm have a small nvt simulation of sugar-water solution which runs fine in cpu amber (>100ns) but always blows up in single-gpu amber (~1-10 ns, both  amber16 and amber18 ). Looking at the output the culprit might be LJ interactions/an overlap of atoms:\nNSTEP =   690000   TIME(PS) =    6635.000  TEMP(K) =   297.51  PRESS =     0.0\nEtot   =     10904.8650  EKtot   =      2383.7571  EPtot      =      8521.1079\nBOND   =      6040.4102  ANGLE   =      1384.2706  DIHED      =       510.1503\nUB     =         0.0000  IMP     =         0.0000  CMAP       =         0.0000\n1-4 NB =       368.8766  1-4 EEL =     13543.7115  VDWAALS    =      3110.9255\nEELEC  =    -16437.2367  EHBOND  =         0.0000  RESTRAINT  =         0.0000\n------------------------------------------------------------------------------\nwrapping first mol.: -2603377.53130 23007489.83260  3909449.84430\nNSTEP =   695000   TIME(PS) =    6645.000  TEMP(K) =      NaN  PRESS =     0.0\nEtot   =            NaN  EKtot   =            NaN  EPtot      = **************\nBOND   =        -0.0000  ANGLE   =    153608.5525  DIHED      =       824.9250\nUB     =         0.0000  IMP     =         0.0000  CMAP       =         0.0000\n1-4 NB =         0.0000  1-4 EEL =         0.0010  VDWAALS    = **************\nEELEC  =    -30673.5824  EHBOND  =         0.0000  RESTRAINT  =         0.0000\nThe force field defines some special 1-4 interactions. Reading the mailing list, it seems to imply that these used to be treated differently in cpu vs gpu. Is this still the case? Or are there any other possible reasons why LJ interactions would be different in the two cases?\nThank you for the help,\nHanne Antila\nPostdoctoral scholar\nMax Planck Institute of Colloids and Interfaces",
+      "url": "http://archive.ambermd.org/202003/0311.html"
+    },
+    {
+      "message_id": 1586106915,
+      "author": "David A Case",
+      "date_raw": "Sun, 5 Apr 2020 13:15:15 -0400",
+      "body": "On Mon, Mar 30, 2020, Hanne Antila wrote:\n>\n>\n>wrapping first mol.: -2603377.53130 23007489.83260  3909449.84430\nThis looks very odd to me.  Are there other \"wrapping\" messages in your\noutputi file?  Do any other also have gigantic numbers, like 2-3\nmillion?\nHave you visualized both the CPU and GPU trajectories?  Does everything\nlook both OK and similar (up until the time the GPU job crashes)?\nIf so, it might be worth trying a GPU job with iwrap=0.\n>\n>The force field defines some special 1-4 interactions. Reading the\n>mailing list, it seems to imply that these used to be treated differently\n>in cpu vs gpu. Is this still the case? Or are there any other possible\n>reasons why LJ interactions would be different in the two cases?\nDo any of these special interactions involve atoms with zero LJ\nparameters (which would be hydrogens)?  It's possible that using the\n\"lmod\" action in parmed could reduce the instabilities.  But try the\nother suggestions above first.\n....dac",
+      "url": "http://archive.ambermd.org/202004/0048.html",
+      "in_reply_to": 1585585603
+    }
+  ]
+}

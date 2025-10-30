@@ -1,0 +1,29 @@
+{
+  "thread_id": 1709140755,
+  "subject": "[AMBER] Renumber residues (Error: No change type specified) - AMBER MD 18",
+  "messages": [
+    {
+      "message_id": 1709140755,
+      "author": "Daniel Hall",
+      "date_raw": "Wed, 28 Feb 2024 17:19:15 +0000",
+      "body": "Dear Amber MD users,\nI am having trouble renumbering residues in the topology to match that of those assigned in UniProt. Currently the residue numbers when viewed in cpptraj are:\nCPPTRAJ V18.00 - AMBER MD 18\n#Res  Name First  Last Natom #Orig  #Mol\n1 DA5      1    30    30     1     1\n2 DA      31    62    32     2     1\n3 DT      63    94    32     3     1\n....\n52 DA    1613  1644    32    52     2\n53 DT    1645  1676    32    53     2\n54 DT3   1677  1709    33    54     2\n55 LYS   1710  1733    24    55     3\n56 LYS   1734  1755    22    56     3\n57 PHE   1756  1775    20    57     3\n...\n81 ASN   2154  2167    14    81     3\n82 LYS   2168  2189    22    82     3\n83 LYS   2190  2212    23    83     3\nSo far residue numbers :1-54 correspond to the DNA sequence and :55-83 correspond to the protein. I would like the protein numbering to be :684-712.\nI have tried the following;\ncpptraj\nparm topol.prmtop\ntrajin ensemble.nc\nchange oresnums of :55-83 min 684 max 712\nThis produces the following error:\nError: No change type specified.\nI am unsure how to fix this issue and any help would be greatly appreciated.\nKind regards,\nDan.",
+      "url": "http://archive.ambermd.org/202402/0138.html"
+    },
+    {
+      "message_id": 1709141182,
+      "author": "Rodrigo Galindo-Murillo",
+      "date_raw": "Wed, 28 Feb 2024 10:26:22 -0700",
+      "body": "Hello!\nPlease make sure you have the latest version of CPPTRAJ. The 'change'\ncommand has been updated many times recently.\nRodrigo.\nOn Wed, Feb 28, 2024 at 10:19 AM Daniel Hall via AMBER\n<amber.ambermd.org> wrote:\n>\n> Dear Amber MD users,\n>\n> I am having trouble renumbering residues in the topology to match that of those assigned in UniProt. Currently the residue numbers when viewed in cpptraj are:\n>\n> CPPTRAJ V18.00 - AMBER MD 18\n> #Res  Name First  Last Natom #Orig  #Mol\n>     1 DA5      1    30    30     1     1\n>     2 DA      31    62    32     2     1\n>     3 DT      63    94    32     3     1\n>     ....\n>    52 DA    1613  1644    32    52     2\n>    53 DT    1645  1676    32    53     2\n>    54 DT3   1677  1709    33    54     2\n>    55 LYS   1710  1733    24    55     3\n>    56 LYS   1734  1755    22    56     3\n>    57 PHE   1756  1775    20    57     3\n>    ...\n>    81 ASN   2154  2167    14    81     3\n>    82 LYS   2168  2189    22    82     3\n>    83 LYS   2190  2212    23    83     3\n>\n> So far residue numbers :1-54 correspond to the DNA sequence and :55-83 correspond to the protein. I would like the protein numbering to be :684-712.\n>\n> I have tried the following;\n> cpptraj\n> parm topol.prmtop\n> trajin ensemble.nc\n> change oresnums of :55-83 min 684 max 712\n>\n> This produces the following error:\n> Error: No change type specified.\n>\n> I am unsure how to fix this issue and any help would be greatly appreciated.\n>\n> Kind regards,\n> Dan.\n>",
+      "url": "http://archive.ambermd.org/202402/0140.html",
+      "in_reply_to": 1709140755
+    },
+    {
+      "message_id": 1709343557,
+      "author": "David A Case",
+      "date_raw": "Fri, 1 Mar 2024 18:39:17 -0700",
+      "body": "On Wed, Feb 28, 2024, Daniel Hall via AMBER wrote:\n>\n>So far residue numbers :1-54 correspond to the DNA sequence and :55-83\n>correspond to the protein. I would like the protein numbering to be\n>:684-712.\nAmber internally starts numbering residues at 1 and incrementing with each\nnew residue.\nIf you want the \"original\" numbering scheme from some PDB file, use the\naddPDB action in parmed.  This is store the residue numbers from (say) an\ninput pdb file in the prmtop file.  You can then write out PDB files using\nthose numbers, or ask some programs (like cpptraj) to use such\nnon-sequential numbering in various type of analyses.\n...good luck....dac",
+      "url": "http://archive.ambermd.org/202403/0012.html",
+      "in_reply_to": 1709140755
+    }
+  ]
+}

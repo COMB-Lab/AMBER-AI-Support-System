@@ -1,0 +1,29 @@
+{
+  "thread_id": 1616257221,
+  "subject": "[AMBER] Solvating my box with specified number of water molecules",
+  "messages": [
+    {
+      "message_id": 1616257221,
+      "author": "库米尔",
+      "date_raw": "Sun, 21 Mar 2021 00:20:21 +0800 (GMT+08:00)",
+      "body": "Dear Amber,\nI want to solvate my molecules packed into a box using packmol with specific number of water molecules 4752 with the following scripts I found.\nsolvate.in\n# Target number of waters\ntarget 4752\n# Initial guess for buffer\nbuffer 10\n# Input PDB name\npdb sys.pdb\n# Output topology name\ntop ionicbox.prmtop\n# Output coordinates name\ncrd ionicbox.rst7\n# Base leap input script\nleapin leap.solvate.in\n# Tolerance (# of waters off from target allowed)\ntol 3\n# 1 - Solvatebox\nmode 1\nsolventunit TIP3PBOX\nand\nleap.solvate.in\nsource leaprc.water.tip3p\nset default pbradii mbondi2\nusing the following command   tleap -s -f  solvate.in\nBut  I always get this error\n/home/lexis10k/Desktop/Amberpackage/amber20/bin/teLeap: Fatal Error!\nError from the parser: syntax error\nPlease kindly help me identify where the syntax error is. Am new to scripting\nThanks\nAlex",
+      "url": "http://archive.ambermd.org/202103/0196.html"
+    },
+    {
+      "message_id": 1616339280,
+      "author": "Matias Machado",
+      "date_raw": "Sun, 21 Mar 2021 12:08:00 -0300 (UYT)",
+      "body": "Dear Alex,\nLeap doesn't call PACKMOL to create the solvent box, you have to use it independently from command-line...\nAdditionally, the \"solvate.in\" file is not properly formatted for leap... none of the following keywords/commands are valid: target, buffer, pdb, top, leapin, tol, mode...\nPlease, take a time to read the AMBER Tools 20 Reference Manual [\nhttp://ambermd.org/doc12/Amber20.pdf\n]\nBest regards,\nMatías Machado\n------------------------------------\nPhD.\nResearcher at Biomolecular Simulations Lab.\nInstitut Pasteur de Montevideo | Uruguay\n[\nhttp://pasteur.uy/en/labs/biomolecular-simulations-laboratory\n]\n[\nhttp://www.sirahff.com\n]\n----- Mensaje original -----\nDe: \"库米尔\" <418025.mail.\ndhu.edu.cn>\nPara: amber.ambermd.org\nEnviados: Sábado, 20 de Marzo 2021 13:20:21\nAsunto: [AMBER] Solvating my box with specified number of water molecules\nDear Amber,\nI want to solvate my molecules packed into a box using packmol with specific number of water molecules 4752 with the following scripts I found.\nsolvate.in\n# Target number of waters\ntarget 4752\n# Initial guess for buffer\nbuffer 10\n# Input PDB name\npdb sys.pdb\n# Output topology name\ntop ionicbox.prmtop\n# Output coordinates name\ncrd ionicbox.rst7\n# Base leap input script\nleapin leap.solvate.in\n# Tolerance (# of waters off from target allowed)\ntol 3\n# 1 - Solvatebox\nmode 1\nsolventunit TIP3PBOX\nand\nleap.solvate.in\nsource leaprc.water.tip3p\nset default pbradii mbondi2\nusing the following command   tleap -s -f  solvate.in\nBut  I always get this error\n/home/lexis10k/Desktop/Amberpackage/amber20/bin/teLeap: Fatal Error!\nError from the parser: syntax error\nPlease kindly help me identify where the syntax error is. Am new to scripting\nThanks\nAlex",
+      "url": "http://archive.ambermd.org/202103/0200.html",
+      "in_reply_to": 1616257221
+    },
+    {
+      "message_id": 1616422952,
+      "author": "Daniel Roe",
+      "date_raw": "Mon, 22 Mar 2021 10:22:32 -0400",
+      "body": "Hi,\nLooks like you've stumbled onto input for my not-very-clever brute\nforce solvate wrapper script for LEaP:\nhttps://github.com/drroe/Solvate.sh\nYou need to run that input with this script, not LEaP itself, e.g.\n'Solvate.sh solvate.in'.\nHowever, you may find that 'packmol' is a better alternative for you.\n-Dan\nOn Sat, Mar 20, 2021 at 12:20 PM 库米尔 <418025.mail.\ndhu.edu.cn> wrote:\n>\n> Dear Amber,\n> I want to solvate my molecules packed into a box using packmol with specific number of water molecules 4752 with the following scripts I found.\n> solvate.in\n> # Target number of waters\n> target 4752\n> # Initial guess for buffer\n> buffer 10\n> # Input PDB name\n> pdb sys.pdb\n> # Output topology name\n> top ionicbox.prmtop\n> # Output coordinates name\n> crd ionicbox.rst7\n> # Base leap input script\n> leapin leap.solvate.in\n> # Tolerance (# of waters off from target allowed)\n> tol 3\n> # 1 - Solvatebox\n> mode 1\n> solventunit TIP3PBOX\n>\n>\n> and\n>\n> leap.solvate.in\n> source leaprc.water.tip3p\n> set default pbradii mbondi2\n>\n>\n> using the following command   tleap -s -f  solvate.in\n>\n> But  I always get this error\n>\n> /home/lexis10k/Desktop/Amberpackage/amber20/bin/teLeap: Fatal Error!\n> Error from the parser: syntax error\n> Please kindly help me identify where the syntax error is. Am new to scripting\n>\n> Thanks\n>\n> Alex\n>\n>\n>\n>\n>\n>\n>\n>\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202103/0204.html",
+      "in_reply_to": 1616257221
+    }
+  ]
+}

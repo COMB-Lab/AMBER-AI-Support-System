@@ -1,0 +1,37 @@
+{
+  "thread_id": 1658152200,
+  "subject": "[AMBER] appending to existing files",
+  "messages": [
+    {
+      "message_id": 1658152200,
+      "author": "Giulia Sormani",
+      "date_raw": "Mon, 18 Jul 2022 15:50:00 +0200",
+      "body": "Hello to everyone,\nI would like to restart a simulation after a power crash appending the new\ndata on the existing files.\nI use the command\npmemd.cuda  -i NVT.in -o NVT.out -p topol.prmtop -c NVT.restart -r\nNVT_new.restart -x NVT.nc -inf NVT.info\nwhere\n. NVT.in is the input file used from the beginning\n. NVT.restart is the restart file from previous sim\n. NVT.out, NVT.nc, NVT.info are the files to which I would like to append\nthe data\nHowever, I get the error:\nError on OPEN: NVT.out\nIf I change the name of the files everything goes fine, however it would\nbe simpler for me to avoid concatenating files at the end.\nMany thanks,\nGiulia",
+      "url": "http://archive.ambermd.org/202207/0024.html"
+    },
+    {
+      "message_id": 1658152285,
+      "author": "Suchetana Gupta",
+      "date_raw": "Mon, 18 Jul 2022 08:51:25 -0500",
+      "body": "Use a -O to overwrite existing files with similar name and try.\nOn Mon, Jul 18, 2022, 08:50 Giulia Sormani via AMBER <amber.ambermd.org>\nwrote:\n> Hello to everyone,\n> I would like to restart a simulation after a power crash appending the new\n> data on the existing files.\n> I use the command\n> pmemd.cuda  -i NVT.in -o NVT.out -p topol.prmtop -c NVT.restart -r\n> NVT_new.restart -x NVT.nc -inf NVT.info\n>\n> where\n> . NVT.in is the input file used from the beginning\n> . NVT.restart is the restart file from previous sim\n> . NVT.out, NVT.nc, NVT.info are the files to which I would like to append\n> the data\n>\n> However, I get the error:\n> Error on OPEN: NVT.out\n>\n> If I change the name of the files everything goes fine, however it would\n> be simpler for me to avoid concatenating files at the end.\n>\n> Many thanks,\n> Giulia\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202207/0025.html",
+      "in_reply_to": 1658152200
+    },
+    {
+      "message_id": 1658152379,
+      "author": "Suchetana Gupta",
+      "date_raw": "Mon, 18 Jul 2022 08:52:59 -0500",
+      "body": "You need to use -O to overwrite. Else you cannot append to same out, nc,\nrst files.\nUse new names and later you can join them using cpptraj (for nc)\nOn Mon, Jul 18, 2022, 08:50 Giulia Sormani via AMBER <amber.ambermd.org>\nwrote:\n> Hello to everyone,\n> I would like to restart a simulation after a power crash appending the new\n> data on the existing files.\n> I use the command\n> pmemd.cuda  -i NVT.in -o NVT.out -p topol.prmtop -c NVT.restart -r\n> NVT_new.restart -x NVT.nc -inf NVT.info\n>\n> where\n> . NVT.in is the input file used from the beginning\n> . NVT.restart is the restart file from previous sim\n> . NVT.out, NVT.nc, NVT.info are the files to which I would like to append\n> the data\n>\n> However, I get the error:\n> Error on OPEN: NVT.out\n>\n> If I change the name of the files everything goes fine, however it would\n> be simpler for me to avoid concatenating files at the end.\n>\n> Many thanks,\n> Giulia\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202207/0026.html",
+      "in_reply_to": 1658152200
+    },
+    {
+      "message_id": 1658157561,
+      "author": "Dr. Anselm Horn",
+      "date_raw": "Mon, 18 Jul 2022 17:19:21 +0200",
+      "body": "Giulia,\nperhaps the easiest way would be to write a new file and combine the\ncontent of the first and the second via a cpptraj call.\n(Since your file may be corrupt at the end, simple appending might not\nwork like you intend.)\nBest,\nAnselm\nAm 18.07.2022 um 16:01 schrieb Giulia Sormani via AMBER:\n> Ok,\n> it appeared strange to me that there is no possibility to append (of\n> course overwriting is not what I want to do), but you confirmed that it is\n> actually like this.\n>\n> Thanks,\n> Giulia\n>\n>\n>> You need to use -O to overwrite. Else you cannot append to same out, nc,\n>> rst files.\n>>\n>> Use new names and later you can join them using cpptraj (for nc)\n>>\n>> On Mon, Jul 18, 2022, 08:50 Giulia Sormani via AMBER <amber.ambermd.org>\n>> wrote:\n>>\n>>> Hello to everyone,\n>>> I would like to restart a simulation after a power crash appending the\n>>> new\n>>> data on the existing files.\n>>> I use the command\n>>> pmemd.cuda  -i NVT.in -o NVT.out -p topol.prmtop -c NVT.restart -r\n>>> NVT_new.restart -x NVT.nc -inf NVT.info\n>>>\n>>> where\n>>> . NVT.in is the input file used from the beginning\n>>> . NVT.restart is the restart file from previous sim\n>>> . NVT.out, NVT.nc, NVT.info are the files to which I would like to\n>>> append\n>>> the data\n>>>\n>>> However, I get the error:\n>>> Error on OPEN: NVT.out\n>>>\n>>> If I change the name of the files everything goes fine, however it would\n>>> be simpler for me to avoid concatenating files at the end.\n>>>\n>>> Many thanks,\n>>> Giulia\n>>>\n>>>\n>>>",
+      "url": "http://archive.ambermd.org/202207/0029.html",
+      "in_reply_to": 1658152200
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "thread_id": 1583998888,
+  "subject": "[AMBER] EXTRACTING A PARTICULAR FRAME",
+  "messages": [
+    {
+      "message_id": 1583998888,
+      "author": "Sruthi Sudhakar",
+      "date_raw": "Thu, 12 Mar 2020 13:11:28 +0530",
+      "body": "Dear all,\nI have run a 500 ns production stage on a complex. ntwx = 1000 in the input\nfile. How can I extract a frame at, say for eg at 100 ns of the production\nstage. There are a total of 250000 frames. Sorry if the question seems too\ntrivial.\nThanking you in advance.\nSruthi",
+      "url": "http://archive.ambermd.org/202003/0124.html"
+    },
+    {
+      "message_id": 1584000021,
+      "author": "Gustaf Olsson",
+      "date_raw": "Thu, 12 Mar 2020 08:00:21 +0000",
+      "body": "I think ptraj can fix this for you, probably a lot of other tools as well, including VMD and Chimera with GUIs.\nfor ptraj I think making an input file similar to this.\nparm [prmtop-file]\ntrajin [mdcrd-file] first last step\ntrajout [output file rst | ncrst | pdb | … ]\nShould get the job done. Just replace the “first” with the frame you want, “last” with the same frame and I suppose you can skip “step” or set it to 1, which I suspect is the default. There is probably easier ways to do this as well though this was the first that came to mind using the tools included in amber.\n// Gustaf\n> On 12 Mar 2020, at 08:41, Sruthi Sudhakar <sruthisudhakarraji.gmail.\ncom> wrote:\n>\n> Dear all,\n> I have run a 500 ns production stage on a complex. ntwx = 1000 in the input\n> file. How can I extract a frame at, say for eg at 100 ns of the production\n> stage. There are a total of 250000 frames. Sorry if the question seems too\n> trivial.\n> Thanking you in advance.\n> Sruthi\n>",
+      "url": "http://archive.ambermd.org/202003/0125.html",
+      "in_reply_to": 1583998888
+    },
+    {
+      "message_id": 1584000752,
+      "author": "Sruthi Sudhakar",
+      "date_raw": "Thu, 12 Mar 2020 13:42:32 +0530",
+      "body": "Sir,\nI actually have difficulty in finding out the frame number corresponding to\na particular nanosecond.\nOn Thu, Mar 12, 2020 at 1:30 PM Gustaf Olsson <gustaf.olsson.lnu.\nse> wrote:\n> I think ptraj can fix this for you, probably a lot of other tools as well,\n> including VMD and Chimera with GUIs.\n>\n> for ptraj I think making an input file similar to this.\n>\n>     parm [prmtop-file]\n>     trajin [mdcrd-file] first last step\n>     trajout [output file rst | ncrst | pdb | … ]\n>\n> Should get the job done. Just replace the “first” with the frame you want,\n> “last” with the same frame and I suppose you can skip “step” or set it to\n> 1, which I suspect is the default. There is probably easier ways to do this\n> as well though this was the first that came to mind using the tools\n> included in amber.\n>\n> // Gustaf\n>\n>\n> > On 12 Mar 2020, at 08:41, Sruthi Sudhakar <sruthisudhakarraji.gmail.\ncom>\n> wrote:\n> >\n> > Dear all,\n> > I have run a 500 ns production stage on a complex. ntwx = 1000 in the\n> input\n> > file. How can I extract a frame at, say for eg at 100 ns of the\n> production\n> > stage. There are a total of 250000 frames. Sorry if the question seems\n> too\n> > trivial.\n> > Thanking you in advance.\n> > Sruthi\n> >",
+      "url": "http://archive.ambermd.org/202003/0126.html",
+      "in_reply_to": 1583998888
+    },
+    {
+      "message_id": 1584003969,
+      "author": "Gustaf Olsson",
+      "date_raw": "Thu, 12 Mar 2020 09:06:09 +0000",
+      "body": "how many frames do you have in total? How many nanoseconds would that produce using your defined timestep? Number of nanoseconds / number of frames gives you time/frame. With this you should be able to calculate which frame you are looking for.\n// Gustaf\n> On 12 Mar 2020, at 09:12, Sruthi Sudhakar <sruthisudhakarraji.gmail.\ncom> wrote:\n>\n> Sir,\n> I actually have difficulty in finding out the frame number corresponding to\n> a particular nanosecond.\n>\n> On Thu, Mar 12, 2020 at 1:30 PM Gustaf Olsson <gustaf.olsson.lnu.\nse> wrote:\n>\n>> I think ptraj can fix this for you, probably a lot of other tools as well,\n>> including VMD and Chimera with GUIs.\n>>\n>> for ptraj I think making an input file similar to this.\n>>\n>>    parm [prmtop-file]\n>>    trajin [mdcrd-file] first last step\n>>    trajout [output file rst | ncrst | pdb | … ]\n>>\n>> Should get the job done. Just replace the “first” with the frame you want,\n>> “last” with the same frame and I suppose you can skip “step” or set it to\n>> 1, which I suspect is the default. There is probably easier ways to do this\n>> as well though this was the first that came to mind using the tools\n>> included in amber.\n>>\n>> // Gustaf\n>>\n>>\n>>> On 12 Mar 2020, at 08:41, Sruthi Sudhakar <sruthisudhakarraji.gmail.\ncom>\n>> wrote:\n>>>\n>>> Dear all,\n>>> I have run a 500 ns production stage on a complex. ntwx = 1000 in the\n>> input\n>>> file. How can I extract a frame at, say for eg at 100 ns of the\n>> production\n>>> stage. There are a total of 250000 frames. Sorry if the question seems\n>> too\n>>> trivial.\n>>> Thanking you in advance.\n>>> Sruthi\n>>>",
+      "url": "http://archive.ambermd.org/202003/0127.html",
+      "in_reply_to": 1583998888
+    },
+    {
+      "message_id": 1584011678,
+      "author": "Sruthi Sudhakar",
+      "date_raw": "Thu, 12 Mar 2020 16:44:38 +0530",
+      "body": "thank you so much.\nOn Thu, Mar 12, 2020 at 2:36 PM Gustaf Olsson <gustaf.olsson.lnu.\nse> wrote:\n> how many frames do you have in total? How many nanoseconds would that\n> produce using your defined timestep? Number of nanoseconds / number of\n> frames gives you time/frame. With this you should be able to calculate\n> which frame you are looking for.\n>\n> // Gustaf\n>\n>\n> > On 12 Mar 2020, at 09:12, Sruthi Sudhakar <sruthisudhakarraji.gmail.\ncom>\n> wrote:\n> >\n> > Sir,\n> > I actually have difficulty in finding out the frame number corresponding\n> to\n> > a particular nanosecond.\n> >\n> > On Thu, Mar 12, 2020 at 1:30 PM Gustaf Olsson <gustaf.olsson.lnu.\nse>\n> wrote:\n> >\n> >> I think ptraj can fix this for you, probably a lot of other tools as\n> well,\n> >> including VMD and Chimera with GUIs.\n> >>\n> >> for ptraj I think making an input file similar to this.\n> >>\n> >>    parm [prmtop-file]\n> >>    trajin [mdcrd-file] first last step\n> >>    trajout [output file rst | ncrst | pdb | … ]\n> >>\n> >> Should get the job done. Just replace the “first” with the frame you\n> want,\n> >> “last” with the same frame and I suppose you can skip “step” or set it\n> to\n> >> 1, which I suspect is the default. There is probably easier ways to do\n> this\n> >> as well though this was the first that came to mind using the tools\n> >> included in amber.\n> >>\n> >> // Gustaf\n> >>\n> >>\n> >>> On 12 Mar 2020, at 08:41, Sruthi Sudhakar <\n> sruthisudhakarraji.gmail.com>\n> >> wrote:\n> >>>\n> >>> Dear all,\n> >>> I have run a 500 ns production stage on a complex. ntwx = 1000 in the\n> >> input\n> >>> file. How can I extract a frame at, say for eg at 100 ns of the\n> >> production\n> >>> stage. There are a total of 250000 frames. Sorry if the question seems\n> >> too\n> >>> trivial.\n> >>> Thanking you in advance.\n> >>> Sruthi\n> >>>",
+      "url": "http://archive.ambermd.org/202003/0129.html",
+      "in_reply_to": 1583998888
+    },
+    {
+      "message_id": 1584035138,
+      "author": "Daniel Roe",
+      "date_raw": "Thu, 12 Mar 2020 13:45:38 -0400",
+      "body": "Hi,\nAs others have alluded to, you can extract frames from trajectories\nwith cpptraj. If you want a frame at a specific time point, you can\ncalculate which one you need yourself - you just need to know what\ntime step you used (dt in Amber input) and the trajectory write\nfrequency in steps (ntwx in Amber input). For example, if you use a\ntime step of 1 fs (dt=0.001) and a write frequency of 1000 steps (i.e.\n1 frame per ps), then the frames in your trajectory will correspond to\n1 ps, 2 ps, 3 ps etc. In general, the time t (in ps) of each frame i\nwill be t = i * ntwx * dt (also, add an offset of initial time if\nyou're restarting a trajectory). Using that equation (assuming I\nhaven't made a mistake) you can relate any frame to any simulation\ntime. If you're using the netcdf trajectory format (which you should\nbe) you can actually check the time values in the file (via e.g.\nncdump -v time <file>).\nTo extract say frame 3000 from your trajectory with cpptraj:\nparm myparm.parm7\ntrajin mytraj.nc 3000 3000\ntrajout frame3000.mol2\nrun\nHope this helps,\n-Dan\nOn Thu, Mar 12, 2020 at 3:42 AM Sruthi Sudhakar\n<sruthisudhakarraji.gmail.com> wrote:\n>\n> Dear all,\n> I have run a 500 ns production stage on a complex. ntwx = 1000 in the input\n> file. How can I extract a frame at, say for eg at 100 ns of the production\n> stage. There are a total of 250000 frames. Sorry if the question seems too\n> trivial.\n> Thanking you in advance.\n> Sruthi\n>",
+      "url": "http://archive.ambermd.org/202003/0140.html",
+      "in_reply_to": 1583998888
+    },
+    {
+      "message_id": 1584035352,
+      "author": "koushik kasavajhala",
+      "date_raw": "Thu, 12 Mar 2020 13:49:12 -0400",
+      "body": "Hi Dan,\nWhy not use \"onlyframes\" keyword when writing particular frames instead of\nusing first and last? Wouldn't the script below do the same as the one you\nsuggested?\nparm myparm.parm7\ntrajin mytraj.nc onlyframes 3000\ntrajout frame3000.mol2\nrun\nOn Thu, Mar 12, 2020 at 1:46 PM Daniel Roe <daniel.r.roe.gmail.com> wrote:\n> Hi,\n>\n> As others have alluded to, you can extract frames from trajectories\n> with cpptraj. If you want a frame at a specific time point, you can\n> calculate which one you need yourself - you just need to know what\n> time step you used (dt in Amber input) and the trajectory write\n> frequency in steps (ntwx in Amber input). For example, if you use a\n> time step of 1 fs (dt=0.001) and a write frequency of 1000 steps (i.e.\n> 1 frame per ps), then the frames in your trajectory will correspond to\n> 1 ps, 2 ps, 3 ps etc. In general, the time t (in ps) of each frame i\n> will be t = i * ntwx * dt (also, add an offset of initial time if\n> you're restarting a trajectory). Using that equation (assuming I\n> haven't made a mistake) you can relate any frame to any simulation\n> time. If you're using the netcdf trajectory format (which you should\n> be) you can actually check the time values in the file (via e.g.\n> ncdump -v time <file>).\n>\n> To extract say frame 3000 from your trajectory with cpptraj:\n>\n> parm myparm.parm7\n> trajin mytraj.nc 3000 3000\n> trajout frame3000.mol2\n> run\n>\n> Hope this helps,\n>\n> -Dan\n>\n>\n>\n> On Thu, Mar 12, 2020 at 3:42 AM Sruthi Sudhakar\n> <sruthisudhakarraji.gmail.com> wrote:\n> >\n> > Dear all,\n> > I have run a 500 ns production stage on a complex. ntwx = 1000 in the\n> input\n> > file. How can I extract a frame at, say for eg at 100 ns of the\n> production\n> > stage. There are a total of 250000 frames. Sorry if the question seems\n> too\n> > trivial.\n> > Thanking you in advance.\n> > Sruthi\n> >",
+      "url": "http://archive.ambermd.org/202003/0142.html",
+      "in_reply_to": 1583998888
+    },
+    {
+      "message_id": 1584035609,
+      "author": "Daniel Roe",
+      "date_raw": "Thu, 12 Mar 2020 13:53:29 -0400",
+      "body": "\"onlyframes\" is a 'trajout'-specific keyword. The script you gave\nshould kick back an error.\nIt would be nice to have \"onlyframes\" for trajin. Been on my to-do\nlist for probably years.\n-Dan\nOn Thu, Mar 12, 2020 at 1:49 PM koushik kasavajhala\n<koushik.sbiiit.gmail.com> wrote:\n>\n> Hi Dan,\n>\n> Why not use \"onlyframes\" keyword when writing particular frames instead of\n> using first and last? Wouldn't the script below do the same as the one you\n> suggested?\n>\n> parm myparm.parm7\n> trajin mytraj.nc onlyframes 3000\n> trajout frame3000.mol2\n> run\n>\n> On Thu, Mar 12, 2020 at 1:46 PM Daniel Roe <daniel.r.roe.gmail.com> wrote:\n>\n> > Hi,\n> >\n> > As others have alluded to, you can extract frames from trajectories\n> > with cpptraj. If you want a frame at a specific time point, you can\n> > calculate which one you need yourself - you just need to know what\n> > time step you used (dt in Amber input) and the trajectory write\n> > frequency in steps (ntwx in Amber input). For example, if you use a\n> > time step of 1 fs (dt=0.001) and a write frequency of 1000 steps (i.e.\n> > 1 frame per ps), then the frames in your trajectory will correspond to\n> > 1 ps, 2 ps, 3 ps etc. In general, the time t (in ps) of each frame i\n> > will be t = i * ntwx * dt (also, add an offset of initial time if\n> > you're restarting a trajectory). Using that equation (assuming I\n> > haven't made a mistake) you can relate any frame to any simulation\n> > time. If you're using the netcdf trajectory format (which you should\n> > be) you can actually check the time values in the file (via e.g.\n> > ncdump -v time <file>).\n> >\n> > To extract say frame 3000 from your trajectory with cpptraj:\n> >\n> > parm myparm.parm7\n> > trajin mytraj.nc 3000 3000\n> > trajout frame3000.mol2\n> > run\n> >\n> > Hope this helps,\n> >\n> > -Dan\n> >\n> >\n> >\n> > On Thu, Mar 12, 2020 at 3:42 AM Sruthi Sudhakar\n> > <sruthisudhakarraji.gmail.com> wrote:\n> > >\n> > > Dear all,\n> > > I have run a 500 ns production stage on a complex. ntwx = 1000 in the\n> > input\n> > > file. How can I extract a frame at, say for eg at 100 ns of the\n> > production\n> > > stage. There are a total of 250000 frames. Sorry if the question seems\n> > too\n> > > trivial.\n> > > Thanking you in advance.\n> > > Sruthi\n> > >",
+      "url": "http://archive.ambermd.org/202003/0143.html",
+      "in_reply_to": 1583998888
+    }
+  ]
+}

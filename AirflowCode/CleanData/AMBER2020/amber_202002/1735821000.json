@@ -1,0 +1,21 @@
+{
+  "thread_id": 1735821000,
+  "subject": "[AMBER]  nastruct",
+  "messages": [
+    {
+      "message_id": 1735821000,
+      "author": "Jing Qu",
+      "date_raw": "Thu, 2 Jan 2025 07:30:00 -0500",
+      "body": "Hi,\nI'm using CPPTRAJ to analyze simulations of parallel strand DNA and get\nparameters via \"nastruct\". When concentrating on the parameter \"open\", I\nwill get values around -170 and 170. I know that a larger value indicates a\nlarger separation between base pairs, but apparently my structure isn't\nsplit wide open. I think usually when structures are not split, the values\nshould near 0. I'd like to know what the logic is for AMBER to calculate\n\"opening\"? I'm guessing that the value may be due to the fact that I'm\nanalyzing parallel strand. Do I just need to subtract the value from 180\n(by which I mean turn the value to concentrate around 0), or do I then go\nto the absolute value? Does the negative value make sense? Or is there some\nadjustment I need to make in the code I am analyzing for parallel strand?\nThanks,\nJing",
+      "url": "http://archive.ambermd.org/202501/0003.html"
+    },
+    {
+      "message_id": 1735834050,
+      "author": "Daniel Roe",
+      "date_raw": "Thu, 2 Jan 2025 11:07:30 -0500",
+      "body": "Hi,\n> I know that a larger value indicates a larger separation between base pairs\nThat's not strictly correct; the base pair parameters (Opening,\nPropeller, Buckle, etc.) have specific geometric definitions. In the\ncase of Opening, it is defined as the angle between the base reference\nY-axes *with reference to the Z-axis*. In the case of parallel strands\nof DNA, the Z-axis of one base is flipped relative to what it would be\nwhen the bases are anti-parallel, so the values for Opening are\nsimilarly \"flipped\".\nThe procedure CPPTRAJ uses is the same one found in 3DNA - I'll paste\nthe relevant references below. If you find that the CPPTRAJ results\ndeviate significantly from those produced by 3DNA (or some other NA\nanalysis code) please let me know. Hope this helps!\n-Dan\nReferences:\n- XJ Lu and WK Olson. 3dna: a software package for the analysis, rebuilding\nand visualization of three-dimensional nucleic acid structures. NUCLEIC\nACIDS RESEARCH, 31:5108–5121, 2003.\n- M.S. Babcock, E.P.D. Pednault, and W.K. Olson. Nucleic Acid Structure\nAnalysis. J. Mol. Biol., 237:125–156, 1994.\n- Wilma K. Olson, Manju Bansal, Stephen K. Burley, Richard E. Dickerson,\nMark Gerstein, Stephen C. Harvey, Udo Heinemann, Xiang-Jun Lu,\nStephen Neidle, Zippora Shakked, Heinz Sklenar, Masashi Suzuki, Chang-\nShung Tung, Eric Westhof, Cynthia Wolberger, and Helen M. Berman. A\nstandard reference frame for the description of nucleic acid base-pair geometry.\nJ. Mol. Biol., 313:229–237, 2001.\nOn Thu, Jan 2, 2025 at 7:35 AM Jing Qu via AMBER <amber.ambermd.\norg> wrote:\n>\n> Hi,\n>\n> I'm using CPPTRAJ to analyze simulations of parallel strand DNA and get\n> parameters via \"nastruct\". When concentrating on the parameter \"open\", I\n> will get values around -170 and 170. I know that a larger value indicates a\n> larger separation between base pairs, but apparently my structure isn't\n> split wide open. I think usually when structures are not split, the values\n> should near 0. I'd like to know what the logic is for AMBER to calculate\n> \"opening\"? I'm guessing that the value may be due to the fact that I'm\n> analyzing parallel strand. Do I just need to subtract the value from 180\n> (by which I mean turn the value to concentrate around 0), or do I then go\n> to the absolute value? Does the negative value make sense? Or is there some\n> adjustment I need to make in the code I am analyzing for parallel strand?\n>\n> Thanks,\n> Jing\n>",
+      "url": "http://archive.ambermd.org/202501/0005.html",
+      "in_reply_to": 1735821000
+    }
+  ]
+}

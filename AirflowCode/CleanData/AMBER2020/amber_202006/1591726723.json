@@ -1,0 +1,45 @@
+{
+  "thread_id": 1591726723,
+  "subject": "[AMBER] Xleap - disappearance of selection when trying to relax selection",
+  "messages": [
+    {
+      "message_id": 1591726723,
+      "author": "Billiot, Eugene",
+      "date_raw": "Tue, 9 Jun 2020 18:18:43 +0000",
+      "body": "I am having a problem in Xleap when I build a unit, select that unit and then try to relax it in Xleap.  More often than not, at least lately, instead of showing the unit relaxing it simply disappears.  What we have been doing is just repeat the whole process of building the unit and trying to relax it until it finally relaxes.  We repeat the exact steps each time so it is not how we build the unit.  Any ideas what is going on and how we resolve the issue.",
+      "url": "http://archive.ambermd.org/202006/0074.html"
+    },
+    {
+      "message_id": 1591735050,
+      "author": "David A Case",
+      "date_raw": "Tue, 9 Jun 2020 16:37:30 -0400",
+      "body": "On Tue, Jun 09, 2020, Billiot, Eugene wrote:\n>I am having a problem in Xleap when I build a unit, select that unit and\n>then try to relax it in Xleap.  More often than not, at least lately,\n>instead of showing the unit relaxing it simply disappears.  What we have\n>been doing is just repeat the whole process of building the unit and\n>trying to relax it until it finally relaxes.  We repeat the exact steps\n>each time so it is not how we build the unit.  Any ideas what is going on\n>and how we resolve the issue.\nI don't see this behavior on my machine.  Can you say what OS and\ncompiler you are using?  Maybe also a summary of what you did: are you\nediting an existing unit, or creating one entirely from scratch?\nThat said, graphically building molecules in xleap is surely on its last\nlegs.  I don't think anyone know much about how to fix the problem\nanymore.  I personally tend to use Avogadro for such tasks, but I've\nnever made any attempt to compare different programs.\nThere *is* an Amber-aware tleap/xleap replacement in the works, but it\nis not really ready yet.\n....regards...dac",
+      "url": "http://archive.ambermd.org/202006/0075.html",
+      "in_reply_to": 1591726723
+    },
+    {
+      "message_id": 1591797569,
+      "author": "Billiot, Eugene",
+      "date_raw": "Wed, 10 Jun 2020 13:59:29 +0000",
+      "body": "I think I have identified where the problem lies.  We are using mixed forcefields to describe an amino acid based surfactant (the hydrophobic tail identified by the GAFF forcefield and amino acid polar head groups identified by the protein forcefield).  When we ran antechamber on the surfactant and only used the GAFF forcefield to describe the entire surfactant molecule we did not observe the problem.  So Now I just need to identify what I did wrong in using  the mixed forcefields to describe the amino acid based surfactant.\n-----Original Message-----\nFrom: David A Case <david.case.rutgers.edu>\nSent: Tuesday, June 9, 2020 3:38 PM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] Xleap - disappearance of selection when trying to relax selection\nOn Tue, Jun 09, 2020, Billiot, Eugene wrote:\n>I am having a problem in Xleap when I build a unit, select that unit\n>and then try to relax it in Xleap.  More often than not, at least\n>lately, instead of showing the unit relaxing it simply disappears.\n>What we have been doing is just repeat the whole process of building\n>the unit and trying to relax it until it finally relaxes.  We repeat\n>the exact steps each time so it is not how we build the unit.  Any\n>ideas what is going on and how we resolve the issue.\nI don't see this behavior on my machine.  Can you say what OS and compiler you are using?  Maybe also a summary of what you did: are you editing an existing unit, or creating one entirely from scratch?\nThat said, graphically building molecules in xleap is surely on its last legs.  I don't think anyone know much about how to fix the problem anymore.  I personally tend to use Avogadro for such tasks, but I've never made any attempt to compare different programs.\nThere *is* an Amber-aware tleap/xleap replacement in the works, but it is not really ready yet.\n....regards...dac",
+      "url": "http://archive.ambermd.org/202006/0082.html",
+      "in_reply_to": 1591726723
+    },
+    {
+      "message_id": 1591802947,
+      "author": "David A Case",
+      "date_raw": "Wed, 10 Jun 2020 11:29:07 -0400",
+      "body": "On Wed, Jun 10, 2020, Billiot, Eugene wrote:\n>I think I have identified where the problem lies.  We are using mixed\n>forcefields to describe an amino acid based surfactant (the hydrophobic\n>tail identified by the GAFF forcefield and amino acid polar head groups\n>identified by the protein forcefield).  When we ran antechamber on the\n>surfactant and only used the GAFF forcefield to describe the entire\n>surfactant molecule we did not observe the problem.  So Now I just need\n>to identify what I did wrong in using the mixed forcefields to describe\n>the amino acid based surfactant.\nAh...starts to make some sense.  The \"relax selection\" command in xleap\ndoesn't actually use the force field that would be used in sander.  For\nspeed and generality, it uses a very simplified model.  Somehow, it\nlooks like it getting confused by either the atomic elements or\nsomething about the bonding with your mixed atom types.\nTry building and relaxing entirely with gaff.  That should(?) get you\nstructures.  Then you can input those structures and generate the mixed\nforce fields you want.\nOR: just avoid relaxing the structures: a subsequent minimization in\nsander will do about the same thing.  (Not guaranteed though.)\nMy *guess* is that literally no one understands the innards of the\n\"relax selection\" protocol enough to track down its problems in corner\ncases.  Would be glad to be proved wrong about this....\n....dac",
+      "url": "http://archive.ambermd.org/202006/0084.html",
+      "in_reply_to": 1591726723
+    },
+    {
+      "message_id": 1591857177,
+      "author": "Scott Brozell",
+      "date_raw": "Thu, 11 Jun 2020 02:32:57 -0400",
+      "body": "Hi,\nOn Wed, Jun 10, 2020 at 11:29:07AM -0400, David A Case wrote:\n> On Wed, Jun 10, 2020, Billiot, Eugene wrote:\n>\n> >I think I have identified where the problem lies.  We are using mixed\n> >forcefields to describe an amino acid based surfactant (the hydrophobic\n> >tail identified by the GAFF forcefield and amino acid polar head groups\n> >identified by the protein forcefield).  When we ran antechamber on the\n> >surfactant and only used the GAFF forcefield to describe the entire\n> >surfactant molecule we did not observe the problem.  So Now I just need\n> >to identify what I did wrong in using the mixed forcefields to describe\n> >the amino acid based surfactant.\n>\n> Ah...starts to make some sense.  The \"relax selection\" command in xleap\n> doesn't actually use the force field that would be used in sander.  For\n> speed and generality, it uses a very simplified model.  Somehow, it\n> looks like it getting confused by either the atomic elements or\n> something about the bonding with your mixed atom types.\n>\n> Try building and relaxing entirely with gaff.  That should(?) get you\n> structures.  Then you can input those structures and generate the mixed\n> force fields you want.\n>\n> OR: just avoid relaxing the structures: a subsequent minimization in\n> sander will do about the same thing.  (Not guaranteed though.)\n>\n> My *guess* is that literally no one understands the innards of the\n> \"relax selection\" protocol enough to track down its problems in corner\n> cases.  Would be glad to be proved wrong about this....\nPlease send the details and files to reproduce; note that you may need\nto perform some redundant saves, but you probably have already done\nthat if you've had to redo things.  Note also that tleap has the select,\nrelax, deselect commands.\nThis looks straightforward to debug, probably not straightforward to\nfix, but straightforward to patch for a more informative and graceful\ntermination.\nscott",
+      "url": "http://archive.ambermd.org/202006/0093.html",
+      "in_reply_to": 1591726723
+    }
+  ]
+}
