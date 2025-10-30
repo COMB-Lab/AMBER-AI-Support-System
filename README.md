@@ -11,3 +11,5 @@ Please consult with the Lab Director before sharing results, documentation, or d
 # Amber Mailing List Web Scraper
 This project automatically crawls and downloads all messages from the Amber mailing list archive starting from 2020 to 2025, organizing them into a JSON thread file.
 It runs continuously using Apache Airflow, ensuring new messages are scraped and stored every 24 hours.
+
+# How to run Airflow 
