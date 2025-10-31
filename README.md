@@ -12,4 +12,26 @@ Please consult with the Lab Director before sharing results, documentation, or d
 This project automatically crawls and downloads all messages from the Amber mailing list archive starting from 2020 to 2025, organizing them into a JSON thread file.
 It runs continuously using Apache Airflow, ensuring new messages are scraped and stored every 24 hours.
 
-# How to run Airflow 
+# Getting Started 
+. macOS
+
+. Docker Desktop 
+
+. Python 3.7
+
+# Start Airflow 
+Make sure Docker Desktop is running, then start all Airflow services:
+docker compose up -d
+
+# Access Airflow UI
+Open your browser: 
+
+http://localhost:8080
+
+Default credentials:
+
+. Username: airflow 
+
+. password: airflow 
+
+
