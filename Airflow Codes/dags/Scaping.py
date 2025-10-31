@@ -11,9 +11,9 @@ import logging
 BASE_URL = "http://archive.ambermd.org"
 START_YEAR = 2020
 END_YEAR = 2025
-OUTPUT_DIR = "data"     
+OUTPUT_DIR = "/opt/airflow/data"    
 DELAY = 0.5              
-LOG_FILE = "scraper.log" 
+LOG_FILE = "/opt/airflow/dags/scraper.log" 
 
 # Logging setup
 logging.basicConfig(
