@@ -1,62 +1,15 @@
-## 1.) AMBER\_WEB\_Scraping
+## 1.) AirflowCode
 
+This folder contains all the files needed to run airflow. All the Scripts from the folder **PythonScripts** are imported so no need to duplicate the folder. Just copy this **AirFlowCode** folder and it should run smoothly.
 
+## 2.) CleanedData
 
-Change the values of these Variables to Scrape data from the Amber Website
+This folder contains all the JSON files that have been extracted and cleaned.
 
+## 3.) PythonScripts
 
+This folder contains all the scripts used to datascrape emails from the AmberWebsite. Inside the **PythonScripts** folder it contains a README.md file that will show how to run each script.
 
-* "workingWithYear" - The year chosen for data (ex. "2020")
+## 4.) Rag
 
-
-
-* "workingWithMonth" - The month chosen for data (ex. "Jan")
-
-
-
-* "workingWithFileName" - The filename that the JSON is called (ex."amber\_2020\_Jan.json")
-
-
-
-
-
-## 2.) AMBER\_JSON\_Scraping
-
-
-
-Change the values of these Variables to Scrape data from the JSON file created in the previous script.
-
-
-
-* "workingWithJSONFile" - The name of the JSON file we are working with (Usually the name of 							"workingWithFileName") (ex. amber\_2020\_Jan.json)
-
-
-
-* "workingWithFolderName" - The name of the folder we are assigning (ex. "amber\_202001")
-
-
-
-
-
-## 3.) AMBER\_Check\_Replies
-
-
-
-Change the values of these Variables to match the replies with subject from the previous month.
-
-
-
-* "previousMonthFile" - The previous month JSON Folder 
-
-&nbsp;			(Usually "workingWithFolderName") (ex. "amber\_202001")
-
-
-
-
-
-* "currentMonthFile" - The current month JSON Folder 
-
-&nbsp;			(Usually "workingWithFolderName") (ex. "amber\_202002")
-
-
-
+This folder contains all the necessary scripts needed for the RAG portion of this project. Inside it contains a READMe.md file that will show how to run each script.
