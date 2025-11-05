@@ -12,4 +12,4 @@ This folder contains all the scripts used to datascrape emails from the AmberWeb
 
 ## 4.) Rag
 
-This folder contains all the necessary scripts needed for the RAG portion of this project. Inside it contains a READMe.md file that will show how to run each script.
+This folder contains all the necessary scripts needed for the RAG portion of this project. Inside it contains a README.md file that will show how to run each script.
