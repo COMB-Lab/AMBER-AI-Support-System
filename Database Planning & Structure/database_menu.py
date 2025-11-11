@@ -133,24 +133,39 @@ class AmberChromaAPI:
             if level == "thread":
                 self.add_thread(thread)
 
-    def query_embeddings(self, text, n=5, where=None):
-        "Return matched embeddings and similarity scores."
+    def query_embeddings(self, text, n=5, where=None, threshold=0.75):
+        "Return matched embeddings and similarity scores (filtered by threshold)."
         embedding = EMBEDDER.encode(text).tolist()
         print(f"\nQuerying for embeddings similar to: '{text}'")
-
+    
         results = self.collection.query(
             query_embeddings=[embedding],
             n_results=n,
             where=where if where is not None else None,
-            include=["embeddings", "distances"]
+            include=["embeddings", "distances", "metadatas"]  # optionally include metadatas
         )
-
+    
         embeddings = results.get("embeddings", [[]])[0]
         distances = results.get("distances", [[]])[0]
+        metadatas = results.get("metadatas", [[]])[0] if "metadatas" in results else [None] * len(embeddings)
+    
+        total_found = len(embeddings)
+        print(f"Found {total_found} total embedding results before filtering")
+    
+        filtered_pairs = []
+        for emb, dist, meta in zip(embeddings, distances, metadatas):
+            similarity = 1 - dist
+            if similarity >= threshold:
+                filtered_pairs.append({
+                    "embedding": emb,
+                    "similarity": similarity,
+                    "metadata": meta,
+                })
+    
+        print(f"{len(filtered_pairs)} embeddings kept (similarity ≥ {threshold})")
+    
+        return filtered_pairs
 
-        pairs = [{"embedding": e, "similarity": 1 - d} for e, d in zip(embeddings, distances)]
-        print(f"Returned {len(pairs)} embedding vectors.")
-        return pairs
 
 
     def query(self, text, n=5, where=None, threshold=0.75):
