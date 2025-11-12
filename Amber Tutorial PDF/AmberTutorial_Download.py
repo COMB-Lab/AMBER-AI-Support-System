@@ -19,7 +19,7 @@ def download_file(url, folder, filename):
             for chunk in response.iter_content(chunk_size=8192):
                 file.write(chunk)
 
-        print(f"✅ Download complete! Saved to: {filepath}")
+        print(f" Download complete! Saved to: {filepath}")
 
     except requests.exceptions.RequestException as e:
         print(f" Download failed: {e}")
