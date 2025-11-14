@@ -1,0 +1,21 @@
+{
+  "thread_id": 1760893574,
+  "subject": "[AMBER] illegal memory access",
+  "messages": [
+    {
+      "message_id": 1760893574,
+      "author": "Tomás Benjamín Cáceres Madariaga",
+      "date_raw": "Sun, 19 Oct 2025 17:06:14 +0000",
+      "body": "Dear amber users,\nI'm experiencing a strange issue when running pmemd.cuda.\nThe error is:\nError: an illegal memory access was encountered launching kernel kNLSkinTest\nI thought this was related to some problem in the simulation, i.e., something exploded or there was a very bad contact. However, when I ran the same simulation on another machine, it worked without a problem. Also, I repeated a simulation that worked fine before, and now it's also failing. So I'm starting to think it's related to the GPU or nvidia driver. I tried recompiling amber but the error still happen.\nI'm using Amber24, with a 3060 nvidia gpu, with cuda 12.4 and driver 580. This happened in Ubuntu 22.04, then I updated to 24.04 and recompiled amber again, and nothing changed. I tried to use an old nvidia-driver (550, 560) with no success, so I couldn't test if this is something related to nvidia driver.\nThe protocol that I'm using is:\n1.\nTwo step minimization --> ok\n2.\nRaising temperature --> ok\n3.\nFive restrained NPT steps to relax the system (gradually releasing the restraint in each step). It fails at the third step, i.e, first two are running fine.\n4.\nOne unrestrained NPT. --> also failing (using the restart file obtained from the other machine)\nAny clue? Thanks in advance\nTomás Cáceres\nBioquímico UC\nAsistente de Investigación | Laboratorio de Simulación Computacional y Diseño de Fármacos",
+      "url": "http://archive.ambermd.org/202510/0031.html"
+    },
+    {
+      "message_id": 1761363604,
+      "author": "David A Case",
+      "date_raw": "Fri, 24 Oct 2025 21:40:04 -0600",
+      "body": "On Sun, Oct 19, 2025, Tomás Benjamín Cáceres Madariaga via AMBER wrote:\n>I'm experiencing a strange issue when running pmemd.cuda.\n>The error is:\n>    Error: an illegal memory access was encountered launching kernel kNLSkinTest\n>\n>I thought this was related to some problem in the simulation, i.e.,\n>something exploded or there was a very bad contact. However, when I ran\n>the same simulation on another machine, it worked without a problem. Also,\n>I repeated a simulation that worked fine before, and now it's also\n>failing. So I'm starting to think it's related to the GPU or nvidia\n>driver. I tried recompiling amber but the error still happen.\n>\n>I'm using Amber24, with a 3060 nvidia gpu, with cuda 12.4 and driver\n>580. This happened in Ubuntu 22.04, then I updated to 24.04 and recompiled\n>amber again, and nothing changed. I tried to use an old nvidia-driver (550,\n>560) with no success, so I couldn't test if this is something related to\n>nvidia driver.\nThis sounds most like a GPU hardware problem, but that is obviously just a\nguess.  Have you run \"make test.cuda.serial\" on the GPU that may be a\nproblem?  That might help narrow things down.\nA second thought is to use barostat=2 for your NPT runs, if you have not yet\ndone that.  There have been some recent reports that sound similar to yours,\nand for which setting barostat=2 helped.  Again, this would help narrow down\nthe problem.  (Barostat=2 probably should be the default setting anyway...)\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202510/0036.html",
+      "in_reply_to": 1760893574
+    }
+  ]
+}

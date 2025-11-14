@@ -1,0 +1,29 @@
+{
+  "thread_id": 1696190209,
+  "subject": "[AMBER] Error with a cpptraj loop",
+  "messages": [
+    {
+      "message_id": 1696190209,
+      "author": "VERONICA MARTIN HERNANDEZ",
+      "date_raw": "Sun, 1 Oct 2023 19:56:49 +0000",
+      "body": "Hi everyone again (and sorry for writting to much)\nI've to extract all the frames of a dynamic in separated files and I was trying with cpptraj and the following loop:\nparm CRBN-LVR-solv.prmtop\ntrajin CRBN-LVR-NVTcenter.mdcrd\nfor iFrame in {1..500}\ntrajout CRBN-LVR-\\$iFrame.mdcrd onlyframes \\$iFrame\ndo\nrun\nBut I get the following error:\nINPUT: Reading input from 'extract.in'\n[parm CRBN-LVR-solv.prmtop]\nReading 'CRBN-LVR-solv.prmtop' as Amber Topology\nRadius Set: H(N)-modified Bondi radii (mbondi2)\n[trajin CRBN-LVR-NVTcenter.mdcrd]\nReading 'CRBN-LVR-NVTcenter.mdcrd' as Amber Trajectory\n[for iFrame in {1..500}]\nSetting up 'for' loop.\nCONTROL: Parsing control block.\nBLOCK  0: for ((iFrame in {1..500})) do\n[trajout CRBN-LVR-\\$iFrame.mdcrd onlyframes \\$iFrame]\nAdded command 'trajout' to control block 0.\n[do]\nAdded command 'do' to control block 0.\nError: 1 unterminated control block(s) detected.\nError:   0 : for ((iFrame in {1..500})) do\nTIME: Total execution time: 0.1296 seconds.\nError: Error(s) occurred during execution.\nHow can I fix it?\nThanks in advance",
+      "url": "http://archive.ambermd.org/202310/0000.html"
+    },
+    {
+      "message_id": 1696192895,
+      "author": "SATYAJIT KHATUA",
+      "date_raw": "Sun, 1 Oct 2023 20:41:35 +0000",
+      "body": "Hi,\nI may help you with a alternate script. A simple bash script will do the job for you.\nIn terminal, please write the following:\nfor i in {1..500};do echo trajin *.mdcrd $i $i > 1.in;echo trajout frame$i.mdcrd crd > 2.in;cat 1.in 2.in > traj$i.in;cpptraj -p *.prmtop -i traj$i.in;done\nBest,\nSatyajit\n________________________________\nFrom: VERONICA MARTIN HERNANDEZ via AMBER <amber.ambermd.org>\nSent: 02 October 2023 01:26\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: [AMBER] Error with a cpptraj loop\nHi everyone again (and sorry for writting to much)\nI've to extract all the frames of a dynamic in separated files and I was trying with cpptraj and the following loop:\nparm CRBN-LVR-solv.prmtop\ntrajin CRBN-LVR-NVTcenter.mdcrd\nfor iFrame in {1..500}\ntrajout CRBN-LVR-\\$iFrame.mdcrd onlyframes \\$iFrame\ndo\nrun\nBut I get the following error:\nINPUT: Reading input from 'extract.in'\n[parm CRBN-LVR-solv.prmtop]\nReading 'CRBN-LVR-solv.prmtop' as Amber Topology\nRadius Set: H(N)-modified Bondi radii (mbondi2)\n[trajin CRBN-LVR-NVTcenter.mdcrd]\nReading 'CRBN-LVR-NVTcenter.mdcrd' as Amber Trajectory\n[for iFrame in {1..500}]\nSetting up 'for' loop.\nCONTROL: Parsing control block.\nBLOCK  0: for ((iFrame in {1..500})) do\n[trajout CRBN-LVR-\\$iFrame.mdcrd onlyframes \\$iFrame]\nAdded command 'trajout' to control block 0.\n[do]\nAdded command 'do' to control block 0.\nError: 1 unterminated control block(s) detected.\nError:   0 : for ((iFrame in {1..500})) do\nTIME: Total execution time: 0.1296 seconds.\nError: Error(s) occurred during execution.\nHow can I fix it?\nThanks in advance",
+      "url": "http://archive.ambermd.org/202310/0001.html",
+      "in_reply_to": 1696190209
+    },
+    {
+      "message_id": 1696206701,
+      "author": "Daniel Roe",
+      "date_raw": "Sun, 1 Oct 2023 20:31:41 -0400",
+      "body": "Hi,\nYou were close!. The command for closing out a loop block is 'done',\nnot 'do'. However, I wouldn't go about it this way since with 'trajin'\n+ 'trajout onlyframes' you will be reading the entire input trajectory\neach time. Here is a script that will extract all the frames from a\ntrajectory using trajin (so you will only read the single frame you\nwant to process) and write them out as single trajectories:\nparm ../tz2.parm7\ntrajin ../tz2.nc\n# Set N to the total number of frames in the trajectory\nset N = trajinframes\nfor i=1;i<=$N;i++\n# Clear the previous trajectory\nclear trajin\n# Read in a single frame\ntrajin ../tz2.nc $i $i\n# Write it out\ntrajout temp.$i.nc\n# Run\nrun\ndone\nHope this helps,\n-Dan\nOn Sun, Oct 1, 2023 at 3:57 PM VERONICA MARTIN HERNANDEZ via AMBER\n<amber.ambermd.\norg> wrote:\n>\n> Hi everyone again (and sorry for writting to much)\n>\n> I've to extract all the frames of a dynamic in separated files and I was trying with cpptraj and the following loop:\n>\n> parm CRBN-LVR-solv.prmtop\n> trajin CRBN-LVR-NVTcenter.mdcrd\n> for iFrame in {1..500}\n>   trajout CRBN-LVR-\\$iFrame.mdcrd onlyframes \\$iFrame\n> do\n> run\n>\n> But I get the following error:\n>\n> INPUT: Reading input from 'extract.in'\n>   [parm CRBN-LVR-solv.prmtop]\n>         Reading 'CRBN-LVR-solv.prmtop' as Amber Topology\n>         Radius Set: H(N)-modified Bondi radii (mbondi2)\n>   [trajin CRBN-LVR-NVTcenter.mdcrd]\n>         Reading 'CRBN-LVR-NVTcenter.mdcrd' as Amber Trajectory\n>   [for iFrame in {1..500}]\n>     Setting up 'for' loop.\n> CONTROL: Parsing control block.\n>   BLOCK  0: for ((iFrame in {1..500})) do\n>   [trajout CRBN-LVR-\\$iFrame.mdcrd onlyframes \\$iFrame]\n>         Added command 'trajout' to control block 0.\n>   [do]\n>         Added command 'do' to control block 0.\n> Error: 1 unterminated control block(s) detected.\n> Error:   0 : for ((iFrame in {1..500})) do\n> TIME: Total execution time: 0.1296 seconds.\n> Error: Error(s) occurred during execution.\n>\n> How can I fix it?\n> Thanks in advance\n>",
+      "url": "http://archive.ambermd.org/202310/0002.html",
+      "in_reply_to": 1696190209
+    }
+  ]
+}

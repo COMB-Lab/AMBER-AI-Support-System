@@ -1,0 +1,13 @@
+{
+  "thread_id": 1641771011,
+  "subject": "[AMBER] Multi-GPU oddity",
+  "messages": [
+    {
+      "message_id": 1641771011,
+      "author": "James Kress",
+      "date_raw": "Sun, 9 Jan 2022 18:30:11 -0500",
+      "body": "I am running the mdinOPT.GPU benchmark on my 4 RTX3090 GPU system.  It has\ndual AMD CPUs each with 64 cores.  The system also has 2TB of RAM.\nThe OS is RHEL 8 and Amber20 is compiled with CUDA kit 11.4.1 and OpenMPI\n4.1.1 to give $AMBERHOME/bin/pmemd.cuda_SPFP.MPI\nWhen I set  export CUDA_VISIBLE_DEVICES=0,1,2 and run this command:\nmpirun -np 3 $AMBERHOME/bin/pmemd.cuda_SPFP.MPI  -i mdinOPT.GPU -o\nJACOPT_3.out -p JAC.prmtop -c JAC.inpcrd\nI observe in nvidia-smi that 3 processes are routed to GPU 0 with one\nprocess routed to GPU 1 and another to GPU 2 for a total of 5 GPU processes.\nSee attached screen shot (if it clears the posting process).\nWhy are 3 processes being routed to GPU 0?  I also tried the same command\nafter setting  OMP_NUM_THREADS=1 but that made no difference.  Neither did\nmpirun --bind-to none -np 3 ...\nThis behavior is  not observed when I set  export CUDA_VISIBLE_DEVICES=0,1\nand run this command:\nmpirun -np 2 $AMBERHOME/bin/pmemd.cuda_SPFP.MPI  -i mdinOPT.GPU -o\nJACOPT_0_1.out -p JAC.prmtop -c JAC.inpcrd\nor\nexport CUDA_VISIBLE_DEVICES=2,3\nmpirun -np 2 $AMBERHOME/bin/pmemd.cuda_SPFP.MPI  -i mdinOPT.GPU -o\nJACOPT_2_3.out -p JAC.prmtop -c JAC.inpcrd\nWhat I get there is 2 GPU processes on each GPU.\nIs there something else I need to do to get only 1 process per GPU or is\nthis normal behavior?\nAlso note, the performance for the 2 GPU runs is ns/day =    1308.25 while\nfor the 3 GPU run it is ns/day =     606.08.\nAny suggestions on what I am doing wrong and how to fix it?\nThanks.\nJim Kress",
+      "url": "http://archive.ambermd.org/202201/0051.html"
+    }
+  ]
+}

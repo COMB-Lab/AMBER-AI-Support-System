@@ -1,0 +1,29 @@
+{
+  "thread_id": 1606497349,
+  "subject": "[AMBER] AMBER20 TI calculations",
+  "messages": [
+    {
+      "message_id": 1606497349,
+      "author": "Debarati DasGupta",
+      "date_raw": "Fri, 27 Nov 2020 17:15:49 +0000",
+      "body": "Hello everyone,\nI am running an absolute binding free energy calculation on a ABL kinase system ( ligand is isopropanol), I have applied distance based restraints  to keep the ligand in the pocket:\nHowever, after minimization, the system gets unstable in the temperature ramping simulation I get this: ( see picture below). Any ideas/thoughts on how to prevent this?\nI have used softcore potentials and I am doing a stepwise de-charge, then disappearing the LJ interactions.\nThanks\nDebarati\n[cid:image001.png.01D6C4B6.D8F0CCC0]",
+      "url": "http://archive.ambermd.org/202011/0258.html"
+    },
+    {
+      "message_id": 1606497669,
+      "author": "Adrian Roitberg",
+      "date_raw": "Fri, 27 Nov 2020 12:21:09 -0500",
+      "body": "Hard to tell without more details, but...\nYou are getting warning about NMR restraints, I would check those first.\nWhat happens if you take the restraints out just to check on the run ?\nYour box size seems to be immense. I very much doubt that your system is\n91 MICROMETERS to the side !\nadrian\nOn 11/27/20 12:15 PM, Debarati DasGupta wrote:\n> [External Email]\n>\n> Hello everyone,\n> I am running an absolute binding free energy calculation on a ABL kinase system ( ligand is isopropanol), I have applied distance based restraints  to keep the ligand in the pocket:\n> However, after minimization, the system gets unstable in the temperature ramping simulation I get this: ( see picture below). Any ideas/thoughts on how to prevent this?\n> I have used softcore potentials and I am doing a stepwise de-charge, then disappearing the LJ interactions.\n> Thanks\n> Debarati\n> [cid:image001.png.01D6C4B6.D8F0CCC0]\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202011/0259.html",
+      "in_reply_to": 1606497349
+    },
+    {
+      "message_id": 1606499557,
+      "author": "Debarati DasGupta",
+      "date_raw": "Fri, 27 Nov 2020 17:52:37 +0000",
+      "body": "Sent from Mail<\nhttps://go.microsoft.com/fwlink/?LinkId=550986\n> for Windows 10\nFrom: Debarati DasGupta<mailto:debarati_dasgupta.hotmail.com>\nSent: 27 November 2020 12:37\nTo: Adrian Roitberg<mailto:roitberg.ufl.edu>\nSubject: RE: [AMBER] AMBER20 TI calculations\nHello Prof Roitberg,\nThanks for your reply, really appreciate it.\nSO this is the input file (for clambda=0.20634)  which leads me to the unstable simulation:\n&cntrl\nimin = 0, nstlim = 100000, dt = 0.001,\nirest = 0, ntx = 1, ig = -1,\ntempi = 0.0, temp0 = 50.0\nntc = 1, ntf = 1, tol = 0.00001,\nnsnb   = 10, nscm = 10,\nioutfm=1,\ntaup = 1,\nntwx = 100, ntwe = 100, ntwr = 100, ntpr = 100, ntwv=-1, ntave = 100,\ncut = 11.0, iwrap = 1,\nntt =3, ntb = 1, ntp = 0, gamma_ln=1.0,\nnscm = 0,\nicfe = 1, clambda=0.20634, ifsc=1,\ntimask1=':IPA',timask2= '', scalpha = 0.1, scbeta = 50.0,\nscmask1 = ':IPA', scmask2 = '',\nnmropt=1,\n/\n&wt type='DUMPFREQ', istep1=1, /\n&wt type='END', /\nDISANG=output.disang\nDUMPAVE=dist_0.20634.dat\nLISTIN=POUT\nLISTOUT=POUT\n/\n&ewald\nskinnb=2, nfft1=96, nfft2=96, nfft3=96,\n/\n&wt type='TEMP0', istep1=0, istep2=90000, value1=0.0, value2=50.0 /\n&wt type='TEMP0', istep1=90001, istep2=100000, value1=50.0, value2=50.0 /\n&wt type='END' /\nAlso, when I use  harmonic restraints (ntr=1), the simulation does not crash.\nI am running a 10 step heating without restraints to check on the run.\nDo you want me to  provide you the prmtop and inpcrd file?\nThanks\nDebarati\nFrom: Adrian Roitberg<mailto:roitberg.ufl.edu>\nSent: 27 November 2020 12:21\nTo: AMBER Mailing List<mailto:amber.ambermd.org>; Debarati DasGupta<mailto:debarati_dasgupta.hotmail.com>\nSubject: Re: [AMBER] AMBER20 TI calculations\nHard to tell without more details, but...\nYou are getting warning about NMR restraints, I would check those first.\nWhat happens if you take the restraints out just to check on the run ?\nYour box size seems to be immense. I very much doubt that your system is 91 MICROMETERS to the side !\nadrian\nOn 11/27/20 12:15 PM, Debarati DasGupta wrote:\n[External Email]\nHello everyone,\nI am running an absolute binding free energy calculation on a ABL kinase system ( ligand is isopropanol), I have applied distance based restraints  to keep the ligand in the pocket:\nHowever, after minimization, the system gets unstable in the temperature ramping simulation I get this: ( see picture below). Any ideas/thoughts on how to prevent this?\nI have used softcore potentials and I am doing a stepwise de-charge, then disappearing the LJ interactions.\nThanks\nDebarati\n[cid:image001.png.01D6C4B6.D8F0CCC0]",
+      "url": "http://archive.ambermd.org/202011/0260.html",
+      "in_reply_to": 1606497349
+    }
+  ]
+}

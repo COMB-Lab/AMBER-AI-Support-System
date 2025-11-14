@@ -1,0 +1,37 @@
+{
+  "thread_id": 1677278980,
+  "subject": "[AMBER] pmemd.cuda: error while loading shared libraries",
+  "messages": [
+    {
+      "message_id": 1677278980,
+      "author": "ABDELATIF MESSAOUDI",
+      "date_raw": "Fri, 24 Feb 2023 23:49:40 +0100",
+      "body": "Dear AMBER users,\nI have compiled Amber22 with CUDA support in our Ubuntu 22,10, but when\n*to run simulation, pmemd runs fine but I get the following error in\npmemd.cuda *\n*pmemd.cuda: error while loading shared libraries: libcufft.so.10: cannot\nopen shared object file: No such file or directory*\n*Best regards *\n*Abdelatif Messaoudi*\n*LCMVAR, University of Batna 1, Algeria*",
+      "url": "http://archive.ambermd.org/202302/0137.html"
+    },
+    {
+      "message_id": 1677310464,
+      "author": "Markowska",
+      "date_raw": "Sat, 25 Feb 2023 08:34:24 +0100",
+      "body": "Hi  Abdelatif,\nI had the same issue but with a different Amber version.\nPlease check if the $LD_LIBRARY_PATH consists of CUDA directory. In\nterminal you can check that by\necho $LD_LIBRARY_PATH\nIf not, you can export it with CUDA directory and see if that helps.\nSo, assuming that your CUDA directory is located at /usr/local/cuda, do\nexport LD_LIBRARY_PATH=/usr/local/cuda/lib64/:$LD_LIBRARY_PATH\nGood luck!\nKarolina\npt., 24 lut 2023 o 23:50 ABDELATIF MESSAOUDI via AMBER <amber.ambermd.\norg>\nnapisał(a):\n> Dear AMBER users,\n>\n> I have compiled Amber22 with CUDA support in our Ubuntu 22,10, but when\n>\n> *to run simulation, pmemd runs fine but I get the following error in\n> pmemd.cuda *\n> *pmemd.cuda: error while loading shared libraries: libcufft.so.10: cannot\n> open shared object file: No such file or directory*\n>\n>\n>\n> *Best regards *\n>\n>\n> *Abdelatif Messaoudi*\n>\n> *LCMVAR, University of Batna 1, Algeria*\n>",
+      "url": "http://archive.ambermd.org/202302/0139.html",
+      "in_reply_to": 1677278980
+    },
+    {
+      "message_id": 1677592218,
+      "author": "David A Case",
+      "date_raw": "Tue, 28 Feb 2023 08:50:18 -0500",
+      "body": "On Fri, Feb 24, 2023, ABDELATIF MESSAOUDI via AMBER wrote:\n>\n>I have compiled Amber22 with CUDA support in our Ubuntu 22,10, but when\n>\n>*to run simulation, pmemd runs fine but I get the following error in\n>pmemd.cuda *\n>*pmemd.cuda: error while loading shared libraries: libcufft.so.10: cannot\n>open shared object file: No such file or directory*\nGo to your amber22/bin folder, and type the following:\nldd pmemd.cuda_SPFP\nWhat does it say about libcufft.so.10?   It should be pointing to your\n$CUDA_HOME folder (something like /usr/local/cuda/lib64).  You may need to\nadd that path to your LD_LIBRARY_PATH environment variable; run ldd again\nto see if that helps.\n....dac",
+      "url": "http://archive.ambermd.org/202302/0148.html",
+      "in_reply_to": 1677278980
+    },
+    {
+      "message_id": 1677621032,
+      "author": "ABDELATIF MESSAOUDI",
+      "date_raw": "Tue, 28 Feb 2023 22:50:32 +0100",
+      "body": "Dear David\nThanks a lot ! It worked very well.\nBest wishes\nAbdelatif\nLe mar. 28 févr. 2023 à 14:50, David A Case <david.case.rutgers.\nedu> a\nécrit :\n> On Fri, Feb 24, 2023, ABDELATIF MESSAOUDI via AMBER wrote:\n> >\n> >I have compiled Amber22 with CUDA support in our Ubuntu 22,10, but when\n> >\n> >*to run simulation, pmemd runs fine but I get the following error in\n> >pmemd.cuda *\n> >*pmemd.cuda: error while loading shared libraries: libcufft.so.10: cannot\n> >open shared object file: No such file or directory*\n>\n> Go to your amber22/bin folder, and type the following:\n>\n>     ldd pmemd.cuda_SPFP\n>\n> What does it say about libcufft.so.10?   It should be pointing to your\n> $CUDA_HOME folder (something like /usr/local/cuda/lib64).  You may need to\n> add that path to your LD_LIBRARY_PATH environment variable; run ldd again\n> to see if that helps.\n>\n> ....dac\n>\n>",
+      "url": "http://archive.ambermd.org/202302/0155.html",
+      "in_reply_to": 1677278980
+    }
+  ]
+}

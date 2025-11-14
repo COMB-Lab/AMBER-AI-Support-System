@@ -1,0 +1,13 @@
+{
+  "thread_id": 1676274456,
+  "subject": "[AMBER] scalpha and scbeta defaults are not right for TI calculations with smoothstep gti_lam_sch=1?",
+  "messages": [
+    {
+      "message_id": 1676274456,
+      "author": "Skanda Sastry",
+      "date_raw": "Sun, 12 Feb 2023 23:47:36 -0800",
+      "body": "Hello all,\nThank you so much for all of your help. The mailing list archive is a great\nplace to come for help with alchemical calculations.\nOne thing I noticed after reading this paper (\nhttps://www.ncbi.nlm.nih.gov/pmc/articles/PMC7494069/#SD1\n) and page 497 of\nthe Amber22 manual is that when the gti_lam_sch is set to 1 (lambda\nscheduling), default scalpha is supposed to be 0.2 and default scbeta is\nsupposed to be 50. However, when I look at my resulting output file I see\nthat scalpha remains at 0.5 and scbeta remains at 12. When I run TI with a\ncharged amino acid this leads to a particle collapse problem.\nIs there anything wrong I am doing? Here is an example script. The\ntimask/scmask are automatically filled in with a script. If there is\nnothing wrong with my input script, is it possible for those defaults to be\nchanged so that it is in accordance with the manual? Thank you so much!!\nRegards,\nSkanda\n&cntrl\nimin=0, !minimization off\nirest=1,ntx=5, !read coordinates,velocities\nntpr=10000, !energy information in mdout\nntwx=10000, !coordinates will be written to trajectory\nnstlim=5000000,!5ns equilibration run\ndt=0.001,\nntt=3, !langevin dynamics\ngamma_ln=1.0, !collison frequency\nig=-1,!random number generator\nntc=1, !no SHAKE\nntf=1, !\ncut=8, !nonbonded cutoff\nntb=1, !constant volume\ntempi=300.0, !initial temperature\ntemp0=300.0, !final temperature\niwrap=1, !coordinates written to the restart and trajectory files will be\n\"wrapped\" into a primary box.\nioutfm=1, !netcdf trajectory\nicfe = 1, ifsc = 1,\ngti_lam_sch=1,\n${timask1}\n${timask2}\n${scmask1}\n${scmask2}\nclambda = 0.5,\n/\n&wt TYPE='END' /",
+      "url": "http://archive.ambermd.org/202302/0069.html"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "thread_id": 1648734465,
+  "subject": "Re: [AMBER] Unit 9 Error on OPEN: inpcrd When Running GPU Simulation on PMEMD.CUDA",
+  "messages": [
+    {
+      "message_id": 1648734465,
+      "author": "Nathan Black",
+      "date_raw": "Thu, 31 Mar 2022 08:47:45 -0500",
+      "body": "Hello all,\nPlease disregard the previous message. The error I made was trivial (i.e.,\nthere was a space present at the end of the -p line directly preceeding\nline 22). I wound up finding it by checking every character in the text\nagainst another functioning script from an AMBER MD tutorial.\nAlso, I found that pmemd.CUDA was not compatible with my heating and\nequilibration steps, so converting those back to sander.MPI solved some\nother unrelated errors with my code. Another issue is that I attempted to\nuse ntp > 0 for my implicit solvent equilibration step, which forces ntb >\n0 (not compatible with implicit solvent to the best of my knowledge). I am\nleaving these notes in case another inexperienced AMBER user such as myself\nends up with these issues.\nAll the best,\nNDB\nOn Wed, Mar 30, 2022, 3:05 PM Nathan Black <nathanblack262.gmail.com> wrote:\n> Hello AMBER Users,\n>\n> When running an MD Simulation on AMBER 20 using pmemd.cuda, the following\n> error is given:\n>\n>\n>\n>\n>\n> *Unit    9 Error on OPEN: inpcrd\n>\n>\n>                     STOP PMEMD Terminated\n> Abnormally!./simulate_TEST2_AMBER20_GPU1: line 22: -c: command not foundAt\n> line 857 of file /usr/local/amber20_src/src/pmemd/src/mdin_ctrl_dat.F90\n> (unit = 5, file = 'TEST2_simulate.in')Fortran runtime error: Integer\n> overflow while reading item 0*\n>\n> From my own experience and looking at other posts made to this mailing\n> list, it initially appeared as though my inline tabs (used to \"stretch\" the\n> command over multiple lines) are incorrect. However, I believe that they\n> are (my script and its dependencies are attached). Also, using the\n> pmemd.cuda -help command gave\n>\n>\n>\n> *usage: pmemd  [-O] -i mdin -o mdout -p prmtop -c inpcrd -r restrt\n>       [-ref refc -x mdcrd -v mdvel -frc mdfrc -e mden -inf mdinfo -l\n> logfile]              [-amd amdlog_name -gamd gamdlog_name -scaledMD\n> scaledMDlog_name -suffix output_files_suffix]*\n>\n> Which matches my input. I have attached my pmemd.cuda script and its\n> dependencies, which were all in the same directory with reading\n> permissions. From the error message that was given, I believe that the\n> error is syntax-based and lies within the executable\n> *simulate_TEST2_AMBER20_GPU1*, though I am admittedly lost on diagnosing\n> it further.\n>\n> Any help is much appreciated. Thank you all for your continued support,\n> NDB\n>",
+      "url": "http://archive.ambermd.org/202203/0202.html"
+    }
+  ]
+}

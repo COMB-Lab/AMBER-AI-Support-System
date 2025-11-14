@@ -1,0 +1,29 @@
+{
+  "thread_id": 1655289603,
+  "subject": "[AMBER] Antechamber error in creating FF for charged organic molecule",
+  "messages": [
+    {
+      "message_id": 1655289603,
+      "author": "Giulia Sormani",
+      "date_raw": "Wed, 15 Jun 2022 12:40:03 +0200",
+      "body": "Good morning to everyone,\nI am trying to built the force field to simulate an organic molecule (DFO)\nwhich has a charge of -2.\nI am using the following command:\nantechamber -i  DFO_2minus.pdb -fi pdb -o DFO.mol -fo mol2 -c bcc -s 2 -nc -2\nHowever I get the following error:\n\"\nWarning: the assigned bond types may be wrong, please :\n(1) double check the structure (the connectivity) and/or\n(2) adjust atom valence penalty parameters in APS.DAT, and/or\n(3) increase PSCUTOFF in define.h and recompile bondtype.c\nBe cautious, use a large value of PSCUTOFF (>100) will significantly\nincrease the computation time\nRunning:\n/cineca/prod/opt/applications/amber/16.0/intelmpi--2017--binary/bin/atomtype\n-i ANTECHAMBER_AC.AC0 -o ANTECHAMBER_AC.AC -p gaff\nTotal number of electrons: 304; net charge: -2\nRunning:\n/cineca/prod/opt/applications/amber/16.0/intelmpi--2017--binary/bin/sqm -O\n-i sqm.in -o sqm.out\nError: cannot run\n\"/cineca/prod/opt/applications/amber/16.0/intelmpi--2017--binary/bin/sqm\n-O -i sqm.in -o sqm.out\" of bcc() in charge.c properly, exit\n\"\nI read from previous mails that when you get this warning probably there\nactually is a problem with the input file.\nI am sure the connectivity of the molecule is fine, I don't see where is\nthe problem.\nI put in the attachment the input file, could someone help me with this?\nBest,\nGiulia Sormani",
+      "url": "http://archive.ambermd.org/202206/0002.html"
+    },
+    {
+      "message_id": 1655301215,
+      "author": "David A Case",
+      "date_raw": "Wed, 15 Jun 2022 09:53:35 -0400",
+      "body": "On Wed, Jun 15, 2022, Giulia Sormani via AMBER wrote:\n>\n>I am trying to built the force field to simulate an organic molecule (DFO)\n>which has a charge of -2.\n>I am using the following command:\n>antechamber -i  DFO_2minus.pdb -fi pdb -o DFO.mol -fo mol2 -c bcc -s 2 -nc -2\n>\n>Running:\n>/cineca/prod/opt/applications/amber/16.0/intelmpi--2017--binary/bin/sqm -O\n>-i sqm.in -o sqm.out\n>Error: cannot run\n>\"/cineca/prod/opt/applications/amber/16.0/intelmpi--2017--binary/bin/sqm\n>-O -i sqm.in -o sqm.out\" of bcc() in charge.c properly, exit\n>\"\nFirst, you need to look at the sqm.out file to see what the error is.\nSecond, if it's not obvious what to do from the sqm.out file, and geometry\noptimization seems to be the problem, turn off geometry optimization and/or\nchange the scf convergence options: see notes #6 and #7 on p. 302-3 of the\n2022 Amber Reference Manual (available on the web site -- I don't know the\npage number for Amber16).\nSpecifically, you might want to try adding the following flag to you\nantechamber run:\n-ek \"qm_theory='AM1', maxcyc=0, scfconv=1.d-8, ndiis_attempts=700,\"\n[It's probably a good general idea to update to AmberTools22, and to start\nusing GAFF2.  But this is unlikley to be really related to the problem you\nare seeing.]\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202206/0004.html",
+      "in_reply_to": 1655289603
+    },
+    {
+      "message_id": 1655305098,
+      "author": "Erdem Yeler",
+      "date_raw": "Wed, 15 Jun 2022 17:58:18 +0300",
+      "body": "Actually this answer helped me a lot, even if I was not the person who\nasked this question. Thank you so much Dear David Case.\nRegards,\nErdem\nDavid A Case via AMBER <amber.ambermd.\norg>, 15 Haz 2022 Çar, 16:54\ntarihinde şunu yazdı:\n> On Wed, Jun 15, 2022, Giulia Sormani via AMBER wrote:\n> >\n> >I am trying to built the force field to simulate an organic molecule (DFO)\n> >which has a charge of -2.\n> >I am using the following command:\n> >antechamber -i  DFO_2minus.pdb -fi pdb -o DFO.mol -fo mol2 -c bcc -s 2\n> -nc -2\n> >\n> >Running:\n> >/cineca/prod/opt/applications/amber/16.0/intelmpi--2017--binary/bin/sqm -O\n> >-i sqm.in -o sqm.out\n> >Error: cannot run\n> >\"/cineca/prod/opt/applications/amber/16.0/intelmpi--2017--binary/bin/sqm\n> >-O -i sqm.in -o sqm.out\" of bcc() in charge.c properly, exit\n> >\"\n>\n> First, you need to look at the sqm.out file to see what the error is.\n>\n> Second, if it's not obvious what to do from the sqm.out file, and geometry\n> optimization seems to be the problem, turn off geometry optimization and/or\n> change the scf convergence options: see notes #6 and #7 on p. 302-3 of the\n> 2022 Amber Reference Manual (available on the web site -- I don't know the\n> page number for Amber16).\n>\n> Specifically, you might want to try adding the following flag to you\n> antechamber run:\n>\n>     -ek \"qm_theory='AM1', maxcyc=0, scfconv=1.d-8, ndiis_attempts=700,\"\n>\n> [It's probably a good general idea to update to AmberTools22, and to start\n> using GAFF2.  But this is unlikley to be really related to the problem you\n> are seeing.]\n>\n> ...hope this helps....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202206/0005.html",
+      "in_reply_to": 1655289603
+    }
+  ]
+}

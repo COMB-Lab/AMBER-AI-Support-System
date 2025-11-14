@@ -1,0 +1,13 @@
+{
+  "thread_id": 1665592970,
+  "subject": "[AMBER] PLUMED misformatted output file",
+  "messages": [
+    {
+      "message_id": 1665592970,
+      "author": "Tucker Burgin",
+      "date_raw": "Wed, 12 Oct 2022 09:42:50 -0700",
+      "body": "Amber users,\nI'm using Amber20 with PLUMED 2.8.0 to do umbrella sampling along a custom\nCV. Everything is going fine, except on rare occasions the PLUMED output\nfiles will have some serious formatting errors. A couple recent examples:\nA missing newline:\n...\n18.735000 -9.940796\n18.736000 -9.89812 18.776000 -10.107412\n18.777000 -10.098970\n18.778000 -10.053000\n...\nOverwriting the end of one line with the next:\n...\n18.406000 -10.088869\n18.407000 -10.08718.368000 -9.975116\n18.369000 -10.082246\n...\nAsking around among some colleagues who regularly use PLUMED with Gromacs,\nthey don't report having ever encountered something like this, so I'm\nguessing it's Amber-specific. Does anyone have any suggestions to prevent\nthis from happening?\nAn input file, for completeness:\nUmbrella sampling\n&cntrl\nimin =0,\nirest=0,\nntx=1,\nntxo=1,\nnstlim=250000,\ndt=0.001,\nntt=2,\ntempi=310.0,\ntemp0=310.0,\nvrand=1000,\nntp=1,\ntaup=2.0,\nntb=2,\nntc=2,\nntf=2,\nntwx=250,\nntpr=250,\nntwr=250,\nntwv=-1\ncut=8.0,\niwrap=0,\nifqnt=1,\nigb=0,\nnmropt=1,\nig=-1,\nplumed=1,\nplumedfile='plumed.in',\n/\n&qmmm\nqmmask=\".1908-1912,2532-2537,2983-2993,3833-3886\",\nqmcharge=-1,\nqm_theory=\"DFTB3\",\nqm_ewald=1,\nqmshake=0,\nqmcut=8.0,\n/\n&wt\ntype=\"END\",\n&end\nDISANG=additional_restraints.DISANG\nAnd here's the relevant bits of a representative plumed.in file:\n...\nrestraint-rc: RESTRAINT ARG=RC KAPPA=100.0 AT=-9.75\nPRINT ARG=RC FILE=rcwin_-9.75_1_us.dat\nThanks!\n-Tucker Burgin",
+      "url": "http://archive.ambermd.org/202210/0037.html"
+    }
+  ]
+}

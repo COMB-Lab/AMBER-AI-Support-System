@@ -1,0 +1,21 @@
+{
+  "thread_id": 1599142802,
+  "subject": "[AMBER] 30 Series GPUs from Nvidia",
+  "messages": [
+    {
+      "message_id": 1599142802,
+      "author": "Homeo Morphism",
+      "date_raw": "Thu, 3 Sep 2020 17:20:02 +0300",
+      "body": "Nvidia has just announced 30 series GPUs. From their official site,\nvideocards will be available starting mid-September. Will they work with\nAmber 18? If so, can we expect the performance rise in Amber calculations\nproportional to the increase in Cuda cores? Nvidia 2080 had approx. 3000\ncores, but 3080 will have about 9000. Does this mean that 3080 will be able\nto generate three times as long trajectories as 2080 per day? Thank you.",
+      "url": "http://archive.ambermd.org/202009/0028.html"
+    },
+    {
+      "message_id": 1599160959,
+      "author": "Hashemi, Mohtadin",
+      "date_raw": "Thu, 3 Sep 2020 19:22:39 +0000",
+      "body": "-----Original Message-----\nFrom: Homeo Morphism <homeo.morphizm.gmail.com>\nSent: Thursday, September 3, 2020 9:20 AM\nTo: amber.ambermd.org\nSubject: [AMBER] 30 Series GPUs from Nvidia\n> Non-UNMC email\n>Nvidia has just announced 30 series GPUs. From their official site, videocards will be available starting mid-September. Will they work with Amber 18? If so, can we expect the performance rise in Amber calculations proportional to the increase in Cuda cores? Nvidia 2080 had approx. 3000 cores, but 3080 will have about 9000. Does this mean that 3080 will be able to generate three times as long trajectories as 2080 per day? Thank you.\nShort answer: Amber18 may work, depending on the changes in the CUDA API. As for performance, it's complicated, but you should see a significant increase in performance.\nAmpere (30 series) is supported from driver 450.36.06 and the CUDA 11 toolkit. Amber18 does not (yet) support CUDA 11, however no one is stopping you from trying to compile Amber18 with CUDA 11. Due diligence and test simulations for comparison will take you a long way.\nNow, for the performance increase: Using the benchmarks by Dave Cerutti for Amber20, there is no linear jump in performance proportional to the jump in core count:\nCards: 980Ti --> 1080Ti -->2080Ti\nShaders: 2816-->3584-->4352\nRatios: 1:1.28:1.55\nPerformance (ns/day for Cellulose, 408,609 atoms, NPT): 22.4-->40.8-->64.8\nRatios: 1:1.82:2.89\nThis is great news! However, you also have to consider that a large number of factors changed with each successive generation of GPUs. Other factors influence the performance, if not more so, than just the number of processors available on the GPU.  As an example, when you compare two cards from the same generation: the 1080Ti (40.8 ns/day) with the GP100 (52.0 ns/day):\n1080Ti: Shaders = 3584, RAM BW = 484 GB/s, Bus width = 352 bits\nGP100 (assuming 16GB PCI-e): Shaders = 3584, RAM BW = 732 GB/s, Bus width = 4096 bits\nOr the Titan V (78.1 ns/day) vs V100 (84.3 ns/day):\nTitan V: Shaders = 5120, RAM BW = 652.8 GB/s, Bus width = 3072 bits\nV100 (assuming PCI-e): Shaders = 5120, RAM BW = 900 GB/s, Bus width = 4096 bits\nIt would seem that the memory has a significant impact on performance.\n/MH\n>",
+      "url": "http://archive.ambermd.org/202009/0035.html",
+      "in_reply_to": 1599142802
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "thread_id": 1617867296,
+  "subject": "[AMBER] molecular-dynamics docking: when everything docks to the receptor's site, how do you deal with it?",
+  "messages": [
+    {
+      "message_id": 1617867296,
+      "author": "Homeo Morphism",
+      "date_raw": "Thu, 8 Apr 2021 10:34:56 +0300",
+      "body": "I'm running a simulation of dynamic docking of a set of putative ligands to\na certain receptor.\nThe receptor's orthosteric site is well-described and quite exposed to the\nextracellular solvent.\nEvery ligand from the set is hydrophobic. Perhaps, due to this, every\nsimulation ends up with the same result: ligand trying to lose its contact\nwith solvent, after some random-walking, eventually enters the cavity on\nthe receptor which leads straight to its orthosteric site and blocks it.\nThat is ligand blocks the cavity and thus blocks the path to the\northosteric site for any other compound. Now agonists can't enter the site\nand activate the receptor.\nProblem is this is not what we see in the experiment. Some compounds from\nthe set do block the receptor, but others don't - receptor can still be\nactivated by its agonists.\nEven without the experiment, purely on heuristic or logical grounds, the\nobtained simulations point to a ridiculous conclusion: that every\nhydrophobic compound that sterically matches the cavity will block this\nreceptor.\nI parameterize ligands with gaff2 and set up receptor's amino acids'\nprotonation states according to the published information.\nAny tips on how to make these simulations reflect the reality? Thanks.",
+      "url": "http://archive.ambermd.org/202104/0046.html"
+    },
+    {
+      "message_id": 1617884888,
+      "author": "David A Case",
+      "date_raw": "Thu, 8 Apr 2021 08:28:08 -0400",
+      "body": "On Thu, Apr 08, 2021, Homeo Morphism wrote:\n>\n>Every ligand from the set is hydrophobic. Perhaps, due to this, every\n>simulation ends up with the same result: ligand trying to lose its contact\n>with solvent, after some random-walking, eventually enters the cavity on\n>the receptor which leads straight to its orthosteric site and blocks it.\nIs there any chance you are starting the ligands close to cavity it binds\nto?  That might make it less likely for some ligands to find an alternate\nbinding site (say on the other side of the protein) that in real life would\ncompete with the first binding site.\nAlso, it only seems that you are investigating \"k_on\", the ease at which\nligand binding takes place.  Relative affinities are generally dominated by\ndifferences in \"k_off\", i.e. how long it takes to get back out.  Values of\nk_on are often very similar, which is what you seem to be seeing.  Values of\nk_off can differ by orders of magnitude.\nIs your experimental result dominated by kinetics or more by thermodynamics?\nIf it is the latter, that might also help explain what you are seeing.\n....dac",
+      "url": "http://archive.ambermd.org/202104/0048.html",
+      "in_reply_to": 1617867296
+    }
+  ]
+}

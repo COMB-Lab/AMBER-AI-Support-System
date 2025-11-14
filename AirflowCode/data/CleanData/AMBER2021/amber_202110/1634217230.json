@@ -1,0 +1,29 @@
+{
+  "thread_id": 1634217230,
+  "subject": "Re: [AMBER] Problems with mm_pbsa tests",
+  "messages": [
+    {
+      "message_id": 1634217230,
+      "author": "David A Case",
+      "date_raw": "Thu, 14 Oct 2021 09:13:50 -0400",
+      "body": "On Thu, Oct 14, 2021, Ravi Abrol wrote:\n>\n>We do plan to use the residue decomposition so I looked into the dif file.\n>I noticed that the file was missing and in fact nothing seems to have run\n>in that folder:\n>/usr/local/amber20///AmberTools/src/mm_pbsa/Examples/05_MMPBSA_Decomp_Residue/\n>Could it be that something went wrong during the tests such that the test\n>was not run for this case?\nI'm pretty lost here, and am cc-ing to Adrian to try to pass on to someone\nwho might know more.\nAmber has had two \"mmpbsa\" scripts, and old one using perl, and a newer\none built with python.  Your test failures seem to be from the perl version,\nwhich I think very few people use any more, and is not documented in the\nmanual.  But the test suite seems to be running both.  (My memory is that on\nthe FEW suite uses the old perl version, which is called mm_pbsa, with an\nunderscore, rather than mmpbsa.)\nTry this:  go to $AMBERHOME/AmberTools/test, and type \"make test.mmpbsa\".\nThat will tell you if the python code is working or not; you probably don't\ncare about the perl version.\n...good luck...dac\np.s.: the cuda errors look serious, but that is a separate issue.",
+      "url": "http://archive.ambermd.org/202110/0096.html"
+    },
+    {
+      "message_id": 1634278355,
+      "author": "Ravi Abrol",
+      "date_raw": "Thu, 14 Oct 2021 23:12:35 -0700",
+      "body": "Hi Dave and Adrian,\nI ran the test.mmpbsa and it was successful. It seems to delete the output\nfiles after comparing with reference output.\nIs there a flag to not delete them, so that I can see all the files my test\ngenerated?\nDave, any pointers on debugging the CUDA errors?\nI am willing to run any tests.\nThanks,\nRavi\nOn Thu, Oct 14, 2021 at 6:14 AM David A Case <david.case.rutgers.edu> wrote:\n> On Thu, Oct 14, 2021, Ravi Abrol wrote:\n> >\n> >We do plan to use the residue decomposition so I looked into the dif file.\n> >I noticed that the file was missing and in fact nothing seems to have run\n> >in that folder:\n>\n> >/usr/local/amber20///AmberTools/src/mm_pbsa/Examples/05_MMPBSA_Decomp_Residue/\n> >Could it be that something went wrong during the tests such that the test\n> >was not run for this case?\n>\n> I'm pretty lost here, and am cc-ing to Adrian to try to pass on to someone\n> who might know more.\n>\n> Amber has had two \"mmpbsa\" scripts, and old one using perl, and a newer\n> one built with python.  Your test failures seem to be from the perl\n> version,\n> which I think very few people use any more, and is not documented in the\n> manual.  But the test suite seems to be running both.  (My memory is that\n> on\n> the FEW suite uses the old perl version, which is called mm_pbsa, with an\n> underscore, rather than mmpbsa.)\n>\n> Try this:  go to $AMBERHOME/AmberTools/test, and type \"make test.mmpbsa\".\n>\n> That will tell you if the python code is working or not; you probably don't\n> care about the perl version.\n>\n> ...good luck...dac\n>\n> p.s.: the cuda errors look serious, but that is a separate issue.\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202110/0112.html",
+      "in_reply_to": 1634217230
+    },
+    {
+      "message_id": 1634299290,
+      "author": "David A Case",
+      "date_raw": "Fri, 15 Oct 2021 08:01:30 -0400",
+      "body": "On Thu, Oct 14, 2021, Ravi Abrol wrote:\n>\n>I ran the test.mmpbsa and it was successful. It seems to delete the output\n>files after comparing with reference output.\n>Is there a flag to not delete them, so that I can see all the files my test\n>generated?\nYou have to go into the test scripts themselves, and add the \"-k\" flag to\nthe invocations of dacdif.  This will keep all your files.\nBut if the tests pass, the files that were deleted will be identical to the\nones with a \".save\" or \".check\" extension, except for lines starting with\n\"|\".\n....dac",
+      "url": "http://archive.ambermd.org/202110/0114.html",
+      "in_reply_to": 1634217230
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "thread_id": 1602024982,
+  "subject": "[AMBER] Amber performance",
+  "messages": [
+    {
+      "message_id": 1602024982,
+      "author": "Jonathan Gabriel Canan Gomez",
+      "date_raw": "Tue, 6 Oct 2020 22:56:22 +0000",
+      "body": "I am having problems with the performance of pmemd.cuda, I am testing the systems of\nhttps://ambermd.org/GPUPerformance.php#RCWBenchmarks\nand I can only get about 80% of performance that you show on the page.\nFor example the JAC_production_NVE_4fs (PME) system on a 2080ti device where you get 1033 ns/day, we get 841.29 ns/day.\nReviewing the information of device I see that it is at a temperature of 82 �C, the fan at 49% and the gpu-utility at 87%. Is it possible that better cooling is required for better performance? or is this temperature ok and I need a specific configuration on compilation?\nThank you for your help\nJonathan Canan\nIngeniero en Bioinform�tica\nAdministrador de Sistemas\nCenter for Bioinformatics and Integrative Biology (CBIB)\nFacultad de Ciencias Biol�gicas - Universidad Andr�s Bello\nwww.cbib.cl<\nhttp://www.cbib.cl\n>\n[cid:c631aefc-0aa7-45c7-a28e-ee25e5067600]",
+      "url": "http://archive.ambermd.org/202010/0083.html"
+    },
+    {
+      "message_id": 1602026034,
+      "author": "Bill Ross",
+      "date_raw": "Tue, 06 Oct 2020 16:13:54 -0700",
+      "body": "What is the CPU and the amount of memory?BillAI:\nhttp://phobrain.com/pr/home/view.html\n-------- Original message --------From: Jonathan Gabriel Canan Gomez <jonathan.canan.unab.\ncl> Date: 10/6/20  3:56 PM  (GMT-08:00) To: amber.ambermd.\norg Subject: [AMBER] Amber performance I am having problems with the performance of pmemd.cuda, I am testing the systems of https://ambermd.org/GPUPerformance.php#RCWBenchmarksand I can only get about 80% of performance that you show on the page.For example the JAC_production_NVE_4fs (PME) system on a 2080ti device where you get 1033 ns/day, we get 841.29 ns/day.Reviewing the information of device I see that it is at a temperature of 82 ºC, the fan at 49% and the gpu-utility at 87%. Is it possible that better cooling is required for better performance? or is this temperature ok and I need a specific configuration on compilation?Thank you for your helpJonathan CananIngeniero en BioinformáticaAdministrador de SistemasCenter for Bioinformatics and Integrative Biology (CBIB)Facultad de Ciencias Biológicas - Universidad Andrés Bellowww.cbib.cl<http://www.cbib.cl>[content://com.samsung.android.email.attachmentprovider/1/8676/RAW]",
+      "url": "http://archive.ambermd.org/202010/0084.html",
+      "in_reply_to": 1602024982
+    },
+    {
+      "message_id": 1602026385,
+      "author": "Ross Walker",
+      "date_raw": "Tue, 6 Oct 2020 19:19:45 -0400",
+      "body": "Hi Jonathan,\nIf you are using Amber 20 there was, and to some extent still is, a performance regression on Turing (20XX) hardware. There have been some performance patches released that mitigate some of this so if you are using AMBER 20 not being fully up to date could be your issue. I would apply the latest patches and recompile.\nThermal throttling is also a possible issue here. One way to check for this is let the card cool down to ambient temperature and then set the benchmark to only have sufficient steps to run for approximately 60 seconds. Let it run and see what it reports at the end of the mdout file for performance. Then repeat it with enough steps that it runs for 5 mins or so and compare. This will give you an idea of how much it is throttling.\nDepending on the case design you have you may be able to improve things by setting the case fans to 100%. This helps a lot with ducked systems - e.g. a 2U rack mount with 4 GPUs but has less impact on desktop like systems. It's also possible to override the fan speed for the 2080TI using the coolbits setting in xorg.conf. It's a longggg time since I played with that though so I am not sure how effective it works these days.\nAll the best\nRoss\n> On Oct 6, 2020, at 18:56, Jonathan Gabriel Canan Gomez <jonathan.canan.unab.\ncl> wrote:\n>\n>\n> I am having problems with the performance of pmemd.cuda, I am testing the systems of\nhttps://ambermd.org/GPUPerformance.php#RCWBenchmarks\n> and I can only get about 80% of performance that you show on the page.\n>\n> For example the JAC_production_NVE_4fs (PME) system on a 2080ti device where you get 1033 ns/day, we get 841.29 ns/day.\n>\n> Reviewing the information of device I see that it is at a temperature of 82 ºC, the fan at 49% and the gpu-utility at 87%. Is it possible that better cooling is required for better performance? or is this temperature ok and I need a specific configuration on compilation?\n>\n> Thank you for your help\n>\n>\n> Jonathan Canan\n>\n> Ingeniero en Bioinformática\n> Administrador de Sistemas\n> Center for Bioinformatics and Integrative Biology (CBIB)\n> Facultad de Ciencias Biológicas - Universidad Andrés Bello\n> www.cbib.cl<\nhttp://www.cbib.cl\n>\n> [cid:c631aefc-0aa7-45c7-a28e-ee25e5067600]\n> <Outlook-nyqljozl.png>",
+      "url": "http://archive.ambermd.org/202010/0085.html",
+      "in_reply_to": 1602024982
+    }
+  ]
+}

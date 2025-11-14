@@ -1,36 +1,48 @@
 version: "3.8"
 
 x-airflow-common: &airflow-common
-  image: apache/airflow:3.1.0
+  image: apache/airflow:2.10.2
   environment:
     AIRFLOW_HOME: /opt/airflow
-    AIRFLOW__CORE__EXECUTOR: SequentialExecutor   # <-- simple dev, no external DB
+    AIRFLOW__CORE__EXECUTOR: SequentialExecutor
     AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/airflow.db
+    PIP_ADDITIONAL_REQUIREMENTS: >-
+      langchain-community
+      chromadb
+      sentence-transformers
+      langchain-openai
   volumes:
+    - airflow_home:/opt/airflow            # share metadata DB (airflow.db)
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
     - ./plugins:/opt/airflow/plugins
     - ./scripts:/opt/airflow/dags/scripts
-  # NOTE: keep 'user' if your Windows host creates permission issues; else you can remove it
+    - ./data:/opt/airflow/data
+  # If you hit Windows perms issues, keep this. Otherwise you can remove it.
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-0}"
 
 services:
   airflow-init:
     <<: *airflow-common
     container_name: amber_airflow_init
-    entrypoint: ["/bin/bash", "-c"]
-    command: >
-      airflow db init &&
-      airflow users create
-      --username admin --password admin
-      --firstname Admin --lastname User
-      --role Admin --email admin@example.com
+    entrypoint: /bin/bash
+    command:
+      - -lc
+      - |
+        set -e
+        airflow db migrate
+        airflow users create \
+          --username admin --password admin \
+          --firstname Admin --lastname User \
+          --role Admin --email admin@example.com || true
 
   airflow-webserver:
     <<: *airflow-common
     container_name: amber_airflow_web
-    command: webserver
-    ports: ["8080:8080"]
+    command: ["bash","-lc","airflow webserver"]
+    ports:
+      - "8080:8080"
     depends_on:
       - airflow-init
     healthcheck:
@@ -42,12 +54,14 @@ services:
   airflow-scheduler:
     <<: *airflow-common
     container_name: amber_airflow_scheduler
-    command: scheduler
+    command: ["bash","-lc","airflow scheduler"]
     depends_on:
       - airflow-webserver
 
-  # Handy for VS Code: attach to this as your interpreter
   airflow-dev:
     <<: *airflow-common
     container_name: amber_airflow_dev
-    command: ["python", "-c", "import time; time.sleep(10**9)"]
+    command: ["bash","-lc","python -c 'import time; time.sleep(10**9)'"]
+
+volumes:
+  airflow_home: {}

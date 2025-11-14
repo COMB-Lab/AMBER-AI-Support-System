@@ -1,0 +1,13 @@
+{
+  "thread_id": 1650037985,
+  "subject": "Re: [AMBER] AMBER/TeraChem interface",
+  "messages": [
+    {
+      "message_id": 1650037985,
+      "author": "Vinicius Wilian Cruzeiro",
+      "date_raw": "Fri, 15 Apr 2022 15:53:05 +0000",
+      "body": "Hello,\nThe next Amber release contains a fix for this. You need to add \"keep_scr yes\" into your TeraChem input file. For now, you should be able to do that by using the use_template option, which allows you to specify your own TeraChem input file.\nBtw: the next Amber release will contain a new interface with TeraChem that enables faster QM/MM calculations. Stay tuned ;)\nI hope this helps,\nAll the best,\nVinícius Wilian D. Cruzeiro, PhD\nPostdoctoral Researcher\nDepartment of Chemistry\nStanford University\nTwitter: .vwcruzeiro\n________________________________\nFrom: 이욱(생명과학과) <lwmod.postech.ac.kr>\nSent: Friday, April 15, 2022 7:42 AM\nTo: amber.ambermd.org <amber.ambermd.\norg>\nSubject: [AMBER] AMBER/TeraChem interface\nDear AMBER Users,\nI am trying to run QM/MM MD with AMBER20(AmberTools21)/Terachem(Ver. 1.95Ab, trial version) interface,\nThe calculation goes well for the first MD step without any problem, but it gives an error in the second step as shown below (Terachem output file).\nCan't open guess file scr/c0 for read\nPlease, fix \"guess\" keyword in your input.\nDIE called at line number 3314 in file terachem/init.cpp\nIt seems that this is due to the mismatch between the actual name of a scratch directory created for Terachem and the name of the scratch directory given in Terachem input file.\nAs far as I understand, a scratch directory for Terachem is automatically created for each MD step, and its name is given like ./scr.inpfile.n-1, where n stands for step number. Therefore, the name goes like ./scr.inpfile for step 1, and ./scr.inpfile.1 for step 2…, but, in the input file for Terachem calculation created by AMBER/Terachem interface, the name of a scratch directory is always ./scr.inpfile. This is why the first MD step goes well, but an error occurs in the second MD step because it can’t find a wavefunction file (c0) located in ./scr.inpfile.1 directory in the second MD step.\nI’ve tried to manually define the name of a scratch directory for Terachem, but it didn’t work.\nAny help would be appreciated!",
+      "url": "http://archive.ambermd.org/202204/0102.html"
+    }
+  ]
+}

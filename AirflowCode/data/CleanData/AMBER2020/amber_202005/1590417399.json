@@ -1,0 +1,37 @@
+{
+  "thread_id": 1590417399,
+  "subject": "[AMBER] clustering parameter files",
+  "messages": [
+    {
+      "message_id": 1590417399,
+      "author": "Ranim Maaieh",
+      "date_raw": "Mon, 25 May 2020 14:36:39 +0000",
+      "body": "Hi all,\nIs it possible to use cpptraj to do combined clustering on simulations with different parameter files using parameter tagging? In this case, they are the same structure but the loops of the structure were initially modeled a bit differently therefore they have different starting structures. If not could I cluster using the same parameter file?",
+      "url": "http://archive.ambermd.org/202005/0299.html"
+    },
+    {
+      "message_id": 1590504847,
+      "author": "Daniel Roe",
+      "date_raw": "Tue, 26 May 2020 10:54:07 -0400",
+      "body": "Hi,\nI'm not sure I understand the issue. If they are the same structure\nthe they should work with the same topology, right?\n-Dan\nOn Mon, May 25, 2020 at 10:36 AM Ranim Maaieh\n<ranim.maaieh.mail.utoronto.ca> wrote:\n>\n> Hi all,\n>\n> Is it possible to use cpptraj to do combined clustering on simulations with different parameter files using parameter tagging? In this case, they are the same structure but the loops of the structure were initially modeled a bit differently therefore they have different starting structures. If not could I cluster using the same parameter file?\n>",
+      "url": "http://archive.ambermd.org/202005/0300.html",
+      "in_reply_to": 1590417399
+    },
+    {
+      "message_id": 1591573401,
+      "author": "Ranim Maaieh",
+      "date_raw": "Sun, 7 Jun 2020 23:43:21 +0000",
+      "body": "Hi Dan,\nThe numbering of the residues was a bit different between them because I prepared them a bit differently.\nRanim\n________________________________\nFrom: Daniel Roe <daniel.r.roe.gmail.com>\nSent: Tuesday, May 26, 2020 10:54 AM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: Re: [AMBER] clustering parameter files\nHi,\nI'm not sure I understand the issue. If they are the same structure\nthe they should work with the same topology, right?\n-Dan\nOn Mon, May 25, 2020 at 10:36 AM Ranim Maaieh\n<ranim.maaieh.mail.utoronto.ca> wrote:\n>\n> Hi all,\n>\n> Is it possible to use cpptraj to do combined clustering on simulations with different parameter files using parameter tagging? In this case, they are the same structure but the loops of the structure were initially modeled a bit differently therefore they have different starting structures. If not could I cluster using the same parameter file?\n>",
+      "url": "http://archive.ambermd.org/202006/0046.html",
+      "in_reply_to": 1590417399
+    },
+    {
+      "message_id": 1593002560,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 24 Jun 2020 08:42:40 -0400",
+      "body": "I see - in that case the best thing to do is to strip each incoming\ntrajectory to a common \"core\" of atoms. For example, if the first\ntrajectory has an extra 2 residues at the beginning, you might do\nsomething like:\n# Load traj1, strip first 2 residues\nparm parm1.parm7\ntrajin traj1.nc\nstrip :1,2\ncreatecrd MyCrd\nrun\n# Load traj2 and append\nparm parm2.parm7\ntrajin traj..nc parmindex 1\ncreatecrd MyCrd\nrun\n# Cluster\nrunanalysis crdset MyCrd <other options>\nIf you need to extract the non-stripped frames you can use the\nresulting cluster number vs time file and filter out the frames you\nneed (using e.g. 'readdata', 'filter' etc).\nHope this helps,\n-Dan\nOn Sun, Jun 7, 2020 at 7:43 PM Ranim Maaieh\n<ranim.maaieh.mail.utoronto.ca> wrote:\n>\n> Hi Dan,\n>\n> The numbering of the residues was a bit different between them because I prepared them a bit differently.\n>\n> Ranim\n> ________________________________\n> From: Daniel Roe <daniel.r.roe.gmail.com>\n> Sent: Tuesday, May 26, 2020 10:54 AM\n> To: AMBER Mailing List <amber.ambermd.org>\n> Subject: Re: [AMBER] clustering parameter files\n>\n> Hi,\n>\n> I'm not sure I understand the issue. If they are the same structure\n> the they should work with the same topology, right?\n>\n> -Dan\n>\n> On Mon, May 25, 2020 at 10:36 AM Ranim Maaieh\n> <ranim.maaieh.mail.utoronto.ca> wrote:\n> >\n> > Hi all,\n> >\n> > Is it possible to use cpptraj to do combined clustering on simulations with different parameter files using parameter tagging? In this case, they are the same structure but the loops of the structure were initially modeled a bit differently therefore they have different starting structures. If not could I cluster using the same parameter file?\n> >",
+      "url": "http://archive.ambermd.org/202006/0222.html",
+      "in_reply_to": 1591573401
+    }
+  ]
+}

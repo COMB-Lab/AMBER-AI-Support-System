@@ -1,0 +1,29 @@
+{
+  "thread_id": 1664892002,
+  "subject": "[AMBER] Running the TI code on a single residue results in NaN electrostatics",
+  "messages": [
+    {
+      "message_id": 1664892002,
+      "author": "Miroslav Suruzhon",
+      "date_raw": "Tue, 4 Oct 2022 15:00:02 +0100",
+      "body": "Dear Amber users,\nI have been trying to use AMBER to perform a residue perturbation using the TI code. As far as I understand, if one is working with e.g. a tripeptide such as (using one-letter amino acid codes) PTG and wants to perturb it to PYG, the correct way to do it in AMBER is to generate a composite residue (which we will call MUT), which results in P-MUT-G, where MUT contains atoms from both T and Y. Then one sets the TI masks to be all the corresponding atoms from the MUT residue, and the SC masks define the dummy atoms as usual.\nHowever, if I try to do that with a very simple test input of this tripeptide in vacuum, I get NaNs in the non-1-4 electrostatic part of the calculation. However, the van der Waals interactions are finite, which means that the problem is not a clash. Even more strangely, if one sets all charges to 0, the NaNs are still there, which is completely unexpected. On the other hand, if one removes the periodic boundary conditions (i.e. set ntb=0), the simulation runs fine, indicating that these infinities stem from the PME part of the code.\nI am attaching an input parm7, rst7 and mdin file which reproduce the error. Does anyone have any clue as to what might be going wrong? Any help would be much appreciated.\nKind regards,\nMiro\nMiroslav Suruzhon MSc PhD\nMolecular Dynamics Research Scientist\n+44 (0) 7719 025700\nExscientia\nThe Schrödinger Building, Heatley Road, Oxford Science Park, Oxford, OX4 4GE\n-- \n*Please note that this email communication and any attachments to it may \ncontain confidential or privileged information and so circulation should be \nrestricted to the addressee’s organisation. If you are not the addressee, \nplease let us know by return email, then delete all copies of this email. \n**\nPersonal data that you share with us will be stored and used in \naccordance with our Privacy Policy which can be accessed on our website.*\n*\nExscientia plc is a company incorporated in England and Wales with \nregistered number 13483814 and its registered office at The Schrodinger \nBuilding, Oxford Science Park, Oxford, Oxfordshire, United Kingdom, OX4 \n4GE*",
+      "url": "http://archive.ambermd.org/202210/0010.html"
+    },
+    {
+      "message_id": 1664977163,
+      "author": "David A Case",
+      "date_raw": "Wed, 5 Oct 2022 09:39:23 -0400",
+      "body": "On Tue, Oct 04, 2022, Miroslav Suruzhon via AMBER wrote:\n>\n>\n>   I have been trying to use AMBER to perform a residue perturbation using\n>   the TI code. As far as I understand, if one is working with e.g. a\n>   tripeptide such as (using one-letter amino acid codes) PTG and wants to\n>   perturb it to PYG, the correct way to do it in AMBER is to generate a\n>   composite residue (which we will call MUT), which results in P-MUT-G,\n>   where MUT contains atoms from both T and Y. Then one sets the TI masks to\n>   be all the corresponding atoms from the MUT residue, and the SC masks\n>   define the dummy atoms as usual.\nIt's unclear how you created the MUT residue: can you outline the process\nyou used?\nThe \"usual\" method is to use the timerge action in ParmEd.  See section 15.2\nof the Reference Manual.\n...thanks....dac",
+      "url": "http://archive.ambermd.org/202210/0014.html",
+      "in_reply_to": 1664892002
+    },
+    {
+      "message_id": 1665397612,
+      "author": "Miroslav Suruzhon",
+      "date_raw": "Mon, 10 Oct 2022 11:26:52 +0100",
+      "body": "Hi David,\nI wasn’t aware of this function - I tried it now and it seems to work. Many thanks!\nKind regards,\nMiro\nMiroslav Suruzhon MSc PhD\nMolecular Dynamics Research Scientist\n+44 (0) 7719 025700\nExscientia\nThe Schrödinger Building, Heatley Road, Oxford Science Park, Oxford, OX4 4GE\n> On 5 Oct 2022, at 14:39, David A Case <david.case.rutgers.\nedu> wrote:\n>\n> On Tue, Oct 04, 2022, Miroslav Suruzhon via AMBER wrote:\n>>\n>>\n>>  I have been trying to use AMBER to perform a residue perturbation using\n>>  the TI code. As far as I understand, if one is working with e.g. a\n>>  tripeptide such as (using one-letter amino acid codes) PTG and wants to\n>>  perturb it to PYG, the correct way to do it in AMBER is to generate a\n>>  composite residue (which we will call MUT), which results in P-MUT-G,\n>>  where MUT contains atoms from both T and Y. Then one sets the TI masks to\n>>  be all the corresponding atoms from the MUT residue, and the SC masks\n>>  define the dummy atoms as usual.\n>\n> It's unclear how you created the MUT residue: can you outline the process\n> you used?\n>\n> The \"usual\" method is to use the timerge action in ParmEd.  See section 15.2\n> of the Reference Manual.\n>\n> ...thanks....dac\n>\n-- \n*Please note that this email communication and any attachments to it may \ncontain confidential or privileged information and so circulation should be \nrestricted to the addressee’s organisation. If you are not the addressee, \nplease let us know by return email, then delete all copies of this email. \n**\nPersonal data that you share with us will be stored and used in \naccordance with our Privacy Policy which can be accessed on our website.*\n*\nExscientia plc is a company incorporated in England and Wales with \nregistered number 13483814 and its registered office at The Schrodinger \nBuilding, Oxford Science Park, Oxford, Oxfordshire, United Kingdom, OX4 \n4GE*",
+      "url": "http://archive.ambermd.org/202210/0031.html",
+      "in_reply_to": 1664892002
+    }
+  ]
+}

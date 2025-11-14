@@ -1,0 +1,21 @@
+{
+  "thread_id": 1728661882,
+  "subject": "[AMBER] Problems building Amber",
+  "messages": [
+    {
+      "message_id": 1728661882,
+      "author": "Martin Cuma",
+      "date_raw": "Fri, 11 Oct 2024 15:51:22 +0000",
+      "body": "Hello,\nI am getting the following error when building Amber and would appreciate pointers how to proceed:\n[ 11%] Creating directories for 'PerlMol'\n[ 11%] Performing download step for 'PerlMol'\n[ 11%] No update step for 'PerlMol'\n[ 11%] No patch step for 'PerlMol'\n[ 11%] Performing configure step for 'PerlMol'\nChecking if your kit is complete...\nLooks good\nWarning: prerequisite Chemistry::Mol 0.33 not found.\nERROR from evaluation of /uufs/chpc.utah.edu/sys/srcdir/r8/amber/24/amber24_src/build/AmberTools/src/PerlMol-0.3500/build/Chemistry-File-VRML-0.10/Makefile.PL: Could not open 'lib/Chemistry/File/VRML.pm': No such file or directory at /usr/share/perl5/vendor_perl/ExtUtils/MM_Unix.pm line 2920.\nVerbose error is like this:\ncd /uufs/chpc.utah.edu/sys/srcdir/r8/amber/24/amber24_src/build/AmberTools/src/PerlMol-0.3500/build && /uufs/chpc.utah.edu/sys/installdir/r8/cmake/3.26.0/bin/cmake -E env PERL5LIB=/uufs/chpc.utah.edu/sys/srcdir/r8/amber/24/amber24_src/build/AmberTools/src/PerlMol-0.3500/build /usr/bin/perl Makefile.PL PREFIX=/uufs/chpc.utah.edu/sys/srcdir/r8/amber/24/amber24_src/build/AmberTools/src/PerlMol-0.3500/install LIB=/uufs/chpc.utah.edu/sys/srcdir/r8/amber/24/amber24_src/build/AmberTools/src/PerlMol-0.3500/install/lib/perl INSTALL_BASE=\nChecking if your kit is complete...\nLooks good\nChecking if your kit is complete...\nWarning: the following files are missing in your kit:\nlib/Chemistry/File/VRML.pm\nt/pod.t\nt/vrml.t\nPlease inform the author.\nWarning: prerequisite Chemistry::Mol 0.33 not found.\nERROR from evaluation of /uufs/chpc.utah.edu/sys/srcdir/r8/amber/24/amber24_src/build/AmberTools/src/PerlMol-0.3500/build/Chemistry-File-VRML-0.10/Makefile.PL: Could not open 'lib/Chemistry/File/VRML.pm': No such file or directory at /usr/share/perl5/vendor_perl/ExtUtils/MM_Unix.pm line 2920.\nmake[2]: *** [AmberTools/src/PerlMol-0.3500/CMakeFiles/PerlMol.dir/build.make:92: AmberTools/src/PerlMol-0.3500/src/PerlMol-stamp/PerlMol-configure] Error 2\nI am doing this on am HPC cluster running fairly stock Rocky Linux 8, with gcc/11.2.0, cuda/12.4.0, openmpi/5.0.3 and intel-oneapi-mkl/2024.0.0, all installed with Spack and loaded via modules. Perl is the stock OS.\nThe cmake command is as follows:\ncmake $AMBER_PREFIX/amber24_src \\\n-DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber24 \\\n-DCOMPILER=GNU  \\\n-DMPI=TRUE -DCUDA=TRUE -DINSTALL_TESTS=TRUE \\\n-DDOWNLOAD_MINICONDA=TRUE \\\n2>&1 | tee  cmake.log\nthough I get the same error if I don't use MPI and CUDA.\nThanks,\nMartin",
+      "url": "http://archive.ambermd.org/202410/0031.html"
+    },
+    {
+      "message_id": 1729265531,
+      "author": "David A Case",
+      "date_raw": "Fri, 18 Oct 2024 09:32:11 -0600",
+      "body": "On Fri, Oct 11, 2024, Martin Cuma via AMBER wrote:\n>\n>I am getting the following error when building Amber and would appreciate\n>pointers how to proceed:\n>\n>[ 11%] Creating directories for 'PerlMol'\n>[ 11%] Performing download step for 'PerlMol'\n>[ 11%] No update step for 'PerlMol'\n>[ 11%] No patch step for 'PerlMol'\n>[ 11%] Performing configure step for 'PerlMol'\n>Checking if your kit is complete...\n>Looks good\n>Warning: prerequisite Chemistry::Mol 0.33 not found.\n>ERROR from evaluation of /uufs/chpc.utah.edu/sys/srcdir/r8/amber/24/amber24_src/build/AmberTools/src/PerlMol-0.3500/build/Chemistry-File-VRML-0.10/Makefile.PL: Could not open 'lib/Chemistry/File/VRML.pm': No such file or directory at /usr/share/perl5/vendor_perl/ExtUtils/MM_Unix.pm line 2920.\nDoes this error stop the build?  You could try adding -DBUILD_PERL=FALSE to\nyour run_cmake script.  Only a small piece of specialized software uses\nperl.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202410/0053.html",
+      "in_reply_to": 1728661882
+    }
+  ]
+}

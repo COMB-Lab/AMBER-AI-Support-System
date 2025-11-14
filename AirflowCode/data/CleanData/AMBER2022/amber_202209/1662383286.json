@@ -1,0 +1,53 @@
+{
+  "thread_id": 1662383286,
+  "subject": "[AMBER] Test result of amber22 installation",
+  "messages": [
+    {
+      "message_id": 1662383286,
+      "author": "Dulal Mondal",
+      "date_raw": "Mon, 5 Sep 2022 18:38:06 +0530",
+      "body": "Dear Users,\nRecently, I have installed amber22 in our departmental cluster. After the\nsuccessful installation the parallel test experienced the attached errors.\nThe related diff file is also attached. I am not sure if this is anything\nassociated with the errors in installation. Can you check the files and\nlet me know if I can safely ignore these errors?\nWith regards,\nDulal Mondal",
+      "url": "http://archive.ambermd.org/202209/0028.html"
+    },
+    {
+      "message_id": 1662491855,
+      "author": "David A Case",
+      "date_raw": "Tue, 6 Sep 2022 15:17:35 -0400",
+      "body": "On Mon, Sep 05, 2022, Dulal Mondal via AMBER wrote:\n>Recently, I have installed amber22 in our departmental cluster. After the\n>successful installation the parallel test experienced the attached errors.\n>The related diff file is also attached. I am not sure if this is anything\n>associated with the errors in installation. Can you check the files and\n>let me know if I can safely ignore these errors?\nThese look innocuous to me.  Parallel results on CPU's are not exactly\nreproducible over different numbers of processors.  Amber's test suite\ngenerally tests 2 MPI threads.\nIf you every actually decide to run a kmmd or bbmd calculations, you could\nrevisit how results depend on the number of MPI threads.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202209/0041.html",
+      "in_reply_to": 1662383286
+    },
+    {
+      "message_id": 1662509508,
+      "author": "Yeng-Tseng Wang",
+      "date_raw": "Wed, 7 Sep 2022 08:11:48 +0800",
+      "body": "Dear all,\nThis is my error and could you tell me how to fix it ?\nThanks\nYT\n-------------------------------------------------------------------------------------\n-- Found CUDA: /usr/local/cuda (found version \"11.7\")\n-- CUDA version 11.7 detected\n-- Configuring for SM3.5, SM5.0, SM5.2, SM5.3, SM6.0, SM6.1, SM7.0, SM7.5\nand SM\n8.0\n--\n************************************************************\nError: Incompatible CUDA and GNU versions\n 10.2.1\nDavid A Case via AMBER <amber.ambermd.org> 於 2022年9月7日 週三 凌晨3:17寫道：\n> On Mon, Sep 05, 2022, Dulal Mondal via AMBER wrote:\n>\n> >Recently, I have installed amber22 in our departmental cluster. After the\n> >successful installation the parallel test experienced the attached errors.\n> >The related diff file is also attached. I am not sure if this is anything\n> >associated with the errors in installation. Can you check the files and\n> >let me know if I can safely ignore these errors?\n>\n> These look innocuous to me.  Parallel results on CPU's are not exactly\n> reproducible over different numbers of processors.  Amber's test suite\n> generally tests 2 MPI threads.\n>\n> If you every actually decide to run a kmmd or bbmd calculations, you could\n> revisit how results depend on the number of MPI threads.\n>\n> ...good luck...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202209/0046.html",
+      "in_reply_to": 1662383286
+    },
+    {
+      "message_id": 1662639347,
+      "author": "Yeng-Tseng Wang",
+      "date_raw": "Thu, 8 Sep 2022 20:15:47 +0800",
+      "body": "Dear all，\nMy os is debian 11\nYt\nDavid A Case <david.case.rutgers.\nedu>於 2022年9月8日 週四，下午8:00寫道：\n> On Thu, Sep 08, 2022, Yeng-Tseng Wang via AMBER wrote:\n>\n> >I have fixed the problem..(suggested by my friends)...\n> >sudo apt-get -y install libnetcdf-dev libnetcdff-dev\n> >sudo apt-get -y install pnetcdf-bin libnetcdf*\n> >sudo apt-get -y install openmpi-bin libopenmpi-dev python3-pip\n> >python3-mpi4py-fft python3-mpi4py-dbg\n> >sudo apt-get install zlib1g-dev libbz2-dev\n> >\n> >#install amber22\n> >sudo apt -y install tcsh make gcc gfortran flex bison patch bc wget\n> >xorg-dev libz-dev libbz2-dev\n> >cd ~/software/amber22_src\n> >./update_amber --upgrade\n> >./update_amber --update\n> >cd build\n> >\n> >#setup run_cmake\n> >vi run_cmake\n> >./run_cmake\n> >make install\n>\n> Thanks for the comments.  Can you say (again?) what Linux distribution\n> (version of Ubuntu?) you are using?\n>\n> Some comments:\n>\n> It should not be necessary to install netcdf or pnetcdf; I'll fix the\n> instructions about zlib1g-dev; the requirements for pip and mpi4py packages\n> may be helpful to others.\n>\n> ...thx...dac\n>\n>",
+      "url": "http://archive.ambermd.org/202209/0050.html",
+      "in_reply_to": 1662383286
+    },
+    {
+      "message_id": 1662498655,
+      "author": "Edivaldo Rodrigues",
+      "date_raw": "Tue, 06 Sep 2022 21:10:55 -0000",
+      "body": "hi,I've got to solve that other problem and now I am having the following:---------------------------------------[ 79%] Linking C executable simplepbsa[ 79%] Built target simplepbsa[ 79%] Building NVCC (Device) object AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/pbsa.cuda_generated_kLinearSolvers.cu.o/usr/include/c++/11/bits/std_function.h:435:145: error: parameter packs not expanded with ‘...’:  435 |         function(_Functor&& __f)      |                                                                                                                                                 ^/usr/include/c++/11/bits/std_function.h:435:145: note:         ‘_ArgTypes’/usr/include/c++/11/bits/std_function.h:530:146: error: parameter packs not expanded with ‘...’:  530 |         operator=(_Functor&& __f)      |                                                                                                                                                  ^/usr/include/c++/11/bits/std_function.h:530:146: note:         ‘_ArgTypes’CMake Error at pbsa.cuda_generated_kLinearSolvers.cu.o.RELEASE.cmake:278 (message):  Error generating file  /home/edivaldo/Downloads/amber22_src/build/AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir//./pbsa.cuda_generated_kLinearSolvers.cu.omake[2]: *** [AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/build.make:353: AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/pbsa.cuda_generated_kLinearSolvers.cu.o] Error 1make[1]: *** [CMakeFiles/Makefile2:6189: AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/all] Error 2make: *** [Makefile:156: all] Error 2---------------------------------------I would like to have some help.Att.Edivaldo RodriguesOn Sep 6, 2022, at 4:35 PM, Edivaldo Rodrigues via AMBER <amber@ambermd.org> wrote:I have did all the procedure and the libz-dev when i try apt install libz-dev it shows as \"zlib1g-dev\", but is already installed On Sep 6, 2022, at 4:09 PM, David A Case <david.case@rutgers.edu> wrote:On Tue, Sep 06, 2022, Edivaldo Rodrigues via AMBER wrote:Dear all,I am having problem when I try to run \"make install\" to install amber22.I am using ubuntu 22.04[ 15%] Linking C shared library libnetcdf.so/usr/bin/ld: cannot find -lZLIB_LIBRARY-NOTFOUND: No such file or directorycollect2: error: ld returned 1 exit statusmake[2]:Have you used apt-get to install the needed pre-requisites listed here:\nhttps://ambermd.org/InstUbuntu.phpNote\nthat libz-dev is one package (among others) that is needed, and itlooks like you don't have this.....dac",
+      "url": "http://archive.ambermd.org/202209/0044.html",
+      "in_reply_to": 1662383286
+    },
+    {
+      "message_id": 1662501117,
+      "author": "Edivaldo Rodrigues",
+      "date_raw": "Tue, 06 Sep 2022 21:51:57 -0000",
+      "body": "Hi, I've got the following problem installing amber22 in ubuntu 22.04 configured to gpu. I have tried some procedure from the forum but it didn't worked. Please, help me.Att.Edivaldo Rodrigues.---------------------------------------------------------------------------[ 79%] Linking C executable simplepbsa[ 79%] Built target simplepbsa[ 79%] Building NVCC (Device) object AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/pbsa.cuda_generated_kLinearSolvers.cu.o/usr/include/c++/11/bits/std_function.h:435:145: error: parameter packs not expanded with ‘...’:  435 |         function(_Functor&& __f)      |                                                                                                                                                 ^/usr/include/c++/11/bits/std_function.h:435:145: note:         ‘_ArgTypes’/usr/include/c++/11/bits/std_function.h:530:146: error: parameter packs not expanded with ‘...’:  530 |         operator=(_Functor&& __f)      |                                                                                                                                                  ^/usr/include/c++/11/bits/std_function.h:530:146: note:         ‘_ArgTypes’CMake Error at pbsa.cuda_generated_kLinearSolvers.cu.o.RELEASE.cmake:278 (message):  Error generating file  /home/edivaldo/Downloads/amber22_src/build/AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir//./pbsa.cuda_generated_kLinearSolvers.cu.omake[2]: *** [AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/build.make:98: AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/pbsa.cuda_generated_kLinearSolvers.cu.o] Error 1make[1]: *** [CMakeFiles/Makefile2:6189: AmberTools/src/pbsa/CMakeFiles/pbsa.cuda.dir/all] Error 2make: *** [Makefile:156: all] Error 2------------------------------------------------------------------------------",
+      "url": "http://archive.ambermd.org/202209/0045.html",
+      "in_reply_to": 1662383286
+    }
+  ]
+}

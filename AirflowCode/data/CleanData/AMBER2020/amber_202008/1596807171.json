@@ -1,0 +1,45 @@
+{
+  "thread_id": 1596807171,
+  "subject": "[AMBER] problem in 3DRISM",
+  "messages": [
+    {
+      "message_id": 1596807171,
+      "author": "angad sharma",
+      "date_raw": "Fri, 7 Aug 2020 19:02:51 +0530",
+      "body": "I am trying to run the 3D-RISM calculations using rism3d.snglpnt to\ncalculate free energy, i got trajectory file  of 1000ns from that i had to\na take 10 frames between 50-100ns. The protein has +26 unit of charge.\n>parm AB.prmtop\n>trajin prod.nc <\nhttp://md100ns.nc/\n> 5001 10000 500\n>strip:WAT\n>strip:Na+\n>strip>Cl-\n>trajout newtraj.nc <\nhttp://dnanew.nc/\n>\n>trajoout 10snapshot.pdb\n>parmwrite out 10snapshot.prmtop\nAnd the command for 3d rism is :\nrism3d.snglpnt --pdb 10snapshot.pdb --prmtop 10snapshot.prmtop --closure\nKH  --buffer 45.0 --xvv ../1drism/SPC_NaCl.xvv\nit is giving some error i m trying to figure out but could not solve it\nthe error:\nError: rism>0 is incompatible with periodic boundary conditions.\nError: To use this method set IFBOX in the PRMTOP file to 0.",
+      "url": "http://archive.ambermd.org/202008/0072.html"
+    },
+    {
+      "message_id": 1596808781,
+      "author": "ATUL KUMAR",
+      "date_raw": "Fri, 7 Aug 2020 19:29:41 +0530",
+      "body": "Go through  Dan Sindhikara's Tutorila on  RISM and 3DRISM, it might solve\nyour problem\nhttp://www.dansindhikara.com/Tutorials/Entries/2012/1/1_Using_3D-RISM_and_PLACEVENT.html\n*Dr. Atul Kumar Jaiswal*\nResearch Associate\nDAILAB\nDepartment of biochemical engineering and biotechnology\nIndian Institute of Technology, Delhi\nIndia\nOn Fri, Aug 7, 2020 at 7:09 PM angad sharma <angadsharma54.gmail.com> wrote:\n> I am trying to run the 3D-RISM calculations using rism3d.snglpnt to\n> calculate free energy, i got trajectory file  of 1000ns from that i had to\n> a take 10 frames between 50-100ns. The protein has +26 unit of charge.\n> >parm AB.prmtop\n> >trajin prod.nc <\nhttp://md100ns.nc/\n> 5001 10000 500\n> >strip:WAT\n> >strip:Na+\n> >strip>Cl-\n> >trajout newtraj.nc <\nhttp://dnanew.nc/\n>\n> >trajoout 10snapshot.pdb\n> >parmwrite out 10snapshot.prmtop\n>\n> And the command for 3d rism is :\n> rism3d.snglpnt --pdb 10snapshot.pdb --prmtop 10snapshot.prmtop --closure\n> KH  --buffer 45.0 --xvv ../1drism/SPC_NaCl.xvv\n>\n> it is giving some error i m trying to figure out but could not solve it\n>  the error:\n> Error: rism>0 is incompatible with periodic boundary conditions.\n> Error: To use this method set IFBOX in the PRMTOP file to 0.\n>",
+      "url": "http://archive.ambermd.org/202008/0073.html",
+      "in_reply_to": 1596807171
+    },
+    {
+      "message_id": 1596813495,
+      "author": "David A Case",
+      "date_raw": "Fri, 7 Aug 2020 11:18:15 -0400",
+      "body": "On Fri, Aug 07, 2020, angad sharma wrote:\n>I am trying to run the 3D-RISM calculations using rism3d.snglpnt to\n>calculate free energy, i got trajectory file  of 1000ns from that i had to\n>a take 10 frames between 50-100ns. The protein has +26 unit of charge.\n>>parm AB.prmtop\n>>trajin prod.nc\n>>strip:WAT\n>>strip:Na+\n>>strip>Cl-\n>>trajout newtraj.nc\n>>trajoout 10snapshot.pdb\n>>parmwrite out 10snapshot.prmtop\nAfter you strip solvent, you no longer have a periodic simulation.  Use\nthe \"nobox\" option on the trajout commands to remove periodicity.\n....dac",
+      "url": "http://archive.ambermd.org/202008/0074.html",
+      "in_reply_to": 1596807171
+    },
+    {
+      "message_id": 1598617679,
+      "author": "angad sharma",
+      "date_raw": "Fri, 28 Aug 2020 17:57:59 +0530",
+      "body": "Actually I want to calculate the binding free energy of a dimer. And the\ncommand for the 3drism is as follows\nrism3d.snglpnt --pdb beta-fr1.pdb --prmtop beta10.prmtop   --traj traj1.nc\n--buffer 45.0 --closure KH --guv betaAB1  --entropicDecomp  --polarDecomp\n--xvv  SPC_NaCl.xvv\nit is running properly with some warnings .\n|WARNING> Entropy decomposition is an undocumented, experimental feature.\n|WARNING> Turn off entropicDecomp unless you know exactly what you are\ndoing.\nWARNING> Input Xvv file version < 1.000.\nWARNING> Not performing energy/entropy decomposition or temperature\nderivatives.\nI just want to know how to  remove these warnings to get correct output.",
+      "url": "http://archive.ambermd.org/202008/0239.html",
+      "in_reply_to": 1596807171
+    },
+    {
+      "message_id": 1598624801,
+      "author": "Tyler Luchko (Lists)",
+      "date_raw": "Fri, 28 Aug 2020 07:26:41 -0700",
+      "body": "Hi Angad,\nTo get rid of the warnings, remove the ‘--entropicDecomp’ flag. You only need this if you want to further decompose the excess chemical potential in to entropic and energetic components.  OTOH, if you do want entropic decomposition, you will need to recreate your Xvv file. The one you have is from an older version that did not support entropic decomposition. The warning about this being an experimental feature is out of date.\nSimilarly, ‘--polarDecomp’ decomposes the excess chemical potential into polar and non-polar contributions and isn’t necessary to calculate binding free energies.\nTurning on both entropic and polar decomposition will cause your calculation to take much longer, so only use them if you need them.\nTyler\nTyler Luchko\nAssociate Professor\nDepartment of Physics & Astronomy\nCalifornia State University, Northridge\nNorthridge, CA\ntluchko.csun.edu\n818-677-6442\n> On Aug 28, 2020, at 5:27 AM, angad sharma <angadsharma54.gmail.\ncom> wrote:\n>\n> Actually I want to calculate the binding free energy of a dimer. And the\n> command for the 3drism is as follows\n> rism3d.snglpnt --pdb beta-fr1.pdb --prmtop beta10.prmtop   --traj traj1.nc\n> --buffer 45.0 --closure KH --guv betaAB1  --entropicDecomp  --polarDecomp\n> --xvv  SPC_NaCl.xvv\n> it is running properly with some warnings .\n> |WARNING> Entropy decomposition is an undocumented, experimental feature.\n> |WARNING> Turn off entropicDecomp unless you know exactly what you are\n> doing.\n> WARNING> Input Xvv file version < 1.000.\n> WARNING> Not performing energy/entropy decomposition or temperature\n> derivatives.\n> I just want to know how to  remove these warnings to get correct output.\n>",
+      "url": "http://archive.ambermd.org/202008/0240.html",
+      "in_reply_to": 1596807171
+    }
+  ]
+}

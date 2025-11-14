@@ -1,0 +1,21 @@
+{
+  "thread_id": 1760970868,
+  "subject": "Re: [AMBER] MBAR input keywords not recognized in sander.MPI (Amber24)",
+  "messages": [
+    {
+      "message_id": 1760970868,
+      "author": "Timothy Giese",
+      "date_raw": "Mon, 20 Oct 2025 14:34:28 +0000",
+      "body": "The valid options for sander are:\nifmbar ! turn on/off\nbar_intervall ! output frequency\nbar_l_min ! the minimum lambda (often 0.0)\nbar_l_max ! the maximum lambda (often 1.0)\nbar_l_incr ! the increment between states\nUnlike pmemd, one currently cannot input arbitrary schedules � one is limited to uniform schedules.\nIf you are trying to perform alchemical free energy  (AFE) transformations involving softcore functions, I highly recommend using pmemd.cuda (not sander and not the cpu version of pmemd).  All of the AFE developments in the past 5 years have been made to the pmemd cuda code, and the pmemd cpu version was never updated to reflect the enormous number of improvements, bug fixes, and additions.  One would typically only use sander to calculate \"bookend\" corrections via the indirect method (transformations that change potential energy functions rather than the chemical identity of a molecule).  For example, the free energy of replacing a MM potential with a QM/MM potential.",
+      "url": "http://archive.ambermd.org/202510/0032.html"
+    },
+    {
+      "message_id": 1760974095,
+      "author": "Dulal Mondal",
+      "date_raw": "Mon, 20 Oct 2025 20:58:15 +0530",
+      "body": "Thanks for the response.\nBut I for pmemd.cuda hybrid prmtop file needed. I already generated two end\nstates  prmtop files.\n*With regards,*\n*Dulal Mondal,*\n*Research Scholar,*\n*Department of Chemistry,*\n*IIT Kharagpur, Kharagpur 721302.*\nOn Mon, 20 Oct, 2025, 8:04 pm Timothy Giese, <giese025.rutgers.\nedu> wrote:\n> The valid options for sander are:\n> ifmbar ! turn on/off\n> bar_intervall ! output frequency\n> bar_l_min ! the minimum lambda (often 0.0)\n> bar_l_max ! the maximum lambda (often 1.0)\n> bar_l_incr ! the increment between states\n>\n> Unlike pmemd, one currently cannot input arbitrary schedules — one is\n> limited to uniform schedules.\n>\n> If you are trying to perform alchemical free energy  (AFE) transformations\n> involving softcore functions, I highly recommend using pmemd.cuda (not\n> sander and not the cpu version of pmemd).  All of the AFE developments in\n> the past 5 years have been made to the pmemd cuda code, and the pmemd cpu\n> version was never updated to reflect the enormous number of improvements,\n> bug fixes, and additions.  One would typically only use sander to calculate\n> \"bookend\" corrections via the indirect method (transformations that change\n> potential energy functions rather than the chemical identity of a\n> molecule).  For example, the free energy of replacing a MM potential with a\n> QM/MM potential.\n>",
+      "url": "http://archive.ambermd.org/202510/0033.html",
+      "in_reply_to": 1760970868
+    }
+  ]
+}

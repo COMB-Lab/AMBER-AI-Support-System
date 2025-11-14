@@ -1,0 +1,29 @@
+{
+  "thread_id": 1673979380,
+  "subject": "[AMBER] the charge error in amber",
+  "messages": [
+    {
+      "message_id": 1673979380,
+      "author": "laura zhang",
+      "date_raw": "Tue, 17 Jan 2023 18:16:20 +0000",
+      "body": "Dear Amber users,\nI got the following error when running tleap step when setting up a amber system including a drug molecule and a protein:\namber20/bin/teLeap: Warning!\nThe unperturbed charge of the unit (-4.998000) is not zero.\nFATAL:  Atom .R<HIE 239>.A<HD1 18> does not have a type.\nFATAL:  Atom .R<HIE 74>.A<HD1 18> does not have a type.\nFATAL:  Atom .R<NILE 2>.A<H 22> does not have a type.\nBut I used the following in the tleap script to neutralize the charge of the solvated system:\naddions solvcomplex Cl- 0\naddions solvcomplex Na+ 0\nI am wondering where was wrong and why the net charge of the system was not zero. Thank you very much.\nLaura",
+      "url": "http://archive.ambermd.org/202301/0082.html"
+    },
+    {
+      "message_id": 1673989585,
+      "author": "Carlos Simmerling",
+      "date_raw": "Tue, 17 Jan 2023 16:06:25 -0500",
+      "body": "here the charge is not the fatal error, it is the naming of atoms. HIE has\nhydrogen at the epsilon nitrogen, so it should not have atom HD1. You\nshould check to see how you built the pdb file that you used as input. Did\nit already contain hydrogen atoms? If so, and the residue was named HIS, it\nmay have automatically been converted to HIE. If you know that it should be\nHID, you can rename it to HID before loading into leap. the cpptraj\n\"prepareforleap\" command can be helpful for this in the general case (see\nhttps://amberhub.chpc.utah.edu/prepareforleap/\n), but for this one error you\ncan fix it manually with the renaming. Once again though, it depends on the\nsource of the pdb file and if you are confident that it is indeed HID not\nHIE.\nOn Tue, Jan 17, 2023 at 1:16 PM laura zhang via AMBER <amber.ambermd.org>\nwrote:\n> Dear Amber users,\n>\n> I got the following error when running tleap step when setting up a amber\n> system including a drug molecule and a protein:\n>\n> amber20/bin/teLeap: Warning!\n> The unperturbed charge of the unit (-4.998000) is not zero.\n> FATAL:  Atom .R<HIE 239>.A<HD1 18> does not have a type.\n> FATAL:  Atom .R<HIE 74>.A<HD1 18> does not have a type.\n> FATAL:  Atom .R<NILE 2>.A<H 22> does not have a type.\n>\n> But I used the following in the tleap script to neutralize the charge of\n> the solvated system:\n>\n> addions solvcomplex Cl- 0\n> addions solvcomplex Na+ 0\n>\n> I am wondering where was wrong and why the net charge of the system was\n> not zero. Thank you very much.\n>\n> Laura\n>\n>",
+      "url": "http://archive.ambermd.org/202301/0083.html",
+      "in_reply_to": 1673979380
+    },
+    {
+      "message_id": 1674152026,
+      "author": "David A Case",
+      "date_raw": "Thu, 19 Jan 2023 13:13:46 -0500",
+      "body": "On Tue, Jan 17, 2023, laura zhang via AMBER wrote:\n>\n>I got the following error when running tleap step when setting up a amber\n>system including a drug molecule and a protein:\nThere are at least three separate problems coming up here:\n>\n>amber20/bin/teLeap: Warning!\n>The unperturbed charge of the unit (-4.998000) is not zero.\n>\n>But I used the following in the tleap script to neutralize the charge of\n>the solvated system:\n>\n>addions solvcomplex Cl- 0\n>addions solvcomplex Na+ 0\nYou need to look at the leap.log output to see what happened here.  It could\nbe something as simple as having the charge warning come before the ions\nwere added.  If in doubt, use the \"summary\" action in parmed to see an\noverview of what is really in the final prmtop file.\n>\n>FATAL:  Atom .R<HIE 239>.A<HD1 18> does not have a type.\n>FATAL:  Atom .R<HIE 74>.A<HD1 18> does not have a type.\nThis was addressed earlier (I think): either use pdb4amber, or manually\nchange the residue names of residues 74 and 239 to HID.\n>FATAL:  Atom .R<NILE 2>.A<H 22> does not have a type.\nAn N-terminal residue should not have an atom named \"H\".  Delete this atom\nfrom the input PDB, and let tleap add back in H1,H2,H3 atoms.\n...good luck....dac",
+      "url": "http://archive.ambermd.org/202301/0090.html",
+      "in_reply_to": 1673979380
+    }
+  ]
+}

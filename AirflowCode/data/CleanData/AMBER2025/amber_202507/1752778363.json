@@ -1,0 +1,13 @@
+{
+  "thread_id": 1752778363,
+  "subject": "[AMBER] Negative Temperature Bug with Belly Dynamics",
+  "messages": [
+    {
+      "message_id": 1752778363,
+      "author": "Matthew Tremblay",
+      "date_raw": "Thu, 17 Jul 2025 14:52:43 -0400",
+      "body": "Hi all,\nI posted a few weeks ago about running into negative temperatures in some\nQM/MM simulations in a protein. I've isolated the problem to be ibelly with\nfour-point water models. I made a box of 500 waters and ran 100 fs of MM\nNVE, dt=1fs, tempi=50 for OPC, OPC3, TIP4PEw, and TIP3P with increasing\nnumbers of water molecules frozen with ibelly, from 0 up to 475. The\naverage temperature over the 100 steps for the three-point models remains\nconsistently about 200 K no matter the number of waters, but the average\ntemperature for the four-point models increases very high and then plummets\ninto the negative before climbing back. It looks like some sort of critical\npoint is reached at about 325 waters frozen out of 500. The reported\nkinetic energies are reasonable and decrease as the number of frozen waters\nincreases, as anticipated. I think there's some sort of bug in the code\nthat calculates the temperature of a system containing four-point water\nmodels with frozen atoms. In my protein system, I also found that freezing\nthe protein but not the four-point waters led to positive temperatures, as\nexpected. Here's a Google Drive link to the data I used to find this,\nincluding the initial structures, sample input file and sander command, and\nthe csvs and plots of the temperature and kinetic energy vs. the number of\nfrozen atoms:\nhttps://drive.google.com/drive/folders/1IOEhZT5ZA1lNqlagcz1EOruiSsKn9Wed?usp=sharing\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202507/0048.html"
+    }
+  ]
+}

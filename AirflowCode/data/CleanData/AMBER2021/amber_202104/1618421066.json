@@ -1,0 +1,29 @@
+{
+  "thread_id": 1618421066,
+  "subject": "[AMBER] Forcefield loading order and water parameters",
+  "messages": [
+    {
+      "message_id": 1618421066,
+      "author": "Reza Esmaeeli",
+      "date_raw": "Wed, 14 Apr 2021 13:24:26 -0400",
+      "body": "We have been trying to use OPC water model in our simulations. It looks like the order of loading water and macromolecule forcefields is important. Since ff19SB loads parm10, it will overwrite parameters for OW from tip3p, but not EP. This leads to abnormal behavior of water molecules which act as if they are positionally restrained. We have tested this with OL3 and OL15 as well. The pictures below show coordinates of two water molecules across a 50-ns trajectory with the aforementioned order of loading forcefields:\nsource leaprc.water.opc\nsource leaprc.protein.ff19SB\nsource leaprc.protein.ff19SB\nsource leaprc.water.opc\nI wonder in case of other 3-point water models, tip3p could be overwriting SPC parameters and while it might diffuse properly, the actual values may not be correct.\nAny ideas if this should be included as a warning in tleap or some other way of preventing it?",
+      "url": "http://archive.ambermd.org/202104/0100.html"
+    },
+    {
+      "message_id": 1618433741,
+      "author": "Kellon Belfon",
+      "date_raw": "Wed, 14 Apr 2021 16:55:41 -0400",
+      "body": "Hi Reza,\nWe had made some adjustments to this behavior by removing the OW and HW\nparameters from the protein, RNA, and DNA forcefields. This will prevent HW\nand OW parameters from TIP3P from overwriting parameters from other water\nmodels.\nThis will be in the upcoming AmberTools21 release.\nOn Wed, Apr 14, 2021 at 1:24 PM Reza Esmaeeli <goldeagle.93.gmail.com>\nwrote:\n> We have been trying to use OPC water model in our simulations. It looks\n> like the order of loading water and macromolecule forcefields is important.\n> Since ff19SB loads parm10, it will overwrite parameters for OW from tip3p,\n> but not EP. This leads to abnormal behavior of water molecules which act as\n> if they are positionally restrained. We have tested this with OL3 and OL15\n> as well. The pictures below show coordinates of two water molecules across\n> a 50-ns trajectory with the aforementioned order of loading forcefields:\n>\n> source leaprc.water.opc\n> source leaprc.protein.ff19SB\n>\n>\n>\n> source leaprc.protein.ff19SB\n> source leaprc.water.opc\n>\n>\n> I wonder in case of other 3-point water models, tip3p could be overwriting\n> SPC parameters and while it might diffuse properly, the actual values may\n> not be correct.\n> Any ideas if this should be included as a warning in tleap or some other\n> way of preventing it?\n>",
+      "url": "http://archive.ambermd.org/202104/0101.html",
+      "in_reply_to": 1618421066
+    },
+    {
+      "message_id": 1618470016,
+      "author": "Gustaf Olsson",
+      "date_raw": "Thu, 15 Apr 2021 07:00:16 +0000",
+      "body": "Hello Reza\nI had a similar issue before and the order in which you source files is indeed relevant. In order to get the OPC water parameters it needs to be sourced last to be prioritised. The order of priority was \"bottom up”.\nBest regards\n// Gustaf\n> On 14 Apr 2021, at 19:24, Reza Esmaeeli <goldeagle.93.gmail.\ncom> wrote:\n>\n> We have been trying to use OPC water model in our simulations. It looks like the order of loading water and macromolecule forcefields is important. Since ff19SB loads parm10, it will overwrite parameters for OW from tip3p, but not EP. This leads to abnormal behavior of water molecules which act as if they are positionally restrained. We have tested this with OL3 and OL15 as well. The pictures below show coordinates of two water molecules across a 50-ns trajectory with the aforementioned order of loading forcefields:\n>\n> source leaprc.water.opc\n> source leaprc.protein.ff19SB\n>\n>\n>\n> source leaprc.protein.ff19SB\n> source leaprc.water.opc\n>\n>\n> I wonder in case of other 3-point water models, tip3p could be overwriting SPC parameters and while it might diffuse properly, the actual values may not be correct.\n> Any ideas if this should be included as a warning in tleap or some other way of preventing it?\n>",
+      "url": "http://archive.ambermd.org/202104/0103.html",
+      "in_reply_to": 1618421066
+    }
+  ]
+}

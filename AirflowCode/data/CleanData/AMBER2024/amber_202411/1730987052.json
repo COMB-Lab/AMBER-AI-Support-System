@@ -1,0 +1,13 @@
+{
+  "thread_id": 1730987052,
+  "subject": "Re: [AMBER] Atommap doesn't change atom names",
+  "messages": [
+    {
+      "message_id": 1730987052,
+      "author": "Daniel Roe",
+      "date_raw": "Thu, 7 Nov 2024 08:44:12 -0500",
+      "body": "Hi,\nThanks for providing the files.\nOn Tue, Nov 5, 2024 at 7:55 AM Maciej Spiegel <maciej.spiegel.umw.\nedu.pl> wrote:\n>\n> This fails and mapped.mol2 has atom names of charges.mol2, despite atommap.dat output indicates they are recognized correctly. The files:\nActually, you can see from the atommap output that you provided that\nsome of the atoms were not mapped:\n>     35 H11      35 H\n>     36 H12      36 H\n>     37 H13      37 H\n>    ---  ---     38 C\n>    ---  ---     39 H\n>    ---  ---     40 H\n>    ---  ---     41 H\n>     38 Cl1      42 Cl\nThis is because charges.mol2 contains 3 fewer atoms than A8C.pdb.\nSince 'changenames' requires that all atoms have been mapped, this is\nwhy no names are changed. Maybe I should add a flag allowing any\nmapped atom names to be changed.\nAlso, it seems like you may have reversed the order of target and\nreference to 'atommap' - do you really want A8C.pdb to be the\nreference? It has generic atom names:\n> HETATM   33  O           0       0.887   0.876  -0.201                       O\n> HETATM   34  C           0       0.046   0.947  -1.356                       C\n> HETATM   35  H           0      -0.762   0.254  -1.252                       H\n> HETATM   36  H           0      -0.345   1.939  -1.452                       H\n> HETATM   37  H           0       0.616   0.703  -2.228                       H\nwhich will cause problems if you try to build with it (since all atom\nnames in a residue must be unique).\nI'll let you know if I can get around to implementing name changes\nwith partial atom maps. In the meantime if you know there are atoms\nyou do not want mapped you could always remove them from A8C.pdb to\nget the atoms in target and reference to match up.\nHopefully this clears some things up.\n-Dan",
+      "url": "http://archive.ambermd.org/202411/0009.html"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "thread_id": 1612692097,
+  "subject": "[AMBER] polarizable FF in amber18 or 20",
+  "messages": [
+    {
+      "message_id": 1612692097,
+      "author": "Vaibhav Dixit",
+      "date_raw": "Sun, 7 Feb 2021 15:31:37 +0530",
+      "body": "Dear All,\nI want to use a polarizable force field for MD simulation of a protein with\nnon-standard residues and cofactors.\nIf possible, can you please suggest how these are generally used in Amber18\nor Amber20?\nI can't find a tutorial, archive message that is specific for this, nor\ndoes the manual or FF-page contain information with which one can easily\nidentify availability, usage and current limitations. Section 3.12.4 does\nmention a 2002 polarizable FF, but it under the obsolete FF section 3.12\nand thus probably not recommended by developers, is it?\nContributions to Amber does mention \"Jim Caldwell and Piotr Cieplak,\nprimary developers of the original Amber polarizable force fields\".\nBut it doesn't say much about which these are and how to use/call them in\ntleap (if these are not the obsolete ones).\nThus I'm guessing that this would need some development/validation on case\nto case basis and thus not trivial or a routine task in Amber.\nPlease help me understand the current recommendations in Amber and\nstate-of-the-art.\nLooking forward to valuable suggestions from the list.\nThank you and best regards.\n-- \nRegards,\nDr. Vaibhav A. Dixit,\nVisiting Scientist at the Manchester Institute of Biotechnology (MIB), The\nUniversity of Manchester, 131 Princess Street, Manchester M1 7DN, UK.\nAND\nAssistant Professor,\nDepartment of Pharmacy,\n▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄\nBirla Institute of Technology and Sciences Pilani (BITS-Pilani),\nVidyaVihar Campus, street number 41, Pilani, Rajasthan 333031.\nIndia.\nPhone No. +91 1596 255652, Mob. No. +91-7709129400,\nEmail: vaibhav.dixit.pilani.bits-pilani.ac.in, vaibhavadixit.gmail.\ncom\nhttp://www.bits-pilani.ac.in/pilani/vaibhavdixit/profile\nhttps://www.linkedin.com/in/vaibhav-dixit-b1a07a39/\nORCID ID: https://orcid.org/0000-0003-4015-2941\nhttp://scholar.google.co.in/citations?user=X876BKcAAAAJ&hl=en&oi=sra\nP Please consider the environment before printing this e-mail",
+      "url": "http://archive.ambermd.org/202102/0066.html"
+    },
+    {
+      "message_id": 1612712041,
+      "author": "David A Case",
+      "date_raw": "Sun, 7 Feb 2021 10:34:01 -0500",
+      "body": "On Sun, Feb 07, 2021, Vaibhav Dixit wrote:\n>I want to use a polarizable force field for MD simulation of a protein with\n>non-standard residues and cofactors.\nAs you post points out, we don't support such simulations.  There is still\nsome old code around, and you could probably cobble together a simulation of\na standard protein using a two-decade old force field.  Structural results\nwould almost certainly be worse than if you used a non-polarizable modern\nAmber force field.  And creating polarizable models for non-standard\nresidues and cofactors would present a significant challenge.\nThe Amoeba force field is supported in gem.pmemd.  But that is not its\nprimary purpose, and there is no GPU support.  Plus, you have to set up the\nsystem in Tinker as a start, and by the time you get all that done, you\nmight as well run the simulation itself in Tinker or OpenMM.  Again, whether\nyour results \"improve\", compared to using something like ff19SB, will depend\non the system and what sorts of properties you are looking at.\nAnother alternative, that I use, is to use just OpenMM, skipping the Tinker\npart.  You can use the scripts below to make these simulations look more\nlike Amber runs, outputting netCDF trajectory and restart files that can be\nanalyzed via cpptraj or pytraj.\nhttps://github.com/dacase/OMM_Amoeba_Scripts.git\nOthers on the list might wish to chime in with ideas here.  There is some\nwork in the Amber community to develop new polarizable force fields and\ncodes, and I don't know how far along these efforts are.\n...dac",
+      "url": "http://archive.ambermd.org/202102/0071.html",
+      "in_reply_to": 1612692097
+    }
+  ]
+}

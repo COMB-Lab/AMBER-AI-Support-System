@@ -1,0 +1,29 @@
+{
+  "thread_id": 1618545688,
+  "subject": "[AMBER] RMSIP",
+  "messages": [
+    {
+      "message_id": 1618545688,
+      "author": "waleed zalloum",
+      "date_raw": "Fri, 16 Apr 2021 04:01:28 +0000 (UTC)",
+      "body": "Dear Amber users,\nI am simulating enzyme in its bound and unbound states. I calculated the PCs for both systems and I am trying to use RMSIP to quantify differences of energy landscape for the two systems using first 10 PCs. I tried to read amber archive and literature, however I couldn't find a way. I tried to used modes of cpptraj, but with no succes. I was wondering, is there a way to calculate RMSIP for the energy differences.\nThank you, indeed\nWaleed",
+      "url": "http://archive.ambermd.org/202104/0115.html"
+    },
+    {
+      "message_id": 1618581007,
+      "author": "Daniel Roe",
+      "date_raw": "Fri, 16 Apr 2021 09:50:07 -0400",
+      "body": "Hi,\nOn Fri, Apr 16, 2021 at 12:01 AM waleed zalloum\n<waleed_zalloum.yahoo.com> wrote:\n> I tried to used modes of cpptraj, but with no succes.\nCan you be more specific? What was the exact input you gave cpptraj?\nDid you try using 'mode rmsip'? Did you get an error message?\n-Dan",
+      "url": "http://archive.ambermd.org/202104/0121.html",
+      "in_reply_to": 1618545688
+    },
+    {
+      "message_id": 1618600111,
+      "author": "Daniel Roe",
+      "date_raw": "Fri, 16 Apr 2021 15:08:31 -0400",
+      "body": "Hi,\nOn Fri, Apr 16, 2021 at 11:23 AM waleed zalloum\n<waleed_zalloum.yahoo.com> wrote:\n>\n> readdata evecs-ca.dat name pc1\n> readdata evecs-ca.dat name pc2\nDid this give an error? You didn't specify. Assuming there is indeed\n\"modes\" data in evecs-ca.dat you should see a message like:\nReading 'evecs-ca.dat' as Evecs file with name 'pc1'\nAlso, you don't need to specify the same file twice. By default\ncpptraj will read all modes from the file.\n> runanalysis modes rmsip name pc1 name2 pc2 beg 1 end 1 out rmsip\nYou're doing the RMSIP of eigenvector 1 to 1 which is not very useful.\nTry 'beg 1 end 2' instead.\n>\n>\n> Also, I projected the trajectory coordinates along pcs and got a file for this process (pca12-ca). I tried to read it instead of evecs-ca.dat in the above comman but it gave me the following error:\nNo, this won't work. Projections are not the same as \"modes\" (i.e.\neigenvectors). You can use eigenvectors to get projections, but you\ncan't feed the projection values back in place of modes.\nHope this helps,\n-Dan\n>\n> INPUT: Reading Input from file pcin-emsip\n>   [readdata pca12-ca name pc1 ]\n>         Reading 'pca12-ca' as Standard Data File with name 'pc1'\n>         DataFile pca12-ca has 4 columns, 62501 lines.\n>         DataFile contains labels:\n>   1: Frame\n>   2: Mode1\n>   3: Mode2\n>   4: Mode3\n>         Index column is 1\n>   [readdata pca12-ca name pc2]\n>         Reading 'pca12-ca' as Standard Data File with name 'pc2'\n>         DataFile pca12-ca has 4 columns, 62501 lines.\n>         DataFile contains labels:\n>   1: Frame\n>   2: Mode1\n>   3: Mode2\n>   4: Mode3\n>         Index column is 1\n>   [runanalysis modes rmsip name pc1 name2 pc2 beg 1 end 1 out rmsip]\n> Error: 'pc1' not found: Modes should be read in prior to this command with 'readdata'\n>\n> TIME: Total analysis execution time: 0.0000 seconds.\n>         1 errors encountered reading input.\n> TIME: Total execution time: 0.0960 seconds.\n>\n> Also, I tried to read a file containing the first eigenvector and the other has 50 eignevector but it gave me a result of 1 as below.\n>\n> readdata evecs-firstvector-ca.dat name pc1\n> readdata evecs-allvectors-ca.dat name pc2\n> runanalysis modes rmsip name pc1 name2 pc2 beg 1 end 1 out rmsip\n>\n> I am not fully aware of what I have to do to calculate rmsip for each mode and then plot rmsip vs each mode.\n>\n> Thank you, indeed\n>\n> Waleed\n>\n> On Friday, 16 April 2021, 16:50:18 EEST, Daniel Roe <daniel.r.roe.gmail.com> wrote:\n>\n>\n> Hi,\n>\n> On Fri, Apr 16, 2021 at 12:01 AM waleed zalloum\n> <waleed_zalloum.yahoo.com> wrote:\n> > I tried to used modes of cpptraj, but with no succes.\n>\n>\n> Can you be more specific? What was the exact input you gave cpptraj?\n> Did you try using 'mode rmsip'? Did you get an error message?\n>\n> -Dan\n>",
+      "url": "http://archive.ambermd.org/202104/0124.html",
+      "in_reply_to": 1618545688
+    }
+  ]
+}

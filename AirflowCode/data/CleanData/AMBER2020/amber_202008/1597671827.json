@@ -1,0 +1,21 @@
+{
+  "thread_id": 1597671827,
+  "subject": "[AMBER] AMBER18 pmemd.MPI installation error",
+  "messages": [
+    {
+      "message_id": 1597671827,
+      "author": "Shubhandra Tripathi",
+      "date_raw": "Mon, 17 Aug 2020 19:13:47 +0530",
+      "body": "Dear All,\nI am installing amber18 with AmberTools19 in a GPU machine. The sander and\nsander.MPI get installated properly and working, but during  pmemd.MPI\ninstallation following error is occurring.\n\"mpif90 -DMPI   -DBINTRAJ -DEMIL -DPUBFFT -DGNU_HACKS -O3 -mtune=native\n-I/home/sl302/Software/new_amb/amber18/include -c mdin_debugf_dat.F90\nmpif90 -DMPI   -DBINTRAJ -DEMIL -DPUBFFT -DGNU_HACKS -O3 -mtune=native\n-I/home/sl302/Software/new_amb/amber18/include -c remd.F90\nmpif90 -DMPI   -DBINTRAJ -DEMIL -DPUBFFT -DGNU_HACKS -O3 -mtune=native\n-I/home/sl302/Software/new_amb/amber18/include -c binrestart.F90\nbinrestart.F90:110:8:\nif (NC_defineRemdIndices(ncid, remd_dimension, remd_indices_var_id,&\n1\nError: Missing actual argument for argument ‘ismremd’ at (1)\nMakefile:174: recipe for target 'binrestart.o' failed\nmake[3]: *** [binrestart.o] Error 1\nmake[3]: Leaving directory\n'/home/sl302/Software/new_amb/amber18/src/pmemd/src'\nMakefile:25: recipe for target 'parallel' failed\nmake[2]: *** [parallel] Error 2\nmake[2]: Leaving directory '/home/sl302/Software/new_amb/amber18/src/pmemd'\nMakefile:38: recipe for target 'parallel' failed\nmake[1]: *** [parallel] Error 2\nmake[1]: Leaving directory '/home/sl302/Software/new_amb/amber18/src'\nMakefile:7: recipe for target 'install' failed\nmake: *** [install] Error 2\"\nKindly help in this regard.\nThanks\nShubhandra Tripathi, Ph.D\n-- \nSHUBHANDRA TRIPATHI, Ph.D.",
+      "url": "http://archive.ambermd.org/202008/0122.html"
+    },
+    {
+      "message_id": 1597754747,
+      "author": "David A Case",
+      "date_raw": "Tue, 18 Aug 2020 08:45:47 -0400",
+      "body": "On Mon, Aug 17, 2020, Shubhandra Tripathi wrote:\n>-I/home/sl302/Software/new_amb/amber18/include -c binrestart.F90\n>binrestart.F90:110:8:\n>\n>     if (NC_defineRemdIndices(ncid, remd_dimension, remd_indices_var_id,&\n>        1\n>Error: Missing actual argument for argument ‘ismremd’ at (1)\nThis symptom was reported once about a year ago, but no developer has yet\nbeen able to reproduce it.\nMake sure that you have applied update.14 to your amber18 sources -- use\n\"$AMBERHOME/update_amber --help\" to get started.  You might try again from\nscratch with a fresh download.\nBeyond that can you report what OS, and compiler version you are using?\n...thx...dac",
+      "url": "http://archive.ambermd.org/202008/0129.html",
+      "in_reply_to": 1597671827
+    }
+  ]
+}

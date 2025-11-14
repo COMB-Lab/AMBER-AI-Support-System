@@ -1,0 +1,29 @@
+{
+  "thread_id": 1611151099,
+  "subject": "[AMBER] combining crashed trajectories",
+  "messages": [
+    {
+      "message_id": 1611151099,
+      "author": "Ayesha Fatima",
+      "date_raw": "Wed, 20 Jan 2021 21:58:19 +0800",
+      "body": "Dear all,\nGood evening\nPerhaps this question has been asked but I could not find what I was\nlooking for, While running my production simulation, it crashed\nmultiple times due to computer restarting for one reason or another. Now i\nwant to combine them and i made the following input file\n...........................................\ntrajin 05-production1ns.nc 1 257900 1\ntrajin 05-production1ns-1.nc 100 224900 1\ntrajin 05-production1ns-2.nc 100 16800 1\nreference 04-eq-2.rst7\nautoimage\ncenter :1-60113 mass origin\nimage origin center familiar\ntrajout 05-production1ns-all.nc\n............................................\nthe command line I will run is ptraj -p complex_solv.prmtop <trajin.in>\ntrajout.out\nIs this the correct way to run?\nThank you\nRegards\nAyesha",
+      "url": "http://archive.ambermd.org/202101/0308.html"
+    },
+    {
+      "message_id": 1611163543,
+      "author": "Dr. Anselm Horn",
+      "date_raw": "Wed, 20 Jan 2021 18:25:43 +0100",
+      "body": "Dear Ayesha,\nof course you can simply combine several trajectories to a single long\none; this is done routinely, if you run your calculations on a large\nmachine, where you face a computational time limit; thus you run many\nsimulations in a row combining the trajectory files afterwards.\nEnsure, however, that your trajectory files have not been corrupted by\nthe crash of the simulation.\n(From your input, it is not clear to me, why you did not start your\ninput at frame 1 for the second and third nc file; this may be due to\nthe different writing frequencies of nc and rst files, I guess.)\nRegards,\nAnselm\nOn 01/20/2021 02:58 PM, Ayesha Fatima wrote:\n> Dear all,\n> Good evening\n> Perhaps this question has been asked but I could not find what I was\n> looking for, While running my production simulation, it crashed\n> multiple times due to computer restarting for one reason or another. Now i\n> want to combine them and i made the following input file\n> ...........................................\n> trajin 05-production1ns.nc 1 257900 1\n> trajin 05-production1ns-1.nc 100 224900 1\n> trajin 05-production1ns-2.nc 100 16800 1\n> reference 04-eq-2.rst7\n> autoimage\n> center :1-60113 mass origin\n> image origin center familiar\n> trajout 05-production1ns-all.nc\n>\n> ............................................\n> the command line I will run is ptraj -p complex_solv.prmtop <trajin.in>\n> trajout.out\n>\n> Is this the correct way to run?\n>\n> Thank you\n> Regards\n> Ayesha\n>",
+      "url": "http://archive.ambermd.org/202101/0312.html",
+      "in_reply_to": 1611151099
+    },
+    {
+      "message_id": 1611341205,
+      "author": "Daniel Roe",
+      "date_raw": "Fri, 22 Jan 2021 13:46:45 -0500",
+      "body": "Hi,\nOne thing you might consider doing is adding a 'check' command with\nthe 'skipbadframes' option to skip over frames with corrupted\ncoordinates.  In my experience when a NetCDF trajectory frame is\ncorrupted it tends to be an 'all or nothing' situation, so checking\nthe first few atoms of the system (for speed) usually suffices,\nsomething like:\ntrajin <trajectory>\ncheck .1-10 skipbadframes reportfile report.dat\ntrajout nobadframes.nc\nThen check 'report.dat' for which frames had issues. I like doing this\nas a first pass because if you have corrupted frames, things like\n'autoimage' will fail anway. Hope this helps,\n-Dan\nOn Wed, Jan 20, 2021 at 8:55 AM Ayesha Fatima <ayeshafatima.69.gmail.com> wrote:\n>\n> Dear all,\n> Good evening\n> Perhaps this question has been asked but I could not find what I was\n> looking for, While running my production simulation, it crashed\n> multiple times due to computer restarting for one reason or another. Now i\n> want to combine them and i made the following input file\n> ...........................................\n> trajin 05-production1ns.nc 1 257900 1\n> trajin 05-production1ns-1.nc 100 224900 1\n> trajin 05-production1ns-2.nc 100 16800 1\n> reference 04-eq-2.rst7\n> autoimage\n> center :1-60113 mass origin\n> image origin center familiar\n> trajout 05-production1ns-all.nc\n>\n> ............................................\n> the command line I will run is ptraj -p complex_solv.prmtop <trajin.in>\n> trajout.out\n>\n> Is this the correct way to run?\n>\n> Thank you\n> Regards\n> Ayesha\n>",
+      "url": "http://archive.ambermd.org/202101/0334.html",
+      "in_reply_to": 1611151099
+    }
+  ]
+}

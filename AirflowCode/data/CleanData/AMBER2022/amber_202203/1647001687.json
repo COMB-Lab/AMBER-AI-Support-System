@@ -1,0 +1,85 @@
+{
+  "thread_id": 1647001687,
+  "subject": "[AMBER] problems installing Amber20 + AmberTools21 parallel version with open-mpi",
+  "messages": [
+    {
+      "message_id": 1647001687,
+      "author": "Antonija Tomić",
+      "date_raw": "Fri, 11 Mar 2022 13:28:07 +0100",
+      "body": "Dear Amber Community,\nI'm having trouble installing Amber20 + Amber Tools 21 on my machine. On\nthe same machine previously I had installed Amber20 +AmberTools20 but\ndue to some reasons not related to the functioning of Amber I needed to\nreinstall Ubuntu. So at the same time I decided to put a newer version\nof Amber Tools. I installed the same version of OS as I had before\n(Ubuntu 20.04).\nI manged to install serial version of Amber20, however problems emerged\nwhen trying to install parallel version using open-mpi (prior to\ninstillation I performed: apt -y install openmpi-bin libopenmpi-dev) .\nAfter modifying “-DMPI=TRUE”  and performing “sudo ./run_cmake” I\ninitialized “sudo make install” and got the following error (the whole\noutput is given in attached file):\ncollect2: error: ld returned 1 exit status\nfailure.\nremoving: _configtest.c _configtest.o\nerror: Cannot link MPI programs. Check your configuration!!!\nmake[2]: ***\n[AmberTools/src/mpi4py-3.0.3/CMakeFiles/mpi4py.dir/build.make:276:\nAmberTools/src/mpi4py-3.0.3/CMakeFiles/mpi4py-build/mpi4py-build.stamp]\nError 1\nmake[1]: *** [CMakeFiles/Makefile2:3757:\nAmberTools/src/mpi4py-3.0.3/CMakeFiles/mpi4py.dir/all] Error 2\nmake: *** [Makefile:152: all] Error 2\nAny suggestion would be appreciated,\nAntonija",
+      "url": "http://archive.ambermd.org/202203/0051.html"
+    },
+    {
+      "message_id": 1647003734,
+      "author": "David A Case",
+      "date_raw": "Fri, 11 Mar 2022 08:02:14 -0500",
+      "body": "On Fri, Mar 11, 2022, Antonija Tomić wrote:\n>\n>After modifying “-DMPI=TRUE”  and performing “sudo ./run_cmake” I\n>initialized “sudo make install” and got the following error (the whole\n>output is given in attached file):\n>\n>collect2: error: ld returned 1 exit status\n>failure.\n>removing: _configtest.c _configtest.o\n>error: Cannot link MPI programs. Check your configuration!!!\nTry adding the following line to your run_cmake file:\n-DDISABLE_TOOLS=\"mmpbsa_py\"\nUpdates to mpi4py (which get downloaded when you re-install miniconda) seem\nto have broken the parallel version of mmpbsa_py.  This *should* all\neverything else to build, but I've not tested this myself.\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202203/0053.html",
+      "in_reply_to": 1647001687
+    },
+    {
+      "message_id": 1647006294,
+      "author": "Antonija Tomić",
+      "date_raw": "Fri, 11 Mar 2022 14:44:54 +0100",
+      "body": "Thank you for your suggestion but unfortunately this didn’t help. After\nrunning “sudo ./run_cmake” with applied correction:\n#  Assume this is Linux:\ncmake $AMBER_PREFIX/amber20_src \\\n-DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber20 \\\n-DCOMPILER=GNU  \\\n-DMPI=TRUE -DCUDA=FALSE -DINSTALL_TESTS=TRUE \\\n-DDOWNLOAD_MINICONDA=TRUE -DMINICONDA_USE_PY3=TRUE \\\n-DDISABLE_TOOLS=\"mmpbsa_py\" \\\n2>&1 | tee  cmake.log\nand “sudo make install” the same errors were reported:\ncollect2: error: ld returned 1 exit status\nfailure.\nremoving: _configtest.c _configtest.o\nerror: Cannot link MPI programs. Check your configuration!!!\nmake[2]: ***\n[AmberTools/src/mpi4py-3.0.3/CMakeFiles/mpi4py.dir/build.make:276:\nAmberTools/src/mpi4py-3.0.3/CMakeFiles/mpi4py-build/mpi4py-build.stamp]\nError 1\nmake[1]: *** [CMakeFiles/Makefile2:3734:\nAmberTools/src/mpi4py-3.0.3/CMakeFiles/mpi4py.dir/all] Error 2\nmake: *** [Makefile:152: all] Error 2\nIn addition I observed the behavior already mentioned on the mailing\nlist (\nhttp://archive.ambermd.org/202012/0083.html\n) where the cmake\nreports at one stage that mpi4py \"not found\", but later, in the Build\nReport, it indicates that it will be used. However, there seems to be no\nsolution offered.\nAll best,\nAntonija\nDana 11.03.2022 14:02, David A Case je napisao(la):\n> On Fri, Mar 11, 2022, Antonija Tomić wrote:\n>>\n>> After modifying “-DMPI=TRUE”  and performing “sudo ./run_cmake” I\n>> initialized “sudo make install” and got the following error (the whole\n>> output is given in attached file):\n>>\n>> collect2: error: ld returned 1 exit status\n>> failure.\n>> removing: _configtest.c _configtest.o\n>> error: Cannot link MPI programs. Check your configuration!!!\n>\n> Try adding the following line to your run_cmake file:\n>\n>    -DDISABLE_TOOLS=\"mmpbsa_py\"\n>\n> Updates to mpi4py (which get downloaded when you re-install miniconda)\n> seem\n> to have broken the parallel version of mmpbsa_py.  This *should* all\n> everything else to build, but I've not tested this myself.\n>\n> ...hope this helps....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202203/0054.html",
+      "in_reply_to": 1647001687
+    },
+    {
+      "message_id": 1647016080,
+      "author": "David A Case",
+      "date_raw": "Fri, 11 Mar 2022 11:28:00 -0500",
+      "body": "On Fri, Mar 11, 2022, Antonija Tomić wrote:\n>Thank you for your suggestion but unfortunately this didn’t help.\n>After running “sudo ./run_cmake” with applied correction:\n>\n>#  Assume this is Linux:\n>\n>  cmake $AMBER_PREFIX/amber20_src \\\n>    -DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber20 \\\n>    -DCOMPILER=GNU  \\\n>    -DMPI=TRUE -DCUDA=FALSE -DINSTALL_TESTS=TRUE \\\n>    -DDOWNLOAD_MINICONDA=TRUE -DMINICONDA_USE_PY3=TRUE \\\n>    -DDISABLE_TOOLS=\"mmpbsa_py\" \\\n>    2>&1 | tee  cmake.log\nMy fault here, I think.  Try -DDISABLE_TOOLS=\"mpi4py-3.0.3\"\n....dac",
+      "url": "http://archive.ambermd.org/202203/0056.html",
+      "in_reply_to": 1647001687
+    },
+    {
+      "message_id": 1647251058,
+      "author": "Antonija Tomić",
+      "date_raw": "Mon, 14 Mar 2022 10:44:18 +0100",
+      "body": "Unfortunaltely this also didn't help. I keep geting the same error:\ncollect2: error: ld returned 1 exit status\nfailure.\nremoving: _configtest.c _configtest.o\nerror: Cannot link MPI programs. Check your configuration!!!\nmake[2]: ***\n[AmberTools/src/mpi4py-3.0.3/CMakeFiles/mpi4py.dir/build.make:276:\nAmberTools/src/mpi4py-3.0.3/CMakeFiles/mpi4py-build/mpi4py-build.stamp]\nError 1\nmake[1]: *** [CMakeFiles/Makefile2:3757:\nAmberTools/src/mpi4py-3.0.3/CMakeFiles/mpi4py.dir/all] Error 2\nmake: *** [Makefile:152: all] Error 2\nDana 11.03.2022 17:28, David A Case je napisao(la):\n> On Fri, Mar 11, 2022, Antonija Tomić wrote:\n>\n>> Thank you for your suggestion but unfortunately this didn’t help.\n>> After running “sudo ./run_cmake” with applied correction:\n>>\n>> #  Assume this is Linux:\n>>\n>>  cmake $AMBER_PREFIX/amber20_src \\\n>>    -DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX/amber20 \\\n>>    -DCOMPILER=GNU  \\\n>>    -DMPI=TRUE -DCUDA=FALSE -DINSTALL_TESTS=TRUE \\\n>>    -DDOWNLOAD_MINICONDA=TRUE -DMINICONDA_USE_PY3=TRUE \\\n>>    -DDISABLE_TOOLS=\"mmpbsa_py\" \\\n>>    2>&1 | tee  cmake.log\n>\n> My fault here, I think.  Try -DDISABLE_TOOLS=\"mpi4py-3.0.3\"\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202203/0070.html",
+      "in_reply_to": 1647001687
+    },
+    {
+      "message_id": 1647278809,
+      "author": "David A Case",
+      "date_raw": "Mon, 14 Mar 2022 13:26:49 -0400",
+      "body": "On Mon, Mar 14, 2022, Antonija Tomić wrote:\n>Unfortunaltely this also didn't help. I keep geting the same error:\n>\n>error: Cannot link MPI programs. Check your configuration!!!\nWhat OS are you using?  There are known problems with yum-installed MPI stacks\n(like openMPI) on CentOS, Fedora, RHEL.  More information is here:\nhttps://ambermd.org/InstCentOS.php\n(You can ignore this if you are not using a Red-Hat related distro.)\n....dac",
+      "url": "http://archive.ambermd.org/202203/0074.html",
+      "in_reply_to": 1647001687
+    },
+    {
+      "message_id": 1647327398,
+      "author": "Antonija Tomić",
+      "date_raw": "Tue, 15 Mar 2022 07:56:38 +0100",
+      "body": "I am using Ubuntu 20.04 and I have installed open-mpi applying \"apt -y\ninstall openmpi-bin libopenmpi-dev\".\n---\n------------------------------------------\ndr. sc. Antonija Tomić\nLBPMM, Institut Ruđer Bošković\n  Bijenička cesta 54, 10000 Zagreb, Croatia\nDana 14.03.2022 18:26, David A Case je napisao(la):\n> On Mon, Mar 14, 2022, Antonija Tomić wrote:\n> \n>> Unfortunaltely this also didn't help. I keep geting the same error:\n>> \n>> error: Cannot link MPI programs. Check your configuration!!!\n> \n> What OS are you using?  There are known problems with yum-installed MPI \n> stacks\n> (like openMPI) on CentOS, Fedora, RHEL.  More information is here:\n> \n>\nhttps://ambermd.org/InstCentOS.php\n> \n> (You can ignore this if you are not using a Red-Hat related distro.)\n> \n> ....dac\n> \n> \n>",
+      "url": "http://archive.ambermd.org/202203/0083.html",
+      "in_reply_to": 1647001687
+    },
+    {
+      "message_id": 1647348156,
+      "author": "David A Case",
+      "date_raw": "Tue, 15 Mar 2022 08:42:36 -0400",
+      "body": "On Tue, Mar 15, 2022, Antonija Tomić wrote:\n>I am using Ubuntu 20.04 and I have installed open-mpi applying \"apt -y\n>install openmpi-bin libopenmpi-dev\".\nYou can go all in and try -DBUILD_PYTHON=FALSE in the run_cmake script.\n....dac",
+      "url": "http://archive.ambermd.org/202203/0085.html",
+      "in_reply_to": 1647001687
+    },
+    {
+      "message_id": 1647369922,
+      "author": "Antonija Tomić",
+      "date_raw": "Tue, 15 Mar 2022 19:45:22 +0100",
+      "body": "THANK you!\nUsing -DBUILD_PYTHON=FALSE I finally managed to install parallel version\nof Amber. However, I am not able to perform the tests (this is probably\nexpected?). This is what I get after \"make test.parallel\":\nTests being run with DO_PARALLEL=\"mpirun -np 2\".\nError: Could not import Amber Python modules!\nProbably your Amber Python environment was not set up correctly.\nWe recommend adding the line:\ntest -f /usr/local/amber20/amber.sh  && source\n/usr/local/amber20/amber.sh (sh/bash/zsh)\nor\ntest -f /usr/local/amber20/amber.csh && source\n/usr/local/amber20/amber.csh (csh/tcsh)\nto your login shell resource file (e.g., ~/.bashrc or ~/.cshrc).\nmake: *** [Makefile:18: test.parallel] Error 1\n---\n------------------------------------------\ndr. sc. Antonija Tomić\nLBPMM, Institut Ruđer Bošković\n  Bijenička cesta 54, 10000 Zagreb, Croatia\nDana 15.03.2022 13:42, David A Case je napisao(la):\n> On Tue, Mar 15, 2022, Antonija Tomić wrote:\n> \n>> I am using Ubuntu 20.04 and I have installed open-mpi applying \"apt -y \n>> install openmpi-bin libopenmpi-dev\".\n> \n> You can go all in and try -DBUILD_PYTHON=FALSE in the run_cmake script.\n> \n> ....dac\n> \n> \n>",
+      "url": "http://archive.ambermd.org/202203/0086.html",
+      "in_reply_to": 1647001687
+    },
+    {
+      "message_id": 1647433111,
+      "author": "David A Case",
+      "date_raw": "Wed, 16 Mar 2022 08:18:31 -0400",
+      "body": "On Tue, Mar 15, 2022, Antonija Tomić wrote:\n>\n>Using -DBUILD_PYTHON=FALSE I finally managed to install parallel\n>version of Amber. However, I am not able to perform the tests (this is\n>probably expected?). This is what I get after \"make test.parallel\":\n>\n>Error: Could not import Amber Python modules!\n>   Probably your Amber Python environment was not set up correctly.\nThis is clearly a bug.  Developers: the \"test.serial\" target has logic\nto decide if python is present or not, but this was never copied over into\nthe other test targets, like test.parallel.\nA possible workaround: edit the $AMBERHOME/AmberTools/test/test_check.sh\nscript, and comment out the \"error()\" call at about line 110.\n...thanks for the report....dac",
+      "url": "http://archive.ambermd.org/202203/0088.html",
+      "in_reply_to": 1647001687
+    }
+  ]
+}

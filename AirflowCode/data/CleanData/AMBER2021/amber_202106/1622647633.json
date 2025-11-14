@@ -1,0 +1,21 @@
+{
+  "thread_id": 1622647633,
+  "subject": "[AMBER] Running cpptraj in hpc",
+  "messages": [
+    {
+      "message_id": 1622647633,
+      "author": "Jenny 148",
+      "date_raw": "Wed, 2 Jun 2021 20:57:13 +0530",
+      "body": "Dear all,\nI wanted to know if while running cpptraj in a hpc cluster, how should we\ngive the command lines?\nwe do give the whole line while submitting production pmemd.cuda -O -i\nmin.in -o min.out -p prit.prmtop -c prot.inpcrd -r prot.rst7\nIn cpptraj would it be enough to give the line\ncpptraj -i traj.in\nWith the traj.in containing the following lines:\nparm prot.prmtop\ntrajin prod.nc\nreference equil.rst7\nrms reference out ligand_500ns.rms :1\n-- \nJenny R.S",
+      "url": "http://archive.ambermd.org/202106/0012.html"
+    },
+    {
+      "message_id": 1622656120,
+      "author": "Daniel Roe",
+      "date_raw": "Wed, 2 Jun 2021 13:48:40 -0400",
+      "body": "Hi,\nOn Wed, Jun 2, 2021 at 11:27 AM Jenny 148 <jenny.rs140.gmail.com> wrote:\n> In cpptraj would it be enough to give the line\n> cpptraj -i traj.in\nThis should work fine. If you have access to multiple nodes you may\nget a speedup by using cpptraj.MPI. I've typically found good results\non HPC systems by using cpptraj.MPI.OMP (MPI + OpenMP enabled) and\nusing as many processes as there are CPU sockets and using openmp\nthreads for the remaining cores. So for example, for 2 nodes where\neach node has 2 sockets and each socket has 12 cores, I would use 4\nMPI processes, 12 threads per process.\nHope this helps,\n-Dan\n>\n> With the traj.in containing the following lines:\n> parm prot.prmtop\n> trajin prod.nc\n> reference equil.rst7\n>\n> rms reference out ligand_500ns.rms :1\n> --\n> Jenny R.S\n>",
+      "url": "http://archive.ambermd.org/202106/0014.html",
+      "in_reply_to": 1622647633
+    }
+  ]
+}

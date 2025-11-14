@@ -1,0 +1,21 @@
+{
+  "thread_id": 1715955057,
+  "subject": "[AMBER] Fwd: bug report and gmail filtering amber digest",
+  "messages": [
+    {
+      "message_id": 1715955057,
+      "author": "Ross Walker",
+      "date_raw": "Fri, 17 May 2024 10:10:57 -0400",
+      "body": "> Begin forwarded message:\n>\n> From: \"German P. Barletta\" <pbarletta.gmail.com>\n> Subject: bug report and gmail filtering amber digest\n> Date: May 17, 2024 at 09:31:31 EDT\n> To: amber-owner.ambermd.org\n>\n> Hello,\n> I'm writing to report a bug on a test, maybe it's been fixed already, but I downloaded amber yesterday, so I thought I should try to report it.\n> I'd write to the mailing list but gmail has been filtering my amber digest emails for a while now.\n>\n> On amber24/test/4096wat/Run.frcdmp:\n> ----------------------------------------\n> # Check the NetCDF forces with ncdump\n> if [ ! -x $AMBERHOME/bin/ncdump ]; then\n>   ncdump=`which ncdump`\n>   if [ ! -x $ncdump ]; then\n>      echo \"Warning: Cannot compare mdfrc without ncdump!\"\n>      exit 0\n>   fi\n> else\n>   ncdump=$AMBERHOME/bin/ncdump\n> fi\n> ----------------------------------------\n>\n> It should be:\n> ----------------------------------------\n> # Check the NetCDF forces with ncdump\n> if [ ! -x $AMBERHOME/bin/ncdump ]; then\n>   ncdump=`which ncdump`\n>   if [ -z $ncdump ]; then\n>      echo \"Warning: Cannot compare mdfrc without ncdump!\"\n>      exit 0\n>   fi\n> else\n>   ncdump=$AMBERHOME/bin/ncdump\n> fi\n> ----------------------------------------\n>\n> -x is good for checking if a file exists and is executable, -z is good for checking if a variable is empty, which is what happens if which ncdump can't find ncdump.\n>\n> Best wishes,",
+      "url": "http://archive.ambermd.org/202405/0070.html"
+    },
+    {
+      "message_id": 1715961060,
+      "author": "Ryan Snyder",
+      "date_raw": "Fri, 17 May 2024 15:51:00 +0000",
+      "body": "I agree with your findings. I created a merge request to implement your fix.\nRyan Snyder\n________________________________\nFrom: Ross Walker via AMBER <amber.ambermd.org>\nSent: Friday, May 17, 2024 10:10 AM\nTo: AMBER Mailing List <amber.ambermd.org>\nSubject: [AMBER] Fwd: bug report and gmail filtering amber digest\n> Begin forwarded message:\n>\n> From: \"German P. Barletta\" <pbarletta.gmail.com>\n> Subject: bug report and gmail filtering amber digest\n> Date: May 17, 2024 at 09:31:31 EDT\n> To: amber-owner.ambermd.org\n>\n> Hello,\n> I'm writing to report a bug on a test, maybe it's been fixed already, but I downloaded amber yesterday, so I thought I should try to report it.\n> I'd write to the mailing list but gmail has been filtering my amber digest emails for a while now.\n>\n> On amber24/test/4096wat/Run.frcdmp:\n> ----------------------------------------\n> # Check the NetCDF forces with ncdump\n> if [ ! -x $AMBERHOME/bin/ncdump ]; then\n>   ncdump=`which ncdump`\n>   if [ ! -x $ncdump ]; then\n>      echo \"Warning: Cannot compare mdfrc without ncdump!\"\n>      exit 0\n>   fi\n> else\n>   ncdump=$AMBERHOME/bin/ncdump\n> fi\n> ----------------------------------------\n>\n> It should be:\n> ----------------------------------------\n> # Check the NetCDF forces with ncdump\n> if [ ! -x $AMBERHOME/bin/ncdump ]; then\n>   ncdump=`which ncdump`\n>   if [ -z $ncdump ]; then\n>      echo \"Warning: Cannot compare mdfrc without ncdump!\"\n>      exit 0\n>   fi\n> else\n>   ncdump=$AMBERHOME/bin/ncdump\n> fi\n> ----------------------------------------\n>\n> -x is good for checking if a file exists and is executable, -z is good for checking if a variable is empty, which is what happens if which ncdump can't find ncdump.\n>\n> Best wishes,",
+      "url": "http://archive.ambermd.org/202405/0073.html",
+      "in_reply_to": 1715955057
+    }
+  ]
+}

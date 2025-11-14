@@ -1,0 +1,29 @@
+{
+  "thread_id": 1704108634,
+  "subject": "[AMBER] Amber to gromacs conversion",
+  "messages": [
+    {
+      "message_id": 1704108634,
+      "author": "Sourav Bhowmik",
+      "date_raw": "Mon, 1 Jan 2024 17:00:34 +0530",
+      "body": "Dear users,\nI am trying to convert amber prmtop and inpcrd to gromacs format using\namb2gro_top_gro.py programme. The following error is encountered. Kindly\nhelp me.\nsic.sic:~/ala$ amb2gro_top_gro.py\nTraceback (most recent call last):\nFile \"/home/sic/Downloads/amber22/bin/amb2gro_top_gro.py\", line 7, in\n<module>\nimport parmed as pmd\nModuleNotFoundError: No module named 'parmed'\nsic.sic:~/ala$\nSourav",
+      "url": "http://archive.ambermd.org/202401/0003.html"
+    },
+    {
+      "message_id": 1704126666,
+      "author": "Todd Minehardt",
+      "date_raw": "Mon, 1 Jan 2024 10:31:06 -0600",
+      "body": "Sourav,\nI'm guessing your PYTHONPATH and/or AMBERHOME and/or something related to\nthe always wonderful python package management system\nis at work here, unless you haven't installed parmed - which doesn't rule\nout python issues, btw.\nCan you report the output of the following from the command line?\n(1) which parmed\n(2) echo $AMBERHOME\nthose should give something like:\ntodd.finch:~$ which parmed\n/usr/local/amber22/bin/parmed\ntodd.finch:~$ echo $AMBERHOME\n/usr/local/amber22\n(3) also try it from a python prompt on the command line, you should see\nsomething like:\ntodd.finch:~$ python3\nPython 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0] on linux\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\n>>> import parmed\n>>> dir(parmed)\n['AcceptorDonor', 'AmoebaNonbondedExceptionType', 'Angle', 'AngleType',\n'Atom', 'AtomList', 'AtomType', 'Bond', 'BondType', 'ChiralFrame', 'Cmap',\n'CmapType', 'Dihedral', 'DihedralType', 'DihedralTypeList',\n'DrudeAnisotropy', 'DrudeAtom', 'ExtraPoint', 'Group', 'Hybridization',\n'Improper', 'ImproperType', 'Link', 'MultipoleFrame', 'NoUreyBradley',\n'NonbondedException', 'NonbondedExceptionType', 'OutOfPlaneBend',\n'OutOfPlaneBendType', 'OutOfPlaneExtraPointFrame', 'ParameterSet',\n'PiTorsion', 'QualitativeBondType', 'RBTorsionType', 'Residue',\n'ResidueList', 'StretchBend', 'StretchBendType', 'Structure',\n'StructureView', 'ThreeParticleExtraPointFrame', 'TorsionTorsion',\n'TorsionTorsionType', 'TrackedList', 'TrigonalAngle',\n'TwoParticleExtraPointFrame', 'UnassignedAtomType', 'UreyBradley', 'Vec3',\n'__all__', '__author__', '__builtins__', '__cached__', '__doc__',\n'__file__', '__loader__', '__name__', '__package__', '__path__',\n'__spec__', '__version__', '_version', '_versionre', 'amber', 'charmm',\n'constants', 'dlpoly', 'download_CIF', 'download_PDB', 'download_cif',\n'download_pdb', 'entos', 'exceptions', 'formats', 'geometry', 'gromacs',\n'load_file', 'load_rdkit', 'load_rosetta', 'modeller', 'namd', 'openmm',\n'parameters', 'periodic_table', 'rdkit', 'read_CIF', 'read_PDB',\n'read_cif', 'read_pdb', 'residue', 'rosetta', 'structure', 'symmetry',\n'tinker', 'tools', 'topologyobjects', 'unit', 'utils', 'vec3', 'version']\n>>>\nCheers,\nTodd\nOn Mon, Jan 1, 2024 at 5:31 AM Sourav Bhowmik via AMBER <amber.ambermd.\norg>\nwrote:\n> Dear users,\n> I am trying to convert amber prmtop and inpcrd to gromacs format using\n> amb2gro_top_gro.py programme. The following error is encountered. Kindly\n> help me.\n>\n> sic.sic:~/ala$ amb2gro_top_gro.py\n> Traceback (most recent call last):\n>   File \"/home/sic/Downloads/amber22/bin/amb2gro_top_gro.py\", line 7, in\n> <module>\n>     import parmed as pmd\n> ModuleNotFoundError: No module named 'parmed'\n> sic.sic:~/ala$\n>\n> Sourav\n>",
+      "url": "http://archive.ambermd.org/202401/0004.html",
+      "in_reply_to": 1704108634
+    },
+    {
+      "message_id": 1704163895,
+      "author": "王世玉",
+      "date_raw": "Tue, 2 Jan 2024 10:51:35 +0800 (GMT+08:00)",
+      "body": "Dear Sourav Bhowmik:\nI hope you can check that you used right python.\nIf not, you can:\n1. find the location of right python interpreter.\n2. run the  amb2gro_top_gro.py with the absolute path of python, like '/usr/local/python  amb2gro_top_gro.py -h' or '$AMBERHOME/miniconda/bin/python amb2gro_top_gro.py -h'\nI hope this will help you.\nShiyu\n&gt; -----原始邮件-----\n&gt; 发件人: \"Sourav Bhowmik via AMBER\" <amber.ambermd.\norg>\n&gt; 发送时间: 2024-01-01 19:30:34 (星期一)\n&gt; 收件人: amber.ambermd.org\n&gt; 抄送:\n&gt; 主题: [AMBER] Amber to gromacs conversion\n&gt;\n&gt; Dear users,\n&gt; I am trying to convert amber prmtop and inpcrd to gromacs format using\n&gt; amb2gro_top_gro.py programme. The following error is encountered. Kindly\n&gt; help me.\n&gt;\n&gt; sic.sic:~/ala$ amb2gro_top_gro.py\n&gt; Traceback (most recent call last):\n&gt;   File \"/home/sic/Downloads/amber22/bin/amb2gro_top_gro.py\", line 7, in\n&gt; <module>\n&gt;     import parmed as pmd\n&gt; ModuleNotFoundError: No module named 'parmed'\n&gt; sic.sic:~/ala$\n&gt;\n&gt; Sourav\n&gt;",
+      "url": "http://archive.ambermd.org/202401/0005.html",
+      "in_reply_to": 1704108634
+    }
+  ]
+}

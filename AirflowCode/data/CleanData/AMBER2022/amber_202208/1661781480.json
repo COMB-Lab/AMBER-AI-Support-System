@@ -1,0 +1,29 @@
+{
+  "thread_id": 1661781480,
+  "subject": "[AMBER] CpHMD",
+  "messages": [
+    {
+      "message_id": 1661781480,
+      "author": "Dulal Mondal",
+      "date_raw": "Mon, 29 Aug 2022 19:28:00 +0530",
+      "body": "Dear Users,\nI am running CpHMD simulation. Can you help me how the charge of the system\nis maintained and how the long range electrostatics of the system is taken\ncare of?\nwith regards,\nDulal Mondal",
+      "url": "http://archive.ambermd.org/202208/0144.html"
+    },
+    {
+      "message_id": 1661803641,
+      "author": "Adrian Roitberg",
+      "date_raw": "Mon, 29 Aug 2022 16:07:21 -0400",
+      "body": "Hi\nThe constant pH algorithm in amber consists of two parts. In the first\none, regular MD is performed with a certain set of protonation states.\nThe charge of the system is then treated like in any other regular MD\nrun, using PME. If there is extra charge, it is dealt with a\nneutralizing plasma, again, like in any MD in amber.\nThe second part is a montecarlo step to see if one can change\nprotonation state. This MC is done in implicit solvent, using GB with an\ninfinite cutoff, so there are no issues about charges there either.\nadrian\nOn 8/29/22 9:58 AM, Dulal Mondal via AMBER wrote:\n> [External Email]\n>\n> Dear Users,\n>\n> I am running CpHMD simulation. Can you help me how the charge of the system\n> is maintained and how the long range electrostatics of the system is taken\n> care of?\n> with regards,\n> Dulal Mondal\n>",
+      "url": "http://archive.ambermd.org/202208/0148.html",
+      "in_reply_to": 1661781480
+    },
+    {
+      "message_id": 1661804455,
+      "author": "David A Case",
+      "date_raw": "Mon, 29 Aug 2022 16:20:55 -0400",
+      "body": "On Mon, Aug 29, 2022, Dulal Mondal via AMBER wrote:\n>\n>I am running CpHMD simulation. Can you help me how the charge of the system\n>is maintained\nCharge is not maintained: it will rise and fall as protons are bound or\nunbound from the system.\n> and how the long range electrostatics of the system is taken care of?\nThis depends on what flavor of constant pH simulation you are doing.  If\ngeneralized Born is used (which I recommend starting with if you are new to\nCpHMD), electrostatic interactions beyond the nonbonded cutoff are ignored.\nYou should therefore use a large cutoff.  It is common practice to set the\ncutoff to be much larger than the size of the system -- this effectively\nmeans that there is no cutoff.\nFor explicit solvent simulations, the particle-mesh Ewald scheme is used to\nhandle long-range electrostatics.  This is a more complex subject than can\nbe handled in a single email (especially since you may be using GB anyway.)\n....dac",
+      "url": "http://archive.ambermd.org/202208/0150.html",
+      "in_reply_to": 1661781480
+    }
+  ]
+}

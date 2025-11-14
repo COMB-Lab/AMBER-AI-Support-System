@@ -1,0 +1,53 @@
+{
+  "thread_id": 1585957378,
+  "subject": "[AMBER] nmode entropy calculations gets stuck way too often",
+  "messages": [
+    {
+      "message_id": 1585957378,
+      "author": "Liao",
+      "date_raw": "Fri, 3 Apr 2020 18:42:58 -0500",
+      "body": "Dear Amber users,\nI’ve been running into a persistent problem that I have never really resolved. That when using the MMPBSA.py.MPI script for energy calculations, specifically the nmode entropy calculations part, it very easily gets stuck.\nWith drms=0.002, maxcyc=1000, I can see that in the nm.out file that gets stuck (usually stuck already by 200ns), the RMSG will go back and forth between a certain value, and never reach the drms value set. Whether maxcyc=1000 or 10000 doesn’t help, it usually gets stuck by iteration 200 or so.\nIf all frames are good, they finish in an hour or so. When a single frame has this problem, after a few hours, it finishes with an error, but it still saves a result file, minus one (stuck) entropy frame. But there are times when more than one frame is stuck and nothing gets saved after a few hours.\nHave others been also getting this problem, frequently? If so, is it the structure problem, or a calculation set up problem?\nMany thanks.",
+      "url": "http://archive.ambermd.org/202004/0024.html"
+    },
+    {
+      "message_id": 1585958114,
+      "author": "Roitberg,Adrian E",
+      "date_raw": "Fri, 3 Apr 2020 23:55:14 +0000",
+      "body": "That has nothing to do with the normal mode calculation per se. The problem is the optimizer. For a large system, it is very hard to locally optimize the structures enough to be able to trust the low frequency vibrations.\nSent from my iPad\n> On Apr 3, 2020, at 19:43, Liao <liaojunzhuo.aliyun.\ncom> wrote:\n>\n> ﻿[External Email]\n>\n> Dear Amber users,\n>\n> I’ve been running into a persistent problem that I have never really resolved. That when using the MMPBSA.py.MPI script for energy calculations, specifically the nmode entropy calculations part, it very easily gets stuck.\n>\n> With drms=0.002, maxcyc=1000, I can see that in the nm.out file that gets stuck (usually stuck already by 200ns), the RMSG will go back and forth between a certain value, and never reach the drms value set. Whether maxcyc=1000 or 10000 doesn’t help, it usually gets stuck by iteration 200 or so.\n>\n> If all frames are good, they finish in an hour or so. When a single frame has this problem, after a few hours, it finishes with an error, but it still saves a result file, minus one (stuck) entropy frame. But there are times when more than one frame is stuck and nothing gets saved after a few hours.\n>\n> Have others been also getting this problem, frequently? If so, is it the structure problem, or a calculation set up problem?\n>\n> Many thanks.\n>\n>",
+      "url": "http://archive.ambermd.org/202004/0025.html",
+      "in_reply_to": 1585957378
+    },
+    {
+      "message_id": 1585964662,
+      "author": "Liao",
+      "date_raw": "Fri, 3 Apr 2020 20:44:22 -0500",
+      "body": "Thanks there, so does that mean I can raise the set drms value to larger one, without problem? Because I remember the default is 0.001, and I’ve raised it to 0.002 already.\n> On Apr 3, 2020, at 6:55 PM, Roitberg,Adrian E <roitberg.ufl.\nedu> wrote:\n>\n> ﻿That has nothing to do with the normal mode calculation per se. The problem is the optimizer. For a large system, it is very hard to locally optimize the structures enough to be able to trust the low frequency vibrations.\n>\n> Sent from my iPad\n>\n>> On Apr 3, 2020, at 19:43, Liao <liaojunzhuo.aliyun.\ncom> wrote:\n>>\n>> ﻿[External Email]\n>>\n>> Dear Amber users,\n>>\n>> I’ve been running into a persistent problem that I have never really resolved. That when using the MMPBSA.py.MPI script for energy calculations, specifically the nmode entropy calculations part, it very easily gets stuck.\n>>\n>> With drms=0.002, maxcyc=1000, I can see that in the nm.out file that gets stuck (usually stuck already by 200ns), the RMSG will go back and forth between a certain value, and never reach the drms value set. Whether maxcyc=1000 or 10000 doesn’t help, it usually gets stuck by iteration 200 or so.\n>>\n>> If all frames are good, they finish in an hour or so. When a single frame has this problem, after a few hours, it finishes with an error, but it still saves a result file, minus one (stuck) entropy frame. But there are times when more than one frame is stuck and nothing gets saved after a few hours.\n>>\n>> Have others been also getting this problem, frequently? If so, is it the structure problem, or a calculation set up problem?\n>>\n>> Many thanks.\n>>\n>>",
+      "url": "http://archive.ambermd.org/202004/0027.html",
+      "in_reply_to": 1585957378
+    },
+    {
+      "message_id": 1586021424,
+      "author": "David A Case",
+      "date_raw": "Sat, 4 Apr 2020 13:30:24 -0400",
+      "body": "On Fri, Apr 03, 2020, Liao wrote:\n>\n>With drms=0.002, maxcyc=1000, I can see that in the nm.out file that gets\n>stuck (usually stuck already by 200ns), the RMSG will go back and forth\n>between a certain value, and never reach the drms value set. Whether\n>maxcyc=1000 or 10000 doesn’t help, it usually gets stuck by iteration 200\n>or so.\nThis is a case where you may need to do the entropy part \"by hand\".  I'd\nexplore using txmin.c to carry out the minimization, and tnmode.c to do\nthe subsequent normal mode analysis.  (These programs are in\nAmberTools/test/nabc; you can also use NAB versions of the same thing.)\nBe sure you have SHAKE turned off in the minimization.\nEqually well, you can modify the sander minimization to use xmin (set\nntmin=3).\nCaveat: I'm not familiar with how many options you have in using the\nMMPBSA.py scripts -- there may be option there that others on the list\ncan suggest.\nIt would help to know how big your system is.\n...thx...dac",
+      "url": "http://archive.ambermd.org/202004/0034.html",
+      "in_reply_to": 1585957378
+    },
+    {
+      "message_id": 1586028385,
+      "author": "Liao",
+      "date_raw": "Sat, 4 Apr 2020 14:26:25 -0500",
+      "body": "Thanks there, I can look into the by hand minimization method.\nThe system is in total 261 residues, 2 proteins and a ligand.\nI was also planning to change drms to a larger value like 0.005 or 0.01, to see if the entropy values differ greatly than compared to 0.002 that I was using. If the values are close enough it can also be a solution.\nSent from my iPhone\n> On Apr 4, 2020, at 12:30 PM, David A Case <david.case.rutgers.\nedu> wrote:\n>\n> ﻿On Fri, Apr 03, 2020, Liao wrote:\n>>\n>> With drms=0.002, maxcyc=1000, I can see that in the nm.out file that gets\n>> stuck (usually stuck already by 200ns), the RMSG will go back and forth\n>> between a certain value, and never reach the drms value set. Whether\n>> maxcyc=1000 or 10000 doesn’t help, it usually gets stuck by iteration 200\n>> or so.\n>\n> This is a case where you may need to do the entropy part \"by hand\".  I'd\n> explore using txmin.c to carry out the minimization, and tnmode.c to do\n> the subsequent normal mode analysis.  (These programs are in\n> AmberTools/test/nabc; you can also use NAB versions of the same thing.)\n> Be sure you have SHAKE turned off in the minimization.\n>\n> Equally well, you can modify the sander minimization to use xmin (set\n> ntmin=3).\n>\n> Caveat: I'm not familiar with how many options you have in using the\n> MMPBSA.py scripts -- there may be option there that others on the list\n> can suggest.\n>\n> It would help to know how big your system is.\n>\n> ...thx...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202004/0038.html",
+      "in_reply_to": 1585957378
+    },
+    {
+      "message_id": 1586665857,
+      "author": "Liao",
+      "date_raw": "Sat, 11 Apr 2020 23:30:57 -0500",
+      "body": "Update, I got it solved so far, by setting back to default value maxcyc=10000, while keeping drms=0.002 (default is 0.001). A run with 200+ amino acid residues may take 12-20 hours in my case, assigning 2 frames per cpu core (mooring np -4 with 8 frames total).\nSent from my iPhone\n> On Apr 4, 2020, at 2:26 PM, Liao <liaojunzhuo.aliyun.com> wrote:\n>\n> ﻿Thanks there, I can look into the by hand minimization method.\n> The system is in total 261 residues, 2 proteins and a ligand.\n> I was also planning to change drms to a larger value like 0.005 or 0.01, to see if the entropy values differ greatly than compared to 0.002 that I was using. If the values are close enough it can also be a solution.\n>\n> Sent from my iPhone\n>\n>>> On Apr 4, 2020, at 12:30 PM, David A Case <david.case.rutgers.\nedu> wrote:\n>>>\n>>> ﻿On Fri, Apr 03, 2020, Liao wrote:\n>>>\n>>> With drms=0.002, maxcyc=1000, I can see that in the nm.out file that gets\n>>> stuck (usually stuck already by 200ns), the RMSG will go back and forth\n>>> between a certain value, and never reach the drms value set. Whether\n>>> maxcyc=1000 or 10000 doesn’t help, it usually gets stuck by iteration 200\n>>> or so.\n>>\n>> This is a case where you may need to do the entropy part \"by hand\".  I'd\n>> explore using txmin.c to carry out the minimization, and tnmode.c to do\n>> the subsequent normal mode analysis.  (These programs are in\n>> AmberTools/test/nabc; you can also use NAB versions of the same thing.)\n>> Be sure you have SHAKE turned off in the minimization.\n>>\n>> Equally well, you can modify the sander minimization to use xmin (set\n>> ntmin=3).\n>>\n>> Caveat: I'm not familiar with how many options you have in using the\n>> MMPBSA.py scripts -- there may be option there that others on the list\n>> can suggest.\n>>\n>> It would help to know how big your system is.\n>>\n>> ...thx...dac\n>>\n>>\n>>",
+      "url": "http://archive.ambermd.org/202004/0123.html",
+      "in_reply_to": 1585957378
+    }
+  ]
+}

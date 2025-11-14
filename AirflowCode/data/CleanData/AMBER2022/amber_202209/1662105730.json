@@ -1,0 +1,21 @@
+{
+  "thread_id": 1662105730,
+  "subject": "[AMBER] crash o the pmemd.cuda",
+  "messages": [
+    {
+      "message_id": 1662105730,
+      "author": "Enrico Martinez",
+      "date_raw": "Fri, 2 Sep 2022 10:02:10 +0200",
+      "body": "Dear Amber users!\nThe second time I have a crash of pmemd.cuda after 370ns of the\nproduction run without any reasons for it. I checked the system and\ndid not observe any instabilities (like jump of RMSD or other\nparameters).\nin the nohup log I could found only this :\n/home/enrico/Desktop/test_md/NMR/output_testDIM77/MDtest/dim_310K/runjob_gpu.sh:\nline 24: 1625945 Killed                  pmemd.cuda -O -i\n./in/md_production_310K.in -o prod_.out -p protein.prmtop -c\nequil1p.rst -ref equil1p.rst -r prod_310K.rst -x prod_310K.netcdf\nNote that at that moment two different simulations were executing\nusing 2 separate GPUs and both of them were killed.\n.. and in the md.log the last string was:\nNSTEP =185695000   TIME(PS) =  372439.999  TEMP(K) =   309.94  PRESS =   -47.5\nEtot   =   -146618.0456  EKtot   =     66279.2422  EPtot      =   -212897.2878\nBOND   =      1847.8633  ANGLE   =      4826.5693  DIHED      =      3445.0949\nUB     =         0.0000  IMP     =         0.0000  CMAP       =       417.9705\n1-4 NB =      2148.6538  1-4 EEL =     23809.7680  VDWAALS    =    -12041.6860\nEELEC  =   -237351.5217  EHBOND  =         0.0000  RESTRAINT  =         0.0000\nEKCMT  =     29711.4731  VIRIAL  =     30994.1671  VOLUME     =   1250021.3388\nDensity    =         0.8550\n------------------------------------------------------------------------------\nwrapping first mol.:       78.33046      -55.38799       95.93482\nHow could I understand the reason for the crash? Was it due to the\noverheating of the gpu or a problem with my simulation?\nMany thanks in advance!\nEnrico",
+      "url": "http://archive.ambermd.org/202209/0008.html"
+    },
+    {
+      "message_id": 1662363926,
+      "author": "Enrico Martinez",
+      "date_raw": "Mon, 5 Sep 2022 09:45:26 +0200",
+      "body": "Thanks a lot, David!\nI believe this was due to the GPU overheating since I could run this\njob using check-out file without any issues\nCheers\nEnrico\nIl giorno ven 2 set 2022 alle ore 22:19 David A Case\n<david.case.rutgers.edu> ha scritto:\n>\n> On Fri, Sep 02, 2022, Enrico Martinez via AMBER wrote:\n>\n> >The second time I have a crash of pmemd.cuda after 370ns of the\n> >production run without any reasons for it. I checked the system and\n> >did not observe any instabilities (like jump of RMSD or other\n> >parameters).\n> >\n> >in the nohup log I could found only this :\n> >\n> >/home/enrico/Desktop/test_md/NMR/output_testDIM77/MDtest/dim_310K/runjob_gpu.sh:\n> >line 24: 1625945 Killed                  pmemd.cuda -O -i\n> >./in/md_production_310K.in -o prod_.out -p protein.prmtop -c\n> >equil1p.rst -ref equil1p.rst -r prod_310K.rst -x prod_310K.netcdf\n> >\n> >Note that at that moment two different simulations were executing\n> >using 2 separate GPUs and both of them were killed.\n>\n> This has some of the characteristics of a hardware failure, but it's hard to\n> be sure.  Consider using shorter runs, and restarting more often.  Then, if\n> the system fails as 370 nsec, you can restart shortly before the failure, to\n> see if bad things still happen at 370 nsec.  Ideally, you could get a\n> restart close enough to the failure that you could compare GPU and CPU runs\n> (or compare cuda_SPDP with cuda_DPFP, etc.)\n>\n> ....dac\n>",
+      "url": "http://archive.ambermd.org/202209/0026.html",
+      "in_reply_to": 1662105730
+    }
+  ]
+}

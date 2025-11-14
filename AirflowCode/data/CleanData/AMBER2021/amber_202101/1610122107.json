@@ -1,0 +1,29 @@
+{
+  "thread_id": 1610122107,
+  "subject": "[AMBER] CPPTRAJ error while Clustering",
+  "messages": [
+    {
+      "message_id": 1610122107,
+      "author": "Maghsoud, Yazdan",
+      "date_raw": "Fri, 8 Jan 2021 16:08:27 +0000",
+      "body": "Dear Amber Users,\nI'm doing clustering for a system of around 150,000 atoms (water molecules are also included) for further QM/MM calculations. I'm doing this clustering for three replicates each 500ns and a total of 150 .mdcrd files (each mdcrd file contains 2500 frames). I'm also using 20 CPUs and 120GB of RAM but after 20% of processing I face the following error:\n=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES\n=   PID 94219 RUNNING AT c11-8-4\n=   EXIT CODE: 9\n=   CLEANING UP REMAINING PROCESSES\n=   YOU CAN IGNORE THE BELOW CLEANUP MESSAGES\n===================================================================================\nYOUR APPLICATION TERMINATED WITH THE EXIT STRING: Killed (signal 9)\nThis typically refers to a problem with your application.\nThanks for any help in advance,\nYazdan",
+      "url": "http://archive.ambermd.org/202101/0109.html"
+    },
+    {
+      "message_id": 1610127109,
+      "author": "Daniel Roe",
+      "date_raw": "Fri, 8 Jan 2021 12:31:49 -0500",
+      "body": "Hi,\nOn Fri, Jan 8, 2021 at 11:08 AM Maghsoud, Yazdan\n<YazdanMaghsoud.my.unt.edu> wrote:\n>\n> Dear Amber Users,\n>\n> I'm doing clustering for a system of around 150,000 atoms (water molecules are also included) for further QM/MM calculations. I'm doing this clustering for three replicates each 500ns and a total of 150 .mdcrd files (each mdcrd file contains 2500 frames). I'm also using 20 CPUs and 120GB of RAM but after 20% of processing I face the following error:\nThat is a *lot* of data. 150000 atoms * 3 is 450k coordinates per\nframe, times 150 trajectories of 2500 frames means you will need about\n675 GB to store that trajectory in single precision in memory (4 bytes\nper coord); note that 20% of that is just over your system memory plus\nwhatever caching, which is probably why you're crashing. You have two\nways around this:\n1) Strip away the water if you don't need to cluster on it. That\nshould reduce your system size significantly. If you plan on doing a\nlot of calculations that don't involve the water, consider making a\nseparate \"stripped\" trajectory as this will speed up calculations\nquite a bit. Make sure you save the equivalent stripped topology (via\n'strip parmout', 'strip outprefix', 'parmstrip', or use parmed).\n2) Load the trajectories as on-disk data sets (TRAJ data sets in\ncpptraj terms). You won't be able to manipulate them but they will\nstay on disk.\n3) Cluster on only a subset of the trajectory frames. You can do this\nmultiple times for different subsets and compare the results. You\nshould probably be doing this anyway in order to test whether your\nclustering parameters are appropriate for your system.\nWith a lot of frames you might also run into the problem that your\npairwise distance matrix is too big to fit in memory. In that case\nyou'll have to use 'pairwisecache disk' or 'pairwisecache none'; be\naware that both are slower than having the pairwise matrix in memory.\nHope this helps,\n-Dan\n>\n> =   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES\n> =   PID 94219 RUNNING AT c11-8-4\n> =   EXIT CODE: 9\n> =   CLEANING UP REMAINING PROCESSES\n> =   YOU CAN IGNORE THE BELOW CLEANUP MESSAGES\n> ===================================================================================\n> YOUR APPLICATION TERMINATED WITH THE EXIT STRING: Killed (signal 9)\n> This typically refers to a problem with your application.\n>\n>\n> Thanks for any help in advance,\n>\n> Yazdan\n>",
+      "url": "http://archive.ambermd.org/202101/0110.html",
+      "in_reply_to": 1610122107
+    },
+    {
+      "message_id": 1611242083,
+      "author": "Stejskal, Lenka",
+      "date_raw": "Thu, 21 Jan 2021 15:14:43 +0000",
+      "body": "Hi, I am having issue with topology file reading in cpptraj. I had the CMAP issue reported previously: http://archive.ambermd.org/202012/0257.html<https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Farchive.ambermd.org%2F202012%2F0257.html&data=04%7C01%7C%7Cf383af2e807f4e9ec14d08d8bdefead3%7C1faf88fea9984c5b93c9210a11d9a5c2%7C0%7C0%7C637468185431308783%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&sdata=siDuZb85C29nPtgI4PMECN7Qsghb701fpSVtwzqAXSc%3D&reserved=0>\nI have used the latest version of cpptraj and it crashes:\nparm step5_input.parm7\nparm step5_input.parm7\nReading 'step5_input.parm7' as Amber Topology\nCHAMBER topology:\nCHARMM36 All-atom Force Field\nterminate called after throwing an instance of 'BadConversion'\nwhat():convertToInteger(\"IO.\")\nAbort (core dumped)\nThank you,\nLenka",
+      "url": "http://archive.ambermd.org/202101/0321.html",
+      "in_reply_to": 1610122107
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "thread_id": 1669647211,
+  "subject": "Re: [AMBER] gti_cut vs. gti_cut_sc",
+  "messages": [
+    {
+      "message_id": 1669647211,
+      "author": "accuratefreeenergy&ndash;&ndash;&ndash;",
+      "date_raw": "Mon, 28 Nov 2022 09:53:31 -0500",
+      "body": "Hi Matthew,\nnon-bonding cutoff is NOT the softcore potential cutoff point—it is used to determine whether to include the non-bond interaction for a pair or not.  gti_cut should be set to 1 so that all pairs within the entire TI region will not be ignored.  This is required to get consistent lambda scaling for the electrostatic interactions.\ngti_cut_sc=2 will make the tail smoothly go to zero, otherwise NB interactions would have a small value at the cutoff boundary.  Such errors usually are ignored and might not be big issues but could cause energy conservation problems in NVE simulations.\n(If there is no cutoff for the softcore potential, how can it smoothly go to zero at the cutoff?): When gti_cut_sc=2 and gti_cut=1, it means all pairs will be considered and the SC potentials will smoothly go to zero at the cutoff distance.  gti_cut =1 will not make the cutoff value disappear.\nBest,\nTaisung\nFrom: Matthew Guberman-Pfeffer <matthew.guberman-pfeffer.uconn.\nedu>\nSent: Friday, November 25, 2022 5:03 PM\nTo: accuratefreeenergy.gmail.\ncom; AMBER Mailing List <amber.ambermd.\norg>\nSubject: gti_cut vs. gti_cut_sc\nDear AMBER community,\nFor TI simulations, the manual recommends gti_cut=1 so that the non-bond cutoff is not applied to the internal softcore non-bonded terms. At the same time, it seems sensible to use gti_cut_sc=2 so that the tail of the softcore potential smoothly goes to zero at the non-bonding cutoff. To specify gti_cut_sc=2, must gti_cut = 0? (If there is no cutoff for the softcore potential, how can it smoothly go to zero at the cutoff?) Or, do I not understand what these options do?\nIf I must choose either gti_cut=1 or gti_cut_sc=2, what would you recommend? Even just some pros/cons would be helpful.\nThank you so much for the help!\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202211/0182.html"
+    }
+  ]
+}
