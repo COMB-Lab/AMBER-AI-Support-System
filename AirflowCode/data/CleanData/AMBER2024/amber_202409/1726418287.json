@@ -1,0 +1,45 @@
+{
+  "thread_id": 1726418287,
+  "subject": "[AMBER] Forcefield Builder analogs in Amber",
+  "messages": [
+    {
+      "message_id": 1726418287,
+      "author": "Nikolay Kuzmich",
+      "date_raw": "Sun, 15 Sep 2024 16:38:07 +0000",
+      "body": "Dear Amber users and developers,\nI wonder if there is something similar to Schr�dinger's Forcefield Builder in the Amber package for QM torsion parameters fitting. Is that paramfit utility? Extensive comments are appreciated.\nKind regards\nNick",
+      "url": "http://archive.ambermd.org/202409/0060.html"
+    },
+    {
+      "message_id": 1726455242,
+      "author": "David A Case",
+      "date_raw": "Sun, 15 Sep 2024 20:54:02 -0600",
+      "body": "On Sun, Sep 15, 2024, Nikolay Kuzmich via AMBER wrote:\n>I wonder if there is something similar to Schr�dinger's Forcefield Builder\n>in the Amber package for QM torsion parameters fitting. Is that paramfit\n>utility? Extensive comments are appreciated.\nI've not used the Schrodinger product you mention, but using QM to do a\nbespoke fitting for torsion parameters is a common task, and Amber users\nover the years have created a variety of tools for this.\nThe paramfit utility is described in Chap 16 of the Amber 2024 Reference\nManaul, and there is no point on expanding on that in an email.\nChap 17 describes mdgx, which is a much more elaborate tool for force field\ndevelopment, with a larger associated learning curve.  Look for the\nFitTorsion options in that Chapter if you are mainly interested in fitting\ntorsions.\nAnother recent tool, (which I have never used myself) is described here:\nhttps://chemrxiv.org/engage/chemrxiv/article-details/66df56e9cec5d6c1429f22e9\nNote that this package is not a part of Amber, and has its own software license\nagreement: be sure to see if that fits your needs.\nOthers on the list may wish to chime in here: I know the folks that\ndeveloped the packages listed above pretty well, but am far from an expert\nhere.\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202409/0063.html",
+      "in_reply_to": 1726418287
+    },
+    {
+      "message_id": 1726565130,
+      "author": "Jones de Andrade",
+      "date_raw": "Tue, 17 Sep 2024 06:25:30 -0300",
+      "body": "Dear list users, good night.\nFirst of all, sorry for kind of \"hijacking\" this thread for a related topic.\nBut since we are talking about automatic parametrization, and given that AMBER's FFs philosophy makes the torsion parameters (original topic of the thread) highly correlated to both electrostatic (for which amber already provides both resp and pyresp) and van der Waals parameters, can I ask if someone has similar information on automated tools for (amber compatible) Lennard-Jones potentials parametrization?\nThanks lot in advance,\nJones\nEm 17 de setembro de 2024 03:25:30 BRT, Nikolay Kuzmich via AMBER <amber.ambermd.\norg> escreveu:\n>Dear David,\n>\n>thank you for your answer!\n>\n>Kind regards\n>\n>Nick\n>\n>________________________________\n>From: David A Case <dacase1.gmail.com>\n>Sent: Monday, September 16, 2024 5:54:02 AM\n>To: Nikolay Kuzmich; AMBER Mailing List\n>Subject: Re: [AMBER] Forcefield Builder analogs in Amber\n>\n>Caution: External Sender. Do not click on links or open attachments unless you recognize the sender.\n>\n>\n>On Sun, Sep 15, 2024, Nikolay Kuzmich via AMBER wrote:\n>\n>>I wonder if there is something similar to Schrödinger's Forcefield Builder\n>>in the Amber package for QM torsion parameters fitting. Is that paramfit\n>>utility? Extensive comments are appreciated.\n>\n>I've not used the Schrodinger product you mention, but using QM to do a\n>bespoke fitting for torsion parameters is a common task, and Amber users\n>over the years have created a variety of tools for this.\n>\n>The paramfit utility is described in Chap 16 of the Amber 2024 Reference\n>Manaul, and there is no point on expanding on that in an email.\n>\n>Chap 17 describes mdgx, which is a much more elaborate tool for force field\n>development, with a larger associated learning curve.  Look for the\n>FitTorsion options in that Chapter if you are mainly interested in fitting\n>torsions.\n>\n>Another recent tool, (which I have never used myself) is described here:\n>\n>\nhttps://chemrxiv.org/engage/chemrxiv/article-details/66df56e9cec5d6c1429f22e9\n>\n>Note that this package is not a part of Amber, and has its own software license\n>agreement: be sure to see if that fits your needs.\n>\n>Others on the list may wish to chime in here: I know the folks that\n>developed the packages listed above pretty well, but am far from an expert\n>here.\n>\n>...hope this helps....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202409/0080.html",
+      "in_reply_to": 1726418287
+    },
+    {
+      "message_id": 1726768856,
+      "author": "David A Case",
+      "date_raw": "Thu, 19 Sep 2024 12:00:56 -0600",
+      "body": "On Tue, Sep 17, 2024, Jones de Andrade via AMBER wrote:\n>\n>But since we are talking about automatic parametrization, and given that\n>AMBER's FFs philosophy makes the torsion parameters (original topic of the\n>thread) highly correlated to both electrostatic (for which amber already\n>provides both resp and pyresp) and van der Waals parameters, can I ask if\n>someone has similar information on automated tools for (amber compatible)\n>Lennard-Jones potentials parametrization?\nI don't know of anything like this.  Antechamber assigns GAFF2 atom types,\nwhich have associated Lennard-Jones parameters.  In the Amber force-field\napproach, atoms with the same atom type all have the same LJ paramters, but\ncan have different charges.\nSo, torsion parameters indeed depend on both LJ parameters and charges, but\nonly the latter are independent of atom type.\nYou could, of course, define new atom types.  But I don't know of any\nautomated way to do this.  Others on the list may have more information.\n....dac",
+      "url": "http://archive.ambermd.org/202409/0087.html",
+      "in_reply_to": 1726418287
+    },
+    {
+      "message_id": 1726772097,
+      "author": "Carlos Simmerling",
+      "date_raw": "Thu, 19 Sep 2024 14:54:57 -0400",
+      "body": "you might check into what the openFF group is doing and see if they have\nany tools, there models tend to be Amber-compatible in terms of functional\nform.\nOn Thu, Sep 19, 2024 at 2:51 PM Jones De Andrade via AMBER <\namber.ambermd.org> wrote:\n> Hi Dr. Case, thanks for the answer.\n>\n> > You could, of course, define new atom types.  But I don't know of any\n> > automated way to do this.  Others on the list may have more\n> > information.\n>\n> That is what I'm interested in (sorry if I was not clear in the previous\n> email), define new atoms types, in some cases for different elements.\n>\n> I kinda remember that old VDW parameters were adjusted to fit density\n> and vaporization enthalpies from MC simulations, but I'm not quite sure\n> if it would still be an up-to-date method, neither if someone has ever\n> automatized this or any other approach (I thought that ForceBalance\n> would be able to try to parametrize those too: am I wrong?)\n>\n>",
+      "url": "http://archive.ambermd.org/202409/0089.html",
+      "in_reply_to": 1726418287
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "thread_id": 1627464022,
+  "subject": "[AMBER] Installing AmberTools with C++11 support",
+  "messages": [
+    {
+      "message_id": 1627464022,
+      "author": "Muhammad Ayaz Anwar",
+      "date_raw": "Wed, 28 Jul 2021 09:20:22 +0000",
+      "body": "Hi,\nI am trying to install the AmberTools20 with C++11 support for energy calculation using PME on windows subsystem linux. I tried different set up but nothing worked.\nTo enable the c++11 support i did:\n> set CMAKE_CXX_FLAGS -std=gnu++11 or  set CMAKE_CXX_FLAGS -std=c++11\n> cmake .. -DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX\\amber20_fftw_cpp -DCOMPILER=GNU -DPMI=FALSE -DCUDA=FALSE -DINSTALL_TESTS=TRUE -DDOWNLOAD_MINICONDA=TRUE -DMINICONDA_USE_PY3=TRUE -DOPENMP=TRUE\nThen using CMAKE-gui,\nCMAKE_CXX_FLAGS = -std=c++11\nand used the same cmake .. command. It compiled, but cpptraj energy command eneded with error \"pme requires compiling with fftw and c++11 support\".\nI dont knwo what else to do, anythoughts on how to make this work.\ncmake version = 3.10.0\ngcc version = 7.5.0\nThank you.\nAanwar",
+      "url": "http://archive.ambermd.org/202107/0229.html"
+    },
+    {
+      "message_id": 1627470579,
+      "author": "Shawn Brown",
+      "date_raw": "Wed, 28 Jul 2021 07:09:39 -0400",
+      "body": "Shawn T. Brown | Director | Pittsburgh Supercomputing Center | Carnegie\nMellon University | University of Pittsburgh\nOn Wed, Jul 28, 2021, 5:21 AM Muhammad Ayaz Anwar <ayazanwar.hotmail.com>\nwrote:\n> Hi,\n>\n> I am trying to install the AmberTools20 with C++11 support for energy\n> calculation using PME on windows subsystem linux. I tried different set up\n> but nothing worked.\n>\n> To enable the c++11 support i did:\n>\n> > set CMAKE_CXX_FLAGS -std=gnu++11 or  set CMAKE_CXX_FLAGS -std=c++11\n> > cmake .. -DCMAKE_INSTALL_PREFIX=$AMBER_PREFIX\\amber20_fftw_cpp\n> -DCOMPILER=GNU -DPMI=FALSE -DCUDA=FALSE -DINSTALL_TESTS=TRUE\n> -DDOWNLOAD_MINICONDA=TRUE -DMINICONDA_USE_PY3=TRUE -DOPENMP=TRUE\n>\n> Then using CMAKE-gui,\n> CMAKE_CXX_FLAGS = -std=c++11\n> and used the same cmake .. command. It compiled, but cpptraj energy\n> command eneded with error \"pme requires compiling with fftw and c++11\n> support\".\n>\n> I dont knwo what else to do, anythoughts on how to make this work.\n>\n> cmake version = 3.10.0\n> gcc version = 7.5.0\n>\n> Thank you.\n>\n> Aanwar\n>",
+      "url": "http://archive.ambermd.org/202107/0230.html",
+      "in_reply_to": 1627464022
+    },
+    {
+      "message_id": 1627472948,
+      "author": "David A Case",
+      "date_raw": "Wed, 28 Jul 2021 07:49:08 -0400",
+      "body": "On Wed, Jul 28, 2021, Muhammad Ayaz Anwar wrote:\n>To enable the c++11 support i did:\n>\n>> set CMAKE_CXX_FLAGS -std=gnu++11 or  set CMAKE_CXX_FLAGS -std=c++11\nIf you are using csh as your shell, the above command should be:\nsetenv CMAKE_CXX_FLAGS -std=gnu++11\nYou need \"setenv\" rather than \"set\" to get the variable into your\nenvironment.\nIf you are using bash (which would be more common in WSL or Linux), use\nexport CMAKE_CXX_FLAGS=\"-std=gnu++11\"\nI think it's better to just add CMAKE_CXX_FLAGS to the run_cmake script:\nthat way you have a record of what you did, and if you re-run it later you\ndon't have to remember to set the environment variables again.\nAlso, be sure to execute a ./clean_build (or equivalent) so that you will be\nsure to recompile fftw.\n....dac",
+      "url": "http://archive.ambermd.org/202107/0232.html",
+      "in_reply_to": 1627464022
+    }
+  ]
+}

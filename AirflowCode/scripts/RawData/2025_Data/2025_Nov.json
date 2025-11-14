@@ -1,0 +1,458 @@
+[
+  {
+    "message_id": "amber-202511-0000",
+    "url": "http://archive.ambermd.org/202511/0000.html",
+    "subject": "[AMBER] Using Multiple Parameter-Topology Files in Cpptraj?",
+    "author_name": "Liao",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Sun, 02 Nov 2025 00:54:48 +0800",
+    "date_iso": "2025-11-02T00:54:48+08:00",
+    "date_utc": "2025-11-01T16:54:48Z",
+    "received_raw": "Received on Sat Nov 01 2025 - 10:00:02 PDT",
+    "thread_id": "using multiple parameter-topology files in cpptraj?",
+    "body_text": "Dear AMBER list,\nI have experienced some issue with cpptraj, when I specify more than 1 parm file. Only the 1st one seems to be used. I tried to carefully follow the syntax of the manual but my 2nd parm file would be ignored. Wonder if something is wrong in my script that I don't see?\nAn example script of mine looks like this:\nparm ../../builtout.gas.pdb [1]\nparm ../../1.pdb [2]\ntrajin 10.align.xtc\nreference ../../1.pdb [ref1] parm [2]\nreference ../../../native/builtout.gas.pdb [ref2] parm [1]\nrms to1 :;176-189&!.H= ref [ref1] nofit out rmsd.out\nrms tonative :;176-189&!.H= ref [ref2] nofit out rmsd.out\n------------------------------------------------------------------------------\nThe warning message that would indicate the parm file mismatch issue is as below:\n[reference ../../1.pdb [ref1] parm [2]]\nReading '../../1.pdb' as PDB\nRead CRYST1 info from PDB: a=56.928 b=70.255 c=55.149 alpha=90 beta=90 gamma=90\nSetting active reference for distance-based masks: '1.pdb'\nWarning: Active reference has only 4633 atoms, parm 'builtout.gas.pdb' has 4838.\nWarning: Parm will only have reference coordinates for the first 4633 atoms (distance-based masks only).\n------------------------------------------------------------------------------\nSo 1.pdb when I use it as my reference file, is still fetching for builtout.gas.pdb the parm [1], instead of parm [2] that I specified. In fact this also would happen in trajectory processing, if I specify different trajectories to different parm files.\nThis is cpptraj from Amber 22. Any insight would be appreciated, thanks!\nJ Liao",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "Daniel Roe via AMBER: \"Re: [AMBER] Using Multiple Parameter-Topology Files in Cpptraj?\"",
+      "next_in_thread_title": "Daniel Roe via AMBER: \"Re: [AMBER] Using Multiple Parameter-Topology Files in Cpptraj?\"",
+      "replies_titles": [
+        "Daniel Roe via AMBER: \"Re: [AMBER] Using Multiple Parameter-Topology Files in Cpptraj?\""
+      ],
+      "in_reply_to_title": null,
+      "in_reply_to_link": null
+    }
+  },
+  {
+    "message_id": "amber-202511-0001",
+    "url": "http://archive.ambermd.org/202511/0001.html",
+    "subject": "Re: [AMBER] Using Multiple Parameter-Topology Files in Cpptraj?",
+    "author_name": "Daniel Roe",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Sat, 1 Nov 2025 13:33:03 -0400",
+    "date_iso": "2025-11-01T13:33:03-04:00",
+    "date_utc": "2025-11-01T17:33:03Z",
+    "received_raw": "Received on Sat Nov 01 2025 - 11:00:02 PDT",
+    "thread_id": "re: [amber] using multiple parameter-topology files in cpptraj?",
+    "body_text": "Hi,\nThis is actually OK. The warning refers to the use of distance-based masks only.\nWhen you load 1.pdb as a reference structure, since it is the first\nreference structure encountered, CPPTRAJ is using coordinates from it\nfor any distance-based masks it encounters during trajectory\nprocessing. The reason CPPTRAJ uses a single reference structure for\ndistance-based masks is so that mask selections do not change from\nframe to frame, which could affect data set handling etc. (side note:\nthe active reference for distance-based masks can be changed with the\n'activeref' command).\nHowever, when cpptraj sets 1.pdb as the active reference, it notices\nthere is another topology already loaded (builtout.gas.pdb) which has\na different number of atoms. Therefore any trajectory you load that\nuses this topology will not match the current active reference\nstructure, and CPPTRAJ lets you know this.\nSo to sum up, unless you are using distance-based masks, this warning\ndoes not apply. Let me know if that makes sense or if you are seeing\nunexpected behavior/strange results.\n-Dan\nOn Sat, Nov 1, 2025 at 12:55 PM Liao via AMBER <amber.ambermd.\norg> wrote:\n>\n> Dear AMBER list,\n> I have experienced some issue with cpptraj, when I specify more than 1 parm file. Only the 1st one seems to be used. I tried to carefully follow the syntax of the manual but my 2nd parm file would be ignored. Wonder if something is wrong in my script that I don't see?\n> An example script of mine looks like this:\n> parm ../../builtout.gas.pdb [1]\n> parm ../../1.pdb [2]\n> trajin 10.align.xtc\n> reference ../../1.pdb [ref1] parm [2]\n> reference ../../../native/builtout.gas.pdb [ref2] parm [1]\n> rms to1 :;176-189&!.H= ref [ref1] nofit out rmsd.out\n> rms tonative :;176-189&!.H= ref [ref2] nofit out rmsd.out\n> ------------------------------------------------------------------------------\n> The warning message that would indicate the parm file mismatch issue is as below:\n>  [reference ../../1.pdb [ref1] parm [2]]\n>  Reading '../../1.pdb' as PDB\n>  Read CRYST1 info from PDB: a=56.928 b=70.255 c=55.149 alpha=90 beta=90 gamma=90\n>  Setting active reference for distance-based masks: '1.pdb'\n> Warning: Active reference has only 4633 atoms, parm 'builtout.gas.pdb' has 4838.\n> Warning: Parm will only have reference coordinates for the first 4633 atoms (distance-based masks only).\n> ------------------------------------------------------------------------------\n> So 1.pdb when I use it as my reference file, is still fetching for builtout.gas.pdb the parm [1], instead of parm [2] that I specified. In fact this also would happen in trajectory processing, if I specify different trajectories to different parm files.\n> This is cpptraj from Amber 22. Any insight would be appreciated, thanks!\n> J Liao\n>",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "Marek Malý via AMBER: \"[AMBER] Institute of Photonics and Electronics of the Czech Academy of Sciences is looking for Computational Molecular Modelling Research Assistant\"",
+      "next_in_thread_title": null,
+      "replies_titles": [],
+      "in_reply_to_title": "Liao via AMBER: \"[AMBER] Using Multiple Parameter-Topology Files in Cpptraj?\"",
+      "in_reply_to_link": "http://archive.ambermd.org/202511/0000.html"
+    }
+  },
+  {
+    "message_id": "amber-202511-0002",
+    "url": "http://archive.ambermd.org/202511/0002.html",
+    "subject": "[AMBER] Institute of Photonics and Electronics of the Czech Academy of Sciences is looking for Computational Molecular Modelling Research Assistant",
+    "author_name": "Marek Malý",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Sun, 02 Nov 2025 19:17:44 +0000",
+    "date_iso": "2025-11-02T19:17:44+00:00",
+    "date_utc": "2025-11-02T19:17:44Z",
+    "received_raw": "Received on Sun Nov 02 2025 - 11:30:02 PST",
+    "thread_id": "institute of photonics and electronics of the czech academy of sciences is looking for computational molecular modelling research assistant",
+    "body_text": "Computational Molecular Modelling Research Assistant\nWe are seeking a motivated Research Assistant to join our\nBioelectrodynamics research team, at the Institute of Photonics and\nElectronics, Czech Academy of Sciences in Prague. More information here:\nhttps://www.ufe.cz/volne-pozice/computational-molecular-modelling-research-assistant/\nI would like to inform anyone interested that I am not the contact\nperson for this matter. All information, including contact details for\nthe relevant contact person, can be found on the website linked above.\nBest wishes,\nMarek Maly",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "Stefan Ivanov via AMBER: \"[AMBER] GAMESS-US PUNCH file\"",
+      "next_in_thread_title": null,
+      "replies_titles": [],
+      "in_reply_to_title": null,
+      "in_reply_to_link": null
+    }
+  },
+  {
+    "message_id": "amber-202511-0003",
+    "url": "http://archive.ambermd.org/202511/0003.html",
+    "subject": "[AMBER] GAMESS-US PUNCH file",
+    "author_name": "Stefan Ivanov",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Tue, 4 Nov 2025 10:31:44 +0200 (EET)",
+    "date_iso": "2025-11-04T10:31:44+02:00",
+    "date_utc": "2025-11-04T08:31:44Z",
+    "received_raw": "Received on Tue Nov 04 2025 - 01:00:02 PST",
+    "thread_id": "gamess-us punch file",
+    "body_text": "Dear Amber users,     I am trying to calculate RESP charges with antechamber from GAMESS-US output. I see that I need a PUNCH file but I have never seen one and have idea what it should look like. The subject seems to be poorly documented.     antechamber -i test.dat -fi gamess -o resp.mol2 -fo mol2 -c resp -eq 2     How can I generate a PUNCH file? What should it look like? Can someone please share one with me? This is my input to get Mulliken charges from GAMESS. Can someone suggest how I need to edit this to get a PUNCH file? Does the extension matter to antechamber - .log or .dat?     # GAMESS INPUT FILE\n$SYSTEM MEMDDI=400 MWORDS=200 $END\n$CONTRL RELWFN=LUT-IOTC ISPHER=1 SCFTYP=RHF MAXIT=200\nDFTTYP=B3LYP RUNTYP=ENERGY ICHARG=0 MULT=1 $END\n$STATPT NSTEP=1000 $END\n$ELPOT IEPOT=1 WHERE=PDC $END\n$PDC PTSEL=CONNOLLY CONSTR=NONE $END\n$BASIS GBASIS=SPKRDZC $END\n$SCF DIRSCF=.TRUE. $END\n$DATA  Cluster/6-31G  C1  PT\n78.0\n0.0160321744\n-0.2082819868\n-0.1009437405  CL\n17.0\n-1.6417024430\n1.0103777598\n-1.2164634440  N\n7.0\n-1.4166786092\n-1.1690025456\n1.0116726610  CL\n17.0\n1.6725016009\n-1.4400559218\n1.0016891461  N\n7.0\n1.4447375448\n0.7532160924\n-1.2170189176  H\n1.0\n-1.8522367882\n-0.5228264135\n1.6734346056  H\n1.0\n-0.9868294567\n-1.9341716738\n1.5397591238  H\n1.0\n-2.1592249953\n-1.5426330450\n0.4163336616  H\n1.0\n0.9903508114\n1.3584394432\n-1.9074080925  H\n1.0\n2.0433563725\n0.0813681723\n-1.7026474615  H\n1.0\n2.0505937885\n1.3258701187\n-0.6251075421\n$END",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "Daniel Hall via AMBER: \"[AMBER] Improve simulation performance for amber24 with an RTX 3080\"",
+      "next_in_thread_title": "James Kress via AMBER: \"Re: [AMBER] GAMESS-US PUNCH file\"",
+      "replies_titles": [
+        "James Kress via AMBER: \"Re: [AMBER] GAMESS-US PUNCH file\""
+      ],
+      "in_reply_to_title": null,
+      "in_reply_to_link": null
+    }
+  },
+  {
+    "message_id": "amber-202511-0008",
+    "url": "http://archive.ambermd.org/202511/0008.html",
+    "subject": "Re: [AMBER] GAMESS-US PUNCH file",
+    "author_name": "James Kress",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Tue, 4 Nov 2025 19:24:07 -0500",
+    "date_iso": "2025-11-04T19:24:07-05:00",
+    "date_utc": "2025-11-05T00:24:07Z",
+    "received_raw": "Received on Tue Nov 04 2025 - 16:30:02 PST",
+    "thread_id": "re: [amber] gamess-us punch file",
+    "body_text": "Try asking here:\nAn independent Google Groups discussion forum exists for GAMESS users.\nThe group's home page is at: http://groups.google.com/group/gamess\nOn Tue, Nov 4, 2025 at 3:32 AM Stefan Ivanov via AMBER <amber.ambermd.\norg>\nwrote:\n>  Dear Amber users,     I am trying to calculate RESP charges with\n> antechamber from GAMESS-US output. I see that I need a PUNCH file but I\n> have never seen one and have idea what it should look like. The subject\n> seems to be poorly documented.     antechamber -i test.dat -fi gamess -o\n> resp.mol2 -fo mol2 -c resp -eq 2     How can I generate a PUNCH file? What\n> should it look like? Can someone please share one with me? This is my input\n> to get Mulliken charges from GAMESS. Can someone suggest how I need to edit\n> this to get a PUNCH file? Does the extension matter to antechamber - .log\n> or .dat?     # GAMESS INPUT FILE\n> $SYSTEM MEMDDI=400 MWORDS=200 $END\n> $CONTRL RELWFN=LUT-IOTC ISPHER=1 SCFTYP=RHF MAXIT=200\n> DFTTYP=B3LYP RUNTYP=ENERGY ICHARG=0 MULT=1 $END\n> $STATPT NSTEP=1000 $END\n> $ELPOT IEPOT=1 WHERE=PDC $END\n> $PDC PTSEL=CONNOLLY CONSTR=NONE $END\n> $BASIS GBASIS=SPKRDZC $END\n> $SCF DIRSCF=.TRUE. $END\n> $DATA  Cluster/6-31G  C1  PT\n>\n>\n>\n>\n> 78.0\n>\n> 0.0160321744\n>  -0.2082819868\n>  -0.1009437405  CL\n>\n>\n>\n>\n> 17.0\n>  -1.6417024430\n>\n> 1.0103777598\n>  -1.2164634440  N\n>\n>\n>\n>\n>\n> 7.0\n>  -1.4166786092\n>  -1.1690025456\n>\n> 1.0116726610  CL\n>\n>\n>\n>\n> 17.0\n>\n> 1.6725016009\n>  -1.4400559218\n>\n> 1.0016891461  N\n>\n>\n>\n>\n>\n> 7.0\n>\n> 1.4447375448\n>\n> 0.7532160924\n>  -1.2170189176  H\n>\n>\n>\n>\n>\n> 1.0\n>  -1.8522367882\n>  -0.5228264135\n>\n> 1.6734346056  H\n>\n>\n>\n>\n>\n> 1.0\n>  -0.9868294567\n>  -1.9341716738\n>\n> 1.5397591238  H\n>\n>\n>\n>\n>\n> 1.0\n>  -2.1592249953\n>  -1.5426330450\n>\n> 0.4163336616  H\n>\n>\n>\n>\n>\n> 1.0\n>\n> 0.9903508114\n>\n> 1.3584394432\n>  -1.9074080925  H\n>\n>\n>\n>\n>\n> 1.0\n>\n> 2.0433563725\n>\n> 0.0813681723\n>  -1.7026474615  H\n>\n>\n>\n>\n>\n> 1.0\n>\n> 2.0505937885\n>\n> 1.3258701187\n>  -0.6251075421\n> $END\n>",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "David A Case via AMBER: \"Re: [AMBER] Vlimit error\"",
+      "next_in_thread_title": null,
+      "replies_titles": [],
+      "in_reply_to_title": "Stefan Ivanov via AMBER: \"[AMBER] GAMESS-US PUNCH file\"",
+      "in_reply_to_link": "http://archive.ambermd.org/202511/0003.html"
+    }
+  },
+  {
+    "message_id": "amber-202511-0004",
+    "url": "http://archive.ambermd.org/202511/0004.html",
+    "subject": "[AMBER] Improve simulation performance for amber24 with an RTX 3080",
+    "author_name": "Daniel Hall",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Tue, 4 Nov 2025 16:12:44 +0000",
+    "date_iso": "2025-11-04T16:12:44+00:00",
+    "date_utc": "2025-11-04T16:12:44Z",
+    "received_raw": "Received on Tue Nov 04 2025 - 08:30:02 PST",
+    "thread_id": "improve simulation performance for amber24 with an rtx 3080",
+    "body_text": "Hello amber community,\nI hope everyone is well.\nI am experiencing a poorer than expected performance when running explicit solvated system, with performances ~330 ns/day for a system of size ~18k atoms using amber24 on an Ubuntu 24.02 system. Here is my workstation hardware;\nCPU: Intel Xeon W-2295, 18 cores . 3 GHz\nGPU: NVIDIA GeForce RTX 3080 10GB\nStorage: 1 TB M.2 2280 PCIe NVMe Gen4x4 + 2 TB M.2 2280 PCIe NVMe Gen4x4\nRAM: 64GB (4 x 16GB) DDR4 2933 MHz\nPSU: 1000W\nThis is the prod.in using pmemd.cuda;\nigb = 0, imin = 0, irest = 1, ntx = 7,\nntb = 2, pres0 = 1.0, ntp = 1,\ntaup = 2.0,\ncut = 10.0, ntr = 0,\nntc = 2, ntf = 2,\ntempi = 300.0, temp0 = 300.0,\nntt = 3, gamma_ln = 2.0,\nnstlim = 250000000, dt = 0.002,\nntpr = 50000, ntwx = 50000, ntwr = 50000,\ntol = 0.00001\n/\nTroubleshooting I’ve already performed;\n*   I have checked that the GPU is being utilized, although the memory usage is only 472 Mb. Both the NVIDIA drivers (580.95.05) and CUDA versions (13.0) are up-to-date, and the correct version of CUDA is being used.\n*   The GPU is in the correct PCIe slot, x16 gen 3, and is forced x16 speed in the BIOS.\n*   The GPU isn’t thermal throttling, as it doesn’t exceed 75 °C.\n*   The maximum power performance option is selected by the workstation.\n*   The simulation is being in single-precision and not double-precision.\n*   I would normally use 5000 for ntpr, ntwx and ntwr but increasing to 50000 did not make a difference.\n*   Utilising more CPU cores made performances worse.\nIs there anything else that I have missed or could do to improve simulation performance.\nAny suggestions are greatly appreciated 😊\nRegards\nDan.",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "Carlos Simmerling via AMBER: \"Re: [AMBER] Improve simulation performance for amber24 with an RTX 3080\"",
+      "next_in_thread_title": "Carlos Simmerling via AMBER: \"Re: [AMBER] Improve simulation performance for amber24 with an RTX 3080\"",
+      "replies_titles": [
+        "Carlos Simmerling via AMBER: \"Re: [AMBER] Improve simulation performance for amber24 with an RTX 3080\""
+      ],
+      "in_reply_to_title": null,
+      "in_reply_to_link": null
+    }
+  },
+  {
+    "message_id": "amber-202511-0005",
+    "url": "http://archive.ambermd.org/202511/0005.html",
+    "subject": "Re: [AMBER] Improve simulation performance for amber24 with an RTX 3080",
+    "author_name": "Carlos Simmerling",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Tue, 4 Nov 2025 11:33:48 -0500",
+    "date_iso": "2025-11-04T11:33:48-05:00",
+    "date_utc": "2025-11-04T16:33:48Z",
+    "received_raw": "Received on Tue Nov 04 2025 - 09:00:03 PST",
+    "thread_id": "re: [amber] improve simulation performance for amber24 with an rtx 3080",
+    "body_text": "- switch to the MC barostat (barostat=2)\n- use H mass repartitioning and a dt=0.004\nOn Tue, Nov 4, 2025 at 11:13 AM Daniel Hall via AMBER <amber.ambermd.\norg>\nwrote:\n> Hello amber community,\n>\n> I hope everyone is well.\n>\n> I am experiencing a poorer than expected performance when running explicit\n> solvated system, with performances ~330 ns/day for a system of size ~18k\n> atoms using amber24 on an Ubuntu 24.02 system. Here is my workstation\n> hardware;\n>\n> CPU: Intel Xeon W-2295, 18 cores . 3 GHz\n> GPU: NVIDIA GeForce RTX 3080 10GB\n> Storage: 1 TB M.2 2280 PCIe NVMe Gen4x4 + 2 TB M.2 2280 PCIe NVMe Gen4x4\n> RAM: 64GB (4 x 16GB) DDR4 2933 MHz\n> PSU: 1000W\n>\n> This is the prod.in using pmemd.cuda;\n>\n>   igb = 0, imin = 0, irest = 1, ntx = 7,\n>   ntb = 2, pres0 = 1.0, ntp = 1,\n>   taup = 2.0,\n>   cut = 10.0, ntr = 0,\n>   ntc = 2, ntf = 2,\n>   tempi = 300.0, temp0 = 300.0,\n>   ntt = 3, gamma_ln = 2.0,\n>   nstlim = 250000000, dt = 0.002,\n>   ntpr = 50000, ntwx = 50000, ntwr = 50000,\n>   tol = 0.00001\n> /\n>\n> Troubleshooting I’ve already performed;\n>\n>   *   I have checked that the GPU is being utilized, although the memory\n> usage is only 472 Mb. Both the NVIDIA drivers (580.95.05) and CUDA versions\n> (13.0) are up-to-date, and the correct version of CUDA is being used.\n>   *   The GPU is in the correct PCIe slot, x16 gen 3, and is forced x16\n> speed in the BIOS.\n>   *   The GPU isn’t thermal throttling, as it doesn’t exceed 75 °C.\n>   *   The maximum power performance option is selected by the workstation.\n>   *   The simulation is being in single-precision and not double-precision.\n>   *   I would normally use 5000 for ntpr, ntwx and ntwr but increasing to\n> 50000 did not make a difference.\n>   *   Utilising more CPU cores made performances worse.\n>\n> Is there anything else that I have missed or could do to improve\n> simulation performance.\n>\n> Any suggestions are greatly appreciated 😊\n>\n>\n> Regards\n> Dan.\n>\n>",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "Adrian Roitberg via AMBER: \"Re: [AMBER] Improve simulation performance for amber24 with an RTX 3080\"",
+      "next_in_thread_title": "Adrian Roitberg via AMBER: \"Re: [AMBER] Improve simulation performance for amber24 with an RTX 3080\"",
+      "replies_titles": [
+        "Adrian Roitberg via AMBER: \"Re: [AMBER] Improve simulation performance for amber24 with an RTX 3080\""
+      ],
+      "in_reply_to_title": "Daniel Hall via AMBER: \"[AMBER] Improve simulation performance for amber24 with an RTX 3080\"",
+      "in_reply_to_link": "http://archive.ambermd.org/202511/0004.html"
+    }
+  },
+  {
+    "message_id": "amber-202511-0006",
+    "url": "http://archive.ambermd.org/202511/0006.html",
+    "subject": "Re: [AMBER] Improve simulation performance for amber24 with an RTX 3080",
+    "author_name": "Adrian Roitberg",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Tue, 4 Nov 2025 11:45:18 -0500",
+    "date_iso": "2025-11-04T11:45:18-05:00",
+    "date_utc": "2025-11-04T16:45:18Z",
+    "received_raw": "Received on Tue Nov 04 2025 - 09:00:04 PST",
+    "thread_id": "re: [amber] improve simulation performance for amber24 with an rtx 3080",
+    "body_text": "Also, try cut=9\nWhat water model are you using ?\nOn 11/4/25 11:33 AM, Carlos Simmerling via AMBER wrote:\n> [External Email]\n>\n> - switch to the MC barostat (barostat=2)\n> - use H mass repartitioning and a dt=0.004\n>\n>\n> On Tue, Nov 4, 2025 at 11:13 AM Daniel Hall via AMBER <amber.ambermd.\norg>\n> wrote:\n>\n>> Hello amber community,\n>>\n>> I hope everyone is well.\n>>\n>> I am experiencing a poorer than expected performance when running explicit\n>> solvated system, with performances ~330 ns/day for a system of size ~18k\n>> atoms using amber24 on an Ubuntu 24.02 system. Here is my workstation\n>> hardware;\n>>\n>> CPU: Intel Xeon W-2295, 18 cores @ 3 GHz\n>> GPU: NVIDIA GeForce RTX 3080 10GB\n>> Storage: 1 TB M.2 2280 PCIe NVMe Gen4x4 + 2 TB M.2 2280 PCIe NVMe Gen4x4\n>> RAM: 64GB (4 x 16GB) DDR4 2933 MHz\n>> PSU: 1000W\n>>\n>> This is the prod.in using pmemd.cuda;\n>>\n>>    igb = 0, imin = 0, irest = 1, ntx = 7,\n>>    ntb = 2, pres0 = 1.0, ntp = 1,\n>>    taup = 2.0,\n>>    cut = 10.0, ntr = 0,\n>>    ntc = 2, ntf = 2,\n>>    tempi = 300.0, temp0 = 300.0,\n>>    ntt = 3, gamma_ln = 2.0,\n>>    nstlim = 250000000, dt = 0.002,\n>>    ntpr = 50000, ntwx = 50000, ntwr = 50000,\n>>    tol = 0.00001\n>> /\n>>\n>> Troubleshooting I’ve already performed;\n>>\n>>    *   I have checked that the GPU is being utilized, although the memory\n>> usage is only 472 Mb. Both the NVIDIA drivers (580.95.05) and CUDA versions\n>> (13.0) are up-to-date, and the correct version of CUDA is being used.\n>>    *   The GPU is in the correct PCIe slot, x16 gen 3, and is forced x16\n>> speed in the BIOS.\n>>    *   The GPU isn’t thermal throttling, as it doesn’t exceed 75 °C.\n>>    *   The maximum power performance option is selected by the workstation.\n>>    *   The simulation is being in single-precision and not double-precision.\n>>    *   I would normally use 5000 for ntpr, ntwx and ntwr but increasing to\n>> 50000 did not make a difference.\n>>    *   Utilising more CPU cores made performances worse.\n>>\n>> Is there anything else that I have missed or could do to improve\n>> simulation performance.\n>>\n>> Any suggestions are greatly appreciated 😊\n>>\n>>\n>> Regards\n>> Dan.\n>>\n>>",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "Pradip Si via AMBER: \"[AMBER] Torsional Scan of a molecule in AMBER with GAFF\"",
+      "next_in_thread_title": null,
+      "replies_titles": [],
+      "in_reply_to_title": "Carlos Simmerling via AMBER: \"Re: [AMBER] Improve simulation performance for amber24 with an RTX 3080\"",
+      "in_reply_to_link": "http://archive.ambermd.org/202511/0005.html"
+    }
+  },
+  {
+    "message_id": "amber-202511-0007",
+    "url": "http://archive.ambermd.org/202511/0007.html",
+    "subject": "[AMBER] Torsional Scan of a molecule in AMBER with GAFF",
+    "author_name": "Pradip Si",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Tue, 4 Nov 2025 17:22:32 -0600",
+    "date_iso": "2025-11-04T17:22:32-06:00",
+    "date_utc": "2025-11-04T23:22:32Z",
+    "received_raw": "Received on Tue Nov 04 2025 - 15:30:02 PST",
+    "thread_id": "torsional scan of a molecule in amber with gaff",
+    "body_text": "Hello,\nI am interested in performing a torsional scan of a molecule using GAFF\nparameters. Could you please advise how this can be done in AMBER or any\nother code?\nBest regards,\nPradip Si\nPh.D. Student",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "James Kress via AMBER: \"Re: [AMBER] GAMESS-US PUNCH file\"",
+      "next_in_thread_title": null,
+      "replies_titles": [],
+      "in_reply_to_title": null,
+      "in_reply_to_link": null
+    }
+  },
+  {
+    "message_id": "amber-202511-0009",
+    "url": "http://archive.ambermd.org/202511/0009.html",
+    "subject": "Re: [AMBER] Vlimit error",
+    "author_name": "David A Case",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Thu, 6 Nov 2025 09:30:10 -0700",
+    "date_iso": "2025-11-06T09:30:10-07:00",
+    "date_utc": "2025-11-06T16:30:10Z",
+    "received_raw": "Received on Thu Nov 06 2025 - 09:00:02 PST",
+    "thread_id": "re: [amber] vlimit error",
+    "body_text": "On Sat, Nov 01, 2025, Surabhi Singh 24933024 wrote:\n>Thanks for the quick response, so I have checked there are no bad contacts\n>or bonds reported by checkstructure.\nDid you look at a simulation that was set to stop right before the first\nvlimit message in the mdout file?\nRun an initial simulation that stop a few steps before the first vlimit\nmessage.  Than continue (restart) from there, setting ntpr=1.  Look closely\nat the energies that are reported -- I suspect(!) that the electrostatic\nenergy will start to look odd, and using cpptraj checkstructure on a\nsnapshot right at the first vlimit error might reveal a bad contact.  That\nmight at least get you started on finding the origin of the problem.\n...dac",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "Дмитрий Громак via AMBER: \"[AMBER] Trouvles with pmemd.cuda\"",
+      "next_in_thread_title": "David A Case via AMBER: \"Re: [AMBER] Vlimit error\"",
+      "replies_titles": [],
+      "in_reply_to_title": null,
+      "in_reply_to_link": null
+    }
+  },
+  {
+    "message_id": "amber-202511-0014",
+    "url": "http://archive.ambermd.org/202511/0014.html",
+    "subject": "Re: [AMBER] Vlimit error",
+    "author_name": "David A Case",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Fri, 7 Nov 2025 09:10:35 -0700",
+    "date_iso": "2025-11-07T09:10:35-07:00",
+    "date_utc": "2025-11-07T16:10:35Z",
+    "received_raw": "Received on Fri Nov 07 2025 - 08:30:03 PST",
+    "thread_id": "re: [amber] vlimit error",
+    "body_text": "On Fri, Nov 07, 2025, Surabhi Singh 24933024 wrote:\n>Got the exact issue, it's the Phosphate group at 5'ends of the DNA that was\n>giving bad contact.\n>\nIs the bad contact between the H atom on the phosphate group and a\nneighboring oxygen atom on the same phosphate?\nIf so, that is a problem that we have seen before, and the \"fix\" involves\nincreasing the force constant on the P-O-H angle.  I don't remember the\ndetails right now, but let us know if this is the bad contact -- we can\ntrack things down, and others on the list probably have better grey cells\nthan I have.\nIf it's not this, knowing which atoms are involved in the bad contact might\ntrigger some thoughts.  That's assuming that you have not already made\nprogress on your own.\n...good luck...dac",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "Ruchika Bhat via AMBER: \"[AMBER] 3D Rism\"",
+      "next_in_thread_title": null,
+      "replies_titles": [],
+      "in_reply_to_title": "David A Case via AMBER: \"Re: [AMBER] Vlimit error\"",
+      "in_reply_to_link": "http://archive.ambermd.org/202511/0009.html"
+    }
+  },
+  {
+    "message_id": "amber-202511-0010",
+    "url": "http://archive.ambermd.org/202511/0010.html",
+    "subject": "[AMBER] Trouvles with pmemd.cuda",
+    "author_name": "Дмитрий Громак",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Thu, 06 Nov 2025 20:13:32 +0300",
+    "date_iso": "2025-11-06T20:13:32+03:00",
+    "date_utc": "2025-11-06T17:13:32Z",
+    "received_raw": "Received on Thu Nov 06 2025 - 09:30:02 PST",
+    "thread_id": "trouvles with pmemd.cuda",
+    "body_text": "",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "Greenberg, Jerry via AMBER: \"Re: [AMBER] Problem compiling ambertools25/amber24\"",
+      "next_in_thread_title": null,
+      "replies_titles": [],
+      "in_reply_to_title": null,
+      "in_reply_to_link": null
+    }
+  },
+  {
+    "message_id": "amber-202511-0011",
+    "url": "http://archive.ambermd.org/202511/0011.html",
+    "subject": "Re: [AMBER] Problem compiling ambertools25/amber24",
+    "author_name": "Greenberg, Jerry",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Thu, 6 Nov 2025 17:22:31 +0000",
+    "date_iso": "2025-11-06T17:22:31+00:00",
+    "date_utc": "2025-11-06T17:22:31Z",
+    "received_raw": "Received on Thu Nov 06 2025 - 09:30:03 PST",
+    "thread_id": "re: [amber] problem compiling ambertools25/amber24",
+    "body_text": "Thanks Dave and apologies if this is a duplicate message:\nIt turns out I was able to compile ambertools 25 and pmemd 24 for cpu’s ands gpu’s outside of spack (after sorting out a gcc/cuda compatibility issue).\nSo I'll try to sort this out with the spack people: The problem is even on the spack develop branch they are only up to v 20 with  autotools which is why I wrote my own spack package which uses cmake and which worked until the current version.\nJerry\nFrom: David A Case <dacase1.gmail.com>\nDate: Friday, October 24, 2025 at 8:52 PM\nTo: Greenberg, Jerry <jpg.sdsc.\nedu>, AMBER Mailing List <amber.ambermd.\norg>\nSubject: Re: [AMBER] Problem compiling ambertools25/amber24\nOn Wed, Oct 22, 2025, Greenberg, Jerry via AMBER wrote:\n>\n>I am trying to compile amber 24/ambertools 25 via spack (using a spack\n>package that I wrote, which I modified from the package I wrote to\n>successfully compile amber 22).\nHi Jerry:  I'd like to know exactly what you mean by \"amber 24/ambertools\n25\": have you downloaded Amber 24 since May of this year?  You can tell\nbecause the download will expand into a pmemd24_src folder.  Building pmemd\nis now completely independent of building AmberTools25.\n(Of course, this change will problem mean that your spack package will need\nconsiderable updates...)\nTo clarify: the *code* inside pmemd24_src is the same as the patched\nversion of the old (pre-May 2025) download of Amber24.  It's just the\npackaging that has changed.\n>-- Running update_amber...\n>PatchingError: .patches/Amber24_Unapplied_Patches/update.2 failed to apply. No changes made from this patch\nYou should also try compiling from truly fresh directories, which would not\nhave anything like Amber24_Unapplied_Patches there.  Plus, the pmemd24_src\nfolder already has all the patches that were made for the older Amber24.\nOur hope is this: AmberTools25 is still a complex package, and using spack\nto handle dependencies, etc. might make good sense.  Amber24 (in its new\nversion inside pmemd24_src) has many fewer dependencies, and might not need\nonly a very simple spack file, or maybe none at all.\n...good luck...let me know if you need more info.\n...dac",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "yumura.seigo967--- via AMBER: \"[AMBER] Issue with mdout file\"",
+      "next_in_thread_title": null,
+      "replies_titles": [],
+      "in_reply_to_title": null,
+      "in_reply_to_link": null
+    }
+  },
+  {
+    "message_id": "amber-202511-0012",
+    "url": "http://archive.ambermd.org/202511/0012.html",
+    "subject": "[AMBER] Issue with mdout file",
+    "author_name": "yumura.seigo967&ndash;&ndash;&ndash;",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Fri, 7 Nov 2025 01:02:29 +0000",
+    "date_iso": "2025-11-07T01:02:29+00:00",
+    "date_utc": "2025-11-07T01:02:29Z",
+    "received_raw": "Received on Thu Nov 06 2025 - 17:30:03 PST",
+    "thread_id": "issue with mdout file",
+    "body_text": "Dear all,\nI'm working on cMD using pmemd.cuda_SPFP.MPI in AMBER24 package.\nRecently, I noticed something unusual in mdout file.\nSpecifically, some parts of mdout file appear unreadable\n(please see the example result using cat commands and vim commands below).\nCould this be a bug in pmemd.cuda_SPFP.MPI?\nBest regards,\nSeigo\n(using cat command)",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "David A Case via AMBER: \"Re: [AMBER] Issue with mdout file\"",
+      "next_in_thread_title": "David A Case via AMBER: \"Re: [AMBER] Issue with mdout file\"",
+      "replies_titles": [
+        "David A Case via AMBER: \"Re: [AMBER] Issue with mdout file\""
+      ],
+      "in_reply_to_title": null,
+      "in_reply_to_link": null
+    }
+  },
+  {
+    "message_id": "amber-202511-0013",
+    "url": "http://archive.ambermd.org/202511/0013.html",
+    "subject": "Re: [AMBER] Issue with mdout file",
+    "author_name": "David A Case",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Fri, 7 Nov 2025 09:00:32 -0700",
+    "date_iso": "2025-11-07T09:00:32-07:00",
+    "date_utc": "2025-11-07T16:00:32Z",
+    "received_raw": "Received on Fri Nov 07 2025 - 08:30:02 PST",
+    "thread_id": "re: [amber] issue with mdout file",
+    "body_text": "On Fri, Nov 07, 2025, yumura.seigo967--- via AMBER wrote:\n>\n>I'm working on cMD using pmemd.cuda_SPFP.MPI in AMBER24 package.\n>Recently, I noticed something unusual in mdout file.\n>\n>Specifically, some parts of mdout file appear unreadable\n>(please see the example result using cat commands and vim commands below).\n>\nAre you trying to read an mdout file from a job that is still running? And\nis what you get reproducible -- i.e. do you get the same result repeatedly?\n>(using cat command)\n>",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "David A Case via AMBER: \"Re: [AMBER] Vlimit error\"",
+      "next_in_thread_title": null,
+      "replies_titles": [],
+      "in_reply_to_title": "yumura.seigo967--- via AMBER: \"[AMBER] Issue with mdout file\"",
+      "in_reply_to_link": "http://archive.ambermd.org/202511/0012.html"
+    }
+  },
+  {
+    "message_id": "amber-202511-0015",
+    "url": "http://archive.ambermd.org/202511/0015.html",
+    "subject": "[AMBER] 3D Rism",
+    "author_name": "Ruchika Bhat",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Sat, 8 Nov 2025 15:33:36 +0530",
+    "date_iso": "2025-11-08T15:33:36+05:30",
+    "date_utc": "2025-11-08T10:03:36Z",
+    "received_raw": "Received on Sat Nov 08 2025 - 02:30:02 PST",
+    "thread_id": "3d rism",
+    "body_text": "Hi team,\nI am using gmx_MMPBSA 1.6.4, MMPBSA version 16.0 and AmberTools: 20.\nI am having the following error while running this input file\n&general\nsys_name=\"3D-RISM\",\nstartframe=5,\nendframe=8,\n/\n&rism\npolardecomp=0, tolerance=0.001, rism_verbose=2, closure=\"kh\"\n/\nI want to run it on my gromacs trajectories. Other runs on MmPbsa and\nMmgbsa and NMA and IE have fun successfully on the same complex\ntrajectories.\nAttached is the error screenshot. Kindly guide how to proceed.\nThanks and regards,\nDr. Ruchika\nSenior Post Doc\nUniversity of Arizona",
+    "attachments": [
+      {
+        "filename": "Screenshot__47_.png",
+        "mime": "image/png",
+        "url": "http://archive.ambermd.org/202511/att-0015/Screenshot__47_.png"
+      }
+    ],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "Wong, Matthew via AMBER: \"[AMBER] Question About RMSD During Equilibration\"",
+      "next_in_thread_title": null,
+      "replies_titles": [],
+      "in_reply_to_title": null,
+      "in_reply_to_link": null
+    }
+  },
+  {
+    "message_id": "amber-202511-0016",
+    "url": "http://archive.ambermd.org/202511/0016.html",
+    "subject": "[AMBER] Question About RMSD During Equilibration",
+    "author_name": "Wong, Matthew",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Mon, 10 Nov 2025 05:40:46 +0000",
+    "date_iso": "2025-11-10T05:40:46+00:00",
+    "date_utc": "2025-11-10T05:40:46Z",
+    "received_raw": "Received on Sun Nov 09 2025 - 22:00:02 PST",
+    "thread_id": "question about rmsd during equilibration",
+    "body_text": "Hi Amber Community,\nI hope you’re doing well. I have a quick question regarding the equilibration steps in my simulation.\nI am simulating a large system closer to a million atoms. For the heating step post minimization (T=100→298 K, 1 ns, constant volume, solute restraint = 100) and the subsequent constant pressure equilibration (T=298 K, 1 ns, solute restraint = 100), I’m observing an RMSD jump of about 1.0 Å. In contrast, all my other steps typically show RMSD changes around 0.2 Å and plateau by the end of the step.\nIs it normal to see such a larger RMSD jump switching from NVT to NPT? If not, could this indicate an issue with my setup, and what changes do you suggest that I can make to my protocol?\nThank you for your guidance!\nBest regards,\nMatthew\nGet Outlook for iOS<\nhttps://aka.ms/o0ukef\n>",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "David A Case via AMBER: \"Re: [AMBER] Question About RMSD During Equilibration\"",
+      "next_in_thread_title": "David A Case via AMBER: \"Re: [AMBER] Question About RMSD During Equilibration\"",
+      "replies_titles": [
+        "David A Case via AMBER: \"Re: [AMBER] Question About RMSD During Equilibration\"",
+        "Carlos Simmerling via AMBER: \"Re: [AMBER] Question About RMSD During Equilibration\""
+      ],
+      "in_reply_to_title": null,
+      "in_reply_to_link": null
+    }
+  },
+  {
+    "message_id": "amber-202511-0017",
+    "url": "http://archive.ambermd.org/202511/0017.html",
+    "subject": "Re: [AMBER] Question About RMSD During Equilibration",
+    "author_name": "David A Case",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Mon, 10 Nov 2025 08:20:53 -0700",
+    "date_iso": "2025-11-10T08:20:53-07:00",
+    "date_utc": "2025-11-10T15:20:53Z",
+    "received_raw": "Received on Mon Nov 10 2025 - 07:30:02 PST",
+    "thread_id": "re: [amber] question about rmsd during equilibration",
+    "body_text": "On Mon, Nov 10, 2025, Wong, Matthew via AMBER wrote:\n>\n>I am simulating a large system closer to a million atoms. For the heating\n>step post minimization (T=100→298 K, 1 ns, constant volume, solute\n>restraint = 100) and the subsequent constant pressure equilibration (T=298\n>K, 1 ns, solute restraint = 100), I’m observing an RMSD jump of about 1.0\n>Å. In contrast, all my other steps typically show RMSD changes around 0.2\n>Å and plateau by the end of the step.\n>\n>Is it normal to see such a larger RMSD jump switching from NVT to NPT? If\n>not, could this indicate an issue with my setup, and what changes do you\n>suggest that I can make to my protocol?\nIt's hard to say much based on only 2 ns of simulation and the small amount\nof information we have.\nA solute restraint of 100 is very high: consider reducing that by an order\nof magnitude.\nIn the NPT simulation, see if the density and volume are changing by a lot;\nthat could lead to changes in your RMS statistic.\nGenerally, a single number is not going to tell you all that much.  Visual\nexamination is always recommended.\n...good luck...dac",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": "Carlos Simmerling via AMBER: \"Re: [AMBER] Question About RMSD During Equilibration\"",
+      "next_in_thread_title": "Carlos Simmerling via AMBER: \"Re: [AMBER] Question About RMSD During Equilibration\"",
+      "replies_titles": [],
+      "in_reply_to_title": "Wong, Matthew via AMBER: \"[AMBER] Question About RMSD During Equilibration\"",
+      "in_reply_to_link": "http://archive.ambermd.org/202511/0016.html"
+    }
+  },
+  {
+    "message_id": "amber-202511-0018",
+    "url": "http://archive.ambermd.org/202511/0018.html",
+    "subject": "Re: [AMBER] Question About RMSD During Equilibration",
+    "author_name": "Carlos Simmerling",
+    "author_email_raw": "amber.ambermd.org",
+    "author_email_deobfuscated": "amber@ambermd.org",
+    "date_raw": "Mon, 10 Nov 2025 10:48:51 -0500",
+    "date_iso": "2025-11-10T10:48:51-05:00",
+    "date_utc": "2025-11-10T15:48:51Z",
+    "received_raw": "Received on Mon Nov 10 2025 - 08:00:02 PST",
+    "thread_id": "re: [amber] question about rmsd during equilibration",
+    "body_text": "think about these:\n- what are the reference coordinates, mask and weight at each step of\nrelaxation? Are they the same?\n- what are the reference coordinates and mask during the rmsd calculation?\nare they the same as during the MD steps?\nin particular, changing the reference coordinates can lead to jumps.\nOn Mon, Nov 10, 2025 at 12:41 AM Wong, Matthew via AMBER <amber.ambermd.\norg>\nwrote:\n> Hi Amber Community,\n>\n> I hope you’re doing well. I have a quick question regarding the\n> equilibration steps in my simulation.\n>\n> I am simulating a large system closer to a million atoms. For the heating\n> step post minimization (T=100→298 K, 1 ns, constant volume, solute\n> restraint = 100) and the subsequent constant pressure equilibration (T=298\n> K, 1 ns, solute restraint = 100), I’m observing an RMSD jump of about 1.0\n> Å. In contrast, all my other steps typically show RMSD changes around 0.2 Å\n> and plateau by the end of the step.\n>\n> Is it normal to see such a larger RMSD jump switching from NVT to NPT? If\n> not, could this indicate an issue with my setup, and what changes do you\n> suggest that I can make to my protocol?\n>\n> Thank you for your guidance!\n>\n> Best regards,\n>\n> Matthew\n>\n> Get Outlook for iOS<\n>\nhttps://protect.checkpoint.com/v2/r01/___https://aka.ms/o0ukef___.YzJ1OnN0b255YnJvb2s6YzpnOjk0OTBkOTJjNWQ0ZGIxZTc4ZDlmZDkyZTdiZmE0ZmE5Ojc6NDc5ZTpjMzY3NzE5MGMzMGY3NTcyODA0YjY5YmUyODM5NWY3YjUxOGJlZjJlYzhmNWNmMDYyYzkzZDE1N2Q5Njc5MGRiOnA6VDpG\n> >\n>",
+    "attachments": [],
+    "nav_links": {
+      "this_message": "Message body",
+      "next_message_title": null,
+      "next_in_thread_title": null,
+      "replies_titles": [],
+      "in_reply_to_title": "Wong, Matthew via AMBER: \"[AMBER] Question About RMSD During Equilibration\"",
+      "in_reply_to_link": "http://archive.ambermd.org/202511/0016.html"
+    }
+  }
+]

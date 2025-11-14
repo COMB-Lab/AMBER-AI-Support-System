@@ -1,0 +1,13 @@
+{
+  "thread_id": 1691114070,
+  "subject": "[AMBER] Amber problem looking for help",
+  "messages": [
+    {
+      "message_id": 1691114070,
+      "author": "leveen",
+      "date_raw": "Fri, 4 Aug 2023 09:54:30 +0800",
+      "body": "Dear Amber community,\n&nbsp; Referring to tutorial Amber tutorial - Protein Ligand binding free energies (ambermd.org), I'm trying to run the QM/MM simulation to&nbsp; collect potential energy differences for FEP calculations.&nbsp;The version I am using is Amber22. The simulation process is calculated using Sander.\n&nbsp; When I generated an input file using the new version of the mbar method in the Amber22 manual, an error was reported('error in reading namelist cntrl').&nbsp;\nHere is the input file:\nNPT simulation\n&nbsp;&amp;cntrl\n&nbsp; irest=0,ntx=1,\n&nbsp; nstlim=50000,dt=0.002,\n&nbsp; temp0=300.0,ntt=3,gamma_ln=2.0,\n&nbsp; ntc=2,ntf=1,\n&nbsp; cut=8.0,\n&nbsp; ntpr=5000,ntwx=5000,ntwv=0,ntwe=0,\n&nbsp; icfe=1,clambda = 0.5,\n&nbsp; ifmbar=1,\n&nbsp; mbar_states = 15,\n&nbsp; mbar_lambda = 0.00, 0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.85, 0.90, 0.95, 1.0,\n&nbsp; ifsc=1,scmask=\":PHN.O1,H6\",\n&nbsp; ifqnt = 1,\n&nbsp;/\n&nbsp; &amp;qmmm\n&nbsp; qmmask=':PHN.1-13',\n&nbsp; qmcharge=0,\n&nbsp; qm_theory='DFTB3',\n&nbsp;/\n&nbsp; And my terminal's command is&nbsp; ' mpirun&nbsp; -np 2&nbsp; sander.MPI -ng 2 -groupfile group_prod_l ' .\n&nbsp; When I generate an input file using the old version of Amber method, it can be run. The input file is as follows:\nNPT simulation\n&nbsp;&amp;cntrl\n&nbsp; irest=0,ntx=1,\n&nbsp; nstlim=500000,dt=0.001,\n&nbsp; temp0=300.0,ntt=3,gamma_ln=2.0,\n&nbsp; ntc=2,ntf=1,\n&nbsp; cut=8.0,\n&nbsp; ntpr=5000,ntwx=5000,ntwv=0,ntwe=0,\n&nbsp; icfe=1,clambda = 0.5,\n&nbsp; ifmbar=1, bar_intervall=1000,bar_l_min=0.005,bar_l_max=0.995,bar_l_incr=0.1,\n&nbsp; ifsc=1,scmask=\":BNZ.H6\",\n&nbsp; ifqnt = 1,\n&nbsp;/\n&nbsp; &amp;qmmm\n&nbsp; qmmask=':BNZ.1-12',\n&nbsp; qmcharge=0,\n&nbsp; qm_theory='DFTB3',\n&nbsp;/\n&nbsp; However, in the old version of Amber method,&nbsp;it is not allowed for bar_l_min&gt;0.995 or bar_l_max<0.005, which makes it impossible for me to set the lambda=0,1.\n&nbsp; How should I do��\n&nbsp; Best wishes!\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Leveen\n&nbsp;",
+      "url": "http://archive.ambermd.org/202308/0015.html"
+    }
+  ]
+}

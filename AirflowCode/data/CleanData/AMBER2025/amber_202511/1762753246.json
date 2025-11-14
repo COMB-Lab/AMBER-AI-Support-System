@@ -1,0 +1,29 @@
+{
+  "thread_id": 1762753246,
+  "subject": "[AMBER] Question About RMSD During Equilibration",
+  "messages": [
+    {
+      "message_id": 1762753246,
+      "author": "Wong, Matthew",
+      "date_raw": "Mon, 10 Nov 2025 05:40:46 +0000",
+      "body": "Hi Amber Community,\nI hope you’re doing well. I have a quick question regarding the equilibration steps in my simulation.\nI am simulating a large system closer to a million atoms. For the heating step post minimization (T=100→298 K, 1 ns, constant volume, solute restraint = 100) and the subsequent constant pressure equilibration (T=298 K, 1 ns, solute restraint = 100), I’m observing an RMSD jump of about 1.0 Å. In contrast, all my other steps typically show RMSD changes around 0.2 Å and plateau by the end of the step.\nIs it normal to see such a larger RMSD jump switching from NVT to NPT? If not, could this indicate an issue with my setup, and what changes do you suggest that I can make to my protocol?\nThank you for your guidance!\nBest regards,\nMatthew\nGet Outlook for iOS<\nhttps://aka.ms/o0ukef\n>",
+      "url": "http://archive.ambermd.org/202511/0016.html"
+    },
+    {
+      "message_id": 1762788053,
+      "author": "David A Case",
+      "date_raw": "Mon, 10 Nov 2025 08:20:53 -0700",
+      "body": "On Mon, Nov 10, 2025, Wong, Matthew via AMBER wrote:\n>\n>I am simulating a large system closer to a million atoms. For the heating\n>step post minimization (T=100→298 K, 1 ns, constant volume, solute\n>restraint = 100) and the subsequent constant pressure equilibration (T=298\n>K, 1 ns, solute restraint = 100), I’m observing an RMSD jump of about 1.0\n>Å. In contrast, all my other steps typically show RMSD changes around 0.2\n>Å and plateau by the end of the step.\n>\n>Is it normal to see such a larger RMSD jump switching from NVT to NPT? If\n>not, could this indicate an issue with my setup, and what changes do you\n>suggest that I can make to my protocol?\nIt's hard to say much based on only 2 ns of simulation and the small amount\nof information we have.\nA solute restraint of 100 is very high: consider reducing that by an order\nof magnitude.\nIn the NPT simulation, see if the density and volume are changing by a lot;\nthat could lead to changes in your RMS statistic.\nGenerally, a single number is not going to tell you all that much.  Visual\nexamination is always recommended.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202511/0017.html",
+      "in_reply_to": 1762753246
+    },
+    {
+      "message_id": 1762789731,
+      "author": "Carlos Simmerling",
+      "date_raw": "Mon, 10 Nov 2025 10:48:51 -0500",
+      "body": "think about these:\n- what are the reference coordinates, mask and weight at each step of\nrelaxation? Are they the same?\n- what are the reference coordinates and mask during the rmsd calculation?\nare they the same as during the MD steps?\nin particular, changing the reference coordinates can lead to jumps.\nOn Mon, Nov 10, 2025 at 12:41 AM Wong, Matthew via AMBER <amber.ambermd.\norg>\nwrote:\n> Hi Amber Community,\n>\n> I hope you’re doing well. I have a quick question regarding the\n> equilibration steps in my simulation.\n>\n> I am simulating a large system closer to a million atoms. For the heating\n> step post minimization (T=100→298 K, 1 ns, constant volume, solute\n> restraint = 100) and the subsequent constant pressure equilibration (T=298\n> K, 1 ns, solute restraint = 100), I’m observing an RMSD jump of about 1.0\n> Å. In contrast, all my other steps typically show RMSD changes around 0.2 Å\n> and plateau by the end of the step.\n>\n> Is it normal to see such a larger RMSD jump switching from NVT to NPT? If\n> not, could this indicate an issue with my setup, and what changes do you\n> suggest that I can make to my protocol?\n>\n> Thank you for your guidance!\n>\n> Best regards,\n>\n> Matthew\n>\n> Get Outlook for iOS<\n>\nhttps://protect.checkpoint.com/v2/r01/___https://aka.ms/o0ukef___.YzJ1OnN0b255YnJvb2s6YzpnOjk0OTBkOTJjNWQ0ZGIxZTc4ZDlmZDkyZTdiZmE0ZmE5Ojc6NDc5ZTpjMzY3NzE5MGMzMGY3NTcyODA0YjY5YmUyODM5NWY3YjUxOGJlZjJlYzhmNWNmMDYyYzkzZDE1N2Q5Njc5MGRiOnA6VDpG\n> >\n>",
+      "url": "http://archive.ambermd.org/202511/0018.html",
+      "in_reply_to": 1762753246
+    }
+  ]
+}

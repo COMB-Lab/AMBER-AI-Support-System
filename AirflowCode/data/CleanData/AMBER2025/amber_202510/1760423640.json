@@ -1,0 +1,37 @@
+{
+  "thread_id": 1760423640,
+  "subject": "[AMBER] Reading guess file provided manually for Amber-Gaussian QMMM calculations",
+  "messages": [
+    {
+      "message_id": 1760423640,
+      "author": "Ananya Nayak",
+      "date_raw": "Tue, 14 Oct 2025 12:04:00 +0530",
+      "body": "Dear Users,\nWe are trying to do a qmmm calculation for a metalloprotein. The\nmetalloprotein has some anti ferromagnetic coupling. And we wanted to use a\nguess for the wave function obtained from previous cDFT calculations and do\nthe calculations there after. I'm not able to find a way to do that.\nPlease let me know if it's possible and how to do that. Any insight is\nhelpful.\nThank you",
+      "url": "http://archive.ambermd.org/202510/0024.html"
+    },
+    {
+      "message_id": 1760424338,
+      "author": "PUJAN AJMERA",
+      "date_raw": "Mon, 13 Oct 2025 23:45:38 -0700",
+      "body": "Hi Ananya,\nIt really depends on which software you used to generate the constrained\nDFT wavefunction. Can you provide the software and/or input files from the\ncDFT run? Regardless, you would want to reconverge the wavefunction in\nGaussian, or use the Gaussian fragment guess option to reconstruct\nantiferromagnetic coupling, which generally works well. Further, your cDFT\nguess may not stay restrained to the desired electronic state if you are\nswitching softwares that can't provide that.\nBest,\nPujan Ajmera\nOn Mon, Oct 13, 2025 at 11:35 PM Ananya Nayak via AMBER <amber.ambermd.\norg>\nwrote:\n> Dear Users,\n> We are trying to do a qmmm calculation for a metalloprotein. The\n> metalloprotein has some anti ferromagnetic coupling. And we wanted to use a\n> guess for the wave function obtained from previous cDFT calculations and do\n> the calculations there after. I'm not able to find a way to do that.\n> Please let me know if it's possible and how to do that. Any insight is\n> helpful.\n>\n> Thank you\n>",
+      "url": "http://archive.ambermd.org/202510/0025.html",
+      "in_reply_to": 1760423640
+    },
+    {
+      "message_id": 1760426123,
+      "author": "Ananya Nayak",
+      "date_raw": "Tue, 14 Oct 2025 12:45:23 +0530",
+      "body": "Hi PUJAN,\nThanks for your reply. As of now, we have not started the cDFT\ncalculations. We were planning to use QChem or Gaussian.  The plan of\naction was to generate a guess with all high spins(I have more than one\nmetal center) and then use that guess for a physiologically reportated\nstate, As the physiologically reported state is not converging. I'm using\nSanders to do the patching between the MM and QM region. The main thing I'm\nconcerned about is it's not reading the .chk files that I'm providing\nmanually. So, in order to do what we have planned I need to find a way to\nmake sander use the already provided chk file, instead of writing it's own.\nI'm quite new to this and I don't know how to go forward. Please let me\nknow if there is anything I can do.\nThanks\nAnanya\nOn Tue, Oct 14, 2025 at 12:15 PM PUJAN AJMERA <pujanajmera1.g.\nucla.edu>\nwrote:\n> Hi Ananya,\n>\n> It really depends on which software you used to generate the constrained\n> DFT wavefunction. Can you provide the software and/or input files from the\n> cDFT run? Regardless, you would want to reconverge the wavefunction in\n> Gaussian, or use the Gaussian fragment guess option to reconstruct\n> antiferromagnetic coupling, which generally works well. Further, your cDFT\n> guess may not stay restrained to the desired electronic state if you are\n> switching softwares that can't provide that.\n>\n> Best,\n> Pujan Ajmera\n>\n>\n> On Mon, Oct 13, 2025 at 11:35 PM Ananya Nayak via AMBER <amber.ambermd.\norg>\n> wrote:\n>\n>> Dear Users,\n>> We are trying to do a qmmm calculation for a metalloprotein. The\n>> metalloprotein has some anti ferromagnetic coupling. And we wanted to use\n>> a\n>> guess for the wave function obtained from previous cDFT calculations and\n>> do\n>> the calculations there after. I'm not able to find a way to do that.\n>> Please let me know if it's possible and how to do that. Any insight is\n>> helpful.\n>>\n>> Thank you\n>>",
+      "url": "http://archive.ambermd.org/202510/0026.html",
+      "in_reply_to": 1760423640
+    },
+    {
+      "message_id": 1760493966,
+      "author": "Goetz, Andreas",
+      "date_raw": "Wed, 15 Oct 2025 02:06:06 +0000",
+      "body": "Hi Ananya\nThis will require code changes in the Gaussian interface. It is not hard to do but requires changes in AmberTools/src/sander/qm2_extern_gau_module.F90 to enable reading from a provided checkpoint file.\nCurrently, sander removes the checkpoint file at the beginning of a simulation to avoid potential issues with restarts. The checkpoint file from step 1 is then used from step 2 onwards.\nIt would be easy to change this behavior or add a new keyword to the &gau namelist to provide an initial guess and have Gaussian read from this in the first step. I don’t have bandwidth to look at this currently, I will try to revisit later, but perhaps someone else can help in the meantime?\nAll the best,\nAndy\n—\nDr. Andreas W. Goetz\nAssociate Research Scientist\nSan Diego Supercomputer Center\nTel: +1-858-822-4771\nEmail: agoetz.sdsc.edu\nWeb: www.awgoetz.de\nOn Oct 14, 2025, at 12:15 AM, Ananya Nayak via AMBER <amber.ambermd.\norg> wrote:\nHi PUJAN,\nThanks for your reply. As of now, we have not started the cDFT\ncalculations. We were planning to use QChem or Gaussian.  The plan of\naction was to generate a guess with all high spins(I have more than one\nmetal center) and then use that guess for a physiologically reportated\nstate, As the physiologically reported state is not converging. I'm using\nSanders to do the patching between the MM and QM region. The main thing I'm\nconcerned about is it's not reading the .chk files that I'm providing\nmanually. So, in order to do what we have planned I need to find a way to\nmake sander use the already provided chk file, instead of writing it's own.\nI'm quite new to this and I don't know how to go forward. Please let me\nknow if there is anything I can do.\nThanks\nAnanya\nOn Tue, Oct 14, 2025 at 12:15 PM PUJAN AJMERA <pujanajmera1.g.\nucla.edu<mailto:pujanajmera1.g.\nucla.edu>>\nwrote:\nHi Ananya,\nIt really depends on which software you used to generate the constrained\nDFT wavefunction. Can you provide the software and/or input files from the\ncDFT run? Regardless, you would want to reconverge the wavefunction in\nGaussian, or use the Gaussian fragment guess option to reconstruct\nantiferromagnetic coupling, which generally works well. Further, your cDFT\nguess may not stay restrained to the desired electronic state if you are\nswitching softwares that can't provide that.\nBest,\nPujan Ajmera\nOn Mon, Oct 13, 2025 at 11:35 PM Ananya Nayak via AMBER <amber.ambermd.\norg>\nwrote:\nDear Users,\nWe are trying to do a qmmm calculation for a metalloprotein. The\nmetalloprotein has some anti ferromagnetic coupling. And we wanted to use\na\nguess for the wave function obtained from previous cDFT calculations and\ndo\nthe calculations there after. I'm not able to find a way to do that.\nPlease let me know if it's possible and how to do that. Any insight is\nhelpful.\nThank you",
+      "url": "http://archive.ambermd.org/202510/0027.html",
+      "in_reply_to": 1760423640
+    }
+  ]
+}

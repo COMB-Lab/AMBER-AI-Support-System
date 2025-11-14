@@ -1,0 +1,37 @@
+{
+  "thread_id": 1616489699,
+  "subject": "[AMBER] Seeking suggestions for breaking a covalent link between atoms",
+  "messages": [
+    {
+      "message_id": 1616489699,
+      "author": "Amit Sharma (Asstt. Prof., MCARS)",
+      "date_raw": "Tue, 23 Mar 2021 14:24:59 +0530",
+      "body": "Hi,\nI created a covalent bond between two carbons using the leap command\n>bond mol.20.C mol.39.C\nThen, the simulation was run for the protein having this covalent bond.\nNow, I want to break this covalent bond and continue further with the\nsimulation. This time the start structure will be the last pdb of the\nprevious simulation but, without the covalent bond.\nCan some suggest what to do to remove the covalent bond and continue the\nsimulation?\nAlso, will the bond breaking require us to bring changes in the existing\nforcefield?\nThanks,\nAmit\n-- \n_\n_\n*Please consider the environment before printing this email.*\nThe \ninformation contained in this electronic message and any *attachments to \nthis message are intended for the exclusive use of addressee(s) and may \ncontain proprietary, confidential or privileged information. If you are not \nthe intended recipient, you should not disseminate, distribute **or copy \nthis e-mail. Please notify the\nsender immediately and destroy all copies of \nthis message and any attachments.***\n**\n**WARNING***: The recipient should \ncheck this email and any attachments for\nthe presence of viruses. JMI \naccepts no liability for any damage caused by any\nvirus transmitted by this \nemail.*",
+      "url": "http://archive.ambermd.org/202103/0217.html"
+    },
+    {
+      "message_id": 1616506829,
+      "author": "David A Case",
+      "date_raw": "Tue, 23 Mar 2021 09:40:29 -0400",
+      "body": "On Tue, Mar 23, 2021, Amit Sharma (Asstt. Prof., MCARS) wrote:\n>\n>I created a covalent bond between two carbons using the leap command\n>>bond mol.20.C mol.39.C\n>Then, the simulation was run for the protein having this covalent bond.\n>\n>Now, I want to break this covalent bond and continue further with the\n>simulation. This time the start structure will be the last pdb of the\n>previous simulation but, without the covalent bond.\nThe \"deleteBond\" action in ParmEd will let you create a new prmtop file\nwithout the bond you want to delete.  Then you could just continue the\nsimulation from the last restart file.\nHowever, if you just delete a C--C bond, you will have nonsensical\nchemistry, at least from a molecular mechanics standpoint, since each of the\ntwo carbons will now have an open valence.  So it seems likely that you will\nhave to add bonds as well.  In that case, you would need to hand-edit the\nPDB file to represent the new chemistry, then re-run tleap to make the new\nprmtop file.\n...hope this helps...dac",
+      "url": "http://archive.ambermd.org/202103/0220.html",
+      "in_reply_to": 1616489699
+    },
+    {
+      "message_id": 1616596091,
+      "author": "Amit Sharma (Asstt. Prof., MCARS)",
+      "date_raw": "Wed, 24 Mar 2021 19:58:11 +0530",
+      "body": "Thanks for your help David,\nI tried deleteBond in parmed, but the output coordinate file (out.ncrst or\nout.pdb) still shows the bond (when seen in vmd or pymol).\nBut, I still continued further with the simulation using new prmtop file\n(hmass_delbond.prmtop). Here, if I run using pmemd.cuda, pmemd terminates\nabnormally and if I use sander the log file says\n\"Coordinate resetting (SHAKE) cannot be accomplished,\ndeviation is too large\nNITER, NIT, LL, I and J are :      0      1    390    777    778\nNote: This is usually a symptom of some deeper\nproblem with the energetics of the system.\"\nCan you please help to figure out what might be going wrong.\nTo inform, I ran the following commands in parmed\n>parm hmass.prmtop #Hmassrepartioned parameter file\n>loadRestrt in.ncrst # loaded restart file from previous simulation with\nbond\n>loadCoordinates in.nc # loaded nc file from previous simulation with bond\n>deleteBond :20.C :39.C # delete bond between two specified atoms\n>#HMassRepartition #\n> writeCoordinates out.ncrst # write coordinates after bond deletion\n> parmout hmass_delbond.prmtop # write parameter file after bond deletion\nAmit\nOn Tue, Mar 23, 2021 at 7:14 PM David A Case <david.case.rutgers.\nedu> wrote:\n> On Tue, Mar 23, 2021, Amit Sharma (Asstt. Prof., MCARS) wrote:\n> >\n> >I created a covalent bond between two carbons using the leap command\n> >>bond mol.20.C mol.39.C\n> >Then, the simulation was run for the protein having this covalent bond.\n> >\n> >Now, I want to break this covalent bond and continue further with the\n> >simulation. This time the start structure will be the last pdb of the\n> >previous simulation but, without the covalent bond.\n>\n> The \"deleteBond\" action in ParmEd will let you create a new prmtop file\n> without the bond you want to delete.  Then you could just continue the\n> simulation from the last restart file.\n>\n> However, if you just delete a C--C bond, you will have nonsensical\n> chemistry, at least from a molecular mechanics standpoint, since each of\n> the\n> two carbons will now have an open valence.  So it seems likely that you\n> will\n> have to add bonds as well.  In that case, you would need to hand-edit the\n> PDB file to represent the new chemistry, then re-run tleap to make the new\n> prmtop file.\n>\n> ...hope this helps...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202103/0235.html",
+      "in_reply_to": 1616489699
+    },
+    {
+      "message_id": 1616599069,
+      "author": "David A Case",
+      "date_raw": "Wed, 24 Mar 2021 11:17:49 -0400",
+      "body": "On Wed, Mar 24, 2021, Amit Sharma (Asstt. Prof., MCARS) wrote:\n>\n>I tried deleteBond in parmed, but the output coordinate file (out.ncrst or\n>out.pdb) still shows the bond (when seen in vmd or pymol).\nIf you just give a pdb file to a graphics program, it has to try to figure\nout what bonds are there, just based on distance.  Since your two carbon\natoms are still at bonding distance (parmed doesn't change the coordinates)\na bond will be shown visually.\nYou can print bonds in ParmEd to verify the bond is missing.  You can also\nload the prmtop and coordinate files in VMD, and it will show just bonds\nthat are actually there.\n>But, I still continued further with the simulation using new prmtop file\n>(hmass_delbond.prmtop). Here, if I run using pmemd.cuda, pmemd terminates\n>abnormally and if I use sander the log file says\n>\n>\"Coordinate resetting (SHAKE) cannot be accomplished,\n>     deviation is too large\n>     NITER, NIT, LL, I and J are :      0      1    390    777    778\n>\n>     Note: This is usually a symptom of some deeper\n>     problem with the energetics of the system.\"\nThis is to be expected: your two carbon atoms are now treated as non-bonded,\nyet they are way too close for that, and you will have very large initial\nforces and energy.  You will need to minimize the system (use a CPU) before\ncontinuing with MD.\nBut be sure this is really what you want to do: as I said before, just\nremoving a bond leaves you with a system that doesn't make any chemical\nsense.  Be sure you understand what you hope to learn from such a\nsimulation.\n....dac",
+      "url": "http://archive.ambermd.org/202103/0238.html",
+      "in_reply_to": 1616489699
+    }
+  ]
+}

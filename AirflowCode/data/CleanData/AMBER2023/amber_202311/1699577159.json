@@ -1,0 +1,37 @@
+{
+  "thread_id": 1699577159,
+  "subject": "[AMBER] problem about pmemd.cuda.MPI",
+  "messages": [
+    {
+      "message_id": 1699577159,
+      "author": "ning",
+      "date_raw": "Fri, 10 Nov 2023 08:45:59 +0800 (CST)",
+      "body": "Hi amber experts,\nI have a question about how to use pmemd.cuda.MPI for long time simulation. Because, I found that if applying this command like \"mpirun -np 8 pmemd.cuda.MPI .... �� to use 8��2080Ti GPU, the simulation performance had been decreased to 12.5% of one GPU. What's wrong about this �� I just compiled the parallel version as manual guidance.  How to fix this problem? Thanks for any suggestions.\nBest,\nNing",
+      "url": "http://archive.ambermd.org/202311/0049.html"
+    },
+    {
+      "message_id": 1699577664,
+      "author": "PUJAN AJMERA",
+      "date_raw": "Thu, 9 Nov 2023 16:54:24 -0800",
+      "body": "Hi Ning,\nAre you aiming to make a single long trajectory faster? Generally, GPUs\nwill not run much faster beyond 1, due to communication overhead (GPUs are\nmuch faster than the communication between them), and unsurprisingly in\nyour case, actually slow it down.\nIf you are looking to just get good sampling, I may suggest splitting your\ntrajectory length into 8 runs, and running each on 1 GPU.\nAll the best,\nPujan Ajmera\nPhD Student at UCLA\nOn Thu, Nov 9, 2023 at 4:46 PM ning via AMBER <amber.ambermd.\norg> wrote:\n> Hi amber experts,\n>\n>\n>       I have a question about how to use pmemd.cuda.MPI for long time\n> simulation. Because, I found that if applying this command like \"mpirun -np\n> 8 pmemd.cuda.MPI .... ” to use 8×2080Ti GPU, the simulation performance had\n> been decreased to 12.5% of one GPU. What's wrong about this ？ I just\n> compiled the parallel version as manual guidance.  How to fix this problem?\n> Thanks for any suggestions.\n>\n>\n> Best,\n> Ning\n>",
+      "url": "http://archive.ambermd.org/202311/0048.html",
+      "in_reply_to": 1699577159
+    },
+    {
+      "message_id": 1699578214,
+      "author": "ning",
+      "date_raw": "Fri, 10 Nov 2023 09:03:34 +0800 (CST)",
+      "body": "Thanks for you quick reply.  Yes, as you said, I'm trying to make a single long trajectory.  Maybe I should to try another enhanced sampling method for exploring more protein conformation.\nSincerely,\nNing\nAt 2023-11-10 08:54:24, \"PUJAN AJMERA\" <pujanajmera1.g.\nucla.edu> wrote:\nHi Ning,\nAre you aiming to make a single long trajectory faster? Generally, GPUs will not run much faster beyond 1, due to communication overhead (GPUs are much faster than the communication between them), and unsurprisingly in your case, actually slow it down.\nIf you are looking to just get good sampling, I may suggest splitting your trajectory length into 8 runs, and running each on 1 GPU.\nAll the best,\nPujan Ajmera\nPhD Student at UCLA\nOn Thu, Nov 9, 2023 at 4:46 PM ning via AMBER <amber.ambermd.\norg> wrote:\nHi amber experts,\nI have a question about how to use pmemd.cuda.MPI for long time simulation. Because, I found that if applying this command like \"mpirun -np 8 pmemd.cuda.MPI .... �� to use 8��2080Ti GPU, the simulation performance had been decreased to 12.5% of one GPU. What's wrong about this �� I just compiled the parallel version as manual guidance.  How to fix this problem? Thanks for any suggestions.\nBest,\nNing",
+      "url": "http://archive.ambermd.org/202311/0050.html",
+      "in_reply_to": 1699577159
+    },
+    {
+      "message_id": 1699607767,
+      "author": "Dr. Anselm Horn",
+      "date_raw": "Fri, 10 Nov 2023 10:16:07 +0100",
+      "body": "Ning,\njust to add to Pujan's response:\nI experienced some speed-up for parallel GPU jobs on our systems with 4x\nNVIDIA A100 and NVlink: the fast interconnect is crucial for this speed-up.\nBut, as Pujan already suggested, it is more efficient to run multiple\njobs on single GPUs, e.g. different trajectories of the same system.\nBest,\nAnselm\nBioinformatik  |  NHR.FAU\nFriedrich-Alexander-Universität Erlangen-Nürnberg (FAU)\nGermany\nAm 10.11.2023 um 02:03 schrieb ning via AMBER:\n> Thanks for you quick reply.  Yes, as you said, I'm trying to make a single long trajectory.  Maybe I should to try another enhanced sampling method for exploring more protein conformation.\n>\n>\n> Sincerely,\n> Ning\n>\n>\n>\n>\n>\n>\n>\n>\n>\n>\n>\n>\n>\n>\n>\n>\n>\n>\n> At 2023-11-10 08:54:24, \"PUJAN AJMERA\" <pujanajmera1.g.\nucla.edu> wrote:\n>\n> Hi Ning,\n>\n>\n> Are you aiming to make a single long trajectory faster? Generally, GPUs will not run much faster beyond 1, due to communication overhead (GPUs are much faster than the communication between them), and unsurprisingly in your case, actually slow it down.\n>\n>\n> If you are looking to just get good sampling, I may suggest splitting your trajectory length into 8 runs, and running each on 1 GPU.\n>\n>\n> All the best,\n> Pujan Ajmera\n> PhD Student at UCLA\n>\n>\n> On Thu, Nov 9, 2023 at 4:46 PM ning via AMBER <amber.ambermd.\norg> wrote:\n>\n> Hi amber experts,\n>\n>\n>       I have a question about how to use pmemd.cuda.MPI for long time simulation. Because, I found that if applying this command like \"mpirun -np 8 pmemd.cuda.MPI .... ” to use 8×2080Ti GPU, the simulation performance had been decreased to 12.5% of one GPU. What's wrong about this ？ I just compiled the parallel version as manual guidance.  How to fix this problem? Thanks for any suggestions.\n>\n>\n> Best,\n> Ning\n>",
+      "url": "http://archive.ambermd.org/202311/0052.html",
+      "in_reply_to": 1699577159
+    }
+  ]
+}

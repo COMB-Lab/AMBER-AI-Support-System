@@ -1,0 +1,37 @@
+{
+  "thread_id": 1623812669,
+  "subject": "[AMBER] Execution Trouble",
+  "messages": [
+    {
+      "message_id": 1623812669,
+      "author": "ankita mehta",
+      "date_raw": "Wed, 16 Jun 2021 08:34:29 +0530",
+      "body": "*Hello all , *\n*I am running the simulation through perl script.*\n*I give the system command :*\n*mpirun -np 2 pmemd.MPI -O -i equil_1.in <\nhttp://equil_1.in/\n> -o\nequil_1.out -p var_3.prmtop -c var_3.inpcrd -r var_equil_3.restrt*\n*to run the simulation and then after cpptraj command.*\n*system \"cpptraj -i cpptraj_3.in <\nhttp://cpptraj_3.in/\n>\";*\n*Since system command to run the simulation takes more  time*\n*So cpptraj command doesn’t run .*\n*What is the solution?*\n*TIA*",
+      "url": "http://archive.ambermd.org/202106/0115.html"
+    },
+    {
+      "message_id": 1623847561,
+      "author": "David A Case",
+      "date_raw": "Wed, 16 Jun 2021 08:46:01 -0400",
+      "body": "On Wed, Jun 16, 2021, ankita mehta wrote:\n>*system \"cpptraj -i cpptraj_3.in <\nhttp://cpptraj_3.in/\n>\";*\nIt's hard to know what the exact command was that you used, since something\n(your mail program, you yourself?) added the http part.  Did you get any\nerror messages?  Is the http part really there?\n>*So cpptraj command doesn’t run .*\nJust saying \"doesn't run\" is very vague, and doesn't allow anyone to offer\nhelp.  Did you get any error messages?  What happens if you run the cpptraj\ncommand at the console (i.e. without the perl part)?\n....dac",
+      "url": "http://archive.ambermd.org/202106/0119.html",
+      "in_reply_to": 1623812669
+    },
+    {
+      "message_id": 1623985660,
+      "author": "ankita mehta",
+      "date_raw": "Fri, 18 Jun 2021 08:37:40 +0530",
+      "body": "I mean running the following command :\n*mpirun -np 2 pmemd.MPI -O -i equil_1.in <\nhttp://equil_1.in/\n> -o\nequil_1.out -p var_3.prmtop -c var_3.inpcrd -r var_equil_3.restart*\n*takes time *\n*so when cpptraj runs , it simply says  var_equil_3.restart is not found.*\n*Actually we want to automate this by scripting so , i need the ways to\navoid this.*\n*IF I manually runs the scripts , everything works fine.*\n*But how do i automate ?*\n*Is there any way in scripting to wait while simulation is being run and\nvar_equil_3.restrst is completely written and then cpptraj should run.*\n*P.S. i need to submit it in the nodes on the cluster. So, there is waiting\ntime at times.*\n*TIA!*\nOn Wed, Jun 16, 2021 at 6:16 PM David A Case <david.case.rutgers.\nedu> wrote:\n> On Wed, Jun 16, 2021, ankita mehta wrote:\n>\n> >*system \"cpptraj -i cpptraj_3.in <\nhttp://cpptraj_3.in/\n>\";*\n>\n> It's hard to know what the exact command was that you used, since something\n> (your mail program, you yourself?) added the http part.  Did you get any\n> error messages?  Is the http part really there?\n>\n> >*So cpptraj command doesn’t run .*\n>\n> Just saying \"doesn't run\" is very vague, and doesn't allow anyone to offer\n> help.  Did you get any error messages?  What happens if you run the cpptraj\n> command at the console (i.e. without the perl part)?\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202106/0145.html",
+      "in_reply_to": 1623812669
+    },
+    {
+      "message_id": 1624018391,
+      "author": "David A Case",
+      "date_raw": "Fri, 18 Jun 2021 08:13:11 -0400",
+      "body": "On Fri, Jun 18, 2021, ankita mehta wrote:\n>*Is there any way in scripting to wait while simulation is being run and\n>var_equil_3.restrst is completely written and then cpptraj should run.*\nYes, this is what usually happens:\n------------------------------------------------------------\n#!/bin/bash\nmpirun -mp 2 pmemd.MPI  ....\ncpptraj   ....\n------------------------------------------------------------\nThe cpptraj job will not be run until the pmemd job is finished.\n....dac",
+      "url": "http://archive.ambermd.org/202106/0151.html",
+      "in_reply_to": 1623812669
+    }
+  ]
+}

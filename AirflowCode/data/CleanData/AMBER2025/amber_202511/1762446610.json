@@ -1,0 +1,21 @@
+{
+  "thread_id": 1762446610,
+  "subject": "Re: [AMBER] Vlimit error",
+  "messages": [
+    {
+      "message_id": 1762446610,
+      "author": "David A Case",
+      "date_raw": "Thu, 6 Nov 2025 09:30:10 -0700",
+      "body": "On Sat, Nov 01, 2025, Surabhi Singh 24933024 wrote:\n>Thanks for the quick response, so I have checked there are no bad contacts\n>or bonds reported by checkstructure.\nDid you look at a simulation that was set to stop right before the first\nvlimit message in the mdout file?\nRun an initial simulation that stop a few steps before the first vlimit\nmessage.  Than continue (restart) from there, setting ntpr=1.  Look closely\nat the energies that are reported -- I suspect(!) that the electrostatic\nenergy will start to look odd, and using cpptraj checkstructure on a\nsnapshot right at the first vlimit error might reveal a bad contact.  That\nmight at least get you started on finding the origin of the problem.\n...dac",
+      "url": "http://archive.ambermd.org/202511/0009.html"
+    },
+    {
+      "message_id": 1762531835,
+      "author": "David A Case",
+      "date_raw": "Fri, 7 Nov 2025 09:10:35 -0700",
+      "body": "On Fri, Nov 07, 2025, Surabhi Singh 24933024 wrote:\n>Got the exact issue, it's the Phosphate group at 5'ends of the DNA that was\n>giving bad contact.\n>\nIs the bad contact between the H atom on the phosphate group and a\nneighboring oxygen atom on the same phosphate?\nIf so, that is a problem that we have seen before, and the \"fix\" involves\nincreasing the force constant on the P-O-H angle.  I don't remember the\ndetails right now, but let us know if this is the bad contact -- we can\ntrack things down, and others on the list probably have better grey cells\nthan I have.\nIf it's not this, knowing which atoms are involved in the bad contact might\ntrigger some thoughts.  That's assuming that you have not already made\nprogress on your own.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202511/0014.html",
+      "in_reply_to": 1762446610
+    }
+  ]
+}

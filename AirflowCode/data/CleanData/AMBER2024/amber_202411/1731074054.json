@@ -1,0 +1,21 @@
+{
+  "thread_id": 1731074054,
+  "subject": "[AMBER] md simulations running very slow",
+  "messages": [
+    {
+      "message_id": 1731074054,
+      "author": "Rosa Teijeiro Juiz",
+      "date_raw": "Fri, 8 Nov 2024 14:54:14 +0100",
+      "body": "Dear Amber users,\nI am writing to ask for help to optimize the time of my MD simulations.\nSo far, I have only worked with short simulations because I was still\nlearning how to use the software, but now I am trying to run a 500ns MD\nsimulation of my protein and my problem is that the estimated time for\nthe run (what appears on my .mdinfo file) in over 8000 thousand hours,\nwhich honestly doesn't make sense to me.\nI tried submitting the MD run to a cluster (instead of just running on\nmy local computer) to see if this would help with the optimization of\nthe time but initially it was the same:\n#!/bin/bash\n#SBATCH --job-name=...\n#SBATCH --mail-user=...\n#SBATCH --mail-type=end\n#SBATCH --ntasks=1\n#SBATCH --mem-per-cpu=8000\n#SBATCH --time=50:00:00\n#SBATCH --qos=standard\nmodule add AmberTools/23.6-foss-2023a\ncd /scratch/MD_simulations/cotb2/ABA107\nAmberTools/23.6-foss-2023a/bin/sander -O -i 03_Prod.in -o 03_Prod.out -p\nsolvated_cotb2.parm7 -c 02_Heat.ncrst -r 03_Prod.ncrst -x 03_Prod.nc\n-inf 03_Prod.info &\nI tried changing some parameters like the number of CPUs, number of\ntasks... but the simulation was not running as it should. Now I was also\nreading that for parallelization I should run sander.MPI not just sander\n(or pmemd), but overall I am just really confused on if this is what\nmakes sense to optimize the time of my simulation, and if it is how I\nshould run my script, how many tasks I should set, how many CPUs....\nIf anyone could help me out that would be highly appreciated.\nThank you,\nRosa Teijeiro Juiz\nNote:\nIn my .in file:\nnstlim=250000000\ndt=0.002\nntpr=50000\nntwx=50000\n*In case changing any of these parameters could also help decreasing the\nsimulation time...",
+      "url": "http://archive.ambermd.org/202411/0017.html"
+    },
+    {
+      "message_id": 1731110559,
+      "author": "David A Case",
+      "date_raw": "Fri, 8 Nov 2024 17:02:39 -0700",
+      "body": "On Fri, Nov 08, 2024, Rosa Teijeiro Juiz via AMBER wrote:\n>\n>I am writing to ask for help to optimize the time of my MD\n>simulations. So far, I have only worked with short simulations because\n>I was still learning how to use the software, but now I am trying to\n>run a 500ns MD simulation of my protein and my problem is that the\n>estimated time for the run (what appears on my .mdinfo file) in over\n>8000 thousand hours, which honestly doesn't make sense to me.\n>\n>I tried submitting the MD run to a cluster (instead of just running on\n>my local computer) to see if this would help with the optimization of\n>the time but initially it was the same:\n>\n>AmberTools/23.6-foss-2023a/bin/sander -O -i 03_Prod.in -o 03_Prod.out\n>-p solvated_cotb2.parm7 -c 02_Heat.ncrst -r 03_Prod.ncrst -x\n>03_Prod.nc -inf 03_Prod.info &\nTo make things go faster, in ascending order:\n1. use sander.MPI, with something like 16-32 cores, if you have them\navailable.  Depending on the size of your system, this might give close to\nan order of magnitude speedup.\n2. use pmemd.MPI.  This is likely to be roughly 2-3 times faster than\nsander, at least for a lot of systems.\n3. get access to a GPU, and use pmemd.cuda.  This is likely to be 100 or\nmore time faster.  (Don't bother with pmemd.cuda.MPI until/unless you get to\nusing techniques like replica exchange.)\nA discussion of these options is in Chapter 2 of the Amber 2024 Reference\nManual.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202411/0019.html",
+      "in_reply_to": 1731074054
+    }
+  ]
+}

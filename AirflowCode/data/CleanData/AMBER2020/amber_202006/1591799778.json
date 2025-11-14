@@ -1,0 +1,37 @@
+{
+  "thread_id": 1591799778,
+  "subject": "[AMBER] Python related problem running MMPBSA.py.MPI",
+  "messages": [
+    {
+      "message_id": 1591799778,
+      "author": "Casalini  Tommaso",
+      "date_raw": "Wed, 10 Jun 2020 14:36:18 +0000",
+      "body": "Dear Amber users and developers,\nI am trying to run a MMPBSA.py.MPI calculation.\nI am using the last AmberTools version and I have employed python 3.6.0 version when I installed it (in other words, I have used the flag --with-python=path_to_my_python3.6).\nI am also 100% sure that my input files, as well as prmtop and trajectory files, are correct.\nAnyway, I obtain the following error:\nFile \"/cluster/scratch/catommas/amber20_src/bin/MMPBSA.py.MPI\", line 100, in <module>\napp.run_mmpbsa()\nFile \"/cluster/scratch/catommas/amber20_src/lib/python3.6/site-packages/MMPBSA_mods/main.py\", line 218, in run_mmpbsa\nself.calc_list.run(rank, self.stdout)\nFile \"/cluster/scratch/catommas/amber20_src/lib/python3.6/site-packages/MMPBSA_mods/calculation.py\", line 82, in run\nFile \"/cluster/scratch/catommas/amber20_src/lib/python3.6/site-packages/MMPBSA_mods/calculation.py\", line 428, in run\nTypeError: a bytes-like object is required, not 'str'\nError occured on rank 23.\nExiting. All files have been retained.\nI believe that it is something related to the conversion from python 2.x to python 3.x. I have used the 2to3 utility, but it seems that it did not work or I did not use it properly.\nI would like to ask you some suggestions to solve this issue.\nI thank you in advance for your support!\nBest wishes,\nTommaso",
+      "url": "http://archive.ambermd.org/202006/0083.html"
+    },
+    {
+      "message_id": 1591803085,
+      "author": "David A Case",
+      "date_raw": "Wed, 10 Jun 2020 11:31:25 -0400",
+      "body": "On Wed, Jun 10, 2020, Casalini  Tommaso wrote:\n>\n>I am trying to run a MMPBSA.py.MPI calculation.\n>\n>I am using the last AmberTools version and I have employed python 3.6.0\n>version when I installed it (in other words, I have used the flag\n>--with-python=path_to_my_python3.6).\nCan you check if running short run with MMPBSA.py itself works or fails?\nThat would help isolate the problem.\n...thx...dac",
+      "url": "http://archive.ambermd.org/202006/0085.html",
+      "in_reply_to": 1591799778
+    },
+    {
+      "message_id": 1591803427,
+      "author": "Casalini  Tommaso",
+      "date_raw": "Wed, 10 Jun 2020 15:37:07 +0000",
+      "body": "Dear Dr. Case,\nI thank you for your quick reply.\nI tested MMPBSA.py and everything went well.\nWith my best regards,\nTommaso\n________________________________\nDa: David A Case <david.case.rutgers.edu>\nInviato: mercoled� 10 giugno 2020 17:31:25\nA: AMBER Mailing List\nOggetto: Re: [AMBER] Python related problem running MMPBSA.py.MPI\nOn Wed, Jun 10, 2020, Casalini  Tommaso wrote:\n>\n>I am trying to run a MMPBSA.py.MPI calculation.\n>\n>I am using the last AmberTools version and I have employed python 3.6.0\n>version when I installed it (in other words, I have used the flag\n>--with-python=path_to_my_python3.6).\nCan you check if running short run with MMPBSA.py itself works or fails?\nThat would help isolate the problem.\n...thx...dac",
+      "url": "http://archive.ambermd.org/202006/0086.html",
+      "in_reply_to": 1591799778
+    },
+    {
+      "message_id": 1591804674,
+      "author": "Casalini  Tommaso",
+      "date_raw": "Wed, 10 Jun 2020 15:57:54 +0000",
+      "body": "Dear Dr. Case,\nI would like to add some details that may be useful.\nAs I mentioned, MMPBSA.py is fine.\nWhen I use MMPBSA.py.MPI, the program correctly generates the .mdcrd files for the trajectory post processing (that is, it generates the _MMPBSA_complex.mdcrd.x files) and also it starts generating the files that contain the results for each frame that is, _MMPBSA_complex_pb_mdout.x files.\nEssentially, everything stops before any number is written; this is what I obtain:\nReading parm file (Complex.prmtop)\ntitle:\ndefault_name\nParameter topology includes 10-12 terms:\nThese are assumed to be zero here (e.g. from TIP3P water)\nmm_options:  e_debug=3\nmm_options:  ipb=2\nmm_options:  inp=1\nmm_options:  epsin=4.000000\nmm_options:  epsout=80.000000\nmm_options:  smoothopt=1\nmm_options:  istrng=150.000000\nmm_options:  radiopt=0\nmm_options:  dprob=1.400000\nmm_options:  iprob=2.000000\nmm_options:  npbopt=0\nmm_options:  solvopt=1\nmm_options:  accept=0.001000\nmm_options:  maxitn=1000\nmm_options:  fillratio=4.000000\nmm_options:  space=0.500000\nmm_options:  nfocus=2\nmm_options:  fscale=8\nmm_options:  bcopt=5\nmm_options:  eneopt=2\nmm_options:  cutnb=0.000000\nmm_options:  sprob=1.400000\nmm_options:  cavity_surften=0.005000\nmm_options:  cavity_offset=0.000000\nProcessing ASCII trajectory (_MMPBSA_complex.mdcrd.0)\nProcessing frame 1\niter    Total       bad      vdW     elect   nonpolar       EPB      frms\nI thank again for the support!\nTommaso\n________________________________\nDa: Casalini Tommaso <tommaso.casalini.chem.ethz.ch>\nInviato: mercoled� 10 giugno 2020 17:37:07\nA: AMBER Mailing List\nOggetto: Re: [AMBER] Python related problem running MMPBSA.py.MPI\nDear Dr. Case,\nI thank you for your quick reply.\nI tested MMPBSA.py and everything went well.\nWith my best regards,\nTommaso\n________________________________\nDa: David A Case <david.case.rutgers.edu>\nInviato: mercoled� 10 giugno 2020 17:31:25\nA: AMBER Mailing List\nOggetto: Re: [AMBER] Python related problem running MMPBSA.py.MPI\nOn Wed, Jun 10, 2020, Casalini  Tommaso wrote:\n>\n>I am trying to run a MMPBSA.py.MPI calculation.\n>\n>I am using the last AmberTools version and I have employed python 3.6.0\n>version when I installed it (in other words, I have used the flag\n>--with-python=path_to_my_python3.6).\nCan you check if running short run with MMPBSA.py itself works or fails?\nThat would help isolate the problem.\n...thx...dac",
+      "url": "http://archive.ambermd.org/202006/0087.html",
+      "in_reply_to": 1591799778
+    }
+  ]
+}

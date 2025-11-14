@@ -1,0 +1,21 @@
+{
+  "thread_id": 1640683076,
+  "subject": "[AMBER] Ligand problem in system preparation",
+  "messages": [
+    {
+      "message_id": 1640683076,
+      "author": "Ch Bilal",
+      "date_raw": "Tue, 28 Dec 2021 09:17:56 +0000",
+      "body": "hi Amber users,\ni am working on a complex (pdb ID: 3qj4). ligand FDA has a charge -1. Whenever I try to prepare the system for simulations using antechamber, i get ligand structure with many changes in it (ligand structure output is attached). i used following commands with modifications but no use.\nantechamber -i ligand1.mol2 -fi mol2 -o ligand-out.mol2 -fo mol2 -at sybyl -pf y\nor\nantechamber -i lig.pdb -fi pdb -o LIG.mol2 -fo mol2 -c bcc -nc 0.\nanyone can tell what is the problem and how to fix it?\nthank you.",
+      "url": "http://archive.ambermd.org/202112/0197.html"
+    },
+    {
+      "message_id": 1640702083,
+      "author": "David A Case",
+      "date_raw": "Tue, 28 Dec 2021 09:34:43 -0500",
+      "body": "On Tue, Dec 28, 2021, Ch Bilal wrote:\n>\n>i am working on a complex (pdb ID: 3qj4). ligand FDA has a charge\n>-1.\n>i get ligand structure with many changes in it (ligand structure output is\n>attached). i used following commands with modifications but no use.\n>\n>antechamber -i ligand1.mol2 -fi mol2 -o ligand-out.mol2 -fo mol2 -at sybyl -pf y\nYou don't want this one: sybyl atom types will do you no good with Amber.\nThat option is there for folks who want sybyl types (which are sometimes\nwhat is expected in a mol2 file) for other reasons.\n>antechamber -i lig.pdb -fi pdb -o LIG.mol2 -fo mol2 -c bcc -nc 0.\nThis doesn't look right: if the ligand charge is -1, why are you setting -nc\n0?  Your input should give an error about having an odd number of electrons,\nunless something else is amiss.\nIn some cases, you don't want to geometry optimized the ligand.  See the\ndiscussion in Note 7 of Section 16.2 of the Reference Manual.\n....dac",
+      "url": "http://archive.ambermd.org/202112/0201.html",
+      "in_reply_to": 1640683076
+    }
+  ]
+}

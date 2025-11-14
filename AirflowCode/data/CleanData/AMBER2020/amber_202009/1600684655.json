@@ -1,0 +1,29 @@
+{
+  "thread_id": 1600684655,
+  "subject": "[AMBER] MMPBSA.py error",
+  "messages": [
+    {
+      "message_id": 1600684655,
+      "author": "Asmi Mahmood",
+      "date_raw": "Mon, 21 Sep 2020 10:37:35 +0000 (UTC)",
+      "body": "Hi\nI am new to AMBER as i use NAMD for simulation. I am using NAMD trajectories to analyze MMPB(GB)SA in ambertools 20. For the purpose i converted following CHARMM files into amber format:\nComplex (Protein+ligand without water) PDB and PSF files into prmtopReceptor  ====\nLigand =====\nSolvated (Protein+Ligand+water+ions) =====\nusing following command in PARMED\nchamber -psf file.psf -crd file.pdb -top file.top -param file.prm -str file.str\nIn my receptor there is a nickle atom that i have already parametrized in PSF file.\nby using command in the manual mentioned the analysis started normally bu as the GB calculations has started it gave this error:CalcError: file location/complex.prmtopwxiting: all file have been retained\nwhen i checked the gb.mdout file it was ended in the following error in the atomic coordinate and velocity section\nFATAL: NATOM mismatch in coord and topology\nThe MMPBSA.in file is as follow\nInput file for running PB and GB in serial\n&general\nendframe=100, start frame= 95, keep_files=2,\n/\n&gb\nigb=2, saltcon=0.100,\n/\n&pb\nistrng=0.100,\nNeed guidance plz\nThanks in advance",
+      "url": "http://archive.ambermd.org/202009/0262.html"
+    },
+    {
+      "message_id": 1600928890,
+      "author": "Asmi Mahmood",
+      "date_raw": "Thu, 24 Sep 2020 06:28:10 +0000 (UTC)",
+      "body": "Hi I'm using AMBER mmpbsa.py for energy calculation of my system. In my protein- ligand system there is also a metal atom Nickle in the binding site. I used charmm-gui for PSF generation and ran simulations using NAMD. For MMPbsa, I used ambertools20. Converted all PSF and crd files into prmtop using commands in parmed of chamber: Chamber -top top.rtf -param file.prm - str file.str -psf file.psf -crd file .PDB\nFollowed by outparm file.prmtop and inpcrd.\nAll files generated successfully without any error. But when I ran MMPbsa command it gives error just after initializing GB calculation Calerr: complex.prmtop\nDetail of error in gb.out file is FATAL: mismatch NATOM in coordinate and topology file.\nFor troubleshooting, I ran tutorial files it ran well. In addition I also ran an other NAMD simulated protein. It also ran without any error.\nI am confused how to sort it out.I checked number of atoms in complex PSF and PDB files atoms are same. I generted PSF files both by charmm-gui and also by vmd. Even then same error.My gut feel says it's something about the metal ion in the binding site.\nPlz guide me. Thanks in advance",
+      "url": "http://archive.ambermd.org/202009/0318.html",
+      "in_reply_to": 1600684655
+    },
+    {
+      "message_id": 1601146212,
+      "author": "Jason Swails",
+      "date_raw": "Sat, 26 Sep 2020 14:50:12 -0400",
+      "body": "The error message suggests that the number of atoms specified in the\ncoordinate/trajectory file for the complex is different than the number of\natoms in the resulting trajectory.\nBy default, the `strip_mask` variable in the MMPBSA.py input file will\nstrip out all of the metal atoms from the trajectory.  You need to override\nthis value to *not* strip out the metal atom in your complex that you would\nlike to keep.\nHTH,\nJason\nOn Thu, Sep 24, 2020 at 2:28 AM Asmi Mahmood <asmi_mahmood.yahoo.com> wrote:\n> Hi I'm using AMBER mmpbsa.py for energy calculation of my system. In my\n> protein- ligand system there is also a metal atom Nickle in the binding\n> site. I used charmm-gui for PSF generation and ran simulations using\n> NAMD. For MMPbsa, I used ambertools20. Converted all PSF and crd files into\n> prmtop using commands in parmed of chamber: Chamber -top top.rtf -param\n> file.prm - str file.str -psf file.psf -crd file .PDB\n> Followed by outparm file.prmtop and inpcrd.\n>\n>\n> All files generated successfully without any error. But when I ran MMPbsa\n> command it gives error just after initializing GB calculation Calerr:\n> complex.prmtop\n> Detail of error in gb.out file is FATAL: mismatch NATOM in coordinate and\n> topology file.\n> For troubleshooting, I ran tutorial files it ran well. In addition I also\n> ran an other NAMD simulated protein. It also ran without any error.\n> I am confused how to sort it out.I checked number of atoms in complex PSF\n> and PDB files atoms are same. I generted PSF files both by charmm-gui and\n> also by vmd. Even then same error.My gut feel says it's something about the\n> metal ion in the binding site.\n> Plz guide me. Thanks in advance\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202009/0348.html",
+      "in_reply_to": 1600684655
+    }
+  ]
+}

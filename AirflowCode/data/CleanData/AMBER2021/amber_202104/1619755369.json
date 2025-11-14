@@ -1,0 +1,21 @@
+{
+  "thread_id": 1619755369,
+  "subject": "[AMBER] About cpptraj (v18) extracting temperature trajectory from REMD trajectory",
+  "messages": [
+    {
+      "message_id": 1619755369,
+      "author": "Ojet",
+      "date_raw": "Fri, 30 Apr 2021 12:02:49 +0800 (CST)",
+      "body": "Hello,\nThank you for your response!\nI used Cpptraj (v18) to extract the temperature trajectory from the REMD trajectory, and some new warning appeared:\n[trajin remd.mdcrd.001 remdtraj remdtrajtemp 300.0]\nFound 8 replicas.\nReading 'remd.mdcrd.001' as Amber NetCDF\nWarning: New style (Amber >= V18) remd values detected with < 2 dimensions.\nWarning:  Assuming temperature.\nWarning: New style (Amber >= V18) remd values detected with < 2 dimensions.\nWarning:  Assuming temperature.\nWarning: New style (Amber >= V18) remd values detected with < 2 dimensions.\nWarning:  Assuming temperature.\nWarning: New style (Amber >= V18) remd values detected with < 2 dimensions.\nWarning:  Assuming temperature.\nWarning: New style (Amber >= V18) remd values detected with < 2 dimensions.\nWarning:  Assuming temperature.\nWarning: New style (Amber >= V18) remd values detected with < 2 dimensions.\nWarning:  Assuming temperature.\nWarning: New style (Amber >= V18) remd values detected with < 2 dimensions.\nWarning:  Assuming temperature.\nWarning: New style (Amber >= V18) remd values detected with < 2 dimensions.\nWarning:  Assuming temperature.\nThe ��extract_300k_traj.x�� script is as follows:\n#!/bin/csh\ncpptraj ala10.prmtop << EOF\ntrajin remd.mdcrd.001 remdtraj remdtrajtemp 300.0\ntrajout remd.300K.mdcrd nobox\ndistance d1 out dist.300K.dat :2.CA :8.CA\ngo\nEOF",
+      "url": "http://archive.ambermd.org/202104/0261.html"
+    },
+    {
+      "message_id": 1619796832,
+      "author": "Daniel Roe",
+      "date_raw": "Fri, 30 Apr 2021 11:33:52 -0400",
+      "body": "Hi,\nOn Fri, Apr 30, 2021 at 12:03 AM Ojet <ojet0501.163.com> wrote:\n>\n> Hello,\n> Thank you for your response!\n> I used Cpptraj (v18) to extract the temperature trajectory from the REMD trajectory, and some new warning appeared:\nThese warnings are just letting you know that the NetCDF trajectory\nfile from REMD doesn't have a 'temperature' dimension, as was the case\nin the past. This is the reason you couldn't use ptraj to process\nthese trajectories. If you didn't receive any error messages things\nseem to have worked fine. Let me know if not.\n-Dan\n>  [trajin remd.mdcrd.001 remdtraj remdtrajtemp 300.0]\n>\n> Found 8 replicas.\n>\n> Reading 'remd.mdcrd.001' as Amber NetCDF\n>\n> Warning: New style (Amber >= V18) remd values detected with < 2 dimensions.\n>\n> Warning:  Assuming temperature.\n>\n> Warning: New style (Amber >= V18) remd values detected with < 2 dimensions.\n>\n> Warning:  Assuming temperature.\n>\n> Warning: New style (Amber >= V18) remd values detected with < 2 dimensions.\n>\n> Warning:  Assuming temperature.\n>\n> Warning: New style (Amber >= V18) remd values detected with < 2 dimensions.\n>\n> Warning:  Assuming temperature.\n>\n> Warning: New style (Amber >= V18) remd values detected with < 2 dimensions.\n>\n> Warning:  Assuming temperature.\n>\n> Warning: New style (Amber >= V18) remd values detected with < 2 dimensions.\n>\n> Warning:  Assuming temperature.\n>\n> Warning: New style (Amber >= V18) remd values detected with < 2 dimensions.\n>\n> Warning:  Assuming temperature.\n>\n> Warning: New style (Amber >= V18) remd values detected with < 2 dimensions.\n>\n> Warning:  Assuming temperature.\n>\n>\n>\n> The “extract_300k_traj.x” script is as follows:\n>\n> #!/bin/csh\n>\n> cpptraj ala10.prmtop << EOF\n>\n> trajin remd.mdcrd.001 remdtraj remdtrajtemp 300.0\n>\n> trajout remd.300K.mdcrd nobox\n>\n> distance d1 out dist.300K.dat :\n2.CA\n:\n8.CA\n>\n> go\n>\n> EOF\n>",
+      "url": "http://archive.ambermd.org/202104/0271.html",
+      "in_reply_to": 1619755369
+    }
+  ]
+}

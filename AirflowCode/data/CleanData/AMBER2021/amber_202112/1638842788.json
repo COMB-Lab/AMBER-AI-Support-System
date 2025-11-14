@@ -1,0 +1,53 @@
+{
+  "thread_id": 1638842788,
+  "subject": "[AMBER] Error with MMPBSA",
+  "messages": [
+    {
+      "message_id": 1638842788,
+      "author": "Kehinde Idowu",
+      "date_raw": "Tue, 7 Dec 2021 02:06:28 +0000 (UTC)",
+      "body": "Hi guys, Please, I need your assistance. I was trying to calculate binding energy between two receptors using MMPBSA script on Amber 14, however, I keep getting this error message bellow in my mmpbsa.log file. Kindly advise on this.Thanks.\n-------------------------------------------------------Primary job  terminated normally, but 1 process returneda non-zero exit code.. Per user-direction, the job has been aborted.-------------------------------------------------------------------------------------------------------------------A process or daemon was unable to complete a TCP connectionto another process:  Local host:    cnode0451  Remote host:   cnode0451This is usually caused by a firewall on the remote host. Pleasecheck that any firewall (e.g., iptables) has been disabled andtry again.--------------------------------------------------------------------------------------------------------------------------------------mpirun detected that one or more processes exited with non-zero status, thus causingthe job to be terminated. The first process to do so was:\nProcess name: [[11143,1],15]  Exit code:    2--------------------------------------------------------------------------~",
+      "url": "http://archive.ambermd.org/202112/0068.html"
+    },
+    {
+      "message_id": 1638881435,
+      "author": "David A Case",
+      "date_raw": "Tue, 7 Dec 2021 07:50:35 -0500",
+      "body": "On Tue, Dec 07, 2021, Kehinde Idowu wrote:\n>Hi guys,�Please, I need your assistance. I was trying to calculate binding\n>energy between two receptors using MMPBSA script on Amber 14, however, I\n>keep getting this error message bellow in my mmpbsa.log file. Kindly advise\n>on this.Thanks.\n>Primary job� terminated normally, but 1 process returneda non-zero exit code.\nThis message doesn't say anything except that the job failed.  Look at the\noutput files for indications of what might have gone wrong.  If that doesn't\nhelp, try a (shorter?) run using the non-parallel script: that might help\nidentify what the problem is.  This looks like it might be an MPI problem.\n....dac",
+      "url": "http://archive.ambermd.org/202112/0071.html",
+      "in_reply_to": 1638842788
+    },
+    {
+      "message_id": 1638891870,
+      "author": "Debarati DasGupta",
+      "date_raw": "Tue, 7 Dec 2021 15:44:30 +0000",
+      "body": "Hi Kehinde,\nHave you tried it with the normal single processor MMPBSA code?\nOne of my PBSA jobs failed when I used the MMPBSA.py.MPI code as the memory ran out and the job terminated without giving me the output.. I later increased memory usage to 8gigs and the MPI job ran fine.\nPlease post your  slurm.out file and maybe what is exactly printed as the error?\nThanks!\nFrom: David A Case<mailto:david.case.rutgers.edu>\nSent: 07 December 2021 07:51\nTo: AMBER Mailing List<mailto:amber.ambermd.org>\nSubject: Re: [AMBER] Error with MMPBSA\nOn Tue, Dec 07, 2021, Kehinde Idowu wrote:\n>Hi guys, Please, I need your assistance. I was trying to calculate binding\n>energy between two receptors using MMPBSA script on Amber 14, however, I\n>keep getting this error message bellow in my mmpbsa.log file. Kindly advise\n>on this.Thanks.\n>Primary job  terminated normally, but 1 process returneda non-zero exit code.\nThis message doesn't say anything except that the job failed.  Look at the\noutput files for indications of what might have gone wrong.  If that doesn't\nhelp, try a (shorter?) run using the non-parallel script: that might help\nidentify what the problem is.  This looks like it might be an MPI problem.\n....dac",
+      "url": "http://archive.ambermd.org/202112/0074.html",
+      "in_reply_to": 1638842788
+    },
+    {
+      "message_id": 1638896394,
+      "author": "Kehinde Idowu",
+      "date_raw": "Tue, 7 Dec 2021 16:59:54 +0000 (UTC)",
+      "body": "Dear all,My mmgbsa_output file is empty, however, this is the error message in mmgbsa.log file:--------------------------------------------------------------------------mpirun was unable to launch the specified application as it could not accessor execute an executable:\nExecutable: ./testNode: cnode0220\nwhile attempting to start process rank 0.--------------------------------------------------------------------------4 total processes failed to start\nThis is also my mmgbsa.in file;\nInput file for running PB and GB in serial&general startframe=1,  endframe=9000, interval=50, keep_files=0,/&gbigb=5,saltcon=0.15,/#&pb#istrng=0.100,#/#&decomp#idecomp=1,#print_res=\"1243\"#dec_verbose=2,csv_format=0,/\nOn Tuesday, December 7, 2021, 06:50:56 AM CST, David A Case <david.case.rutgers.\nedu> wrote:\nOn Tue, Dec 07, 2021, Kehinde Idowu wrote:\n>Hi guys, Please, I need your assistance. I was trying to calculate binding\n>energy between two receptors using MMPBSA script on Amber 14, however, I\n>keep getting this error message bellow in my mmpbsa.log file. Kindly advise\n>on this.Thanks.\n>Primary job  terminated normally, but 1 process returneda non-zero exit code.\nThis message doesn't say anything except that the job failed.  Look at the\noutput files for indications of what might have gone wrong.  If that doesn't\nhelp, try a (shorter?) run using the non-parallel script: that might help\nidentify what the problem is.  This looks like it might be an MPI problem.\n....dac",
+      "url": "http://archive.ambermd.org/202112/0075.html",
+      "in_reply_to": 1638842788
+    },
+    {
+      "message_id": 1638970590,
+      "author": "Monsurat M. Lawal",
+      "date_raw": "Wed, 8 Dec 2021 08:36:30 -0500",
+      "body": "Hi Kehinde,\nThe problem is with your .pbs or .job file. I guess you are using CHPC\nSouth Africa.\nSee if this works for you. Also, edit endframe=500 to quickly check, then\nyou choose whatever you want if it works.\nBest regards\nMonsurat.\nOn Tue, Dec 7, 2021 at 12:00 PM Kehinde Idowu <kidowu93.yahoo.com> wrote:\n>  Dear all,My mmgbsa_output file is empty, however, this is the error\n> message in mmgbsa.log\n> file:--------------------------------------------------------------------------mpirun\n> was unable to launch the specified application as it could not accessor\n> execute an executable:\n> Executable: ./testNode: cnode0220\n> while attempting to start process rank\n> 0.--------------------------------------------------------------------------4\n> total processes failed to start\n> This is also my mmgbsa.in file;\n> Input file for running PB and GB in serial&general startframe=1,\n> endframe=9000, interval=50,\n> keep_files=0,/&gbigb=5,saltcon=0.15,/#&pb#istrng=0.100,#/#&decomp#idecomp=1,#print_res=\"1243\"#dec_verbose=2,csv_format=0,/\n>     On Tuesday, December 7, 2021, 06:50:56 AM CST, David A Case <\n> david.case.rutgers.edu> wrote:\n>\n>  On Tue, Dec 07, 2021, Kehinde Idowu wrote:\n>\n> >Hi guys, Please, I need your assistance. I was trying to calculate binding\n> >energy between two receptors using MMPBSA script on Amber 14, however, I\n> >keep getting this error message bellow in my mmpbsa.log file. Kindly\n> advise\n> >on this.Thanks.\n>\n> >Primary job  terminated normally, but 1 process returneda non-zero exit\n> code.\n>\n> This message doesn't say anything except that the job failed.  Look at the\n> output files for indications of what might have gone wrong.  If that\n> doesn't\n> help, try a (shorter?) run using the non-parallel script: that might help\n> identify what the problem is.  This looks like it might be an MPI problem.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202112/0080.html",
+      "in_reply_to": 1638842788
+    },
+    {
+      "message_id": 1638881493,
+      "author": "Monsurat M. Lawal",
+      "date_raw": "Tue, 7 Dec 2021 07:51:33 -0500",
+      "body": "Hello Kehinde,\nCould you please share your script to run the job?\nRegards\nMonsurat.\nOn Mon, Dec 6, 2021 at 9:06 PM Kehinde Idowu <kidowu93.yahoo.com> wrote:\n> Hi guys, Please, I need your assistance. I was trying to calculate binding\n> energy between two receptors using MMPBSA script on Amber 14, however, I\n> keep getting this error message bellow in my mmpbsa.log file. Kindly advise\n> on this.Thanks.\n> -------------------------------------------------------Primary job\n> terminated normally, but 1 process returneda non-zero exit code.. Per\n> user-direction, the job has been\n> aborted.-------------------------------------------------------------------------------------------------------------------A\n> process or daemon was unable to complete a TCP connectionto another\n> process:  Local host:    cnode0451  Remote host:   cnode0451This is usually\n> caused by a firewall on the remote host. Pleasecheck that any firewall\n> (e.g., iptables) has been disabled andtry\n> again.--------------------------------------------------------------------------------------------------------------------------------------mpirun\n> detected that one or more processes exited with non-zero status, thus\n> causingthe job to be terminated. The first process to do so was:\n>   Process name: [[11143,1],15]  Exit code:\n> 2--------------------------------------------------------------------------~\n>\n>",
+      "url": "http://archive.ambermd.org/202112/0072.html",
+      "in_reply_to": 1638842788
+    }
+  ]
+}

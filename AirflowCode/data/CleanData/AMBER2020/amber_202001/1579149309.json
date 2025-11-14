@@ -1,0 +1,21 @@
+{
+  "thread_id": 1579149309,
+  "subject": "[AMBER] ValueError: could not convert string to float: ********* Error occured on rank 0. Exiting. All files have been retained.",
+  "messages": [
+    {
+      "message_id": 1579149309,
+      "author": "Neha Gandhi",
+      "date_raw": "Thu, 16 Jan 2020 14:35:09 +1000",
+      "body": "Dear List,\nI am running mmgbsa and single residue decomposition. It threw following\nerror \"ValueError: could not convert string to float: *********\nError occured on rank 0.\nExiting. All files have been retained.\"\nI executed following steps as suggested in the previous mailing list\ntrajin cluster.nc.c0\ncheck :1-177 skipbadframes nobondcheck reportfile report.dat\ntrajout fixed.corrupted.nc\nrun\nThe above error is still present despite writing a new trajectory.\nAny help would be appreciated.\nCheers,\nNeha",
+      "url": "http://archive.ambermd.org/202001/0178.html"
+    },
+    {
+      "message_id": 1579181760,
+      "author": "David Case",
+      "date_raw": "Thu, 16 Jan 2020 13:36:00 +0000",
+      "body": "On Thu, Jan 16, 2020, Neha Gandhi wrote:\n>\n>I am running mmgbsa and single residue decomposition. It threw following\n>error \"ValueError: could not convert string to float: *********\nLook at your trajectory file with a text editor: you will see that there\nare coordinates that are too large to fit into the space allowed, and\nare indicated by stars.\nSimplest thing usually is to set ioutfm=1, and write to a netCDF\ntrajectory format.  However, there may also be something wrong with your\nsystem, and it is \"blowing up\" somehow.  Be sure to visualize things\nwith a program like chimera or VMD or pymol, to help make sure that you\nare not sending bad results to MM_PBSA.\nNote also the opinion of many: for snapshot analysis (like MM_PB/GBSA),\nthe PB model is generally more robust than in GB.  GB can be very useful\nfor running trajectories, since it is fast, and can be applied at every\nstep.  But where speed is not needed so much, PB can be very helpful.\nSo, at the least, consider running MM_PBSA alongside MM_GBSA.\n....dac",
+      "url": "http://archive.ambermd.org/202001/0183.html",
+      "in_reply_to": 1579149309
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "thread_id": 1674898361,
+  "subject": "[AMBER] Install Amber22",
+  "messages": [
+    {
+      "message_id": 1674898361,
+      "author": "ABDELATIF MESSAOUDI",
+      "date_raw": "Sat, 28 Jan 2023 10:32:41 +0100",
+      "body": "Dear AMBER users,\nI am trying to install AMBER22 in parallel in one computer (CPU Model 11th\nGen Intel(R) Core(TM) i9-11900K . 3.50GHz . I am getting the error :\n~/amber22_src/AmberTools/src# ./configure_mpich gnu\nchecking for Fortran 77 flag for library directories... -L\nchecking whether Fortran 77 compiler processes .F files with C\npreprocessor... yes\nchecking whether gfortran allows mismatched arguments... no\nconfigure: error: The Fortran compiler gfortran will not compile files that\ncall\nthe same routine with arguments of different types.\nMPICH configure failed, returning 1\nI have tried to install Amber22 with cuda in same computer (CPU Model 11th\nGen Intel(R) Core(TM) i9-11900K . 3.50GHz . I am getting the:\nroot.lcmvar:/home/lcmvar/SOFT/amber22_src/build# ./run_cmake\n-- \n**************************************************************************\n-- Starting configuration of Amber version 22.0.0...\n-- CMake Version: 3.22.1\n-- For how to use this build system, please read this wiki:\n--\nhttp://ambermd.org/pmwiki/pmwiki.php/Main/CMake\n-- For a list of important CMake variables, check here:\n--\nhttp://ambermd.org/pmwiki/pmwiki.php/Main/CMake-Common-Options\n-- \n**************************************************************************\n-- Amber source found, building AmberTools and Amber\n-- Could NOT find CUDA (missing: CUDA_INCLUDE_DIRS CUDA_CUDART_LIBRARY)\n(found version \"9.1\")\nCMake Error at cmake/CudaConfig.cmake:15 (message):\nYou turned on CUDA, but it was not found. Please set the\nCUDA_TOOLKIT_ROOT_DIR option to your CUDA install directory.\nCall Stack (most recent call first):\nCMakeLists.txt:120 (include)\n-- Configuring incomplete, errors occurred!\nSee also \"/home/lcmvar/SOFT/amber22_src/build/CMakeFiles/CMakeOutput.log\".\nSee also \"/home/lcmvar/SOFT/amber22_src/build/CMakeFiles/CMakeError.log\".\nIf the cmake build report looks OK, you should now do the following:\nmake install\nsource /home/lcmvar/SOFT/amber22/amber.sh\nConsider adding the last line to your login startup script, e.g. ~/.bashrc\nThank you\nAbdelatif Messaoudi\nLCMVAR, University of Batna1, Algeria",
+      "url": "http://archive.ambermd.org/202301/0123.html"
+    },
+    {
+      "message_id": 1675133877,
+      "author": "David A Case",
+      "date_raw": "Mon, 30 Jan 2023 21:57:57 -0500",
+      "body": "On Sat, Jan 28, 2023, ABDELATIF MESSAOUDI via AMBER wrote:\n>Dear AMBER users,\nI'm not sure if you are really getting emails from this list, or from me.\nI've answered these before, but others may want to chime in here:\n>~/amber22_src/AmberTools/src# ./configure_mpich gnu\n>configure: error: The Fortran compiler gfortran will not compile files that\n>call the same routine with arguments of different types.\nThis is an mpich problem.  Some information is here:\nhttps://github.com/pmodels/mpich/issues/5811\nThe easiest workaround is to use your package manager to install mpich; you\ndon't say what OS you are using, but instructions for many common variants\nare here:\nhttps://ambermd.org/Installation.php\nMore complex would be to downgrade the gfortran compiler to version 8 or so;\nor to learn how to get environment flags into the mpich configure step.\n>-- Could NOT find CUDA (missing: CUDA_INCLUDE_DIRS CUDA_CUDART_LIBRARY)\n>(found version \"9.1\")\n>\n>CMake Error at cmake/CudaConfig.cmake:15 (message):\n>You turned on CUDA, but it was not found. Please set the\n>CUDA_TOOLKIT_ROOT_DIR option to your CUDA install directory.\nYou cuda install directory needs to be found (by you).  It is most often\nat /usr/local/cuda or /usr/lib/cuda (or places like that).\nEasiest thing to set the CUDA_HOME environment variable:\nexplore CUDA_HOME=/usr/local/cuda   # or whatever the correct location is.\nYou can also set CUDA_TOOLKIT_ROOT_DIR in your run_cmake script.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202301/0132.html",
+      "in_reply_to": 1674898361
+    }
+  ]
+}

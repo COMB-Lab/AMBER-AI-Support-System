@@ -1,0 +1,29 @@
+{
+  "thread_id": 1632854311,
+  "subject": "[AMBER] Atom type of NO does not shown up in PARMCHK.DAT",
+  "messages": [
+    {
+      "message_id": 1632854311,
+      "author": "Reza Esmaeeli",
+      "date_raw": "Tue, 28 Sep 2021 14:38:31 -0400",
+      "body": "Dear Amber users,\nI am trying to parametrize a nucleotide analog with a NO2 functional group on the base. After running antechamber and getting the mol2 file, I get the following error from parmchk2:\nAtom type of NO does not shown up in PARMCHK.DAT\nThat atom type is corresponding to the Nitrogen of the NO2 group.\nPlease advise\nReza",
+      "url": "http://archive.ambermd.org/202109/0166.html"
+    },
+    {
+      "message_id": 1632859798,
+      "author": "David A Case",
+      "date_raw": "Tue, 28 Sep 2021 16:09:58 -0400",
+      "body": "On Tue, Sep 28, 2021, Reza Esmaeeli wrote:\n>\n>I am trying to parametrize a nucleotide analog with a NO2 functional\n>group on the base. After running antechamber and getting the mol2 file, I\n>get the following error from parmchk2:\n>\n>Atom type of NO does not shown up in PARMCHK.DAT\nCan you say what command-line arguments you gave to antechamber and to\nparmchk2?  Providing the input pdb file (or similar) that you gave to\nantechamber would also help.\nAtom types in capital letters (like NO) are supposed to be Amber atom types,\nbut PARMCHK.DAT indeed knows nothing about NO.  There are no NO2 functional\ngroups in proteins or nucleic acids, so that is hardly suprising.  But I don't\nknow how you got a NO type assigned in the first place.\nIf you came up with this \"by hand\", then you will need to prepare a frcmod\nfile by hand as well.  Use GAFF atom types (as a test) for your model.  You\nwill probably see atom type \"no\" (lower case) for your nitrogen.  Copy\nparameters that involve it to the frcmod file, changing \"no\" to \"NO\" and\nadapting the atoms types of the atoms it is bonded to as needed.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202109/0169.html",
+      "in_reply_to": 1632854311
+    },
+    {
+      "message_id": 1632936417,
+      "author": "Reza Esmaeeli",
+      "date_raw": "Wed, 29 Sep 2021 13:26:57 -0400",
+      "body": "I’ve attached the pdb and mol2 file I used as input to antechamber. I generated these files using xleap by modifying a cytosine nucleotide from OL15. The command I used for antechamber was:\nantechamber -i zh.mol2 -fi mol2 -o zh-aa.mol2 -fo mol2 -c bcc -s 2 -at amber -rn ZZH\nThanks,\nReza\n> On Sep 28, 2021, at 4:09 PM, David A Case <david.case.rutgers.\nedu> wrote:\n>\n> On Tue, Sep 28, 2021, Reza Esmaeeli wrote:\n>>\n>> I am trying to parametrize a nucleotide analog with a NO2 functional\n>> group on the base. After running antechamber and getting the mol2 file, I\n>> get the following error from parmchk2:\n>>\n>> Atom type of NO does not shown up in PARMCHK.DAT\n>\n> Can you say what command-line arguments you gave to antechamber and to\n> parmchk2?  Providing the input pdb file (or similar) that you gave to\n> antechamber would also help.\n>\n> Atom types in capital letters (like NO) are supposed to be Amber atom types,\n> but PARMCHK.DAT indeed knows nothing about NO.  There are no NO2 functional\n> groups in proteins or nucleic acids, so that is hardly suprising.  But I don't\n> know how you got a NO type assigned in the first place.\n>\n> If you came up with this \"by hand\", then you will need to prepare a frcmod\n> file by hand as well.  Use GAFF atom types (as a test) for your model.  You\n> will probably see atom type \"no\" (lower case) for your nitrogen.  Copy\n> parameters that involve it to the frcmod file, changing \"no\" to \"NO\" and\n> adapting the atoms types of the atoms it is bonded to as needed.\n>\n> ...good luck...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202109/0177.html",
+      "in_reply_to": 1632854311
+    }
+  ]
+}

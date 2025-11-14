@@ -1,0 +1,37 @@
+{
+  "thread_id": 1625749187,
+  "subject": "[AMBER] Stop PMEMD Terminated Aborally. Tutorial 1.7 An Amber Lipid Force Field Tutorial: Lipid14.",
+  "messages": [
+    {
+      "message_id": 1625749187,
+      "author": "王维",
+      "date_raw": "Thu, 8 Jul 2021 20:59:47 +0800 (CST)",
+      "body": "Hi, all,\nI am following the tutorial Tutorial 1.7 An Amber Lipid Force Field Tutorial: Lipid14. When I started to heat the system, I get a output as \"Stop PMEMD Terminated Aborally\", and the last several rows of the 02_Heat.out file is:\n\"\n5.  REFERENCE ATOM COORDINATES\ndefault_name\n----- READING GROUP     1; TITLE:\nHold lipid fixed\nGROUP    1 HAS HARMONIC CONSTRAINTS    10.00000\nrfree: Error decoding variable  4  2 from:\nRES 1 384         !\n\"\nI used the command \"pmemd\" but not the  \"pmemd.CUPD\" since I am learning Amber in a virtual machine.\nIs there any way to fix this problem?\nThanks for help.\nBest regards,\nWang Wei",
+      "url": "http://archive.ambermd.org/202107/0040.html"
+    },
+    {
+      "message_id": 1625750322,
+      "author": "Carlos Simmerling",
+      "date_raw": "Thu, 8 Jul 2021 09:18:42 -0400",
+      "body": "Please include the I put file too, it looks like an error reading your\nrestraints but we can't see what you put in the input.\nOn Thu, Jul 8, 2021, 9:00 AM 王维 <wangwei1619.yeah.\nnet> wrote:\n> Hi, all,\n>\n>\n> I am following the tutorial Tutorial 1.7 An Amber Lipid Force Field\n> Tutorial: Lipid14. When I started to heat the system, I get a output as\n> \"Stop PMEMD Terminated Aborally\", and the last several rows of the\n> 02_Heat.out file is:\n> \"\n>    5.  REFERENCE ATOM COORDINATES\n>\n>\n>   default_name\n>\n>     ----- READING GROUP     1; TITLE:\n>  Hold lipid fixed\n>\n>\n>\n>      GROUP    1 HAS HARMONIC CONSTRAINTS    10.00000\n>\n>\n>      rfree: Error decoding variable  4  2 from:\n> RES 1 384         !\n> \"\n> I used the command \"pmemd\" but not the  \"pmemd.CUPD\" since I am learning\n> Amber in a virtual machine.\n> Is there any way to fix this problem?\n> Thanks for help.\n>\n>\n> Best regards,\n> Wang Wei\n>",
+      "url": "http://archive.ambermd.org/202107/0041.html",
+      "in_reply_to": 1625749187
+    },
+    {
+      "message_id": 1625814234,
+      "author": "王维",
+      "date_raw": "Fri, 9 Jul 2021 15:03:54 +0800 (CST)",
+      "body": "Hi, Carlos,\nThanks for your help.\nThe input file resulted in error is 02_Heat.in, which was pasted from the tutorial web site:\n\"\nLipid 128 heating 100K\n&cntrl\nimin=0,         ! Molecular dynamics\nntx=1,          ! Positions read formatted with no initial velocities\nirest=0,        ! No restart\nntc=2,          ! SHAKE on for bonds with hydrogen\nntf=2,          ! No force evaluation for bonds with hydrogen\ntol=0.0000001,  ! SHAKE tolerance\nnstlim=2500,    ! Number of MD steps\nntt=3,          ! Langevin thermostat\ngamma_ln=1.0,   ! Collision frequency for Langevin thermostat\nntr=1,          ! Restrain atoms using a harmonic potential\n! (See the GROUP input below)\nig=-1,          ! Random seed for Langevin thermostat\nntpr=100,\nntwr=10000,\nntwx=100,       ! Write to trajectory file every ntwx steps\ndt=0.002,       ! Timestep (ps)\nnmropt=1,       ! NMR restraints will be read (See TEMP0 control below)\nntb=1,\nntp=0,\ncut=10.0,\nioutfm=1,       ! Write a binary (netcdf) trajectory\nntxo=2,         ! Write binary restart files\n/\n&wt\ntype='TEMP0',   ! Varies the target temperature TEMP0\nistep1=0,       ! Initial step\nistep2=2500,    ! Final step\nvalue1=0.0,     ! Initial temp0 (K)\nvalue2=100.0 /  ! final temp0 (K)\n&wt type='END' / ! End of varying conditions\nHold lipid fixed\n10.0              ! Force constant (kcal/(mol Angstroms^2))\nRES 1 384         ! Choose residues\nEND\nEND               ! End GROUP input\n\"\nHowever, there is something else that concerns me. I am using Amber 18;I have used AMBERHOME/dat/charmmlipid2amber/charmmlipid2amber.csv to convert the lipid PDB format; the box dimension estimated by vmd_box_dims.sh deviated from the value on tutorial web by about 15%; I could find the leaprc.ff12SB so I sourced the leaprc.ff14SB in xleap.\nI hope these information is helpful.\nBest regards,\nWang Wei\nAt 2021-07-08 21:18:42, \"Carlos Simmerling\" <carlos.simmerling.gmail.\ncom> wrote:\n>Please include the I put file too, it looks like an error reading your\n>restraints but we can't see what you put in the input.\n>\n>On Thu, Jul 8, 2021, 9:00 AM 王维 <wangwei1619.yeah.\nnet> wrote:\n>\n>> Hi, all,\n>>\n>>\n>> I am following the tutorial Tutorial 1.7 An Amber Lipid Force Field\n>> Tutorial: Lipid14. When I started to heat the system, I get a output as\n>> \"Stop PMEMD Terminated Aborally\", and the last several rows of the\n>> 02_Heat.out file is:\n>> \"\n>>    5.  REFERENCE ATOM COORDINATES\n>>\n>>\n>>   default_name\n>>\n>>     ----- READING GROUP     1; TITLE:\n>>  Hold lipid fixed\n>>\n>>\n>>\n>>      GROUP    1 HAS HARMONIC CONSTRAINTS    10.00000\n>>\n>>\n>>      rfree: Error decoding variable  4  2 from:\n>> RES 1 384         !\n>> \"\n>> I used the command \"pmemd\" but not the  \"pmemd.CUPD\" since I am learning\n>> Amber in a virtual machine.\n>> Is there any way to fix this problem?\n>> Thanks for help.\n>>\n>>\n>> Best regards,\n>> Wang Wei\n>>",
+      "url": "http://archive.ambermd.org/202107/0049.html",
+      "in_reply_to": 1625749187
+    },
+    {
+      "message_id": 1625831805,
+      "author": "David A Case",
+      "date_raw": "Fri, 9 Jul 2021 07:56:45 -0400",
+      "body": "On Fri, Jul 09, 2021, 王维 wrote:\n>Hold lipid fixed\n>10.0              ! Force constant (kcal/(mol Angstroms^2))\n>RES 1 384         ! Choose residues\n>END\n>END               ! End GROUP input\nLeave out the comments (starting with \"!\")  The old group input cards don't\nallow Fortran-style comments.\n(Tutorial folks: this input should probably be converted to the\nrestraintmask/restraint_wt format in the &cntrl namelist.)\n....dac\n>>>     ----- READING GROUP     1; TITLE:\n>>>  Hold lipid fixed\n>>>\n>>>      GROUP    1 HAS HARMONIC CONSTRAINTS    10.00000\n>>>      rfree: Error decoding variable  4  2 from:\n>>> RES 1 384         !",
+      "url": "http://archive.ambermd.org/202107/0054.html",
+      "in_reply_to": 1625749187
+    }
+  ]
+}

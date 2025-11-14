@@ -1,0 +1,109 @@
+{
+  "thread_id": 1601570695,
+  "subject": "[AMBER] pmemd",
+  "messages": [
+    {
+      "message_id": 1601570695,
+      "author": "aishen",
+      "date_raw": "Thu, 1 Oct 2020 18:44:55 +0200",
+      "body": "Hi,\nI am trying to do this tutorial but I can't find pmemd where is this\nprogramm from ?\nhttps://amberhub.chpc.utah.edu/analisis-of-nucleic-acid-simulation/\nAny help\nRegards\nHenri",
+      "url": "http://archive.ambermd.org/202010/0004.html"
+    },
+    {
+      "message_id": 1601570976,
+      "author": "Elvis Martis",
+      "date_raw": "Thu, 1 Oct 2020 22:19:36 +0530",
+      "body": "Typing \"which pmemd\" should echo its path.\nIt is general in $AMBERHOME/bin\nBest Regards\nElvis\nOn Thu, 1 Oct 2020 at 22:18, aishen <aishen.free.fr> wrote:\n> Hi,\n>\n> I am trying to do this tutorial but I can't find pmemd where is this\n> programm from ?\n>\n>\nhttps://amberhub.chpc.utah.edu/analisis-of-nucleic-acid-simulation/\n>\n> Any help\n>\n> Regards\n>\n> Henri\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202010/0005.html",
+      "in_reply_to": 1601570695
+    },
+    {
+      "message_id": 1601584841,
+      "author": "David A Case",
+      "date_raw": "Thu, 1 Oct 2020 16:40:41 -0400",
+      "body": "On Thu, Oct 01, 2020, aishen wrote:\n>\n>I am trying to do this tutorial but I can't find pmemd where is this\n>programm from ?\npmemd is a part of Amber; perhaps you only have AmberTools?  The sander\nprogram is generally a compatible (but slower) replacement for pmemd.\n....dac",
+      "url": "http://archive.ambermd.org/202010/0009.html",
+      "in_reply_to": 1601570695
+    },
+    {
+      "message_id": 1601585445,
+      "author": "aishen",
+      "date_raw": "Thu, 1 Oct 2020 22:50:45 +0200",
+      "body": "Here are my command, I think they aren't right ?\nIn fact it doesn't do any error but don't produce the expected files ...\nsander -O  -i mini.in -o mini.out -p dna.prmtop -c dna.rst7 -r mini.rst\n-ref dna.rst7\nsander -O -i heat.in -o heat.out -p dna.prmtop -c mini.rst -r heat.rst\n-x heat.mdcrd -ref mini.rst\nsander -O -i eq.in -o eq.out -p dna.prmtop -c heat.rst -r eq.rst -x\neq.mdcrd -ref heat.rst\nsander -O -i md.in -o md.out -p dna.prmtop -c eq.rst -r md.rst7 -x md.nc\n-inf mdinfo\nand all the files i have in the directory :\nA-dna.pdb  dna.prmtop  dna.rst7  eq.in    eq.out    heat.in heat.out\nleap.log  md.in  md.out  mini.in  mini.out\nBut it should generate md.rst7 and a md.nc (obviously not created )\nBest regards\nHenri\nOn 01/10/2020 19:29, Elvis Martis wrote:\n> You could use sander instead of pmemd.\n> But sander won't run on GPUs\n> Best Regards\n> Elvis\n>\n>\n>\n> On Thu, 1 Oct 2020 at 22:45, aishen <aishen.free.\nfr\n> <mailto:aishen.free.fr>> wrote:\n>\n>     I compiled amber20_src then you are saying I don't have pmemd,\n>     very strange ... I think I won't use any more this soft\n>\n>     Best regards and thank you for the answer\n>\n>     Henri\n>\n>     On 01/10/2020 19:02, Elvis Martis wrote:\n>>     If you did not build amber then you will not find pmemd.\n>>     pmemd is paid code of amber.\n>>     Best Regards\n>>     Elvis\n>>\n>>\n>>\n>>     On Thu, 1 Oct 2020 at 22:30, aishen <aishen.free.fr\n>>     <mailto:aishen.free.fr>> wrote:\n>>\n>>         I thaught too but it's not maybe it wasn't build ? could it be ?\n>>\n>>         On 01/10/2020 18:49, Elvis Martis wrote:\n>>         > Typing \"which pmemd\" should echo its path.\n>>         > It is general in $AMBERHOME/bin\n>>         > Best Regards\n>>         > Elvis\n>>         >\n>>         >\n>>         >\n>>         > On Thu, 1 Oct 2020 at 22:18, aishen <aishen.free.\nfr\n>>         <mailto:\naishen.free.fr\n>> wrote:\n>>         >\n>>         >> Hi,\n>>         >>\n>>         >> I am trying to do this tutorial but I can't find pmemd\n>>         where is this\n>>         >> programm from ?\n>>         >>\n>>         >>\n>>\nhttps://amberhub.chpc.utah.edu/analisis-of-nucleic-acid-simulation/\n>>         >>\n>>         >> Any help\n>>         >>\n>>         >> Regards\n>>         >>\n>>         >> Henri\n>>         >>\n>>         >>\n>>         >>\n>>         >>",
+      "url": "http://archive.ambermd.org/202010/0011.html",
+      "in_reply_to": 1601570695
+    },
+    {
+      "message_id": 1601634042,
+      "author": "Dr. Anselm Horn",
+      "date_raw": "Fri, 2 Oct 2020 12:20:42 +0200",
+      "body": "On 10/01/2020 10:50 PM, aishen wrote:\n> Here are my command, I think they aren't right ?\n>\n> In fact it doesn't do any error but don't produce the expected files ...\n>\n> sander -O  -i mini.in -o mini.out -p dna.prmtop -c dna.rst7 -r mini.rst\n> -ref dna.rst7\n> sander -O -i heat.in -o heat.out -p dna.prmtop -c mini.rst -r heat.rst\n> -x heat.mdcrd -ref mini.rst\n> sander -O -i eq.in -o eq.out -p dna.prmtop -c heat.rst -r eq.rst -x\n> eq.mdcrd -ref heat.rst\n> sander -O -i md.in -o md.out -p dna.prmtop -c eq.rst -r md.rst7 -x md.nc\n> -inf mdinfo\n>\n> and all the files i have in the directory :\n>\n> A-dna.pdb  dna.prmtop  dna.rst7  eq.in    eq.out    heat.in heat.out\n> leap.log  md.in  md.out  mini.in  mini.out\n>\n> But it should generate md.rst7 and a md.nc (obviously not created )\naccording to your e-mail, you issued four isolated sander invokations;\nthe listing of your files indicates that no rst files have been\nproduced, which suggests that there is a problem with your first sander\ncall already.\nThus, have a look into the output of your first call (mini.out); Amber\noften yields helpful error messages. Also check your input (formatting,\nkeywords) and consult the manual, if in doubt.\nA look into the other out files may also be instructive to see, how\nAmber deals with a non-existent file (coordinate reference is missing in\nrun 2-4).\nRegards,\nAnselm",
+      "url": "http://archive.ambermd.org/202010/0018.html",
+      "in_reply_to": 1601570695
+    },
+    {
+      "message_id": 1602970267,
+      "author": "Jorge Iulek",
+      "date_raw": "Sat, 17 Oct 2020 18:31:07 -0300",
+      "body": "Dear all,\nI would like to check the \"stabilization\" of some pmemd runs. Are\nthere versions of process_minout.perl and process_mdout.perl tailored\nfor the output of pmemd?\nThank you,\nJorge",
+      "url": "http://archive.ambermd.org/202010/0222.html",
+      "in_reply_to": 1601570695
+    },
+    {
+      "message_id": 1602971144,
+      "author": "Rodrigo Galindo-Murillo",
+      "date_raw": "Sat, 17 Oct 2020 15:45:44 -0600",
+      "body": "You can use CPPTRAJ to read the out files from sander/pmemd. A working\nexample is available here:\nhttps://amberhub.chpc.utah.edu/reading-the-out-files-and-plotting-different-properties/\nHope that helps!\nRodrigo.\nOn Sat, Oct 17, 2020 at 3:31 PM Jorge Iulek <jiulek.gmail.com> wrote:\n>\n> Dear all,\n>\n>\n>      I would like to check the \"stabilization\" of some pmemd runs. Are\n> there versions of process_minout.perl and process_mdout.perl tailored\n> for the output of pmemd?\n>\n>      Thank you,\n>\n>\n>\n> Jorge\n>\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202010/0224.html",
+      "in_reply_to": 1601570695
+    },
+    {
+      "message_id": 1603043459,
+      "author": "Jorge Iulek",
+      "date_raw": "Sun, 18 Oct 2020 14:50:59 -0300",
+      "body": "Dear Rodrigo,\nYes, fine, it is an alternative and extracted better the variables\nto plot. Possibly it is the way to go, yet , at least for pmemd outputs,\nit seems to me to be more complete than the perl scripts.\nThank you,\nJorge\nOn 10/17/20 6:45 PM, Rodrigo Galindo-Murillo wrote:\n> You can use CPPTRAJ to read the out files from sander/pmemd. A working\n> example is available here:\n>\n>\nhttps://amberhub.chpc.utah.edu/reading-the-out-files-and-plotting-different-properties/\n>\n> Hope that helps!\n> Rodrigo.\n>\n> On Sat, Oct 17, 2020 at 3:31 PM Jorge Iulek <jiulek.gmail.\ncom> wrote:\n>> Dear all,\n>>\n>>\n>>       I would like to check the \"stabilization\" of some pmemd runs. Are\n>> there versions of process_minout.perl and process_mdout.perl tailored\n>> for the output of pmemd?\n>>\n>>       Thank you,\n>>\n>>\n>>\n>> Jorge\n>>\n>>\n>>\n>>\n>>",
+      "url": "http://archive.ambermd.org/202010/0229.html",
+      "in_reply_to": 1601570695
+    },
+    {
+      "message_id": 1603826933,
+      "author": "Bill Abbott",
+      "date_raw": "Tue, 27 Oct 2020 15:28:53 -0400",
+      "body": "Hi,\nI'm trying to compile a hybrid pmemd with both MPI and OpenMP and it's\nnot acting the way I expect.  It seems to build ok, the run_cmake step\nindicates that OpenMP is included and the pmemd.MPI binary acts exactly\nas I would expect with no OpenMP - exactly one core per rank.\nI set OMP_NUM_THREADS, launch with either mpirun or srun, no change.  I\nditch the scheduler entirely and run manually on a whole node, no change.\nIs there a known good procedure to get one MPI rank per node and OpenMP\nthreading across that node with pmemd?\nThanks,\nBill Abbott\nOffice of Advanced Research Computing\nRutgers University",
+      "url": "http://archive.ambermd.org/202010/0376.html",
+      "in_reply_to": 1601570695
+    },
+    {
+      "message_id": 1603829064,
+      "author": "David A Case",
+      "date_raw": "Tue, 27 Oct 2020 16:04:24 -0400",
+      "body": "On Tue, Oct 27, 2020, Bill Abbott wrote:\n>\n>I'm trying to compile a hybrid pmemd with both MPI and OpenMP and it's\n>not acting the way I expect.  It seems to build ok, the run_cmake step\n>indicates that OpenMP is included and the pmemd.MPI binary acts exactly\n>as I would expect with no OpenMP - exactly one core per rank.\nWhat you see is correct and expected.  There was some effort to use\nOpenMP and MPI together on the Xeon Phi architecture, but it died when\nthe enthusiams for Xeon Phi did.\nWe should have some warning message about this.  It's legal to use both\nOpenMP and MPI together, but cpptraj (the analysis program) is the only\ncode that makes use of this, as far as I know.  pmemd.MPI is not set up\nfor OpenMP.\nSorry for the confusion....regards....dave\n[Others on the list should chime in if the above description is wrong or\nincomplete.]",
+      "url": "http://archive.ambermd.org/202010/0377.html",
+      "in_reply_to": 1601570695
+    },
+    {
+      "message_id": 1603829612,
+      "author": "Bill Abbott",
+      "date_raw": "Tue, 27 Oct 2020 16:13:32 -0400",
+      "body": "Understood, thanks very much.\nI noticed during this task that the new cmake procedure with Amber20\nworks well for both gcc and Intel, no issues other than MP, easy and\nstraightforward, if you're still collecting info on that.\nBill\nOn 10/27/20 4:04 PM, David A Case wrote:\n> On Tue, Oct 27, 2020, Bill Abbott wrote:\n>>\n>> I'm trying to compile a hybrid pmemd with both MPI and OpenMP and it's\n>> not acting the way I expect.  It seems to build ok, the run_cmake step\n>> indicates that OpenMP is included and the pmemd.MPI binary acts exactly\n>> as I would expect with no OpenMP - exactly one core per rank.\n>\n> What you see is correct and expected.  There was some effort to use\n> OpenMP and MPI together on the Xeon Phi architecture, but it died when\n> the enthusiams for Xeon Phi did.\n>\n> We should have some warning message about this.  It's legal to use both\n> OpenMP and MPI together, but cpptraj (the analysis program) is the only\n> code that makes use of this, as far as I know.  pmemd.MPI is not set up\n> for OpenMP.\n>\n> Sorry for the confusion....regards....dave\n>\n> [Others on the list should chime in if the above description is wrong or\n> incomplete.]\n>\n>",
+      "url": "http://archive.ambermd.org/202010/0378.html",
+      "in_reply_to": 1601570695
+    },
+    {
+      "message_id": 1603854826,
+      "author": "Abdul Basit",
+      "date_raw": "Wed, 28 Oct 2020 08:43:46 +0530",
+      "body": "Dear users and developers\nDoes pmemd.cuda run on GPU use any CPU at all? If so, does the performance\ndepend on the CPU processor? The pmemd speed in a v100 card in our machine\nis about 80% of what is given in the AMBER benchmarks for a protein+water\nsystem of ~23K atoms.\nSincerely\nAbdul Basit\nResearch Fellow\nSchool of Computational & Integrative Sciences\nJawaharlal Nehru University, New Delhi-110067\nIndia",
+      "url": "http://archive.ambermd.org/202010/0379.html",
+      "in_reply_to": 1601570695
+    },
+    {
+      "message_id": 1603885282,
+      "author": "David A Case",
+      "date_raw": "Wed, 28 Oct 2020 07:41:22 -0400",
+      "body": "On Wed, Oct 28, 2020, Abdul Basit wrote:\n>\n>Does pmemd.cuda run on GPU use any CPU at all? If so, does the performance\n>depend on the CPU processor? The pmemd speed in a v100 card in our machine\n>is about 80% of what is given in the AMBER benchmarks for a protein+water\n>system of ~23K atoms.\npmemd.cuda makes use of the CPU only occasionally, mainly to write out\ncoordinates.  There is a list of considerations for optimizing GPU\nperformance here:\nhttps://ambermd.org/GPULogistics.php\nIf you want to check your V100 performance against published benchmarks,\nconsider just running the benchmarks yourself.  Then you can experiment\nwith input parameters (moving slowly from the benchmark inputs to those\nyou are using) to judge the timing effects of various parameters.\n....dac",
+      "url": "http://archive.ambermd.org/202010/0383.html",
+      "in_reply_to": 1601570695
+    }
+  ]
+}

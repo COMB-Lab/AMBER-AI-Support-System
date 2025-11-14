@@ -1,0 +1,21 @@
+{
+  "thread_id": 1742717190,
+  "subject": "[AMBER] AMD GPU executable reads different gb parameters",
+  "messages": [
+    {
+      "message_id": 1742717190,
+      "author": "Wong, Sergio E.",
+      "date_raw": "Sun, 23 Mar 2025 08:06:30 +0000",
+      "body": "Hi;\nI’m compiling amber 24 on an AMD MI300A GPU system.  The compilation was successful ( it finished ).  However, I noticed something odd while running the tests.\nThe following line is part of the test diff for irest1_ntt0_igb8_ntc2 SPFP.  The same result is true for the DPFP executable.\npossible FAILURE:  check irest1_ntt0_igb8_ntc2.out.dif\n…\n51c51\n<      gbalphaP  =   1.00000, gbbetaP   =   0.80000,  gbgammaP  =    4.85000\n>      gbalphaP  =   0.41836, gbbetaP   =   0.29005,  gbgammaP  =    0.10642\nAs far as I can tell, the gbalphaP, etc are part of the input/parmtop file .  Is the difference due to a problem reading the prmtop file or is it a problem writing the mdout file?\nNote, when I compiled the CPU version of amber24, there is no error involving   gbalphaP , gbbetaP and gbgammaP.  Can anyone shed any light?\nThank you in advance;\n-Sergio",
+      "url": "http://archive.ambermd.org/202503/0040.html"
+    },
+    {
+      "message_id": 1742759967,
+      "author": "David A Case",
+      "date_raw": "Sun, 23 Mar 2025 13:59:27 -0600",
+      "body": "On Sun, Mar 23, 2025, Wong, Sergio E. via AMBER wrote:\n>   The following line is part of the test diff for irest1_ntt0_igb8_ntc2 SPFP.  The same result is true for the DPFP executable.\n>\n>   possible FAILURE:  check irest1_ntt0_igb8_ntc2.out.dif\n>…\n>51c51\n><      gbalphaP  =   1.00000, gbbetaP   =   0.80000,  gbgammaP  =    4.85000\n>>      gbalphaP  =   0.41836, gbbetaP   =   0.29005,  gbgammaP  =    0.10642\nThis is a glitch in the printout.  You can ignore it unless you are using\nigb8 with molecules that contain phosphorus.\nIf your system does require P atoms (e.g. nucleic acids), I think you can\nexplicitly set the alpha/beta/gamma values in your input file as shown in\nthe manual, rather than take the defaults.   Be sure to check a very short\nrun (e.g. 10 steps) on CPU vs GPU to make sure.\n....dac",
+      "url": "http://archive.ambermd.org/202503/0042.html",
+      "in_reply_to": 1742717190
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "thread_id": 1614647731,
+  "subject": "[AMBER] positional and NMR distance restraints together",
+  "messages": [
+    {
+      "message_id": 1614647731,
+      "author": "Qinghua Liao",
+      "date_raw": "Tue, 2 Mar 2021 02:15:31 +0100",
+      "body": "Hello,\nI am using pmemd.cuda_DPFP (Amber 20) to do minimization for my system\nwith both positional and NMR distance restraints.\nThe NMR distance restraints are used to pull one residue close to the\nsubstrate during the minimization gradually (force constant gradually\nincreased in five steps of minimizations).\nAnd the positional restraints are applied to heavy atoms except for the\nsubstrate and the region where the residue locates (20 residues).\nFor two almost identical systems, the input files are the same. But one\nworks for all five steps, pmemd.cuda_DPFP can distinguish both\npositional and NMR distance restraints, as the output shows:\n#\nRESTRAINT  =      705.1138 (positional restraints)\nNMR restraints: Bond =  595.904   Angle =     0.000   Torsion =\n0.000 (NMR distance restraints)\n#\nWhile the other one failed to distinguish positional and NMR distance\nrestraints:\n#\nRESTRAINT  =     1175.6790\nNMR restraints: Bond = 1175.679   Angle =     0.000   Torsion =\n0.000\n#\nFor the failed system, the first step of minimization worked fine with\nforce constant of 1 kcal/mol A2,\nbut it failed to distinguish at the second step of minimization with a\nforce constant of 10 kcal/mol A2.\nAnd it seems that positional restraints are on the region where the\nresidues locates (20 residues), though I did not turn it on,\nleading to failure of pulling the residue close to the substrate.\nHere is my input files:\n#\n&cntrl\nimin = 1, ntmin = 2,\nmaxcyc = 25000, ncyc = 15000,\nntpr = 100, ntwe = 100,\nntb = 1, lj1264 = 0 , nmropt = 1 ,\nntr = 1, restraint_wt = 100,\nrestraintmask=' ( :1-189 | :209-263 | :267-455 | :475-529 ) & !.H= ',\n/\n&ewald\n/\n&wt type='DUMPFREQ', istep1=100, /\n&wt type='END', /\nDISANG=dists2.RST\nDUMPAVE=dists2.dat\nLISTIN=POUT\nLISTOUT=POUT\n#\nI tried pmemd.cuda (single version), it worked, but the minimized\nstructure was a little twisted, some bonds are at length around 2 angstrom).\nI could not figure out the issue. Any comments or suggestions? Thanks a\nlot!\nAll the best,\nQinghua",
+      "url": "http://archive.ambermd.org/202103/0006.html"
+    },
+    {
+      "message_id": 1614694405,
+      "author": "David A Case",
+      "date_raw": "Tue, 2 Mar 2021 09:13:25 -0500",
+      "body": "On Tue, Mar 02, 2021, Qinghua Liao wrote:\n> �� RESTRAINT� =����� 705.1138 (positional restraints)\nI think this is wrong: the 705 number is the sum of all restraints, both\npositional and NMR.\n>\n>While the other one failed to distinguish positional and NMR distance\n>restraints:\n>#\n> �� RESTRAINT� =���� 1175.6790\n> �� NMR restraints: Bond = 1175.679�� Angle =���� 0.000�� Torsion =���0.000\nThis looks like there are no postional restraints, (or the coordinates are\nidentical to those in the -ref file).  You should double-check the mdout\nfile to make sure that you actually have positional restraints turned on\n(ntr=1) here.\n>I tried pmemd.cuda (single version), it worked....\nAre you saying the the identical job gave different results depending on\nwhich version of pmemd you used?  Have you run jobs with just 5 steps of\nminimization, settting ntpr=1, and compared the outputs in detail?  Compare\nthe results of this short run to those from a CPU run.\nFinally, do you have large forces in your system?  pmemd.cuda can fail at\nthe minimization stage when the are bad contacts.\n....dac",
+      "url": "http://archive.ambermd.org/202103/0011.html",
+      "in_reply_to": 1614647731
+    }
+  ]
+}

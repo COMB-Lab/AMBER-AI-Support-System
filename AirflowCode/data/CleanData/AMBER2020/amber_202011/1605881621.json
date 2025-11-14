@@ -1,0 +1,21 @@
+{
+  "thread_id": 1605881621,
+  "subject": "[AMBER] Amber 20 make install problem",
+  "messages": [
+    {
+      "message_id": 1605881621,
+      "author": "Bruno Cramer",
+      "date_raw": "Fri, 20 Nov 2020 11:13:41 -0300",
+      "body": "Hi,\nafter *cmake_run*, without any error indication,* sudo make install *ended\nwith the following error:\n----------------------\nbcramer.Schrodinger:~/amber20_src/build$\nError: Symbol ‘atompositions_fce’ at (1) has no IMPLICIT type\nmake[2]: ***\n[AmberTools/src/rism/CMakeFiles/sander_rism_interface.dir/build.make:63:\nAmberTools/src/rism/CMakeFiles/sander_rism_interface.dir/amber_rism_interface.F90.o]\nError 1\nmake[1]: *** [CMakeFiles/Makefile2:6429:\nAmberTools/src/rism/CMakeFiles/sander_rism_interface.dir/all] Error 2\nmake: *** [Makefile:152: all] Error 2\n--------------------------\nEnvironment:\nexport  AMBERHOME=/home/bcramer/amber20_src/amber.sh\nexport LD_LIBRARY_PATH=${AMBERHOME}/lib64:$LD_LIBRARY_PATH\nexport DO_PARALLEL=\"mpirun -np 4\"\n--------------------\nOS: Ubuntu v20.04 LTS\n-------------------\nAny help is welcome\nRegards\nBruno",
+      "url": "http://archive.ambermd.org/202011/0183.html"
+    },
+    {
+      "message_id": 1605965993,
+      "author": "David A Case",
+      "date_raw": "Sat, 21 Nov 2020 08:39:53 -0500",
+      "body": "On Fri, Nov 20, 2020, Bruno Cramer wrote:\n>bcramer.Schrodinger:~/amber20_src/build$\n>Error: Symbol ‘atompositions_fce’ at (1) has no IMPLICIT type\nThis is an odd error: is there any line number given?  As far as I can\nsee, all references to atompositions_fce are inside #ifdef RISMCRDINTERP\nsigils.\n>export  AMBERHOME=/home/bcramer/amber20_src/amber.sh\nThis is wrong, but seems unrelated to what you report.  AMBERHOME is set\nwhen you source the amber.sh script (after make install).\n>OS: Ubuntu v20.04 LTS\nWhat is the output of \"gfortran --version\"?\n....thanks....dac",
+      "url": "http://archive.ambermd.org/202011/0200.html",
+      "in_reply_to": 1605881621
+    }
+  ]
+}

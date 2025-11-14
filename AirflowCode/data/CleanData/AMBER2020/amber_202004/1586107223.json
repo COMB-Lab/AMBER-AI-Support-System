@@ -1,0 +1,21 @@
+{
+  "thread_id": 1586107223,
+  "subject": "[AMBER] PrmtopError: Inconsistent charge definition for atom",
+  "messages": [
+    {
+      "message_id": 1586107223,
+      "author": "DHEERAJ CHITARA",
+      "date_raw": "Sun, 5 Apr 2020 22:50:23 +0530",
+      "body": "Dear Amber Team,\nI have created complex, receptor, ligand prmtop files using ante-mmpbsa.py\nprogram via solvated complex topology file.\nThe ligand parameter was generated using antechamber of amber18 package.\n==================================================\nante-MMPBSA.py -p xxxxx.prm.top -c complex.prm.top  -r receptor.prm.top -l\nligand.prm.top -s :Na+,WAT -n :1\n==================================================\nAll the complex, receptor, ligand prmtop files generated without any error\nusing above command.\nThe input file for MMPBSA Calculation\n==================================================\nInput file for running PBSA\n&general\nstartframe=1, endframe=50, verbose=1, strip_mask=\":Na+,WAT\",\nkeep_files=0,\nentropy=1,\n/\n&pb\nistrng=0.100, radiopt=0,\n/\n=========================================================\nwhile calculating MMPBSA I got the following error\nFile \"/xxxxx/amber18/bin/MMPBSA.py.MPI\", line 98, in <module>\napp.loadcheck_prmtops()\nFile \"/xxxxx/amber18/lib/python2.7/site-packages/MMPBSA_mods/main.py\",\nline 611, in loadcheck_prmtops\nself.normal_system.CheckConsistency()\nFile\n\"/xxxxx/amber18/lib/python2.7/site-packages/MMPBSA_mods/parm_setup.py\",\nline 932, in CheckConsistency\n(i + 1))\n*PrmtopError: Inconsistent charge definition for atom 1!*\nError occured on rank 2.\nExiting. All files have been retained.\nAny suggestion regarding this error.\nThanks in advance.\n-- \n----\nDheeraj Chitara",
+      "url": "http://archive.ambermd.org/202004/0050.html"
+    },
+    {
+      "message_id": 1586135174,
+      "author": "David A Case",
+      "date_raw": "Sun, 5 Apr 2020 21:06:14 -0400",
+      "body": "On Sun, Apr 05, 2020, DHEERAJ CHITARA wrote:\n> *PrmtopError: Inconsistent charge definition for atom 1!*\n> Error occured on rank 2.\n> Exiting. All files have been retained.\nSince all the files have been retained, use parmed to examine each of\nthe prmtop files you have, especially for atom 1.  Does anything look\nodd?  Presumably, atom 1 is probably the same in the complex and\nreceptor prmtops: does it indeed have the same charge in both?\nA general rule: if you are seeing problems, run the non-MPI versions of\neverything, since that can help in giving better error messages.\n....dac",
+      "url": "http://archive.ambermd.org/202004/0057.html",
+      "in_reply_to": 1586107223
+    }
+  ]
+}

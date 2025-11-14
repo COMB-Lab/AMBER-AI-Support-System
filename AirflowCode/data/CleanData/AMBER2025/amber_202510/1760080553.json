@@ -1,0 +1,61 @@
+{
+  "thread_id": 1760080553,
+  "subject": "[AMBER] Vlimit error",
+  "messages": [
+    {
+      "message_id": 1760080553,
+      "author": "Surabhi Singh 24933024",
+      "date_raw": "Fri, 10 Oct 2025 12:45:53 +0530",
+      "body": "Hello,\nI am working on protein-DNA complex, and while doing equilibration I'm\ngetting vlimit error...\nSo, I have generated .prmtop, inpcrd from tleap (without any error just\nwarnings of close contacts )\nNow I'm\n1.  minimizing the system( cycle 10000), then Heating (rm to 298K quickly,\n25000) and NVT ( NPT . 298K,) all with restrain 10 (on the solute atoms)\n2. Again minimizing the system( cycle 10000), then Heating (rm to 298K\nquickly, 25000) and NVT ( NPT . 298K,) all with restrain 2 (on the solute\natoms) this time\n3. This time I'm not using restain in minimization or equilibration,\nThis is the file for gradual heating and equlibration NVT)\n'''\nrm to 298K slowly,\n&cntrl\nimin = 0, ntx = 1, irest = 0,\nntpr = 1000, ntwx = 1000, ntwe = 0,\nntc = 2, ntf = 2, ntb = 1,\nnstlim = 300000,  dt =0.002,\nnmropt = 1, ntt = 3, gamma_ln = 2.0,\nntp = 0, taup = 0.2, pres0 =1.0,\n&end\n&wt type='TEMP0', istep1=0, istep2=50000, value1=10., value2=100., &end\n&wt type='TEMP0', istep1=50001, istep2=150000, value1=100., value2=100.,\n&end\n&wt type='TEMP0', istep1=150001, istep2=200000, value1=100., value2=298.,\n&end\n&wt type='TEMP0', istep1=200001, istep2=300000, value1=298., value2=298.,\n&end\n&wt type='END' &end\n'''\nI'm getting this error of vlimit exceeded\nvlimit exceeded for step 223546; vmax =    34.0225\nvlimit exceeded for step 223547; vmax =   204.7433\nPLease help me out how should I resolve this.\nThankyou",
+      "url": "http://archive.ambermd.org/202510/0017.html"
+    },
+    {
+      "message_id": 1760085133,
+      "author": "Téletchéa Stéphane",
+      "date_raw": "Fri, 10 Oct 2025 10:32:13 +0200",
+      "body": "Le 10/10/2025 à 09:15, Surabhi Singh 24933024 via AMBER a écrit :\n> I am working on protein-DNA complex, and while doing equilibration I'm\n> getting vlimit error...\nDear Surabhi,\nThis error means probably there is some (little) weirdness in your input\nfile,\nbut it also come from the fact that in some situations (GPU) vlimit is\nnot limited to 20,\nas indicated by the manual, but set to -1 (thus unlimited).\nAdd vlimit=20 to your input file (which is a far reasonable value\nindicated in the manual),\nand the problem should disappear. If not check your protocol, and/or use\nthe one from\nthe BCS consortium:\n- Ivani, I., Dans, P., Noy, A. et al. Parmbsc1: a refined force field\nfor DNA simulations.\nNat Methods 13, 55–58 (2016).\nhttps://www.doi./10.1038/nmeth.3658\nor the one by Daniel Roe and Brooks:\n- Daniel R. Roe, Bernard R. Brooks; A protocol for preparing explicitly\nsolvated systems for stable molecular dynamics simulations.\nJ. Chem. Phys. 7 August 2020; 153 (5): 054123.\nhttps://doi.org/10.1063/5.0013849\nThese should solve your issues.\nIf you want to keep your existing protocol, double check the timestep\nduring the heating steps (1fs, and not 2fs).\nHTH,\nStéphane\n-- \nMaître de conférences Hors Classe, PEDR, HDR\nUS2B, Nantes Université, CNRS, UMR 6286, Team Structural Bioinformatics, F-44000 Nantes\nhttp://www.us2b.univ-nantes.fr/\n-\nhttp://www.steletch.org",
+      "url": "http://archive.ambermd.org/202510/0018.html",
+      "in_reply_to": 1760080553
+    },
+    {
+      "message_id": 1760114905,
+      "author": "Daniel Roe",
+      "date_raw": "Fri, 10 Oct 2025 12:48:25 -0400",
+      "body": "Note the second protocol is implemented in the following script:\nhttps://github.com/drroe/AmberMdPrep\n-Dan\nOn Fri, Oct 10, 2025 at 4:31 AM Téletchéa Stéphane via AMBER <\namber.ambermd.org> wrote:\n> Le 10/10/2025 à 09:15, Surabhi Singh 24933024 via AMBER a écrit :\n> > I am working on protein-DNA complex, and while doing equilibration I'm\n> > getting vlimit error...\n> Dear Surabhi,\n>\n> This error means probably there is some (little) weirdness in your input\n> file,\n> but it also come from the fact that in some situations (GPU) vlimit is\n> not limited to 20,\n> as indicated by the manual, but set to -1 (thus unlimited).\n>\n> Add vlimit=20 to your input file (which is a far reasonable value\n> indicated in the manual),\n> and the problem should disappear. If not check your protocol, and/or use\n> the one from\n> the BCS consortium:\n>\n> - Ivani, I., Dans, P., Noy, A. et al. Parmbsc1: a refined force field\n> for DNA simulations.\n> Nat Methods 13, 55–58 (2016).\nhttps://www.doi./10.1038/nmeth.3658\n>\n> or the one by Daniel Roe and Brooks:\n>\n> - Daniel R. Roe, Bernard R. Brooks; A protocol for preparing explicitly\n> solvated systems for stable molecular dynamics simulations.\n> J. Chem. Phys. 7 August 2020; 153 (5): 054123.\n>\nhttps://doi.org/10.1063/5.0013849\n>\n> These should solve your issues.\n>\n> If you want to keep your existing protocol, double check the timestep\n> during the heating steps (1fs, and not 2fs).\n>\n> HTH,\n>\n> Stéphane\n>\n> --\n> Maître de conférences Hors Classe, PEDR, HDR\n> US2B, Nantes Université, CNRS, UMR 6286, Team Structural Bioinformatics,\n> F-44000 Nantes\n>\nhttp://www.us2b.univ-nantes.fr/\n-\nhttp://www.steletch.org\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202510/0022.html",
+      "in_reply_to": 1760080553
+    },
+    {
+      "message_id": 1761881386,
+      "author": "Surabhi Singh 24933024",
+      "date_raw": "Fri, 31 Oct 2025 08:59:46 +0530",
+      "body": "Hello,\nI’m still stuck at the equilibration stage. Here are the changes I’ve made\nso far:\n1. Adjusted restraints:\n1. 5 kcal/mol·Å² on all heavy atoms (minimization, NVT, NPT)\n2. 2 kcal/mol·Å² on all heavy atoms (minimization, NVT, NPT)\n3. 0.5 kcal/mol·Å² on the backbone only (minimization, NVT, NPT)\n4. Finally, ran without any restraints (minimization, NVT, NPT)\n2. Used ntt = 3 during the NPT phase.\n3. Set the time step to 1 ps.\nI suspect the issue might be related to parameter generation for the\ncomplex.\nHere’s the LEaP input file I used:\nsource leaprc.protein.ff19SB\nsource leaprc.DNA.OL24\nloadoff terminal_monophosphate.lib\nsource leaprc.water.tip3p\naddAtomTypes { { \"ZN\" \"Zn\" \"sp3\" } { \"S3\" \"S\" \"sp3\" } }\nloadamberparams frcmod.ions1lm_126_tip3p\nloadamberprep ZAFF.prep #Load ZAFF prep file\nloadamberparams ZAFF.frcmod #Load ZAFF frcmod file\ncomplex = loadpdb /home/simulation/complex.pdb\nbond complex.83.ZN complex.7.SG\nbond complex.83.ZN complex.10.SG\nbond complex.83.ZN complex.28.SG\nbond complex.83.ZN complex.31.SG\nsolvatebox complex TIP3PBOX 15.0\naddionsrand complex Na+ 55 Cl- 40\nsavepdb complex complex_solvated.pdb\nsaveamberparm complex complex_zaff_solvate.prmtop\ncomplex_zaff_solvate.inpcrd\nquit\nI tried using another system, and I am using CPU for equilibration so there\nis definitely a problem with parameter generation.\nThank You\nOn Fri, Oct 10, 2025 at 12:45 PM Surabhi Singh 24933024 <\nsurabhi_s.bt.iitr.ac.in> wrote:\n> Hello,\n> I am working on protein-DNA complex, and while doing equilibration I'm\n> getting vlimit error...\n> So, I have generated .prmtop, inpcrd from tleap (without any error just\n> warnings of close contacts )\n>\n> Now I'm\n> 1.  minimizing the system( cycle 10000), then Heating (rm to 298K quickly,\n> 25000) and NVT ( NPT @ 298K,) all with restrain 10 (on the solute atoms)\n> 2. Again minimizing the system( cycle 10000), then Heating (rm to 298K\n> quickly, 25000) and NVT ( NPT . 298K,) all with restrain 2 (on the solute\n> atoms) this time\n> 3. This time I'm not using restain in minimization or equilibration,\n> This is the file for gradual heating and equlibration NVT)\n> '''\n> rm to 298K slowly,\n>\n>  &cntrl\n>\n>   imin = 0, ntx = 1, irest = 0,\n>\n>   ntpr = 1000, ntwx = 1000, ntwe = 0,\n>\n>   ntc = 2, ntf = 2, ntb = 1,\n>\n>   nstlim = 300000,  dt =0.002,\n>\n>   nmropt = 1, ntt = 3, gamma_ln = 2.0,\n>\n>   ntp = 0, taup = 0.2, pres0 =1.0,\n>\n>  &end\n>\n>  &wt type='TEMP0', istep1=0, istep2=50000, value1=10., value2=100., &end\n>  &wt type='TEMP0', istep1=50001, istep2=150000, value1=100., value2=100.,\n> &end\n>  &wt type='TEMP0', istep1=150001, istep2=200000, value1=100., value2=298.,\n> &end\n>  &wt type='TEMP0', istep1=200001, istep2=300000, value1=298., value2=298.,\n> &end\n>  &wt type='END' &end\n> '''\n> I'm getting this error of vlimit exceeded\n> vlimit exceeded for step 223546; vmax =    34.0225\n> vlimit exceeded for step 223547; vmax =   204.7433\n>\n>\n> PLease help me out how should I resolve this.\n> Thankyou\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202510/0050.html",
+      "in_reply_to": 1760080553
+    },
+    {
+      "message_id": 1761949868,
+      "author": "David A Case",
+      "date_raw": "Fri, 31 Oct 2025 16:31:08 -0600",
+      "body": "On Fri, Oct 31, 2025, Surabhi Singh 24933024 via AMBER wrote:\n>I’m still stuck at the equilibration stage.\nI'm unsure how far along your simulation has gone before you get a vlimit\nerror.  Be sure that the minimization results look good.  In particular,\nuse the \"checkstructure\" command in cpptraj to examine both your input\nstructure and the results following minimization.  Try to correct any really\nbad contacts or bad bonds it finds.\nDoes the vlimit error happen right at the beginning of some MD stage?  If\nso, use checkstructure on the input coordinates for that stage.  If the\nerror happens part way through (as it seems to be from your email), run a\nrepeat simulation that will stop right before the first vlimit problem.  The\nexamine that structure, both visually and with checkstructure.\n....hope this helps...dac",
+      "url": "http://archive.ambermd.org/202510/0051.html",
+      "in_reply_to": 1760080553
+    },
+    {
+      "message_id": 1762446610,
+      "author": "David A Case",
+      "date_raw": "Thu, 6 Nov 2025 09:30:10 -0700",
+      "body": "On Sat, Nov 01, 2025, Surabhi Singh 24933024 wrote:\n>Thanks for the quick response, so I have checked there are no bad contacts\n>or bonds reported by checkstructure.\nDid you look at a simulation that was set to stop right before the first\nvlimit message in the mdout file?\nRun an initial simulation that stop a few steps before the first vlimit\nmessage.  Than continue (restart) from there, setting ntpr=1.  Look closely\nat the energies that are reported -- I suspect(!) that the electrostatic\nenergy will start to look odd, and using cpptraj checkstructure on a\nsnapshot right at the first vlimit error might reveal a bad contact.  That\nmight at least get you started on finding the origin of the problem.\n...dac",
+      "url": "http://archive.ambermd.org/202511/0009.html",
+      "in_reply_to": 1760080553
+    },
+    {
+      "message_id": 1762531835,
+      "author": "David A Case",
+      "date_raw": "Fri, 7 Nov 2025 09:10:35 -0700",
+      "body": "On Fri, Nov 07, 2025, Surabhi Singh 24933024 wrote:\n>Got the exact issue, it's the Phosphate group at 5'ends of the DNA that was\n>giving bad contact.\n>\nIs the bad contact between the H atom on the phosphate group and a\nneighboring oxygen atom on the same phosphate?\nIf so, that is a problem that we have seen before, and the \"fix\" involves\nincreasing the force constant on the P-O-H angle.  I don't remember the\ndetails right now, but let us know if this is the bad contact -- we can\ntrack things down, and others on the list probably have better grey cells\nthan I have.\nIf it's not this, knowing which atoms are involved in the bad contact might\ntrigger some thoughts.  That's assuming that you have not already made\nprogress on your own.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202511/0014.html",
+      "in_reply_to": 1762446610
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "thread_id": 1639428947,
+  "subject": "[AMBER] Neutralizing a protein with unknown charge?",
+  "messages": [
+    {
+      "message_id": 1639428947,
+      "author": "Gustavo Seabra",
+      "date_raw": "Mon, 13 Dec 2021 15:55:47 -0500",
+      "body": "Hi all,,\nThis may be a weird question but...\nIs there a way in LEaP to automagically add the correct amount of Na+/Cl-\nions to neutralize any system, without the need for us to know a priori if\nthe system is positively or negatively charged (or even neutral)?\nThe reason: I want to prepare a LEaP input file that can work with a large\nnumber of proteins in a database. Some of them may be positively charged,\nsome may be negatively charged or some may even be neutral. I'd like to be\nable to automate the process of creating the parameters using LEaP to work\nwith all of them, irrespective of the charge.\nAny suggestions are highly appreciated!\nThanks a lot!\n--\nGustavo Seabra.",
+      "url": "http://archive.ambermd.org/202112/0097.html"
+    },
+    {
+      "message_id": 1639429956,
+      "author": "Carlos Simmerling",
+      "date_raw": "Mon, 13 Dec 2021 16:12:36 -0500",
+      "body": "yes you can do that with the addions command, just use the number 0 for\nnumion and it will add the right number to make it neutral.\nif you aren't even sure of the sign of the charge, you can try adding both,\nand it will pick the one that works:\naddions solvcomplex Cl- 0\naddions solvcomplex Na+ 0\nOn Mon, Dec 13, 2021 at 3:56 PM Gustavo Seabra <gustavo.seabra.gmail.com>\nwrote:\n> Hi all,,\n>\n> This may be a weird question but...\n>\n> Is there a way in LEaP to automagically add the correct amount of Na+/Cl-\n> ions to neutralize any system, without the need for us to know a priori if\n> the system is positively or negatively charged (or even neutral)?\n>\n> The reason: I want to prepare a LEaP input file that can work with a large\n> number of proteins in a database. Some of them may be positively charged,\n> some may be negatively charged or some may even be neutral. I'd like to be\n> able to automate the process of creating the parameters using LEaP to work\n> with all of them, irrespective of the charge.\n>\n> Any suggestions are highly appreciated!\n>\n> Thanks a lot!\n> --\n> Gustavo Seabra.\n>",
+      "url": "http://archive.ambermd.org/202112/0099.html",
+      "in_reply_to": 1639428947
+    },
+    {
+      "message_id": 1639430355,
+      "author": "Debarati DasGupta",
+      "date_raw": "Mon, 13 Dec 2021 21:19:15 +0000",
+      "body": "Hi Gustavo\nIn my leap.in file I usually have addions pro Na+ 0 as well as addions pro Cl- 0\nThis is helpful as irrespective of the charge on the protein, my leap script adds Na+ or Chloride and neutralizes it .\nHope I could help!\nDebarati\nSent from Mail<\nhttps://go.microsoft.com/fwlink/?LinkId=550986\n> for Windows\nFrom: Gustavo Seabra<mailto:gustavo.seabra.gmail.com>\nSent: Monday, December 13, 2021 3:56 PM\nTo: AMBER Mailing List<mailto:amber.ambermd.org>\nSubject: [AMBER] Neutralizing a protein with unknown charge?\nHi all,,\nThis may be a weird question but...\nIs there a way in LEaP to automagically add the correct amount of Na+/Cl-\nions to neutralize any system, without the need for us to know a priori if\nthe system is positively or negatively charged (or even neutral)?\nThe reason: I want to prepare a LEaP input file that can work with a large\nnumber of proteins in a database. Some of them may be positively charged,\nsome may be negatively charged or some may even be neutral. I'd like to be\nable to automate the process of creating the parameters using LEaP to work\nwith all of them, irrespective of the charge.\nAny suggestions are highly appreciated!\nThanks a lot!\n--\nGustavo Seabra.",
+      "url": "http://archive.ambermd.org/202112/0100.html",
+      "in_reply_to": 1639428947
+    },
+    {
+      "message_id": 1639430410,
+      "author": "Matias Machado",
+      "date_raw": "Mon, 13 Dec 2021 18:20:10 -0300 (UYT)",
+      "body": "Dear Gustavo,\nSomething like this should work:\n# Load molecule\nprotein = loadpdb xxx.pdb\ncharge protein\n# Add solvate and counterions.\nsolvateOct  protein TIP3PBOX 12.0\naddIonsRand protein NA 0\naddIonsRand protein CL 0\ncharge protein\nIf your protein is positive charged then leap will pint the following message and no NA ions is added\nunit charge = 11; ion1 charge = 1;\ncan't neutralize.\nThe correct amount of CL ions is added (in this case 11)\nThe same happens for a negative charged protein...\nNote, this just neutralize the system, no salt is added...\nBest,\nMatías\n----- Mensaje original -----\nDe: \"Gustavo Seabra\" <gustavo.seabra.gmail.com>\nPara: \"AMBER Mailing List\" <amber.ambermd.\norg>\nEnviados: Lunes, 13 de Diciembre 2021 17:55:47\nAsunto: [AMBER] Neutralizing a protein with unknown charge?\nHi all,,\nThis may be a weird question but...\nIs there a way in LEaP to automagically add the correct amount of Na+/Cl-\nions to neutralize any system, without the need for us to know a priori if\nthe system is positively or negatively charged (or even neutral)?\nThe reason: I want to prepare a LEaP input file that can work with a large\nnumber of proteins in a database. Some of them may be positively charged,\nsome may be negatively charged or some may even be neutral. I'd like to be\nable to automate the process of creating the parameters using LEaP to work\nwith all of them, irrespective of the charge.\nAny suggestions are highly appreciated!\nThanks a lot!\n--\nGustavo Seabra.",
+      "url": "http://archive.ambermd.org/202112/0101.html",
+      "in_reply_to": 1639428947
+    },
+    {
+      "message_id": 1639433713,
+      "author": "Gustavo Seabra",
+      "date_raw": "Mon, 13 Dec 2021 17:15:13 -0500",
+      "body": "Wow,\nThanks a lot everyone! I confess I really didn't think about just adding\nNa+ then Cl-. It is so much easier than I thought! Thanks for pointing this\nout.\nAll the best,\n--\nGustavo Seabra.\nOn Mon, Dec 13, 2021 at 4:21 PM Matias Machado <mmachado.pasteur.\nedu.uy>\nwrote:\n> Dear Gustavo,\n>\n> Something like this should work:\n>\n> # Load molecule\n>   protein = loadpdb xxx.pdb\n>   charge protein\n>\n> # Add solvate and counterions.\n>   solvateOct  protein TIP3PBOX 12.0\n>   addIonsRand protein NA 0\n>   addIonsRand protein CL 0\n>\n>   charge protein\n>\n> If your protein is positive charged then leap will pint the following\n> message and no NA ions is added\n>\n>      unit charge = 11; ion1 charge = 1;\n>      can't neutralize.\n>\n> The correct amount of CL ions is added (in this case 11)\n>\n> The same happens for a negative charged protein...\n>\n> Note, this just neutralize the system, no salt is added...\n>\n> Best,\n>\n> Matías\n>\n> ----- Mensaje original -----\n> De: \"Gustavo Seabra\" <gustavo.seabra.gmail.\ncom>\n> Para: \"AMBER Mailing List\" <amber.ambermd.\norg>\n> Enviados: Lunes, 13 de Diciembre 2021 17:55:47\n> Asunto: [AMBER] Neutralizing a protein with unknown charge?\n>\n> Hi all,,\n>\n> This may be a weird question but...\n>\n> Is there a way in LEaP to automagically add the correct amount of Na+/Cl-\n> ions to neutralize any system, without the need for us to know a priori if\n> the system is positively or negatively charged (or even neutral)?\n>\n> The reason: I want to prepare a LEaP input file that can work with a large\n> number of proteins in a database. Some of them may be positively charged,\n> some may be negatively charged or some may even be neutral. I'd like to be\n> able to automate the process of creating the parameters using LEaP to work\n> with all of them, irrespective of the charge.\n>\n> Any suggestions are highly appreciated!\n>\n> Thanks a lot!\n> --\n> Gustavo Seabra.\n>",
+      "url": "http://archive.ambermd.org/202112/0104.html",
+      "in_reply_to": 1639428947
+    }
+  ]
+}

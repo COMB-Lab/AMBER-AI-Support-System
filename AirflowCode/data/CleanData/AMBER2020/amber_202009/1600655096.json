@@ -1,0 +1,37 @@
+{
+  "thread_id": 1600655096,
+  "subject": "[AMBER] MMPBSA binding energy was positive for charged ligand",
+  "messages": [
+    {
+      "message_id": 1600655096,
+      "author": "Nada Afiva",
+      "date_raw": "Mon, 21 Sep 2020 09:24:56 +0700",
+      "body": "Dear Amber:\nI was preparing a system for ATP complexed with RNA and protein using\nAM1-BCC charge, then performed 100 ns MD simulation and calculating the\nMM-PBSA binding energy.\nIf I used the charge for ATP=0 in the preparation step, then the MMPBSA\nfinal binding energy was around -30 kcal/mol, however when I used the\ncharge for ATP=-4, then MMPBSA final binding energy become positive.\nAll other parameter was the same in both systems.\nHere is the input file:\nInput file for running MMPBSA\n|&general\n|   startframe=0, endframe=50000, keep_files=2, interval=250,\n|   verbose=2,\n|/\n|&gb\n|   igb=5, saltcon=0.100\n|/\n|&pb\n|   istrng=0.1, exdi=80, indi=4.0,\n|   inp=1, cavity_surften=0.0378, cavity_offset=-0.5692,\n|   fillratio=4, scale=2.0,\n|   linit=1000, prbrad=1.4, radiopt=0,\n|/\nPlease any suggestion why the difference was very contrast.\nThank you in advance.\nBest regards,\nNadaafiva",
+      "url": "http://archive.ambermd.org/202009/0260.html"
+    },
+    {
+      "message_id": 1600690463,
+      "author": "David A Case",
+      "date_raw": "Mon, 21 Sep 2020 08:14:23 -0400",
+      "body": "On Mon, Sep 21, 2020, Nada Afiva wrote:\n>\n>I was preparing a system for ATP complexed with RNA and protein using\n>AM1-BCC charge, then performed 100 ns MD simulation and calculating the\n>MM-PBSA binding energy.\n>\n>If I used the charge for ATP=0 in the preparation step, then the MMPBSA\n>final binding energy was around -30 kcal/mol, however when I used the\n>charge for ATP=-4, then MMPBSA final binding energy become positive.\n>\n>All other parameter was the same in both systems.\nYou should confirm that the difference is in the electrostatic\ncomponent.   However, ATP is *very* often coordinated with one or more\nMg2+ ions, and so doesn't really carry a -4 charge.  If you have RNA\naround, there might be enough non-neutralized negative charge to repel\nthe ATP.  Anyway, that's something to think about, and to check in the\nsimulation.\n....dac",
+      "url": "http://archive.ambermd.org/202009/0264.html",
+      "in_reply_to": 1600655096
+    },
+    {
+      "message_id": 1600692328,
+      "author": "Nada Afiva",
+      "date_raw": "Mon, 21 Sep 2020 19:45:28 +0700",
+      "body": "Dear Dac,\nThanks so much for your answer.\nThe ELE energy term was -9.1259 kcal/mol for ATP system with charge 0, and\nit is +47.6188 kcal/mol\nfor the same system with charge -4. I attach the binding energy files for\nboth systems.\nIn my system, the ATP was coordinated with one Mn2+ ion and both systems\ncontain the same RNA chain.\nPlease give me more advice in this regard.\nThank you.\nNadaafiva\nPada tanggal Sen, 21 Sep 2020 pukul 19.14 David A Case <\ndavid.case.rutgers.edu> menulis:\n> On Mon, Sep 21, 2020, Nada Afiva wrote:\n> >\n> >I was preparing a system for ATP complexed with RNA and protein using\n> >AM1-BCC charge, then performed 100 ns MD simulation and calculating the\n> >MM-PBSA binding energy.\n> >\n> >If I used the charge for ATP=0 in the preparation step, then the MMPBSA\n> >final binding energy was around -30 kcal/mol, however when I used the\n> >charge for ATP=-4, then MMPBSA final binding energy become positive.\n> >\n> >All other parameter was the same in both systems.\n>\n> You should confirm that the difference is in the electrostatic\n> component.   However, ATP is *very* often coordinated with one or more\n> Mg2+ ions, and so doesn't really carry a -4 charge.  If you have RNA\n> around, there might be enough non-neutralized negative charge to repel\n> the ATP.  Anyway, that's something to think about, and to check in the\n> simulation.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202009/0266.html",
+      "in_reply_to": 1600655096
+    },
+    {
+      "message_id": 1600780268,
+      "author": "neildancer",
+      "date_raw": "Tue, 22 Sep 2020 21:11:08 +0800",
+      "body": "Hi Nada\nI  tried to prepare ATP molecule before, such as charge calculation,\ntopology  build  via GAFF and tleap. But, during the md stage, the ATP\nmolecule always had blowing up errors, because the hydrogen atom of ATP\nshowed some unusual things. So could you describe some details about ATP\npreparation, and how do you add the hydrogen atoms to ATP?  Thank you!\nBest wish\nNing Wang\n[92a152d870f37b53b628a49c78886c22.jpg]\nneildancer\n邮箱：neildancer.sina.com\nSignature is customized by [1]Netease Mail Master\nOn 09/21/2020 20:45, [2]Nada Afiva wrote:\nDear Dac,\nThanks so much for your answer.\nThe ELE energy term was -9.1259 kcal/mol for ATP system with charge 0, and\nit is +47.6188 kcal/mol\nfor the same system with charge -4. I attach the binding energy files for\nboth systems.\nIn my system, the ATP was coordinated with one Mn2+ ion and both systems\ncontain the same RNA chain.\nPlease give me more advice in this regard.\nThank you.\nNadaafiva\nPada tanggal Sen, 21 Sep 2020 pukul 19.14 David A Case <\ndavid.case.rutgers.edu> menulis:\n> On Mon, Sep 21, 2020, Nada Afiva wrote:\n> >\n> >I was preparing a system for ATP complexed with RNA and protein using\n> >AM1-BCC charge, then performed 100 ns MD simulation and calculating the\n> >MM-PBSA binding energy.\n> >\n> >If I used the charge for ATP=0 in the preparation step, then the MMPBSA\n> >final binding energy was around -30 kcal/mol, however when I used the\n> >charge for ATP=-4, then MMPBSA final binding energy become positive.\n> >\n> >All other parameter was the same in both systems.\n>\n> You should confirm that the difference is in the electrostatic\n> component.   However, ATP is *very* often coordinated with one or more\n> Mg2+ ions, and so doesn't really carry a -4 charge.  If you have RNA\n> around, there might be enough non-neutralized negative charge to repel\n> the ATP.  Anyway, that's something to think about, and to check in the\n> simulation.\n>\n> ....dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202009/0289.html",
+      "in_reply_to": 1600655096
+    }
+  ]
+}

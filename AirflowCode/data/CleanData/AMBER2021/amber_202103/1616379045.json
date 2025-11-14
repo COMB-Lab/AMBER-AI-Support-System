@@ -1,0 +1,53 @@
+{
+  "thread_id": 1616379045,
+  "subject": "[AMBER] 3D-RISM solvent placement with MoFT",
+  "messages": [
+    {
+      "message_id": 1616379045,
+      "author": "He, Amy",
+      "date_raw": "Mon, 22 Mar 2021 02:10:45 +0000",
+      "body": "Dear Amber Community,\nI am using Amber 20 and I use 3D-RISM in sander to compute the solvent distribution for a single-frame protein structure. Then I use the 'metatwist' application in MoFT for water and ion placement by Laplacian analysis. The command I use to place the oxygen atoms of water molecules is:\nmetatwist --dx complex.kh.O.0.ccp4 \\\n--ldx convolution-complex.kh.O.ccp4 --map blobsper \\\n--species O WAT --bulk 55.55 --threshold 0.1 > complex.blobs\nIn the output complex.kh.O.0-convolution-complex.kh.O-blobs-centroid.pdb files, I get very high values in the 'occupancy' column (columns #55-60) for the first a few positions, please see a sample below:\nATOM      1   O  WAT C   1      97.780  57.122  36.5311073.28 31.44           O\nTER\nATOM      2   O  WAT C   2      97.780  61.277  42.7931073.28 31.44           O\nTER\nATOM      3   O  WAT C   3      98.126  67.162  40.7061073.28 31.44           O\nTER\nATOM      4   O  WAT C   4      98.473  61.277  45.9251073.28 31.44           O\nTER\nATOM      5   O  WAT C   5      98.820  51.929  46.2721073.28 31.44           O\nTER\nATOM      6   O  WAT C   6      98.820  59.892  46.6201073.28 31.44           O\nTER\nI have the same issue with the blobs-centroid.pdb files that I get for ion placement. The coordinates seem fine. What am I doing wrong? How could I interpret the occupancy values?\nMassive thanks,\nAmy H",
+      "url": "http://archive.ambermd.org/202103/0202.html"
+    },
+    {
+      "message_id": 1616434332,
+      "author": "He, Amy",
+      "date_raw": "Mon, 22 Mar 2021 17:32:12 +0000",
+      "body": "Hi again,\nI read the log (.blobs) file produced by the command and I think I understand a little  bit more. This is what I found in the .blobs file:\n# Blob - index\n# Max[x,y,z] - coordinates of the point where density is maximum within the blob.\n# Occ[#] - integrated occupancy of the blob.\n# V[A^3] - volume occupied by the blob.\n# M[x,y,z] - average position (first moment) of the blob.\n# Var[A^2] - average variance (second moment) of the blob.\n# rave/max - ration between density at the average position and maximum value of density.\nBlob Max[x,y,z]                     Occ[#]   V[A^3] M[x,y,z]                     Var[A^2] rave/max[%]\n0 (  97.780   57.122   36.531) 1073.278 16353.362 (  44.732   41.949   46.326)    0.744    0.000\n0 (  97.780   61.277   42.793) 1073.278 16353.362 (  44.732   41.949   46.326)    0.684    0.000\n0 (  98.126   67.162   40.706) 1073.278 16353.362 (  44.732   41.949   46.326)    0.795    0.000\n0 (  98.473   61.277   45.925) 1073.278 16353.362 (  44.732   41.949   46.326)    0.604    0.000\n0 (  98.820   51.929   46.272) 1073.278 16353.362 (  44.732   41.949   46.326)    0.727    0.000\n0 (  98.820   59.892   46.620) 1073.278 16353.362 (  44.732   41.949   46.326)    0.586    0.000\nIs the occupancy 1073.278 a sum of the occupancy values for the Max points in Blob #0? Is it normal to get such a huge blob #0 in Laplacian analysis, since the other blobs only contain one point each? If that is normal, is there any way to get the individual occupancy values for those Max points from the Laplacian analysis?\nMany thanks,\nAmy H\n--\nAmy He\nChemistry Graduate Teaching Assistant\nHadad Research Group\nOhio State University\nhe.1768.osu.edu\nFrom: He, Amy <he.1768.buckeyemail.osu.edu>\nDate: Sunday, March 21, 2021 at 10:10 PM\nTo: amber.ambermd.org <amber.ambermd.org>\nSubject: 3D-RISM solvent placement with MoFT\nDear Amber Community,\nI am using Amber 20 and I use 3D-RISM in sander to compute the solvent distribution for a single-frame protein structure. Then I use the 'metatwist' application in MoFT for water and ion placement by Laplacian analysis. The command I use to place the oxygen atoms of water molecules is:\nmetatwist --dx complex.kh.O.0.ccp4 \\\n--ldx convolution-complex.kh.O.ccp4 --map blobsper \\\n--species O WAT --bulk 55.55 --threshold 0.1 > complex.blobs\nIn the output complex.kh.O.0-convolution-complex.kh.O-blobs-centroid.pdb files, I get very high values in the 'occupancy' column (columns #55-60) for the first a few positions, please see a sample below:\nATOM      1   O  WAT C   1      97.780  57.122  36.5311073.28 31.44           O\nTER\nATOM      2   O  WAT C   2      97.780  61.277  42.7931073.28 31.44           O\nTER\nATOM      3   O  WAT C   3      98.126  67.162  40.7061073.28 31.44           O\nTER\nATOM      4   O  WAT C   4      98.473  61.277  45.9251073.28 31.44           O\nTER\nATOM      5   O  WAT C   5      98.820  51.929  46.2721073.28 31.44           O\nTER\nATOM      6   O  WAT C   6      98.820  59.892  46.6201073.28 31.44           O\nTER\nI have the same issue with the blobs-centroid.pdb files that I get for ion placement. The coordinates seem fine. What am I doing wrong? How could I interpret the occupancy values?\nMassive thanks,\nAmy H",
+      "url": "http://archive.ambermd.org/202103/0211.html",
+      "in_reply_to": 1616379045
+    },
+    {
+      "message_id": 1616549513,
+      "author": "George M. Giambasu",
+      "date_raw": "Tue, 23 Mar 2021 21:31:53 -0400",
+      "body": "Hi Amy - thanks for reporting your analysis.\nI wonder how the occupancy values look when you use a threshold of say\n0.5. Doing so will \"shrink\" the Laplacian blobs and will avoid\nintegrating the density over delocalized blobs.\nIt takes a little experimentation to find the right values for the\nthreshold and one way to do so is to open the Laplacian maps in chimera,\nvmd or pymol and see at which negative isovalue the Laplacian blobs\nstart to look more \"localized\". When run using the --blobs, or\n--blobsper options metatwist reports the ranges of Laplacian values used\nto map water binding modes so you can double check.\nLet us know how this worked for you,\nGeorge Giambasu.",
+      "url": "http://archive.ambermd.org/202103/0224.html",
+      "in_reply_to": 1616379045
+    },
+    {
+      "message_id": 1616648346,
+      "author": "He, Amy",
+      "date_raw": "Thu, 25 Mar 2021 04:59:06 +0000",
+      "body": "Hi Dr. Giambasu,\nThank you so much for your kind advice. It was really helpful! And I was able to get smaller blobs using the higher threshold values as you suggested.\nI built the protein from a crystal structure, so I align the positions given from MoFT with the crystal structure. I am able to trim down a lot of points when threshold varies from 0.1 to 0.3, and the alignment is still great with the crystallographically-resolved water molecules.\nI have two more questions about choosing a threshold value and about the occupancy values:\n(1) As the threshold increases, more and more points are eliminated, because the Laplacian at these positions is less negative than the reference Laplacian (=threshold*min(Laplacian)). Is it right to think that the eliminated positions are likely the false positives where a solvent molecule should not be placed at?\n(2) For the occupancy values, am I right in thinking that one can average the occupancy values by volume of the blob, or is there some way to get the individual occupancy value for each position in a blob?\nThank you again for your time and kind help.\nThanks,\nAmy H\n--\nAmy He\nChemistry Graduate Teaching Assistant\nHadad Research Group\nOhio State University\nhe.1768.osu.edu",
+      "url": "http://archive.ambermd.org/202103/0244.html",
+      "in_reply_to": 1616379045
+    },
+    {
+      "message_id": 1616982145,
+      "author": "George Madalin Giambasu",
+      "date_raw": "Sun, 28 Mar 2021 21:42:25 -0400",
+      "body": "Hi Amy - happy to see that the increase in Laplacian threshold helped. See some more comments bellow comments.\n> (1) As the threshold increases, more and more points are eliminated, because the Laplacian at these positions is less negative than the reference Laplacian (=threshold*min(Laplacian)). Is it right to think that the eliminated positions are likely the false positives where a solvent molecule should not be placed at?\nYou can think about these eliminated positions as corresponding to loosely bound waters. For ions, we sometimes use terms such as diffusely or territorially bound which is opposed to site-bound. By increasing the Laplacian threshold you are more likely to identify site-bound waters.\n> (2) For the occupancy values, am I right in thinking that one can average the occupancy values by volume of the blob, or is there some way to get the individual occupancy value for each position in a blob?\n>\nThat is a good question. The current code integrates over the entire volume of the blob and so if you wanted to approximate the occupancy for each water position you could divide it by the number of waters contained within the blob. I am planning to change this in the next version of the code and integrate the density around each water position.\nI hope this make sense, let me know if I have answered your questions.\nGeorge Giambasu",
+      "url": "http://archive.ambermd.org/202103/0288.html",
+      "in_reply_to": 1616379045
+    },
+    {
+      "message_id": 1617081366,
+      "author": "He, Amy",
+      "date_raw": "Tue, 30 Mar 2021 05:16:06 +0000",
+      "body": "Dr. Giambasu,\nYes that makes lots of sense to me! MoFT is really a helpful application to use for 3D-RISM and for processing data in the .dx format. Looking forward to the updates in the future!\nThank you again for your time and kind reply.\nBest,\nAmy\n--\nAmy He\nChemistry Graduate Teaching Assistant\nHadad Research Group\nOhio State University\nhe.1768.osu.edu",
+      "url": "http://archive.ambermd.org/202103/0303.html",
+      "in_reply_to": 1616379045
+    }
+  ]
+}

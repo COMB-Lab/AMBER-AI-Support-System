@@ -1,0 +1,29 @@
+{
+  "thread_id": 1711104364,
+  "subject": "[AMBER] Issue with glycam nomenclature",
+  "messages": [
+    {
+      "message_id": 1711104364,
+      "author": "SUBHASMITA MAHAPATRA MAHAPATRA",
+      "date_raw": "Fri, 22 Mar 2024 16:16:04 +0530",
+      "body": "Hello,\nI want to simulate this PDB:1FQ9. It has two chains of heparan sulfate\n(E,F). They have this residue 'UAP' and I am unable to find its name as per\nGlycam force field. I have tried the Glycam-web interface.\nKindly help me in this regard.\nThank you\n-- \n*Yours Sincerely*\n*Subhasmita Mahapatra*\n*Ph.D. Scholar (PMRF)*\n*Computational Biophysics Group*\n*Department of Biosciences and Biomedical Engineering*\n*Indian Institute of Technology, Indore*\n*Madhya Pradesh, India (453552)*",
+      "url": "http://archive.ambermd.org/202403/0131.html"
+    },
+    {
+      "message_id": 1711109826,
+      "author": "Daniel Roe",
+      "date_raw": "Fri, 22 Mar 2024 08:17:06 -0400",
+      "body": "Hi,\nYou might want to try the 'prepareforleap' command in cpptraj, since\none of the functions is to assign correct Glycam names for sugars. Try\nsomething like the following cpptraj input:\nparm 1FQ9.pdb\nloadcrd 1FQ9.pdb name MyCrd\nprepareforleap cricket MyCrd name Prepared pdbout Prepared.pdb\nleapunitname Mol out Prepared.leap.in nowat noh\nThen you can put something like the following into your leap.in file\n(replace with your desired force field files):\nsource leaprc.protein.ff14SB\nsource leaprc.GLYCAM_06j-1\nsource Prepared.leap.in\nsaveamberparm Mol 1FQ9.parm7 1FQ9.rst7\nquit\nThen run 'tleap -f leap.in'. Hope this helps,\n-Dan\nOn Fri, Mar 22, 2024 at 6:47 AM SUBHASMITA MAHAPATRA MAHAPATRA via\nAMBER <amber.ambermd.org> wrote:\n>\n> Hello,\n>\n> I want to simulate this PDB:1FQ9. It has two chains of heparan sulfate\n> (E,F). They have this residue 'UAP' and I am unable to find its name as per\n> Glycam force field. I have tried the Glycam-web interface.\n>\n> Kindly help me in this regard.\n>\n> Thank you\n>\n> --\n> *Yours Sincerely*\n> *Subhasmita Mahapatra*\n> *Ph.D. Scholar (PMRF)*\n> *Computational Biophysics Group*\n> *Department of Biosciences and Biomedical Engineering*\n> *Indian Institute of Technology, Indore*\n> *Madhya Pradesh, India (453552)*\n>",
+      "url": "http://archive.ambermd.org/202403/0132.html",
+      "in_reply_to": 1711104364
+    },
+    {
+      "message_id": 1711471439,
+      "author": "Daniel Roe",
+      "date_raw": "Tue, 26 Mar 2024 12:43:59 -0400",
+      "body": "Hi,\nI was able to get prepareforleap to recognize IDU and UAP by adding\nthe following to the 'Carbohydrate_PDB_Glycam_Names.txt' file in\n$CPPTRAJHOME/dat:\nIDU U B L P \"2-O-sulfo-beta-L-altropyranuronic acid\"\nUAP U A L P \"4-deoxy-2-O-sulfo-alpha-L-threo-hex-4-enopyranuronic acid\"\nUnfortunately as far as I can tell GLYCAM doesn't seem to have a\nresidue with the N-sulfamino framework for the SGN residue (there are\nonly N-acetyl varieties like NAG, MGC, etc). Maybe one of the Glycam\nfolks can chime in and let me know if I've missed something.\nIf the stock Glycam FF doesn't have what you need, other people may\nhave generated the parameters you need. A brief search turned up this\npublication which seemed promising (but full disclosure I did not read\nthe whole thing): https://cdnsciencepub.com/doi/10.1139/cjc-2015-0606\nI'll keep trying to think about this but I'm not sure how much more\nI'll be able to help. Other (smarter) people may want to step in here.\n-Dan\nPS - You could also try alternatives like CHARMM-GUI to model your glycoprotein.\nOn Fri, Mar 22, 2024 at 6:47 AM SUBHASMITA MAHAPATRA MAHAPATRA via\nAMBER <amber.ambermd.org> wrote:\n>\n> Hello,\n>\n> I want to simulate this PDB:1FQ9. It has two chains of heparan sulfate\n> (E,F). They have this residue 'UAP' and I am unable to find its name as per\n> Glycam force field. I have tried the Glycam-web interface.\n>\n> Kindly help me in this regard.\n>\n> Thank you\n>\n> --\n> *Yours Sincerely*\n> *Subhasmita Mahapatra*\n> *Ph.D. Scholar (PMRF)*\n> *Computational Biophysics Group*\n> *Department of Biosciences and Biomedical Engineering*\n> *Indian Institute of Technology, Indore*\n> *Madhya Pradesh, India (453552)*\n>",
+      "url": "http://archive.ambermd.org/202403/0158.html",
+      "in_reply_to": 1711104364
+    }
+  ]
+}

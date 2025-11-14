@@ -1,0 +1,13 @@
+{
+  "thread_id": 1585850303,
+  "subject": "[AMBER] AMBER 18 cuda installation: error: redefinition of ‘simulationConst cSim’",
+  "messages": [
+    {
+      "message_id": 1585850303,
+      "author": "Sapna Shedge",
+      "date_raw": "Thu, 2 Apr 2020 10:58:23 -0700",
+      "body": "I am trying to do amber18 installation with Cuda-9.0\nI am getting following error\n*gti_global.cu:7:24:* *error: *redefinition of ‘*simulationConst cSim*’\n__constant__ simulationConst cSim;\n*                        ^*\n*simulationConst.h:12:24:* *error: *‘*simulationConst cSim*’ previously\ndeclared here\nextern __constant__ simulationConst cSim;\n*                        ^*\nmake[5]: *** [gti_global.o] Error 1\nmake[5]: *** Waiting for unfinished jobs....\nI saw that one person also got the same error and he was asked to provide\ncontent of simulationConst.h file. Here is content of this file\nifndef _CUDA_SIMULATION\n#define _CUDA_SIMULATION\n#include \"base_simulationConst.h\"\n#ifdef GTI\n#include \"gti_simulationConst.h\"\ntypedef gti_simulationConst simulationConst;\n#else\ntypedef base_simulationConst simulationConst;\n#endif\nextern __constant__ simulationConst cSim;\n#endif /* _CUDA_SIMULATION */\nAny help in this regards will be very useful.\nThank you!",
+      "url": "http://archive.ambermd.org/202004/0016.html"
+    }
+  ]
+}

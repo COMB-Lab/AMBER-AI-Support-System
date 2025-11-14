@@ -1,0 +1,21 @@
+{
+  "thread_id": 1645029605,
+  "subject": "[AMBER] Unused parameters in tip4pew?",
+  "messages": [
+    {
+      "message_id": 1645029605,
+      "author": "Rosemary Millmore",
+      "date_raw": "Wed, 16 Feb 2022 16:40:05 +0000",
+      "body": "Hi,\nIn the frcmod files for various four-point water models, there are some\nparameters that have zero force constant or torsional barrier height. For\nexample, in tip4pew there are:\nHW-OW-EP    0.0       120.0\nHW-HW-OW      0.      127.74\nX -HW-OW-X    2       0.0         0.0         1.0\nDo these parameters serve any purpose in the software?\nThank you,\nRosemary",
+      "url": "http://archive.ambermd.org/202202/0166.html"
+    },
+    {
+      "message_id": 1645031370,
+      "author": "Jason Swails",
+      "date_raw": "Wed, 16 Feb 2022 12:09:30 -0500",
+      "body": "Those parameters don't matter.  TIP4PEw is a rigid water model which means\nit only behaves \"correctly\" when used with SHAKE (or SETTLE), meaning the\ngeometry is constrained to the equilibrium geometry of the water model.\nParameters involving virtual sites are even more meaningless, since virtual\nsite positions are defined within a given reference (as a function of the\npositions of other particles).  I'm pretty sure that bonded forces between\nvirtual sites and other atoms are not computed, and the dummy values here\njust satisfy tleap requirements, I think.\nHTH,\nJason\nOn Wed, Feb 16, 2022 at 11:40 AM Rosemary Millmore <rosiemantell.gmail.com>\nwrote:\n> Hi,\n>\n> In the frcmod files for various four-point water models, there are some\n> parameters that have zero force constant or torsional barrier height. For\n> example, in tip4pew there are:\n> HW-OW-EP    0.0       120.0\n> HW-HW-OW      0.      127.74\n> X -HW-OW-X    2       0.0         0.0         1.0\n>\n> Do these parameters serve any purpose in the software?\n>\n> Thank you,\n>\n> Rosemary\n>",
+      "url": "http://archive.ambermd.org/202202/0167.html",
+      "in_reply_to": 1645029605
+    }
+  ]
+}

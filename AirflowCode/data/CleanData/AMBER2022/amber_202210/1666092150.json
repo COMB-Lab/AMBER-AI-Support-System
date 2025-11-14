@@ -1,0 +1,29 @@
+{
+  "thread_id": 1666092150,
+  "subject": "[AMBER] AmberTools installation issue MacOS",
+  "messages": [
+    {
+      "message_id": 1666092150,
+      "author": "Xavier Brazzolotto",
+      "date_raw": "Tue, 18 Oct 2022 13:22:30 +0200",
+      "body": "Dear AmberTools users\nI do have an issue when trying to install on my Intel Mac (macOS Monterey 12.6)\nDespite many warnings during the installation everything goes to 100% but end up with\n[100%] Linking CXX executable metatwist\nUndefined symbols for architecture x86_64:\n\"boost::iostreams::detail::bzip2_base::end(bool, std::nothrow_t)\", referenced from:\nboost::iostreams::symmetric_filter<boost::iostreams::detail::bzip2_decompressor_impl<std::__1::allocator<char> >, std::__1::allocator<char> >::symmetric_filter<bool>(long, bool const&) in metatwist.cpp.o\nboost::detail::shared_count::shared_count<boost::iostreams::symmetric_filter<boost::iostreams::detail::bzip2_decompressor_impl<std::__1::allocator<char> >, std::__1::allocator<char> >::impl>(boost::iostreams::symmetric_filter<boost::iostreams::detail::bzip2_decompressor_impl<std::__1::allocator<char> >, std::__1::allocator<char> >::impl*) in metatwist.cpp.o\nboost::detail::sp_counted_impl_p<boost::iostreams::symmetric_filter<boost::iostreams::detail::bzip2_decompressor_impl<std::__1::allocator<char> >, std::__1::allocator<char> >::impl>::dispose() in metatwist.cpp.o\nld: symbol(s) not found for architecture x86_64\nclang: error: linker command failed with exit code 1 (use -v to see invocation)\nmake[2]: *** [AmberTools/src/moft/metatwist] Error 1\nmake[1]: *** [AmberTools/src/moft/CMakeFiles/metatwist.dir/all] Error 2\nmake: *** [all] Error 2\nAny idea of what causing such issue ? Maybe I have to update something.\nFor information I am using gFortran 12.2.0 from Homebrew maybe it is the cause and Amber may prefer a gFortran 11 flavor ?\nXavier",
+      "url": "http://archive.ambermd.org/202210/0080.html"
+    },
+    {
+      "message_id": 1666106761,
+      "author": "David A Case",
+      "date_raw": "Tue, 18 Oct 2022 11:26:01 -0400",
+      "body": "On Tue, Oct 18, 2022, Xavier Brazzolotto via AMBER wrote:\n>\n>I do have an issue when trying to install on my Intel Mac (macOS Monterey 12.6)\n>\n>[100%] Linking CXX executable metatwist\n>Undefined symbols for architecture x86_64:\n>  \"boost::iostreams::detail::bzip2_base::end(bool, std::nothrow_t)\", referenced from:\nLook at the packaging report in the cmake.log file: are you getting boost\nfrom internal or external sources?  If the latter, then adding this to your\nrun_cmake script should help:\n-DFORCE_INTERNAL_LIBS=\"boost\"\nOr, a workaround would be this:\n-DDISABLE_TOOLS=\"moft\"\nThis will skip building metatwist.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202210/0081.html",
+      "in_reply_to": 1666092150
+    },
+    {
+      "message_id": 1666114818,
+      "author": "Xavier Brazzolotto",
+      "date_raw": "Tue, 18 Oct 2022 19:40:18 +0200",
+      "body": "Hi David,\nI’ve tried the -DFORCE_INTERNAL_LIBS=\"boost\" as I have boost installed from Homebrew but it didn’t do the trick.\nThe second workaround did it and I’ve able to install AmberTools.\nMany thanks David\n> Le 18 oct. 2022 à 17:26, David A Case via AMBER <amber.ambermd.\norg> a écrit :\n>\n> On Tue, Oct 18, 2022, Xavier Brazzolotto via AMBER wrote:\n>>\n>> I do have an issue when trying to install on my Intel Mac (macOS Monterey 12.6)\n>>\n>> [100%] Linking CXX executable metatwist\n>> Undefined symbols for architecture x86_64:\n>> \"boost::iostreams::detail::bzip2_base::end(bool, std::nothrow_t)\", referenced from:\n>\n> Look at the packaging report in the cmake.log file: are you getting boost\n> from internal or external sources?  If the latter, then adding this to your\n> run_cmake script should help:\n>\n>   -DFORCE_INTERNAL_LIBS=\"boost\"\n>\n> Or, a workaround would be this:\n>\n>   -DDISABLE_TOOLS=\"moft\"\n>\n> This will skip building metatwist.\n>\n> ...good luck...dac\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202210/0082.html",
+      "in_reply_to": 1666092150
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "thread_id": 0,
+  "subject": "Re: [AMBER] Error while creating topology file(HMassRepartition) in parmed",
+  "messages": [
+    {
+      "message_id": 0,
+      "author": "Aravind Ravichandran",
+      "date_raw": null,
+      "body": "Dear David,\nThanks for the reply. I tried both. The error occurs before the first\nenergy calculation(Before the first step output was written to the file).\nAnd when I ran the simulation with sander.MPI, I get the following error.\nCoordinate resetting (SHAKE) cannot be accomplished,\ndeviation is too large\nNITER, NIT, LL, I and J are :      0      0  24998  49727  49728\nNote: This is usually a symptom of some deeper\nproblem with the energetics of the system.\nCoordinate resetting (SHAKE) cannot be accomplished,\ndeviation is too large\nNITER, NIT, LL, I and J are :      0      0  14844  29626  29627\nNote: This is usually a symptom of some deeper\nproblem with the energetics of the system.\n--------------------------------------------------------------------------\nMPI_ABORT was invoked on rank 1 in communicator MPI_COMM_WORLD\nwith errorcode 1.\nNOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.\nYou may or may not see output from other processes, depending on\nexactly when Open MPI kills them.\n--------------------------------------------------------------------------\nJust to put to your notice, I also ran a short 20ps, NVT and NPT\nsimulations each before running production on the system with HMR.\nMoreover, diff prmtop hmr.prmtop shows many lines of differences.\nThank you,\nAravind R\nJunior Research Fellow\nRanabir Das lab\nNCBS, GKVK\nBellary Road\nBengaluru 560065\nOn Mon, September 24, 2018 5:09 pm, David A Case wrote:\n> On Mon, Sep 24, 2018, Aravind Ravichandran wrote:\n>\n>\n>> I wanted to run my production MD with HMR. So, after preparing my\n>> simulation, running minimization and equilibration steps, I used parmed\n>> to change the H-mass. {\n>> parmed prmtop HMassRepartition\n>> outparm hmr.prmtop }\n>> After this I ran my production where I got the following error:\n>>\n>>\n>> cudaMemcpy GpuBuffer::Download failed an illegal memory access was\n>> encountered\n>\n> Usual debugging strategy: run a short simulation with ntpr=1.  Do you\n> see anything that helps? Does the above error occur before the first energy\n> calcualation or somewhere later on?\n>\n> Second strategy: run the same short simluation with the CPU version.  Is\n> there any difference?\n>\n> You may also want to try a constant volume simulation, to see if the\n> instability in your system is related to pressure or density changes.\n>\n> ...good luck...dac\n>\n>\n>\n>",
+      "url": "http://archive.ambermd.org/xxxxxx/0001.html"
+    }
+  ]
+}

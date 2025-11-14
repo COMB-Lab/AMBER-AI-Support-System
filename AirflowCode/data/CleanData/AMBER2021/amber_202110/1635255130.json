@@ -1,0 +1,21 @@
+{
+  "thread_id": 1635255130,
+  "subject": "[AMBER] Amber21 installation using Docker will be Parallel or Serial?",
+  "messages": [
+    {
+      "message_id": 1635255130,
+      "author": "Erdem Yeler",
+      "date_raw": "Tue, 26 Oct 2021 16:32:10 +0300",
+      "body": "Hello amberers,\nI want to know that: Will I be able to use parallel version of sander\n(sander.MPI) after Amber21 installation using docker? or will it be just\nserial installation?\nThank you",
+      "url": "http://archive.ambermd.org/202110/0215.html"
+    },
+    {
+      "message_id": 1635512734,
+      "author": "Jason Swails",
+      "date_raw": "Fri, 29 Oct 2021 09:05:34 -0400",
+      "body": "If you are not familiar with the concept of containers and how docker\nreally *works,* then the Amber community neither provides nor builds docker\nimages with any Amber programs installed in them.  The easiest way to just\n\"download and run\" AmberTools (sander) is to use the conda package manager.\n---------------\nIf you are familiar with containers and docker, a more detailed answer is\ngiven below:\n\"Install using Docker\" is not well-defined for Amber.  We do not have an\nofficially published Docker image (for any architecture) in which Amber is\ninstalled and available.  There are some docker images on Docker Hub that\nwe use for our continuous integration if you've seen images like\n`ambermd/cpu-build` or `ambermd/gpu-build` (those listed here:\nhttps://hub.docker.com/u/ambermd\n), but those images simply contain the base\nrequirements needed to *build* Amber -- they don't have Amber installed\nthemselves.\nWhat this means is you can't run any Amber programs directly from a docker\nimage that the Amber community produces.  The only way to \"install using\nDocker\" is to start a docker container (e.g., from the ambermd/cpu-build\nimage on Docker Hub) and then compile AmberTools in the container.  In that\ncase, you will end up choosing the compilation options that decide whether\nit's serial only or includes MPI and/or OpenMP parallel builds.\nFor the Amber continuous integration testing builds, we *do* build and test\nparallel versions of Amber using the ambermd/cpu-build image (so that image\nhas an MPI installed in it).\nHTH,\nJason\nOn Tue, Oct 26, 2021 at 9:33 AM Erdem Yeler <erdemyeler.gmail.com> wrote:\n> Hello amberers,\n> I want to know that: Will I be able to use parallel version of sander\n> (sander.MPI) after Amber21 installation using docker? or will it be just\n> serial installation?\n> Thank you\n>",
+      "url": "http://archive.ambermd.org/202110/0244.html",
+      "in_reply_to": 1635255130
+    }
+  ]
+}

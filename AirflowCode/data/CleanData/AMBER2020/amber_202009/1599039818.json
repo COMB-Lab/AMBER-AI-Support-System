@@ -1,0 +1,21 @@
+{
+  "thread_id": 1599039818,
+  "subject": "[AMBER] MCPB parametrization for an RNA systems",
+  "messages": [
+    {
+      "message_id": 1599039818,
+      "author": "Claire Claire",
+      "date_raw": "Wed, 2 Sep 2020 11:43:38 +0200",
+      "body": "Dear all,\nI am currently trying to run an MD simulation of an RNA molecule stabilized\nby several Mg2+ ions using the AMBER16 package.\nI need to parametrize the metal coordination centers in order to avoid the\nMg2+ leaving their original sites. I tried MCPB as I already used it for\nmetalloenzymes. However, the system the first MCPB step created does not\ncap the nucleotides as it would do with the amino acids in order to do the\nQM calculations (Gaussian) as it leaves opened valences. I decided to\nmanually cap the nucleotides and generate Gaussian input files so that the\ncharge calculation would be correct, but now that I want  to run the second\nMCPB step I’m facing a discrepancy between mi QM outputs and the\n*standard.fingerprint files produced in the first step. And if I try to run\nthe first MCPB step using PDBs with the caped nucleotides, the program\ndoesn’t seem to understand the molecules I’m giving it.\nCan anyone give me a bit of insight on how to tackle this issue? Is there\nanother version of MCPB that allows the parametrization I’m trying to do?\nClaire",
+      "url": "http://archive.ambermd.org/202009/0015.html"
+    },
+    {
+      "message_id": 1599770968,
+      "author": "Pengfei Li",
+      "date_raw": "Thu, 10 Sep 2020 16:49:28 -0400",
+      "body": "Hi Clarie,\nUnfortunately, now MCPB.py does not support the recognition of nucleotides automatically. The way to solve your problem is to provide a mol2 file for the nucleotides by yourself and provide it through the naa_mol2files variable in the MCPB.py input file, along with providing an relevant parameter file through the frcmod_files variable (this file is not needed if the force field you chose already includes the parameters for nucleotides) in the MCPB.py input file.\nBecause Mg2+ is pretty ionic, so usually a nonbonded model is enough. Does the Mg2+ ions leave the original sites if you use a nonbonded model? Some ionic bonds are pretty strong and it is not easy for the ions to leave its original sites.\nPengfei\n> On Sep 2, 2020, at 5:43 AM, Claire Claire <anyron.gmail.\ncom> wrote:\n>\n> Dear all,\n>\n> I am currently trying to run an MD simulation of an RNA molecule stabilized\n> by several Mg2+ ions using the AMBER16 package.\n> I need to parametrize the metal coordination centers in order to avoid the\n> Mg2+ leaving their original sites. I tried MCPB as I already used it for\n> metalloenzymes. However, the system the first MCPB step created does not\n> cap the nucleotides as it would do with the amino acids in order to do the\n> QM calculations (Gaussian) as it leaves opened valences. I decided to\n> manually cap the nucleotides and generate Gaussian input files so that the\n> charge calculation would be correct, but now that I want  to run the second\n> MCPB step I’m facing a discrepancy between mi QM outputs and the\n> *standard.fingerprint files produced in the first step. And if I try to run\n> the first MCPB step using PDBs with the caped nucleotides, the program\n> doesn’t seem to understand the molecules I’m giving it.\n> Can anyone give me a bit of insight on how to tackle this issue? Is there\n> another version of MCPB that allows the parametrization I’m trying to do?\n>\n> Claire\n>",
+      "url": "http://archive.ambermd.org/202009/0159.html",
+      "in_reply_to": 1599039818
+    }
+  ]
+}

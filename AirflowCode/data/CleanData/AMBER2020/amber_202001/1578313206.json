@@ -1,0 +1,13 @@
+{
+  "thread_id": 1578313206,
+  "subject": "[AMBER] Umbrella sampling sufficient overlap test",
+  "messages": [
+    {
+      "message_id": 1578313206,
+      "author": "Martin Rosellen",
+      "date_raw": "Mon, 6 Jan 2020 12:20:06 +0000",
+      "body": "Dear all,\nI am running umbrella sampling productions using a dihedral angle as reaction coordinate. By eye, the histograms of the angles of the umbrella productions overlap well in most of the cases. I wrote myself a script that checks for overlap using quantiles. I currently test if the 5th 5-quantile of production n is greater than the 1th 5-quantile of production n+1. I wonder if that test is too strict? How much overlap is intended/enough?\nThis is my python script that you can also find here: https://github.com/Gimba/UmbrellaSamplingUtils/blob/master/check_overlap.py\nimport glob\nimport matplotlib.pyplot as plt\nimport numpy as np\ndef main():\nfig = plt.figure(figsize=(15, 10))\ndata = {}\nfiles = []\nfor file in glob.glob(\"*.dat\"):\nfiles.append(file)\nfiles = sorted(files, key=lambda x: int(x.split('_')[-1].split('.')[0]))\nfor file in files:\nwith open(file, 'r') as f:\nfile_number = int(file.split('_')[-1].split('.')[0])\ndata[file_number] = []\nfor line in f.readlines():\ndat = line.split()[-1]\ndata[file_number].append(float(dat))\n# plot and annotate histograms\ny, x, _ = plt.hist(data[file_number], bins=100, histtype='step')\ny_coord = max(y)\nx_coord = x[np.where(y == max(y))[0][0]]\nplt.annotate(str(file_number), (x_coord, y_coord), ha='center')\nplt.xlabel('dihedral angle')\nplt.ylabel('frequency')\n#  use quantiles to check proper overlap of distributions\nwith open('umbrella_stats.txt', 'w') as o:\no.write('file number <-> filenumber : sufficient overlap\\n')\nfor key in sorted(data.keys()):\nkey_next = key + 1\nif key_next in data.keys():\ndat = np.asarray(data[key])\ndat_next = np.asarray(data[key_next])\ndat_quantile = np.quantile(dat, 0.8)\ndat_next_quantile = np.quantile(dat_next, 0.2)\n# plt.axvline(dat_quantile, color='red')\n# plt.axvline(dat_next_quantile)\nif (dat_quantile > dat_next_quantile):\no.write('{} <-> {} : True\\n'.format(key, key_next))\nelse:\nprint('!!! {} <-> {} : False\\n'.format(key, key_next))\no.write('{} <-> {} : False\\n'.format(key, key_next))\nplt.savefig('histograms.png')\nif __name__ == '__main__':\nmain()\n-------------------------------------------------------------------------\nMartin Rosellen\nPhd, UCL Division of Biosciences\nHansen Lab (UCL), Shepherd Group (Birkbeck)\nUCL (University College London)\nBirkbeck, University of London\nE: martin.rosellen.16.ucl.ac.uk<mailto:martin.rosellen.16.ucl.ac.uk>",
+      "url": "http://archive.ambermd.org/202001/0056.html"
+    }
+  ]
+}

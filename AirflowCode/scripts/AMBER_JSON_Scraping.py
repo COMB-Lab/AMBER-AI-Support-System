@@ -1,17 +1,19 @@
 import json
+import os
 from pathlib import Path
 from email.utils import parsedate_to_datetime
 from datetime import timezone
 from typing import Optional, Dict, List
 
-# workingWithParentFolderName = Path("AMBER_2020")
-# workingWithFolderName = "02"
-# workingWithJSONFile = "amber_2020_Feb.json"
+# ===== where data lives inside the container =====
+DATA_DIR = Path(os.environ.get("DATA_DIR", "/opt/airflow/data")).resolve()
+RAW_BASE   = DATA_DIR / "RawData"    # input: .../RawData/<YEAR>_Data/*.json
+CLEAN_BASE = DATA_DIR / "CleanData"  # output: .../CleanData/AMBER<YEAR>/amber_<YYYYMM>/<thread_id>.json
 
 MONTH_MAP = {
     "Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6,
-    "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12}
-
+    "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12
+}
 
 def to_epoch_seconds(date_str: Optional[str]) -> int:
     """Convert an email Date header into UTC epoch seconds."""
@@ -24,7 +26,6 @@ def to_epoch_seconds(date_str: Optional[str]) -> int:
         return int(dt.timestamp())
     except Exception:
         return 0
-
 
 def normalize_subject(subject: Optional[str]) -> str:
     """
@@ -40,36 +41,35 @@ def normalize_subject(subject: Optional[str]) -> str:
     if s.lower().startswith("[amber]"):
         rb = s.find("]")
         if rb != -1:
-            s = s[rb+1:].strip()
+            s = s[rb + 1 :].strip()
 
     while s[:3].lower() == "re:":
         s = s[3:].strip()
 
     return " ".join(s.split()).lower()
 
-
 def month_num(m: str) -> int:
-    return MONTH_MAP[m[:3].title()]
-
+    m3 = (m or "")[:3].title()
+    return MONTH_MAP.get(m3, 0)  # 0 -> will format as 00 if unknown
 
 def createThreadLevel(groupedData, threadKey) -> Dict:
     thread_id = None
     subject = None
     messages = []
 
-    dataWorkingWith = groupedData.get(threadKey)
+    dataWorkingWith = groupedData.get(threadKey, [])
 
     for index, items in enumerate(dataWorkingWith):
         if index == 0:  # root message
-            subject = items["subject"]
-            thread_id = items["message_id"]
+            subject = items.get("subject")
+            thread_id = items.get("message_id")
 
         messageDict = {
-            "message_id": items["message_id"],
-            "author": items["author_name"],
-            "date_raw": items["date_raw"],
-            "body": items["body_text"],
-            "url": items["url"]
+            "message_id": items.get("message_id"),
+            "author": items.get("author_name"),
+            "date_raw": items.get("date_raw"),
+            "body": items.get("body_text"),
+            "url": items.get("url"),
         }
 
         if index > 0:  # not the root
@@ -80,9 +80,8 @@ def createThreadLevel(groupedData, threadKey) -> Dict:
     return {
         "thread_id": thread_id,
         "subject": subject,
-        "messages": messages
+        "messages": messages,
     }
-
 
 def populateJSONFile(sortedData) -> List:
     finalizedData = []
@@ -90,7 +89,6 @@ def populateJSONFile(sortedData) -> List:
         threads = createThreadLevel(sortedData, items)
         finalizedData.append(threads)
     return finalizedData
-
 
 def processOneFile(workingWithJSONFile: Path, workingWithParentFolderName: Path, workingWithFolderName: str):
     # --- Load messages from the JSON file ---
@@ -121,38 +119,43 @@ def processOneFile(workingWithJSONFile: Path, workingWithParentFolderName: Path,
     sorted_threads = sorted(
         groupedThreads.items(),
         key=lambda x: min(m["message_id"] for m in x[1]),
-        reverse=False
+        reverse=False,
     )
     groupedThreads_sorted = dict(sorted_threads)
 
     # --- Convert grouped threads into structured JSON data ---
     threadLevelDict = populateJSONFile(groupedThreads_sorted)
 
-    # --- Create output subfolder ---
+    # --- Create output subfolder: CLEAN_BASE/AMBER<YEAR>/amber_<YYYYMM> ---
     subfolder = workingWithParentFolderName / workingWithFolderName
     subfolder.mkdir(parents=True, exist_ok=True)
 
     # --- Write each thread as its own JSON ---
     for thread in threadLevelDict:
-        thread_id = thread["thread_id"]
+        thread_id = thread["thread_id"] or 0  # int from epoch seconds
         file_path = subfolder / f"{thread_id}.json"
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(thread, f, indent=2, ensure_ascii=False)
 
     print(f"Wrote data to folder: {subfolder}")
 
-
 def main():
-    base = Path("../RawData")
-    for year_folder in base.glob("*_Data"):
+    # INPUT: /opt/airflow/data/RawData/<YEAR>_Data/*.json
+    # OUTPUT ROOT: /opt/airflow/data/CleanData/AMBER<YEAR>/amber_<YYYYMM>/
+    for year_folder in RAW_BASE.glob("*_Data"):
         if year_folder.is_dir():
             year = year_folder.stem.replace("_Data", "")
-            parent_folder = Path(f"CleanData/AMBER{year}")
+            parent_folder = CLEAN_BASE / f"AMBER{year}"
             for json_file in year_folder.glob("*.json"):
-                month_name = json_file.stem.split("_")[1]
-                workingWithFolderName = f"amber_{year}{month_num(month_name):02d}"
+                parts = json_file.stem.split("_")
+                if len(parts) < 2:
+                    print(f"Skipping unexpected filename: {json_file.name}")
+                    continue
+                month_name = parts[1]
+                month_idx = month_num(month_name)
+                workingWithFolderName = f"amber_{year}{month_idx:02d}"
 
                 processOneFile(json_file, parent_folder, workingWithFolderName)
 
-
-main()
+if __name__ == "__main__":
+    main()

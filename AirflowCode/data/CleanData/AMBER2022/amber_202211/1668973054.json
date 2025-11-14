@@ -1,0 +1,45 @@
+{
+  "thread_id": 1668973054,
+  "subject": "[AMBER] Vacuum simulation problem",
+  "messages": [
+    {
+      "message_id": 1668973054,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Sun, 20 Nov 2022 14:37:34 -0500",
+      "body": "Dear AMBER community,\nI’m really puzzled by a segmentation fault error I’m getting for simply trying to do a vacuum minimization. Below is my input file and command. Note that it works fine with SANDER, but crashes with PMEMD. No error message is printed by PMEMD to the end of the out file (see below for output).\nInput:\n&cntrl\nig=-1,\nimin=1, ntmin=2,   ncyc=1000,  maxcyc=1000,\nntb=0, igb=0, cut=9999,\nntc=2, ntf=1,\nntr=0, nmropt=0,\nntwr=100, ntwx=100,   ntpr=100,\nntxo=2, ioutfm=1,\n/\npmemd -O -i min.in -p BeforeState_vac.parm7 -c BeforeState_vac.rst7 -o min.out -r min.rst7 -inf min.info\nOutput to terminal:\nProgram received signal SIGSEGV: Segmentation fault - invalid memory reference.\nBacktrace for this error:\n#0  0x2b2ae3e583ff in ???\n#1  0x48b3ee in ???\n#2  0x4ab713 in ???\n#3  0x4dbea6 in ???\n#4  0x50a113 in ???\n#5  0x42403c in ???\n#6  0x2b2ae3e44554 in ???\n#7  0x42406c in ???\n#8  0xffffffffffffffff in ???\nSegmentation fault\nEnd of output file:\n--------------------------------------------------------------------------------\n1.  RESOURCE   USE:\n--------------------------------------------------------------------------------\nNATOM  =      53 NTYPES =      10 NBONH =      26 MBONA  =      27\nNTHETH =      55 MTHETA =      36 NPHIH =     113 MPHIA  =      94\nNHPARM =       0 NPARM  =       0 NNB   =     266 NRES   =       5\nNBONA  =      27 NTHETA =      36 NPHIA =      94 NUMBND =      17\nNUMANG =      31 NPTRA  =      33 NATYP =      12 NPHB   =       0\nIFBOX  =       0 NMXRS  =      21 IFCAP =       0 NEXTRA =       0\nNCOPY  =       0\n| Coordinate Index Table dimensions:     0    0    0\nWhat is going wrong? What should I check?\nBest,\nMatthew\n88,1          Bot",
+      "url": "http://archive.ambermd.org/202211/0138.html"
+    },
+    {
+      "message_id": 1668979767,
+      "author": "James Kress",
+      "date_raw": "Sun, 20 Nov 2022 16:29:27 -0500",
+      "body": "Which version of Amber?\n-----Original Message-----\nFrom: Matthew Guberman-Pfeffer via AMBER <amber.ambermd.\norg>\nSent: Sunday, November 20, 2022 2:38 PM\nTo: AMBER Mailing List <amber.ambermd.\norg>\nSubject: [AMBER] Vacuum simulation problem\nDear AMBER community,\nI’m really puzzled by a segmentation fault error I’m getting for simply trying to do a vacuum minimization. Below is my input file and command. Note that it works fine with SANDER, but crashes with PMEMD. No error message is printed by PMEMD to the end of the out file (see below for output).\nInput:\n&cntrl\nig=-1,\nimin=1, ntmin=2,   ncyc=1000,  maxcyc=1000,\nntb=0, igb=0, cut=9999,\nntc=2, ntf=1,\nntr=0, nmropt=0,\nntwr=100, ntwx=100,   ntpr=100,\nntxo=2, ioutfm=1,\n/\npmemd -O -i min.in -p BeforeState_vac.parm7 -c BeforeState_vac.rst7 -o min.out -r min.rst7 -inf min.info\nOutput to terminal:\nProgram received signal SIGSEGV: Segmentation fault - invalid memory reference.\nBacktrace for this error:\n#0  0x2b2ae3e583ff in ???\n#1  0x48b3ee in ???\n#2  0x4ab713 in ???\n#3  0x4dbea6 in ???\n#4  0x50a113 in ???\n#5  0x42403c in ???\n#6  0x2b2ae3e44554 in ???\n#7  0x42406c in ???\n#8  0xffffffffffffffff in ???\nSegmentation fault\nEnd of output file:\n--------------------------------------------------------------------------------\n1.  RESOURCE   USE:\n--------------------------------------------------------------------------------\nNATOM  =      53 NTYPES =      10 NBONH =      26 MBONA  =      27\nNTHETH =      55 MTHETA =      36 NPHIH =     113 MPHIA  =      94\nNHPARM =       0 NPARM  =       0 NNB   =     266 NRES   =       5\nNBONA  =      27 NTHETA =      36 NPHIA =      94 NUMBND =      17\nNUMANG =      31 NPTRA  =      33 NATYP =      12 NPHB   =       0\nIFBOX  =       0 NMXRS  =      21 IFCAP =       0 NEXTRA =       0\nNCOPY  =       0\n| Coordinate Index Table dimensions:     0    0    0\nWhat is going wrong? What should I check?\nBest,\nMatthew\n88,1          Bot",
+      "url": "http://archive.ambermd.org/202211/0140.html",
+      "in_reply_to": 1668973054
+    },
+    {
+      "message_id": 1668982509,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Sun, 20 Nov 2022 17:15:09 -0500",
+      "body": "Amber20.\n> On Nov 20, 2022, at 4:29 PM, James Kress via AMBER <amber.ambermd.\norg> wrote:\n>\n> *Message sent from a system outside of UConn.*\n>\n>\n> Which version of Amber?\n>\n> -----Original Message-----\n> From: Matthew Guberman-Pfeffer via AMBER <amber.ambermd.\norg>\n> Sent: Sunday, November 20, 2022 2:38 PM\n> To: AMBER Mailing List <amber.ambermd.\norg>\n> Subject: [AMBER] Vacuum simulation problem\n>\n> Dear AMBER community,\n>\n> I’m really puzzled by a segmentation fault error I’m getting for simply trying to do a vacuum minimization. Below is my input file and command. Note that it works fine with SANDER, but crashes with PMEMD. No error message is printed by PMEMD to the end of the out file (see below for output).\n>\n> Input:\n>\n> &cntrl\n>  ig=-1,\n>  imin=1, ntmin=2,   ncyc=1000,  maxcyc=1000,\n>  ntb=0, igb=0, cut=9999,\n>  ntc=2, ntf=1,\n>  ntr=0, nmropt=0,\n>  ntwr=100, ntwx=100,   ntpr=100,\n>  ntxo=2, ioutfm=1,\n> /\n>\n> pmemd -O -i min.in -p BeforeState_vac.parm7 -c BeforeState_vac.rst7 -o min.out -r min.rst7 -inf min.info\n>\n>\n> Output to terminal:\n>\n> Program received signal SIGSEGV: Segmentation fault - invalid memory reference.\n>\n> Backtrace for this error:\n> #0  0x2b2ae3e583ff in ???\n> #1  0x48b3ee in ???\n> #2  0x4ab713 in ???\n> #3  0x4dbea6 in ???\n> #4  0x50a113 in ???\n> #5  0x42403c in ???\n> #6  0x2b2ae3e44554 in ???\n> #7  0x42406c in ???\n> #8  0xffffffffffffffff in ???\n> Segmentation fault\n>\n>\n> End of output file:\n>\n> --------------------------------------------------------------------------------\n>   1.  RESOURCE   USE:\n> --------------------------------------------------------------------------------\n>\n> NATOM  =      53 NTYPES =      10 NBONH =      26 MBONA  =      27\n> NTHETH =      55 MTHETA =      36 NPHIH =     113 MPHIA  =      94\n> NHPARM =       0 NPARM  =       0 NNB   =     266 NRES   =       5\n> NBONA  =      27 NTHETA =      36 NPHIA =      94 NUMBND =      17\n> NUMANG =      31 NPTRA  =      33 NATYP =      12 NPHB   =       0\n> IFBOX  =       0 NMXRS  =      21 IFCAP =       0 NEXTRA =       0\n> NCOPY  =       0\n>\n> | Coordinate Index Table dimensions:     0    0    0\n>\n>\n>\n> What is going wrong? What should I check?\n>\n> Best,\n> Matthew\n>                                                                                                                                                                         88,1          Bot\n>\n>\n>",
+      "url": "http://archive.ambermd.org/202211/0141.html",
+      "in_reply_to": 1668973054
+    },
+    {
+      "message_id": 1669041191,
+      "author": "David A Case",
+      "date_raw": "Mon, 21 Nov 2022 09:33:11 -0500",
+      "body": "On Sun, Nov 20, 2022, Matthew Guberman-Pfeffer via AMBER wrote:\n>\n>I’m really puzzled by a segmentation fault error I’m getting for\n>simply trying to do a vacuum minimization. Below is my input file and\n>command. Note that it works fine with SANDER, but crashes with PMEMD. No\n>error message is printed by PMEMD to the end of the out file (see below for\n>output).\n>What is going wrong? What should I check?\nWhat happens in the sander run?  Do you see bad energies at the first step?\nIf you want to debug pmemd with a segfault, your first step would be to\nbuild with debugging symbols on.  Add -DCMAKE_BUILD_TYPE=DEBUG to your\nrun_cmake file, and re-build.  That will only tell you the location where\nthe segfault is occurring, but that might be enough.\nYou should note that setting ntb=0 and igb=0 enters code that is *very* rarely\nused.  If you want a vacuum simulation, try setting igb=6 instead.\n....dac",
+      "url": "http://archive.ambermd.org/202211/0144.html",
+      "in_reply_to": 1668973054
+    },
+    {
+      "message_id": 1669041894,
+      "author": "Matthew Guberman-Pfeffer",
+      "date_raw": "Mon, 21 Nov 2022 09:44:54 -0500",
+      "body": "Hi David,\nThanks! igb=6 was the key— pmemd works now. It maybe of interest to note that the energies given by pmemd with igb=6 match those given by sander with igb=0.\nBest,\nMatthew",
+      "url": "http://archive.ambermd.org/202211/0145.html",
+      "in_reply_to": 1668973054
+    }
+  ]
+}

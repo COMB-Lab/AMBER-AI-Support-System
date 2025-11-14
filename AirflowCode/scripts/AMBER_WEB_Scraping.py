@@ -12,6 +12,9 @@ from email.utils import parsedate_to_datetime
 from datetime import timezone
 from zoneinfo import ZoneInfo
 
+# ========= choose output root (default = /opt/airflow/data) =========
+DATA_DIR = Path(os.environ.get("DATA_DIR", "/opt/airflow/data")).resolve()
+DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 class AmberData:
     def __init__(self, year):
@@ -40,10 +43,11 @@ class AmberData:
 
 
 dataUrl = "http://archive.ambermd.org/"
-response = requests.get(dataUrl)
+response = requests.get(dataUrl, timeout=30)
 soup = BeautifulSoup(response.text, "html.parser")
 dataDictionary = {}
 
+# Defaults used by some helpers (kept from your original code)
 workingWithYear = "2020"
 workingWithMonth = "Jan"
 workingWithFileName = "amber_2020_Jan.json"
@@ -84,7 +88,6 @@ Year: AmberObject(Year)
         }     
 '''
 
-
 def getData():
     allHeader3 = soup.find_all("h3")
     year = None
@@ -112,35 +115,29 @@ def getData():
         dataDictionary[f"{year}"] = ad
 
     print("Populating Messages...")
-
-    # Gets a single Year/ Month Review
-    # getReviews(dataDictionary[workingWithYear], workingWithMonth)
     print("Success!")
 
     print("Populating Clean Data...")
 
-    # Populates a single data
-    # populateCleanData(workingWithYear, workingWithMonth)
-
-    # Populates ONLY 2020–2025
+    # Process only the requested year range, writing into DATA_DIR
     for year_str in sorted(dataDictionary.keys(), key=int):
         y = int(year_str)
         if yearStart <= y <= yearEnd:
             amberObj = dataDictionary[year_str]
-            out_dir = Path(f"RawData/{year_str}_Data")
-            out_dir.mkdir(parents=True, exist_ok=True)
+
+            # NEW: Write all outputs for a year into /opt/airflow/data/RawData/<YEAR>_Data
+            year_out_dir = DATA_DIR / "RawData" / f"{year_str}_Data"
+            year_out_dir.mkdir(parents=True, exist_ok=True)
 
             for month in sorted(amberObj.months.keys(), key=lambda m: int(month_num(m))):
                 print(f"Working on {year_str} {month} ...")
                 file_name = f"{year_str}_{month}.json"
 
+                # Populate and write directly to the final absolute path
                 populateCleanData(year_str, month)
-                export_month_to_json(year_str, month, file_name)
+                out_path = year_out_dir / file_name
+                export_month_to_json(year_str, month, out_path)
 
-                # then move into the year folder
-                src = Path(file_name)
-                dst = out_dir / file_name
-                shutil.move(str(src), str(dst))
                 time.sleep(0.5)
 
     print("Success!")
@@ -148,7 +145,7 @@ def getData():
 
 def getReviews(ad, month):
     urlLink = ad.getMonthValue(month)
-    reviewResponse = requests.get(urlLink)
+    reviewResponse = requests.get(urlLink, timeout=30)
     ReviewSoup = BeautifulSoup(reviewResponse.text, "html.parser")
 
     allMessages = ReviewSoup.find_all("a", href=True)
@@ -241,7 +238,7 @@ def populateCleanData(year_key, month_key):
             # Nav links first (so errors later won't wipe them)
             record["nav_links"] = extract_nav_links(soup, base_url=resp.url)
 
-            # Attachments (now returns full URLs); protect so a hiccup doesn't kill nav links
+            # Attachments
             try:
                 record["attachments"] = extract_attachments(soup, base_url=resp.url)
             except Exception as att_err:
@@ -384,9 +381,6 @@ def extract_nav_links(soup, base_url: str | None = None):
     for a in soup.select("div.head a, div.foot a"):
         txt = (a.get_text(" ", strip=True) or "").lower()
         title_attr = norm(a.get("title"))
-        # print(f"a: {a}")
-        # print(f"txt: {txt}")
-        # print(f"title_attr: {title_attr}")
         if "next message" in txt and (title_attr or txt):
             next_message_title = title_attr or norm(a.get_text(" ", strip=True))
         elif "next in thread" in txt and (title_attr or txt):
@@ -397,7 +391,6 @@ def extract_nav_links(soup, base_url: str | None = None):
             inReplyToLink = urljoin(effective_base, href) if href else None
 
     # 3) Replies
-    #   Look in both head & foot nav blocks.
     for section in soup.select("div.head, div.foot"):
         for li in section.find_all("li"):
             dfn = li.find("dfn")
@@ -448,7 +441,11 @@ def newRecord(url: str) -> dict:
     }
 
 
-def export_month_to_json(year_key: str, month_key: str, out_path: str):
+# ======== UPDATED: out_path is a Path (absolute); ensure parent exists ========
+def export_month_to_json(year_key: str, month_key: str, out_path: Path):
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+
     amberObj = dataDictionary[year_key]
     data = amberObj.getCleanDataValue(month_key) or []
 
@@ -458,7 +455,10 @@ def export_month_to_json(year_key: str, month_key: str, out_path: str):
     print(f"Wrote {len(data)} messages to {out_path}")
 
 
-def export_range_to_json(start_year: int, end_year: int, out_path: str):
+def export_range_to_json(start_year: int, end_year: int, out_path: str | Path):
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+
     export_data = {}
     for year in range(start_year, end_year + 1):
         year_str = str(year)
@@ -473,7 +473,10 @@ def export_range_to_json(start_year: int, end_year: int, out_path: str):
     print(f"Wrote years {start_year}-{end_year} to {out_path}")
 
 
-def export_all_to_json(out_path: str):
+def export_all_to_json(out_path: str | Path):
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+
     export_data = {}
     for year, amberObj in dataDictionary.items():
         export_data[year] = amberObj.cleanData
@@ -493,13 +496,13 @@ def printData():
                 print(f"    {link}")
 
 
+# ===================== MAIN =====================
 getData()
 
-# export_month_to_json(workingWithYear, workingWithMonth, workingWithFileName)
-
-# export_range_to_json(2022, 2025, "amber_2022_2025.json")
-
-# export_all_to_json("AmberCleanData.json")
+# Example optional exporters (now write to DATA_DIR):
+# export_month_to_json(workingWithYear, workingWithMonth, DATA_DIR / workingWithFileName)
+# export_range_to_json(2022, 2025, DATA_DIR / "amber_2022_2025.json")
+# export_all_to_json(DATA_DIR / "AmberCleanData.json")
 '''
 for i, msg in enumerate(msgs, start=1):
     print(f"\nMessage {i}:")

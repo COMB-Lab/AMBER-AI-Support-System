@@ -1,0 +1,29 @@
+{
+  "thread_id": 1715003204,
+  "subject": "[AMBER] Cpptraj distance for multiple copies of ligand vs protein",
+  "messages": [
+    {
+      "message_id": 1715003204,
+      "author": "Alexander Hung Lee",
+      "date_raw": "Mon, 6 May 2024 13:46:44 +0000",
+      "body": "In my system, I have 45 copies of a ligand (all with resname SIA but with different resid's) floating around a receptor. I'm trying to track what's the closest distance between any of those ligands and the backbone. Is there something I'm missing? It seems to be tracking only one of the 45.\nInput:\nparm ../2_md/CPLX_Neut_Sol.parm7\ntrajin ../2_md/10.1.produ.nc\ndistance :SIA .CA,C,O,N,H out distance.txt\nrun\nOuput:\n#Frame      Dis_00001\n1       8.5270\n2       8.5101\n3       8.4704\n...\n138      13.1068\n139      13.2145\n140      13.5623\n141      13.5264\nAlex Lee\nPhD Student\nWoods Research Group<\nhttps://woodsgroup.franklinresearch.uga.edu/\n>\nDepartment of Biochemistry & Molecular Biology\nComplex Carbohydrate Research Center\nUniversity of Georgia\n315 Riverbend Rd.\nAthens, GA  30602\nEmail: ahl63010.uga.edu\nMobile: (470) 641-3884",
+      "url": "http://archive.ambermd.org/202405/0011.html"
+    },
+    {
+      "message_id": 1715004623,
+      "author": "Martin Juh�s",
+      "date_raw": "Mon, 6 May 2024 14:10:23 +0000",
+      "body": "Hi,\nI believe your command would take the average position of the SIA residues and thus distance correspond to the distance of \"average\" SIA to the backbone.\nTry to define them with their indeces, not resnames.\nMJ\n-----Original Message-----\nFrom: Alexander Hung Lee via AMBER <amber.ambermd.org>\nSent: Monday, May 6, 2024 3:47 PM\nTo: Alexander Hung Lee via AMBER <amber.ambermd.org>\nSubject: [AMBER] Cpptraj distance for multiple copies of ligand vs protein\n[EXTERNAL EMAIL]\nIn my system, I have 45 copies of a ligand (all with resname SIA but with different resid's) floating around a receptor. I'm trying to track what's the closest distance between any of those ligands and the backbone. Is there something I'm missing? It seems to be tracking only one of the 45.\nInput:\nparm ../2_md/CPLX_Neut_Sol.parm7\ntrajin ../2_md/10.1.produ.nc\ndistance :SIA .CA,C,O,N,H out distance.txt run\nOuput:\n#Frame      Dis_00001\n1       8.5270\n2       8.5101\n3       8.4704\n...\n138      13.1068\n139      13.2145\n140      13.5623\n141      13.5264\nAlex Lee\nPhD Student\nWoods Research Group<\nhttps://woodsgroup.franklinresearch.uga.edu/\n>\nDepartment of Biochemistry & Molecular Biology Complex Carbohydrate Research Center University of Georgia\n315 Riverbend Rd.\nAthens, GA  30602\nEmail: ahl63010.uga.edu\nMobile: (470) 641-3884",
+      "url": "http://archive.ambermd.org/202405/0012.html",
+      "in_reply_to": 1715003204
+    },
+    {
+      "message_id": 1715014482,
+      "author": "Daniel Roe",
+      "date_raw": "Mon, 6 May 2024 12:54:42 -0400",
+      "body": "Hi,\nYour 'distance' command is calculating the center of mass of all atoms\nin the first mask to the center of mass of all atoms in the second\nmass, which is not what you want.\nYou could probably use the 'closest' command for this, just put the\nligand's name in place of solvent, e.g.\nclosest 1 .CA,C,O,N,H solventmask :SIA closestout closest.dat name SIA\nSee the manual for full command details. Let me know if this works for you.\n-Dan\nOn Mon, May 6, 2024 at 9:47 AM Alexander Hung Lee via AMBER\n<amber.ambermd.org> wrote:\n>\n> In my system, I have 45 copies of a ligand (all with resname SIA but with different resid's) floating around a receptor. I'm trying to track what's the closest distance between any of those ligands and the backbone. Is there something I'm missing? It seems to be tracking only one of the 45.\n>\n> Input:\n> parm ../2_md/CPLX_Neut_Sol.parm7\n> trajin ../2_md/10.1.produ.nc\n> distance :SIA @CA,C,O,N,H out distance.\ntxt\n> run\n>\n> Ouput:\n> #Frame      Dis_00001\n>        1       8.5270\n>        2       8.5101\n>        3       8.4704\n>    ...\n>      138      13.1068\n>      139      13.2145\n>      140      13.5623\n>      141      13.5264\n>\n> Alex Lee\n> PhD Student\n> Woods Research Group<\nhttps://woodsgroup.franklinresearch.uga.edu/\n>\n> Department of Biochemistry & Molecular Biology\n> Complex Carbohydrate Research Center\n> University of Georgia\n>\n> 315 Riverbend Rd.\n> Athens, GA  30602\n> Email: ahl63010.uga.\nedu\n> Mobile: (470) 641-3884\n>",
+      "url": "http://archive.ambermd.org/202405/0014.html",
+      "in_reply_to": 1715003204
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "thread_id": 1596433474,
+  "subject": "[AMBER] Regarding the backup of amber nc files",
+  "messages": [
+    {
+      "message_id": 1596433474,
+      "author": "Jenny 148",
+      "date_raw": "Mon, 3 Aug 2020 11:14:34 +0530",
+      "body": "Dear all,\nThis is a very general query. I am beginner in AMBER but have done a few\nsimulations of 500 ns range. The ouput trajectory files are almost 40-50gb.\nI wanted to know how do we backup these files if the free memory we have is\nlimited. We need these files for future references. Could someone guide me\nabout this?\nThanks,\nJenny",
+      "url": "http://archive.ambermd.org/202008/0007.html"
+    },
+    {
+      "message_id": 1596435543,
+      "author": "Bill Ross",
+      "date_raw": "Sun, 2 Aug 2020 23:19:03 -0700",
+      "body": "This is a generic data-archiving question.\nI'm just reexamined the backup issue for saving a few TB a year or so,\nas a former designer and implementer of massive automated backup systems\nat NASA.\nI liked the look of LTO-x Ultrium tapes, but in the end I couldn't find\na drive plus cheap adapter card I could add to my motherboard and be\nsure of working, and no evidence of others using the drives on linux\nconsumer-level motherboards, so I settled on writing to a pair of 3.5\" 4\nTB 5400 rpm drives, same data to each in case one fails, and these I\nwrap in insulation and store in a waterproof metal ammunition container\nto protect from EMP (sun flare or nuke). Tape would weigh less than 3.5\"\ndrives is my main sigh.\nI used a clear plastic Orico drop-in drive bay, 10 Gbps. I think the\ndata may only be readable with the same brand or even model of bay; if I\ncan't read the Orico-written when mounted inside the case, a backup copy\nof the bay is needed, or I might reboot to plug the backup drive into an\ninternal slot for my deep backups. Why should a drive bay need to change\nthe disk format?\nIf you are in a well-funded lab with nice hardware and people to manage\nit, I'd ask about the Ultrium solution for everyone, since it seems more\nlab-scale. If you don't want to think another moment, buy 2 Orico 6139C3\nbays or the equivalent and a pair of ~4 TB drives, and do some\ncross-compatibility checking on the bays after copying to them and\nbefore packing it all away and forgetting about it for a couple of years.\nBill\nOn 8/2/20 10:44 PM, Jenny 148 wrote:\n> Dear all,\n>\n> This is a very general query. I am beginner in AMBER but have done a few\n> simulations of 500 ns range. The ouput trajectory files are almost 40-50gb.\n> I wanted to know how do we backup these files if the free memory we have is\n> limited. We need these files for future references. Could someone guide me\n> about this?\n>\n> Thanks,\n> Jenny\n>",
+      "url": "http://archive.ambermd.org/202008/0008.html",
+      "in_reply_to": 1596433474
+    },
+    {
+      "message_id": 1596464723,
+      "author": "David A Case",
+      "date_raw": "Mon, 3 Aug 2020 10:25:23 -0400",
+      "body": "On Mon, Aug 03, 2020, Jenny 148 wrote:\n>\n>This is a very general query. I am beginner in AMBER but have done a few\n>simulations of 500 ns range. The ouput trajectory files are almost 40-50gb.\n>I wanted to know how do we backup these files if the free memory we have is\n>limited. We need these files for future references. Could someone guide me\n>about this?\nThanks to Bill for his very useful post about backing things up.  But I wonder\nif you are not saving your trajectory frames way too often.  Are you sure you\nneed all that much information?\nYou could think about doing this:\ncpptraj <prmtop-file>\ntrajin input.nc 10 last 10\ntrajout output.nc\ngo\nYour output.nc file will only have every 10th frame, so should be 10 times\nsmaller.  Of course, you will have lost a lot of information, but think about\nwhether it is info you really need.  Depending on your needs (but you say you\nare a beginner, so that may not be all that specializd), saving frames more\noften than about 1 ns intervals may not be very helpful.\nClearly, you have to use your judgement here, and you may indeed need more\nstorage space.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202008/0011.html",
+      "in_reply_to": 1596433474
+    }
+  ]
+}

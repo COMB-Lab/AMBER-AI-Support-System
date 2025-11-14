@@ -1,0 +1,21 @@
+{
+  "thread_id": 1589994814,
+  "subject": "[AMBER] AMBER Tools 20: Bug in libraries of modified amino acids prevents force field load",
+  "messages": [
+    {
+      "message_id": 1589994814,
+      "author": "Matias Machado",
+      "date_raw": "Wed, 20 May 2020 14:13:34 -0300 (UYT)",
+      "body": "Dear developers,\nI've just found a format issue in the recently incorporated libraries for modified amino acids \"mod_amino.lib\" and \"mod_amino19.lib\".\nA blank space before the carrier returns at line 773 is causing LEAP to hang while sourcing cmd files \"leaprc.protein.ff14SB_modAA\" or \"leaprc.protein.ff19SB_modAA\" (see related thread: [http://archive.ambermd.org/201910/0094.html])...\nYou can find the issue by executing the following command:\ngrep -nE \"\\ $\" mod_amino*.lib | cat -A\nmod_amino19.lib:773: \"CA\" \"XC\" 0 1 131072 3 6 -0.042993 $\nmod_amino.lib:773: \"CA\" \"CX\" 0 1 131072 3 6 -0.042993 $\nBest,\nMatias Machado\n------------------------------------\nPhD.\nResearcher at Biomolecular Simulations Lab.\nInstitut Pasteur de Montevideo | Uruguay\n[\nhttp://pasteur.uy/en/labs/biomolecular-simulations-laboratory\n]\n[\nhttp://www.sirahff.com\n]",
+      "url": "http://archive.ambermd.org/202005/0248.html"
+    },
+    {
+      "message_id": 1590009231,
+      "author": "Kellon Belfon",
+      "date_raw": "Wed, 20 May 2020 17:13:51 -0400",
+      "body": "Thank you for sharing this Matias. It looks like space at the end got\nincluded by accident. I checked the git version and though it finishes, it\nslows down leap a lot.\nI will get this fixed and it should be out in the next amber20 patch.\nOn Wed, May 20, 2020 at 1:14 PM Matias Machado <mmachado.pasteur.edu.uy>\nwrote:\n> Dear developers,\n>\n> I've just found a format issue in the recently incorporated libraries for\n> modified amino acids \"mod_amino.lib\" and \"mod_amino19.lib\".\n>\n> A blank space before the carrier returns at line 773 is causing LEAP to\n> hang while sourcing cmd files \"leaprc.protein.ff14SB_modAA\" or\n> \"leaprc.protein.ff19SB_modAA\" (see related thread: [\n>\nhttp://archive.ambermd.org/201910/0094.html\n])...\n>\n> You can find the issue by executing the following command:\n> grep -nE \"\\ $\" mod_amino*.lib | cat -A\n>\n> mod_amino19.lib:773: \"CA\" \"XC\" 0 1 131072 3 6 -0.042993 $\n> mod_amino.lib:773: \"CA\" \"CX\" 0 1 131072 3 6 -0.042993 $\n>\n> Best,\n>\n> Matias Machado\n>\n> ------------------------------------\n> PhD.\n> Researcher at Biomolecular Simulations Lab.\n> Institut Pasteur de Montevideo | Uruguay\n> [\nhttp://pasteur.uy/en/labs/biomolecular-simulations-laboratory\n]\n> [\nhttp://www.sirahff.com\n]\n>\n>",
+      "url": "http://archive.ambermd.org/202005/0254.html",
+      "in_reply_to": 1589994814
+    }
+  ]
+}

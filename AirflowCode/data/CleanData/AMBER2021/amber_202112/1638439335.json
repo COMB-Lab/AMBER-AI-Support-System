@@ -1,0 +1,37 @@
+{
+  "thread_id": 1638439335,
+  "subject": "[AMBER] Fortran runtime error during 1D-RISM analysis to generate .xvv file",
+  "messages": [
+    {
+      "message_id": 1638439335,
+      "author": "Alexis Azucena",
+      "date_raw": "Thu, 2 Dec 2021 18:02:15 +0800",
+      "body": "Hello,\nI am running 1D-RISM for the water-glycol system. I generated my *.mdl *file\nfor the glycol as shown below:\n%VERSION  VERSION_STAMP = V0001.000  DATE = 12/01/2021  21:10:00\n%FLAG TITLE\n%FORMAT(20a4)\nEDO\n%FLAG POINTERS\n%FORMAT(10I8)\n10   4\n%FLAG ATMTYP\n%FORMAT(10I8)\n1   2    3   4\n%FLAG ATMNAME\n%FORMAT(20a4)\nCT  HO  HC  OH\n%FLAG MASS\n%FORMAT(5e16.8)\n1.20100000e+01  1.00800000e+00    1.00800000e+00    1.60000000e+01\n%FLAG CHG\n%FORMAT(5e16.8)\n1.45000000e-01  4.35000000e-01     6.00000000e-02    -7.00000000e-01\n%FLAG LJEPSILON\n%FORMAT(5e16.8)\n6.60000000e-02  0.00000000e+00    3.00000000e-02    1.70000000e-01\n%FLAG LJSIGMA\n%FORMAT(5e16.8)\n3.50000000e+00  0.00000000e+00    2.50000000e+00    3.07000000e+00\n%FLAG MULTI\n%FORMAT(10I8)\n2       2        4       2\n%FLAG COORD\n%FORMAT(5e16.8)\n-6.09000000e-01  -2.82000000e-01  7.10000000e-01   -6.09000000e-01\n2.82000000e-01\n-7.10000000e-01  5.18000000e-01   -2.10000000e-01  2.29100000e+00\n5.18000000e-01\n2.10000000e-01   -2.29100000e+00  -6.09000000e-01  -1.37200000e+00\n6.68000000e-01\n-1.49900000e+00  6.00000000e-02   1.23800000e+00   -1.49900000e+00\n-6.00000000e-02\n-1.23800000e+00  -6.09000000e-01  1.37100000e+00   -6.68000000e-01\n5.57000000e-01\n1.67000000e-01   1.40200000e+00   5.57000000e-01   -1.67000000e-01\n-1.40200000e+00\nWhen I run the *rism1d*, I got this error:\nAt line 236 of file\n/home/conda/feedstock_root/build_artifacts/ambertools_1623420697094/work/AmberTools/src/rism/rism1d.F90\n(unit = 10, file = 'test.inp')\nFortran runtime error: End of file\nI think there is a problem with my *.mdl* file. If possible, can you please\nhelp me? Thank you in advance.",
+      "url": "http://archive.ambermd.org/202112/0030.html"
+    },
+    {
+      "message_id": 1638451041,
+      "author": "David A Case",
+      "date_raw": "Thu, 2 Dec 2021 08:17:21 -0500",
+      "body": "On Thu, Dec 02, 2021, Alexis Azucena wrote:\n>\n>I am running 1D-RISM for the water-glycol system. I generated my *.mdl *file\n>for the glycol as shown below:\n>\n>%FLAG POINTERS\n>%FORMAT(10I8)\n>       10   4\n>%FLAG ATMTYP\n>%FORMAT(10I8)\n>       1   2    3   4\nAbove looks wrong: the \"10I8\" is a fortran format, which says that each\ninteger should take eight columns.  Try changing this to\n%FLAG POINTERS\n%FORMAT(10I8)\n10       4\n%FLAG ATMTYP\n%FORMAT(10I8)\n1       2       3       4\n...hope this helps....dac",
+      "url": "http://archive.ambermd.org/202112/0033.html",
+      "in_reply_to": 1638439335
+    },
+    {
+      "message_id": 1638468070,
+      "author": "tluchko",
+      "date_raw": "Thu, 02 Dec 2021 18:01:10 +0000",
+      "body": "> (unit = 10, file = 'test.inp')\n> Fortran runtime error: End of file\nI'll also point out that the error report is in reading 'test.inp', not the MDL file.  This is commonly due to a problem with the namelist format, such as missing a newline character after the closing `/`.\nTyler\nSent with ProtonMail Secure Email.\n‐‐‐‐‐‐‐ Original Message ‐‐‐‐‐‐‐\nOn Thursday, December 2nd, 2021 at 5:17 AM, David A Case <david.case.rutgers.\nedu> wrote:\n> On Thu, Dec 02, 2021, Alexis Azucena wrote:\n>\n> > I am running 1D-RISM for the water-glycol system. I generated my *.mdl *file\n> >\n> > for the glycol as shown below:\n> >\n> > %FLAG POINTERS\n> >\n> > %FORMAT(10I8)\n> >\n> > 10 4\n> >\n> > %FLAG ATMTYP\n> >\n> > %FORMAT(10I8)\n> >\n> > 1 2 3 4\n>\n> Above looks wrong: the \"10I8\" is a fortran format, which says that each\n>\n> integer should take eight columns. Try changing this to\n>\n> %FLAG POINTERS\n>\n> %FORMAT(10I8)\n>\n> 10 4\n>\n> %FLAG ATMTYP\n>\n> %FORMAT(10I8)\n>\n> 1 2 3 4\n>\n> ...hope this helps....dac\n>\n> AMBER mailing list\n>\n> AMBER.ambermd.org\n>\n>\nhttp://lists.ambermd.org/mailman/listinfo/amber",
+      "url": "http://archive.ambermd.org/202112/0037.html",
+      "in_reply_to": 1638439335
+    },
+    {
+      "message_id": 1638495082,
+      "author": "Alexis Azucena",
+      "date_raw": "Fri, 3 Dec 2021 09:31:22 +0800",
+      "body": "Hello,\nYour suggestion works for me. I accidentally removed the newline without\nknowing. Thank you again for your help.\nOn Fri, Dec 3, 2021 at 2:03 AM tluchko <tluchko.protonmail.com> wrote:\n> > (unit = 10, file = 'test.inp')\n> > Fortran runtime error: End of file\n>\n> I'll also point out that the error report is in reading 'test.inp', not\n> the MDL file.  This is commonly due to a problem with the namelist format,\n> such as missing a newline character after the closing `/`.\n>\n> Tyler\n>\n> Sent with ProtonMail Secure Email.\n>\n> ‐‐‐‐‐‐‐ Original Message ‐‐‐‐‐‐‐\n>\n> On Thursday, December 2nd, 2021 at 5:17 AM, David A Case <\n> david.case.rutgers.edu> wrote:\n>\n> > On Thu, Dec 02, 2021, Alexis Azucena wrote:\n> >\n> > > I am running 1D-RISM for the water-glycol system. I generated my *.mdl\n> *file\n> > >\n> > > for the glycol as shown below:\n> > >\n> > > %FLAG POINTERS\n> > >\n> > > %FORMAT(10I8)\n> > >\n> > > 10 4\n> > >\n> > > %FLAG ATMTYP\n> > >\n> > > %FORMAT(10I8)\n> > >\n> > > 1 2 3 4\n> >\n> > Above looks wrong: the \"10I8\" is a fortran format, which says that each\n> >\n> > integer should take eight columns. Try changing this to\n> >\n> > %FLAG POINTERS\n> >\n> > %FORMAT(10I8)\n> >\n> > 10 4\n> >\n> > %FLAG ATMTYP\n> >\n> > %FORMAT(10I8)\n> >\n> > 1 2 3 4\n> >\n> > ...hope this helps....dac\n> >\n> > AMBER mailing list\n> >\n> > AMBER.ambermd.org\n> >\n> >\nhttp://lists.ambermd.org/mailman/listinfo/amber\n>\n>",
+      "url": "http://archive.ambermd.org/202112/0040.html",
+      "in_reply_to": 1638439335
+    }
+  ]
+}
