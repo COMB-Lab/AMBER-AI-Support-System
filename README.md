@@ -93,20 +93,73 @@ Note: Airflow must be installed following Apache Airflow's official docs and
 is not installed via this repo's `requirements.txt` by default.
 
 
-Tutorials scraping (R&D prototype)
-----------------------------------
-This repository includes a prototype scraper for the Amber tutorials and a
-short R&D report describing the approach. The prototype is purpose-built to
-discover tutorial pages, extract the main text and headings, and emit two
-outputs suitable for downstream use:
+Tutorial Scraper R&D & Pipeline
+--------------------------------
 
-- Per-tutorial JSON files: `data/tutorials/<slug>.json` (title, sections,
-	full_text, url)
-- Chunked JSONL files for vector DB ingestion: `data/tutorials_chunks/<slug>_chunks.jsonl`
+## Overview
 
-How to run the tutorial scraper (PowerShell)
+This repository includes a production-capable scraper for AmberMD tutorials
+(from https://ambermd.org/tutorials) and associated ingestion pipeline. The
+scraper discovers tutorial pages, extracts structured content (sections,
+headings, paragraphs), and emits two outputs:
 
-1) Create and activate a virtualenv and install dependencies:
+- **Per-tutorial JSON**: `data/tutorials/<slug>.json` containing title, sections,
+  full_text, and source URL
+- **Chunked JSONL**: `data/tutorials_chunks/<slug>_chunks.jsonl` with `{id, text,
+  metadata}` records ready for vector database ingestion
+
+## R&D Summary & Approach
+
+### Goals
+- Reuse existing script patterns and keep modifications minimal
+- Respect site structure and be polite (rate limits, user-agent, robots.txt)
+- Produce text chunks with metadata so each chunk can be inserted as a Chroma
+  document with fields: id, text, metadata
+
+### Strategy
+
+**1. Discovery (index parsing)**
+- Fetch the main index at `/tutorials/` and collect all links pointing to
+  tutorial pages or directories containing `index.php`
+- Accept multiple link styles found on the site (e.g., `basic/tutorial7/index.php`,
+  `BuildingSystems.php`)
+
+**2. Fetching pages**
+- Use requests with a descriptive User-Agent
+- Implement fallback heuristics: if a candidate URL returns 404, try appending
+  `/index.php` or requesting the directory URL
+- Rate-limit requests (default 0.5s between requests)
+
+**3. Parsing and cleaning**
+- Use BeautifulSoup (`lxml`) to parse HTML
+- Heuristic selection of main content: prefer `#content`, then `<main>`,
+  `<article>`, else fallback to `<body>`
+- Remove navigation and unrelated elements (nav, header, footer, breadcrumbs)
+- Extract headings and paragraph/code/list nodes into a list of sections:
+  `[{heading, text}, ...]`
+- Create `full_text` by joining sections
+
+**4. Chunking for ChromaDB**
+- Use paragraph-based greedy chunking, grouping paragraphs until reaching a
+  character cap (default 2000 chars ≈ ~500 tokens)
+- Emit JSONL records with `{id, text, metadata}` where metadata includes `url`
+  and `title`
+
+**5. Deduplication & IDs**
+- Use stable IDs derived from URL path (slug) plus chunk index
+- When ingesting into Chroma, choose `document_id` or `id` consistently to allow
+  upserts
+
+### Prototype Behavior & Limitations
+- HTML on the site is heterogeneous; the parser uses conservative heuristics and
+  requires manual inspection of failed pages
+- This prototype does not execute JavaScript (uses requests + BeautifulSoup). If
+  some tutorials rely on JS to render content, a headless-browser approach
+  (Playwright/Selenium) will be required
+
+## How to Run the Tutorial Scraper
+
+### Setup (PowerShell)
 
 ```powershell
 python -m venv .venv
@@ -114,20 +167,109 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-2) Run the prototype (demo mode — limited):
+### Run the scraper
 
 ```powershell
 python .\scripts\scrape_amber_tutorials.py
 ```
 
-By default the script runs in a safe demo mode (limit=10). To run the full
-discovery edit the script or call `main(limit=None)` from a small wrapper.
+**Default**: runs in safe demo mode (limit=10 pages). To run full discovery,
+pass `--limit None` or edit the script.
 
-Outputs and next steps
+**CLI options**:
+- `--limit N` (default: 10) — max pages to scrape
+- `--domain DOMAIN` (default: https://ambermd.org) — base domain
+- `--delay SECONDS` (default: 0.5) — seconds between requests
+- `--checkpoint PATH` (default: checkpoints/) — checkpoint directory
+
+**Example**: scrape with custom delay and limit
+
+```powershell
+python .\scripts\scrape_amber_tutorials.py --limit 50 --delay 1.0
+```
+
+### Outputs
 - `data/tutorials/` — per-page JSON for manual inspection and QA
-- `data/tutorials_chunks/` — JSONL files with `{id,text,metadata}` ready for
-	embedding + upsert into a vector DB (Chroma). See `docs/amber_tutorials_scrape_report.md`
-	for details and suggested chunk sizes.
+- `data/tutorials_chunks/` — JSONL files with `{id, text, metadata}` ready for
+  Chroma ingestion
+
+## Chroma Ingestion
+
+### Load tutorial chunks into Chroma
+
+```powershell
+python .\scripts\chroma_ingest.py --jsonl-dir data/tutorials_chunks/
+```
+
+**CLI options**:
+- `--jsonl-dir DIR` (default: data/tutorials_chunks/) — location of chunk JSONL
+  files
+- `--chroma-collection NAME` (default: amber_tutorials) — Chroma collection name
+- `--openai-embed` — generate embeddings via OpenAI API (requires `OPENAI_API_KEY`
+  env var)
+- `--chroma-host HOST` (default: None — uses local client) — remote Chroma server
+  host
+
+**Example**: ingest with OpenAI embeddings into a remote Chroma server
+
+```powershell
+$env:OPENAI_API_KEY = "sk-..."
+python .\scripts\chroma_ingest.py --openai-embed --chroma-host http://localhost:8000
+```
+
+## Production Next Steps
+
+### 1. Robustness
+- Replace heuristics with per-section extraction rules if the site has consistent
+  templates
+- Add retry/backoff and per-page caching to avoid repeated downloads
+- Implement comprehensive error logging and per-page failure reporting
+
+### 2. Politeness & Scale
+- Honor `robots.txt` and consider site owner contact
+- Add configurable concurrency limits; consider a job queue and checkpointing
+  (persist processed URLs)
+- Respect crawl-delay directives in robots.txt
+
+### 3. Content Normalization
+- Normalize code blocks and file downloads; extract example input files when
+  available
+- Store language metadata for code snippets
+- Handle tables and complex formatting consistently
+
+### 4. QA & Human Review
+- Provide a small UI (static HTML or simple notebook) for subject matter experts
+  to review parsed pages and flag OCR/parse errors
+- Collect feedback to refine parsing heuristics
+
+### 5. Security & Licensing
+- Respect site terms and license; Amber tutorials are educational material
+- Check site terms before mass scraping and downstream distribution
+- Document any restrictions on redistribution or derivative works
+
+## Reference: Sample Chroma Ingestion (Pseudocode)
+
+```python
+import chromadb
+import json
+
+client = chromadb.Client()
+col = client.create_collection('amber_tutorials')
+
+# Read chunked JSONL
+with open('data/tutorials_chunks/tutorial_001_chunks.jsonl') as f:
+    docs = [json.loads(line) for line in f]
+    texts = [d['text'] for d in docs]
+    metadatas = [d['metadata'] for d in docs]
+    ids = [d['id'] for d in docs]
+    
+    # Obtain embeddings via your chosen embedding function (OpenAI, HuggingFace, etc.)
+    # embeddings = [...] 
+    
+    # Upsert into Chroma
+    col.add(ids=ids, documents=texts, metadatas=metadatas)
+    # col.upsert(ids=ids, documents=texts, metadatas=metadatas, embeddings=embeddings)
+```
 
 
 Airflow R&D — how to wire and test the workflow
@@ -185,10 +327,3 @@ Deployment and production notes
 - The repo includes a `Dockerfile` and `docker-compose.yml` to run the
 	pipeline as a container; see the repo top-level files if you'd prefer to
 	run the pipeline in containers rather than installing Airflow locally.
-
-If you want, I can add a short CI job (GitHub Actions) that runs the demo
-test on push, or I can add a Chroma ingestion script to take the tutorial
-chunks JSONL and upsert them into a Chroma collection. Tell me which you
-prefer and I will add it.
-
-
