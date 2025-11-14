@@ -1,91 +1,37 @@
-from typing import List, Dict, Optional
-from RAG.data_schema import Doc
-from Database.amber_chroma_api import AmberChromaAPI
+# RAG/retriever.py
+import os
+from typing import List, Dict, Any
 
-class ChromaRetriever:
-    """
-    Adapter over the Database team's AmberChromaAPI.
-    Strategy:
-      • Ask DB with threshold=0.0 (permissive) so nothing is dropped upstream.
-      • Rank locally by score and return top-k.
-    """
-    def __init__(
-        self,
-        db_path: str = "./amber_chroma_db",
-        collection_name: str = "amber_messages",
-        default_threshold: float = 0.0
-    ):
-        self.api = AmberChromaAPI(db_path=db_path, collection_name=collection_name)
-        self.default_threshold = default_threshold
+# Lazy import so devs without access don’t crash at import-time
+def _get_amber_db():
+    import sys
+    sys.path.append("/opt/chromadb/data")
+    from vector_db_maker import AmberChromaAPI
+    return AmberChromaAPI
 
-    def _to_where(self, filters: Optional[Dict]) -> Optional[Dict]:
-        if not filters:
-            return None
-        clauses = []
-        for k, v in filters.items():
-            if v is None:
-                continue
-            clauses.append({k: {"$in": v}} if isinstance(v, list) else {k: {"$eq": v}})
-        return {"$and": clauses} if clauses else None
+DEFAULT_DB_PATH = os.getenv("AMBER_CHROMA_DB_PATH", "/opt/chromadb/data/amber_chroma_db")
+DEFAULT_COLLECTION = os.getenv("AMBER_CHROMA_COLLECTION", "amber_messages")
+DEFAULT_TOP_K = int(os.getenv("AMBER_TOP_K", "4"))
+DEFAULT_THRESHOLD = float(os.getenv("AMBER_THRESHOLD", "0.3"))
 
-    def _map_results(self, out: dict) -> List[Doc]:
-        docs_txt = out.get("documents", []) or []
-        metas    = out.get("metadatas", []) or []
-        scores   = out.get("scores", []) or []
-        n = min(len(docs_txt), len(metas), len(scores) or len(docs_txt))
-        rows = []
-        for i in range(n):
-            md = metas[i] or {}
-            rows.append({
-                "id": str(md.get("thread_id") or md.get("id") or f"row-{i}"),
-                "text": docs_txt[i] or md.get("text", ""),
-                "score": float(scores[i]) if i < len(scores) and scores else 0.0,
-                "metadata": {
-                    "title":       md.get("subject") or md.get("title"),
-                    "url_or_path": md.get("url"),
-                    "source_type": md.get("doc_type", "thread"),
-                    "date":        md.get("date_iso"),
-                    "thread_id":   md.get("thread_id"),
-                    "author":      md.get("author"),
-                },
-            })
-        rows.sort(key=lambda r: r["score"], reverse=True)  # high → low
-        return [Doc(id=r["id"], text=r["text"], score=r["score"], metadata=r["metadata"]) for r in rows]
+class AmberRetriever:
+    def __init__(self,
+                 db_path: str = DEFAULT_DB_PATH,
+                 collection: str = DEFAULT_COLLECTION,
+                 top_k: int = DEFAULT_TOP_K,
+                 threshold: float = DEFAULT_THRESHOLD) -> None:
+        AmberChromaAPI = _get_amber_db()
+        self.api = AmberChromaAPI(db_path=db_path, collection_name=collection)
+        self.top_k = top_k
+        self.threshold = threshold
 
-    def query(
-        self,
-        query_text: str,
-        n_results: int = 6,
-        filters: Optional[Dict] = None,
-        threshold: Optional[float] = None
-    ) -> List[Doc]:
-        where = self._to_where(filters)
-        out = self.api.query(query_text, n=max(n_results, 10), where=where, threshold=0.0)
-        docs = self._map_results(out)
-        if threshold is not None:
-            docs = [d for d in docs if d.score >= threshold]
-        return docs[:n_results]
-
-
-# ---- Optional stub for --mode stub (keeps demo flexible) ----
-class StubRetriever:
-    """Very simple stub: returns first N messages as Docs (for JSON-only smoke tests)."""
-    def __init__(self):
-        self._docs: List[Doc] = []
-
-    def add(self, messages: List):
-        self._docs = []
-        for i, m in enumerate(messages):
-            body = getattr(m, "body", "")
-            md = {
-                "title": getattr(m, "subject", None),
-                "url_or_path": getattr(m, "url", None),
-                "source_type": "mailing_list",
-                "date": getattr(m, "date_iso", None),
-                "thread_id": getattr(m, "thread_id", i),
-                "author": getattr(m, "author", None),
-            }
-            self._docs.append(Doc(id=str(md["thread_id"]), text=body, score=0.0, metadata=md))
-
-    def query(self, query_text: str, n_results: int = 6, filters: Optional[Dict] = None) -> List[Doc]:
-        return self._docs[:n_results]
+    def retrieve(self, query: str) -> List[Dict[str, Any]]:
+        """Returns a list of chunks: [{'text': str, 'metadata': dict, 'score': float}, ...]"""
+        res = self.api.query(query, n=self.top_k, threshold=self.threshold)
+        docs = res.get("documents", [])
+        metas = res.get("metadatas", [])
+        scores = res.get("scores", [])
+        out = []
+        for i in range(min(len(docs), len(metas), len(scores))):
+            out.append({"text": docs[i], "metadata": metas[i], "score": scores[i]})
+        return out

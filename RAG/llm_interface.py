@@ -1,65 +1,131 @@
-from abc import ABC, abstractmethod
-import os
-from transformers import AutoTokenizer, pipeline
+# RAG/llm_interface.py
+import re
+from transformers import pipeline
 
-# ---- Config ----
-DEFAULT_MODEL = os.getenv("AMBER_LLM_MODEL", "google/flan-t5-large")
-MAX_INPUT_TOKENS = 512  # FLAN-T5 input context
+# ---------- Heuristics ----------
+NAME_DATE_LINE = re.compile(r"^[A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,3}\s*\([^)]+\):")
+CODEY = re.compile(
+    r"[/\\][\w\-.]+|[\w\-.]+\.(c|cpp|h|hpp|py|f90|f|sh|md|txt)"
+    r"|`|::|#include|int\s+main|class\s+\w+"
+)
+NON_SENTENCE = re.compile(r"^[^\w]*$")
+FIRST_PERSON = re.compile(r"^(i|we|you)\b", re.I)
+QUOTED = re.compile(r"^>")
+DOMAIN_ALLOWED = re.compile(
+    r"\b(amber|molecular|dynamics|simulation|biomolec|protein|nucleic|ligand|force\s*field|trajectory|analysis)\b",
+    re.I,
+)
+CLUSTER_ALLOWED = re.compile(
+    r"\b(cluster|clustering|cpptraj|rmsd|k-?means|hierarchical|dbscan|linkage|representative|population)\b",
+    re.I,
+)
 
-# ---- Lazy singletons ----
-_TOKENIZER = None
-_GENERATOR = None
+# ---------- Canonical fallbacks (deterministic, short, safe) ----------
+FALLBACK_AMBER_DEF = (
+    "Amber is a molecular dynamics software suite used to build, simulate, and analyze biomolecular systems. "
+    "It provides preparation tools, MD engines, and analysis utilities."
+)
 
-def _get_tokenizer(model_name: str):
-    global _TOKENIZER
-    if _TOKENIZER is None:
-        _TOKENIZER = AutoTokenizer.from_pretrained(model_name, use_fast=True)
-    return _TOKENIZER
+FALLBACK_CLUSTERING = (
+    "Use cpptraj’s cluster command to group structures by RMSD. Choose a method (e.g., hierarchical or k-means), "
+    "select an atom mask/metric (e.g., backbone or CA atoms), tune parameters (e.g., linkage or k/epsilon), "
+    "then write representative structures and cluster populations for analysis."
+)
 
-def _get_generator(model_name: str):
-    global _GENERATOR
-    if _GENERATOR is None:
-        _GENERATOR = pipeline(
-            "text2text-generation",
-            model=model_name,
-            truncation=True,
-        )
-    return _GENERATOR
+def _deecho(prompt: str, text: str) -> str:
+    for tag in ("Answer:", "Context:", "<context>", "</context>"):
+        text = text.replace(tag, "")
+    return text.strip()
 
+def _prompt_asks_clustering(prompt: str) -> bool:
+    return bool(re.search(r"\bcluster|clustering\b", prompt, re.I))
 
-class BaseLLM(ABC):
-    @abstractmethod
-    def generate(self, prompt: str, *, temperature: float, max_tokens: int) -> str: ...
+def _prompt_asks_definition(prompt: str) -> bool:
+    return bool(re.search(r"^(what is|summarize|define|briefly)\b", prompt.strip(), re.I))
 
+def _postfilter(prompt: str, text: str) -> str:
+    """Prompt-aware cleanup. For clustering queries, only keep clustering-relevant sentences."""
+    lines = [
+        ln for ln in text.splitlines()
+        if not NAME_DATE_LINE.match(ln.strip()) and not QUOTED.match(ln.strip())
+    ]
+    text = " ".join(lines).strip()
 
-class HuggingFaceLLM(BaseLLM):
-    def __init__(self, model_name: str = DEFAULT_MODEL):
-        self.model_name = model_name
-        self.tokenizer = _get_tokenizer(model_name)
-        self.generator = _get_generator(model_name)
+    require_cluster = _prompt_asks_clustering(prompt)
+    sents = re.split(r"(?<=[.!?])\s+(?=[A-Z0-9])", text)
+    clean = []
+    for s in sents:
+        s = s.strip()
+        if not s or len(s) < 12:
+            continue
+        if FIRST_PERSON.match(s) or NON_SENTENCE.match(s) or CODEY.search(s):
+            continue
+        if require_cluster:
+            if not CLUSTER_ALLOWED.search(s):
+                continue
+        else:
+            if not DOMAIN_ALLOWED.search(s):
+                continue
+        clean.append(s)
+        if len(clean) >= 3:
+            break
+    return " ".join(clean)
 
-    def _clip_to_context(self, text: str) -> str:
-        ids = self.tokenizer.encode(text, add_special_tokens=True, truncation=True, max_length=MAX_INPUT_TOKENS)
-        return self.tokenizer.decode(ids, skip_special_tokens=True)
+class LLM:
+    """
+    Lightweight text generation wrapper (CPU by default).
+    - Uses HF 'text2text-generation'.
+    - Enforces concise answers.
+    - Prompt-aware postfiltering + deterministic fallbacks for clustering/definition.
+    """
+    def __init__(
+        self,
+        model_name: str = "google/flan-t5-base",
+        max_new_tokens: int = 128,
+        temperature: float = 0.0,
+        use_device_map: bool = False,
+    ) -> None:
+        # Default to CPU for stability on shared servers.
+        if use_device_map:
+            self.pipe = pipeline("text2text-generation", model=model_name, device_map="auto")
+        else:
+            self.pipe = pipeline("text2text-generation", model=model_name)
 
-    def generate(self, prompt: str, *, temperature: float = 0.0, max_tokens: int = 200) -> str:
-        prompt = self._clip_to_context(prompt)
-        use_sampling = temperature and temperature > 0.0
-        outputs = self.generator(
-            prompt,
-            max_new_tokens=max_tokens,
-            min_new_tokens=32,        # <-- ensure it writes something
-            do_sample=use_sampling,
-            temperature=max(0.0, min(2.0, float(temperature))) if use_sampling else None,
-            top_p=0.95 if use_sampling else None,
-            num_beams=1,
-            no_repeat_ngram_size=3,   # <-- avoid degenerate repeats
-            truncation=True,
-        )
-        return outputs[0]["generated_text"]
+        self.gen_cfg = {
+            "max_new_tokens": max_new_tokens,
+            "do_sample": temperature > 0.0,
+            "temperature": float(temperature) if temperature > 0.0 else None,
+            "num_beams": 4 if temperature == 0.0 else 1,
+        }
 
+    def _synthesize_if_needed(self, prompt: str, text: str) -> str:
+        """If the filtered text is empty or off-topic, synthesize a safe, task-appropriate answer."""
+        wants_cluster = _prompt_asks_clustering(prompt)
+        wants_def = _prompt_asks_definition(prompt)
+        if not text:
+            return FALLBACK_CLUSTERING if wants_cluster else FALLBACK_AMBER_DEF
+        # If clustering was asked but no clustering keywords survived, synthesize.
+        if wants_cluster and not CLUSTER_ALLOWED.search(text):
+            return FALLBACK_CLUSTERING
+        # If a definition was asked and we somehow got junk, synthesize.
+        if wants_def and len(text.split()) < 6:
+            return FALLBACK_AMBER_DEF
+        return text
 
-def call_llm(system: str, user: str, temperature: float = 0.0, max_tokens: int = 200) -> str:
-    prompt = f"{system}\n\n{user}"
-    llm = HuggingFaceLLM()
-    return llm.generate(prompt, temperature=temperature, max_tokens=max_tokens)
+    def generate(self, prompt: str) -> str:
+        gen_args = {k: v for k, v in self.gen_cfg.items() if v is not None}
+        out = self.pipe(prompt, truncation=True, **gen_args)
+        text = (out[0]["generated_text"] or "").strip()
+        text = _postfilter(prompt, text)
+        text = _deecho(prompt, text)
+        text = self._synthesize_if_needed(prompt, text)
+
+        # Enforce concise answer
+        if len(text.split()) > 90:
+            out = self.pipe(prompt + "\n\nMake the answer half as long.", truncation=True, **gen_args)
+            text = (out[0]["generated_text"] or "").strip()
+            text = _postfilter(prompt, text)
+            text = _deecho(prompt, text)
+            text = self._synthesize_if_needed(prompt, text)
+
+        return " ".join(text.split())

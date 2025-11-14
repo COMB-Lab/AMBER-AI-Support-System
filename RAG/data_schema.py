@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from typing import List, Optional
+from dataclasses import dataclass, field
+from typing import List, Optional, Dict, Any
 
 @dataclass
 class Message:
@@ -10,7 +10,7 @@ class Message:
     date_iso: str
     body: str
     url: str
-    in_reply_to: Optional[str]
+    in_reply_to: Optional[str] = None
 
 @dataclass
 class Thread:
@@ -21,5 +21,5 @@ class Thread:
 class Doc:
     id: str
     text: str
-    score: float
-    metadata: dict
+    score: float = 0.0
+    metadata: Dict[str, Any] = field(default_factory=dict)

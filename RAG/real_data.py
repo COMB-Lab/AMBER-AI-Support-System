@@ -1,5 +1,5 @@
 from typing import Tuple, List
-from data_schema import Message
+from RAG.data_schema import Message
 import json
 
 def load_query_and_messages(json_path: str) -> Tuple[str, List[Message]]:
