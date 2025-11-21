@@ -1,0 +1,29 @@
+{
+  "thread_id": 1763156824,
+  "subject": "[AMBER] Trying to Setup PMEMD Amber24",
+  "messages": [
+    {
+      "message_id": 1763156824,
+      "author": "Eng, Kevin Neil",
+      "date_raw": "Fri, 14 Nov 2025 21:47:04 +0000",
+      "body": "Hello,\nWe're trying to install Amber24 on a Ubuntu machine running a RTX 5070 ti. While Sander commands seem to be running fine, we're running into issues running PMEMD/utilizing the gpu. We believe CUDA and other dependencies are set correctly but anytime we run commands for SPFP, we get an error message:\npeachy-billante.VB253-B:/opt/pmemd24/test$ sudo ./test_amber_cuda_serial.sh SPFP\nError: PMEMDHOME is not defined !\nSet PMEMDHOME to /opt/pmemd24 and re-run the tests:\nThe best way to do this is via one of the initialization scripts\n$PMEMDHOME/amber.sh and $PMEMDHOME/amber.csh which can be sourced\nnow or from your shell resource file (e.g., ~/.bashrc or ~/.cshrc).\nPMEMDHOME is set in the bashrc as both:\nexport PMEMDHOME=/opt/pmemd24\nsource /opt/pmemd24/amber.sh\nHas anyone encountered this issue? Is there another way to test if PMEMD is configured correctly?\nThank you!\n[cid:image001.png.01DC556D.2872A330]\nKevin Eng\nIT Customer Support\nCollege of Veterinary Medicine\nWashington State University\nOffice: 509-335-0101\nMobile: 208-874-3841\nEmail: kevin.eng.wsu.edu<mailto:kevin.eng.wsu.edu>\n[A black and grey sign with red text  Description automatically generated]",
+      "url": "http://archive.ambermd.org/202511/0027.html"
+    },
+    {
+      "message_id": 1763164384,
+      "author": "David A Case",
+      "date_raw": "Fri, 14 Nov 2025 16:53:04 -0700",
+      "body": "On Fri, Nov 14, 2025, Eng, Kevin Neil via AMBER wrote:\n>\n>We're trying to install Amber24 on a Ubuntu machine running a RTX 5070\n>ti. While Sander commands seem to be running fine, we're running into\n>issues running PMEMD/utilizing the gpu. We believe CUDA and other\n>dependencies are set correctly but anytime we run commands for SPFP, we get\n>an error message:\n>\n>peachy-billante.VB253-B:/opt/pmemd24/test$ sudo ./test_amber_cuda_serial.sh SPFP\n>\n>Error: PMEMDHOME is not defined !\nI think the answer to your problem is in the message you quoted (below), but\nit's not clear if you actually tried any of these.\n>\n>Set PMEMDHOME to /opt/pmemd24 and re-run the tests:\n>The best way to do this is via one of the initialization scripts\n>$PMEMDHOME/amber.sh and $PMEMDHOME/amber.csh which can be sourced\n>now or from your shell resource file (e.g., ~/.bashrc or ~/.cshrc).\n>PMEMDHOME is set in the bashrc as both:\n>export PMEMDHOME=/opt/pmemd24\n>source /opt/pmemd24/amber.sh\nThe \"source /opt/pmemd24/amber.sh\" command will set up the PMEMDHOME\nvariable, and add $PMEMDHOME/bin to your PATH.  This should enable you to\nrun the tests, and other pmemd jobs.\nAfter doing this, try \"echo $PMEMDHOME\" to make sure that the variable has\nindeed been set correctly.\n...good luck...dac",
+      "url": "http://archive.ambermd.org/202511/0028.html",
+      "in_reply_to": 1763156824
+    },
+    {
+      "message_id": 1763219677,
+      "author": "David A Case",
+      "date_raw": "Sat, 15 Nov 2025 08:14:37 -0700",
+      "body": "On Sat, Nov 15, 2025, Eng, Kevin Neil wrote:\n>My apologies, I thought I mentioned that later in that email. We have\n>sourced it and echo $PMEMDHOME does say /opt/pmemd24. However, the error of\n>\"PMEMDHOME is not defined\" is still present. Attached is an image of the\n>bashrc.\nI missed this before: it's the \"sudo\" part of your test command.  When you\nuse sudo, you get a different (root) environment that won't inherit all your\nvariables.\nGenerally, one should not use sudo except for actions that are clearly\nrelated to system maintenance.  Consider moving your Amber24 environment to\na location that does not require its use.\n....dac",
+      "url": "http://archive.ambermd.org/202511/0033.html",
+      "in_reply_to": 1763156824
+    }
+  ]
+}

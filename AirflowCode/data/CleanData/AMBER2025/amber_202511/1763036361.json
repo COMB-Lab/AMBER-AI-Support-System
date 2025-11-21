@@ -1,0 +1,29 @@
+{
+  "thread_id": 1763036361,
+  "subject": "[AMBER] System doesn't heat up to target temperature during relaxation",
+  "messages": [
+    {
+      "message_id": 1763036361,
+      "author": "Antti Salo",
+      "date_raw": "Thu, 13 Nov 2025 12:19:21 +0000",
+      "body": "Hello Amber people!\nI am trying to heat up my system during initial relaxation of mobile molecules.\nHowever, it seems like the system will not heat up from the initial temperature to the target temperature.\nThis is my input file:\n________________________________\n&cntrl\nimin = 0,\nnstlim = 400000,\ndt = 0.001,\nntx = 1,\nirest = 0,\nig = -1,\nntwx = 5000,\nntwv = -1,\nioutfm = 1,\nntxo = 2,\nntpr = 5000,\nntwr = 5000,\niwrap = 0,\nnscm = 0,\nntc = 2,\nntf = 2,\nntb = 1,\ncut = 8.0,\nntt = 3,\ngamma_ln = 5,\ntemp0 = 0.0,\ntempi = 298.0,\nntr = 1,\nrestraintmask = \":1-837&!.H=\",\nrestraint_wt = 5.0,\n/\n________________________________\nI have tried with 0 and 100K as temp0, but the system stays stuck in the initial temperature.\nThis is from the output file:\nNSTEP =   400000   TIME(PS) =     400.000  TEMP(K) =     0.00  PRESS =     0.0\nEtot   =   -565664.2437  EKtot   =         0.2269  EPtot      =   -565664.4706\nBOND   =       463.8658  ANGLE   =      2024.7437  DIHED      =      3516.5485\nUB     =         0.0000  IMP     =         0.0000  CMAP       =       730.5271\n1-4 NB =      2590.1816  1-4 EEL =     29144.5279  VDWAALS    =     81696.5859\nEELEC  =   -686026.0488  EHBOND  =         0.0000  RESTRAINT  =       194.5978\nEAMBER (non-restraint)  =   -565859.0684\n------------------------------------------------------------------------------\nAny idea how this could be fixed? I would like to avoid starting the minimization from the target temperature, but if this is the only solution then it has to do.\nThanks,\nAntti",
+      "url": "http://archive.ambermd.org/202511/0023.html"
+    },
+    {
+      "message_id": 1763037032,
+      "author": "Carlos Simmerling",
+      "date_raw": "Thu, 13 Nov 2025 07:30:32 -0500",
+      "body": "Temp0 is the thermostat temperature.\nI recommend looking at the tutorials on the ambermd.org site to see how\nheating is carried out, and a good relaxation protocol. Typically you want\nto do this slowly, not all at once.\nOn Thu, Nov 13, 2025, 7:19 AM Antti Salo via AMBER <amber.ambermd.\norg>\nwrote:\n> Hello Amber people!\n>\n> I am trying to heat up my system during initial relaxation of mobile\n> molecules.\n> However, it seems like the system will not heat up from the initial\n> temperature to the target temperature.\n>\n> This is my input file:\n> ________________________________\n>\n> &cntrl\n>  imin = 0,\n>  nstlim = 400000,\n>  dt = 0.001,\n>  ntx = 1,\n>  irest = 0,\n>  ig = -1,\n>  ntwx = 5000,\n>  ntwv = -1,\n>  ioutfm = 1,\n>  ntxo = 2,\n>  ntpr = 5000,\n>  ntwr = 5000,\n>  iwrap = 0,\n>  nscm = 0,\n>  ntc = 2,\n>  ntf = 2,\n>  ntb = 1,\n>  cut = 8.0,\n>  ntt = 3,\n>  gamma_ln = 5,\n>  temp0 = 0.0,\n>  tempi = 298.0,\n>  ntr = 1,\n>  restraintmask = \":1-837&!.H=\",\n>  restraint_wt = 5.0,\n> /\n>\n> ________________________________\n> I have tried with 0 and 100K as temp0, but the system stays stuck in the\n> initial temperature.\n>\n> This is from the output file:\n>  NSTEP =   400000   TIME(PS) =     400.000  TEMP(K) =     0.00  PRESS =\n>  0.0\n>  Etot   =   -565664.2437  EKtot   =         0.2269  EPtot      =\n>  -565664.4706\n>  BOND   =       463.8658  ANGLE   =      2024.7437  DIHED      =\n> 3516.5485\n>  UB     =         0.0000  IMP     =         0.0000  CMAP       =\n>  730.5271\n>  1-4 NB =      2590.1816  1-4 EEL =     29144.5279  VDWAALS    =\n>  81696.5859\n>  EELEC  =   -686026.0488  EHBOND  =         0.0000  RESTRAINT  =\n>  194.5978\n>  EAMBER (non-restraint)  =   -565859.0684\n>\n>  ------------------------------------------------------------------------------\n>\n> Any idea how this could be fixed? I would like to avoid starting the\n> minimization from the target temperature, but if this is the only solution\n> then it has to do.\n>\n> Thanks,\n> Antti\n>",
+      "url": "http://archive.ambermd.org/202511/0024.html",
+      "in_reply_to": 1763036361
+    },
+    {
+      "message_id": 1763058126,
+      "author": "David A Case",
+      "date_raw": "Thu, 13 Nov 2025 11:22:06 -0700",
+      "body": "On Thu, Nov 13, 2025, Antti Salo via AMBER wrote:\n>\n>I am trying to heat up my system during initial relaxation of mobile molecules.\n>However, it seems like the system will not heat up from the initial\n>temperature to the target temperature.\n> temp0 = 0.0,\n> tempi = 298.0,\nLooks like you have these backwards: you probably want the initial\ntemperature (tempi) to be zero, and the target temperature (temp0) to be\n298.  No matter what initial temperature you set, if you set temp0=0.0,\nafter 40000 steps you will end up with a temperature very near zero.\nI support Carlos' suggestion: use established equilibration protocols,\nunless you are sure that you need to make some changes.\n....dac",
+      "url": "http://archive.ambermd.org/202511/0026.html",
+      "in_reply_to": 1763036361
+    }
+  ]
+}
