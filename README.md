@@ -327,3 +327,84 @@ Deployment and production notes
 - The repo includes a `Dockerfile` and `docker-compose.yml` to run the
 	pipeline as a container; see the repo top-level files if you'd prefer to
 	run the pipeline in containers rather than installing Airflow locally.
+
+PDF RAG R&D — Storing AmberMD PDF for RAG
+----------------------------------------
+
+Target PDF: https://ambermd.org/doc12/Amber25.pdf
+
+Objective
+---------
+Quick R&D to determine a practical approach to store PDFs so they are usable
+in a retrieval-augmented generation (RAG) pipeline. The goal is to produce a
+prototype that downloads the PDF, preserves the raw PDF, extracts per-page
+text, chunks the text for embeddings, and writes metadata for ingestion into
+Chroma (or any vector DB).
+
+Recommendations (summary)
+-------------------------
+- Store the raw PDF binary in `data/pdfs/` (preserve original file for
+  provenance and possible binary analysis).
+- Extract per-page text and save per-page JSON: `data/pdfs/<slug>/page_000.json`.
+- Create chunked JSONL suitable for vector DBs in `data/pdf_chunks/<slug>_chunks.jsonl`.
+- Keep metadata in a small SQLite table (`pdfs` and `pdf_pages`) for provenance
+  and quick lookups; include original URL, filename, sha256, page_count.
+- Upsert chunk records into Chroma using stable IDs: `<slug>_p{page}_c{chunk>`.
+
+Prototype script
+----------------
+This repository includes `scripts/pdf_rag_store.py` which implements a minimal
+prototype to:
+
+- download a PDF from a URL and save to `data/pdfs/<slug>.pdf`
+- compute SHA256 for the file
+- extract per-page text using `pdfplumber` (fallback to `pypdf` if needed)
+- chunk pages using a simple character-based greedy chunker (default
+  max chars ~2000)
+- write per-page JSON and a chunked JSONL
+
+Why per-page chunks?
+---------------------
+PDFs often contain structure and images; per-page extraction keeps context
+localized and makes it easy to show sources in RAG. Chunking further controls
+embedding granularity and token limits.
+
+Storage options considered
+--------------------------
+1. Raw PDF + text chunks on disk + metadata in SQLite (prototype): simple,
+   reproducible, easy to back up.
+2. Raw PDF in object store (S3/MinIO) + text/metadata in Postgres + vector
+   store in Chroma: production-grade, scalable, supports CDN and signed URLs.
+3. Store OCR images and original PDF too (if OCR needed): use Tesseract or
+   commercial OCR if PDF is scanned.
+
+Recommendations for production
+------------------------------
+- Use object storage for raw PDFs and backups; store metadata in Postgres.
+- Use deterministic stable IDs derived from URL/sha256/slug to allow idempotent
+  re-ingestion.
+- Respect site terms and robots; for single PDF of Amber25.pdf this is likely
+  fine for internal use, but confirm license.
+
+Sample commands (PowerShell)
+----------------------------
+Create venv and install deps:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+Run the prototype on the Amber PDF:
+
+```powershell
+python .\scripts\pdf_rag_store.py --url https://ambermd.org/doc12/Amber25.pdf
+```
+
+Outputs
+-------
+- `data/pdfs/amber25/Amber25.pdf` — raw PDF
+- `data/pdfs/amber25/pages/page_000.json` — per-page JSON with text and metadata
+- `data/pdf_chunks/amber25_chunks.jsonl` — chunked JSONL `{id,text,metadata}`
+- (optional) `data/pdfs/amber25/metadata.json` — summary metadata (sha256, page_count)
