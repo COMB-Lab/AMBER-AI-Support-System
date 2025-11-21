@@ -6,6 +6,7 @@ The folder **dags** has all the scripts necessary to execute the airflow pipelin
 ## 1.) Open terminal
 
 ## 2.) Execute the command **docker-compose up -d** in the terminal
+Once the docker container is running, Go to http://localhost:8080/ and run the dag from there.
 
 
 
