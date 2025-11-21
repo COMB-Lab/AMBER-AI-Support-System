@@ -22,7 +22,7 @@ class Thread:
 
 # Retriever
 class ChromaRetriever:
-    def __init__(self, db_path="/opt/chromadb/data", collection_name="temp_name"):
+    def __init__(self, db_path="/opt/chromadb/data", collection_name="amber_chroma_db"):
         self.db_path = db_path
         self.client = chromadb.PersistentClient(path=db_path)
         self.collection = self.client.get_collection(collection_name)
@@ -102,7 +102,7 @@ class HuggingFaceLLM:
 # Demo Workflow
 if __name__ == "__main__":
     
-    retriever = ChromaRetriever(db_path="/opt/chromadb/data", collection_name="temp_name")
+    retriever = ChromaRetriever(db_path="/opt/chromadb/data", collection_name="amber_chroma_db")
     documents = retriever.load_documents(limit=30)
 
     if not documents:
@@ -113,7 +113,7 @@ if __name__ == "__main__":
     query_understanding = QueryUnderstanding()
     query_info = query_understanding.process(query)
 
-    print("\nQuery Understanding:t")
+    print("\nQuery Understanding:")
     print(f"Normalized Query: {query_info['query']}")
     print(f"Detected Intent: {query_info['top_label']}")
     print("Scores: ", json.dumps(query_info["scores"], indent=2))
