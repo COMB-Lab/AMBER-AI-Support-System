@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] [fglaser.technion.ac.il: Fwd: MaxNumberTIAtom on PPI-GaMD - BUG?] from David A Case via AMBER on 2023-07-17 (Amber Archive Jul 2023)</title>
+<meta name="Author" content="David A Case via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] [fglaser.technion.ac.il: Fwd: MaxNumberTIAtom on PPI-GaMD - BUG?]" />
+<meta name="Date" content="2023-07-17" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] [fglaser.technion.ac.il: Fwd: MaxNumberTIAtom on PPI-GaMD - BUG?]</h1>
+<!-- received="Mon Jul 17 05:00:02 2023" -->
+<!-- isoreceived="20230717120002" -->
+<!-- sent="Mon, 17 Jul 2023 07:41:30 -0400" -->
+<!-- isosent="20230717114130" -->
+<!-- name="David A Case via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] [fglaser.technion.ac.il: Fwd: MaxNumberTIAtom on PPI-GaMD - BUG?]" -->
+<!-- id="20230717114130.el3tfp6ctjzobpai.davidcase-system76.fios-router.home" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0087.html" accesskey="d" title="David A Case via AMBER: &quot;Re: [AMBER] Error in generating prmtop and inpcrd file&quot;">Next message</a> ]
+[ <a href="0085.html" title="Priyasha Majee via AMBER: &quot;[AMBER] Error in generating prmtop and inpcrd file&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg86" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg86" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg86" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg86" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20%5Bfglaser.technion.ac.il%3A%20Fwd%3A%20MaxNumberTIAtom%20on%20PPI-GaMD%20-%20BUG%3F%5D">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 17 Jul 2023 07:41:30 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+----- Forwarded message from Fabian Glaser &lt;fglaser.technion.ac.il&gt; -----
+<br />
+<br />From: Fabian Glaser &lt;fabian.glaser.gmail.com&gt;
+<br />
+Date: 13 July 2023 at 15:10:04 GMT+3
+<br />
+To: AMBER Mailing List &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+Cc: Fabian Glaser &lt;fglaser.techunix.technion.ac.il&gt;
+<br />
+Subject: MaxNumberTIAtom on PPI-GaMD - BUG?
+<br />
+<br />﻿ Dear amber experts,
+<br />
+<br />I am trying to run PPI-GaMD for a dimer of my interest, but I am repeatedly getting sigfault errors (see below). Normal GaMD Equilibration and Production runs perfectly OK, but when I try to run a PPI-GaMD Production, I get sigfault. Below I pasted the input file for EQ and PROD I used, the output error, and gti_controlVariable.i file.
+<br />
+<br />As the a runtime error mentions the TI atom limits of 500 atoms, I changed the MaxNumberTIAtom = 2000 in gti_controlVariable.i file to 2000 and recompiled, but the result was exactly the same (I also tried to use very few atoms a 100, this does not seem to be the problem). Even the TI atom limits error persists. I did several additional tests both with amber20 and amber22, using several different configurations of the input file, with two different machines, and I keep getting the same type of segfault. I even asked from a colleague to run the same code in his machine, to be sure there is not a compilation problem on my system or a system problem in my machines. With the same result….
+<br />
+<br />Do you think this maybe an amber code bug?
+<br />
+If not, could you please advise what could be done?
+<br />
+<br />Thanks a lot in advance,
+<br />
+I am using GaMD for some time successfully, but I would be very happy to be able to sample complexes properly, as this is one of the main lines of my research.
+<br />
+<br />Best regards,
+<br />
+Fabian
+<br />
+<br />--------------------------
+<br />
+Fabian Glaser, PhD
+<br />
+<br />Structural and Computational Biology Unit
+<br />
+The Lorry I. Lokey Center for Life Sciences and Engineering
+<br />
+Technion - Israel Institute of Technology, Haifa, Israel
+<br />
+<br /><br /><br />terminate called after throwing an instance of 'std::runtime_error'
+<br />
+<br />&nbsp;&nbsp;&nbsp;what():  Too many TI atoms--current limit: 500 atoms
+<br />
+<br /><br />Program received signal SIGABRT: Process abort signal.
+<br />
+<br /><br />Backtrace for this error:
+<br />
+<br />#0  0x7f6095108d21 in ???
+<br />
+<br />#1  0x7f6095107ef5 in ???
+<br />
+<br />#2  0x7f6094f1e08f in ???
+<br />
+<br />at /build/glibc-SzIz7B/glibc-2.31/signal/../sysdeps/unix/sysv/linux/x86_64/sigaction.c:0
+<br />
+<br />#3  0x7f6094f1e00b in __GI_raise
+<br />
+<br />at ../sysdeps/unix/sysv/linux/raise.c:51
+<br />
+<br />#4  0x7f6094efd858 in __GI_abort
+<br />
+<br />at /build/glibc-SzIz7B/glibc-2.31/stdlib/abort.c:79
+<br />
+<br />#5  0x7f6095473910 in ???
+<br />
+<br />#6  0x7f609547f38b in ???
+<br />
+<br />#7  0x7f609547f3f6 in ???
+<br />
+<br />#8  0x7f609547f6a8 in ???
+<br />
+<br />#9  0x557b53e8ddbf in ???
+<br />
+<br />#10  0x557b540889b6 in ???
+<br />
+<br />#11  0x557b53f602fa in ???
+<br />
+<br />#12  0x557b53e8e81e in ???
+<br />
+<br />#13  0x7f6094eff082 in __libc_start_main
+<br />
+<br />at ../csu/libc-start.c:308
+<br />
+<br />#14  0x557b53eaa4dd in ???
+<br />
+<br />#15  0xffffffffffffffff in ???
+<br />
+<br />./LAT12.PPI-GaMD.1.eq.prod: line 39: 2194499 Aborted                 (core dumped) pmemd.cuda -O -i 2-GaMD-PPI/PPI-GaMD.PROD -p 0-PAR/$prefix.prmtop -c 2-GaMD-PPI/$prefix.PPI-GaMD.EQ.1.rst7 -ref 2-GaMD-PPI/$prefix.PPI-GaMD.EQ.1.rst7 -o 2-GaMD-PPI/$prefix.PPI-GaMD.PROD.1.mdout -x 2-GaMD-PPI/$prefix.PPI-GaMD.PROD.1.nc -inf 2-GaMD-PPI/$prefix.PPI-GaMD.PROD.1.mdinfo -r 2-GaMD-PPI/$prefix.PPI-GaMD.PROD.1.rst7
+<br />
+<br />Executing finished
+<br />
+<br /><br /><br /><br />#ifndef GTI_CONTROL
+<br />
+<br />#define GTI_CONTROL
+<br />
+<br /><br />#ifdef C_COMPILER
+<br />
+<br />#define STATIC_CONST_INT static const int
+<br />
+<br />#else /* for FORTRAN */
+<br />
+<br />#define STATIC_CONST_INT integer, parameter::
+<br />
+<br />#endif
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;STATIC_CONST_INT MaxNumberTIAtom = 2000;
+<br />
+<br />&nbsp;&nbsp;&nbsp;STATIC_CONST_INT MaxNumberTIPair = 300;
+<br />
+<br />&nbsp;&nbsp;&nbsp;STATIC_CONST_INT MaxNumberNBPerAtom = 3072;
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;STATIC_CONST_INT MaxNumberREAFAtom = 500;
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;STATIC_CONST_INT GPUPotEnergyTerms = 54;
+<br />
+<br />&nbsp;&nbsp;&nbsp;STATIC_CONST_INT NumberTIEnergyTerms = 17;
+<br />
+<br />&nbsp;&nbsp;&nbsp;STATIC_CONST_INT GPUKinEnergyTerms = 10;
+<br />
+<br />&nbsp;&nbsp;&nbsp;STATIC_CONST_INT TIEnergyBufferMultiplier = 9;
+<br />
+<br />&nbsp;&nbsp;&nbsp;STATIC_CONST_INT TIEnergyDLShift = 3;
+<br />
+<br />&nbsp;&nbsp;&nbsp;STATIC_CONST_INT TIEnergySCShift = 6;
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;STATIC_CONST_INT TIExtraShift = 44;
+<br />
+<br />&nbsp;&nbsp;&nbsp;STATIC_CONST_INT TINumberExtraTerms = 6;
+<br />
+<br /><br />&nbsp;&nbsp;&nbsp;STATIC_CONST_INT TISpecialShift = 52;
+<br />
+<br />&nbsp;&nbsp;&nbsp;STATIC_CONST_INT TINumberSpecialTerms = 2;
+<br />
+<br /><br />#ifdef C_COMPILER
+<br />
+<br />&nbsp;&nbsp;&nbsp;#define TCV_BEG typedef struct {
+<br />
+<br />&nbsp;&nbsp;&nbsp;#define TCV_END } TypeCtrlVar;
+<br />
+<br />&nbsp;&nbsp;&nbsp;#define TCV_DOUBLE double
+<br />
+<br />&nbsp;&nbsp;&nbsp;#define TCV_INT int
+<br />
+<br />&nbsp;&nbsp;&nbsp;#define TCV_SP ;
+<br />
+<br /><br /><br /><br />EQUILIBRATION PPI-GaMD
+<br />
+<br /><br />&amp;cntrl
+<br />
+<br />&nbsp;&nbsp;imin = 0,
+<br />
+<br />&nbsp;&nbsp;nstlim = 2500000,
+<br />
+<br />&nbsp;&nbsp;dt = 0.002,
+<br />
+<br />&nbsp;&nbsp;temp0 = 300,
+<br />
+<br />&nbsp;&nbsp;ntc = 2,             !Flag for SHAKE to perform bond length constraints NTC=NTF = 2 for TIP, OPC water, etc.
+<br />
+<br />&nbsp;&nbsp;ntf = 2,             !Force evaluation, calculations for H-atoms bonds are omitted (ntf=2) (use with NTC=2)
+<br />
+<br />&nbsp;&nbsp;tol = 0.00001,       !Relative geometrical tolerance for coordinate resetting in shake
+<br />
+<br />&nbsp;&nbsp;ntwx = 5000,        !save coordinates every ntwx steps
+<br />
+<br />&nbsp;&nbsp;ntwe = 0,            !Every ntwe steps, energies and T  written to &quot;mden&quot; in a compact form
+<br />
+<br />&nbsp;&nbsp;ntwr = 5000,        !restart file written very ntwr stesp
+<br />
+<br />&nbsp;&nbsp;ntpr = 5000,        !Print the progress of the minimization (or MD) every ntpr steps. This goes to the &quot;mdout&quot;
+<br />
+<br />&nbsp;&nbsp;cut = 10.0,          !non bonded cutoff
+<br />
+<br />&nbsp;&nbsp;nscm = 1000,         !avoids flying cube effec by removing center of mass
+<br />
+<br />&nbsp;&nbsp;iwrap = 1,           !periodic image closest to the midle of box written rest are &quot;wrapped&quot;,
+<br />
+<br />&nbsp;&nbsp;ntt = 3,             !Langevin thermostat control ntt=3 with low viscosity (gamma_ln=1.0) used in explicit solv MD
+<br />
+<br />&nbsp;&nbsp;gamma_ln=1.0,        !Collision frequency
+<br />
+<br />&nbsp;&nbsp;ntb = 2,             !constant volume (ntb=1, ntp=0) for production runs (step 10 and on), especially on GPUs
+<br />
+<br />&nbsp;&nbsp;ntp = 1,             !constant volume
+<br />
+<br />&nbsp;&nbsp;barostat = 2,
+<br />
+<br />&nbsp;&nbsp;taup = 1.0,          !controls strength of the pressure coupling; smaller values give tighter coupling to the barostat
+<br />
+<br />&nbsp;&nbsp;irest = 0,           !irest=1 to restart
+<br />
+<br />&nbsp;&nbsp;ntx = 1,             !read velocities
+<br />
+<br />&nbsp;&nbsp;ioutfm = 1,          !ioutfm=1 to write NetCDF trajectories, used in initial calc
+<br />
+<br />&nbsp;&nbsp;ntxo = 2,            !ntxo=2 to write a NetCDF restart file, used in initial calc
+<br />
+<br />&nbsp;&nbsp;ig = -1,             !ig=-1 to use the wall clock for the pseudo-random number generator seed, used in initial calc
+<br />
+<br /><br />&nbsp;&nbsp;igamd = 3,       !Flag to apply boost potential
+<br />
+<br />&nbsp;&nbsp;iE = 1,       !Flag to set the threshold energy E
+<br />
+<br />&nbsp;&nbsp;irest_gamd = 0,      !Flag to restart GaMD simulation
+<br />
+<br />&nbsp;&nbsp;ntcmd = 1000000,     !The number of initial conventional molecular dynamics simulation steps
+<br />
+<br />&nbsp;&nbsp;nteb = 25000000,     !The number of biasing molecular dynamics simulation steps
+<br />
+<br />&nbsp;&nbsp;ntave = 200000,      !The number of simulation steps used to calculate the average and standard deviation of potential energies
+<br />
+<br />&nbsp;&nbsp;ntcmdprep = 200000,  !The number of preparation conventional molecular dynamics steps
+<br />
+<br />&nbsp;&nbsp;ntebprep = 800000,   !The number of preparation biasing molecular dynamics simulation steps
+<br />
+<br />&nbsp;&nbsp;sigma0P = 6.0,       !The upper limit of the standard deviation of the first potential boost that allows for accurate reweighting. default is 6.0 (unit: kcal/mol).
+<br />
+<br />&nbsp;&nbsp;sigma0D = 6.0,       !The upper limit of the standard deviation of the second potential boost that allows for accurate reweighting
+<br />
+<br /><br />/
+<br />
+<br /><br /><br />&nbsp;&nbsp;PRODUCTION GaMD
+<br />
+<br /><br />&amp;cntrl
+<br />
+<br />&nbsp;&nbsp;imin = 0, ! no minimization
+<br />
+<br />&nbsp;&nbsp;nstlim = 250000000, !total steps
+<br />
+<br />&nbsp;&nbsp;dt = 0.002, !time step
+<br />
+<br />&nbsp;&nbsp;tempi=300.0,   ! Initial temperature
+<br />
+<br />&nbsp;&nbsp;temp0=300.0,   ! Target temperature
+<br />
+<br />&nbsp;&nbsp;irest = 0,
+<br />
+<br />&nbsp;&nbsp;ntx = 1,
+<br />
+<br />&nbsp;&nbsp;ntc = 2,             !Flag for SHAKE to perform bond length constraints NTC=NTF = 2 for TIP, OPC water, etc.
+<br />
+<br />&nbsp;&nbsp;ntf = 2,             !Force evaluation, calculations for H-atoms bonds are omitted (ntf=2) (use with NTC=2)
+<br />
+<br />&nbsp;&nbsp;tol = 0.00001,       !Relative geometrical tolerance for coordinate resetting in shake
+<br />
+<br />&nbsp;&nbsp;ntwx = 5000,        !save coordinates every ntwx steps
+<br />
+<br />&nbsp;&nbsp;ntwe = 0,            !Every ntwe steps, energies and T  written to &quot;mden&quot; in a compact form
+<br />
+<br />&nbsp;&nbsp;ntwr = 5000,        !restart file written very ntwr stesp
+<br />
+<br />&nbsp;&nbsp;ntpr = 5000,        !Print the progress of the minimization (or MD) every ntpr steps. This goes to the &quot;mdout&quot;
+<br />
+<br />&nbsp;&nbsp;cut = 10.0,          !non bonded cutoff
+<br />
+<br />&nbsp;&nbsp;nscm = 1000,         !avoids flying cube effec by removing center of mass
+<br />
+<br />&nbsp;&nbsp;iwrap = 1,           !periodic image closest to the midle of box written rest are &quot;wrapped&quot;,
+<br />
+<br />&nbsp;&nbsp;ntt = 3,             !Langevin thermostat control ntt=3 with low viscosity (gamma_ln=1.0) used in explicit solv MD
+<br />
+<br />&nbsp;&nbsp;gamma_ln=1.0,        !Collision frequency
+<br />
+<br />&nbsp;&nbsp;ntb = 2,             !constant volume (ntb=1, ntp=0) for production runs (step 10 and on), especially on GPUs
+<br />
+<br />&nbsp;&nbsp;ntp = 1,             !constant volume
+<br />
+<br />&nbsp;&nbsp;barostat = 2         ! MC Barostat
+<br />
+<br />&nbsp;&nbsp;taup = 1.0,          !controls strength of the pressure coupling; smaller values give tighter coupling to the barostat
+<br />
+<br />&nbsp;&nbsp;ioutfm = 1,          !ioutfm=1 to write NetCDF trajectories, used in initial calc
+<br />
+<br />&nbsp;&nbsp;ntxo = 2,            !ntxo=2 to write a NetCDF restart file, used in initial calc
+<br />
+<br />&nbsp;&nbsp;ig = -1,             !ig=-1 to use the wall clock for the pseudo-random number generator seed, used in initial calc
+<br />
+<br /><br />&nbsp;&nbsp;icfe = 1,
+<br />
+<br />&nbsp;&nbsp;ifsc = 1,
+<br />
+<br />&nbsp;&nbsp;gti_cpu_output = 0,
+<br />
+<br />&nbsp;&nbsp;gti_add_sc = 1,
+<br />
+<br />&nbsp;&nbsp;timask1 = ':1-97(!.H=)',
+<br />
+<br />&nbsp;&nbsp;scmask1 = ':1-97(!.H=)',
+<br />
+<br />&nbsp;&nbsp;timask2 = '',
+<br />
+<br />&nbsp;&nbsp;scmask2 = '',
+<br />
+<br />&nbsp;&nbsp;bgpro2atm=1604,
+<br />
+<br />&nbsp;&nbsp;edpro2atm=3199,
+<br />
+<br />&nbsp;&nbsp;igamd = 17,
+<br />
+<br />&nbsp;&nbsp;iE = 1,
+<br />
+<br />&nbsp;&nbsp;iEP = 1,
+<br />
+<br />&nbsp;&nbsp;iED = 1,
+<br />
+<br />&nbsp;&nbsp;irest_gamd = 0,
+<br />
+<br />&nbsp;&nbsp;ntcmd = 1000000,
+<br />
+<br />&nbsp;&nbsp;nteb = 1000000,
+<br />
+<br />&nbsp;&nbsp;ntave = 50000,
+<br />
+<br />&nbsp;&nbsp;ntcmdprep = 200000,
+<br />
+<br />&nbsp;&nbsp;ntebprep = 200000,
+<br />
+<br />&nbsp;&nbsp;sigma0P = 6.0,
+<br />
+<br />&nbsp;&nbsp;sigma0D = 6.0,
+<br />
+<br />/
+<br />
+<br /><br /><br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jul 17 2023 - 05:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0087.html" title="Next message in the list">David A Case via AMBER: "Re: [AMBER] Error in generating prmtop and inpcrd file"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0085.html" title="Previous message in the list">Priyasha Majee via AMBER: "[AMBER] Error in generating prmtop and inpcrd file"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg86" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg86" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg86" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg86" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

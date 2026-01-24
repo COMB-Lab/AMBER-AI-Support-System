@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] 1-4 scaling in GLYCAM from Richard Kullmann via AMBER on 2023-05-24 (Amber Archive May 2023)</title>
+<meta name="Author" content="Richard Kullmann via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] 1-4 scaling in GLYCAM" />
+<meta name="Date" content="2023-05-24" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] 1-4 scaling in GLYCAM</h1>
+<!-- received="Wed May 24 05:30:02 2023" -->
+<!-- isoreceived="20230524123002" -->
+<!-- sent="Wed, 24 May 2023 14:20:03 +0200" -->
+<!-- isosent="20230524122003" -->
+<!-- name="Richard Kullmann via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] 1-4 scaling in GLYCAM" -->
+<!-- id="61cf893b-30f7-5144-a1ae-e6aff68b0fb7.mpikg.mpg.de" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="20230524115555.w5hj3sc522w4ezhi.pop-os.localdomain" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0109.html" accesskey="d" title="David A Case via AMBER: &quot;Re: [AMBER] Specifications of the QMMM coupling scheme in sander module?&quot;">Next message</a> ]
+[ <a href="0107.html" title="David A Case via AMBER: &quot;Re: [AMBER] 1-4 scaling in GLYCAM&quot;">Previous message</a> ]
+[ <a href="0107.html" title="David A Case via AMBER: &quot;Re: [AMBER] 1-4 scaling in GLYCAM&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg108" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg108" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg108" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg108" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Richard Kullmann via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%201-4%20scaling%20in%20GLYCAM">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 24 May 2023 14:20:03 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Dave,
+<br />
+<br />I am sorry for the confusion. Yes, I am saying that it seems to me that 
+<br />
+the scnb values don't matter. I calculated for each carbohydrate atom 
+<br />
+type combination the ratio of the old 1-4 epsilon (o) and new 1-4 
+<br />
+epsilon (n) parameters. Then I modified the GLYCAM06j.dat and 
+<br />
+GLYCAM06EPb.dat files by searching for these pairs and substituting 
+<br />
+SCNB=1.0 for the calculated ratios SCNB=o/n. Later, I carried out the 
+<br />
+test with values of SCNB=n/o. A couple example lines are shown below.
+<br />
+&quot;correct&quot; scaling:
+<br />
+H2-Cg-Cg-Cg   6           0.90           0.00           3.  SCEE=1.0 
+<br />
+SCNB=.939774 2-Dimethylbutanol Hs=0 charge KNK
+<br />
+Ho-Oh-Cg-H1   1           0.18           0.00           3.  SCEE=1.0 
+<br />
+SCNB=1.938487 Methanol Hs=0 charge KNK
+<br />
+&quot;inverse&quot; scaling:
+<br />
+H2-Cg-Cg-Cg   6           0.90           0.00           3.  SCEE=1.0 
+<br />
+SCNB=1.064085 2-Dimethylbutanol Hs=0 charge KNK
+<br />
+Ho-Oh-Cg-H1   1           0.18           0.00           3.  SCEE=1.0 
+<br />
+SCNB=.515866 Methanol Hs=0 charge KNK
+<br />
+<br />As said before, both of these parameters give similar results.
+<br />
+<br />Thank you again and best regards,
+<br />
+<br />Richard
+<br />
+<br />On 5/24/23 13:55, David A Case wrote:
+<br />
+<em class="quotelev1">&gt; On Wed, May 24, 2023, Richard Kullmann via AMBER wrote:
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; I am currently trying to change 1-4 Lennard-Jones parameters of the 
+</em><br />
+<em class="quotelev2">&gt;&gt; GLYCAM06 ff.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; I tried to just scale the scnb parameters in the force field files. 
+</em><br />
+<em class="quotelev2">&gt;&gt; This works in that I can see the changes in ParmEd, but, looking at 
+</em><br />
+<em class="quotelev2">&gt;&gt; the dihedrals, it seems that the alpha-(1-4) linkages of my polymer 
+</em><br />
+<em class="quotelev2">&gt;&gt; are less flexible now. I only retain the major maximum and lose the 
+</em><br />
+<em class="quotelev2">&gt;&gt; second peak. The same goes for the glucose pucker conformations. Here 
+</em><br />
+<em class="quotelev2">&gt;&gt; the number of unlikely conformations is reduced by a factor of 3. 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; You should probably ask these questions at the Glycam web site -- I'm not
+</em><br />
+<em class="quotelev1">&gt; sure that things that get posted here will come to their attention.  I
+</em><br />
+<em class="quotelev1">&gt; remember that having scnb=1 (i.e. no scaling) was a key feature in the
+</em><br />
+<em class="quotelev1">&gt; development of the force field.  Indeed, it led to the changes that allowed
+</em><br />
+<em class="quotelev1">&gt; different values for scnb for different atom pairs.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev2">&gt;&gt; Now, in order to double check the correct implementation of scnb scaling
+</em><br />
+<em class="quotelev2">&gt;&gt; factors, I just tried to use inverse values. Surprisingly, the results 
+</em><br />
+<em class="quotelev2">&gt;&gt; now
+</em><br />
+<em class="quotelev2">&gt;&gt; look very similar to what I got with my first choice of scnb values.  
+</em><br />
+<em class="quotelev2">&gt;&gt; So, I
+</em><br />
+<em class="quotelev2">&gt;&gt; would like to know how 1-4 scaling is implemented in GLYCAM, and am 
+</em><br />
+<em class="quotelev2">&gt;&gt; looking
+</em><br />
+<em class="quotelev2">&gt;&gt; for reasons for this strange behavior I'm seeing.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; A more explicit example might help here, as I'm lost in your wording.  You
+</em><br />
+<em class="quotelev1">&gt; seem to be saying that using inverse values of scnb led to the same results
+</em><br />
+<em class="quotelev1">&gt; as your &quot;first choice&quot;.  Are you saying that the value of scnb doesn't
+</em><br />
+<em class="quotelev1">&gt; matter?  Can you provide an example of what scnb values you used, and
+</em><br />
+<em class="quotelev1">&gt; exactly how to went about modifying them?
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ....dac
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed May 24 2023 - 05:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0109.html" title="Next message in the list">David A Case via AMBER: "Re: [AMBER] Specifications of the QMMM coupling scheme in sander module?"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0107.html" title="Previous message in the list">David A Case via AMBER: "Re: [AMBER] 1-4 scaling in GLYCAM"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0107.html" title="Message to which this message replies">David A Case via AMBER: "Re: [AMBER] 1-4 scaling in GLYCAM"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg108" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg108" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg108" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg108" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

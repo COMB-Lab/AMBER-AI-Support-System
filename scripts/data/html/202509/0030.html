@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Segmentation fault in pmemd.MPI: from David A Case via AMBER on 2025-09-11 (Amber Archive Sep 2025)</title>
+<meta name="Author" content="David A Case via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Segmentation fault in pmemd.MPI:" />
+<meta name="Date" content="2025-09-11" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Segmentation fault in pmemd.MPI:</h1>
+<!-- received="Thu Sep 11 09:00:02 2025" -->
+<!-- isoreceived="20250911160002" -->
+<!-- sent="Thu, 11 Sep 2025 09:52:06 -0600" -->
+<!-- isosent="20250911155206" -->
+<!-- name="David A Case via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Segmentation fault in pmemd.MPI:" -->
+<!-- id="20250911155206.qbqa3g43ysplib4x.pop-os.localdomain" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CAJCGvTBRA0h6H7baZqm+U4cFS_6FSXq_UjpS4Q-djCAZ0PRQ6g.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0031.html" accesskey="d" title="Dulal Mondal via AMBER: &quot;[AMBER] job run error&quot;">Next message</a> ]
+[ <a href="0029.html" title="FyD via AMBER: &quot;Re: [AMBER] Looking at gaff2&quot;">Previous message</a> ]
+[ <a href="0022.html" title="YASHIKA . via AMBER: &quot;[AMBER] Segmentation fault in pmemd.MPI:&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg30" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg30" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg30" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg30" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Segmentation%20fault%20in%20pmemd.MPI%3A">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 11 Sep 2025 09:52:06 -0600</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Tue, Sep 09, 2025, YASHIKA . via AMBER wrote:
+<br />
+<br /><em class="quotelev1">&gt;I am running an energy minimization using pmemd.MPI (AMBER20 compiled with
+</em><br />
+<em class="quotelev1">&gt;Intel compiler 18.0.3 and Intel MPI 2018).
+</em><br />
+<br /><em class="quotelev1">&gt;time mpirun -np 32 pmemd.MPI -O -i min_500.in -o min_500.out -c
+</em><br />
+<em class="quotelev1">&gt;with_184.rst7 -p with_184.parm7 -r min_500.rst7 -inf min_500.info -ref
+</em><br />
+<em class="quotelev1">&gt;with_184.rst7 -x min_500.mdcrd
+</em><br />
+<br />We don't know for sure, but you should use fewer MPI threads.  Start with a
+<br />
+serial run, and slowly increase the number of threads (2,4,8,...) to see if
+<br />
+you find an optimal value.  Note that generally, pmemd does not scale well
+<br />
+beyond about 16 threads.  But the crash problem seems to be related to
+<br />
+minimization.
+<br />
+<br />In general, you (and others) should use sander with ntmin=3 to carry out
+<br />
+initial minimizations.  You will almost always get much better results.
+<br />
+<br />...good luck...dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Sep 11 2025 - 09:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0031.html" title="Next message in the list">Dulal Mondal via AMBER: "[AMBER] job run error"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0029.html" title="Previous message in the list">FyD via AMBER: "Re: [AMBER] Looking at gaff2"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0022.html" title="Message to which this message replies">YASHIKA . via AMBER: "[AMBER] Segmentation fault in pmemd.MPI:"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg30" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg30" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg30" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg30" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

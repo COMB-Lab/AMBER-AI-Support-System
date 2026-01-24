@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] huge memory consumption when running nab simulations from David A Case via AMBER on 2023-06-12 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="David A Case via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] huge memory consumption when running nab simulations" />
+<meta name="Date" content="2023-06-12" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] huge memory consumption when running nab simulations</h1>
+<!-- received="Mon Jun 12 18:00:02 2023" -->
+<!-- isoreceived="20230613010002" -->
+<!-- sent="Mon, 12 Jun 2023 20:57:16 -0400" -->
+<!-- isosent="20230613005716" -->
+<!-- name="David A Case via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] huge memory consumption when running nab simulations" -->
+<!-- id="20230613005716.qbdoeryah2qnymqj.pop-os.localdomain" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="PR3PR09MB5458EEEDA7EF4162595D7050FD54A.PR3PR09MB5458.eurprd09.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0060.html" accesskey="d" title="Dominik Brandstetter via AMBER: &quot;Re: [AMBER] huge memory consumption when running nab simulations&quot;">Next message</a> ]
+[ <a href="0058.html" title="Aravind R via AMBER: &quot;[AMBER] Probability of Contact Formation&quot;">Previous message</a> ]
+[ <a href="0054.html" title="Dominik Brandstetter via AMBER: &quot;Re: [AMBER] huge memory consumption when running nab simulations&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0060.html" accesskey="t" title="Dominik Brandstetter via AMBER: &quot;Re: [AMBER] huge memory consumption when running nab simulations&quot;">Next in thread</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg59" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg59" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg59" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg59" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20huge%20memory%20consumption%20when%20running%20nab%20simulations">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 12 Jun 2023 20:57:16 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Mon, Jun 12, 2023, Dominik Brandstetter via AMBER wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;a quick update on this topic. When I try to run the same simulation
+</em><br />
+<em class="quotelev1">&gt;described in my previous message using hcp = 0, the simulation runs fine
+</em><br />
+<em class="quotelev1">&gt;with a low memory consumption. The huge memory consumption, that eventually
+</em><br />
+<em class="quotelev1">&gt;leads to failure of the run, occurs only when I use hcp = 4. This makes me
+</em><br />
+<em class="quotelev1">&gt;think that my parallelization scheme works fine, and that there might be a
+</em><br />
+<em class="quotelev1">&gt;sort of memory leak in the HCP implementation? What do you think?
+</em><br />
+<br />Thanks for the extra info.  I'm cc-ing this to Alexey Onufriev, who may have
+<br />
+some insight here.  (I don't have any personal experience with HCP).  But I
+<br />
+still suspect (hope) that one doesn't really need HCP for a system with only
+<br />
+4000 atoms.
+<br />
+<br />....regards...dac
+<br />
+<br /><em class="quotelev1">&gt;________________________________
+</em><br />
+<em class="quotelev1">&gt;From: Dominik Brandstetter &lt;Dominik.Brandstetter.UGent.be&gt;
+</em><br />
+<em class="quotelev1">&gt;Sent: Tuesday, June 6, 2023 2:32 PM
+</em><br />
+<em class="quotelev1">&gt;To: amber.ambermd.org &lt;amber.ambermd.org&gt;
+</em><br />
+<em class="quotelev1">&gt;Subject: huge memory consumption when running nab simulations
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;I am new to NAB, and I am running some implicit solvent simulations with it on a cluster having 2x 64-core nodes and with ~940 GiB of RAM memory per node.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;I am using the sim.nab and submit.sh files attached to start my simulations, which are nicely parallelized and run fine, but I notice a huge memory consumption, which often leads to a failure of the simulations, as you can see in the following error message for the run:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Slurm Job_id=25014708 Name=3U_1_64 Failed, Run time 00:47:53, OUT_OF_MEMORY
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Name                : 3U_1_64
+</em><br />
+<em class="quotelev1">&gt;Cores               : 64
+</em><br />
+<em class="quotelev1">&gt;State               : OUT_OF_MEMORY
+</em><br />
+<em class="quotelev1">&gt;Submit              : 2023-06-05T08:42:07
+</em><br />
+<em class="quotelev1">&gt;Start               : 2023-06-05T10:19:49
+</em><br />
+<em class="quotelev1">&gt;End                 : 2023-06-05T11:07:42
+</em><br />
+<em class="quotelev1">&gt;Reserved walltime   :   03:00:00
+</em><br />
+<em class="quotelev1">&gt;Used walltime       :   00:47:53
+</em><br />
+<em class="quotelev1">&gt;Used CPU time       : 2-02:08:17
+</em><br />
+<em class="quotelev1">&gt;% User (Computation): 99.76%
+</em><br />
+<em class="quotelev1">&gt;% System (I/O)      :  0.24%
+</em><br />
+<em class="quotelev1">&gt;Mem reserved        : 900G
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Max Mem used        : 897.41G (node4113.gallade.os)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Max Disk Write      : 194.56K (node4113.gallade.os)
+</em><br />
+<em class="quotelev1">&gt;Max Disk Read       : 42.54M (node4113.gallade.os)
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;The system I am trying to simulate has 3696 atoms. Do you think this high memory consumption is normal for this size? Or is there a way I can modify e.g. my sim.nab or submit.sh file to reduce the RAM usage and have a successful completion of my run?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;Dominik
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jun 12 2023 - 18:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0060.html" title="Next message in the list">Dominik Brandstetter via AMBER: "Re: [AMBER] huge memory consumption when running nab simulations"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0058.html" title="Previous message in the list">Aravind R via AMBER: "[AMBER] Probability of Contact Formation"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0054.html" title="Message to which this message replies">Dominik Brandstetter via AMBER: "Re: [AMBER] huge memory consumption when running nab simulations"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0060.html" title="Next message in this discussion thread">Dominik Brandstetter via AMBER: "Re: [AMBER] huge memory consumption when running nab simulations"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg59" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg59" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg59" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg59" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

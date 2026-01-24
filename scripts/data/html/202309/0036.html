@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] What is the best way to do triplicate runs from Carlos Simmerling via AMBER on 2023-09-08 (Amber Archive Sep 2023)</title>
+<meta name="Author" content="Carlos Simmerling via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] What is the best way to do triplicate runs" />
+<meta name="Date" content="2023-09-08" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] What is the best way to do triplicate runs</h1>
+<!-- received="Fri Sep  8 14:00:03 2023" -->
+<!-- isoreceived="20230908210003" -->
+<!-- sent="Fri, 8 Sep 2023 16:55:49 -0400" -->
+<!-- isosent="20230908205549" -->
+<!-- name="Carlos Simmerling via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] What is the best way to do triplicate runs" -->
+<!-- id="CAGk3s-RHo1ceLpeebEkFwrF+0+_SWr_BJ7WAJ-ntgReT1qyrsQ.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="DM6PR07MB5609E50C755554F525C11E78A1EDA.DM6PR07MB5609.namprd07.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0037.html" accesskey="d" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] Umbrella Sampling&quot;">Next message</a> ]
+[ <a href="0035.html" title="Jing Qu via AMBER: &quot;[AMBER]  Umbrella Sampling&quot;">Previous message</a> ]
+[ <a href="0034.html" title="Romero, Maria via AMBER: &quot;[AMBER] What is the best way to do triplicate runs&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg36" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg36" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg36" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg36" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Carlos Simmerling via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20What%20is%20the%20best%20way%20to%20do%20triplicate%20runs">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 8 Sep 2023 16:55:49 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+If you already have relaxed the system I would not reset the temperature to
+<br />
+a low value, especially with that thermostat (ntt=1).
+<br />
+<br />Ntt=3 and ig=-1 will give different trajectories even if you read in the
+<br />
+velocities.
+<br />
+<br />If the triplicates are not agreeing then it is a sign that the protocol is
+<br />
+not reproducible. Perhaps it needs to run longer, or have other
+<br />
+adjustments, but that depends on your project and the timescale of the
+<br />
+motions you are modeling. Maybe it is related to your aMD setup.
+<br />
+<br />On Fri, Sep 8, 2023, 3:33 PM Romero, Maria via AMBER &lt;amber.ambermd.org&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt; Hello Amber community,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; My goal is to generate triplicate aMD runs for my system, but I have been
+</em><br />
+<em class="quotelev1">&gt; struggling to obtain results that agree with each other to a certain
+</em><br />
+<em class="quotelev1">&gt; extent. These are the two methods that I have tried so far:
+</em><br />
+<em class="quotelev1">&gt; -Starting with one single pdb structure, do prep in cpptraj and
+</em><br />
+<em class="quotelev1">&gt; minimization and then introduce random velocities in my first step of
+</em><br />
+<em class="quotelev1">&gt; equilibration using the following script:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; nstlim=250000, dt=0.001, ntx=1, irest=0, ntpr=1000, ntwr=10000, ntwx=1000,
+</em><br />
+<em class="quotelev1">&gt;   tempi=0.5, temp0=300.0, ntt=1, tautp=2.8, ig=-1,
+</em><br />
+<em class="quotelev1">&gt;   ntb=1, ntp=0,
+</em><br />
+<em class="quotelev1">&gt;   ntc=2, ntf=2,
+</em><br />
+<em class="quotelev1">&gt;   cut=10.0, iwrap=1
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The results from the 3 trajectories do not agree at all. For example my
+</em><br />
+<em class="quotelev1">&gt; ligand would randomly leave one of the active sites in one trajectory, both
+</em><br />
+<em class="quotelev1">&gt; active sites in another and none in the third trajectory.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; The second approach I tried was:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; -Take 3 different starting structures from an unbiased MD simulation as
+</em><br />
+<em class="quotelev1">&gt; starting points and using the following script for the first step of
+</em><br />
+<em class="quotelev1">&gt; equilibration:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; nstlim=250000, dt=0.001, ntx=1, irest=0, ntpr=1000, ntwr=10000, ntwx=1000,
+</em><br />
+<em class="quotelev1">&gt;   tempi=000.0, temp0=300.0, ntt=1, tautp=2.8, ig=-1,
+</em><br />
+<em class="quotelev1">&gt;   ntb=1, ntp=0,
+</em><br />
+<em class="quotelev1">&gt;   ntc=2, ntf=2,
+</em><br />
+<em class="quotelev1">&gt;   cut=10.0, iwrap=1,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Which I guess introduces velocities based on the forces, but again results
+</em><br />
+<em class="quotelev1">&gt; are very different.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Can someone help? Should I use a different thermostat like ntt=3? My
+</em><br />
+<em class="quotelev1">&gt; system is dimer protein solvated in water. What is the best way to
+</em><br />
+<em class="quotelev1">&gt; introduce random velocities that would give me trajectories that are
+</em><br />
+<em class="quotelev1">&gt; similar to each other? My big concern is reproducibiliity.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thank you in advance for your help,
+</em><br />
+<em class="quotelev1">&gt; Maria.
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Sep 08 2023 - 14:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0037.html" title="Next message in the list">Carlos Simmerling via AMBER: "Re: [AMBER] Umbrella Sampling"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0035.html" title="Previous message in the list">Jing Qu via AMBER: "[AMBER]  Umbrella Sampling"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0034.html" title="Message to which this message replies">Romero, Maria via AMBER: "[AMBER] What is the best way to do triplicate runs"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg36" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg36" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg36" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg36" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Choice of protein/water force fields with ZAFF	zinc parameters? from Cherry, Kendall via AMBER on 2025-09-03 (Amber Archive Sep 2025)</title>
+<meta name="Author" content="Cherry, Kendall via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Choice of protein/water force fields with ZAFF	zinc parameters?" />
+<meta name="Date" content="2025-09-03" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Choice of protein/water force fields with ZAFF	zinc parameters?</h1>
+<!-- received="Wed Sep  3 12:30:02 2025" -->
+<!-- isoreceived="20250903193002" -->
+<!-- sent="Wed, 3 Sep 2025 19:10:26 +0000" -->
+<!-- isosent="20250903191026" -->
+<!-- name="Cherry, Kendall via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Choice of protein/water force fields with ZAFF	zinc parameters?" -->
+<!-- id="PH0PR03MB5781CEF9E6242D8511CDAE269F01A.PH0PR03MB5781.namprd03.prod.outlook.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CH2PR12MB4102798E56D1A33D6334CB4CA905A.CH2PR12MB4102.namprd12.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0006.html" accesskey="d" title="YASHIKA . via AMBER: &quot;[AMBER] Difference in cpptraj output structures between NVT equilibration and NPT production runs&quot;">Next message</a> ]
+[ <a href="0004.html" title="Dulal Mondal via AMBER: &quot;Re: [AMBER] continuous constant pH (chapter 28)&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg5" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg5" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg5" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg5" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Cherry, Kendall via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Choice%20of%20protein%2Fwater%20force%20fields%20with%20ZAFF%09zinc%20parameters%3F">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 3 Sep 2025 19:10:26 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Zhen,
+<br />
+
+<br />
+Thank you for looking into this. I tried your fixes, and tleap and the subsequent MD steps ran!
+<br />
+
+<br />
+Appreciate your help,
+<br />
+Kendall Cherry
+<br />
+
+<br />
+
+<br />
+From: Li, Zhen &lt;lizhen6.chemistry&#46;<!--nospam-->msu.edu&gt;
+<br />
+Date: Friday, August 29, 2025 at 11:02 PM
+<br />
+To: Cherry, Kendall &lt;kche.email.unc.edu&gt;, amber.ambermd&#46;<!--nospam-->org &lt;amber.ambermd&#46;<!--nospam-->org&gt;, Li, Zhen &lt;lizhen6.chemistry&#46;<!--nospam-->msu.edu&gt;
+<br />
+Subject: Re: [AMBER] Choice of protein/water force fields with ZAFF zinc parameters?
+<br />
+
+<br />
+Hi Kendall and Saverio,
+<br />
+
+<br />
+Thank you for waiting. As promised, it is the end of August, and I have finally fixed the bug in the current ZAFF model for multiple Zn2+ centers.
+<br />
+
+<br />
+First, the current ZAFF.prep file might be incompatible with the PDB naming rules; some of the &quot;HN&quot; should be names as &quot;H&quot; instead. To correct this, simply run &quot;sed 's/HN/H/g' ZAFF.prep &gt; ZAFF_H.prep&quot; and use ZAFF_H.prep instead in the tleap input file.
+<br />
+
+<br />
+Second, if two ZN are present, there must be another TER between the two ZN in the PDB; no need to rename them to Zn2+.
+<br />
+
+<br />
+The solution is simpler than I thought...
+<br />
+
+<br />
+Best regards,
+<br />
+Zhen.
+<br />
+
+<br />
+
+<br />
+_____________________
+<br />
+
+<br />
+Zhen Li&lt;<a href="http://lizhen62017.wixsite.com/home">http://lizhen62017.wixsite.com/home</a>&gt;, Ph.D.,
+<br />
+
+<br />
+The Merz Research Group&lt;<a href="http://merzgroup.org/">http://merzgroup.org/</a>&gt;,
+<br />
+
+<br />
+Michigan State University,
+<br />
+
+<br />
+Cleveland Clinic.
+<br />
+
+<br />
+________________________________
+<br />
+From: Li, Zhen via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+Sent: Tuesday, July 15, 2025 5:35 AM
+<br />
+To: Cherry, Kendall &lt;kche.email.unc.edu&gt;; amber.ambermd&#46;<!--nospam-->org &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+Subject: Re: [AMBER] Choice of protein/water force fields with ZAFF zinc parameters?
+<br />
+
+<br />
+Hi Kendall,
+<br />
+
+<br />
+You are not alone. Please see this AMBER email list too <a href="https://urldefense.com/v3/__http://archive.ambermd.org/202405/0040.html__;!!HXCxUKc!yP2ctlnzaB62ypARAFzd-BWotYdrfRTB1tn0y3OhUxQPyyFQlFcnDEZAkhWHZ3uleB7e8lmSPfwu3If50kmw7RM">https://urldefense.com/v3/__http://archive.ambermd.org/202405/0040.html__;!!HXCxUKc!yP2ctlnzaB62ypARAFzd-BWotYdrfRTB1tn0y3OhUxQPyyFQlFcnDEZAkhWHZ3uleB7e8lmSPfwu3If50kmw7RM</a>$  (Apology to Saverio that I did not notice it until today).
+<br />
+
+<br />
+This is a good chance to bring them together and resolve the issue. I believe some rare instances were being missed by the Seminario/ChgModB method during parameter generation. Please allow me a couple of days to look into it and get back to you by the end of August. Appreciate your patience.
+<br />
+
+<br />
+Best regards,
+<br />
+Zhen.
+<br />
+
+<br />
+_____________________
+<br />
+
+<br />
+Zhen Li&lt;<a href="https://urldefense.com/v3/__http://lizhen62017.wixsite.com/home__;!!HXCxUKc!yP2ctlnzaB62ypARAFzd-BWotYdrfRTB1tn0y3OhUxQPyyFQlFcnDEZAkhWHZ3uleB7e8lmSPfwu3If5Cd3Vh9w">https://urldefense.com/v3/__http://lizhen62017.wixsite.com/home__;!!HXCxUKc!yP2ctlnzaB62ypARAFzd-BWotYdrfRTB1tn0y3OhUxQPyyFQlFcnDEZAkhWHZ3uleB7e8lmSPfwu3If5Cd3Vh9w</a>$ &gt;, Ph.D.,
+<br />
+
+<br />
+The Merz Research Group&lt;<a href="https://urldefense.com/v3/__http://merzgroup.org__;!!HXCxUKc!yP2ctlnzaB62ypARAFzd-BWotYdrfRTB1tn0y3OhUxQPyyFQlFcnDEZAkhWHZ3uleB7e8lmSPfwu3If5SPtoQGg">https://urldefense.com/v3/__http://merzgroup.org__;!!HXCxUKc!yP2ctlnzaB62ypARAFzd-BWotYdrfRTB1tn0y3OhUxQPyyFQlFcnDEZAkhWHZ3uleB7e8lmSPfwu3If5SPtoQGg</a>$ &gt;,
+<br />
+
+<br />
+Michigan State University,
+<br />
+
+<br />
+Cleveland Clinic.
+<br />
+
+<br />
+________________________________
+<br />
+From: Cherry, Kendall &lt;kche.email&#46;<!--nospam-->unc.edu&gt;
+<br />
+Sent: Monday, July 14, 2025 7:57 PM
+<br />
+To: Li, Zhen &lt;lizhen6.chemistry&#46;<!--nospam-->msu.edu&gt;; amber.ambermd&#46;<!--nospam-->org &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+Subject: Re: [AMBER] Choice of protein/water force fields with ZAFF zinc parameters?
+<br />
+
+<br />
+
+<br />
+Hi Zhen,
+<br />
+
+<br />
+
+<br />
+
+<br />
+Thank you for the clarification. I encountered an error message today that I believe is a problem with the ZAFF.frcmod file. In tleap, when I tried to save the .prmtop and .inpcrd files (after loading ZAFF.frcmod and ZAFF.prep), I got numerous errors that the bond, angle, and torsion types were not found. I replaced all instances of ZN with Zn2+ in the ZAFF.frcmod file, as my ZN ions were being renamed to Zn2+, and tried again. This got rid of the angle and bond issues, but the torsion errors remain. Here is just a portion of that:
+<br />
+
+<br />
+
+<br />
+
+<br />
+Error:  ** No torsion terms for atom types: CC-N1-Zn2+-S2
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for atom CG at position -5.464000, -0.251000, -1.623000,
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atom ND1 at position -6.101000, 0.958000, -1.517000,
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atom ZN at position -5.284000, 2.719000, -2.043000,
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and atom SG at position -3.460000, 2.371000, -3.448000.
+<br />
+
+<br />
+
+<br />
+
+<br />
+Error:  ** No torsion terms for atom types: S1-Zn2+-S1-CT
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for atom SG at position 5.739000, 7.577000, 1.386000,
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atom ZN at position 5.749000, 7.446000, 3.664000,
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atom SG at position 7.872000, 7.200000, 4.458000,
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and atom CB at position 9.127000, 7.334000, 3.145000.
+<br />
+
+<br />
+
+<br />
+
+<br />
+Error:  ** No torsion terms for atom types: CT-S1-Zn2+-S1
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for atom CB at position 5.446000, 5.958000, 0.614000,
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atom SG at position 5.739000, 7.577000, 1.386000,
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atom ZN at position 5.749000, 7.446000, 3.664000,
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and atom SG at position 7.872000, 7.200000, 4.458000.
+<br />
+
+<br />
+
+<br />
+
+<br />
+This repeated dozens of times, all of the torsion terms containing Zn2+. I checked the modified ZAFF.frcmod file and noticed that some of the torsion terms that caused errors were still present there, so I am not sure what is going wrong. Some torsion terms are missing, though, so I will need to create new ones I’m assuming?
+<br />
+
+<br />
+
+<br />
+
+<br />
+If I can provide any other information, files, etc. for clarification, please let me know.
+<br />
+
+<br />
+
+<br />
+
+<br />
+Thank you,
+<br />
+
+<br />
+Kendall Cherry
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+<br />
+From: Li, Zhen &lt;lizhen6.chemistry.msu.edu&gt;
+<br />
+Date: Monday, July 14, 2025 at 6:33 PM
+<br />
+To: amber.ambermd.org &lt;amber.ambermd.org&gt;, Cherry, Kendall &lt;kche.email&#46;<!--nospam-->unc.edu&gt;
+<br />
+Subject: Re: [AMBER] Choice of protein/water force fields with ZAFF zinc parameters?
+<br />
+
+<br />
+You don't often get email from lizhen6.chemistry.msu.edu. Learn why this is important&lt;<a href="https://urldefense.com/v3/__https://aka.ms/LearnAboutSenderIdentification__;!!HXCxUKc!3p1mfOlkidzTUaa3S0PkMcNd0BhmqN4kybdqj5cSljXXxvi-g2WQJ3sSRlqaQq0hw8B_OmZUSPV3PJbudRbMzaEr">https://urldefense.com/v3/__https://aka.ms/LearnAboutSenderIdentification__;!!HXCxUKc!3p1mfOlkidzTUaa3S0PkMcNd0BhmqN4kybdqj5cSljXXxvi-g2WQJ3sSRlqaQq0hw8B_OmZUSPV3PJbudRbMzaEr</a>$&gt;
+<br />
+
+<br />
+Hi Kendall,
+<br />
+
+<br />
+
+<br />
+
+<br />
+Thank you for being interested in ZAFF. As you might have noticed here. ZAFF is a very exhaustive force field that covers all possible combinations of Zn2+ ligands in a specific forcefield.
+<br />
+
+<br />
+
+<br />
+
+<br />
+To my knowledge today. There has not been a complete re-parametrization or ZAFF in ff19SB and OPC water. So, to be safe, I still suggest using ff14SB and TIP3P at this moment. Currently, there is not restriction to stop you from using ff19SB + OPC + ZAFF, but as you have mentioned, it sounds like putting new wine to an old bag.
+<br />
+
+<br />
+
+<br />
+
+<br />
+We are glad to help if you could DM us the system that you are interested or any error message that you have encountered.
+<br />
+
+<br />
+
+<br />
+
+<br />
+Best regards,
+<br />
+
+<br />
+Zhen.
+<br />
+
+<br />
+
+<br />
+
+<br />
+_____________________
+<br />
+
+<br />
+Zhen Li&lt;<a href="https://urldefense.com/v3/__http://lizhen62017.wixsite.com/home__;!!HXCxUKc!3p1mfOlkidzTUaa3S0PkMcNd0BhmqN4kybdqj5cSljXXxvi-g2WQJ3sSRlqaQq0hw8B_OmZUSPV3PJbudXVYFMc0">https://urldefense.com/v3/__http://lizhen62017.wixsite.com/home__;!!HXCxUKc!3p1mfOlkidzTUaa3S0PkMcNd0BhmqN4kybdqj5cSljXXxvi-g2WQJ3sSRlqaQq0hw8B_OmZUSPV3PJbudXVYFMc0</a>$&gt;, Ph.D.,
+<br />
+
+<br />
+The Merz Research Group&lt;<a href="https://urldefense.com/v3/__http://merzgroup.org/__;!!HXCxUKc!3p1mfOlkidzTUaa3S0PkMcNd0BhmqN4kybdqj5cSljXXxvi-g2WQJ3sSRlqaQq0hw8B_OmZUSPV3PJbuddSBpDyQ">https://urldefense.com/v3/__http://merzgroup.org/__;!!HXCxUKc!3p1mfOlkidzTUaa3S0PkMcNd0BhmqN4kybdqj5cSljXXxvi-g2WQJ3sSRlqaQq0hw8B_OmZUSPV3PJbuddSBpDyQ</a>$&gt;,
+<br />
+
+<br />
+Michigan State University,
+<br />
+
+<br />
+Cleveland Clinic.
+<br />
+
+<br />
+________________________________
+<br />
+
+<br />
+From: Cherry, Kendall via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+Sent: Monday, July 14, 2025 3:29 PM
+<br />
+To: amber.ambermd.org &lt;amber.ambermd.org&gt;
+<br />
+Subject: Re: [AMBER] Choice of protein/water force fields with ZAFF zinc parameters?
+<br />
+
+<br />
+
+<br />
+
+<br />
+Sorry, just noticed a typo – I meant to say that the tutorial uses ff14SB and TIP3P.
+<br />
+
+<br />
+Kendall Cherry
+<br />
+
+<br />
+
+<br />
+From: Cherry, Kendall &lt;kche.email.unc.edu&gt;
+<br />
+Date: Monday, July 14, 2025 at 3:25 PM
+<br />
+To: amber.ambermd&#46;<!--nospam-->org &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+Subject: Choice of protein/water force fields with ZAFF zinc parameters?
+<br />
+Hello AMBER community,
+<br />
+
+<br />
+I am running simulations of a zinc finger protein and am planning to use ZAFF parameters to facilitate the Zn parametrization process. When reading through the ZAFF paper, I saw that it was validated with ff99SB and TIP3P, while the ZAFF tutorial uses ff14SB and SPC/E. I typically use ff19SB with OPC. Are there any conflicts between ZAFF parameters and ff19SB/OPC? Also, if someone has any ideas of a better way to incorporate Zn parameters, let me know – I know that ZAFF was developed ~15 years ago now, so am not sure if something better has come along since then.
+<br />
+
+<br />
+Thank you,
+<br />
+Kendall Cherry
+<br />
+
+<br />
+Chemistry Ph.D. Student at UNC-Chapel Hill
+<br />
+Kratochvil Lab
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!HXCxUKc!3tfgv2RVD2A_Ti7td-iFJmkYAd8QZYVnWcHliF7xkn8a59zwmgkNTpsYFPr-Yqah9lTpk-Wmnwdj1HwHmIZiBDI$">https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!HXCxUKc!3tfgv2RVD2A_Ti7td-iFJmkYAd8QZYVnWcHliF7xkn8a59zwmgkNTpsYFPr-Yqah9lTpk-Wmnwdj1HwHmIZiBDI$</a>
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!HXCxUKc!yP2ctlnzaB62ypARAFzd-BWotYdrfRTB1tn0y3OhUxQPyyFQlFcnDEZAkhWHZ3uleB7e8lmSPfwu3If543DF_xU$">https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!HXCxUKc!yP2ctlnzaB62ypARAFzd-BWotYdrfRTB1tn0y3OhUxQPyyFQlFcnDEZAkhWHZ3uleB7e8lmSPfwu3If543DF_xU$</a>
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Sep 03 2025 - 12:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0006.html" title="Next message in the list">YASHIKA . via AMBER: "[AMBER] Difference in cpptraj output structures between NVT equilibration and NPT production runs"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0004.html" title="Previous message in the list">Dulal Mondal via AMBER: "Re: [AMBER] continuous constant pH (chapter 28)"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg5" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg5" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg5" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg5" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] RESP fitting with constraints, qout output charges NaN from Albert Gauss via AMBER on 2023-07-07 (Amber Archive Jul 2023)</title>
+<meta name="Author" content="Albert Gauss via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] RESP fitting with constraints, qout output charges NaN" />
+<meta name="Date" content="2023-07-07" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] RESP fitting with constraints, qout output charges NaN</h1>
+<!-- received="Fri Jul  7 01:30:02 2023" -->
+<!-- isoreceived="20230707083002" -->
+<!-- sent="Fri, 7 Jul 2023 10:23:28 +0200" -->
+<!-- isosent="20230707082328" -->
+<!-- name="Albert Gauss via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] RESP fitting with constraints, qout output charges NaN" -->
+<!-- id="9391551f-7912-cbab-862a-436a3155c035.eigengestalt.com" -->
+<!-- charset="UTF-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0037.html" accesskey="d" title="Enrico Martinez via AMBER: &quot;Re: [AMBER] [Sender Not Verified] Rmsf profile after removing periodicity&quot;">Next message</a> ]
+[ <a href="0035.html" title="brian.radak--- via AMBER: &quot;Re: [AMBER] AmberTools23 changes antechamber behavior for GAFF2&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg36" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg36" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg36" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg36" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Albert Gauss via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20RESP%20fitting%20with%20constraints%2C%20qout%20output%20charges%20NaN">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 7 Jul 2023 10:23:28 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+&nbsp; Dear all,
+<br />
+<br />I am presently working through this tutorial 
+<br />
+(<a href="https://ambermd.org/tutorials/basic/tutorial5/">https://ambermd.org/tutorials/basic/tutorial5/</a>), attempting to apply 
+<br />
+RESP charges. As part of this process, I've introduced additional charge 
+<br />
+constraints in the ANTECHAMBER_RESP1/2.IN files. These constraints 
+<br />
+relate to the peptide bond atoms and are set to match the FF charges, 
+<br />
+also stipulating that the partial charge of all four atoms must equate 
+<br />
+to zero. The structure encompasses two peptide bonds.
+<br />
+<br />Here is the appended section to the ANTECHAMBER_RESP1.IN:
+<br />
+&nbsp;    1   -0.56790
+<br />
+&nbsp;    1   34
+<br />
+&nbsp;    1   0.59730
+<br />
+&nbsp;    1   32
+<br />
+&nbsp;    1   -0.41750
+<br />
+&nbsp;    1   48
+<br />
+&nbsp;    1   0.27190
+<br />
+&nbsp;    1   49
+<br />
+&nbsp;    4   0
+<br />
+&nbsp;    1   34 1 32 1 48 1 49
+<br />
+&nbsp;    # next peptide bond
+<br />
+&nbsp;    1   -0.56790
+<br />
+&nbsp;    1   30
+<br />
+&nbsp;    1   0.59730
+<br />
+&nbsp;    1   20
+<br />
+&nbsp;    1   -0.41570
+<br />
+&nbsp;    1   26
+<br />
+&nbsp;    1   0.27190
+<br />
+&nbsp;    1   36
+<br />
+&nbsp;    4   0
+<br />
+&nbsp;    1   30 1 20 1 26 1 36
+<br />
+<br />I'm encountering an issue when running resp; the charges in the qout 
+<br />
+file are all returned as NaN. Interestingly, when I include constraints 
+<br />
+for only one peptide bond, resp generates a qout file with charges. This 
+<br />
+holds true for both peptide bonds when individually included. For your 
+<br />
+convenience, I've attached the structure.xyz and resp input and output 
+<br />
+files. At this stage, I'm unsure how to move forward and I'm seeking any 
+<br />
+insights or advice you could offer. Any assistance will be greatly 
+<br />
+appreciated.
+<br />
+<br />Thank you in advance for your time and help.
+<br />
+<br />Best regards,
+<br />
+<br />Albert
+<br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<ul>
+<li>text/plain attachment: <a href="att-0036/ANTECHAMBER_RESP1.IN">ANTECHAMBER_RESP1.IN</a></li>
+</ul>
+<!-- attachment="ANTECHAMBER_RESP1.IN" -->
+<ul>
+<li>text/plain attachment: <a href="att-0036/ANTECHAMBER_RESP1.OUT">ANTECHAMBER_RESP1.OUT</a></li>
+</ul>
+<!-- attachment="ANTECHAMBER_RESP1.OUT" -->
+<ul>
+<li>chemical/x-xyz attachment: <a href="att-0036/struc_opt_vaccum.xyz">struc_opt_vaccum.xyz</a></li>
+</ul>
+<!-- attachment="struc_opt_vaccum.xyz" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Fri Jul 07 2023 - 01:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0037.html" title="Next message in the list">Enrico Martinez via AMBER: "Re: [AMBER] [Sender Not Verified] Rmsf profile after removing periodicity"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0035.html" title="Previous message in the list">brian.radak--- via AMBER: "Re: [AMBER] AmberTools23 changes antechamber behavior for GAFF2"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg36" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg36" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg36" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg36" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

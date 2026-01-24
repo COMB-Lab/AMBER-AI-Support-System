@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] closest command cpptraj from Maria Bzówka via AMBER on 2023-05-31 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="Maria Bzówka via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] closest command cpptraj" />
+<meta name="Date" content="2023-05-31" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] closest command cpptraj</h1>
+<!-- received="Thu Jun  1 00:00:03 2023" -->
+<!-- isoreceived="20230601070003" -->
+<!-- sent="Thu, 1 Jun 2023 08:38:04 +0200" -->
+<!-- isosent="20230601063804" -->
+<!-- name="Maria Bzówka via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] closest command cpptraj" -->
+<!-- id="CA+j-mc3Mi=82-iPbBSNCbhtNX5UrA3bt9afdLT+xXGR1sKLksA.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0001.html" accesskey="d" title="Daniel Roe via AMBER: &quot;Re: [AMBER] closest command cpptraj&quot;">Next message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0001.html" accesskey="t" title="Daniel Roe via AMBER: &quot;Re: [AMBER] closest command cpptraj&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg0" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg0" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg0" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg0" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Maria Bzówka via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20closest%20command%20cpptraj">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 1 Jun 2023 08:38:04 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber users,
+<br />
+<br />I wanted to ask for your advice while using the closest command in cpptraj.
+<br />
+<br />The goal was to obtain 5 closest water molecules from a specific atom
+<br />
+within our protein. In the original .pdb and .prmtop files we have 1-1255
+<br />
+protein residues which are followed by 3 Ca, 1Na, 5 Cl molecules and water
+<br />
+molecules (in such order). It seemed that the command worked because we
+<br />
+got both the .dat and .crd file with the information about the closest
+<br />
+residues but we are concerned regarding their numbering (indexing).
+<br />
+<br />First of all, in the created .crd and .prmtop files we have the protein,
+<br />
+1Na, 3Ca, only 2Cl molecules (so the numbering for the small molecules has
+<br />
+changed and three Cl ions were somehow excluded - we don't know why) and
+<br />
+later the closest water molecules.
+<br />
+In the example below we can see that a water molecule with an index 67 was
+<br />
+found in the first frame - how to get its real index? Should we add the
+<br />
+number of protein residues or also other small molecules? If so what about
+<br />
+those ions which were excluded during the analysis?
+<br />
+<br /><br />Below you can find both the input file command as well as output .dat file.
+<br />
+input.in
+<br />
+parm FS.prmtop
+<br />
+reference FS.inpcrd
+<br />
+<br />trajin x1.nc
+<br />
+autoimage
+<br />
+center :1-1255 mass origin
+<br />
+<br />closest 5 :870.NE2 first closestout out.dat outprefix 5closest
+<br />
+trajout out.crd
+<br />
+<br />go
+<br />
+<br />output.dat
+<br />
+#CLOSEST_00002[Frame] CLOSEST_00002[Mol] CLOSEST_00002[Dist]
+<br />
+CLOSEST_00002[FirstAtm]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1              10168              3.2605
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;50142
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1               9848              4.5560
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;49182
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1               6826              4.6368
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;40116
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1               5117              5.4421
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;34989
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1                 67              6.4906
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;19839
+<br />
+<br />Thank you in advance for your help.
+<br />
+<br />Best regards
+<br />
+Maria Bzówka
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Jun 01 2023 - 00:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0001.html" title="Next message in the list">Daniel Roe via AMBER: "Re: [AMBER] closest command cpptraj"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0001.html" title="Next message in this discussion thread">Daniel Roe via AMBER: "Re: [AMBER] closest command cpptraj"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0001.html" title="Message sent in reply to this message">Daniel Roe via AMBER: "Re: [AMBER] closest command cpptraj"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg0" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg0" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg0" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg0" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

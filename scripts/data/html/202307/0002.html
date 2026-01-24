@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Kerror about MMPBSA from Bill Miller III via AMBER on 2023-07-02 (Amber Archive Jul 2023)</title>
+<meta name="Author" content="Bill Miller III via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Kerror about MMPBSA" />
+<meta name="Date" content="2023-07-02" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Kerror about MMPBSA</h1>
+<!-- received="Sun Jul  2 07:00:03 2023" -->
+<!-- isoreceived="20230702140003" -->
+<!-- sent="Sun, 2 Jul 2023 08:31:27 -0500" -->
+<!-- isosent="20230702133127" -->
+<!-- name="Bill Miller III via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Kerror about MMPBSA" -->
+<!-- id="72326B55-F801-44D9-BE59-E4445DCD338A.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="[AMBER] Kerror about MMPBSA" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0003.html" accesskey="d" title="Hector A. Baldoni via AMBER: &quot;[AMBER] QM+Link final coordinates&quot;">Next message</a> ]
+[ <a href="0001.html" title="ZangRiran via AMBER: &quot;[AMBER] Kerror about mmpbsa&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg2" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg2" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg2" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg2" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Bill Miller III via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Kerror%20about%20MMPBSA">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 2 Jul 2023 08:31:27 -0500</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Based on the error, it appears MMPBSA is trying to predict the ligand mask and is finding no atoms. Which is why it is telling you that it “can’t pass no mask to strip” because there are no ligand atoms to remove when preparing the trajectory files. Did you create the dry prmtop files with ante-MMPBSA.py? I would start with double checking that your dry prmtop files were generated correctly.
+<br />
+<br />-Bill
+<br />
+<br /><br /><br /><em class="quotelev1">&gt; On Jul 2, 2023, at 8:22 AM, ZangRiran via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ﻿Hello
+</em><br />
+<em class="quotelev1">&gt; I am running mmpbsa in amber18  using the following command&quot; MMPBSA-1.py -O -i mmpbsa.in -o mmpbsa.dat -do final_mmpbsa.dat -sp com_solvated.prmtop -cp com.prmtop -rp ras.prmtop -lp raf.prmtop -y md.crd&quot;
+</em><br />
+<em class="quotelev1">&gt; But I am encountering an error which says &quot;Loading and checking parameter files for compatibility...
+</em><br />
+<em class="quotelev1">&gt; sander found! Using /mnt/disk1/software/AMBER18/amber18/bin/sander
+</em><br />
+<em class="quotelev1">&gt; cpptraj found! Using /mnt/disk1/software/AMBER18/amber18/bin/cpptraj
+</em><br />
+<em class="quotelev1">&gt; File &quot;/mnt/disk1/software/AMBER18/amber18/bin/MMPBSA-1.py&quot;, line 99, in &lt;module&gt;
+</em><br />
+<em class="quotelev1">&gt;    app.file_setup()
+</em><br />
+<em class="quotelev1">&gt;  File &quot;/mnt/disk1/software/AMBER18/amber18/lib/python2.7/site-packages/MMPBSA_mods/main.py&quot;, line 156, in file_setup
+</em><br />
+<em class="quotelev1">&gt;    self.mpi_size, str(external_progs['cpptraj']), self.pre)
+</em><br />
+<em class="quotelev1">&gt;  File &quot;/mnt/disk1/software/AMBER18/amber18/lib/python2.7/site-packages/MMPBSA_mods/make_trajs.py&quot;, line 104, in make_trajectories
+</em><br />
+<em class="quotelev1">&gt;    traj.Strip(INPUT['ligand_mask'])
+</em><br />
+<em class="quotelev1">&gt;  File &quot;/mnt/disk1/software/AMBER18/amber18/lib/python2.7/site-packages/MMPBSA_mods/make_trajs.py&quot;, line 646, in Strip
+</em><br />
+<em class="quotelev1">&gt;    raise InternalError('Cannot pass no mask to Strip!')
+</em><br />
+<em class="quotelev1">&gt; InternalError: Cannot pass no mask to Strip!&quot;
+</em><br />
+<em class="quotelev1">&gt; And the input file MMPBSA content is &quot;
+</em><br />
+<em class="quotelev1">&gt; &amp;general
+</em><br />
+<em class="quotelev1">&gt;  endframe = 10000,
+</em><br />
+<em class="quotelev1">&gt;  verbose = 1,
+</em><br />
+<em class="quotelev1">&gt;  strip_mask = &quot;:WAT:CL:CLO:IB:K:LI:MG:NA:NB&quot;,
+</em><br />
+<em class="quotelev1">&gt; /
+</em><br />
+<em class="quotelev1">&gt; &amp;gb
+</em><br />
+<em class="quotelev1">&gt;  igb = 5, saltcon = 0.100,
+</em><br />
+<em class="quotelev1">&gt; /
+</em><br />
+<em class="quotelev1">&gt; &amp;pb
+</em><br />
+<em class="quotelev1">&gt;  istrng = 0.100,
+</em><br />
+<em class="quotelev1">&gt; /
+</em><br />
+<em class="quotelev1">&gt; &amp;decomp
+</em><br />
+<em class="quotelev1">&gt;  idecomp = 1, print_res = &quot;1-77&quot;, dec_verbose = 1,
+</em><br />
+<em class="quotelev1">&gt; /&quot;
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; How to rectify this kindly help as I am badly stuck in this.
+</em><br />
+<em class="quotelev1">&gt; Thank you,
+</em><br />
+<em class="quotelev1">&gt; Regards.
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sun Jul 02 2023 - 07:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0003.html" title="Next message in the list">Hector A. Baldoni via AMBER: "[AMBER] QM+Link final coordinates"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0001.html" title="Previous message in the list">ZangRiran via AMBER: "[AMBER] Kerror about mmpbsa"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg2" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg2" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg2" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg2" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

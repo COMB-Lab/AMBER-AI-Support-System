@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] [Sender Not Verified]  RNA with 5' phosphates from Steinbrecher, Thomas via AMBER on 2023-06-05 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="Steinbrecher, Thomas via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] [Sender Not Verified]  RNA with 5' phosphates" />
+<meta name="Date" content="2023-06-05" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] [Sender Not Verified]  RNA with 5' phosphates</h1>
+<!-- received="Mon Jun  5 23:30:02 2023" -->
+<!-- isoreceived="20230606063002" -->
+<!-- sent="Tue, 6 Jun 2023 08:23:21 +0200" -->
+<!-- isosent="20230606062321" -->
+<!-- name="Steinbrecher, Thomas via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] [Sender Not Verified]  RNA with 5' phosphates" -->
+<!-- id="CABaEAN1+5Uh7V22DhBmbhQpOuBdJk1_Q0B5_j5uH4=FoQOuNSg.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CA+D=SrnngAqqFSyLUaodKaxySXj-SKqs8iG8Ca1tgnhZ3XvG9g.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0027.html" accesskey="d" title="angad sharma via AMBER: &quot;[AMBER] Tolerance problem in umbrella sampling&quot;">Next message</a> ]
+[ <a href="0025.html" title="Christopher Corbo via AMBER: &quot;Re: [AMBER] Self Inconsistency within antechamber for NAD and NAP cofactors (expects different bond orders in different routines)&quot;">Previous message</a> ]
+[ <a href="0021.html" title="Michael Bruist via AMBER: &quot;[AMBER] RNA with 5&#0039; phosphates&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg26" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg26" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg26" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg26" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Steinbrecher, Thomas via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20%5BSender%20Not%20Verified%5D%20%20RNA%20with%205'%20phosphates">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 6 Jun 2023 08:23:21 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Michael,
+<br />
+<br />there was a thread on this in the mailing list a few weeks back:
+<br />
+<a href="http://archive.ambermd.org/202303/0114.html">http://archive.ambermd.org/202303/0114.html</a> My response seems not to have
+<br />
+been archived, so I copied it here:
+<br />
+<br />my experience here may be outdated, but the stability issues you mention
+<br />
+are (or were some years ago) typical for MD simulations of protonated
+<br />
+phosphates. As you describe, the imbalance between electrostatics and vdW
+<br />
+repulsion is the issue here. A normal hydroxyl H does not need a LJ center,
+<br />
+because it is sufficiently protected by both the O-LJ volume plus, and this
+<br />
+is key, the relatively stiff angle bending in e.g. C-C-O groups, so the H
+<br />
+is kept away from the heavy atoms three bonds away. In contrast, a
+<br />
+phosphate has
+<br />
+O-P-O angle terms which are softer plus relatively high charges on both H
+<br />
+and O, so the collapse you describe between atoms 1 and 4 in a O-P-O-H
+<br />
+substructure can occur. The ad hoc solution of giving the H non-zero vdW
+<br />
+parameters will make the simulation stable (most likely) but in principle
+<br />
+you'd be on the hook to show that this still describes the phosphate group
+<br />
+well in the environment you simulate it in. The cowardly solution would be
+<br />
+to claim that the phosphate has pK around 7 anyway and in the presence of
+<br />
+all those nucleic acid associated metal cations, you may as well simulate
+<br />
+it deprotonated.
+<br />
+<br /><br />Dave also suggested stiffening the O-P-O or P-O-H angles which also should
+<br />
+prevent such instabilities from happening.
+<br />
+<br />Kind Regards,
+<br />
+<br />Thomas
+<br />
+<br />On Mon, Jun 5, 2023 at 8:08 PM Michael Bruist via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt; My group is trying to model RNAs with 5’-phosphates. We are getting crashes
+</em><br />
+<em class="quotelev1">&gt; that may indicate a problem for the force fields in terminalphos.lib
+</em><br />
+<em class="quotelev1">&gt; (Amber18) and terminalphos.LJbb-RNA (Amber20). Both have a problem in that
+</em><br />
+<em class="quotelev1">&gt; bond angles with the protonated oxygen are not maintained during
+</em><br />
+<em class="quotelev1">&gt; minimization or pmemd runs. See attached 10-frame movie for a failure in
+</em><br />
+<em class="quotelev1">&gt; minimization.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Attached are the following files for our attempts to use this in AMBER20:
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; GMP_failure.mp4  a 10-frame movie showing the failure of the 5’ phosphate
+</em><br />
+<em class="quotelev1">&gt; in the upper left.
+</em><br />
+<em class="quotelev1">&gt; tleap_commands.txt
+</em><br />
+<em class="quotelev1">&gt; TLS1_clipped_K.inmin
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I also wanted to attach the parm file, but its size prohibited this
+</em><br />
+<em class="quotelev1">&gt; message from being accepted. I am including a link to a Google drive
+</em><br />
+<em class="quotelev1">&gt; folder.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://drive.google.com/drive/folders/1EvhLYvcV5DkpDGNmbQR7B5-R8Pd_yeTp?usp=sharing">https://drive.google.com/drive/folders/1EvhLYvcV5DkpDGNmbQR7B5-R8Pd_yeTp?usp=sharing</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; For the future, what is the best way to provide access to such large files?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks for your help.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Mike Bruist
+</em><br />
+<em class="quotelev1">&gt; --
+</em><br />
+<em class="quotelev1">&gt; Michael F. Bruist
+</em><br />
+<em class="quotelev1">&gt; Professor of Biochemistry
+</em><br />
+<em class="quotelev1">&gt; Department of Chemistry and Biochemistry
+</em><br />
+<em class="quotelev1">&gt; 215-596-8530 (University City office)
+</em><br />
+<em class="quotelev1">&gt; 610-649-5474 (home, &quot;COVID office&quot;)
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br /><br /><pre>
+-- 
+*Dr. Thomas Steinbrecher*
+Principal Scientist CADD
+Roche Pharma Research and Early Development
+Roche Innovation Center Basel
+F. Hoffmann-La Roche Ltd
+Bldg. 092/3.92
+Grenzacherstrasse 124
+4070 Basel
+Switzerland
+Phone +41 61 682 1319
+mailto: thomas.steinbrecher.roche.com
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Mon Jun 05 2023 - 23:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0027.html" title="Next message in the list">angad sharma via AMBER: "[AMBER] Tolerance problem in umbrella sampling"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0025.html" title="Previous message in the list">Christopher Corbo via AMBER: "Re: [AMBER] Self Inconsistency within antechamber for NAD and NAP cofactors (expects different bond orders in different routines)"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0021.html" title="Message to which this message replies">Michael Bruist via AMBER: "[AMBER] RNA with 5&#0039; phosphates"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg26" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg26" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg26" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg26" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

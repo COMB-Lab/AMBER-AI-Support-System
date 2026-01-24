@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] QMMM-FEP with sander.MPI from 东庚 via AMBER on 2023-08-08 (Amber Archive Aug 2023)</title>
+<meta name="Author" content="东庚 via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] QMMM-FEP with sander.MPI" />
+<meta name="Date" content="2023-08-08" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] QMMM-FEP with sander.MPI</h1>
+<!-- received="Tue Aug  8 18:00:02 2023" -->
+<!-- isoreceived="20230809010002" -->
+<!-- sent="Wed, 9 Aug 2023 00:31:12 +0000" -->
+<!-- isosent="20230809003112" -->
+<!-- name="东庚 via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] QMMM-FEP with sander.MPI" -->
+<!-- id="ZQ0PR01MB10955F1C10EC245E3B59B2D79412A.ZQ0PR01MB1095.CHNPR01.prod.partner.outlook.cn" -->
+<!-- charset="gb2312" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0033.html" accesskey="d" title="&#19996;&#24218; via AMBER: &quot;[AMBER] QMMM-FEP with sander.MPI&quot;">Next message</a> ]
+[ <a href="0031.html" title="Elvira Tarasova via AMBER: &quot;Re: [AMBER] Problem with time records in cpout- files in REMD CpHMD simulation&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0033.html" accesskey="t" title="&#19996;&#24218; via AMBER: &quot;[AMBER] QMMM-FEP with sander.MPI&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg32" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg32" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg32" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg32" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: 东庚 via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20QMMM-FEP%20with%20sander.MPI">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 9 Aug 2023 00:31:12 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber community,
+<br />
+I'm trying to run the SQM/MM FEP calculations. The version I am using is Amber22. The simulation process is calculated using Sander.MPI.
+<br />
+
+<br />
+When I generated an input file using the new version of the mbar method in the Amber22 manual, an error was reported('error in reading namelist cntrl').
+<br />
+Here is the input file:
+<br />
+##########################################
+<br />
+NPT simulation
+<br />
+&amp;cntrl
+<br />
+irest=0,ntx=1,
+<br />
+nstlim=50000,dt=0.002,
+<br />
+temp0=300.0,ntt=3,gamma_ln=2.0,
+<br />
+ntc=2,ntf=1,
+<br />
+cut=8.0,
+<br />
+ntpr=5000,ntwx=5000,ntwv=0,ntwe=0,
+<br />
+icfe=1,clambda = 0.5,
+<br />
+ifmbar=1,
+<br />
+mbar_states = 15,
+<br />
+mbar_lambda = 0.00, 0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.85, 0.90, 0.95, 1.0,
+<br />
+ifsc=1,scmask=&quot;:PHN.O1,H6&quot;,
+<br />
+ifqnt = 1,
+<br />
+/
+<br />
+&amp;qmmm
+<br />
+qmmask=':PHN.1-13',
+<br />
+qmcharge=0,
+<br />
+qm_theory='DFTB3’,
+<br />
+/
+<br />
+##########################################
+<br />
+And my terminal's command is
+<br />
+&nbsp;' mpirun&amp;nbsp; -np 2&amp;nbsp; sander.MPI -ng 2 -groupfile group_prod_l ‘ .
+<br />
+
+<br />
+When I generate an input file using the old version of Amber formate, it can be run. The input file is as follows:
+<br />
+##########################################
+<br />
+NPT simulation
+<br />
+&amp;cntrl
+<br />
+irest=0,ntx=1,
+<br />
+nstlim=500000,dt=0.001,
+<br />
+temp0=300.0,ntt=3,gamma_ln=2.0,
+<br />
+ntc=2,ntf=1,
+<br />
+cut=8.0,
+<br />
+ntpr=5000,ntwx=5000,ntwv=0,ntwe=0,
+<br />
+icfe=1,clambda = 0.5,
+<br />
+ifmbar=1, bar_intervall=1000,bar_l_min=0.005,bar_l_max=0.995,bar_l_incr=0.1,
+<br />
+ifsc=1,scmask=&quot;:BNZ.H6&quot;,
+<br />
+ifqnt = 1,
+<br />
+/
+<br />
+&amp;qmmm
+<br />
+qmmask=':BNZ.1-12',
+<br />
+qmcharge=0,
+<br />
+qm_theory='DFTB3',
+<br />
+/
+<br />
+##########################################
+<br />
+
+<br />
+However, in the old version of Amber , it is not allowed for bar_l_min&amp;gt;0.995 or bar_l_max&lt;0.005, which makes it impossible for me to set the lambda=0 and 1.
+<br />
+
+<br />
+How should I do?
+<br />
+Best Regards,
+<br />
+Geng
+<br />
+
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Aug 08 2023 - 18:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0033.html" title="Next message in the list">&#19996;&#24218; via AMBER: "[AMBER] QMMM-FEP with sander.MPI"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0031.html" title="Previous message in the list">Elvira Tarasova via AMBER: "Re: [AMBER] Problem with time records in cpout- files in REMD CpHMD simulation"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0033.html" title="Next message in this discussion thread">&#19996;&#24218; via AMBER: "[AMBER] QMMM-FEP with sander.MPI"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0033.html" title="Message sent in reply to this message">&#19996;&#24218; via AMBER: "[AMBER] QMMM-FEP with sander.MPI"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg32" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg32" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg32" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg32" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] pmemd simulation exits abnormally from David A Case via AMBER on 2023-05-15 (Amber Archive May 2023)</title>
+<meta name="Author" content="David A Case via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] pmemd simulation exits abnormally" />
+<meta name="Date" content="2023-05-15" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] pmemd simulation exits abnormally</h1>
+<!-- received="Mon May 15 05:30:02 2023" -->
+<!-- isoreceived="20230515123002" -->
+<!-- sent="Mon, 15 May 2023 08:21:24 -0400" -->
+<!-- isosent="20230515122124" -->
+<!-- name="David A Case via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] pmemd simulation exits abnormally" -->
+<!-- id="20230515122124.hsidcjd2bn5n2pcx.pop-os.localdomain" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="CABaEAN2CS3_rfNbTfL0vUBy4Qmbr89M+wpuzKzEJaHwkyrt0eA.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0069.html" accesskey="d" title="Martin Juh&#0225;s via AMBER: &quot;Re: [AMBER] Amber22 Could not import mpi4py package.&quot;">Next message</a> ]
+[ <a href="0067.html" title="Ignacio J. General via AMBER: &quot;Re: [AMBER] pmemd simulation exits abnormally&quot;">Previous message</a> ]
+[ <a href="0066.html" title="Steinbrecher, Thomas via AMBER: &quot;[AMBER] pmemd simulation exits abnormally&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0070.html" accesskey="t" title="Steinbrecher, Thomas via AMBER: &quot;Re: [AMBER] pmemd simulation exits abnormally&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg68" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg68" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg68" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg68" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20pmemd%20simulation%20exits%20abnormally">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 15 May 2023 08:21:24 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Mon, May 15, 2023, Steinbrecher, Thomas via AMBER wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;I see the following error message occurring seemingly at random (in about
+</em><br />
+<em class="quotelev1">&gt;20% of runs) in some repeats of a large membrane system simulation (running
+</em><br />
+<em class="quotelev1">&gt;Amber22 pmemd.CUDA on RHEL with ff19SB+gaff2+lipid21+OPC water):
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;-----------------------------------------------
+</em><br />
+<em class="quotelev1">&gt;ERROR: Calculation halted.  Periodic box dimensions have changed too much
+</em><br />
+<em class="quotelev1">&gt;from their initial values.
+</em><br />
+<em class="quotelev1">&gt;------------------------------------------------
+</em><br />
+<br />Just to check: how far into the simulation does this occur?  Are you
+<br />
+printing often enough to be sure that you are seeing all the volume changes that
+<br />
+are taking place? (Especially if the error is early in the run.)
+<br />
+<br />Note that vlimit is not checked on the GPU, but you can monitor the
+<br />
+temperature via mdout.  A couple things to try:
+<br />
+<br />&nbsp;&nbsp;&nbsp;1. Have you done enough initial NVT eqilibration before switching to NPT?
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(I don't know what &quot;enough&quot; is here, but try 10 ns or so.)
+<br />
+&nbsp;&nbsp;&nbsp;2. Try NPT with the MC barostat to see if you get past this problem; you
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;can switch to the Berendsen barostat later.
+<br />
+<br />Of course, it would be good if pmemd reported more details about what is
+<br />
+going on -- at least exactly which dimension values were involved.
+<br />
+<br />....good luck...dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon May 15 2023 - 05:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0069.html" title="Next message in the list">Martin Juh&#0225;s via AMBER: "Re: [AMBER] Amber22 Could not import mpi4py package."</a></li>
+<li><dfn>Previous message</dfn>: <a href="0067.html" title="Previous message in the list">Ignacio J. General via AMBER: "Re: [AMBER] pmemd simulation exits abnormally"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0066.html" title="Message to which this message replies">Steinbrecher, Thomas via AMBER: "[AMBER] pmemd simulation exits abnormally"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0070.html" title="Next message in this discussion thread">Steinbrecher, Thomas via AMBER: "Re: [AMBER] pmemd simulation exits abnormally"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0070.html" title="Message sent in reply to this message">Steinbrecher, Thomas via AMBER: "Re: [AMBER] pmemd simulation exits abnormally"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg68" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg68" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg68" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg68" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

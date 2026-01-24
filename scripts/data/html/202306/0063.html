@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Regarding K-means clustering from Saikat Pal via AMBER on 2023-06-14 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="Saikat Pal via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Regarding K-means clustering" />
+<meta name="Date" content="2023-06-14" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Regarding K-means clustering</h1>
+<!-- received="Wed Jun 14 11:30:02 2023" -->
+<!-- isoreceived="20230614183002" -->
+<!-- sent="Wed, 14 Jun 2023 18:05:37 +0000 (UTC)" -->
+<!-- isosent="20230614180537" -->
+<!-- name="Saikat Pal via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Regarding K-means clustering" -->
+<!-- id="573108111.2888855.1686765937781.mail.yahoo.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="573108111.2888855.1686765937781.ref.mail.yahoo.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0064.html" accesskey="d" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Regarding K-means clustering&quot;">Next message</a> ]
+[ <a href="0062.html" title="Steinbrecher, Thomas via AMBER: &quot;Re: [AMBER] [Sender Not Verified] About polar solvation term in MMGBSA decomposition results&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0064.html" accesskey="t" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Regarding K-means clustering&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg63" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg63" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg63" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg63" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Saikat Pal via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Regarding%20K-means%20clustering">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 14 Jun 2023 18:05:37 +0000 (UTC)</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear all,I am trying to perform K-means clustering of my system. I am using the following script:
+<br />
+trajin remd-3.nc 1 last 10
+<br />
+strip :Na+,Cl-,WAT
+<br />
+cluster c1 \
+<br />
+kmeans clusters 50 randompoint maxit 1000 \
+<br />
+rms :1-15.C,N,O,CA \
+<br />
+sieve 10 random \
+<br />
+out cnumvtime.dat \
+<br />
+summary summary.dat \
+<br />
+info info.dat \
+<br />
+cpopvtime cpopvtime.agr normframe \
+<br />
+repout rep repfmt pdb \
+<br />
+singlerepout singlerep.nc singlerepfmt netcdf \
+<br />
+avgout avg avgfmt pdb
+<br />
+run
+<br />
+<br />However, I am getting the following errors:ANALYSIS: Performing 1 analyses:
+<br />
+  0: [cluster c1 kmeans clusters 5 randompoint maxit 1000 rms :1-15.C,N,O,CA sieve 10 random out cnumvtime&#46;<!--nospam-->dat summary summary.dat info info.dat cpopvtime cpopvtime.agr normframe repout rep repfmt pdb singlerepout singlerep.nc singlerepfmt netcdf avgout avg avgfmt pdb]
+<br />
+    Starting clustering.
+<br />
+    Mask [:1-15.C,N,O,CA] corresponds to 60 atoms.
+<br />
+    RNG: Marsaglia
+<br />
+Random_Number: seed is &lt;= 0, using wallclock time as seed (1639061)
+<br />
+    Estimated pair-wise matrix memory usage: &gt; 79.664 kB
+<br />
+    Pair-wise matrix set up with sieve, 2000 frames, 200 sieved frames.
+<br />
+    Calculating pair-wise distances.
+<br />
+ 0% Segmentation fault (core dumped)
+<br />
+<br />Please help me to solve the issue.
+<br />
+Thanks and Regards,
+<br />
+Saikat Pal
+<br />
+<br /><br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Jun 14 2023 - 11:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0064.html" title="Next message in the list">Daniel Roe via AMBER: "Re: [AMBER] Regarding K-means clustering"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0062.html" title="Previous message in the list">Steinbrecher, Thomas via AMBER: "Re: [AMBER] [Sender Not Verified] About polar solvation term in MMGBSA decomposition results"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0064.html" title="Next message in this discussion thread">Daniel Roe via AMBER: "Re: [AMBER] Regarding K-means clustering"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0064.html" title="Message sent in reply to this message">Daniel Roe via AMBER: "Re: [AMBER] Regarding K-means clustering"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg63" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg63" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg63" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg63" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] pmemd simulation exits abnormally from Dickson, Callum via AMBER on 2023-05-15 (Amber Archive May 2023)</title>
+<meta name="Author" content="Dickson, Callum via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] pmemd simulation exits abnormally" />
+<meta name="Date" content="2023-05-15" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] pmemd simulation exits abnormally</h1>
+<!-- received="Mon May 15 09:00:02 2023" -->
+<!-- isoreceived="20230515160002" -->
+<!-- sent="Mon, 15 May 2023 15:43:55 +0000" -->
+<!-- isosent="20230515154355" -->
+<!-- name="Dickson, Callum via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] pmemd simulation exits abnormally" -->
+<!-- id="SA0P171MB01074676048305B5AEC35659FC789.SA0P171MB0107.NAMP171.PROD.OUTLOOK.COM" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CABaEAN0iOEkvbi8uNSh4ZM3QBAizZNFhe+2JdLv1HY+ShDCzMQ.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0075.html" accesskey="d" title="mish via AMBER: &quot;Re: [AMBER] pmemd simulation exits abnormally&quot;">Next message</a> ]
+[ <a href="0073.html" title="Daniel Hall via AMBER: &quot;[AMBER] Cluster size&quot;">Previous message</a> ]
+[ <a href="0071.html" title="Steinbrecher, Thomas via AMBER: &quot;Re: [AMBER] pmemd simulation exits abnormally&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+[ <a href="0075.html" accesskey="t" title="mish via AMBER: &quot;Re: [AMBER] pmemd simulation exits abnormally&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg74" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg74" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg74" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg74" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Dickson, Callum via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20pmemd%20simulation%20exits%20abnormally">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 15 May 2023 15:43:55 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Thomas,
+<br />
+
+<br />
+I wrote up my usual protocol for membrane protein MD here, in case parts of this are useful:
+<br />
+<a href="https://github.com/callumjd/AMBER-Membrane_protein_tutorial">https://github.com/callumjd/AMBER-Membrane_protein_tutorial</a>
+<br />
+
+<br />
+I use semi-isotropic pressure scaling with surface tension term set to zero, this couples the X and Y allowing Z to vary (see 07_Prod.in file):
+<br />
+
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntp=3, csurften=3, gamma_ten=0.0, ninterface=2,
+<br />
+
+<br />
+To be conservative, the 100ns MD also uses skinnb=3.0 but provided the system is equilibrated, you can likely remove this since it slows down your simulation time.
+<br />
+
+<br />
+Regarding Monte Carlo barostat, this does result in a lower area per lipid than Berendsen, so the Berendsen barostat is preferred. However, I ran 300 ns MDs for the Lipid21 paper and you can see the comparison between Berendsen and Monte Carlo barostats in the SI, in general the area per lipid drops by ~ 3 A^2, but does not result in a phase change of the membrane.
+<br />
+
+<br />
+Best,
+<br />
+Callum
+<br />
+
+<br />
+
+<br />
+
+<br />
+-----Original Message-----
+<br />
+From: Steinbrecher, Thomas via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt; 
+<br />
+Sent: Monday, May 15, 2023 10:15 AM
+<br />
+To: David A Case &lt;david.case.rutgers.edu&gt;
+<br />
+Cc: AMBER Mailing List &lt;amber.ambermd.org&gt;
+<br />
+Subject: Re: [AMBER] pmemd simulation exits abnormally
+<br />
+
+<br />
+This Message is from an External Sender. Do not click links or open attachments unless you trust the sender.
+<br />
+
+<br />
+in support of my last suggestion, I plotted the x and y box size and
+<br />
+sqrt(x*y) for one of my simulations (one that completed, I should not have overwritten the halted ones...) and it certainly seems the later term is very constant while the x and y alone can vary more or less randomly by 10% or more.
+<br />
+
+<br />
+This would explain the seemingly random number of the crashes, as the box dimensions change almost in a random walk. This also would mean that every membrane simulation in pmemd.cuda should sooner or later crash with ntb=2 since nothing stops the x and y dimensions from sooner or later changing too far.
+<br />
+
+<br />
+Maybe I'm on the wrong track here, but if the above is correct, should
+<br />
+ntb=2 even be recommended for membrane simulations (which the manual does)?
+<br />
+Sooner or later, the box will thin so much that one will see boundary artefacts.
+<br />
+
+<br />
+Would ntb=3 then be preferred? But that requires surface tension &gt; 0 and
+<br />
+lipid21 membranes should be run without surface tension afaik?
+<br />
+
+<br />
+Kind Regards,
+<br />
+
+<br />
+Thomas
+<br />
+
+<br />
+
+<br />
+On Mon, May 15, 2023 at 3:50 PM Thomas Steinbrecher &lt; thomas.steinbrecher.roche&#46;<!--nospam-->com&gt; wrote:
+<br />
+
+<br />
+<em class="quotelev1">&gt; Hi all,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; There is one more thing that occured to me: My system has ntb = 2 set, 
+</em><br />
+<em class="quotelev1">&gt; non-isotropic box scaling as recommended for membrane systems. Is it 
+</em><br />
+<em class="quotelev1">&gt; possible that the system &quot;drifts&quot;, since the membrane can freely 
+</em><br />
+<em class="quotelev1">&gt; change shape in x-y direction as long as the total xy-area stays 
+</em><br />
+<em class="quotelev1">&gt; constant? This wouldnt even be wrong physically, but I can imagine 
+</em><br />
+<em class="quotelev1">&gt; pmemd could have an issue with that when splitting atoms into cells.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; There is no semi-isotropic scaling in Amber that varies the z-box size 
+</em><br />
+<em class="quotelev1">&gt; independent of the coupled x-y size, right?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; Just to check: how far into the simulation does this occur?  Are you 
+</em><br />
+<em class="quotelev2">&gt;&gt; printing often enough to be sure that you are seeing all the volume 
+</em><br />
+<em class="quotelev2">&gt;&gt; changes that are taking place? (Especially if the error is early in 
+</em><br />
+<em class="quotelev2">&gt;&gt; the run.)
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; it happens more or less equally spaced during my 250ns production run, 
+</em><br />
+<em class="quotelev1">&gt; as early as 30ns, or as late as 200ns into the run.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I'm certainly not printing often enough to see quick changes, if 
+</em><br />
+<em class="quotelev1">&gt; something goes seriously wrong and destabilises the system in a few 
+</em><br />
+<em class="quotelev1">&gt; 1000s steps, I would likely miss it (Im printing every 1 ns, which 
+</em><br />
+<em class="quotelev1">&gt; already creates huge files).
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; Note that vlimit is not checked on the GPU, but you can monitor the 
+</em><br />
+<em class="quotelev2">&gt;&gt; temperature via mdout.  A couple things to try:
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;    1. Have you done enough initial NVT eqilibration before switching 
+</em><br />
+<em class="quotelev2">&gt;&gt; to NPT?
+</em><br />
+<em class="quotelev2">&gt;&gt;       (I don't know what &quot;enough&quot; is here, but try 10 ns or so.)
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; the NVT equilibration is fairly short, but at the point here, we have 
+</em><br />
+<em class="quotelev1">&gt; done
+</em><br />
+<em class="quotelev1">&gt; 20+ns of various restrained and unrestrained NPT equilibration, plus
+</em><br />
+<em class="quotelev1">&gt; typically more than 50ns of production runs. Density, Temperature and 
+</em><br />
+<em class="quotelev1">&gt; Pressure all look fine the entire time, so it would be surprising (and 
+</em><br />
+<em class="quotelev1">&gt; very
+</em><br />
+<em class="quotelev1">&gt; worrying) if there could still be insufficient equilibration in the 
+</em><br />
+<em class="quotelev1">&gt; system somehow...
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;    2. Try NPT with the MC barostat to see if you get past this 
+</em><br />
+<em class="quotelev2">&gt;&gt; problem; you
+</em><br />
+<em class="quotelev2">&gt;&gt;       can switch to the Berendsen barostat later.
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; A past test had MC barostat and did not crash (N=1 observation), but I 
+</em><br />
+<em class="quotelev1">&gt; thought that is not recommended for membrane simulations currently?
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev2">&gt;&gt; Of course, it would be good if pmemd reported more details about what 
+</em><br />
+<em class="quotelev2">&gt;&gt; is going on -- at least exactly which dimension values were involved.
+</em><br />
+<em class="quotelev2">&gt;&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Yes, it would be helpful to know what pmemd expects here, or maybe to 
+</em><br />
+<em class="quotelev1">&gt; write out the final coordinates when this condition occurs.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; --
+</em><br />
+<em class="quotelev1">&gt; *Dr. Thomas Steinbrecher*
+</em><br />
+<em class="quotelev1">&gt; Principal Scientist CADD
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Roche Pharma Research and Early Development Roche Innovation Center 
+</em><br />
+<em class="quotelev1">&gt; Basel F. Hoffmann-La Roche Ltd Bldg. 092/3.92 Grenzacherstrasse 124
+</em><br />
+<em class="quotelev1">&gt; 4070 Basel
+</em><br />
+<em class="quotelev1">&gt; Switzerland
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Phone +41 61 682 1319
+</em><br />
+<em class="quotelev1">&gt; mailto: thomas.steinbrecher.roche.com
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+
+<br />
+
+<br />
+--
+<br />
+*Dr. Thomas Steinbrecher*
+<br />
+Principal Scientist CADD
+<br />
+
+<br />
+Roche Pharma Research and Early Development Roche Innovation Center Basel F. Hoffmann-La Roche Ltd Bldg. 092/3.92 Grenzacherstrasse 124
+<br />
+4070 Basel
+<br />
+Switzerland
+<br />
+
+<br />
+Phone +41 61 682 1319
+<br />
+mailto: thomas.steinbrecher.roche.com
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!N3hqHg43uw!s1bb36bbBF43yti7SJYSyCaTukj-ygveCB7p5Me3pS94cpFvfI3vkikR1MaRZuUEgNtEMLCR16lw_AwFaxiM$">https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!N3hqHg43uw!s1bb36bbBF43yti7SJYSyCaTukj-ygveCB7p5Me3pS94cpFvfI3vkikR1MaRZuUEgNtEMLCR16lw_AwFaxiM$</a>
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon May 15 2023 - 09:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0075.html" title="Next message in the list">mish via AMBER: "Re: [AMBER] pmemd simulation exits abnormally"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0073.html" title="Previous message in the list">Daniel Hall via AMBER: "[AMBER] Cluster size"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0071.html" title="Message to which this message replies">Steinbrecher, Thomas via AMBER: "Re: [AMBER] pmemd simulation exits abnormally"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0075.html" title="Next message in this discussion thread">mish via AMBER: "Re: [AMBER] pmemd simulation exits abnormally"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0075.html" title="Message sent in reply to this message">mish via AMBER: "Re: [AMBER] pmemd simulation exits abnormally"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg74" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg74" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg74" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg74" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] How to get Inherent structure (Minimization energy) from David A Case via AMBER on 2023-09-20 (Amber Archive Sep 2023)</title>
+<meta name="Author" content="David A Case via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] How to get Inherent structure (Minimization energy)" />
+<meta name="Date" content="2023-09-20" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] How to get Inherent structure (Minimization energy)</h1>
+<!-- received="Wed Sep 20 10:00:03 2023" -->
+<!-- isoreceived="20230920170003" -->
+<!-- sent="Wed, 20 Sep 2023 10:51:23 -0600" -->
+<!-- isosent="20230920165123" -->
+<!-- name="David A Case via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] How to get Inherent structure (Minimization energy)" -->
+<!-- id="20230920165123.bb6yyngah5xfw4s5.pop-os.localdomain" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="SL2P216MB1013A6C5AF1003D70E4A00BCCBFAA.SL2P216MB1013.KORP216.PROD.OUTLOOK.COM" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0090.html" accesskey="d" title="David A Case via AMBER: &quot;Re: [AMBER] Installing on Ubuntu Question&quot;">Next message</a> ]
+[ <a href="0088.html" title="David A Case via AMBER: &quot;Re: [AMBER] How can I resolve the issue of the &#0039;NAB&#0039; command not being found in AmberTools23?&quot;">Previous message</a> ]
+[ <a href="0079.html" title="Zafar,Muhammad Saqlain via AMBER: &quot;[AMBER] How to get Inherent structure (Minimization energy)&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg89" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg89" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg89" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg89" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: David A Case via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20How%20to%20get%20Inherent%20structure%20(Minimization%20energy)">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 20 Sep 2023 10:51:23 -0600</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+On Tue, Sep 19, 2023, Zafar,Muhammad Saqlain via AMBER wrote:
+<br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;I want to get inherent structure after doing my NPT, on trajactory npt.nc
+</em><br />
+<em class="quotelev1">&gt;file.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;i want to know is steepest descent method is ok to get inherent structure
+</em><br />
+<em class="quotelev1">&gt;or anyother algorithm i have to use for it ?
+</em><br />
+<br />You would want to use the &quot;xmin&quot; minimizer, ntmin=3 in sander.  See the
+<br />
+Reference Manual for details.  If you have explicit solvent, you would want
+<br />
+to remove that first, since minimizing the solvent doesn't make good
+<br />
+physical sense (not to mention being very difficult to converge.)
+<br />
+<br />You should be able to get solvent energies minimized to a very low gradient
+<br />
+(say 10^-7 or even less if you are patient.)  This will give you the
+<br />
+inherent structure and its energy. [You may need to turn of SHAKE for this
+<br />
+minimization...I can't quite remember whether sander treats SHAKE correctly
+<br />
+with ntmin=3 -- do some experiments on small systems first.]
+<br />
+<br />....good luck....dac
+<br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed Sep 20 2023 - 10:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0090.html" title="Next message in the list">David A Case via AMBER: "Re: [AMBER] Installing on Ubuntu Question"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0088.html" title="Previous message in the list">David A Case via AMBER: "Re: [AMBER] How can I resolve the issue of the &#0039;NAB&#0039; command not being found in AmberTools23?"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0079.html" title="Message to which this message replies">Zafar,Muhammad Saqlain via AMBER: "[AMBER] How to get Inherent structure (Minimization energy)"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg89" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg89" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg89" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg89" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] LEaP scripting from amber--- via AMBER on 2023-08-18 (Amber Archive Aug 2023)</title>
+<meta name="Author" content="amber--- via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] LEaP scripting" />
+<meta name="Date" content="2023-08-18" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] LEaP scripting</h1>
+<!-- received="Fri Aug 18 09:30:02 2023" -->
+<!-- isoreceived="20230818163002" -->
+<!-- sent="Fri, 18 Aug 2023 19:17:42 +0300" -->
+<!-- isosent="20230818161742" -->
+<!-- name="amber&ndash;&ndash;&ndash; via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] LEaP scripting" -->
+<!-- id="E2F9283E-8308-4B83-8295-CAC98009A4B0.sheg.cc" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0064.html" accesskey="d" title="Dr. Anselm Horn via AMBER: &quot;Re: [AMBER] LEaP scripting&quot;">Next message</a> ]
+[ <a href="0062.html" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Blank frcmod file is generating&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0064.html" accesskey="t" title="Dr. Anselm Horn via AMBER: &quot;Re: [AMBER] LEaP scripting&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg63" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg63" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg63" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg63" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: amber--- via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20LEaP%20scripting">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 18 Aug 2023 19:17:42 +0300</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber community,
+<br />
+<br />I'm trying to figure out how LEaP concepts work. Please, check the script I wrote to build isolysine residue (lysine which forms amide bond with ε-N-atom), is it correct? I will really appreciate any help
+<br />
+source leaprc.protein.ff19SB
+<br />
+source leaprc.gaff
+<br />
+<br />LYX = copy LYS
+<br />
+set LYX name &quot;LYX&quot;
+<br />
+set LYX.1 name &quot;LYX&quot;
+<br />
+<br /># terminal nytrogen
+<br />
+set LYX.1.NZ type n3
+<br />
+set LYX head LYX.1.NZ
+<br />
+set LYX.1 connect0 LYX.1.NZ
+<br />
+<br /># terminal hydrogens
+<br />
+remove LYX LYX.1.HZ3
+<br />
+set LYX.1.HZ1 type hn
+<br />
+set LYX.1.HZ2 type hn
+<br />
+<br /># build peptide
+<br />
+p = sequence { ALA LYX ALA LYS }
+<br />
+Also I have a question: I've found in the documentation that water parameters must be sourced after macromolecular parameters, in which order must I source custom and GAFF parameters?
+<br />
+— Vsevolod
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Aug 18 2023 - 09:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0064.html" title="Next message in the list">Dr. Anselm Horn via AMBER: "Re: [AMBER] LEaP scripting"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0062.html" title="Previous message in the list">Daniel Roe via AMBER: "Re: [AMBER] Blank frcmod file is generating"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0064.html" title="Next message in this discussion thread">Dr. Anselm Horn via AMBER: "Re: [AMBER] LEaP scripting"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0064.html" title="Message sent in reply to this message">Dr. Anselm Horn via AMBER: "Re: [AMBER] LEaP scripting"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg63" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg63" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg63" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg63" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

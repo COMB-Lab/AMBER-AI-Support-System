@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] [Sender Not Verified]  gamma_ln in simulated annealing from Steinbrecher, Thomas via AMBER on 2023-08-27 (Amber Archive Aug 2023)</title>
+<meta name="Author" content="Steinbrecher, Thomas via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] [Sender Not Verified]  gamma_ln in simulated annealing" />
+<meta name="Date" content="2023-08-27" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] [Sender Not Verified]  gamma_ln in simulated annealing</h1>
+<!-- received="Mon Aug 28 00:00:02 2023" -->
+<!-- isoreceived="20230828070002" -->
+<!-- sent="Mon, 28 Aug 2023 08:40:40 +0200" -->
+<!-- isosent="20230828064040" -->
+<!-- name="Steinbrecher, Thomas via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] [Sender Not Verified]  gamma_ln in simulated annealing" -->
+<!-- id="CABaEAN3iWzpGC0C0b6+RUoMaH9WkQQrwjjic0WMp4nwBWAsWyg.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="PA4PR03MB6976228EA47E89B4D4BC338CCDE2A.PA4PR03MB6976.eurprd03.prod.outlook.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0094.html" accesskey="d" title="Kankana Bhattacharjee via AMBER: &quot;Re: [AMBER] MMPBSA-Nonpolar-solvation-energy-parameters:&quot;">Next message</a> ]
+[ <a href="0092.html" title="Ray Luo via AMBER: &quot;Re: [AMBER] MMPBSA-Nonpolar-solvation-energy-parameters:&quot;">Previous message</a> ]
+[ <a href="0088.html" title="Anirban Ghosh via AMBER: &quot;[AMBER] gamma_ln in simulated annealing&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg93" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg93" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg93" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg93" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Steinbrecher, Thomas via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20%5BSender%20Not%20Verified%5D%20%20gamma_ln%20in%20simulated%20annealing">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 28 Aug 2023 08:40:40 +0200</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Short answer: probably yes.
+<br />
+<br />Longer: You want gamma_ln high enough to have the system temp closely track
+<br />
+the thermostat temperature and low enough not to strongly impact your
+<br />
+dynamics. From my experience, anything between 0.5 and 5 is fine for this
+<br />
+purpose for non-weird systems. But you dont need to rely on estimates, run
+<br />
+the simulation and plot target T vs. actual T and you'll see how 'tight'
+<br />
+your thermostatization was. If you are worried about parts of the system
+<br />
+not properly exchanging energy with the rest (which Id consider quite an
+<br />
+unlikely problem for solvated DNA), you could also plot particle velocity
+<br />
+distributions for different system components after the run.
+<br />
+<br />Kind Regards,
+<br />
+<br />Thomas
+<br />
+<br />On Sat, Aug 26, 2023 at 2:25 PM Anirban Ghosh via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt; Dear all,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I am running a 1000ps simulated annealing with NMR restrains with my DNA
+</em><br />
+<em class="quotelev1">&gt; quadruplex.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; My script is like below
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; &amp;cntrl
+</em><br />
+<em class="quotelev1">&gt;     nmropt=1,
+</em><br />
+<em class="quotelev1">&gt;     ntpr=5000,
+</em><br />
+<em class="quotelev1">&gt;     ntwx=5000,
+</em><br />
+<em class="quotelev1">&gt;     nstlim=2000000,
+</em><br />
+<em class="quotelev1">&gt;     dt=0.0005,
+</em><br />
+<em class="quotelev1">&gt;     tempi=300.0,
+</em><br />
+<em class="quotelev1">&gt;     temp0=0.0,
+</em><br />
+<em class="quotelev1">&gt;     ig=-1,
+</em><br />
+<em class="quotelev1">&gt;     ntt=3,
+</em><br />
+<em class="quotelev1">&gt;     gamma_ln=2,
+</em><br />
+<em class="quotelev1">&gt;     ntc=2,
+</em><br />
+<em class="quotelev1">&gt;     ntf=2,
+</em><br />
+<em class="quotelev1">&gt;     ntb=0,
+</em><br />
+<em class="quotelev1">&gt;     tol=0.00001,
+</em><br />
+<em class="quotelev1">&gt;     cut=9999.0,
+</em><br />
+<em class="quotelev1">&gt;     igb=2,
+</em><br />
+<em class="quotelev1">&gt;     saltcon=0.050
+</em><br />
+<em class="quotelev1">&gt;     offset=0.13
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; I am wondering what value of collission frequency  what we need to use for
+</em><br />
+<em class="quotelev1">&gt; it? Does 2 is sufficient?
+</em><br />
+<em class="quotelev1">&gt; Thank you for your reply.
+</em><br />
+<em class="quotelev1">&gt; Best Regards,
+</em><br />
+<em class="quotelev1">&gt; Anirban
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<br /><br /><pre>
+-- 
+*Dr. Thomas Steinbrecher*
+Principal Scientist CADD
+Roche Pharma Research and Early Development
+Roche Innovation Center Basel
+F. Hoffmann-La Roche Ltd
+Bldg. 092/3.92
+Grenzacherstrasse 124
+4070 Basel
+Switzerland
+Phone +41 61 682 1319
+mailto: thomas.steinbrecher.roche.com
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd&#46;<!--nospam-->org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Mon Aug 28 2023 - 00:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0094.html" title="Next message in the list">Kankana Bhattacharjee via AMBER: "Re: [AMBER] MMPBSA-Nonpolar-solvation-energy-parameters:"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0092.html" title="Previous message in the list">Ray Luo via AMBER: "Re: [AMBER] MMPBSA-Nonpolar-solvation-energy-parameters:"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0088.html" title="Message to which this message replies">Anirban Ghosh via AMBER: "[AMBER] gamma_ln in simulated annealing"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg93" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg93" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg93" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg93" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

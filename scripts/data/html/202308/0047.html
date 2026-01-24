@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Problems with post-processing MD simulation with non-standard residues from m.bzowka m.bzowka via AMBER on 2023-08-12 (Amber Archive Aug 2023)</title>
+<meta name="Author" content="m.bzowka m.bzowka via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Problems with post-processing MD simulation with non-standard residues" />
+<meta name="Date" content="2023-08-12" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Problems with post-processing MD simulation with non-standard residues</h1>
+<!-- received="Sat Aug 12 02:00:02 2023" -->
+<!-- isoreceived="20230812090002" -->
+<!-- sent="Sat, 12 Aug 2023 10:41:49 +0200 (CEST)" -->
+<!-- isosent="20230812084149" -->
+<!-- name="m.bzowka m.bzowka via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Problems with post-processing MD simulation with non-standard residues" -->
+<!-- id="1102829619.406824.1691829709688.ox2.poczta.az.pl" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0048.html" accesskey="d" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Problems with post-processing MD simulation with non-standard residues&quot;">Next message</a> ]
+[ <a href="0046.html" title="Elvira Tarasova via AMBER: &quot;Re: [AMBER] Problem with time records in cpout- files in REMD CpHMD simulation&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0048.html" accesskey="t" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Problems with post-processing MD simulation with non-standard residues&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg47" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg47" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg47" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg47" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: m.bzowka m.bzowka via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Problems%20with%20post-processing%20MD%20simulation%20with%20non-standard%20residues">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sat, 12 Aug 2023 10:41:49 +0200 (CEST)</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber Users,
+<br />
+&nbsp;
+<br />
+I am struggling with processing the results from the MD simulation for the system with three non-standard residues. The system is quite big - 1255 amino acids in total. To be more specific, it's the acyl-enzyme complex, in which we have two big macromolecules - a receptor in which one of the loops is cleaved and the protease which is responsible for this cleavage.
+<br />
+Since it is the intermediate state of the reaction, the peptide bond in the receptor part is already cleaved but one amino acid from the cleavage site of the receptor is connected with the protease via the ester bond.
+<br />
+<br />My problem is that when I process the trajectory file with cpptraj and when I open the .nc file in vmd, I can't see the three non-standard residues in the sequence and I observe the gaps in the structure. Also, when I performed the rmsf analysis of the trajectory, in the output file there is no rmsf value for these three residues. However, when I extracted the example frame from the created .nc file, non-standard residues are present in the .pdb file. Right now I am also wondering if those residues are even taken into consideration during the MD simulation (although when I created input .prmtop and .inpcrd files including the parameters for non-standard residues I didn't get any errors in tleap and also the simulation ended without any errors).
+<br />
+&nbsp;
+<br />
+I noticed in the output file from the cpptraj the following warnings:
+<br />
+Warning: 1 molecules have non-contiguous segments of atoms.
+<br />
+1 2 segments: 1-6865 (6865) 12658-19658 (7001)
+<br />
+Warning: The 'fixatomorder' command can be used to reorder the topology and any
+<br />
+Warning: associated coordinates.
+<br />
+&nbsp;
+<br />
+Atom number 6865 is the last atom of one of the non-standard residues from the proteolytic cleavage site (this amino acid was connected with the protease using the bond command during the preparation of input files in tleap); in the original .pdb file which I used for the preparation of the .prmtop and .inpcrd files there is a TER after this atom.
+<br />
+Atoms 12658-19658 include the whole range of amino acids from protease. In the original .pdb file, before and after protease there were TERs.
+<br />
+<br />Do you have any idea what can be the problem or what should I try in order to process the trajectory in the correct way and be able to see the non-standard residues and also proceed with rmsf analysis for them? Should I use this fixatomorder command? If so, can you give me suggestions how to properly use that? I saw that there is an option &quot;pdborder&quot; but it's described as experimental.
+<br />
+<br />Below you can find the input for the cpptraj I am using:
+<br />
+parm *.prmtop
+<br />
+reference*.inpcrd
+<br />
+trajin prod1.nc
+<br />
+trajin prod2.nc
+<br />
+trajin prod3.nc
+<br />
+trajin prod4.nc
+<br />
+trajin prod5.nc
+<br />
+trajin prod6.nc
+<br />
+trajin prod7.nc
+<br />
+trajin prod8.nc
+<br />
+trajin prod9.nc
+<br />
+trajin prod10.nc
+<br />
+#autoimage
+<br />
+center :1-1255 mass origin
+<br />
+image origin center familiar
+<br />
+strip :WAT,Cl-,Na+ outprefix nowat
+<br />
+rms ToRef :<a href="mailto:1-1255.CA?Subject=Re%3A%20%5BAMBER%5D%20Problems%20with%20post-processing%20MD%20simulation%20with%20non-standard%20residues">1-1255.CA</a>,C,N reference out rmsd_100ns_x1&#46;<!--nospam-->arg mass
+<br />
+#rms ToRef :<a href="mailto:1-1255.CA?Subject=Re%3A%20%5BAMBER%5D%20Problems%20with%20post-processing%20MD%20simulation%20with%20non-standard%20residues">1-1255.CA</a> reference out rmsd_CA&#46;<!--nospam-->arg mass
+<br />
+atomicfluct out rmsf_CA_100ns_x1.arg :<a href="mailto:1-1255.CA?Subject=Re%3A%20%5BAMBER%5D%20Problems%20with%20post-processing%20MD%20simulation%20with%20non-standard%20residues">1-1255.CA</a> byres
+<br />
+atomicfluct out rmsf_100ns_x1.arg :<a href="mailto:1-1255.CA?Subject=Re%3A%20%5BAMBER%5D%20Problems%20with%20post-processing%20MD%20simulation%20with%20non-standard%20residues">1-1255.CA</a>,C,N byres
+<br />
+trajout *_nowat.nc NetCDF
+<br />
+go
+<br />
+Attached, please find the .out file from cpptraj.
+<br />
+<br />Thank you in advance for your help.
+<br />
+<br />Best
+<br />
+Maria Bzówka
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Sat Aug 12 2023 - 02:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0048.html" title="Next message in the list">Daniel Roe via AMBER: "Re: [AMBER] Problems with post-processing MD simulation with non-standard residues"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0046.html" title="Previous message in the list">Elvira Tarasova via AMBER: "Re: [AMBER] Problem with time records in cpout- files in REMD CpHMD simulation"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0048.html" title="Next message in this discussion thread">Daniel Roe via AMBER: "Re: [AMBER] Problems with post-processing MD simulation with non-standard residues"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0048.html" title="Message sent in reply to this message">Daniel Roe via AMBER: "Re: [AMBER] Problems with post-processing MD simulation with non-standard residues"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0050.html" title="Message sent in reply to this message">Daniel Roe via AMBER: "Re: [AMBER] Problems with post-processing MD simulation with non-standard residues"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg47" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg47" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg47" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg47" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

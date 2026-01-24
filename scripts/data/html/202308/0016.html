@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] weird simulation behavior when iwrap=1 from Delwakkada Liyanage, Senal Dinuka via AMBER on 2023-08-03 (Amber Archive Aug 2023)</title>
+<meta name="Author" content="Delwakkada Liyanage, Senal Dinuka via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] weird simulation behavior when iwrap=1" />
+<meta name="Date" content="2023-08-03" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] weird simulation behavior when iwrap=1</h1>
+<!-- received="Thu Aug  3 19:30:02 2023" -->
+<!-- isoreceived="20230804023002" -->
+<!-- sent="Fri, 4 Aug 2023 02:11:18 +0000" -->
+<!-- isosent="20230804021118" -->
+<!-- name="Delwakkada Liyanage, Senal Dinuka via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] weird simulation behavior when iwrap=1" -->
+<!-- id="SJ0PR01MB636634C5785A22DA8381F30E8B09A.SJ0PR01MB6366.prod.exchangelabs.com" -->
+<!-- charset="utf-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0017.html" accesskey="d" title="Elvira Tarasova via AMBER: &quot;Re: [AMBER] Problem with time records in cpout- files in REMD CpHMD simulation&quot;">Next message</a> ]
+[ <a href="0015.html" title="leveen via AMBER: &quot;[AMBER] Amber problem looking for help&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg16" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg16" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg16" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg16" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Delwakkada Liyanage, Senal Dinuka via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20weird%20simulation%20behavior%20when%20iwrap%3D1">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 4 Aug 2023 02:11:18 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber list members,
+<br />
+
+<br />
+I am simulating a POPC bilayer in water following the default CHARMM-GUI protocol. On visualizing the production trajectory, I saw a weird behavior where the bilayer and water layer positions had been flipped. I know theoretically this doesn't mean anything given the images in periodic boxes, and probably this shouldn't affect the resulting properties. However, I am hoping for a reason for this and a way to produce a nice trajectory with it. I have attached a snapshot from after 10 ns of NPT production. You would see that there is a shift between periodic boxes along the Z axis (trajectory aligned to the bilayer residues). I appreciate your expert thoughts on this.
+<br />
+
+<br />
+A NPT simulation for common production-level simulations
+<br />
+&nbsp;&amp;cntrl
+<br />
+      imin=0,        ! No minimization
+<br />
+      irest=1,       ! This IS a restart of an old MD simulation
+<br />
+      ntx=5,         ! So our inpcrd file has velocities
+<br />
+
+<br />
+      ! Temperature control
+<br />
+      ntt=3,         ! Langevin dynamics
+<br />
+      gamma_ln=1.0,  ! Friction coefficient (ps^-1)
+<br />
+      temp0=310,     ! Target temperature
+<br />
+
+<br />
+      ! Potential energy control
+<br />
+      cut=9.0,       ! nonbonded cutoff, in Angstroms
+<br />
+
+<br />
+      ! MD settings
+<br />
+      nstlim=5000000,! 10 ns total
+<br />
+      dt=0.002,      ! time step (ps)
+<br />
+
+<br />
+      ! SHAKE
+<br />
+      ntc=2,         ! Constrain bonds containing hydrogen
+<br />
+      ntf=2,         ! Do not calculate forces of bonds containing hydrogen
+<br />
+
+<br />
+      ! Control how often information is printed
+<br />
+      ntpr=20000,    ! Print energies every 10000 steps
+<br />
+      ntwx=10000,    ! Print coordinates every 50000 steps to the trajectory
+<br />
+      ntwr=2500000,  ! Print a restart file every 2500K steps (can be less frequent)
+<br />
+      !   ntwv=-1,       ! Uncomment to also print velocities to trajectory
+<br />
+      !   ntwf=-1,       ! Uncomment to also print forces to trajectory
+<br />
+      ntxo=2,        ! Write NetCDF format
+<br />
+      ioutfm=1,      ! Write NetCDF format (always do this!)
+<br />
+
+<br />
+      ! Wrap coordinates when printing them to the same unit cell
+<br />
+      iwrap=1,
+<br />
+
+<br />
+      ! Constant pressure control.
+<br />
+      barostat=1,    ! Berendsen barostat... change to 2 for MC
+<br />
+      ntp=3,         ! 1=isotropic, 2=anisotropic, 3=semi-isotropic w/ surften
+<br />
+      pres0=1.0,     ! Target external pressure, in bar
+<br />
+      taup=1.0,
+<br />
+
+<br />
+      ! Constant surface tension (needed for semi-isotropic scaling). Uncomment
+<br />
+      ! for this feature. csurften must be nonzero if ntp=3 above
+<br />
+      csurften=3,    ! Interfaces in 1=yz plane, 2=xz plane, 3=xy plane
+<br />
+      gamma_ten=0.0, ! Surface tension (dyne/cm). 0 gives pure semi-iso scaling
+<br />
+      ninterface=2,  ! Number of interfaces (2 for bilayer)
+<br />
+
+<br />
+      ! Set water atom/residue names for SETTLE recognition
+<br />
+      watnam='WAT',  ! Water residues are named WAT
+<br />
+      owtnm='O',     ! Water oxygens are named O
+<br />
+&nbsp;/
+<br />
+
+<br />
+Thank you,
+<br />
+
+<br />
+Senal Liyanage
+<br />
+
+<br />
+[cid:fe008a5e-0d6d-4c64-b803-b54a918858e8]
+<br />
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<p><img src="att-0016/image.png" alt="image.png
+" />
+<br />
+(image/png attachment: <a href="att-0016/image.png">image.png</a>)</p>
+<!-- attachment="image.png" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Thu Aug 03 2023 - 19:30:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0017.html" title="Next message in the list">Elvira Tarasova via AMBER: "Re: [AMBER] Problem with time records in cpout- files in REMD CpHMD simulation"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0015.html" title="Previous message in the list">leveen via AMBER: "[AMBER] Amber problem looking for help"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg16" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg16" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg16" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg16" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

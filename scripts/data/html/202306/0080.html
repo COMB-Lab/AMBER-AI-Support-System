@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] [Sender Not Verified] Re: Issues with simulating 5'-phosphorylated RNA strands from Michael Bruist via AMBER on 2023-06-19 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="Michael Bruist via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] [Sender Not Verified] Re: Issues with simulating 5'-phosphorylated RNA strands" />
+<meta name="Date" content="2023-06-19" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] [Sender Not Verified] Re: Issues with simulating 5'-phosphorylated RNA strands</h1>
+<!-- received="Mon Jun 19 10:00:03 2023" -->
+<!-- isoreceived="20230619170003" -->
+<!-- sent="Mon, 19 Jun 2023 12:53:04 -0400" -->
+<!-- isosent="20230619165304" -->
+<!-- name="Michael Bruist via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] [Sender Not Verified] Re: Issues with simulating 5'-phosphorylated RNA strands" -->
+<!-- id="CA+D=Sr=SrKGLxrtSKi510JLbX5zovBGgqyM+UXp=n1c6suWcdA.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="LO2P265MB3423CAF89AAB8461157EC220BE879.LO2P265MB3423.GBRP265.PROD.OUTLOOK.COM" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0081.html" accesskey="d" title="Abhilash J via AMBER: &quot;[AMBER] Error in modelling with ion using MCPB.py&quot;">Next message</a> ]
+[ <a href="0079.html" title="SATYAJIT KHATUA via AMBER: &quot;Re: [AMBER] Error while running mmpbsa&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg80" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg80" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg80" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg80" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Michael Bruist via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20%5BSender%20Not%20Verified%5D%20Re%3A%20Issues%20with%20simulating%205'-phosphorylated%20RNA%20strands">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Mon, 19 Jun 2023 12:53:04 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Harvey,
+<br />
+<br />I have run across similar problems and came up with two different methods
+<br />
+that seem to have stabilized the phosphates.
+<br />
+<br />Method 1
+<br />
+<br /><br /><br />Dissociate the problematic hydrogen, giving the terminal phosphate a charge
+<br />
+of  –2.
+<br />
+<br />Since the pKa of that group is close to 7, this is not an abnormal choice.
+<br />
+The atom type of the dissociated hydrogen was changed and charged on P and
+<br />
+OP1, OP2, and OP3 were altered, all in leap.
+<br />
+<br />source leaprc.RNA.OL3
+<br />
+<br />source leaprc.water.tip3p
+<br />
+<br />loadOff terminalphos.lib
+<br />
+<br />rna=loadPDB ../../TLS1_HPO3_old/TLS1_clipped.chimera.pdb
+<br />
+<br /><br />remove rna.1 rna.1.36            # removes the HOP from residue
+<br />
+<br />set rna.1.35 type &quot;O2&quot;                        # changed atom type from OH
+<br />
+to O2 (OP3)
+<br />
+<br />set rna.1.35 charge -0.9534            # changes charge of oxygen with
+<br />
+changed type
+<br />
+<br />set rna.1.1 charge 1.1662                  # changes charge on phosphorus
+<br />
+(P)
+<br />
+<br />set rna.1.2 charge -0.9534                # changes charge on OP2
+<br />
+<br />set rna.1.3 charge -0.9534                # changes charge on OP1
+<br />
+<br />check RNA
+<br />
+<br /><br /><br />Method 2
+<br />
+<br /><br /><br />Increase the force constraint on the P - OP3 - HO bond angle.
+<br />
+<br />In all cases where I have been able to see images before the crash, this
+<br />
+angle has been less than 90°.  I increased it approximately 3x, to give it
+<br />
+the same value as the O - P - P bonds, so it is not completely abnormal.
+<br />
+<br /><br /><br />With this value, a 100 nsec run of a 4-way junction molecule with four 5’
+<br />
+phosphates gave one P -O -H angle that dropped to 95°.
+<br />
+<br /><br /><br />These modifications were made using parmed on the parm and crd file created
+<br />
+in leap with the problematic phosphate(s).
+<br />
+<br /><br /><br />Note parmed will only recognize an angle listed in one direction:
+<br />
+<br />printAngles :1.P :1.OP3 :1.HP3            # This is recognized
+<br />
+<br />printAngles :1.HP3 :1.OP3 :1.P            # gives blank information with no
+<br />
+error
+<br />
+<br /><br /><br />Get started:
+<br />
+<br />parmed  -p ../build3/TLS1_clipped_K_tmp3.parm7  -c
+<br />
+../build3/TLS1_clipped_K_tmp3.lcrd
+<br />
+<br /><br /><br />printAngles :1.P :1.OP3 :1.HP3               # provides the current
+<br />
+properties of this angle
+<br />
+<br />setAngle :1.P :1.OP3 :1.HP3 140&#46;<!--nospam-->0 108.5         # 140 is the new spring
+<br />
+constant; 108.5 is the original equilibrium angle
+<br />
+<br />printAngles :1.P :1.OP3 :1.HP3               # The new value was accepted
+<br />
+<br /><br /><br />setAngle :11.P :11.OP3 :11.HP3 140.0 108.5   # The other three phosphates
+<br />
+are modified.
+<br />
+<br />setAngle :21.P :21.OP3 :21.HP3 140.0 108.5
+<br />
+<br />setAngle :31.P :31.OP3 :31.HP3 140&#46;<!--nospam-->0 108.5
+<br />
+<br /><br /><br />printDetails .OP3                        # Various ways to give the program
+<br />
+a chance to say something is wrong.
+<br />
+<br />checkValidity
+<br />
+<br />summary
+<br />
+<br /><br /><br />outparm TLS1_short_HPO3_k140.parm7                        # This prints out
+<br />
+the new parm file. Be sure to give it a distinctive name. This file will
+<br />
+work with previous coordinate files because no atoms were added or deleted.
+<br />
+<br />quit
+<br />
+<br />On Thu, Mar 23, 2023 at 10:57 AM Harvey Dale via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt;
+<br />
+wrote:
+<br />
+<br /><em class="quotelev1">&gt; Dear David and Thomas,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks very much for the advice. As both of you have described, setting a
+</em><br />
+<em class="quotelev1">&gt; small vdW radius (0.3) and epsilon (0.05) for the phosphate hydrogen
+</em><br />
+<em class="quotelev1">&gt; appears to have resolved the problems with the instabilities I was
+</em><br />
+<em class="quotelev1">&gt; observing; I must confess I have not yet tried stiffening the P-O-H angle,
+</em><br />
+<em class="quotelev1">&gt; but suspect this too will yield the same result.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Will certainly look to validate this approach as I run more simulations
+</em><br />
+<em class="quotelev1">&gt; down the line.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thanks again,
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Harvey
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ________________________________________________
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Dr Harvey J. A. Dale
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Research Fellow
+</em><br />
+<em class="quotelev1">&gt; Royal Commission for the Exhibition of 1851
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; John Henry Coates Research Fellow
+</em><br />
+<em class="quotelev1">&gt; Emmanuel College | Cambridge | CB2 3AP | hd487.cam&#46;<!--nospam-->ac.uk
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Postdoctoral Researcher
+</em><br />
+<em class="quotelev1">&gt; MRC Lab of Molecular Biology | Cambridge | CB2 0QH
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; -----Original Message-----
+</em><br />
+<em class="quotelev1">&gt; From: David A Case via AMBER &lt;amber.ambermd.org&gt;
+</em><br />
+<em class="quotelev1">&gt; Sent: Wednesday, March 22, 2023 3:07 PM
+</em><br />
+<em class="quotelev1">&gt; To: Steinbrecher, Thomas &lt;thomas.steinbrecher.roche&#46;<!--nospam-->com&gt;; AMBER Mailing
+</em><br />
+<em class="quotelev1">&gt; List &lt;amber.ambermd.org&gt;
+</em><br />
+<em class="quotelev1">&gt; Subject: Re: [AMBER] [Sender Not Verified] Re: Issues with simulating
+</em><br />
+<em class="quotelev1">&gt; 5'-phosphorylated RNA strands
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; On Wed, Mar 22, 2023, Steinbrecher, Thomas via AMBER wrote:
+</em><br />
+<em class="quotelev2">&gt; &gt;
+</em><br />
+<em class="quotelev2">&gt; &gt;my experience here may be outdated, but the stability issues you
+</em><br />
+<em class="quotelev2">&gt; &gt;mention are (or were some years ago) typical for MD simulations of
+</em><br />
+<em class="quotelev2">&gt; &gt;protonated phosphates. As you describe, the imbalance between
+</em><br />
+<em class="quotelev2">&gt; &gt;electrostatics and vdW repulsion is the issue here. A normal hydroxyl H
+</em><br />
+<em class="quotelev2">&gt; &gt;does not need a LJ center, because it is sufficiently protected by both
+</em><br />
+<em class="quotelev2">&gt; &gt;the O-LJ volume plus, and this is key, the relatively stiff angle
+</em><br />
+<em class="quotelev2">&gt; &gt;bending in e.g. C-C-O groups, so the H is kept away from the heavy
+</em><br />
+<em class="quotelev2">&gt; &gt;atoms three bonds away. In contrast, a phosphate has O-P-O angle terms
+</em><br />
+<em class="quotelev2">&gt; &gt;which are softer plus relatively high charges on both H and O, so the
+</em><br />
+<em class="quotelev2">&gt; &gt;collapse you describe between atoms 1 and 4 in a O-P-O-H substructure
+</em><br />
+<em class="quotelev2">&gt; &gt;can occur. The ad hoc solution of giving the H non-zero vdW parameters
+</em><br />
+<em class="quotelev2">&gt; &gt;will make the simulation stable (most likely) but in principle you'd be
+</em><br />
+<em class="quotelev2">&gt; &gt;on the hook to show that this still describes the phosphate group well
+</em><br />
+<em class="quotelev2">&gt; &gt;in the environment you simulate it in. The cowardly solution would be
+</em><br />
+<em class="quotelev2">&gt; &gt;to claim that the phosphate has pK around 7 anyway and in the presence
+</em><br />
+<em class="quotelev2">&gt; &gt;of all those nucleic acid associated metal cations, you may as well
+</em><br />
+<em class="quotelev1">&gt; simulate it deprotonated.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Thomas' post seems spot-on to me.  One other thing that I remember doing
+</em><br />
+<em class="quotelev1">&gt; is to increase the force constant for the P-O-H angle in the monophosphate:
+</em><br />
+<em class="quotelev1">&gt; this will help keep the proton from finding a neighboring hydrogen.  I'd
+</em><br />
+<em class="quotelev1">&gt; double the force constant -- having a slightly-too-stiff angle is not
+</em><br />
+<em class="quotelev1">&gt; really going to do anything bad to your sampling.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; Let us know if either of both of these ideas (non-zero LJ [try the value
+</em><br />
+<em class="quotelev1">&gt; for hydrogens bonded to nitrogen] or stiffer angle) help.  We should update
+</em><br />
+<em class="quotelev1">&gt; the parameters so that others don't see the problems you are having.
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; ...thanks for the detailed reports....dac
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; <a href="https://eur03.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;data=05%7C01%7Chd487%40universityofcambridgecloud.onmicrosoft.com%7Cc99e0f734ccc43d8eced08db2ae7323f%7C49a50445bdfa4b79ade3547b4f3986e9%7C1%7C0%7C63815">https://eur03.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists.ambermd.org%2Fmailman%2Flistinfo%2Famber&amp;data=05%7C01%7Chd487%40universityofcambridgecloud.onmicrosoft.com%7Cc99e0f734ccc43d8eced08db2ae7323f%7C49a50445bdfa4b79ade3547b4f3986e9%7C1%7C0%7C63815</a>0944688465646%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=qOakLXLGCiUTGhHHDzZA3Kv0AlrYl9jwRWsmWn3GIS8%3D&amp;reserved=0
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</em><br />
+<em class="quotelev1">&gt;
+</em><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Mon Jun 19 2023 - 10:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0081.html" title="Next message in the list">Abhilash J via AMBER: "[AMBER] Error in modelling with ion using MCPB.py"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0079.html" title="Previous message in the list">SATYAJIT KHATUA via AMBER: "Re: [AMBER] Error while running mmpbsa"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg80" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg80" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg80" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg80" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

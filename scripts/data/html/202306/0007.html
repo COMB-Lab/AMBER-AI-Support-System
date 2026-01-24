@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Atom musk selection error from Tanmoy Paul via AMBER on 2023-06-03 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="Tanmoy Paul via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Atom musk selection error" />
+<meta name="Date" content="2023-06-03" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Atom musk selection error</h1>
+<!-- received="Sat Jun  3 23:00:02 2023" -->
+<!-- isoreceived="20230604060002" -->
+<!-- sent="Sun, 4 Jun 2023 01:51:21 -0400" -->
+<!-- isosent="20230604055121" -->
+<!-- name="Tanmoy Paul via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Atom musk selection error" -->
+<!-- id="CAD1GXrq3OzKfZ=an841VHfcRcuSJDF-zb5vYELxMyCXq-L86Lg.mail.gmail.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0008.html" accesskey="d" title="Maciej Spiegel via AMBER: &quot;[AMBER] MCPB.py returns &#0034;ZeroDivisionError: float division by zero&#0034; in step 2&quot;">Next message</a> ]
+[ <a href="0006.html" title="David A Case via AMBER: &quot;Re: [AMBER] Problems with minimization energy NaN&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg7" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg7" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg7" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg7" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Tanmoy Paul via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Atom%20musk%20selection%20error">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Sun, 4 Jun 2023 01:51:21 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber Users,
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I am trying to perform principal component
+<br />
+analysis in cpptraj. The input script is the following:
+<br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />*parm 6ted_EC_dry.psftrajin combined_stride10.dcd 25001 last 5rms first
+<br />
+:1-7919&amp;!.H=average crdset 6ted_pcacreatecrd 6ted_trajectoryruncrdaction
+<br />
+6ted_trajectory rms ref 6ted_pca .N,CA,Ccrdaction 6ted_trajectory matrix
+<br />
+covar name 6ted_pca_covar .N,CA,Crunanalysis diagmatrix 6ted_pca_covar out
+<br />
+6ted_eig_vec.dat vecs 5 name myEvecs nmwiz nmwizvecs 5 nmwizfile
+<br />
+6ted_pca1.nmd nmwizmask .N,CA,Crunclear allreaddata 6ted_eig_vec.dat name
+<br />
+Evecsparm 6ted_EC_dry.psfparmstrip !(:1-7919.N,CA,C)parmwrite out
+<br />
+6ted_modes.prmtoprunanalysis modes name Evecs trajout 6ted_mod1.nc
+<br />
+&lt;<a href="http://6ted_mod1.nc">http://6ted_mod1.nc</a>&gt; pcmin -100 pcmax 100 tmode 1 trajoutmask .N,CA,C
+<br />
+trajoutfmt netcdfrunanalysis modes name Evecs trajout 6ted_mod2.nc
+<br />
+&lt;<a href="http://6ted_mod2.nc">http://6ted_mod2.nc</a>&gt; pcmin -100 pcmax 100 tmode 2 trajoutmask .N,CA,C
+<br />
+trajoutfmt netcdfrunanalysis modes name Evecs trajout 6ted_mod3.nc
+<br />
+&lt;<a href="http://6ted_mod3.nc">http://6ted_mod3.nc</a>&gt; pcmin -100 pcmax 100 tmode 3 trajoutmask .N,CA,C
+<br />
+trajoutfmt netcdfrunanalysis modes name Evecs trajout 6ted_mod4.nc
+<br />
+&lt;<a href="http://6ted_mod4.nc">http://6ted_mod4.nc</a>&gt; pcmin -100 pcmax 100 tmode 4 trajoutmask .N,CA,C
+<br />
+trajoutfmt netcdfrunanalysis modes name Evecs trajout 6ted_mod5.nc
+<br />
+&lt;<a href="http://6ted_mod5.nc">http://6ted_mod5.nc</a>&gt; pcmin -100 pcmax 100 tmode 5 trajoutmask .N,CA,C
+<br />
+trajoutfmt netcdf*
+<br />
+<br />*But while running the script, I am getting the following error:*
+<br />
+<br />*Warning: No atoms in mask ':1-7919&amp;.CA,N,C'*
+<br />
+<br />My system is relatively large. I tried running PCA without hydrogen, but it
+<br />
+failed due to memory issues.(terminate called after throwing an instance of
+<br />
+'std::bad_alloc'
+<br />
+&nbsp;&nbsp;what():  std::bad_alloc
+<br />
+/var/spool/slurm/job1675329/slurm_script: line 9: 2989244 Aborted
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(core dumped))
+<br />
+<br />Hence, I tried it with the backbone. I do not know what is wrong with the
+<br />
+musk. Any help will be greatly appreciated.
+<br />
+<br />Regards
+<br />
+Tanmoy
+<br />
+<br /><br /><br /><pre>
+-- 
+With regards,
+Tanmoy
+_______________________________________________
+AMBER mailing list
+AMBER.ambermd.org
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+</pre>
+<span id="received"><dfn>Received on</dfn> Sat Jun 03 2023 - 23:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0008.html" title="Next message in the list">Maciej Spiegel via AMBER: "[AMBER] MCPB.py returns &#0034;ZeroDivisionError: float division by zero&#0034; in step 2"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0006.html" title="Previous message in the list">David A Case via AMBER: "Re: [AMBER] Problems with minimization energy NaN"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg7" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg7" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg7" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg7" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

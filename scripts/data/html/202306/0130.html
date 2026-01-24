@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Energy bumps and structure deformation while minimization of a small molecule from Kotaro TANAKA via AMBER on 2023-06-27 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="Kotaro TANAKA via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Energy bumps and structure deformation while minimization of a small molecule" />
+<meta name="Date" content="2023-06-27" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Energy bumps and structure deformation while minimization of a small molecule</h1>
+<!-- received="Tue Jun 27 22:30:03 2023" -->
+<!-- isoreceived="20230628053003" -->
+<!-- sent="Wed, 28 Jun 2023 14:16:41 +0900" -->
+<!-- isosent="20230628051641" -->
+<!-- name="Kotaro TANAKA via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Energy bumps and structure deformation while minimization of a small molecule" -->
+<!-- id="354134ad-834e-30d0-81b3-0d33dc123fb2.cespi.nagoya-u.ac.jp" -->
+<!-- charset="UTF-8" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0131.html" accesskey="d" title="Steinbrecher, Thomas via AMBER: &quot;Re: [AMBER] [Sender Not Verified] Re: [Sender Not Verified]  Determine whether water molecules are with 1 &#0197; of crystal waters from the PDB structure during the MD simulation&quot;">Next message</a> ]
+[ <a href="0129.html" title="Huang ZiJian via AMBER: &quot;[AMBER] &#22238;&#22797;:  Keyerror about mmpbsa&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0136.html" accesskey="t" title="David A Case via AMBER: &quot;Re: [AMBER] Energy bumps and structure deformation while minimization of a small molecule&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg130" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg130" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg130" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg130" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Kotaro TANAKA via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Energy%20bumps%20and%20structure%20deformation%20while%20minimization%20of%20a%20small%20molecule">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 28 Jun 2023 14:16:41 +0900</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />I performed a 1000 step energy minimization of a small organic molecule, 
+<br />
+which is prepared by antechamber with GAFF2 and the RESP-derived charges.
+<br />
+<br />While the final configuration after minimization looks fine, but there 
+<br />
+were occasional huge bumps in the potential energy in the course of the 
+<br />
+minimization (I attached the energy plot file and the mdout file).
+<br />
+<br />I looked the trajectory and confirmed that the configurations were also 
+<br />
+distorted at the timing of the energy bumps.
+<br />
+<br />Has anyone observed any situation like this? What may be the cause of 
+<br />
+this behavior?
+<br />
+<br /># software version: Amber22/AmberTools22
+<br />
+<br /># Example of the energy bump (line 3952-3997 of the attached min.out 
+<br />
+file. The corresponding trajectory snapshots are also attached.) :
+<br />
+&nbsp;   NSTEP       ENERGY RMS            GMAX         NAME    NUMBER
+<br />
+&nbsp;    479       4.2420E+01     5.0983E-02     1.3987E-01 C11        15
+<br />
+<br />&nbsp; BOND    =        1.7474  ANGLE   =       14.0204  DIHED = 9.6009
+<br />
+&nbsp; VDWAALS =       -3.2458  EEL     =      -60.2337  HBOND = 0.0000
+<br />
+&nbsp; 1-4 VDW =        6.5164  1-4 EEL =       74.0143  RESTRAINT =        
+<br />
+0.0000
+<br />
+<br /><br />&nbsp;   NSTEP       ENERGY          RMS            GMAX NAME    NUMBER
+<br />
+&nbsp;    480       1.4703E+04     1.5718E+04     6.7010E+04 C11        15
+<br />
+<br />&nbsp; BOND    =     1990.7664  ANGLE   =      737.5050  DIHED = 53.9941
+<br />
+&nbsp; VDWAALS =       -0.8177  EEL     =      -62.7268  HBOND = 0.0000
+<br />
+&nbsp; 1-4 VDW =    11889.5108  1-4 EEL =       95.2040  RESTRAINT =        
+<br />
+0.0000
+<br />
+<br /><br />&nbsp;   NSTEP       ENERGY          RMS            GMAX NAME    NUMBER
+<br />
+&nbsp;    481       9.9038E+02     2.5920E+02     9.5956E+02 C11        15
+<br />
+<br />&nbsp; BOND    =      561.1639  ANGLE   =      338.1107  DIHED = 21.0169
+<br />
+&nbsp; VDWAALS =       -2.3347  EEL     =      -61.6524  HBOND = 0.0000
+<br />
+&nbsp; 1-4 VDW =       53.2071  1-4 EEL =       80.8659  RESTRAINT =        
+<br />
+0.0000
+<br />
+<br /><br />&nbsp;   NSTEP       ENERGY          RMS            GMAX NAME    NUMBER
+<br />
+&nbsp;    482       4.2420E+01     3.8712E-02     1.1602E-01 O1         11
+<br />
+<br />&nbsp; BOND    =        1.7456  ANGLE   =       14.0208  DIHED = 9.6006
+<br />
+&nbsp; VDWAALS =       -3.2456  EEL     =      -60.2342  HBOND = 0.0000
+<br />
+&nbsp; 1-4 VDW =        6.5169  1-4 EEL =       74.0157  RESTRAINT =        
+<br />
+0.0000
+<br />
+<br />Best Regards,
+<br />
+Kotaro
+<br />
+<br /><br /><br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<p><img src="att-0130/230628_energy.png" alt="230628_energy.png" />
+<br />
+(image/png attachment: <a href="att-0130/230628_energy.png">230628_energy.png</a>)</p>
+<!-- attachment="230628_energy.png" -->
+<ul>
+<li>text/plain attachment: <a href="att-0130/min.out">min.out</a></li>
+</ul>
+<!-- attachment="min.out" -->
+<p><img src="att-0130/frame478.png" alt="frame478.png" />
+<br />
+(image/png attachment: <a href="att-0130/frame478.png">frame478.png</a>)</p>
+<!-- attachment="frame478.png" -->
+<p><img src="att-0130/frame479.png" alt="frame479.png" />
+<br />
+(image/png attachment: <a href="att-0130/frame479.png">frame479.png</a>)</p>
+<!-- attachment="frame479.png" -->
+<p><img src="att-0130/frame480.png" alt="frame480.png" />
+<br />
+(image/png attachment: <a href="att-0130/frame480.png">frame480.png</a>)</p>
+<!-- attachment="frame480.png" -->
+<p><img src="att-0130/frame481.png" alt="frame481.png" />
+<br />
+(image/png attachment: <a href="att-0130/frame481.png">frame481.png</a>)</p>
+<!-- attachment="frame481.png" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Tue Jun 27 2023 - 22:30:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0131.html" title="Next message in the list">Steinbrecher, Thomas via AMBER: "Re: [AMBER] [Sender Not Verified] Re: [Sender Not Verified]  Determine whether water molecules are with 1 &#0197; of crystal waters from the PDB structure during the MD simulation"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0129.html" title="Previous message in the list">Huang ZiJian via AMBER: "[AMBER] &#22238;&#22797;:  Keyerror about mmpbsa"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0136.html" title="Next message in this discussion thread">David A Case via AMBER: "Re: [AMBER] Energy bumps and structure deformation while minimization of a small molecule"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0136.html" title="Message sent in reply to this message">David A Case via AMBER: "Re: [AMBER] Energy bumps and structure deformation while minimization of a small molecule"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg130" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg130" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg130" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg130" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

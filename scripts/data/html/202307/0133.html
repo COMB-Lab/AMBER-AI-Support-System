@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER]  smaller cutoff resulting in NaNs from Yang, Li-Yen via AMBER on 2023-07-25 (Amber Archive Jul 2023)</title>
+<meta name="Author" content="Yang, Li-Yen via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER]  smaller cutoff resulting in NaNs" />
+<meta name="Date" content="2023-07-25" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER]  smaller cutoff resulting in NaNs</h1>
+<!-- received="Tue Jul 25 13:30:01 2023" -->
+<!-- isoreceived="20230725203001" -->
+<!-- sent="Tue, 25 Jul 2023 20:05:30 +0000" -->
+<!-- isosent="20230725200530" -->
+<!-- name="Yang, Li-Yen via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER]  smaller cutoff resulting in NaNs" -->
+<!-- id="DM6PR07MB41706321586AA27946EF2E33DC03A.DM6PR07MB4170.namprd07.prod.outlook.com" -->
+<!-- charset="windows-1252" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0134.html" accesskey="d" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] smaller cutoff resulting in NaNs&quot;">Next message</a> ]
+[ <a href="0132.html" title="Prokopios Andrikopoulos via AMBER: &quot;Re: [AMBER] Thermodynamic Integration problems&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0134.html" accesskey="t" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] smaller cutoff resulting in NaNs&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg133" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg133" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg133" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg133" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Yang, Li-Yen via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20%20smaller%20cutoff%20resulting%20in%20NaNs">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Tue, 25 Jul 2023 20:05:30 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hello,
+<br />
+<br />I am running a heating process under NVT.
+<br />
+<br />I have previously run it with the same parameters (except the cutoff is different), and there weren’t any issues.
+<br />
+But now when I changed the cutoff from 30 to 10, I started to get NaN values in TEMP, EKtot, and Etot.
+<br />
+<br />In my output file, it went from 0 to NaN as follows:
+<br />
+NSTEP =        0   TIME(PS) =       0.000  TEMP(K) =     0.00  PRESS =     0.0
+<br />
+Etot   =   -763233.3804  EKtot   =         0.0000  EPtot      =   -763233.3804
+<br />
+BOND   =       177.5013  ANGLE   =       900.7922  DIHED      =      3291.6735
+<br />
+1-4 NB =      1075.8873  1-4 EEL =     15422.6675  VDWAALS    =    153707.8033
+<br />
+EELEC  =   -937809.7054  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+<br />
+------------------------------------------------------------------------------
+<br />
+<br />NMR restraints: Bond =    0.000   Angle =     0.000   Torsion =     0.000
+<br />
+===============================================================================
+<br />
+<br />NSTEP =     1000   TIME(PS) =       2.000  TEMP(K) =      NaN  PRESS =     0.0
+<br />
+Etot   =            NaN  EKtot   =            NaN  EPtot      =   -521630.7470
+<br />
+BOND   =       203.3871  ANGLE   =       974.0687  DIHED      =      3309.1011
+<br />
+1-4 NB =      1091.6651  1-4 EEL =     15411.0298  VDWAALS    =     91794.1575
+<br />
+EELEC  =   -634414.1564  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+<br />
+------------------------------------------------------------------------------
+<br />
+<br />NMR restraints: Bond =    0.000   Angle =     0.000   Torsion =     0.000
+<br />
+<br /><br />Below is the parameter settings I have:
+<br />
+&amp;cntrl
+<br />
+&nbsp;&nbsp;&nbsp;imin=0,
+<br />
+&nbsp;&nbsp;&nbsp;irest=0,
+<br />
+&nbsp;&nbsp;&nbsp;ntx=1,
+<br />
+&nbsp;&nbsp;&nbsp;ntpr=1000,
+<br />
+&nbsp;&nbsp;&nbsp;ntwx=1000,
+<br />
+<br />&nbsp;&nbsp;&nbsp;!MD settings
+<br />
+&nbsp;&nbsp;&nbsp;nstlim=200000,
+<br />
+&nbsp;&nbsp;&nbsp;dt=0.002,
+<br />
+<br />&nbsp;&nbsp;&nbsp;!Temperature Regulation
+<br />
+&nbsp;&nbsp;&nbsp;ntt=3
+<br />
+&nbsp;&nbsp;&nbsp;gamma_ln=5.0,
+<br />
+&nbsp;&nbsp;&nbsp;ig=-1,
+<br />
+<br />&nbsp;&nbsp;&nbsp;!SHAKE bond length constraints.
+<br />
+&nbsp;&nbsp;&nbsp;ntc=2,
+<br />
+&nbsp;&nbsp;&nbsp;ntf=2,
+<br />
+&nbsp;&nbsp;&nbsp;cut=10,
+<br />
+<br />&nbsp;&nbsp;&nbsp;!Potential function parameters
+<br />
+&nbsp;&nbsp;&nbsp;ntb=1,
+<br />
+&nbsp;&nbsp;&nbsp;iwrap=1,
+<br />
+&nbsp;&nbsp;&nbsp;ioutfm=1,
+<br />
+&nbsp;&nbsp;&nbsp;nmropt=1,
+<br />
+&nbsp;/
+<br />
+&amp;wt
+<br />
+&nbsp;&nbsp;&nbsp;TYPE='TEMP0',
+<br />
+&nbsp;&nbsp;&nbsp;ISTEP1=0,
+<br />
+&nbsp;&nbsp;&nbsp;ISTEP2=150000,
+<br />
+&nbsp;&nbsp;&nbsp;VALUE1=10.0,
+<br />
+&nbsp;&nbsp;&nbsp;VALUE2=300.0,
+<br />
+/
+<br />
+&amp;wt TYPE='END' /
+<br />
+<br /><br /><br />Could anyone please point out to me what could be wrong with the simulation?
+<br />
+<br />Thank you very much!
+<br />
+<br />Best,
+<br />
+Zoey
+<br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Tue Jul 25 2023 - 13:30:01 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0134.html" title="Next message in the list">Carlos Simmerling via AMBER: "Re: [AMBER] smaller cutoff resulting in NaNs"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0132.html" title="Previous message in the list">Prokopios Andrikopoulos via AMBER: "Re: [AMBER] Thermodynamic Integration problems"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0134.html" title="Next message in this discussion thread">Carlos Simmerling via AMBER: "Re: [AMBER] smaller cutoff resulting in NaNs"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0134.html" title="Message sent in reply to this message">Carlos Simmerling via AMBER: "Re: [AMBER] smaller cutoff resulting in NaNs"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg133" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg133" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg133" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg133" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

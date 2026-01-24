@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] Paths with spaces in cpptraj from Mark Mackey via AMBER on 2023-08-25 (Amber Archive Aug 2023)</title>
+<meta name="Author" content="Mark Mackey via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] Paths with spaces in cpptraj" />
+<meta name="Date" content="2023-08-25" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] Paths with spaces in cpptraj</h1>
+<!-- received="Fri Aug 25 10:00:02 2023" -->
+<!-- isoreceived="20230825170002" -->
+<!-- sent="Fri, 25 Aug 2023 16:40:29 +0000" -->
+<!-- isosent="20230825164029" -->
+<!-- name="Mark Mackey via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] Paths with spaces in cpptraj" -->
+<!-- id="AS8PR08MB671105FBC139794FB338D32EA1E3A.AS8PR08MB6711.eurprd08.prod.outlook.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0086.html" accesskey="d" title="Kankana Bhattacharjee via AMBER: &quot;[AMBER] MMPBSA-Nonpolar-solvation-energy-parameters:&quot;">Next message</a> ]
+[ <a href="0084.html" title="Enrico Martinez via AMBER: &quot;[AMBER] minimisation with pmemd.cuda&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0087.html" accesskey="t" title="Carlos Simmerling via AMBER: &quot;Re: [AMBER] Paths with spaces in cpptraj&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg85" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg85" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg85" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg85" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Mark Mackey via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Paths%20with%20spaces%20in%20cpptraj">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 25 Aug 2023 16:40:29 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear AMBER developers,
+<br />
+<br />I've been trying to use cpptraj with some files with a space in the path name. I've been unable to get this to work at all:
+<br />
+<br /><em class="quotelev1">&gt; parm /tmp/path space/acetone.prmtop
+</em><br />
+&nbsp;&nbsp;[parm /tmp/path space/acetone.prmtop]
+<br />
+Error: '/tmp/path': No such file or directory
+<br />
+Error: Could not open topology '/tmp/path'
+<br />
+<br /><em class="quotelev1">&gt; parm &quot;/tmp/path space/acetone.prmtop&quot;
+</em><br />
+&nbsp;&nbsp;[parm &quot;/tmp/path space/acetone.prmtop&quot;]
+<br />
+Error: '/tmp/path': No such file or directory
+<br />
+Error: Could not open topology '/tmp/path'
+<br />
+Error: 'space/acetone.prmtop': No such file or directory
+<br />
+Error: Could not open topology 'space/acetone.prmtop'
+<br />
+<br /><em class="quotelev1">&gt; parm /tmp/path\ space/acetone.prmtop
+</em><br />
+&nbsp;&nbsp;[parm /tmp/path\ space/acetone.prmtop]
+<br />
+Error: Bad syntax (unbalanced parentheses, unmatched quotes.
+<br />
+Error: '/tmp/path\' corresponds to no files.
+<br />
+<br /><em class="quotelev1">&gt; parm /tmp/path\\ space/acetone.prmtop
+</em><br />
+&nbsp;&nbsp;[parm /tmp/path\\ space/acetone.prmtop]
+<br />
+Error: '/tmp/path\': No such file or directory
+<br />
+Error: Could not open topology '/tmp/path\'
+<br />
+<br /><em class="quotelev1">&gt; parm &quot;/tmp/path\ space/acetone.prmtop&quot;
+</em><br />
+&nbsp;&nbsp;[parm &quot;/tmp/path\ space/acetone.prmtop&quot;]
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reading '/tmp/path space/acetone.prmtop' as Amber Topology
+<br />
+Error reading topology file '/tmp/path space/acetone.prmtop'
+<br />
+Error: Could not open topology '/tmp/path space/acetone.prmtop'
+<br />
+<br />The last one looks like it nearly worked, but not quite! Any suggestions? If this can't be done, can I please add this as a feature request?
+<br />
+<br />Regards,
+<br />
+Mark
+<br />
+<br />Mark Mackey
+<br />
+Chief Scientific Officer
+<br />
+Cresset
+<br />
+New Cambridge House, Bassingbourn Road, Litlington, Cambridgeshire, SG8 0SS, UK
+<br />
+Tel: +44 (0)1223 858890           Mobile: +44 (0)7595099165
+<br />
+Email: mark.mackey.cresset-group.com&lt;mailto:mark.mackey.cresset-group.com&gt;     Web: www.cresset-group.com&lt;http://www.cresset-group.com/&gt;
+<br />
+[cid:image001.png.01D9D77B.3BDBF380]&lt;<a href="https://www.linkedin.com/company/cresset">https://www.linkedin.com/company/cresset</a>&gt;  [cid:image002.png.01D9D77B.3BDBF380] &lt;<a href="https://www.twitter.com/cressetgroup">https://www.twitter.com/cressetgroup</a>&gt;
+<br />
+&nbsp;[Email Signature 412 x 165px (002).png] &lt;<a href="https://www.cresset-group.com/subscribe/">https://www.cresset-group.com/subscribe/</a>&gt;
+<br />
+<br /><br /><br />This email has been sent from Cresset BioMolecular Discovery Limited, registered in England and Wales, Company Number: 04151475. The information in this email and any attachments are confidential and may be privileged. It is intended solely for the addressee and access to this email by anyone else is unauthorised. If an addressing or transmission error has misdirected this email, please notify the author by replying to this email. If you are not the intended recipient you must not use, disclose, distribute, store or copy the information in any medium. Although this e-mail and any attachments are believed to be free from any virus or other defect which might affect any system into which they are opened or received, it is the responsibility of the recipient to check that they are virus-free and that they will in no way affect systems and data. No responsibility is accepted by Cresset BioMolecular Discovery Limited for any loss or damage arising in any way from their receipt, opening or use. Privacy notice&lt;https://www.cresset-group.com/privacy/&gt;
+<br />
+<br /><br />
+_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<br /><div>
+<p><img src="att-0085/image001.png" alt="image001.png
+" />
+<br />
+(image/png attachment: <a href="att-0085/image001.png">image001.png</a>)</p>
+<!-- attachment="image001.png" -->
+<p><img src="att-0085/image002.png" alt="image002.png
+" />
+<br />
+(image/png attachment: <a href="att-0085/image002.png">image002.png</a>)</p>
+<!-- attachment="image002.png" -->
+<p><img src="att-0085/image003.png" alt="image003.png
+" />
+<br />
+(image/png attachment: <a href="att-0085/image003.png">image003.png</a>)</p>
+<!-- attachment="image003.png" -->
+</div>
+<span id="received"><dfn>Received on</dfn> Fri Aug 25 2023 - 10:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0086.html" title="Next message in the list">Kankana Bhattacharjee via AMBER: "[AMBER] MMPBSA-Nonpolar-solvation-energy-parameters:"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0084.html" title="Previous message in the list">Enrico Martinez via AMBER: "[AMBER] minimisation with pmemd.cuda"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0087.html" title="Next message in this discussion thread">Carlos Simmerling via AMBER: "Re: [AMBER] Paths with spaces in cpptraj"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0087.html" title="Message sent in reply to this message">Carlos Simmerling via AMBER: "Re: [AMBER] Paths with spaces in cpptraj"</a></li>
+<li><dfn>Maybe reply</dfn>: <a href="0108.html" title="Message sent in reply to this message">Carlos Simmerling via AMBER: "Re: [AMBER] Paths with spaces in cpptraj"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg85" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg85" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg85" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg85" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

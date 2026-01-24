@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>[AMBER] KeyError of chargedict in MCPB's step 1 from Ge Song via AMBER on 2025-09-04 (Amber Archive Sep 2025)</title>
+<meta name="Author" content="Ge Song via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="[AMBER] KeyError of chargedict in MCPB's step 1" />
+<meta name="Date" content="2025-09-04" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>[AMBER] KeyError of chargedict in MCPB's step 1</h1>
+<!-- received="Thu Sep  4 09:00:03 2025" -->
+<!-- isoreceived="20250904160003" -->
+<!-- sent="Thu, 4 Sep 2025 15:47:45 +0000" -->
+<!-- isosent="20250904154745" -->
+<!-- name="Ge Song via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="[AMBER] KeyError of chargedict in MCPB's step 1" -->
+<!-- id="DM6PR05MB6395759B9F60778E1A1E74B3E300A.DM6PR05MB6395.namprd05.prod.outlook.com" -->
+<!-- charset="us-ascii" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0012.html" accesskey="d" title="ankita mehta via AMBER: &quot;[AMBER] secondary structure analysis&quot;">Next message</a> ]
+[ <a href="0010.html" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Difference in cpptraj output structures between NVT equilibration and NPT production runs&quot;">Previous message</a> ]
+<!-- unextthread="start" -->
+[ <a href="0013.html" accesskey="t" title="Li, Zhen via AMBER: &quot;Re: [AMBER] KeyError of chargedict in MCPB&#0039;s step 1&quot;">Next in thread</a> ]
+ [ <a href="#replies">Replies</a> ]
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg11" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg11" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg11" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg11" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Ge Song via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20KeyError%20of%20chargedict%20in%20MCPB's%20step%201">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Thu, 4 Sep 2025 15:47:45 +0000</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Dear Amber developers,
+<br />
+<br />I have got the same error in running MCPB step 1 as posted here before (<a href="http://archive.ambermd.org/202006/0052.html">http://archive.ambermd.org/202006/0052.html</a>):
+<br />
+<br />&nbsp;&nbsp;File &quot;/home/software/AMBER/19/amber18/lib/python2.7/site-packages/pymsmt/mcpb/gene_model_files.py&quot;, line 1690, in gene_model_files
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;totchg = totchg + chargedict['C' + mol.residues[i].resname]
+<br />
+KeyError: 'CSAM'
+<br />
+<br />According to the previous reply from pengfei (<a href="http://archive.ambermd.org/202006/0100.html">http://archive.ambermd.org/202006/0100.html</a>), matching the atom names in mol2 file with original_pdb file should solve the problem, but this is not the case for me.
+<br />
+<br /><br />I did include the SAM.mol2 file:
+<br />
+<br />original_pdb 1TV8_cym.pdb
+<br />
+group_name fs_clusters
+<br />
+ion_ids 5308 5309 5310 5311 5316 5317 5318 5319
+<br />
+ion_mol2files FE2.mol2 FE2.mol2 FE2.mol2 FE3.mol2 FE2.mol2 FE2.mol2 FE2.mol2 FE2.mol2
+<br />
+naa_mol2files SF4.mol2 SAM.mol2 SO4.mol2
+<br />
+force_field ff14SB
+<br />
+water_model tip3p
+<br />
+cut_off 2.8
+<br />
+charge_method resp
+<br />
+qm_theory B3LYP
+<br />
+basis_set 6-31G*
+<br />
+<br />And the atom names exactly match with the original pdb.
+<br />
+<br />I am wondering if anyone could give me some suggestions (I have attached the 1TV8_cym.pdb abd all mol2 files I am using).
+<br />
+<br />Best,
+<br />
+Ge
+<br />
+[<a href="https://res.public.onecdn.static.microsoft/assets/mail/file-icon/png/generic_16x16.png">https://res.public.onecdn.static.microsoft/assets/mail/file-icon/png/generic_16x16.png</a>]1TV8_cym.pdb&lt;<a href="https://prodduke-my.sharepoint.com/:u:/g/personal/gs298_duke_edu/EY-yYHosL01PtggK1cHP1DEBciKErRX0io073Hs5dtVvRw">https://prodduke-my.sharepoint.com/:u:/g/personal/gs298_duke_edu/EY-yYHosL01PtggK1cHP1DEBciKErRX0io073Hs5dtVvRw</a>&gt;
+<br />
+[<a href="https://res.public.onecdn.static.microsoft/assets/mail/file-icon/png/generic_16x16.png">https://res.public.onecdn.static.microsoft/assets/mail/file-icon/png/generic_16x16.png</a>]FE2.mol2&lt;<a href="https://prodduke-my.sharepoint.com/:u:/g/personal/gs298_duke_edu/EZEKOVjfMplAsp9RJsR71OoB8ffpHpd9qoZ5je2TcMY5pQ">https://prodduke-my.sharepoint.com/:u:/g/personal/gs298_duke_edu/EZEKOVjfMplAsp9RJsR71OoB8ffpHpd9qoZ5je2TcMY5pQ</a>&gt;
+<br />
+[<a href="https://res.public.onecdn.static.microsoft/assets/mail/file-icon/png/generic_16x16.png">https://res.public.onecdn.static.microsoft/assets/mail/file-icon/png/generic_16x16.png</a>]FE3.mol2&lt;<a href="https://prodduke-my.sharepoint.com/:u:/g/personal/gs298_duke_edu/EevdAaEWv1JComYBrqRcFpsB5PQ4XwLSJArNmO-6EGN1Sw">https://prodduke-my.sharepoint.com/:u:/g/personal/gs298_duke_edu/EevdAaEWv1JComYBrqRcFpsB5PQ4XwLSJArNmO-6EGN1Sw</a>&gt;
+<br />
+[<a href="https://res.public.onecdn.static.microsoft/assets/mail/file-icon/png/generic_16x16.png">https://res.public.onecdn.static.microsoft/assets/mail/file-icon/png/generic_16x16.png</a>]SAM.mol2&lt;<a href="https://prodduke-my.sharepoint.com/:u:/g/personal/gs298_duke_edu/ESH1S34rxL9OgoJPUfAvWoQBUzPYkYQ1tokE3qruujDvfA">https://prodduke-my.sharepoint.com/:u:/g/personal/gs298_duke_edu/ESH1S34rxL9OgoJPUfAvWoQBUzPYkYQ1tokE3qruujDvfA</a>&gt;
+<br />
+[<a href="https://res.public.onecdn.static.microsoft/assets/mail/file-icon/png/generic_16x16.png">https://res.public.onecdn.static.microsoft/assets/mail/file-icon/png/generic_16x16.png</a>]SO4.mol2&lt;<a href="https://prodduke-my.sharepoint.com/:u:/g/personal/gs298_duke_edu/EYVxx8w2LOxBk7n1HLvxObsBaBMVsBU5KQhRQQdi_zeE4w">https://prodduke-my.sharepoint.com/:u:/g/personal/gs298_duke_edu/EYVxx8w2LOxBk7n1HLvxObsBaBMVsBU5KQhRQQdi_zeE4w</a>&gt;
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Thu Sep 04 2025 - 09:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0012.html" title="Next message in the list">ankita mehta via AMBER: "[AMBER] secondary structure analysis"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0010.html" title="Previous message in the list">Daniel Roe via AMBER: "Re: [AMBER] Difference in cpptraj output structures between NVT equilibration and NPT production runs"</a></li>
+<!-- lnextthread="start" -->
+<li><dfn>Next in thread</dfn>: <a href="0013.html" title="Next message in this discussion thread">Li, Zhen via AMBER: "Re: [AMBER] KeyError of chargedict in MCPB&#0039;s step 1"</a></li>
+<li><a name="replies" id="replies"></a>
+<dfn>Reply</dfn>: <a href="0013.html" title="Message sent in reply to this message">Li, Zhen via AMBER: "Re: [AMBER] KeyError of chargedict in MCPB&#0039;s step 1"</a></li>
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg11" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg11" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg11" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg11" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

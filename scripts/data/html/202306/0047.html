@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Diffusion in pmemd.cuda from Daniel Roe via AMBER on 2023-06-09 (Amber Archive Jun 2023)</title>
+<meta name="Author" content="Daniel Roe via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Diffusion in pmemd.cuda" />
+<meta name="Date" content="2023-06-09" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Diffusion in pmemd.cuda</h1>
+<!-- received="Fri Jun  9 07:00:03 2023" -->
+<!-- isoreceived="20230609140003" -->
+<!-- sent="Fri, 9 Jun 2023 09:47:18 -0400" -->
+<!-- isosent="20230609134718" -->
+<!-- name="Daniel Roe via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Diffusion in pmemd.cuda" -->
+<!-- id="CAAC0qOayv3V-9CGL2khwHTP67zbNs8C0_FQdvwXezJw_NYTn0g.mail.gmail.com" -->
+<!-- charset="utf-8" -->
+<!-- inreplyto="CAOzhyyDiVPEV+-vwOyV9tB9N_7-c_Ltr6TVtJDtk-s3KPy500Q.mail.gmail.com" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0048.html" accesskey="d" title="Daniel Roe via AMBER: &quot;Re: [AMBER] Cluster size&quot;">Next message</a> ]
+[ <a href="0046.html" title="Charo del Genio via AMBER: &quot;Re: [AMBER] AMD GPU install problems (David A Case)&quot;">Previous message</a> ]
+[ <a href="0041.html" title="David Poole via AMBER: &quot;[AMBER] Diffusion in pmemd.cuda&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg47" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg47" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg47" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg47" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Daniel Roe via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Diffusion%20in%20pmemd.cuda">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Fri, 9 Jun 2023 09:47:18 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi,
+<br />
+<br />In addition to everything Dave said, be aware that until recently
+<br />
+there were issues calculating diffusion constants from NPT simulations
+<br />
+with Cpptraj (NVT and NVE trajectories are fine). I've just made some
+<br />
+fixes and improvements for calculating diffusion from NPT
+<br />
+trajectories, see:
+<br />
+<br /><a href="https://github.com/Amber-MD/cpptraj/pull/1027">https://github.com/Amber-MD/cpptraj/pull/1027</a>
+<br />
+<a href="https://github.com/Amber-MD/cpptraj/pull/1028">https://github.com/Amber-MD/cpptraj/pull/1028</a>
+<br />
+<a href="https://github.com/Amber-MD/cpptraj/pull/1030">https://github.com/Amber-MD/cpptraj/pull/1030</a>
+<br />
+<a href="https://github.com/Amber-MD/cpptraj/pull/1032">https://github.com/Amber-MD/cpptraj/pull/1032</a>
+<br />
+<br />These changes currently only apply to the GitHub version of cpptraj,
+<br />
+so you'll have to install that to take advantage of these
+<br />
+changes/fixes.
+<br />
+<br />On Thu, Jun 8, 2023 at 2:24 PM David Poole via AMBER &lt;amber.ambermd&#46;<!--nospam-->org&gt; wrote:
+<br />
+<em class="quotelev1">&gt; Interestingly, despite this being in line with literature procedures, the
+</em><br />
+<em class="quotelev1">&gt; resulting diffusion constants calculated with the velocity autocorrelation
+</em><br />
+<em class="quotelev1">&gt; function or diffusion analysis in cpptraj did not match literature nor was
+</em><br />
+<em class="quotelev1">&gt; there an expected correlation between the molecule size and diffusion
+</em><br />
+<em class="quotelev1">&gt; constant. This was alarming, so we have now varied the simulations using
+</em><br />
+<br />A few points here:
+<br />
+<br />1) As Dave alluded to, Diffusion calculations can be tough to get
+<br />
+correct. First, note there was a bug in the SPFP GPU code that caused
+<br />
+an energy drift in NVE simulations, so if you're using older
+<br />
+pmemd.cuda this could be an issue. I think that Scott Legrand has
+<br />
+since fixed it, but you should double check that the energy drift in
+<br />
+your NVE simulations looks reasonable (i.e. small to negligible). If
+<br />
+the issue is still there you can work around it by using the DPFP code
+<br />
+or switch back to CPU.
+<br />
+<br />2) In general for diffusion calculations you may want to use a smaller
+<br />
+time step (1 fs) and increase your SHAKE and direct sum tolerances
+<br />
+(say 0.000001 and 0.000001 respectively).
+<br />
+<br />3) If you're calculating diffusion from velocity autocorrelation you
+<br />
+need to save your velocities at a pretty high frequency (about every 5
+<br />
+fs or so) to get the VAC function smooth enough for integrating over -
+<br />
+in general MSD is better to use IMO.
+<br />
+<br />4) If you're calculating diffusion from a small amount of molecules
+<br />
+(like only 10 or so) you'll either need really long simulations or
+<br />
+you'll need to average over multiple time origins to get a
+<br />
+well-averaged MSD vs time curve (it should look fairly straight and
+<br />
+linear, not wavy). The new 'calcdiffusion' analysis in cpptraj will do
+<br />
+this, but it is only available in the latest GitHub version of cpptraj
+<br />
+(and you need to explicitly unwrap the trajectories beforehand). For
+<br />
+water there are generally enough molecules in the simulation that
+<br />
+10-20 ns or so of simulation time is OK, but again look at your MSD vs
+<br />
+time curves and make sure they look linear.
+<br />
+<br />5) If you haven't already seen it, this best-practices article on
+<br />
+calculating diffusion constants has a lot of good info:
+<br />
+<a href="https://livecomsjournal.org/index.php/livecoms/article/view/v1i1e6324">https://livecomsjournal.org/index.php/livecoms/article/view/v1i1e6324</a>
+<br />
+<br /><em class="quotelev1">&gt; NVE, NPT, or NVT setups, turning off shake, decreasing or increasing the
+</em><br />
+<br />Don't turn off SHAKE for rigid water models! They weren't designed for
+<br />
+that and resulting trajectories won't really be valid.
+<br />
+<br />Hope any or all of this helps,
+<br />
+<br />-Dan
+<br />
+<br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Fri Jun 09 2023 - 07:00:03 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0048.html" title="Next message in the list">Daniel Roe via AMBER: "Re: [AMBER] Cluster size"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0046.html" title="Previous message in the list">Charo del Genio via AMBER: "Re: [AMBER] AMD GPU install problems (David A Case)"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0041.html" title="Message to which this message replies">David Poole via AMBER: "[AMBER] Diffusion in pmemd.cuda"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg47" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg47" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg47" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg47" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta name="generator" content="hypermail 2.4.0, see http://www.hypermail-project.org/" />
+<title>Re: [AMBER] Can pmemd.cuda.MPI run on gpu with compute mode set as exclusive process? from Ross Walker via AMBER on 2023-05-10 (Amber Archive May 2023)</title>
+<meta name="Author" content="Ross Walker via AMBER (amber.ambermd.org)" />
+<meta name="Subject" content="Re: [AMBER] Can pmemd.cuda.MPI run on gpu with compute mode set as exclusive process?" />
+<meta name="Date" content="2023-05-10" />
+<style type="text/css">
+/*<![CDATA[*/
+/* To be incorporated in the main stylesheet, don't code it in hypermail! */
+body {color: black; background: #ffffff;}
+dfn {font-weight: bold;}
+pre { background-color:inherit;}
+.head { border-bottom:1px solid black;}
+.foot { border-top:1px solid black;}
+th {font-style:italic;}
+table { margin-left:2em;}map ul {list-style:none;}
+#mid { font-size:0.9em;}
+#received { float:right;}
+address { font-style:inherit;}
+/*]]>*/
+.quotelev1 {color : #990099;}
+.quotelev2 {color : #ff7700;}
+.quotelev3 {color : #007799;}
+.quotelev4 {color : #95c500;}
+.period {font-weight: bold;}
+</style>
+</head>
+<body>
+<div class="head">
+<h1>Re: [AMBER] Can pmemd.cuda.MPI run on gpu with compute mode set as exclusive process?</h1>
+<!-- received="Wed May 10 05:00:02 2023" -->
+<!-- isoreceived="20230510120002" -->
+<!-- sent="Wed, 10 May 2023 07:35:38 -0400" -->
+<!-- isosent="20230510113538" -->
+<!-- name="Ross Walker via AMBER" -->
+<!-- email="amber.ambermd.org" -->
+<!-- subject="Re: [AMBER] Can pmemd.cuda.MPI run on gpu with compute mode set as exclusive process?" -->
+<!-- id="5854D194-0AA8-476E-A657-10D50113A368.rosswalker.co.uk" -->
+<!-- charset="us-ascii" -->
+<!-- inreplyto="89af60dc2a2d4cae99b4a14a6dc824e7.ncr.nstda.or.th" -->
+<!-- expires="-1" -->
+<map id="navbar" name="navbar">
+<ul class="links">
+<li>
+<dfn>This message</dfn>:
+[ <a href="#start" name="options1" id="options1" tabindex="1">Message body</a> ]
+ [ More options (<a href="#options2">top</a>, <a href="#options3">bottom</a>) ]
+</li>
+<li>
+<dfn>Related messages</dfn>:
+<!-- unext="start" -->
+[ <a href="0044.html" accesskey="d" title="Prithviraj Nandigrami via AMBER: &quot;[AMBER] native contacts nucleic acid&quot;">Next message</a> ]
+[ <a href="0042.html" title="Hoang, Oanh Tu via AMBER: &quot;[AMBER] Constant pH&quot;">Previous message</a> ]
+[ <a href="0041.html" title="Siwakorn Sukharom via AMBER: &quot;[AMBER] Can pmemd.cuda.MPI run on gpu with compute mode set as exclusive process?&quot;">In reply to</a> ]
+<!-- unextthread="start" -->
+<!-- ureply="end" -->
+</li>
+</ul>
+</map>
+<ul class="links">
+<li><a name="options2" id="options2"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg43" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg43" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg43" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg43" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</div>
+<!-- body="start" -->
+<div class="mail">
+<address class="headers">
+<span id="from">
+<dfn>From</dfn>: Ross Walker via AMBER &lt;<a href="mailto:amber.ambermd.org?Subject=Re%3A%20%5BAMBER%5D%20Can%20pmemd.cuda.MPI%20run%20on%20gpu%20with%20compute%20mode%20set%20as%20exclusive%20process%3F">amber.ambermd.org</a>&gt;
+</span><br />
+<span id="date"><dfn>Date</dfn>: Wed, 10 May 2023 07:35:38 -0400</span><br />
+</address>
+<a name="start" accesskey="j" id="start"></a><br />
+Hi Siwakorn,
+<br />
+<br />Yes when running the GPU MPI code it has to create an inter-GPU process for the communication. This is prohibited when running the GPUs in exclusive mode hence the error.
+<br />
+<br />Asking why your sysadmin prefers the GPUs to be in exclusive mode is a reasonable question - they just need to properly configure a queuing system that treats GPUs like a consumable. It's pretty easy to do. Assuming though that they don't want to do that you are stuck running single GPU runs I'm afraid. That said the acceleration from multi-GPU is minimal these days with AMBER, unless running very large GB simulations, so there is not much to gain. You are better off running two independent simulations from different starting conditions to improve your overall sampling.
+<br />
+<br />All the best
+<br />
+Ross
+<br />
+<br /><em class="quotelev1">&gt; On May 10, 2023, at 04:44, Siwakorn Sukharom via AMBER &lt;amber.ambermd.org&gt; wrote:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; When I run pmemd.cuda.MPI on gpu that set the compute mode to exclusive process, i got this error
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; cudaDeviceEnablePeerAccess CUDA-capable device(s) is/are busy or unavailable
+</em><br />
+<em class="quotelev1">&gt; cudaDeviceEnablePeerAccess CUDA-capable device(s) is/are busy or unavailable
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; but it can run fine on default mode. However, the problem is the system admin prefer to set gpu mode to exclusive process and ask me if i can make amber to run on exclusive process or not
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; ________________________________
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; Disclaimer:
+</em><br />
+<em class="quotelev1">&gt; 
+</em><br />
+<em class="quotelev1">&gt; This e-mail and any files transmitted with it may contain confidential and proprietary information of the National Science and Technology Development Agency (NSTDA), Thailand. They are intended solely for the use of the addressed individuals or entities. If you are not the intended recipient, you are required to immediately delete this e-mail and its contents from your system. Any disclosure, distribution, or action based upon the contents of this e-mail is strictly prohibited. Any views or opinions presented in this e-mail are solely those of the sender and do not necessarily represent those of NSTDA. NSTDA does not accept any responsibility for the content of this message or the consequences of any actions taken on the basis of the information provided. NSTDA accepts no liability for any damage caused by any virus or malware which may be inserted in this e-mail during transmission.
+</em><br />
+<em class="quotelev1">&gt; _______________________________________________
+</em><br />
+<em class="quotelev1">&gt; AMBER mailing list
+</em><br />
+<em class="quotelev1">&gt; AMBER.ambermd.org
+</em><br />
+<em class="quotelev1">&gt; <a href="https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!Mih3wA!CfD4I2YaOnpj8kUEX_3CRfma5NKESyOii2JQYGF4uiADJD3Bq30JZLesgE55hAP1CKKau3jJelk">https://urldefense.com/v3/__http://lists.ambermd.org/mailman/listinfo/amber__;!!Mih3wA!CfD4I2YaOnpj8kUEX_3CRfma5NKESyOii2JQYGF4uiADJD3Bq30JZLesgE55hAP1CKKau3jJelk</a>$ 
+</em><br />
+<br /><br />_______________________________________________
+<br />
+AMBER mailing list
+<br />
+AMBER.ambermd.org
+<br />
+<a href="http://lists.ambermd.org/mailman/listinfo/amber">http://lists.ambermd.org/mailman/listinfo/amber</a>
+<br />
+<span id="received"><dfn>Received on</dfn> Wed May 10 2023 - 05:00:02 PDT</span>
+</div>
+<!-- body="end" -->
+<div class="foot">
+<map id="navbarfoot" name="navbarfoot" title="Related messages">
+<ul class="links">
+<li><dfn>This message</dfn>: [ <a href="#start">Message body</a> ]</li>
+<!-- lnext="start" -->
+<li><dfn>Next message</dfn>: <a href="0044.html" title="Next message in the list">Prithviraj Nandigrami via AMBER: "[AMBER] native contacts nucleic acid"</a></li>
+<li><dfn>Previous message</dfn>: <a href="0042.html" title="Previous message in the list">Hoang, Oanh Tu via AMBER: "[AMBER] Constant pH"</a></li>
+<li><dfn>In reply to</dfn>: <a href="0041.html" title="Message to which this message replies">Siwakorn Sukharom via AMBER: "[AMBER] Can pmemd.cuda.MPI run on gpu with compute mode set as exclusive process?"</a></li>
+<!-- lnextthread="start" -->
+<!-- lreply="end" -->
+</ul>
+<ul class="links">
+<li><a name="options3" id="options3"></a><dfn>Contemporary messages sorted</dfn>: [ <a href="date.html#msg43" title="Contemporary messages by date">by date</a> ] [ <a href="index.html#msg43" title="Contemporary discussion threads">by thread</a> ] [ <a href="subject.html#msg43" title="Contemporary messages by subject">by subject</a> ] [ <a href="author.html#msg43" title="Contemporary messages by author">by author</a> ] [ <a href="attachment.html" title="Contemporary messages by attachment">by messages with attachments</a> ]</li>
+</ul>
+</map>
+</div>
+<!-- trailer="footer" -->
+<!-- SiteSearch Google -->
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-9700140137778662:razg1fu9f1b" />
+        <input type="hidden" name="ie" value="ISO-8859-1" />
+        <input type="text" name="q" size="60" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+<!-- SiteSearch Google -->
+</td></tr></table>
+
+</body>
+</html>
+</body>
+</html>
