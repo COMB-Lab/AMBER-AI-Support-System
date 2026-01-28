@@ -41,7 +41,10 @@ def fetch(url: str, timeout: int = 15) -> Optional[str]:
 
 
 def parse_index(html: str, domain_filter: Optional[str] = None) -> List[str]:
-    soup = BeautifulSoup(html, "lxml")
+    try:
+        soup = BeautifulSoup(html, "lxml")
+    except Exception:
+        soup = BeautifulSoup(html, "html.parser")
     links = set()
     for a in soup.find_all("a", href=True):
         href = a['href'].strip()
@@ -61,7 +64,10 @@ def parse_index(html: str, domain_filter: Optional[str] = None) -> List[str]:
 
 
 def extract_main_text(html: str) -> Dict:
-    soup = BeautifulSoup(html, "lxml")
+    try:
+        soup = BeautifulSoup(html, "lxml")
+    except Exception:
+        soup = BeautifulSoup(html, "html.parser")
     # try common main containers
     main = soup.find(id="content") or soup.find("main") or soup.find("article") or soup.body
 
