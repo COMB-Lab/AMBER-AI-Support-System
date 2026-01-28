@@ -271,6 +271,93 @@ with open('data/tutorials_chunks/tutorial_001_chunks.jsonl') as f:
     # col.upsert(ids=ids, documents=texts, metadatas=metadatas, embeddings=embeddings)
 ```
 
+Production-Grade Tutorial Scraper and Storage Pipeline
+-----------------------------------------------------
+
+### Overview
+
+This repository includes a **production-grade pipeline** for automatically extracting, cleaning, structuring, and storing Amber tutorial data into the shared ChromaDB instance on Mirzakhani. The goal is to ensure the Amber Knowledge Base includes high-quality instructional content from the official Amber tutorials, alongside mailing list discussions.
+
+Following the R&D exploration on scraping and storing AmberMD tutorials, the pipeline:
+1. **Discovers** all tutorial pages from https://ambermd.org/tutorials
+2. **Extracts** structured content (headings, sections, code blocks)
+3. **Chunks** text intelligently for embedding (character-aware greedy chunking)
+4. **Stores** per-page JSON and chunked JSONL locally for version control and audit
+5. **Ingests** chunks into ChromaDB on Mirzakhani with embeddings (OpenAI or local model)
+6. **Monitors** and logs all operations for debugging and reproducibility
+
+### Key Features
+
+- **Robustness**: Retry/backoff via `tenacity` library; checkpointing to resume interrupted crawls
+- **Politeness**: Rate-limiting (configurable delay), user-agent headers, robots.txt respect
+- **Deduplication**: Stable chunk IDs (`<slug>_p{page}_c{chunk}`) allow idempotent re-ingestion
+- **Provenance**: Per-page JSON with source URL and metadata; SHA256 checksums for raw content
+- **Scalability**: Suitable for crawling hundreds of tutorial pages; easy to parallelize
+- **Integration**: Works with Airflow DAGs for scheduling and Mirzakhani ChromaDB for shared knowledge store
+
+### Running the Production Pipeline (PowerShell)
+
+1. **Setup environment**:
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+2. **Crawl all tutorials** (full production run):
+```powershell
+python .\scripts\scrape_amber_tutorials.py --limit None --delay 0.5
+```
+
+3. **Ingest chunks into Mirzakhani ChromaDB** (with OpenAI embeddings):
+```powershell
+$env:OPENAI_API_KEY = "sk-..."
+$env:CHROMA_HOST = "http://mirzakhani:8000"
+python .\scripts\chroma_ingest.py --jsonl-dir data/tutorials_chunks/ --chroma-collection amber_tutorials --openai-embed --chroma-host $env:CHROMA_HOST
+```
+
+4. **Verify ingestion** (query ChromaDB):
+```powershell
+python .\scripts\chroma_query.py --collection amber_tutorials --query "molecular dynamics" --top-k 5
+```
+
+### Data Storage & Outputs
+
+- `data/tutorials/` — per-tutorial JSON (title, sections, full_text, url)
+- `data/tutorials_chunks/` — JSONL files ready for Chroma ingestion
+- `data/tutorials_metadata.json` — manifest of all tutorials processed (URL, sha256, extraction timestamp)
+
+### Airflow Integration (Optional)
+
+To run the tutorial scraper and ingestion as a scheduled DAG:
+
+1. Copy or reference the DAG template at `airflow/dags/amber_tutorials_dag.py` (to be created)
+2. Configure schedule (e.g., `@weekly`) and failure notifications
+3. Airflow will invoke `scripts/scrape_amber_tutorials.py` and `scripts/chroma_ingest.py` in sequence
+
+### Production Considerations
+
+- **Embeddings**: Use OpenAI API (via env var `OPENAI_API_KEY`) or local embeddings (HuggingFace, etc.)
+- **Chroma Server**: Connect to Mirzakhani via `CHROMA_HOST` env var; falls back to local client if not set
+- **Filtering**: Add domain filtering (`--domain https://ambermd.org`) to avoid off-site links
+- **QA**: Review extracted content in `data/tutorials/` for accuracy; manually flag parsing errors
+- **Licensing**: Confirm Amber tutorials are intended for this use; document any redistribution restrictions
+
+### Example: Demo Run with Sample Data
+
+To quickly test the pipeline without processing all tutorials:
+
+```powershell
+# Extract just 3 tutorials
+python .\scripts\scrape_amber_tutorials.py --limit 3 --delay 1.0
+
+# Create a small sample JSONL for ingest testing
+python .\scripts\create_pdf_sample.py --in data/tutorials_chunks/tutorial_001_chunks.jsonl --out data/tutorials_chunks/sample_tutorials_chunks.jsonl --count 5
+
+# Ingest the sample (dry-run or with local Chroma)
+python .\scripts\chroma_ingest.py --jsonl-dir data/tutorials_chunks/ --chroma-collection amber_tutorials_demo
+```
+
 
 Airflow R&D — how to wire and test the workflow
 -----------------------------------------------
