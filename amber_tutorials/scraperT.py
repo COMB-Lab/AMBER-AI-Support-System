@@ -6,6 +6,7 @@ import time
 from pathlib import Path
 from typing import List, Dict, Optional, Set
 from urllib.parse import urljoin, urlparse
+import uuid
 
 import requests
 from bs4 import BeautifulSoup
@@ -64,7 +65,7 @@ def extract_and_clean_content(html: str, url: str) -> Dict:
 
     # In a weird case that there is no main content
     if not main_content:
-        return {"title": title, "markdown_content": "", "url": url}
+        return {"thread_id": str(uuid.uuid4()), "title": title, "markdown_content": "", "url": url}
 
     # Remove these elements
     for tag_or_selector in ["header", "nav", "footer", ".hnav", ".vnav", ".tutorial_toc"]:
@@ -75,7 +76,13 @@ def extract_and_clean_content(html: str, url: str) -> Dict:
     # change back to html
     markdown_content = markdownify.markdownify(str(main_content), heading_style="ATX").strip()
 
-    return {"title": title, "markdown_content": markdown_content, "url": url}
+    return {
+        # Added a unique thread_id for each tutorial
+        "thread_id": str(uuid.uuid4()),
+        "title": title,
+        "markdown_content": markdown_content,
+        "url": url
+    }
 
 # Had issues with file names so I used slug to make sure that there are no "illegal" file names
 def create_title_slug(title: str) -> str:
