@@ -1,0 +1,93 @@
+{
+  "label": "5.1",
+  "title": "Simple Simulation of Alanine Dipeptide",
+  "url": "https://ambermd.org/tutorials/basic/tutorial0/index.php",
+  "page_title": "Simple Simulation of Alanine Dipeptide*",
+  "sections": [
+    {
+      "heading": "TABLE OF CONTENTS",
+      "text": "Learning Outcomes\nIntroduction\nPrepare topology and\n        coordinate files\nLoad a\n        protein force field\nBuild alanine dipeptide\nSolvate alanine\n        dipeptide\nSave the\n        Amber parm7 and rst7 input files\nPrepare Amber MD pmemd and sander input\n        files\nMinimization input\nHeating input\nProduction input\nRun Amber MD sander\nRun minimization\nRun heating MD\nRun production MD\nVisualize the results\nAnalyze the MD results\nProduction MD\n        system properties\nUse cpptraj to analyze the\n        RMSD\nConclusion"
+    },
+    {
+      "heading": "Learning Outcomes",
+      "text": "After completing this tutorial you will be able to:\nnavigate the command line interface through terminal and tleap to prepare topology and coordinate files\nunderstand the basics of forcefields and be able to load the FF19SB forcefield to be able to work with the alanine dipeptide\nset up an explicit water simulation in tleap\nperform basic equilibration\nperform production run simulations at a given temperature\nVisualize the results of production MD in VMD or Chimera-X\nUse xmgrace to plot MD thermodynamic data such as temperature, density, and energy\nUse cpptraj to calculate the root mean square displacement (RMSD) of the trajectory relative to the initial structure"
+    },
+    {
+      "heading": "Introduction",
+      "text": "parm7 - The file that\n          describes the parameter and topology of the molecules in the system\nrst7 - The file that\n          describes the initial molecular coordinates of the system\nmdin - The file that\n          describes the settings for the Amber MD engine"
+    },
+    {
+      "heading": "Prepare topology and coordinate files",
+      "text": "10.1.1 Introduction to Unix tutorial\nCodecademy command line tutorial\nRyan's Linux tutorial\n2. Make a new directory for this\n          tutorial with the\nmkdir\ncommand called\nTutorial\n.\n3. Use the\ncd\ncommand to change to different directory.\n> tleap\n-I: Adding /home/packages/amber20/dat/leap/prep to search path.\n-I: Adding /home/packages/amber20/dat/leap/lib to search path.\n-I: Adding /home/packages/amber20/dat/leap/parm to search path.\n-I: Adding /home/packages/amber20/dat/leap/cmd to search path.\nWelcome to LEaP!\n(no leaprc in search path)\n>"
+    },
+    {
+      "heading": "Load a protein\n      force field",
+      "text": "5.\nsource\n(load) the FF19SB force field now.\n> source leaprc.protein.ff19SB\n----- Source: /home/packages/amber20/dat/leap/cmd/leaprc.protein.ff19SB\n----- Source of /home/packages/amber20/dat/leap/cmd/leaprc.protein.ff19SB done\nLog file: ./leap.log\nLoading parameters: /home/packages/amber20/dat/leap/parm/parm19.dat\nReading title:\nPARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA + ff19SB\nLoading parameters: /home/packages/amber20/dat/leap/parm/frcmod.ff19SB\nReading force field modification type file (frcmod)\nReading title:\nff19SB AA-specific backbone CMAPs for protein 07/25/2019\nLoading library: /home/packages/amber20/dat/leap/lib/amino19.lib\nLoading library: /home/packages/amber20/dat/leap/lib/aminoct12.lib\nLoading library: /home/packages/amber20/dat/leap/lib/aminont12.lib\n>"
+    },
+    {
+      "heading": "Build alanine dipeptide",
+      "text": "> diala = sequence { ACE ALA NME }"
+    },
+    {
+      "heading": "Solvate alanine dipeptide",
+      "text": "> source leaprc.water.opc\n> solvateoct diala OPCBOX  10.0"
+    },
+    {
+      "heading": "Save the Amber\n        parm7 and rst7 input files",
+      "text": "8. To save the parm7 and rst7\n          file use the\nsaveamberparm\ncommand.\n> saveamberparm diala parm7 rst7\nChecking Unit.\nBuilding topology.\nBuilding atom parameters.\nBuilding bond parameters.\nBuilding angle parameters.\nBuilding proper torsion parameters.\nBuilding improper torsion parameters.\ntotal 4 improper torsions applied\nBuilding H-Bond parameters.\nIncorporating Non-Bonded adjustments.\nNot Marking per-residue atom chain types.\nMarking per-residue atom chain types.\n(no restraints)"
+    },
+    {
+      "heading": "Prepare Amber MD pmemd and sander\n        input files",
+      "text": "Heating with constant volume and temperature (NVT) for 20 ps from 0 K\n          to 300 K\nProduction MD with constant pressure and temperature (NPT) at 300 K\n          and 1 atm for 60 ps"
+    },
+    {
+      "heading": "Minimization input",
+      "text": "Minimize\n&cntrl\nimin=1,\nntx=1,\nirest=0,\nmaxcyc=2000,\nncyc=1000,\nntpr=100,\nntwx=0,\ncut=8.0,\n/"
+    },
+    {
+      "heading": "Heating input",
+      "text": "Heat\n&cntrl\nimin=0,\nntx=1,\nirest=0,\nnstlim=10000,\ndt=0.002,\nntf=2,\nntc=2,\ntempi=0.0,\ntemp0=300.0,\nntpr=100,\nntwx=100,\ncut=8.0,\nntb=1,\nntp=0,\nntt=3,\ngamma_ln=2.0,\nnmropt=1,\nig=-1,\n/\n&wt type='TEMP0', istep1=0, istep2=9000, value1=0.0, value2=300.0 /\n&wt type='TEMP0', istep1=9001, istep2=10000, value1=300.0, value2=300.0 /\n&wt type='END' /"
+    },
+    {
+      "heading": "Production input",
+      "text": "Production\n&cntrl\nimin=0,\nntx=5,\nirest=1,\nnstlim=5000000,\ndt=0.002,\nntf=2,\nntc=2,\ntemp0=300.0,\nntpr=100,\nntwx=100,\ncut=8.0,\nntb=2,\nntp=1,\nntt=3,\nbarostat=1,\ngamma_ln=2.0,\nig=-1,\n/"
+    },
+    {
+      "heading": "Run minimization",
+      "text": "$ $AMBERHOME/bin/sander -O -i 01_Min.in -o 01_Min.out -p parm7 -c rst7 -r 01_Min.ncrst \\\n-inf 01_Min.mdinfo"
+    },
+    {
+      "heading": "Run heating MD",
+      "text": "$ $AMBERHOME/bin/sander -O -i 02_Heat.in -o 02_Heat.out -p parm7 -c 01_Min.ncrst \\\n-r 02_Heat.ncrst -x 02_Heat.nc -inf 02_Heat.mdinfo\nHere is a summary of the command line options for\nsander\n:"
+    },
+    {
+      "heading": "Heating output files",
+      "text": "NSTEP =     1000   TIME(PS) =       2.000  TEMP(K) =    30.80  PRESS =     0.0\nEtot   =     -9636.4025  EKtot   =       130.0070  EPtot      =     -9766.4095\nBOND   =        0.5896   ANGLE   =         1.6788  DIHED      =         2.6834\n1-4 NB =         2.8404  1-4 EEL =        45.1563  VDWAALS    =      1584.9308\nEELEC  =     -11403.7559 EHBOND  =         0.0000  RESTRAINT  =         0.0000\nCMAP   =         -0.5328\nEwald error estimate:   0.4716E-03\n------------------------------------------------------------------------------\nNMR restraints: Bond =    0.000   Angle =     0.000   Torsion =     0.000\n==============================================================================="
+    },
+    {
+      "heading": "Run production MD",
+      "text": "$ $AMBERHOME/bin/pmemd -O -i 03_Prod.in -o 03_Prod.out -p parm7 -c 02_Heat.ncrst \\ \n-r 03_Prod.ncrst -x 03_Prod.nc -inf 03_Prod.info &\n$ tail -f 03_Prod.out"
+    },
+    {
+      "heading": "Visualize the results",
+      "text": "$ cd ~/Tutorial\n$ vmd"
+    },
+    {
+      "heading": "Analyze the MD results",
+      "text": "$ mkdir Analysis\n$ cd Analysis\n$ $AMBERHOME/bin/process_mdout.perl ../02_Heat.out ../03_Prod.out\nMD simulation temperature\nMD simulation density\nMD simulation total, potential, and kinetic energies.\n$ xmgrace summary.TEMP\n$ xmgrace summary.DENSITY\n$ xmgrace summary.ETOT summary.EPTOT summary.EKTOT"
+    },
+    {
+      "heading": "Use cpptraj to analyze\n        the RMSD",
+      "text": "trajin 02_Heat.nc\ntrajin 03_Prod.nc\nreference 01_Min.ncrst\nautoimage\nrms reference mass out 02_03.rms time 2.0 :2"
+    },
+    {
+      "heading": "Run cpptraj",
+      "text": "$ cd ~/Tutorial\n$ $AMBERHOME/bin/cpptraj -p parm7 -i rmsd.cpptraj &> cpptraj.log\nIf you need to download xmgrace or if you want to use pyplot instead, see resources under\nPlotting tutorials.\n$ xmgrace 02_03.rms\nCpptraj output files\nThe\ncpptraj\noutput files are\n      available here:\n02_03.rms\ncpptraj.log\nAlanine dipeptide MD RMSD relative to\n        minimized initial structure\nIn this example, there is no\n      significant conformational change in the positions of the alanine dipeptide atoms relative \n      to the starting structure.\nConclusion\nCongratulations. You've now run your first complete MD simulation and\n      successfully analyzed the results. This is a fairly simple example of the\n      workflow for setting up, running, and analyzing your own MD simulation. If\n      you want to learn more you are encouraged to complete the additional\ntutorials on the AMBER website.\nCopyright Ross Walker & Ben Madej, 2015\nUpdated for Amber 15 by Aditi Munshi and Ross Walker\nUpdated for Amber 18 by Sifath Mannan, Michael Barton and Tyler Luchko\nLast updated for Amber 20 and\ntLEaP\nby Jan Ziembicki and Maria Nagan"
+    },
+    {
+      "heading": "Conclusion",
+      "text": "Copyright Ross Walker & Ben Madej, 2015\nUpdated for Amber 15 by Aditi Munshi and Ross Walker\nUpdated for Amber 18 by Sifath Mannan, Michael Barton and Tyler Luchko\nLast updated for Amber 20 and\ntLEaP\nby Jan Ziembicki and Maria Nagan\n\"How's that for maxed out?\""
+    }
+  ],
+  "full_text": "TABLE OF CONTENTS\nLearning Outcomes\nIntroduction\nPrepare topology and\n        coordinate files\nLoad a\n        protein force field\nBuild alanine dipeptide\nSolvate alanine\n        dipeptide\nSave the\n        Amber parm7 and rst7 input files\nPrepare Amber MD pmemd and sander input\n        files\nMinimization input\nHeating input\nProduction input\nRun Amber MD sander\nRun minimization\nRun heating MD\nRun production MD\nVisualize the results\nAnalyze the MD results\nProduction MD\n        system properties\nUse cpptraj to analyze the\n        RMSD\nConclusion\n\nAfter completing this tutorial you will be able to:\nnavigate the command line interface through terminal and tleap to prepare topology and coordinate files\nunderstand the basics of forcefields and be able to load the FF19SB forcefield to be able to work with the alanine dipeptide\nset up an explicit water simulation in tleap\nperform basic equilibration\nperform production run simulations at a given temperature\nVisualize the results of production MD in VMD or Chimera-X\nUse xmgrace to plot MD thermodynamic data such as temperature, density, and energy\nUse cpptraj to calculate the root mean square displacement (RMSD) of the trajectory relative to the initial structure\n\nparm7 - The file that\n          describes the parameter and topology of the molecules in the system\nrst7 - The file that\n          describes the initial molecular coordinates of the system\nmdin - The file that\n          describes the settings for the Amber MD engine\n\nPrepare topology and coordinate files\n10.1.1 Introduction to Unix tutorial\nCodecademy command line tutorial\nRyan's Linux tutorial\n2. Make a new directory for this\n          tutorial with the\nmkdir\ncommand called\nTutorial\n.\n3. Use the\ncd\ncommand to change to different directory.\n> tleap\n-I: Adding /home/packages/amber20/dat/leap/prep to search path.\n-I: Adding /home/packages/amber20/dat/leap/lib to search path.\n-I: Adding /home/packages/amber20/dat/leap/parm to search path.\n-I: Adding /home/packages/amber20/dat/leap/cmd to search path.\nWelcome to LEaP!\n(no leaprc in search path)\n>\n\nLoad a protein\n      force field\n5.\nsource\n(load) the FF19SB force field now.\n> source leaprc.protein.ff19SB\n----- Source: /home/packages/amber20/dat/leap/cmd/leaprc.protein.ff19SB\n----- Source of /home/packages/amber20/dat/leap/cmd/leaprc.protein.ff19SB done\nLog file: ./leap.log\nLoading parameters: /home/packages/amber20/dat/leap/parm/parm19.dat\nReading title:\nPARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA + ff19SB\nLoading parameters: /home/packages/amber20/dat/leap/parm/frcmod.ff19SB\nReading force field modification type file (frcmod)\nff19SB AA-specific backbone CMAPs for protein 07/25/2019\nLoading library: /home/packages/amber20/dat/leap/lib/amino19.lib\nLoading library: /home/packages/amber20/dat/leap/lib/aminoct12.lib\nLoading library: /home/packages/amber20/dat/leap/lib/aminont12.lib\n\n> diala = sequence { ACE ALA NME }\n\nSolvate alanine dipeptide\n> source leaprc.water.opc\n> solvateoct diala OPCBOX  10.0\n\nSave the Amber\n        parm7 and rst7 input files\n8. To save the parm7 and rst7\n          file use the\nsaveamberparm\ncommand.\n> saveamberparm diala parm7 rst7\nChecking Unit.\nBuilding topology.\nBuilding atom parameters.\nBuilding bond parameters.\nBuilding angle parameters.\nBuilding proper torsion parameters.\nBuilding improper torsion parameters.\ntotal 4 improper torsions applied\nBuilding H-Bond parameters.\nIncorporating Non-Bonded adjustments.\nNot Marking per-residue atom chain types.\nMarking per-residue atom chain types.\n(no restraints)\n\nPrepare Amber MD pmemd and sander\n        input files\nHeating with constant volume and temperature (NVT) for 20 ps from 0 K\n          to 300 K\nProduction MD with constant pressure and temperature (NPT) at 300 K\n          and 1 atm for 60 ps\n\nMinimize\n&cntrl\nimin=1,\nntx=1,\nirest=0,\nmaxcyc=2000,\nncyc=1000,\nntpr=100,\nntwx=0,\ncut=8.0,\n/\n\nHeat\nimin=0,\nnstlim=10000,\ndt=0.002,\nntf=2,\nntc=2,\ntempi=0.0,\ntemp0=300.0,\nntwx=100,\nntb=1,\nntp=0,\nntt=3,\ngamma_ln=2.0,\nnmropt=1,\nig=-1,\n&wt type='TEMP0', istep1=0, istep2=9000, value1=0.0, value2=300.0 /\n&wt type='TEMP0', istep1=9001, istep2=10000, value1=300.0, value2=300.0 /\n&wt type='END' /\n\nProduction\nntx=5,\nirest=1,\nnstlim=5000000,\nntb=2,\nntp=1,\nbarostat=1,\n\n$ $AMBERHOME/bin/sander -O -i 01_Min.in -o 01_Min.out -p parm7 -c rst7 -r 01_Min.ncrst \\\n-inf 01_Min.mdinfo\n\n$ $AMBERHOME/bin/sander -O -i 02_Heat.in -o 02_Heat.out -p parm7 -c 01_Min.ncrst \\\n-r 02_Heat.ncrst -x 02_Heat.nc -inf 02_Heat.mdinfo\nHere is a summary of the command line options for\nsander\n:\n\nHeating output files\nNSTEP =     1000   TIME(PS) =       2.000  TEMP(K) =    30.80  PRESS =     0.0\nEtot   =     -9636.4025  EKtot   =       130.0070  EPtot      =     -9766.4095\nBOND   =        0.5896   ANGLE   =         1.6788  DIHED      =         2.6834\n1-4 NB =         2.8404  1-4 EEL =        45.1563  VDWAALS    =      1584.9308\nEELEC  =     -11403.7559 EHBOND  =         0.0000  RESTRAINT  =         0.0000\nCMAP   =         -0.5328\nEwald error estimate:   0.4716E-03\n------------------------------------------------------------------------------\nNMR restraints: Bond =    0.000   Angle =     0.000   Torsion =     0.000\n===============================================================================\n\n$ $AMBERHOME/bin/pmemd -O -i 03_Prod.in -o 03_Prod.out -p parm7 -c 02_Heat.ncrst \\\n-r 03_Prod.ncrst -x 03_Prod.nc -inf 03_Prod.info &\n$ tail -f 03_Prod.out\n\n$ cd ~/Tutorial\n$ vmd\n\n$ mkdir Analysis\n$ cd Analysis\n$ $AMBERHOME/bin/process_mdout.perl ../02_Heat.out ../03_Prod.out\nMD simulation temperature\nMD simulation density\nMD simulation total, potential, and kinetic energies.\n$ xmgrace summary.TEMP\n$ xmgrace summary.DENSITY\n$ xmgrace summary.ETOT summary.EPTOT summary.EKTOT\n\nUse cpptraj to analyze\n        the RMSD\ntrajin 02_Heat.nc\ntrajin 03_Prod.nc\nreference 01_Min.ncrst\nautoimage\nrms reference mass out 02_03.rms time 2.0 :2\n\nRun cpptraj\n$ $AMBERHOME/bin/cpptraj -p parm7 -i rmsd.cpptraj &> cpptraj.log\nIf you need to download xmgrace or if you want to use pyplot instead, see resources under\nPlotting tutorials.\n$ xmgrace 02_03.rms\nCpptraj output files\nThe\ncpptraj\noutput files are\n      available here:\n02_03.rms\ncpptraj.log\nAlanine dipeptide MD RMSD relative to\n        minimized initial structure\nIn this example, there is no\n      significant conformational change in the positions of the alanine dipeptide atoms relative\n      to the starting structure.\nCongratulations. You've now run your first complete MD simulation and\n      successfully analyzed the results. This is a fairly simple example of the\n      workflow for setting up, running, and analyzing your own MD simulation. If\n      you want to learn more you are encouraged to complete the additional\ntutorials on the AMBER website.\nCopyright Ross Walker & Ben Madej, 2015\nUpdated for Amber 15 by Aditi Munshi and Ross Walker\nUpdated for Amber 18 by Sifath Mannan, Michael Barton and Tyler Luchko\nLast updated for Amber 20 and\ntLEaP\nby Jan Ziembicki and Maria Nagan\n\n\"How's that for maxed out?\""
+}
