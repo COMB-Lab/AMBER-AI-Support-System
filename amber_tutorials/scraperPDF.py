@@ -1,9 +1,14 @@
 import re
 import json
 from pdfminer.high_level import extract_text
+import uuid
 
-
-raw_text = extract_text("Amber25.pdf")
+# Check if amper pdf is there
+try:
+    raw_text = extract_text("Amber25.pdf")
+except FileNotFoundError:
+    print("Error: 'Amber25.pdf' not found. Please place the PDF in the same directory as the script.")
+    exit()
 
 def clean_text(text: str) -> str:
     # remove hyphenated line breaks
@@ -74,6 +79,8 @@ for chapter in chapters:
         section_body = "\n".join(lines[1:]).strip()
 
         section_entries.append({
+            # thread ID is here
+            "thread_id": str(uuid.uuid4()),
             "title": section_title,
             "type": classify_section(section_title),
             "content": section_body
