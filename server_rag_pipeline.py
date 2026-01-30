@@ -37,33 +37,52 @@ Answer the question clearly and concisely, using a step-by-step explanation when
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
 import torch
 
-model_name = "google/flan-t5-large"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
-model.to("cpu")
+class GoogleLLM:
+    def __init__(
+        self,
+        model_name="google/flan-t5-large",
+        max_new_tokens=300,
+        temperature=0.7,
+        use_device_map=False,
+    ):
+        self.model_name = model_name
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-def generate_answer(prompt, max_new_tokens=300):
-    inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+        # defaulting to CPU
+        if use_device_map:
+            self.pipe = pipeline(
+                "text2text-generation",
+                model=model_name,
+                device_map="auto"
+            )
+        else:
+            self.pipe = pipeline(
+                "text2text-generation",
+                model=model_name,
+                device=0 if torch.cuda.is_available() else -1
+            )
 
-    with torch.no_grad():
-        outputs = model.generate(
-            **inputs,
-            max_new_tokens=max_new_tokens,
-            temperature=0.7,
-            top_p=0.9,
-            do_sample=True
-        )
+        self.gen_cfg = {
+            "max_new_tokens": max_new_tokens,
+            "do_sample": temperature > 0.0,
+            "temperature": float(temperature) if temperature > 0.0 else None,
+            "num_beams": 4 if temperature == 0.0 else 1,
+        }
 
-    return tokenizer.decode(outputs[0], skip_special_tokens=True)
+    def generate_answer(self, prompt: str) -> str:
+        output = self.pipe(prompt, **self.gen_cfg)
+        return output[0]["generated_text"]
+
+llm = GoogleLLM()
 
 def rag_pipeline(user_query):
     context = retrieve_context(user_query, chroma_client)
     prompt = build_prompt(user_query, context)
-    answer = generate_answer(prompt)
+    answer = llm.generate_answer(prompt)
     return answer
 
 if __name__ == "__main__":
     # temporary query to test if it will give a response
-    query = "How does Amber handle time-series anomaly detection?"
+    query = input("Question: ")
     response = rag_pipeline(query)
     print("\nAMBER Support:\n", response)
