@@ -77,33 +77,15 @@ def _keyword_score(query: str, sentence: str) -> int:
     s = set(re.findall(r"[A-Za-z0-9]+", sentence.lower()))
     return len(q & s)
 
-def build_prompt(user_query: str, contexts: List[str], max_ctx_chars: int = 2000) -> str:
-    """
-    Build a concise, answer-only prompt.
-    - If contexts is empty (definition-style query), do NOT include a context block.
-    - If contexts is non-empty, compress it and include it, while forbidding copying.
-    """
-    if not contexts:  # definition mode: no retrieval used
-        system = (
-            "You are Amber Support Assistant. Answer in 2–3 plain sentences. "
-            "Do not restate the question. Do not include names, dates, IDs, file paths, code, or citations. "
-            "If uncertain, say so briefly."
-        )
-        return f"{system}\n\nQuestion: {user_query}\n\nAnswer:"
+def build_prompt(user_query: str, contexts: List[str], max_ctx_chars: int = 4000) -> str:
+    context = "\n\n---\n\n".join([c for c in contexts if c])[:max_ctx_chars]
 
-    # retrieval mode
-    focused = compress_context(user_query, contexts, max_sentences=8)[:max_ctx_chars]
-    system = (
-        "You are Amber Support Assistant. Answer in 2–3 plain sentences."
-        "Use the context only to inform your answer; Do not quote or copy sentences from the context. You may mention Amber tool names (e.g., tleap, cpptraj, MMPBSA.py) if helpful."
-        "Do not restate the question. Do not include names, dates, IDs, or citations."
-        "If uncertain, say so briefly."
-    )
-    return (
-        f"{system}\n\n"
-        f"Question: {user_query}\n"
-        "<context>\n"
-        f"{focused}\n"
-        "</context>\n\n"
-        "Answer:"
-    )
+    prompt = f"""You are an expert assistant for Amber, a molecular dynamics software used in computational chemistry and biology. Your job is to help users troubleshoot issues, follow best practices, and understand workflows by using archived discussions, manuals, and documentation.
+
+A user has asked the following question: {user_query}
+
+Relevant technical context has been retrieved from archived sources: {context}
+
+Using the information provided:
+Answer the question in a concise step-by-step way and eplain the reasoning, reference any relevant Amber tools, versions, or error messages, include specific advice or examples when applicable, cite relevant documentation or previous discussions if provided."""
+    return prompt.strip()

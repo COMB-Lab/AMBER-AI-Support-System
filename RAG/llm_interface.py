@@ -1,9 +1,12 @@
+# RAG/llm_interface.py
 import re
 from transformers import pipeline
 
 # ---------- Output cleanup heuristics ----------
 NAME_DATE_LINE = re.compile(r"^[A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,3}\s*\([^)]+\):")
-CODEY = re.compile(r"[/\\][\w\-.]+|[\w\-.]+\.(c|cpp|h|hpp|py|f90|f|sh|md|txt)|`|::|#include|int\s+main|class\s+\w+")
+CODEY = re.compile(
+    r"[/\\][\w\-.]+|[\w\-.]+\.(c|cpp|h|hpp|py|f90|f|sh|md|txt)|`|::|#include|int\s+main|class\s+\w+"
+)
 NON_SENTENCE = re.compile(r"^[^\w]*$")
 FIRST_PERSON = re.compile(r"^(i|we|you)\b", re.I)
 QUOTED = re.compile(r"^>")
@@ -28,20 +31,40 @@ FALLBACK_CLUSTERING = (
     "then write representative structures and cluster populations for analysis."
 )
 
-def _prompt_asks_clustering(prompt: str) -> bool:
-    return bool(re.search(r"\bcluster|clustering\b", prompt, re.I))
+NO_PRIOR_ANSWER = (
+    "No sufficiently relevant prior answer was found in the knowledge base for that query. "
+    "Please submit a support ticket so the team can provide an authoritative answer."
+)
 
-def _prompt_asks_definition(prompt: str) -> bool:
-    return bool(re.search(r"^(what is|summarize|define|briefly)\b", prompt.strip(), re.I))
+# ---------- Prompt parsing (baseline prompt aware) ----------
+_Q_FROM_BASELINE = re.compile(
+    r"A user has asked the following question:\s*(.*?)\s*(?:Relevant technical context|Using the information provided:)",
+    re.S | re.I,
+)
 
-def _postfilter(prompt: str, text: str) -> str:
+def _extract_question(prompt: str) -> str:
+    m = _Q_FROM_BASELINE.search(prompt)
+    if m:
+        return m.group(1).strip()
+    # fallback: try a "Question:" pattern if you ever swap templates
+    m2 = re.search(r"(?mi)^Question:\s*(.+)$", prompt)
+    return (m2.group(1).strip() if m2 else prompt.strip())
+
+def _asks_clustering(question: str) -> bool:
+    return bool(re.search(r"\bcluster|clustering\b", question, re.I))
+
+def _asks_definition(question: str) -> bool:
+    return bool(re.search(r"^(what is|summarize|define|briefly)\b", question.strip(), re.I))
+
+def _postfilter(question: str, text: str) -> str:
+    """Question-aware cleanup. If clustering question, keep clustering-related sentences."""
     lines = [
         ln for ln in text.splitlines()
         if not NAME_DATE_LINE.match(ln.strip()) and not QUOTED.match(ln.strip())
     ]
     text = " ".join(lines).strip()
 
-    require_cluster = _prompt_asks_clustering(prompt)
+    require_cluster = _asks_clustering(question)
     sents = re.split(r"(?<=[.!?])\s+(?=[A-Z0-9])", text)
     clean = []
     for s in sents:
@@ -50,38 +73,31 @@ def _postfilter(prompt: str, text: str) -> str:
             continue
         if FIRST_PERSON.match(s) or NON_SENTENCE.match(s) or CODEY.search(s):
             continue
+
         if require_cluster:
             if not CLUSTER_ALLOWED.search(s):
                 continue
         else:
             if not DOMAIN_ALLOWED.search(s):
                 continue
+
         clean.append(s)
         if len(clean) >= 3:
             break
-    return " ".join(clean)
 
-def _strip_prompt_echo(prompt: str, generated: str) -> str:
-    g = generated.strip()
-    # For causal models, generated text often starts with the prompt.
-    if g.startswith(prompt):
-        g = g[len(prompt):].strip()
-    # Also strip common markers
-    for tag in ("Answer:", "Context:", "<context>", "</context>"):
-        g = g.replace(tag, "")
-    return g.strip()
+    return " ".join(clean).strip()
 
 def _is_llama_like(model_name: str) -> bool:
     m = model_name.lower()
-    return any(k in m for k in ["llama", "mistral", "qwen", "gemma", "gpt", "phi", "falcon"])
+    return any(k in m for k in ["llama", "mistral", "qwen", "gemma", "phi", "falcon"])
 
 class LLM:
     """
-    Supports both:
-    - Seq2Seq models (FLAN-T5): pipeline('text2text-generation')
-    - Causal LMs (LLaMA): pipeline('text-generation')
-    Auto-selects pipeline based on model name.
+    Supports:
+    - Seq2Seq (FLAN-T5): pipeline('text2text-generation')
+    - Causal (LLaMA): pipeline('text-generation') with return_full_text=False
     """
+
     def __init__(
         self,
         model_name: str,
@@ -91,55 +107,61 @@ class LLM:
     ) -> None:
         self.model_name = model_name
         self.is_causal = _is_llama_like(model_name)
-
         task = "text-generation" if self.is_causal else "text2text-generation"
 
+        pipe_kwargs = {"model": model_name}
         if use_device_map:
-            self.pipe = pipeline(task, model=model_name, device_map="auto")
-        else:
-            self.pipe = pipeline(task, model=model_name)
+            pipe_kwargs["device_map"] = "auto"
+
+        # For causal models, returning only the continuation reduces prompt-echo issues a lot.
+        if self.is_causal:
+            pipe_kwargs["return_full_text"] = False
+
+        self.pipe = pipeline(task, **pipe_kwargs)
 
         self.gen_cfg = {
             "max_new_tokens": max_new_tokens,
             "do_sample": temperature > 0.0,
             "temperature": float(temperature) if temperature > 0.0 else None,
-            "num_beams": 4 if (not self.is_causal and temperature == 0.0) else None,  # beams only for seq2seq
+            # beams only makes sense for seq2seq here
+            "num_beams": 4 if (not self.is_causal and temperature == 0.0) else None,
         }
 
-    def _synthesize_if_needed(self, prompt: str, text: str) -> str:
-        wants_cluster = _prompt_asks_clustering(prompt)
-        wants_def = _prompt_asks_definition(prompt)
+    def _fallback(self, question: str, filtered: str, had_context: bool) -> str:
+        wants_cluster = _asks_clustering(question)
+        wants_def = _asks_definition(question)
 
-        if not text:
-            return FALLBACK_CLUSTERING if wants_cluster else FALLBACK_AMBER_DEF
+        if filtered:
+            # If clustering question but clustering keywords didn’t survive, use clustering fallback.
+            if wants_cluster and not CLUSTER_ALLOWED.search(filtered):
+                return FALLBACK_CLUSTERING
+            return filtered
 
-        if wants_cluster and not CLUSTER_ALLOWED.search(text):
+        # If we have no usable text:
+        if wants_cluster:
             return FALLBACK_CLUSTERING
-
-        if wants_def and len(text.split()) < 6:
+        if wants_def:
             return FALLBACK_AMBER_DEF
 
-        return text
+        # For general troubleshooting Qs: if retrieval happened but nothing solid emerged, prefer "no prior answer"
+        return NO_PRIOR_ANSWER if had_context else FALLBACK_AMBER_DEF
 
     def generate(self, prompt: str) -> str:
+        question = _extract_question(prompt)
         gen_args = {k: v for k, v in self.gen_cfg.items() if v is not None}
 
         out = self.pipe(prompt, **gen_args)
         raw = (out[0].get("generated_text") or "").strip()
 
-        # For causal models, remove prompt echo
-        if self.is_causal:
-            raw = _strip_prompt_echo(prompt, raw)
+        filtered = _postfilter(question, raw)
+        had_context = "<context>" in prompt or "Relevant technical context" in prompt
+        text = self._fallback(question, filtered, had_context)
 
-        text = _postfilter(prompt, raw)
-        text = self._synthesize_if_needed(prompt, text)
-
+        # enforce concise
         if len(text.split()) > 90:
-            out = self.pipe(prompt + "\n\nMake the answer half as long.", **gen_args)
-            raw2 = (out[0].get("generated_text") or "").strip()
-            if self.is_causal:
-                raw2 = _strip_prompt_echo(prompt, raw2)
-            text = _postfilter(prompt, raw2)
-            text = self._synthesize_if_needed(prompt, text)
+            out2 = self.pipe(prompt + "\n\nMake the answer half as long.", **gen_args)
+            raw2 = (out2[0].get("generated_text") or "").strip()
+            filtered2 = _postfilter(question, raw2)
+            text = self._fallback(question, filtered2, had_context)
 
         return " ".join(text.split())
