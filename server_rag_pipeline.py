@@ -23,15 +23,14 @@ def retrieve_context(query, chroma_client, top_k=5):
     return context
 
 def build_prompt(query, context):
-    prompt = f"""You are Amber Support Assistant, an expert in Amber molecular dynamics software.
+    prompt = f"""You are an expert assistant for Amber, a molecular dynamics software used in computational chemistry and biology. Your job is to help users troubleshoot issues, follow best practices, and understand workflows by using archived discussions, manuals, and documentation.
 
-Context:
-{context}
+    A user has asked the following question: {query}
 
-Question:
-{query}
+    Relevant technical context has been retrieved from archived sources: {context}
 
-Answer the question clearly and concisely, using a step-by-step explanation when helpful."""
+    Using the information provided:
+    Answer the question in a concise step-by-step way, and explain the reasoning, reference any relevant tools, versions, or error messages, include specific advice or examples when applicable, cite relevant documentation or previous discussions if provided."""
     return prompt
 
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
@@ -82,7 +81,6 @@ def rag_pipeline(user_query):
     return answer
 
 if __name__ == "__main__":
-    # temporary query to test if it will give a response
     query = input("Question: ")
     response = rag_pipeline(query)
     print("\nAMBER Support:\n", response)
