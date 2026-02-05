@@ -422,56 +422,43 @@ Target PDF: https://ambermd.org/doc12/Amber25.pdf
 
 Objective
 ---------
-Quick R&D to determine a practical approach to store PDFs so they are usable
-in a retrieval-augmented generation (RAG) pipeline. The goal is to produce a
-prototype that downloads the PDF, preserves the raw PDF, extracts per-page
-text, chunks the text for embeddings, and writes metadata for ingestion into
-Chroma (or any vector DB).
+Quick R&D to determine a practical approach to store PDFs for use in a
+retrieval-augmented generation (RAG) pipeline. The goal is to produce a
+minimal prototype that downloads and preserves the raw PDF with metadata
+for provenance.
 
 Recommendations (summary)
 -------------------------
-- Store the raw PDF binary in `data/pdfs/` (preserve original file for
+- Store the raw PDF binary in `data/pdfs/<slug>/` (preserve original file for
   provenance and possible binary analysis).
-- Extract per-page text and save per-page JSON: `data/pdfs/<slug>/page_000.json`.
-- Create chunked JSONL suitable for vector DBs in `data/pdf_chunks/<slug>_chunks.jsonl`.
-- Keep metadata in a small SQLite table (`pdfs` and `pdf_pages`) for provenance
-  and quick lookups; include original URL, filename, sha256, page_count.
-- Upsert chunk records into Chroma using stable IDs: `<slug>_p{page}_c{chunk>`.
+- Record metadata (URL, filename, SHA256) in JSON for integrity verification.
+- Defer text extraction and chunking to downstream RAG pipeline (can use
+  pdfplumber, pypdf, or commercial services as needed).
 
 Prototype script
 ----------------
 This repository includes `scripts/pdf_rag_store.py` which implements a minimal
-prototype to:
+R&D prototype to:
 
-- download a PDF from a URL and save to `data/pdfs/<slug>.pdf`
-- compute SHA256 for the file
-- extract per-page text using `pdfplumber` (fallback to `pypdf` if needed)
-- chunk pages using a simple character-based greedy chunker (default
-  max chars ~2000)
-- write per-page JSON and a chunked JSONL
+- Download a PDF from a URL and save to `data/pdfs/<slug>/<filename>.pdf`
+- Compute SHA256 hash for integrity verification
+- Write metadata JSON with URL, filename, and hash for provenance
 
-Why per-page chunks?
----------------------
-PDFs often contain structure and images; per-page extraction keeps context
-localized and makes it easy to show sources in RAG. Chunking further controls
-embedding granularity and token limits.
+Design rationale
+----------------
+The R&D determined that the best approach is to:
+1. **Store raw PDF only** — preserves authenticity and allows flexible extraction
+2. **Record metadata** — SHA256 for integrity, URL for provenance, filename for organization
+3. **Defer extraction** — downstream RAG pipeline can choose best extraction method
+   (OCR, text extraction, image extraction, etc.) based on document type and use case
 
-Storage options considered
---------------------------
-1. Raw PDF + text chunks on disk + metadata in SQLite (prototype): simple,
-   reproducible, easy to back up.
-2. Raw PDF in object store (S3/MinIO) + text/metadata in Postgres + vector
-   store in Chroma: production-grade, scalable, supports CDN and signed URLs.
-3. Store OCR images and original PDF too (if OCR needed): use Tesseract or
-   commercial OCR if PDF is scanned.
-
-Recommendations for production
-------------------------------
-- Use object storage for raw PDFs and backups; store metadata in Postgres.
-- Use deterministic stable IDs derived from URL/sha256/slug to allow idempotent
-  re-ingestion.
-- Respect site terms and robots; for single PDF of Amber25.pdf this is likely
-  fine for internal use, but confirm license.
+Storage recommendations
+-----------------------
+For production:
+- Store raw PDFs in object storage (S3, MinIO, GCS) with versioning
+- Store metadata in relational DB (Postgres, SQLite) for querying
+- Use SHA256 checksums to detect corruption and enable deduplication
+- Respect site terms and licensing; confirm usage rights before distribution
 
 Sample commands (PowerShell)
 ----------------------------
@@ -491,7 +478,34 @@ python .\scripts\pdf_rag_store.py --url https://ambermd.org/doc12/Amber25.pdf
 
 Outputs
 -------
-- `data/pdfs/amber25/Amber25.pdf` — raw PDF
-- `data/pdfs/amber25/pages/page_000.json` — per-page JSON with text and metadata
-- `data/pdf_chunks/amber25_chunks.jsonl` — chunked JSONL `{id,text,metadata}`
-- (optional) `data/pdfs/amber25/metadata.json` — summary metadata (sha256, page_count)
+- `data/pdfs/amber25/Amber25.pdf` — raw PDF (17.3 MB)
+- `data/pdfs/amber25/metadata.json` — metadata with SHA256 and URL for provenance
+
+Example metadata.json:
+```json
+{
+  "url": "https://ambermd.org/doc12/Amber25.pdf",
+  "filename": "Amber25.pdf",
+  "sha256": "2a5ab567fbd40f72fa30cc639b66dea402039ee68af8e3de6c3072f34a1c4e34"
+}
+```
+
+Next steps for RAG integration
+------------------------------
+To extract text or chunks from the stored PDF for RAG:
+
+1. **Text extraction:**
+   ```python
+   import pdfplumber
+   with pdfplumber.open('data/pdfs/amber25/Amber25.pdf') as pdf:
+       for page in pdf.pages:
+           text = page.extract_text()
+   ```
+
+2. **For chunking and vector storage:**
+   - Use the extracted text with a chunking strategy (sliding window, sentence boundaries, etc.)
+   - Generate embeddings via OpenAI, local models, or other services
+   - Store in Chroma, Pinecone, or other vector DB
+
+This separation of concerns allows the team to optimize PDF storage and RAG extraction
+independently.
