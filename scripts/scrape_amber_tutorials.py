@@ -75,34 +75,38 @@ def extract_main_text(html: str) -> Dict:
     for sel in main.select("nav, header, footer, .nav, .menu, .breadcrumb, .breadcrumbs") if main else []:
         sel.decompose()
 
-    sections = []
     if main is None:
         return {"title": "", "sections": [], "full_text": ""}
 
     title_tag = main.find(["h1", "h2"]) or soup.find(["h1", "h2"]) or None
     title = title_tag.get_text(strip=True) if title_tag else ""
 
-    current = {"heading": "", "text": []}
-    for el in main.find_all(recursive=False):
-        # top-level headings
+    # Extract all text from main container (recursive)
+    full_text = main.get_text(separator="\n", strip=True) if main else ""
+    
+    # Simple section splitting by heading tags
+    sections = []
+    current_heading = ""
+    current_text = []
+    
+    for el in main.find_all(recursive=True) if main else []:
         if el.name and re.match(r'h[1-4]', el.name):
-            if current["text"]:
-                sections.append({"heading": current["heading"], "text": "\n\n".join(current["text"])})
-            current = {"heading": el.get_text(strip=True), "text": []}
-        elif el.name in ("p", "pre", "div"):
-            txt = el.get_text("\n", strip=True)
-            if txt:
-                current["text"].append(txt)
-        elif el.name in ("ul", "ol"):
-            items = [li.get_text(" ", strip=True) for li in el.find_all("li")]
-            if items:
-                current["text"].append("\n".join(items))
-
-    # flush
-    if current and current["text"]:
-        sections.append({"heading": current["heading"], "text": "\n\n".join(current["text"])})
-
-    full_text = "\n\n".join([(s.get("heading") + "\n" + s.get("text")) if s.get("heading") else s.get("text") for s in sections])
+            # New heading found
+            if current_text:
+                sections.append({"heading": current_heading, "text": "\n".join(current_text)})
+            current_heading = el.get_text(strip=True)
+            current_text = []
+        elif el.name in ("p", "pre", "div", "li", "td"):
+            # Only process if it's a direct text container
+            if el.parent.name not in ("p", "pre", "div", "li", "td"):  # avoid duplicates
+                txt = el.get_text(strip=True)
+                if txt and len(txt) > 3:
+                    current_text.append(txt)
+    
+    # Flush final section
+    if current_text:
+        sections.append({"heading": current_heading, "text": "\n".join(current_text)})
+    
     return {"title": title, "sections": sections, "full_text": full_text}
 
 
