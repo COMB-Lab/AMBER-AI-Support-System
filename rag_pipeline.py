@@ -128,25 +128,35 @@ def looks_relevant(query: str, context_block: str) -> bool:
     return hits >= 2
 
 def build_prompt(query, context_block):
-    return f"""You are Amber Support Assistant, an expert in Amber molecular dynamics software.
+    return f"""You are Amber Support Assistant.
 
-Rules:
-- Use ONLY the context below for claims about Amber mailing-list content.
-- Cite sources like [S1], [S2] after the sentences they support.
-- If the context is missing or irrelevant, ask for what you need (Amber version, commands run, error output, input snip$
-
-Context:
+STRICT RULES:
+- Use ONLY the retrieved context below.
+- BEFORE answering, you MUST extract evidence from the context.
+- Do NOT use placeholders like X, A, B, "try A then B", "as suggested", or generic GPU advice.
+- Every section must include citations like [S1].
+- If the context does not contain enough info, say:
+  "The retrieved sources do not contain enough information to answer this question."
+  Then ask for: Amber version, exact command, full error text, and input snippet.
+  
+Retrieved context:
 {context_block if context_block else "[No retrieved context]"}
 
-Question:
+User question:
 {query}
 
-Respond with:
-1) Most likely explanation
-2) Step-by-step fix
-3) How to verify
-4) If still failing: what to collect next
+STEP 1 — Evidence (REQUIRED):
+Write 3–6 bullet points. Each bullet must include:
+- a specific quoted/paraphrased detail from the context (error text, symptom, command, scenario)
+- a citation at the end like [S3]
+
+STEP 2 — Final Answer (REQUIRED):
+1) Most likely explanation (must cite)
+2) Step-by-step fix (must cite)
+3) How to verify (must cite)
+4) If still failing: what to collect next (must cite)
 """
+
 
 # -----------------------
 # (E) LLM INIT + GENERATION
@@ -231,7 +241,24 @@ def rag_pipeline(user_query, top_k=5, use_mmr=True, max_new_tokens=300, device=N
 
     tokenizer, model = load_model(device)
     prompt = build_prompt(user_query, context_block)
-    return generate_answer(prompt, tokenizer, model, max_new_tokens=max_new_tokens)
+    answer = generate_answer(prompt, tokenizer, model, max_new_tokens=max_new_tokens)
+
+    # Hard requirements: citations + evidence section must exist
+
+    if "[S" not in answer or "STEP 1" not in answer:
+        return (
+            "FAIL: Answer is not grounded (missing citations and/or missing evidence extraction).\n"
+            "Try: increase top_k, increase context size, or switch to a stronger instruction-following model."
+        )
+
+    # Kill obvious generic filler / placeholders
+    banned = ["Try A", "then B", "associated with X", "as suggested", "X.", "A,", "B,"]
+    if any(x in answer for x in banned):
+        return (
+            "FAIL: Answer contains generic placeholders/filler.\n"
+            "Your prompt rules were not followed."
+        )
+    return answer
 
 # -----------------------
 # (G) TEST SET RUNNER
@@ -283,6 +310,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
