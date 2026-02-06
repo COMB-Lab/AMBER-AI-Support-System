@@ -180,10 +180,70 @@ def main():
     root = Path('data') / 'json'
     msgs = load_messages(root)
     print(f'Loaded {len(msgs)} message JSON files')
+    # Build initial groups by normalized subject
     groups = build_groups(msgs)
     print(f'Built {len(groups)} subject groups')
+
+    # Build id map for messages so we can follow replies across files/months
+    id_map: Dict[str, dict] = {}
+    for m in msgs:
+        mid = m.get('message_id')
+        if mid is None:
+            continue
+        id_map[str(mid)] = m
+
+    # If messages include an explicit 'replies' list (produced by link_replies.py),
+    # propagate child->parent as in_reply_to so downstream logic can use it.
+    for parent in msgs:
+        replies = parent.get('replies') or []
+        if not replies:
+            continue
+        parent_mid = parent.get('message_id')
+        for child_mid in replies:
+            child = id_map.get(str(child_mid))
+            if child:
+                # only set if not already present
+                if not child.get('in_reply_to'):
+                    child['in_reply_to'] = parent_mid
+
+    # Merge subject groups when messages reference each other across groups.
+    # Use union-find on normalized subject keys.
+    def find(parents: Dict[str, str], k: str) -> str:
+        while parents[k] != k:
+            parents[k] = parents[parents[k]]
+            k = parents[k]
+        return k
+
+    def union(parents: Dict[str, str], a: str, b: str):
+        ra = find(parents, a)
+        rb = find(parents, b)
+        if ra != rb:
+            parents[rb] = ra
+
+    # initialize parents for all current group keys
+    parents: Dict[str, str] = {k: k for k in groups.keys()}
+
+    # For each message with in_reply_to, union its normalized subject with parent's
+    for m in msgs:
+        in_reply = m.get('in_reply_to')
+        if not in_reply:
+            continue
+        child_norm = normalize_subject(m.get('subject', '')).lower()
+        parent_msg = id_map.get(str(in_reply))
+        if not parent_msg:
+            continue
+        parent_norm = normalize_subject(parent_msg.get('subject', '')).lower()
+        if child_norm and parent_norm and child_norm in parents and parent_norm in parents:
+            union(parents, child_norm, parent_norm)
+
+    # Build new merged groups according to union-find roots
+    merged: Dict[str, List[dict]] = {}
+    for k, msgs_list in groups.items():
+        root = find(parents, k) if k in parents else k
+        merged.setdefault(root, []).extend(msgs_list)
+
     out_dir = Path('data') / 'threads_merged'
-    merge_and_write(groups, out_dir)
+    merge_and_write(merged, out_dir)
     print(f'Wrote merged thread JSON files to {out_dir}')
 
 
