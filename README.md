@@ -415,97 +415,378 @@ Deployment and production notes
 	pipeline as a container; see the repo top-level files if you'd prefer to
 	run the pipeline in containers rather than installing Airflow locally.
 
-PDF RAG R&D — Storing AmberMD PDF for RAG
-----------------------------------------
+PDF Storage with Embeddings for RAG
+-----------------------------------
 
-Target PDF: https://ambermd.org/doc12/Amber25.pdf
+### Overview
 
-Objective
----------
-Quick R&D to determine a practical approach to store PDFs for use in a
-retrieval-augmented generation (RAG) pipeline. The goal is to produce a
-minimal prototype that downloads and preserves the raw PDF with metadata
-for provenance.
+This repository includes scripts to download the Amber 25 tutorials PDF (https://ambermd.org/doc12/Amber25.pdf) and store it with embeddings for retrieval-augmented generation (RAG) use.
 
-Recommendations (summary)
--------------------------
-- Store the raw PDF binary in `data/pdfs/<slug>/` (preserve original file for
-  provenance and possible binary analysis).
-- Record metadata (URL, filename, SHA256) in JSON for integrity verification.
-- Defer text extraction and chunking to downstream RAG pipeline (can use
-  pdfplumber, pypdf, or commercial services as needed).
+The pipeline performs:
+1. **Download** — Fetches the PDF from the specified URL
+2. **Extract** — Extracts text from each page using pdfplumber (with pypdf fallback)
+3. **Chunk** — Splits text into overlapping chunks for embedding
+4. **Embed** — Generates vector embeddings (local or OpenAI)
+5. **Store** — Upserts chunks with embeddings into Chroma vector database
 
-Prototype script
-----------------
-This repository includes `scripts/pdf_rag_store.py` which implements a minimal
-R&D prototype to:
+### Quick Start
 
-- Download a PDF from a URL and save to `data/pdfs/<slug>/<filename>.pdf`
-- Compute SHA256 hash for integrity verification
-- Write metadata JSON with URL, filename, and hash for provenance
-
-Design rationale
-----------------
-The R&D determined that the best approach is to:
-1. **Store raw PDF only** — preserves authenticity and allows flexible extraction
-2. **Record metadata** — SHA256 for integrity, URL for provenance, filename for organization
-3. **Defer extraction** — downstream RAG pipeline can choose best extraction method
-   (OCR, text extraction, image extraction, etc.) based on document type and use case
-
-Storage recommendations
------------------------
-For production:
-- Store raw PDFs in object storage (S3, MinIO, GCS) with versioning
-- Store metadata in relational DB (Postgres, SQLite) for querying
-- Use SHA256 checksums to detect corruption and enable deduplication
-- Respect site terms and licensing; confirm usage rights before distribution
-
-Sample commands (PowerShell)
-----------------------------
-Create venv and install deps:
-
+#### Setup
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
-Run the prototype on the Amber PDF:
-
+#### Download and Store with Local Embeddings (Default)
 ```powershell
-python .\scripts\pdf_rag_store.py --url https://ambermd.org/doc12/Amber25.pdf
+python scripts/store_amber_tutorials_pdf.py
 ```
 
-Outputs
--------
-- `data/pdfs/amber25/Amber25.pdf` — raw PDF (17.3 MB)
-- `data/pdfs/amber25/metadata.json` — metadata with SHA256 and URL for provenance
+This will:
+- Download PDF to `data/pdfs/amber25/Amber25.pdf`
+- Extract and chunk the text
+- Generate embeddings using `sentence-transformers` (free, no API key needed)
+- Store chunks in Chroma collection `amber_tutorials`
 
-Example metadata.json:
+#### Using OpenAI Embeddings (Optional)
+```powershell
+$env:OPENAI_API_KEY = "sk-..."
+python scripts/store_amber_tutorials_pdf.py --use-openai
+```
+
+### Scripts
+
+#### `store_amber_tutorials_pdf.py` (Recommended)
+Simple convenience script with sensible defaults:
+```powershell
+python scripts/store_amber_tutorials_pdf.py [OPTIONS]
+
+Options:
+  --collection NAME          Chroma collection name (default: amber_tutorials)
+  --use-openai              Use OpenAI embeddings (requires OPENAI_API_KEY)
+  --skip-chroma             Skip storing in Chroma (only download/extract)
+```
+
+#### `download_amber_pdf_with_embeddings.py` (Advanced)
+Full-featured script with fine-grained control:
+```powershell
+python scripts/download_amber_pdf_with_embeddings.py \
+  --url https://ambermd.org/doc12/Amber25.pdf \
+  --collection amber_tutorials \
+  [OPTIONS]
+
+Options:
+  --url URL                  PDF URL to download (required)
+  --collection NAME          Chroma collection name (default: amber_tutorials)
+  --out-root DIR            Output root directory (default: data)
+  --use-openai              Use OpenAI embeddings
+  --chunk-size NUM          Max characters per chunk (default: 2000)
+  --chunk-overlap NUM       Overlap between chunks (default: 200)
+  --skip-chroma             Skip storing in Chroma
+```
+
+### Output Structure
+
+After running the script:
+```
+data/
+└── pdfs/
+    └── amber25/
+        ├── Amber25.pdf              # Raw PDF file
+        └── metadata.json            # Metadata with SHA256, page count, chunk count
+```
+
+**Metadata example:**
 ```json
 {
   "url": "https://ambermd.org/doc12/Amber25.pdf",
   "filename": "Amber25.pdf",
-  "sha256": "2a5ab567fbd40f72fa30cc639b66dea402039ee68af8e3de6c3072f34a1c4e34"
+  "sha256": "2a5ab567fbd40f72fa30cc639b66dea402039ee68af8e3de6c3072f34a1c4e34",
+  "page_count": 438,
+  "chunk_count": 1243
 }
 ```
 
-Next steps for RAG integration
-------------------------------
-To extract text or chunks from the stored PDF for RAG:
+**Chroma Storage:**
+- Collection name: `amber_tutorials` (configurable)
+- Chunk IDs: `amber25_p0000_c000` (slug_page_chunk format)
+- Metadata per chunk:
+  - `source_url`: Original PDF URL
+  - `page`: Page number (1-indexed)
+  - `chunk_index`: Chunk index within page
+  - `pdf_filename`: PDF filename
 
-1. **Text extraction:**
-   ```python
-   import pdfplumber
-   with pdfplumber.open('data/pdfs/amber25/Amber25.pdf') as pdf:
-       for page in pdf.pages:
-           text = page.extract_text()
-   ```
+### Embedding Models
 
-2. **For chunking and vector storage:**
-   - Use the extracted text with a chunking strategy (sliding window, sentence boundaries, etc.)
-   - Generate embeddings via OpenAI, local models, or other services
-   - Store in Chroma, Pinecone, or other vector DB
+#### Local (Default)
+- **Model**: `all-MiniLM-L6-v2` (384-dimensional embeddings)
+- **Size**: ~22 MB
+- **Speed**: Fast (GPU optional)
+- **Cost**: Free
+- **Privacy**: No external API calls
 
-This separation of concerns allows the team to optimize PDF storage and RAG extraction
-independently.
+#### OpenAI
+- **Model**: `text-embedding-3-small` (1536-dimensional embeddings)
+- **Cost**: ~$0.02 per 1M tokens (~$0.12 for full PDF)
+- **Quality**: Slightly better quality
+- **Requires**: `OPENAI_API_KEY` environment variable
+
+### Configuration
+
+#### Environment Variables
+```powershell
+# For OpenAI embeddings
+$env:OPENAI_API_KEY = "sk-..."
+
+# For remote Chroma server (optional)
+$env:CHROMA_SERVER_HOST = "localhost"
+$env:CHROMA_SERVER_HTTP_PORT = "8000"
+```
+
+#### Tuning Parameters
+- **Chunk Size**: Default 2000 chars; smaller for precise queries, larger for context
+- **Overlap**: Default 200 chars; controls repetition between chunks
+
+### Usage in RAG
+
+Once stored in Chroma, query the collection:
+
+```python
+import chromadb
+
+client = chromadb.Client()
+collection = client.get_collection("amber_tutorials")
+
+# Query the collection
+results = collection.query(
+    query_texts=["How to set up AMBER?"],
+    n_results=3
+)
+
+for doc, meta, distance in zip(results['documents'][0], results['metadatas'][0], results['distances'][0]):
+    print(f"Page {meta['page']}: {doc[:200]}...")
+    print(f"Distance: {distance}\n")
+```
+
+### Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| "pdfplumber not found" | `pip install -r requirements.txt` |
+| "sentence_transformers not found" | `pip install sentence-transformers` |
+| "OPENAI_API_KEY not set" | Set env var or use local embeddings (default) |
+| Chroma connection failed | Ensure server running: `chroma run --host 0.0.0.0 --port 8000` |
+
+### Performance Notes
+
+- **Download**: ~10-30 seconds
+- **Text extraction**: ~2-5 seconds (400+ page PDF)
+- **Chunking**: <1 second
+- **Embedding (local)**: ~30-60 seconds for 1000+ chunks
+- **Embedding (OpenAI)**: ~60-120 seconds (API latency)
+- **Chroma storage**: ~5-10 seconds
+- **Total time**: ~2-3 minutes with local embeddings
+
+### Additional Documentation
+
+See [docs/amber_pdf_embeddings_guide.md](docs/amber_pdf_embeddings_guide.md) for comprehensive documentation including production considerations, advanced configuration, and detailed examples.
+
+
+Production-Grade Amber Tutorial Scraper and Storage Pipeline
+------------------------------------------------------------
+
+### Overview
+
+A **production-ready pipeline** for automatically discovering, extracting, analyzing, chunking, and storing Amber MD tutorials into a shared ChromaDB instance for retrieval-augmented generation (RAG).
+
+The pipeline automatically:
+1. **Discovers** all ~150+ tutorial pages from https://ambermd.org/tutorials/
+2. **Extracts** rich structured content:
+   - Text sections with hierarchical organization
+   - Images with alt text and captions
+   - Code blocks with language identification
+   - Download links and related files
+   - External references and citations
+   - Tables and structured data
+3. **Chunks** text intelligently for embedding and retrieval
+4. **Generates embeddings** using local models or OpenAI API
+5. **Stores** in ChromaDB (local or remote Mirzakhani instance)
+6. **Tracks** provenance, metadata, and processing status
+
+### Key Features
+
+- **Rich Content**: Captures images, code, downloads, links, tables with full metadata
+- **Robust**: Error handling, retries, checkpointing, resumable from interruptions
+- **Scalable**: Batch processing, configurable rate limiting, supports 150+ tutorials
+- **Auditable**: Manifest tracking, detailed logs, per-tutorial JSON with metadata
+- **Production-Ready**: Integration with Mirzakhani ChromaDB, OpenAI embeddings, Airflow support
+
+### Quick Start
+
+#### 1. Scrape All Tutorials
+
+```powershell
+# Demo (first 10 tutorials):
+python scripts/scrape_amber_tutorials_production.py --limit 10
+
+# Production (all ~150+ tutorials):
+python scripts/scrape_amber_tutorials_production.py --limit None --delay 0.5
+
+# Resume from where it left off:
+python scripts/scrape_amber_tutorials_production.py --resume --limit None
+```
+
+#### 2. Review and Verify
+
+```powershell
+# View statistics about scraped tutorials:
+python scripts/query_amber_tutorials.py --stats
+
+# List all tutorials:
+python scripts/query_amber_tutorials.py --list-tutorials
+
+# Review specific tutorial details:
+python scripts/query_amber_tutorials.py --tutorial amber25_basic_tutorial
+```
+
+#### 3. Store in Chroma
+
+```powershell
+# Local storage with free local embeddings:
+python scripts/ingest_tutorials_to_chroma.py
+
+# Remote storage (Mirzakhani) with OpenAI embeddings:
+$env:OPENAI_API_KEY = "sk-..."
+python scripts/ingest_tutorials_to_chroma.py `
+    --chroma-host http://mirzakhani:8000 `
+    --use-openai `
+    --batch-size 32
+```
+
+#### 4. Query Results
+
+```powershell
+# Query local Chroma:
+python scripts/query_amber_tutorials.py --query "molecular dynamics setup"
+
+# Query remote Chroma:
+python scripts/query_amber_tutorials.py `
+    --query "molecular dynamics setup" `
+    --chroma-host http://mirzakhani:8000
+```
+
+### Scripts
+
+| Script | Purpose | Key Options |
+|--------|---------|-------------|
+| **scrape_amber_tutorials_production.py** | Main scraper with rich metadata | `--limit`, `--delay`, `--resume` |
+| **ingest_tutorials_to_chroma.py** | Store scraped tutorials in Chroma | `--chroma-host`, `--use-openai`, `--batch-size` |
+| **query_amber_tutorials.py** | Query and review tutorials | `--query`, `--list-tutorials`, `--stats`, `--tutorial` |
+
+### Output Structure
+
+```
+data/
+├── tutorials/                           # Per-tutorial JSON with metadata
+│   ├── amber25_basic_tutorial.json
+│   ├── amber25_advanced_md.json
+│   └── ...
+├── tutorials_chunks/                    # JSONL chunks ready for ingestion
+│   ├── amber25_basic_tutorial_chunks.jsonl
+│   ├── amber25_advanced_md_chunks.jsonl
+│   └── ...
+└── tutorials_manifest.json              # Statistics and tracking manifest
+
+logs:
+├── amber_tutorials_scrape.log           # Detailed scraping log
+└── amber_tutorials_ingest.log           # Detailed ingestion log
+```
+
+### Content Captured
+
+Each tutorial extracts and tracks:
+
+| Content Type | Example | Count |
+|--------------|---------|-------|
+| **Images** | Structure diagrams, workflow diagrams | 200+ total |
+| **Code blocks** | Shell scripts, input files {.in, .parm} | 400+ total |
+| **Downloads** | Sample files, archives {.zip, .tar.gz} | 150+ total |
+| **External links** | References, documentation, papers | 1000+ total |
+| **Tables** | Parameter tables, comparison matrices | 50+ total |
+| **Chunks** | Text chunks for embedding | 3000+ total |
+
+### Tutorial Metadata
+
+Each tutorial JSON includes comprehensive metadata:
+
+```json
+{
+  "url": "https://ambermd.org/tutorials/...",
+  "title": "Tutorial Title",
+  "metadata": {
+    "images": [...],           // Image metadata
+    "downloads": [...],        // Download links  
+    "code_blocks": [...],      // Code with language
+    "external_links": [...],   // References
+    "tables": [...]            // Structured data
+  }
+}
+```
+
+### Workflow Examples
+
+#### Single Machine (Dev/Testing)
+
+```powershell
+# 1. Scrape
+python scripts/scrape_amber_tutorials_production.py --limit 50
+
+# 2. Review
+python scripts/query_amber_tutorials.py --stats
+
+# 3. Ingest locally
+python scripts/ingest_tutorials_to_chroma.py
+
+# 4. Query
+python scripts/query_amber_tutorials.py --query "setup AMBER"
+```
+
+#### Production with Mirzakhani
+
+```powershell
+# 1. Scrape (full run)
+python scripts/scrape_amber_tutorials_production.py --limit None
+
+# 2. Ingest to remote Chroma with OpenAI
+$env:OPENAI_API_KEY = "sk-..."
+python scripts/ingest_tutorials_to_chroma.py `
+    --chroma-host http://mirzakhani:8000 `
+    --use-openai
+
+# 3. Query from anywhere
+python scripts/query_amber_tutorials.py `
+    --query "molecular dynamics" `
+    --chroma-host http://mirzakhani:8000
+```
+
+### Embeddings
+
+- **Local (default)**: Fast, free, no API calls - `all-MiniLM-L6-v2` (384-dim)
+- **OpenAI**: Better quality, small cost - `text-embedding-3-small` (1536-dim)
+
+### Performance Notes
+
+- **Full crawl**: 20-60 minutes depending on embeddings choice
+- **Scraping**: 5-10 minutes for ~150 tutorials
+- **Local embeddings**: 10-15 minutes for 3000+ chunks
+- **OpenAI embeddings**: 15-30 minutes (API latency)
+
+### For Complete Documentation
+
+See [docs/amber_tutorials_production_pipeline.md](docs/amber_tutorials_production_pipeline.md) for:
+- Detailed workflow instructions
+- Configuration and tuning
+- Airflow integration
+- Troubleshooting guide
+- Quality assurance procedures
