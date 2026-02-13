@@ -15,7 +15,7 @@ with DAG(
     dag_id="AMBER_Daily_Scraping",
     description="Run AMBER scrapers sequentially: web -> json -> check replies -> tutorial scrape -> tutorial ingestion",
     start_date=datetime(2025, 10, 15),
-    schedule=None,   # set to "@daily" when ready
+    schedule_interval="@daily",
     catchup=False,
     max_active_runs=1,
     default_args=default_args,
@@ -46,10 +46,10 @@ with DAG(
         env={"DATA_DIR": DATA_DIR},
     )
 
-    amber_ingest_tutorial = BashOperator(
-        task_id="tutorial_ingestion",
-        bash_command=f"cd {BASE} && python AMBER_Tutorial_ChromaDB_Ingestion.py",
+    amber_chromadb_ingest = BashOperator(
+        task_id="chromadb_ingestion",
+        bash_command=f"cd {BASE} && python AMBER_ChromaDB_Ingestion.py",
         env={"DATA_DIR": DATA_DIR},
     )
 
-    amber_web >> amber_json >> amber_check >> amber_tutorial >> amber_ingest_tutorial
+    amber_web >> amber_json >> amber_check >> amber_tutorial >> amber_chromadb_ingest
