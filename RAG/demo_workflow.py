@@ -1,36 +1,45 @@
-# RAG/demo_workflow.py
-import os, sys, re, argparse
+import argparse
+from RAG.retriever import retrieve_with_pdf
+from RAG.prompt_builder import build_context, build_prompt
+from RAG.llm_interface import generate_ollama
 
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-os.environ.setdefault("ANONYMIZED_TELEMETRY", "false")
-os.environ.setdefault("CHROMADB_TELEMETRY_IMPLEMENTATION", "none")
 
-from RAG.retriever import AmberRetriever
-from RAG.prompt_builder import build_prompt
-from RAG.llm_interface import LLM
+def main():
+    p = argparse.ArgumentParser(description="Amber RAG demo (Chroma + PDF + Ollama)")
+    p.add_argument("--query", required=True)
 
-DEFN_RE = re.compile(r"^(what is|summarize|define|briefly)\b", re.I)
+    p.add_argument("--db-path", default="/opt/chromadb/data/prompt_db")
+    p.add_argument("--pdf-path", default="Amber25.pdf")
 
-def run(query, db_path, collection, top_k, threshold, model):
-    use_context = not DEFN_RE.match(query.strip())
+    p.add_argument("--k-chroma", type=int, default=50)
+    p.add_argument("--k-pdf", type=int, default=5)
 
-    contexts = []
-    if use_context:
-        retr = AmberRetriever(db_path=db_path, collection=collection, top_k=top_k, threshold=threshold)
-        hits = retr.retrieve(query)
-        contexts = [h["text"] for h in hits]
+    p.add_argument("--threshold-chroma", type=float, default=0.35)
+    p.add_argument("--threshold-pdf", type=float, default=0.45)
 
-    prompt = build_prompt(query, contexts)
-    llm = LLM(model_name=model, max_new_tokens=256, temperature=0.0, use_device_map=False)
-    print(llm.generate(prompt))
+    p.add_argument("--embedder", default="all-MiniLM-L6-v2")
+
+    p.add_argument("--ollama-model", default="llama3.1:8b")
+    p.add_argument("--temperature", type=float, default=0.2)
+
+    args = p.parse_args()
+
+    chunks = retrieve_with_pdf(
+        question=args.query,
+        db_path=args.db_path,
+        pdf_path=args.pdf_path,
+        embedder_name=args.embedder,
+        k_chroma=args.k_chroma,
+        k_pdf=args.k_pdf,
+        threshold_chroma=args.threshold_chroma,
+        threshold_pdf=args.threshold_pdf,
+    )
+
+    context = build_context(chunks)
+    messages = build_prompt(args.query, context)
+    answer = generate_ollama(messages, model=args.ollama_model, temperature=args.temperature)
+    print(answer)
+
 
 if __name__ == "__main__":
-    p = argparse.ArgumentParser()
-    p.add_argument("--query", required=True)
-    p.add_argument("--db-path", default="/opt/chromadb/data/amber_chroma_db")
-    p.add_argument("--collection", default="amber_messages")
-    p.add_argument("--top-k", type=int, default=6)
-    p.add_argument("--threshold", type=float, default=0.15)
-    p.add_argument("--model", default="meta-llama/Llama-2-7b-chat-hf")
-    args = p.parse_args()
-    run(args.query, args.db_path, args.collection, args.top_k, args.threshold, args.model)
+    main()
