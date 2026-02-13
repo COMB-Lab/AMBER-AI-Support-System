@@ -1,45 +1,35 @@
+# RAG/demo_workflow.py
+
 import argparse
-from RAG.retriever import retrieve_with_pdf
+from RAG.retriever import ChromaRetriever
 from RAG.prompt_builder import build_context, build_prompt
-from RAG.llm_interface import generate_ollama
+from RAG.llm_interface import OllamaLLM
 
 
-def main():
-    p = argparse.ArgumentParser(description="Amber RAG demo (Chroma + PDF + Ollama)")
-    p.add_argument("--query", required=True)
+def run(query: str, top_k: int):
+    retriever = ChromaRetriever(top_k=top_k)
+    chunks = retriever.retrieve(query)
 
-    p.add_argument("--db-path", default="/opt/chromadb/data/prompt_db")
-    p.add_argument("--pdf-path", default="Amber25.pdf")
-
-    p.add_argument("--k-chroma", type=int, default=50)
-    p.add_argument("--k-pdf", type=int, default=5)
-
-    p.add_argument("--threshold-chroma", type=float, default=0.35)
-    p.add_argument("--threshold-pdf", type=float, default=0.45)
-
-    p.add_argument("--embedder", default="all-MiniLM-L6-v2")
-
-    p.add_argument("--ollama-model", default="llama3.1:8b")
-    p.add_argument("--temperature", type=float, default=0.2)
-
-    args = p.parse_args()
-
-    chunks = retrieve_with_pdf(
-        question=args.query,
-        db_path=args.db_path,
-        pdf_path=args.pdf_path,
-        embedder_name=args.embedder,
-        k_chroma=args.k_chroma,
-        k_pdf=args.k_pdf,
-        threshold_chroma=args.threshold_chroma,
-        threshold_pdf=args.threshold_pdf,
-    )
+    if not chunks:
+        print(
+            "No sufficiently relevant prior answer was found in the knowledge base. Please submit a support ticket."
+        )
+        return
 
     context = build_context(chunks)
-    messages = build_prompt(args.query, context)
-    answer = generate_ollama(messages, model=args.ollama_model, temperature=args.temperature)
+    messages = build_prompt(query, context)
+
+    llm = OllamaLLM()
+    answer = llm.generate(messages)
+
+    print("\n--- LLM Response ---\n")
     print(answer)
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--query", required=True)
+    parser.add_argument("--top-k", type=int, default=8)
+    args = parser.parse_args()
+
+    run(args.query, args.top_k)

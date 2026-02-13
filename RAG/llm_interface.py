@@ -1,48 +1,42 @@
-import os
 import requests
-from typing import List, Dict, Any
 
 
-DEFAULT_OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://127.0.0.1:11434")
+class OllamaLLM:
+    def __init__(
+        self,
+        model_name: str = "llama3.1:8b",
+        base_url: str = "http://127.0.0.1:11434",
+        temperature: float = 0.2,
+    ):
+        self.model_name = model_name
+        self.base_url = base_url
+        self.temperature = temperature
 
+    def generate(self, messages):
+        prompt = ""
 
-def generate_ollama(
-    messages: List[Dict[str, str]],
-    model: str = "llama3.1:8b",
-    temperature: float = 0.2,
-    ollama_url: str = DEFAULT_OLLAMA_URL,
-) -> str:
-    """
-    Mirrors the notebook:
-    - Convert chat messages into a single prompt text:
-        System: ...
-        User: ...
-        Assistant:
-    - POST to /api/generate
-    """
-    prompt_parts: list[str] = []
-    for msg in messages:
-        role = (msg.get("role") or "").lower()
-        content = msg.get("content") or ""
-        if role == "system":
-            prompt_parts.append(f"System: {content}")
-        elif role == "user":
-            prompt_parts.append(f"User: {content}")
-        elif role == "assistant":
-            prompt_parts.append(f"Assistant: {content}")
+        for msg in messages:
+            role = msg["role"]
+            content = msg["content"]
 
-    prompt_parts.append("Assistant:")
-    prompt = "\n".join(prompt_parts)
+            if role == "system":
+                prompt += f"System: {content}\n"
+            elif role == "user":
+                prompt += f"User: {content}\n"
+            elif role == "assistant":
+                prompt += f"Assistant: {content}\n"
 
-    resp = requests.post(
-        f"{ollama_url}/api/generate",
-        json={
-            "model": model,
-            "prompt": prompt,
-            "temperature": float(temperature),
-            "stream": False,
-        },
-        timeout=600,
-    )
-    resp.raise_for_status()
-    return (resp.json().get("response") or "").strip()
+        prompt += "Assistant:"
+
+        response = requests.post(
+            f"{self.base_url}/api/generate",
+            json={
+                "model": self.model_name,
+                "prompt": prompt,
+                "temperature": self.temperature,
+                "stream": False,
+            },
+        )
+
+        response.raise_for_status()
+        return response.json()["response"].strip()
