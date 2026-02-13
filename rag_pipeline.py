@@ -2,11 +2,10 @@ import os
 import sys
 import json
 import torch
-from dataclasses import dataclass
 from typing import List, Dict
 import chromadb
 from sentence_transformers import SentenceTransformer
-from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM, AutoModelForCausalLM
+import ollama
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "" 
 EMBEDDER = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
@@ -79,39 +78,18 @@ def build_prompt(query: str, docs: List[str], metas: List[Dict]) -> str:
 
 # LLM Integration
 class HuggingFaceLLM:
-    def __init__(self, model_path="meta-llama/llama-2-7b-chat-hf"):
-        print(f"Loading LLaMA from {model_path}...")
-        try:
-            self.tokenizer = AutoTokenizer.from_pretrained(model_path)
-            
-            self.model = AutoModelForCausalLM.from_pretrained(
-                model_path,
-                device_map="auto",
-                torch_dtype=torch.float16,
-                local_files_only=True
-            )
-        except Exception as e:
-            print(f"CRITICAL ERROR: Could not load LLaMA. {e}")
-            print("Make sure the path is correct and you have 'accelerate' installed.")
-            sys.exit(1)
+    def __init__(self, model_name="llama3.1:8b"):
+        self.model_name = model_name
+        print(f"Connected to Ollama. Using model: {model_name}")
 
     def generate(self, prompt: str) -> str:
-        formatted_prompt = f"[INST] {prompt} [/INST]"
-        
-        inputs = self.tokenizer(formatted_prompt, return_tensors="pt").to("cuda")
-        
-        outputs = self.model.generate(
-            **inputs, 
-            max_new_tokens=512,
-            temperature=0.1,
-            do_sample=True
-        )
-        
-        full_text = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-        
-        if "[/INST]" in full_text:
-            return full_text.split("[/INST]")[-1].strip()
-        return full_text
+        try:
+            response = ollama.chat(model=self.model_name, messages=[
+                {'role': 'user', 'content': prompt},
+            ])
+            return response['message']['content']
+        except Exception as e:
+            return f"Error communicating with Ollama: {e}"
 
 # Demo Workflow
 if __name__ == "__main__":
@@ -136,7 +114,7 @@ if __name__ == "__main__":
     
     prompt = build_prompt(query, docs, metas)
     
-    llm = HuggingFaceLLM()
+    llm = HuggingFaceLLM(model_name="llama3.1:8b")
     answer = llm.generate(prompt)
 
     print("\n" + "="*40)
