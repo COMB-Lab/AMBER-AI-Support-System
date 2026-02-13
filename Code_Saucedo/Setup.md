@@ -31,6 +31,7 @@ create .env file in the same directory
 $ uv add -r requirement.txt
 <br>If the above command doesn't work, try<br>
 uv pip install -r requirements.txt
+### Install requirements-I had difficulty here, maybe ignore this step
 
 ## Select the Kernel
 
