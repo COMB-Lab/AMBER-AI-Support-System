@@ -7,78 +7,91 @@ Original file is located at
     https://colab.research.google.com/drive/192IJG5wTemiWfwNlzpzcrG3TRLIiLoJi
 """
 
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 
 embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 chroma_client = Chroma(
-    persist_directory="/opt/chromadb/data",
+    persist_directory="/opt/chromadb/data/amber_chroma_db",
     embedding_function=embedding_model
 )
 
-def retrieve_context(query, chroma_client, top_k=5):
+def retrieve_context(query, chroma_client, top_k=10):
     results = chroma_client.similarity_search(query, k=top_k)
     context = "\n".join([r.page_content for r in results])
     return context
 
 def build_prompt(query, context):
-    prompt = f"""You are an expert assistant for Amber, a molecular dynamics software used in computational chemistry and biology. Your job is to help users troubleshoot issues, follow best practices, and understand workflows by using archived discussions, manuals, and documentation.
+    prompt = f"""
+    Context:
+    {context}
 
-    A user has asked the following question: {query}
+    Question:
+    {query}
 
-    Relevant technical context has been retrieved from archived sources: {context}
+    Answer the question using ONLY the information in Context.
 
-    Using the information provided:
-    Answer the question in a concise step-by-step way, and explain the reasoning, reference any relevant tools, versions, or error messages, include specific advice or examples when applicable, cite relevant documentation or previous discussions if provided."""
+    STRICT OUTPUT RULES:
+    - Output only the final answer.
+    - Do NOT restate the question.
+    - Do NOT invent information.
+    - At the end, include a Sources section listing only the cited sources
+
+    Answer:
+    """
     return prompt
 
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
+from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 import torch
 
-class GoogleLLM:
+class LlamaLLM:
     def __init__(
         self,
-        model_name="google/flan-t5-large",
+        model_name="meta-llama/Meta-Llama-3.1-8B-Instruct",
         max_new_tokens=300,
         temperature=0.7,
         use_device_map=False,
     ):
-        self.model_name = model_name
+        print("Loading tokenizer...")
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        print("Loading model...")
 
-        # defaulting to CPU
         if use_device_map:
-            self.pipe = pipeline(
-                "text2text-generation",
-                model=model_name,
-                device_map="auto"
-            )
+            device_map = "auto"
         else:
-            self.pipe = pipeline(
-                "text2text-generation",
-                model=model_name,
-                device=0 if torch.cuda.is_available() else -1
-            )
+            device_map = 0 if torch.cuda.is_available() else -1
+
+        self.pipe = pipeline(
+            "text-generation",
+            model=model_name,
+            tokenizer=self.tokenizer,
+            device=device_map
+        )
 
         self.gen_cfg = {
             "max_new_tokens": max_new_tokens,
             "do_sample": temperature > 0.0,
-            "temperature": float(temperature) if temperature > 0.0 else None,
-            "num_beams": 4 if temperature == 0.0 else 1,
+            "temperature": float(temperature),
+            "num_beams": 1 if temperature > 0 else 4,
         }
 
     def generate_answer(self, prompt: str) -> str:
         output = self.pipe(prompt, **self.gen_cfg)
         return output[0]["generated_text"]
 
-llm = GoogleLLM()
+llm = LlamaLLM()
 
 def rag_pipeline(user_query):
     context = retrieve_context(user_query, chroma_client)
+
     prompt = build_prompt(user_query, context)
     answer = llm.generate_answer(prompt)
-    return answer
+
+    if "Sources:" in final_answer:
+        final_answer = final_answer.split("Sources:")[0] + "Sources:" + final_answer.split("Sources:")[1]
+
+    return final_answer
 
 if __name__ == "__main__":
     query = input("Question: ")
