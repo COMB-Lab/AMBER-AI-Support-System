@@ -1,151 +1,129 @@
-from __future__ import annotations
-
-import json
+import os
 import re
+import json
 import time
-from pathlib import Path
-from typing import List, Dict, Optional, Set
-from urllib.parse import urljoin, urlparse
 import uuid
+from pathlib import Path
+from urllib.parse import urljoin, urlparse
 
 import requests
-from bs4 import BeautifulSoup
 import markdownify
+from bs4 import BeautifulSoup
+from tqdm import tqdm
+
+# --- CONFIG ---
+INDEX_URL = "https://ambermd.org/tutorials/"
+OUT_DIR = Path("amber_tutorials_output")
+PER_TUTORIAL_DIR = OUT_DIR / "jsons"
+DELAY = 0.4
 
 
-BASE_URL = "https://ambermd.org"
-INDEX_URL = f"{BASE_URL}/tutorials/"
-OUTPUT_DIR = Path("amber_tutorials/amber_tutorials_output/")
-USER_AGENT = "scraper/1.1"
-REQUEST_DELAY_SECONDS = 0.5
-REQUEST_TIMEOUT = 20
-
-# Scrapes HTML TXT content
-def scraping_html(url: str) -> Optional[str]:
-    headers = {"User-Agent": USER_AGENT}
+def fetch_soup(url):
     try:
-        resp = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
-        resp.raise_for_status()
-        return resp.text
-    except requests.exceptions.RequestException as e:
-        print("Error!")
-        return None
+        # Using a browser-like header to avoid blocks
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+        r = requests.get(url, headers=headers, timeout=15)
+        if r.status_code == 200:
+            return BeautifulSoup(r.text, "lxml")
+    except Exception as e:
+        print(f"Error fetching {url}: {e}")
+    return None
 
-# Parses the tutorial index HTML to find all unique and valid tutorial links.
-def parse_index_links(html: str) -> List[str]:
-    # Change to soup object
-    soup = BeautifulSoup(html, "lxml")
-    # We will use a set instead of a list since duplicates are automatically handled
-    links: Set[str] = set()
 
-    # for each link, loop
+def get_tutorial_links(index_soup):
+    """Finds tutorials based on the structure in the provided HTML."""
+    entries = []
+    seen_urls = set()
+
+    # This regex matches "1.1 ", "7.10 ", "a. ", etc.
+    label_regex = re.compile(r"^(\d+(\.\d+)*|[a-zA-Z])\.\s+")
+
+    for a in index_soup.find_all("a", href=True):
+        url = urljoin(INDEX_URL, a["href"])
+        text = a.get_text(strip=True)
+
+        # Logic: It's a tutorial if it has class 'tutorial' OR matches the numbering pattern
+        is_tutorial_class = "tutorial" in a.get("class", [])
+        has_label_prefix = bool(label_regex.match(text))
+
+        # Filter out navigation and parent index links
+        if (is_tutorial_class or has_label_prefix) and url not in seen_urls:
+            if "ambermd.org" in url and not url.endswith(('.pdf', '.zip', '.tar.gz')):
+                entries.append({"url": url, "title": text})
+                seen_urls.add(url)
+
+    return entries
+
+
+def extract_clean_markdown(soup):
+    """Refined extraction for AmberMD's table-based layout."""
+    # Target the specific content cell seen in the HTML
+    content = soup.find("td", style=re.compile(r"width:760px")) or soup.find("div", {"id": "content"}) or soup.body
+
+    if not content: return ""
+
+    # Remove clutter
+    for tag in content.select("nav, header, footer, .hnav, .vnav, .tutorial_toc, script, style"):
+        tag.decompose()
+
+    return markdownify.markdownify(str(content), heading_style="ATX").strip()
+
+
+def find_sections(base_url, soup):
+    """Look for section1.php, section2.php links in the same directory."""
+    sections = []
+    base_dir = base_url.rsplit('/', 1)[0]
+
     for a in soup.find_all("a", href=True):
-        href = a['href'].strip()
-        # See if this is a valid tutorial
-        if 'tutorial' in href.lower() or href.startswith('basic/') or href.startswith('advanced/'):
-            full_url = urljoin(INDEX_URL, href)
-            parsed = urlparse(full_url)
+        full_url = urljoin(base_url, a['href'])
+        if base_dir in full_url and "section" in full_url.lower():
+            if full_url not in sections and full_url != base_url:
+                sections.append(full_url)
 
-            # Check if we are still in the AMBER website
-            if "ambermd.org" in parsed.netloc:
-                normalized_url = parsed.scheme + "://" + parsed.netloc + parsed.path
-                links.add(normalized_url)
-    return sorted(list(links))
+    # Sort numerically (section1, section2...)
+    return sorted(sections, key=lambda x: int(re.findall(r'\d+', x)[-1]) if re.findall(r'\d+', x) else 0)
 
 
-# Scrapes the content from the html into readable material
-def extract_and_clean_content(html: str, url: str) -> Dict:
-    soup = BeautifulSoup(html, "lxml")
-    # Find Title
-    title_tag = soup.find("h1") or soup.find("title")
-    title = title_tag.get_text(strip=True) if title_tag else "Untitled Tutorial"
+def main():
+    PER_TUTORIAL_DIR.mkdir(parents=True, exist_ok=True)
+    index_soup = fetch_soup(INDEX_URL)
+    if not index_soup: return
 
-    # Find Main content or as a failsafe just grab everything
-    main_content = soup.find("td", style=re.compile(r"width:760px")) or soup.body
+    tutorials = get_tutorial_links(index_soup)
+    print(f"Found {len(tutorials)} tutorials.")
 
-    # In a weird case that there is no main content
-    if not main_content:
-        return {"thread_id": str(uuid.uuid4()), "title": title, "markdown_content": "", "url": url}
+    for item in tqdm(tutorials):
+        url = item['url']
+        soup = fetch_soup(url)
+        if not soup: continue
 
-    # Remove these elements
-    for tag_or_selector in ["header", "nav", "footer", ".hnav", ".vnav", ".tutorial_toc"]:
-        for element in main_content.select(tag_or_selector):
-            # Delete element
-            element.decompose()
+        # Start building the tutorial data
+        main_md = extract_clean_markdown(soup)
+        all_md = [f"# {item['title']}\nSource: {url}\n\n{main_md}"]
 
-    # change back to html
-    markdown_content = markdownify.markdownify(str(main_content), heading_style="ATX").strip()
+        # Deep Crawl: Find sub-sections
+        section_urls = find_sections(url, soup)
+        for s_url in section_urls:
+            s_soup = fetch_soup(s_url)
+            if s_soup:
+                s_md = extract_clean_markdown(s_soup)
+                all_md.append(f"\n\n---\n### Section: {s_url}\n---\n\n{s_md}")
+                time.sleep(DELAY)
 
-    return {
-        # Added a unique thread_id for each tutorial
-        "thread_id": str(uuid.uuid4()),
-        "title": title,
-        "markdown_content": markdown_content,
-        "url": url
-    }
+        # Save result
+        safe_title = re.sub(r'[^\w\-]', '_', item['title'])[:50]
+        result = {
+            "id": str(uuid.uuid4()),
+            "title": item['title'],
+            "url": url,
+            "full_markdown": "\n".join(all_md)
+        }
 
-# Had issues with file names so I used slug to make sure that there are no "illegal" file names
-def create_title_slug(title: str) -> str:
-    # Remove any character that is a "/" or ":" and not a letter, number, or space
-    slug = re.sub(r'[:/]', ' ', title)
-    slug = re.sub(r'[^A-Za-z0-9 ]+', '', slug)
+        with open(PER_TUTORIAL_DIR / f"{safe_title}.json", "w", encoding="utf-8") as f:
+            json.dump(result, f, indent=2)
 
-    # Convert to lowercase, split by spaces, and join with underscores
-    slug = "_".join(slug.lower().split())
-    return slug
+        time.sleep(DELAY)
 
-#save file
-def save_tutorial_as_json(data: Dict):
-    if not data or not data.get("markdown_content"):
-        print("No content to save.")
-        return
 
-    # Create a descriptive filename from the tutorial's title
-    slug = create_title_slug(data["title"])
-    filename = f"{slug}.json"
-    filepath = OUTPUT_DIR / filename
-
-    try:
-        with open(filepath, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-        print(f"Successfully saved content to {filepath}")
-    except IOError as e:
-        print(f"Error saving file {filepath}: {e}")
-
-# Main function for testing
-def main(limit: Optional[int] = None):
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
-    print(f"Starting AmberMD tutorial scraper.")
-    print(f"Output will be saved in: {OUTPUT_DIR.resolve()}\n")
-
-    index_html = scraping_html(INDEX_URL)
-
-    links = parse_index_links(index_html)
-    print(f"Found {len(links)} unique tutorial links to process.\n")
-
-    processed_count = 0
-    for url in links:
-        if limit and processed_count >= limit:
-            print(f"Reached processing limit of {limit}. Stopping.")
-            break
-
-        print(f"Processing ({processed_count + 1}/{len(links)}): {url}")
-
-        tutorial_html = scraping_html(url)
-        if not tutorial_html:
-            print(f"Failed to scrape content.")
-            continue
-
-        scraped_data = extract_and_clean_content(tutorial_html, url)
-
-        save_tutorial_as_json(scraped_data)
-
-        processed_count += 1
-        time.sleep(REQUEST_DELAY_SECONDS)
-
-    print(f"\nScraping complete. Processed {processed_count} tutorials.")
-
-# Limit amount to test
 if __name__ == "__main__":
-    main(limit=10)
+    main()
