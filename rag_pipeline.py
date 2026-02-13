@@ -10,7 +10,7 @@ import torch
 # -----------------------
 # (A) PORTABLE SETTINGS
 # -----------------------
-# Use env var if set; otherwise default to local folder
+# Use env var 
 CHROMA_DIR = os.getenv("CHROMA_DIR", "./chromadb_data")
 EMBED_MODEL_NAME = os.getenv("EMBED_MODEL_NAME", "all-MiniLM-L6-v2")
 MODEL_NAME = os.getenv("LLM_MODEL_NAME", "meta-llama/Meta-Llama-3.1-8B-Instruct")
@@ -310,6 +310,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
