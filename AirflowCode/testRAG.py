@@ -12,7 +12,7 @@ from database_menu import AmberChromaAPI, EMBEDDER
 # Config (env override-friendly)
 # ----------------------------
 
-DEFAULT_DB_PATH = os.getenv("CHROMA_DIR", "./data/chroma_db")
+DEFAULT_DB_PATH = os.getenv("CHROMA_DIR", "/opt/chromadb/data/database")
 
 TUTORIALS_COLLECTION = os.getenv("TUTORIALS_COLLECTION", "amber_tutorials")
 EMAILS_COLLECTION = os.getenv("EMAILS_COLLECTION", "amber_messages")
