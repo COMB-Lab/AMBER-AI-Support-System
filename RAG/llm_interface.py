@@ -36,6 +36,7 @@ class OllamaLLM:
                 "temperature": self.temperature,
                 "stream": False,
             },
+            timeout=300,
         )
 
         response.raise_for_status()
