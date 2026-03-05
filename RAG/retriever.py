@@ -1,4 +1,3 @@
-# RAG/retriever.py
 import os
 from typing import List, Dict, Any, Optional
 
@@ -7,10 +6,7 @@ DEFAULT_AMBER_DB = "/opt/chromadb/data/amber_chroma_db"
 
 import sys
 sys.path.append("/opt/chromadb/data")
-try:
-    from vector_db_maker import AmberChromaAPI
-except Exception:
-    from database_menu import AmberChromaAPI
+from database_menu import AmberChromaAPI
 
 class AmberRetriever:
     def __init__(
