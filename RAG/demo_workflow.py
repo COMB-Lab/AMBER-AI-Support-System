@@ -9,6 +9,11 @@ def run(query: str, db_path: str = "/opt/chromadb/data/prompt_db", top_k: int = 
         print("No sufficiently relevant prior answer was found in the knowledge base. Please submit a support ticket.")
         return
     chunks = [h["text"] for h in hits]
+    print("DEBUG chunks type:", type(chunks))
+    print("DEBUG chunks len:", len(chunks) if chunks is not None else None)
+    if chunks:
+        print("DEBUG chunks[0] type:", type(chunks[0]))
+        print("DEBUG chunks[0] preview:", str(chunks[0])[:200])
     context = build_context(chunks)
     messages = build_prompt(query, context)
     llm = OllamaLLM()
