@@ -34,17 +34,8 @@ def build_context(chunks, max_chars: int = 9000):
     used = 0
 
     for i, ch in enumerate(chunks, 1):
-        meta = ch.get("metadata", {}) or {}
-
-        header = (
-            f"[CITE {i}] "
-            f"{meta.get('subject','')} | "
-            f"{meta.get('author','')} "
-            f"(similarity={ch.get('similarity',0.0):.3f})"
-        )
-
-        body = (ch.get("text") or "").strip()
-        block = header + "\n" + body + "\n"
+        body = ch.strip()
+        block = f"[CITE {i}]\n{body}\n"
 
         if used + len(block) > max_chars:
             break
