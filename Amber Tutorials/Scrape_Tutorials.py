@@ -24,9 +24,8 @@ REQUEST_TIMEOUT = (10, 30)
 DELAY = 0.3
 MIN_TEXT_LEN = 20
 
-# Crawl behavior:
-MAX_PAGES_PER_TUTORIAL = 25   # safety cap
-CRAWL_SECTION_PAGES = True    # set False if you only want the main page
+MAX_PAGES_PER_TUTORIAL = 50   
+CRAWL_SECTION_PAGES = True
 
 SESSION = requests.Session()
 SESSION.headers.update({
@@ -70,13 +69,14 @@ def is_allowed(url):
         return False
     return True
 
-def same_tutorial_directory(root_url, candidate_url):
+def within_same_tutorial_tree(root_url, candidate_url):
     """
-    True if candidate_url is in the same directory as root_url.
+    True if candidate_url is anywhere under the same tutorial folder as root_url.
     Example:
-      root: .../tutorial18/index.php
-      section: .../tutorial18/section1.php   -> True
-      other: .../tutorial19/...             -> False
+      root: .../tutorial3/index.php
+      ok:   .../tutorial3/section2.php
+      ok:   .../tutorial3/py_script/section1.php
+      no:   .../tutorial4/...
     """
     r = urlparse(root_url)
     c = urlparse(candidate_url)
@@ -84,25 +84,23 @@ def same_tutorial_directory(root_url, candidate_url):
     if r.netloc != c.netloc:
         return False
 
-    # Directory path: everything up to last "/"
-    root_dir = r.path.rsplit("/", 1)[0] + "/"
-    cand_dir = c.path.rsplit("/", 1)[0] + "/"
-    return root_dir == cand_dir
+    tutorial_root = r.path.rsplit("/", 1)[0] + "/"   # .../tutorial3/
+    return c.path.startswith(tutorial_root)
 
 # -----------------------------
 # Fetching
 # -----------------------------
 def fetch_html(url):
-    """Fetch HTML or return None if not 200."""
+    """Fetch HTML and return (html_text_or_None, status_code_or_None)."""
     try:
         r = SESSION.get(url, timeout=REQUEST_TIMEOUT, allow_redirects=True)
         if r.status_code != 200:
             print(f"[fetch_html] status={r.status_code} url={url}")
-            return None
-        return r.text
+            return None, r.status_code
+        return r.text, r.status_code
     except requests.RequestException as e:
         print(f"[fetch_html] ERROR {type(e).__name__}: {e}")
-        return None
+        return None, None
 
 # -----------------------------
 # Text helpers
@@ -131,8 +129,8 @@ def parse_index_entries(index_html):
     entries = []
     seen = set()
 
-    num_label = re.compile(r"^(\d+(?:\.\d+)*)\s+(.+)$")   # 7.10 Title
-    letter_label = re.compile(r"^([a-zA-Z])\.\s+(.+)$")   # a. Title
+    num_label = re.compile(r"^(\d+(?:\.\d+)*)\s+(.+)$")   
+    letter_label = re.compile(r"^([a-zA-Z])\.\s+(.+)$")   
 
     for a in soup.find_all("a", href=True):
         link_text = re.sub(r"\s+", " ", a.get_text(" ", strip=True)).strip()
@@ -168,12 +166,13 @@ def parse_index_entries(index_html):
 # -----------------------------
 # Extract sections from a single page
 # -----------------------------
-def extract_sections_from_html(html):
+def extract_sections_from_html(url, html):
     """
-    Extracts structured text from one HTML page:
+    Extract structured text from one HTML page:
       - page_title
       - sections: [{heading, text}]
       - full_text
+      - external_resources: []
     """
     soup = BeautifulSoup(html, "html.parser")
 
@@ -183,7 +182,7 @@ def extract_sections_from_html(html):
 
     main = soup.find("main") or soup.find(id="content") or soup.body or soup
     if not main:
-        return {"page_title": "", "sections": [], "full_text": ""}
+        return {"page_title": "", "sections": [], "full_text": "", "external_resources": []}
 
     h1 = soup.find("h1") or main.find("h1") or main.find("h2")
     page_title = h1.get_text(" ", strip=True) if h1 else ""
@@ -220,61 +219,59 @@ def extract_sections_from_html(html):
         "\n\n".join(f"{s['heading']}\n{s['text']}" for s in sections)
     )
 
-    return {"page_title": page_title, "sections": sections, "full_text": full_text}
+    return {"page_title": page_title, "sections": sections, "full_text": full_text, "external_resources": []}
 
 # -----------------------------
-# NEW: discover section pages for a tutorial
+# Crawl tutorial pages (BFS)
 # -----------------------------
-def find_section_links(root_url, html):
-    """
-    Look for links like section1.php, section2.php, etc. inside the same tutorial directory.
-    Returns a list of absolute URLs.
-    """
-    soup = BeautifulSoup(html, "html.parser")
-    links = set()
-
-    # common Amber naming patterns: section1.php, section2.php, section1, etc.
-    section_re = re.compile(r"(?:^|/)(section\d+)(?:\.\w+)?$", re.IGNORECASE)
-
-    for a in soup.find_all("a", href=True):
-        u = normalize_url(root_url, a["href"])
-        if not u or not is_allowed(u):
-            continue
-        if not same_tutorial_directory(root_url, u):
-            continue
-
-        # only accept section-ish pages
-        path = urlparse(u).path
-        if section_re.search(path):
-            links.add(u)
-
-    # Sort section pages in numeric order if possible (section1, section2, ...)
-    def section_sort_key(url):
-        m = re.search(r"section(\d+)", url, re.IGNORECASE)
-        return int(m.group(1)) if m else 10**9
-
-    return sorted(links, key=section_sort_key)
-
 def crawl_tutorial_pages(root_url):
     """
-    Crawl the main tutorial page + its section pages (if any).
-    Returns ordered list of page URLs to extract.
+    Crawl root page + any linked section pages under the same tutorial folder,
+    including subfolders like py_script/.
+
+    Also returns a list of missing pages (404, etc.) that were linked.
     """
-    main_html = fetch_html(root_url)
-    time.sleep(DELAY)
-    if not main_html:
-        return []
+    visited = set()
+    pages = []
+    missing = []
 
-    pages = [root_url]
+    q = deque([root_url])
 
-    if CRAWL_SECTION_PAGES:
-        section_pages = find_section_links(root_url, main_html)
-        for u in section_pages:
-            if u not in pages:
-                pages.append(u)
+    
+    section_re = re.compile(r"(?:^|/)(section\d+(?:[._-]\d+)?)\.php$", re.IGNORECASE)
 
-    # safety cap
-    return pages[:MAX_PAGES_PER_TUTORIAL]
+    while q and len(pages) < MAX_PAGES_PER_TUTORIAL:
+        url = q.popleft()
+        if url in visited:
+            continue
+        visited.add(url)
+
+        html, status = fetch_html(url)
+        time.sleep(DELAY)
+
+        if status != 200 or not html:
+            missing.append({"url": url, "status": status})
+            continue
+
+        pages.append(url)
+
+        if not CRAWL_SECTION_PAGES:
+            continue
+
+        soup = BeautifulSoup(html, "html.parser")
+        for a in soup.find_all("a", href=True):
+            u = normalize_url(url, a["href"])
+            if not u or not is_allowed(u):
+                continue
+            if not within_same_tutorial_tree(root_url, u):
+                continue
+
+            # only follow section-like pages to keep crawl focused
+            if section_re.search(urlparse(u).path):
+                if u not in visited:
+                    q.append(u)
+
+    return pages, missing
 
 # -----------------------------
 # Main
@@ -282,7 +279,7 @@ def crawl_tutorial_pages(root_url):
 def main():
     os.makedirs(PER_TUTORIAL_DIR, exist_ok=True)
 
-    index_html = fetch_html(INDEX_URL)
+    index_html, status = fetch_html(INDEX_URL)
     if not index_html:
         print("Failed to fetch tutorials index.")
         return
@@ -293,8 +290,7 @@ def main():
     all_results = []
 
     for e in tqdm(entries, desc="Extracting tutorials"):
-        # 1) Determine which pages belong to this tutorial (main + sections)
-        page_urls = crawl_tutorial_pages(e["url"])
+        page_urls, missing_pages = crawl_tutorial_pages(e["url"])
         if not page_urls:
             continue
 
@@ -302,42 +298,43 @@ def main():
         combined_full_text_parts = []
         combined_sections = []
 
-        # 2) Extract content from each page
         for pu in page_urls:
-            html = fetch_html(pu)
+            html, status = fetch_html(pu)
             time.sleep(DELAY)
-            if not html:
+            if status != 200 or not html:
+                # already tracked in crawl_tutorial_pages, but safe to keep
                 continue
 
-            extracted = extract_sections_from_html(html)
+            extracted = extract_sections_from_html(pu, html)
 
             pages_data.append({
                 "url": pu,
+                "page_label_id": e["label_id"],
                 "page_title": extracted["page_title"],
                 "sections": extracted["sections"],
-                "full_text": extracted["full_text"]
+                "full_text": extracted["full_text"],
+                "external_resources": extracted.get("external_resources", [])
             })
 
-            # Combine for one big tutorial doc
             if extracted["full_text"]:
                 combined_full_text_parts.append(f"[Source: {pu}]\n{extracted['full_text']}")
-            if extracted["sections"]:
-                # keep section structure but annotate where it came from
-                for s in extracted["sections"]:
-                    combined_sections.append({
-                        "source_url": pu,
-                        "heading": s["heading"],
-                        "text": s["text"]
-                    })
 
-        # 3) Build final tutorial object
+            for s in extracted["sections"]:
+                combined_sections.append({
+                    "source_url": pu,
+                    "page_label_id": e["label_id"],
+                    "heading": s["heading"],
+                    "text": s["text"]
+                })
+
         obj = {
-            "label_id": e["label_id"],     
+            "label_id": e["label_id"],
             "title": e["title"],
-            "url": e["url"],                # root entry URL from index
-            "pages": pages_data,            # each page extracted separately
-            "sections": combined_sections,  # combined sections across all pages
-            "full_text": "\n\n".join(combined_full_text_parts).strip()
+            "url": e["url"],
+            "pages": pages_data,
+            "sections": combined_sections,
+            "full_text": "\n\n".join(combined_full_text_parts).strip(),
+            "missing_pages": missing_pages
         }
 
         filename = f"{e['label_id']}_{slugify(e['title'])}.json"
