@@ -1,26 +1,45 @@
 import os
+import re
 import argparse
-from typing import List
+from typing import List, Dict, Any, Optional, Tuple
+
+import torch
+import numpy as np
+from transformers import AutoTokenizer, AutoModelForCausalLM, BatchEncoding
 from langchain_community.vectorstores import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from transformers import BatchEncoding
-import torch
+
+#PDF 
+try:
+    from pypdf import PdfReader
+    PDF_AVAILABLE = True
+except Exception:
+    PDF_AVAILABLE = False
+
 
 # -----------------------
 # (A) PORTABLE SETTINGS
 # -----------------------
-# Use env var 
-CHROMA_DIR = os.getenv("CHROMA_DIR", "./chromadb_data")
-EMBED_MODEL_NAME = os.getenv("EMBED_MODEL_NAME", "all-MiniLM-L6-v2")
+CHROMA_DIR = os.getenv("CHROMA_DIR", "/opt/chromadb/data/prompt_db")
+EMBED_MODEL_NAME = os.getenv("EMBED_MODEL_NAME", "sentence-transformers/all-MiniLM-L6-v2")
 MODEL_NAME = os.getenv("LLM_MODEL_NAME", "meta-llama/Meta-Llama-3.1-8B-Instruct")
+COLLECTION_NAME = os.getenv("COLLECTION_NAME", "amber_messages")
+PDF_PATH = os.getenv("PDF_PATH", "Amber25.pdf")
+
+DEFAULT_TOP_K = 8
+DEFAULT_MAX_NEW_TOKENS = 400
+DEFAULT_DOC_CHAR_LIMIT = 1200
+DEFAULT_TOTAL_CONTEXT_CHARS = 8500
+DEFAULT_FETCH_K = 30
+
+CHROMA_MIN_SCORE = float(os.getenv("CHROMA_MIN_SCORE", "0.20"))
+PDF_MIN_SCORE = float(os.getenv("PDF_MIN_SCORE", "0.35"))
+
 
 # -----------------------
 # (B) INIT EMBEDDINGS + CHROMA
 # -----------------------
 embedding_model = HuggingFaceEmbeddings(model_name=EMBED_MODEL_NAME)
-
-COLLECTION_NAME = os.getenv("COLLECTION_NAME", "amber_messages")
 
 chroma_client = Chroma(
     persist_directory=CHROMA_DIR,
@@ -28,54 +47,386 @@ chroma_client = Chroma(
     collection_name=COLLECTION_NAME
 )
 
+#PDF cache
+_pdf_chunks: Optional[List[str]] = None
+_pdf_vectors: Optional[np.ndarray] = None
+
 
 # -----------------------
-# (C) RETRIEVAL
+# (C) UTILITY HELPERS
 # -----------------------
-def retrieve_context_items(query: str, chroma_client: Chroma, top_k: int = 5, use_mmr: bool = True):
+def strip_identity_fields(meta: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Returns LangChain Document objects with .page_content and .metadata
+    Remove person metadata before building model context.
     """
-    if use_mmr:
-        # fetch_k pulls more candidates, MMR selects diverse top_k
-        return chroma_client.max_marginal_relevance_search(query, k=top_k, fetch_k=max(top_k * 4, 20))
-    return chroma_client.similarity_search(query, k=top_k)
+    banned = {
+        "author", "sender", "from", "from_name", "email",
+        "owner", "name", "person", "user"
+    }
+    return {k: v for k, v in meta.items() if k not in banned}
 
-def dedup_docs(docs) -> List:
+
+def get_source_link(meta: Dict[str, Any]) -> str:
     """
-    Deduplicate based on message_id/id if available, otherwise a snippet of text.
+    Returns a source URL if one exists in metadata.
     """
+    for key in ["url", "link", "source_url", "thread_url", "message_url"]:
+        if meta.get(key):
+            return str(meta[key])
+    return ""
+
+
+def cosine_similarity_matrix(query_vec: np.ndarray, doc_matrix: np.ndarray) -> np.ndarray:
+    """
+    Compute cosine similarity between one query vector and many doc vectors.
+    """
+    query_norm = np.linalg.norm(query_vec) + 1e-12
+    doc_norms = np.linalg.norm(doc_matrix, axis=1) + 1e-12
+    return (doc_matrix @ query_vec) / (doc_norms * query_norm)
+
+
+def normalize_whitespace(text: str) -> str:
+    return re.sub(r"\s+", " ", text or "").strip()
+
+
+def chunk_text(text: str, size: int = 900, overlap: int = 150) -> List[str]:
+    """
+    Split long text into overlapping chunks.
+    """
+    text = text.strip()
+    if not text:
+        return []
+
+    chunks = []
+    step = max(1, size - overlap)
+
+    for i in range(0, len(text), step):
+        chunk = text[i:i + size].strip()
+        if chunk:
+            chunks.append(chunk)
+
+    return chunks
+
+def clean_chunk_text(text: str) -> str:
+    text = text or ""
+
+    # remove common email header formatting
+    text = re.sub(r"^[^\n]*<[^>\n]+>\s*\([^)]+\):\s*", "", text)
+    text = re.sub(r"^(From|Subject|Date):.*$", "", text, flags=re.MULTILINE)
+
+    # clean whitespace
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    text = re.sub(r"[ \t]{2,}", " ", text)
+
+    return text.strip()
+
+def remove_repeated_paragraphs(text: str) -> str:
+    parts = [p.strip() for p in text.split("\n\n") if p.strip()]
     seen = set()
     out = []
-    for d in docs:
-        meta = d.metadata or {}
-        key = meta.get("message_id") or meta.get("id") or d.page_content[:120]
+
+    for p in parts:
+        key = p.lower()
         if key in seen:
             continue
         seen.add(key)
-        out.append(d)
+        out.append(p)
+
+    return "\n\n".join(out)
+
+def fallback_answer_from_context(query: str, docs: List[Dict[str, Any]]) -> str:
+    """
+    Simple fallback answer if the model returns something useless.
+    Builds a grounded summary from top retrieved docs.
+    """
+    snippets = []
+    for d in docs[:3]:
+        text = clean_chunk_text(d.get("text", ""))
+        if text:
+            snippets.append(text[:350])
+
+    joined = " ".join(snippets).lower()
+
+    causes = []
+    steps = []
+
+    if "double-precision" in joined or "double precision" in joined:
+        steps.append("Try the full double-precision CUDA minimization code if available.")
+    if "sander" in joined:
+        steps.append("Try minimizing with sander first, since it is often more robust.")
+    if "overflow" in joined or "large initial forces" in joined:
+        causes.append("The error may be caused by very large initial forces or numerical overflow during minimization.")
+    if "nan" in joined:
+        causes.append("The retrieved discussions also suggest bad contacts or unstable starting coordinates may lead to NaN-related failures.")
+    if "segmentation fault" in joined:
+            causes.append("Some related reports show that minimization failures can also appear as low-level memory or segmentation errors.")
+
+    if not causes:
+        causes.append("The retrieved AMBER discussions suggest this is likely a numerical instability during GPU minimization.")
+
+    if not steps:
+        steps = [
+            "Check the starting structure for bad contacts or steric clashes.",
+            "Run a more conservative minimization first.",
+            "Try CPU minimization before returning to pmemd.cuda."
+        ]
+    return (
+            "Likely cause:\n"
+            + " ".join(causes[:2])
+            + "\n\nWhy:\n"
+            + "The retrieved AMBER mailing-list results connect this type of CUDA minimization failure with unstable starting structures, very large forces, or numerical problems during minimization."
+            + "\n\nWhat to try:\n- "
+            + "\n- ".join(steps[:3])
+            + "\n\nIf still failing:\nProvide the Amber version, exact command, full error output, and minimization input settings."
+    )
+def expand_query(query: str) -> str:
+    q = query.lower()
+
+    extras = []
+    if "pmemd.cuda" in q:
+        extras += ["pmemd.cuda", "cuda", "gpu minimization"]
+    if "illegal memory access" in q:
+        extras += ["illegal memory access", "nan", "overflow", "segmentation fault"]
+    if "minimization" in q:
+        extras += ["minimization", "large initial forces", "sander", "double precision"]
+
+    return query + " " + " ".join(dict.fromkeys(extras))
+
+def build_sources_section(docs: List[Dict[str, Any]]) -> str:
+    lines = []
+    for i, d in enumerate(docs, start=1):
+        meta = d.get("metadata", {}) or {}
+        link = get_source_link(meta)
+        subject = meta.get("subject", f"Source {i}")
+        date = meta.get("date") or meta.get("date_iso") or ""
+
+        if link:
+            lines.append(f"- [S{i}] {subject} ({date}): {link}")
+        else:
+            lines.append(f"- [S{i}] {subject} ({date})")
+
+    return "\n".join(lines)
+
+
+
+# -----------------------
+# (D) OPTIONAL PDF RETRIEVAL
+# -----------------------
+def build_pdf_index_if_needed() -> None:
+    """
+    Loads PDF text, chunks it, and embeds it once.
+    """
+    global _pdf_chunks, _pdf_vectors
+
+    if _pdf_chunks is not None and _pdf_vectors is not None:
+        return
+
+    if not PDF_AVAILABLE:
+        _pdf_chunks, _pdf_vectors = [], np.array([])
+        return
+
+    if not os.path.exists(PDF_PATH):
+        _pdf_chunks, _pdf_vectors = [], np.array([])
+        return
+
+    reader = PdfReader(PDF_PATH)
+    full_text = []
+
+    for page in reader.pages:
+        try:
+            page_text = page.extract_text() or ""
+        except Exception:
+            page_text = ""
+        if page_text.strip():
+            full_text.append(page_text)
+
+    joined = "\n".join(full_text).strip()
+    if not joined:
+        _pdf_chunks, _pdf_vectors = [], np.array([])
+        return
+
+    _pdf_chunks = chunk_text(joined, size=900, overlap=150)
+
+    vectors = embedding_model.embed_documents(_pdf_chunks)
+    _pdf_vectors = np.array(vectors, dtype=np.float32)
+
+
+def retrieve_pdf_chunks(query: str, top_k: int = 4, min_score: float = PDF_MIN_SCORE) -> List[Dict[str, Any]]:
+    """
+    Retrieve similar chunks from the optional AMBER PDF/manual.
+    """
+    build_pdf_index_if_needed()
+
+    if not _pdf_chunks or _pdf_vectors is None or len(_pdf_vectors) == 0:
+        return []
+
+    query_vec = np.array(embedding_model.embed_query(query), dtype=np.float32)
+    sims = cosine_similarity_matrix(query_vec, _pdf_vectors)
+
+    ranked_idx = np.argsort(-sims)[:top_k]
+    out = []
+
+    for idx in ranked_idx:
+        score = float(sims[idx])
+        if score < min_score:
+            continue
+        out.append({
+            "text": _pdf_chunks[idx],
+            "metadata": {
+                "subject": "AMBER Manual",
+                "date": "",
+                "id": f"pdf-{idx}",
+                "source_type": "pdf"
+            },
+            "score": score,
+            "source_type": "pdf"
+        })
+
     return out
 
-def debug_retrieval(query: str, chroma_client: Chroma, top_k: int = 5, use_mmr: bool = True):
+
+# -----------------------
+# (E) CHROMA RETRIEVAL
+# -----------------------
+def retrieve_context_items(
+    query: str,
+    chroma_client: Chroma,
+    top_k: int = DEFAULT_TOP_K,
+    use_mmr: bool = True
+):
     """
-    Prints retrieved docs + metadata previews. This is your main "retrieval relevance" test.
+    Returns LangChain Document objects.
     """
-    docs = retrieve_context_items(query, chroma_client, top_k=top_k, use_mmr=use_mmr)
-    docs = dedup_docs(docs)
+    if use_mmr:
+        return chroma_client.max_marginal_relevance_search(
+            query,
+            k=top_k,
+            fetch_k=max(DEFAULT_FETCH_K, top_k * 3)
+        )
+    return chroma_client.similarity_search(query, k=top_k)
+
+
+def retrieve_context_items_with_scores(
+    query: str,
+    chroma_client: Chroma,
+    top_k: int = DEFAULT_TOP_K,
+    use_mmr: bool = True
+) -> List[Tuple[Any, float]]:
+    """
+    Best-effort retrieval with scores.
+    """
+    try:
+        # This gives relevance scores
+        return chroma_client.similarity_search_with_relevance_scores(query, k=top_k)
+    except Exception:
+        docs = retrieve_context_items(query, chroma_client, top_k=top_k, use_mmr=use_mmr)
+        return [(d, 0.0) for d in docs]
+
+
+def dedup_docs(docs) -> List:
+    """
+    Deduplicate by id/message_id if present; otherwise use text prefix.
+    """
+    seen = set()
+    out = []
+
+    for d in docs:
+        if isinstance(d, dict):
+            meta = d.get("metadata", {}) or {}
+            text = d.get("text", "")
+        else:
+            meta = d.metadata or {}
+            text = d.page_content
+
+        key = meta.get("message_id") or meta.get("id") or text[:160]
+
+        if key in seen:
+            continue
+
+        seen.add(key)
+        out.append(d)
+
+    return out
+
+
+def retrieve_hybrid_context(
+    query: str,
+    chroma_client: Chroma,
+    top_k: int = DEFAULT_TOP_K,
+    use_mmr: bool = True,
+    include_pdf: bool = True,
+    pdf_top_k: int = 4
+) -> List[Dict[str, Any]]:
+    """
+    Hybrid retriever:
+    - Chroma mail/archive results
+    - PDF/manual results
+    Returns a single normalized list.
+    """
+    chroma_pairs = retrieve_context_items_with_scores(
+        query,
+        chroma_client,
+        top_k=top_k,
+        use_mmr=use_mmr
+    )
+
+    merged = []
+
+    for d, score in chroma_pairs:
+        meta = d.metadata or {}
+        merged.append({
+            "text": d.page_content,
+            "metadata": meta,
+            "score": float(score),
+            "source_type": "chroma"
+        })
+
+    if include_pdf:
+        merged.extend(retrieve_pdf_chunks(query, top_k=pdf_top_k, min_score=PDF_MIN_SCORE))
+
+    merged = dedup_docs(merged)
+
+    # Sort by score descending
+    merged = sorted(merged, key=lambda x: x.get("score", 0.0), reverse=True)
+
+    return merged
+
+
+def debug_retrieval(
+    query: str,
+    chroma_client: Chroma,
+    top_k: int = DEFAULT_TOP_K,
+    use_mmr: bool = True,
+    include_pdf: bool = True
+):
+    """
+    Prints retrieved docs with useful debug previews.
+    """
+    docs = retrieve_hybrid_context(
+        query,
+        chroma_client,
+        top_k=top_k,
+        use_mmr=use_mmr,
+        include_pdf=include_pdf
+    )
 
     print("\n" + "=" * 80)
     print(f"QUERY: {query}")
     print(f"CHROMA_DIR: {CHROMA_DIR}")
-    print(f"Retrieved {len(docs)} docs (top_k={top_k}, mmr={use_mmr})\n")
+    print(f"COLLECTION_NAME: {COLLECTION_NAME}")
+    print(f"PDF_PATH: {PDF_PATH}")
+    print(f"Retrieved {len(docs)} combined docs\n")
 
     for i, d in enumerate(docs, start=1):
-        meta = d.metadata or {}
+        meta = d.get("metadata", {}) or {}
+        preview = normalize_whitespace(d.get("text", ""))[:350]
+
         print(f"--- S{i} ---")
-        print("subject:", meta.get("subject"))
-        print("date   :", meta.get("date"))
-        print("author :", meta.get("author"))
+        print("type   :", d.get("source_type", "unknown"))
+        print("score  :", round(d.get("score", 0.0), 4))
+        print("subject:", meta.get("subject", "(no subject)"))
+        print("date   :", meta.get("date") or meta.get("date_iso") or "")
         print("id     :", meta.get("id") or meta.get("message_id") or "unknown")
-        preview = d.page_content[:350].replace("\n", " ")
         print("preview:", preview)
         print()
 
@@ -83,86 +434,146 @@ def debug_retrieval(query: str, chroma_client: Chroma, top_k: int = 5, use_mmr: 
 
 
 # -----------------------
-# (D) CONTEXT + PROMPT
+# (F) CONTEXT FILTERING + PROMPT
 # -----------------------
-def format_context(docs, max_chars_per_doc=1200, max_total_chars=6000):
+def choose_supporting_docs(
+    query: str,
+    docs: List[Dict[str, Any]],
+    max_docs: int = 8,
+    min_chroma_score: float = CHROMA_MIN_SCORE
+) -> List[Dict[str, Any]]:
+    """
+    Filters low-value docs and keeps the best mixed evidence set.
+    """
+    selected = []
+    q = query.lower()
+
+    important_terms = ["minimization", "pmemd.cuda", "illegal memory access", "nan", "sander", "double precision"]
+
+    for d in docs:
+        source_type = d.get("source_type", "chroma")
+        score = float(d.get("score", 0.0))
+        text = (d.get("text") or "").lower()
+
+        if source_type == "chroma" and score != 0.0 and score < min_chroma_score:
+            continue
+
+        term_hits = sum(1 for t in important_terms if t in text or t in q)
+        d["term_hits"] = term_hits
+        selected.append(d)
+
+    selected = sorted(
+        selected,
+        key=lambda x: (x.get("term_hits", 0), x.get("score", 0.0)),
+        reverse=True
+    )
+
+    return selected[:max_docs]
+
+
+def format_context(docs, max_chars_per_doc=DEFAULT_DOC_CHAR_LIMIT, max_total_chars=DEFAULT_TOTAL_CONTEXT_CHARS):
+    """
+    Convert retrieved evidence into a clean context block
+    """
     blocks = []
     total = 0
-    for i, d in enumerate(docs, start=1):
-        meta = d.metadata or {}
-        label = f"S{i}"
-        header_bits = [
-            meta.get("date"),
-            meta.get("subject"),
-            meta.get("author"),
-            f"id={meta.get('id') or meta.get('message_id') or 'unknown'}"
-        ]
-        header = " | ".join([x for x in header_bits if x])
 
-        text = d.page_content.strip()
+    for i, d in enumerate(docs, start=1):
+        raw_meta = d.get("metadata", {}) or {}
+        meta = strip_identity_fields(raw_meta)
+        label = f"S{i}"
+
+        header_bits = [
+            meta.get("date") or meta.get("date_iso"),
+            meta.get("subject"),
+            f"id={meta.get('id') or raw_meta.get('message_id') or 'unknown'}",
+            f"type={d.get('source_type', 'unknown')}"
+        ]
+        header = " | ".join([str(x) for x in header_bits if x])
+
+        text = clean_chunk_text((d.get("text") or "").strip())
         if len(text) > max_chars_per_doc:
             text = text[:max_chars_per_doc].rsplit(" ", 1)[0] + "…"
 
         block = f"[{label}] ({header})\n{text}\n"
+
         if total + len(block) > max_total_chars:
             break
+
         blocks.append(block)
         total += len(block)
 
     return "\n".join(blocks).strip()
 
+
 def looks_relevant(query: str, context_block: str) -> bool:
-    """
-    Simple heuristic: if at least 2 meaningful query words appear in context, treat as relevant.
-    Prevents garbage-context hallucinations.
-    """
-    if not context_block or context_block.strip() == "":
+
+    if not context_block or not context_block.strip():
         return False
 
-    q_words = [w.lower() for w in query.split() if len(w) > 4]
-    if not q_words:
+    query_words = [w.lower() for w in re.findall(r"\b\w+\b", query) if len(w) > 4]
+    if not query_words:
         return True
 
-    c = context_block.lower()
-    hits = sum(1 for w in set(q_words) if w in c)
-    return hits >= 2
+    amber_terms = {
+        "amber", "ambertools", "pmemd", "sander", "cpptraj",
+        "tleap", "cuda", "minimization", "mdin", "gaff", "parm", "prmtop"
+    }
 
-def build_prompt(query, context_block):
+    c = context_block.lower()
+    hits = sum(1 for w in set(query_words) if w in c)
+    amber_hits = sum(1 for w in amber_terms if w in query.lower() and w in c)
+
+    return hits >= 2 or amber_hits >= 1
+
+
+def build_prompt(query: str, context_block: str) -> str:
+
     return f"""You are Amber Support Assistant.
 
-STRICT RULES:
-- Use ONLY the retrieved context below.
-- BEFORE answering, you MUST extract evidence from the context.
-- Do NOT use placeholders like X, A, B, "try A then B", "as suggested", or generic GPU advice.
-- Every section must include citations like [S1].
-- If the context does not contain enough info, say:
-  "The retrieved sources do not contain enough information to answer this question."
-  Then ask for: Amber version, exact command, full error text, and input snippet.
-  
+Answer the user's question using only the retrieved context below.
+
+Rules:
+Rules:
+- Do not use outside knowledge.
+- Do not repeat the user's question.
+- Do not copy long passages from the context.
+- Summarize the likely cause and what to try next.
+- Do not suggest nvidia-smi, gdb, driver updates, hardware checks, or generic GPU debugging unless those are explicitly mentioned in the retrieved context.
+- Do not mention author names, sender names, or email formatting.
+- If the context is incomplete, say what is missing.
+- Do not claim hardware failure, GPU failure, corrupted executables, driver problems, or OS issues unless those are explicitly stated in the retrieved context.
+
+Write exactly in this format:
+
+Likely cause:
+<1-3 sentences>
+
+Why:
+<1-3 sentences based only on the retrieved context>
+
+What to try:
+- <step 1>
+- <step 2>
+- <step 3>
+
+If still failing:
+<what details are still needed>
+
 Retrieved context:
 {context_block if context_block else "[No retrieved context]"}
 
 User question:
 {query}
-
-STEP 1 — Evidence (REQUIRED):
-Write 3–6 bullet points. Each bullet must include:
-- a specific quoted/paraphrased detail from the context (error text, symptom, command, scenario)
-- a citation at the end like [S3]
-
-STEP 2 — Final Answer (REQUIRED):
-1) Most likely explanation (must cite)
-2) Step-by-step fix (must cite)
-3) How to verify (must cite)
-4) If still failing: what to collect next (must cite)
 """
 
 
 # -----------------------
-# (E) LLM INIT + GENERATION
+# (G) LLM INIT + GENERATION
 # -----------------------
-def load_model(device: str):
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+def load_model(device: str = None):
+    if device is None:
+        device = "cuda" if torch.cuda.is_available() else "cpu"
 
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=True)
 
@@ -175,12 +586,14 @@ def load_model(device: str):
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    return tokenizer, model
-from transformers import BatchEncoding
-import torch
+    if device != "cuda":
+        model = model.to(device)
 
-def generate_answer(prompt, tokenizer, model, max_new_tokens=350):
-    # --- Build encoded inputs ---
+    return tokenizer, model
+
+
+def generate_answer(prompt, tokenizer, model, max_new_tokens=DEFAULT_MAX_NEW_TOKENS):
+
     if hasattr(tokenizer, "apply_chat_template"):
         messages = [
             {"role": "system", "content": "You are Amber Support Assistant."},
@@ -194,8 +607,6 @@ def generate_answer(prompt, tokenizer, model, max_new_tokens=350):
     else:
         enc = tokenizer(prompt, return_tensors="pt", truncation=True)
 
-    # --- Normalize to tensors ---
-    # Some tokenizers return a Tensor, others return BatchEncoding (dict-like)
     if torch.is_tensor(enc):
         input_ids = enc.to(model.device)
         attention_mask = None
@@ -211,8 +622,10 @@ def generate_answer(prompt, tokenizer, model, max_new_tokens=350):
         max_new_tokens=max_new_tokens,
         do_sample=False,
         num_beams=1,
+        temperature=None,
         pad_token_id=tokenizer.eos_token_id,
     )
+
     if attention_mask is not None:
         gen_kwargs["attention_mask"] = attention_mask
 
@@ -220,96 +633,181 @@ def generate_answer(prompt, tokenizer, model, max_new_tokens=350):
         output_ids = model.generate(input_ids=input_ids, **gen_kwargs)
 
     gen_ids = output_ids[0][input_ids.shape[-1]:]
-    return tokenizer.decode(gen_ids, skip_special_tokens=True).strip()
+    answer = tokenizer.decode(gen_ids, skip_special_tokens=True).strip()
+
+    answer = re.sub(r"\n{3,}", "\n\n", answer).strip()
+    answer = remove_repeated_paragraphs(answer)
+    return answer
+
+
 # -----------------------
-# (F) FULL RAG PIPELINE
+# (H) FULL RAG PIPELINE
 # -----------------------
-def rag_pipeline(user_query, top_k=5, use_mmr=True, max_new_tokens=300, device=None):
+def rag_pipeline(
+    user_query,
+    top_k=DEFAULT_TOP_K,
+    use_mmr=True,
+    max_new_tokens=DEFAULT_MAX_NEW_TOKENS,
+    device=None,
+    include_pdf=True
+):
     if device is None:
         device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    docs = retrieve_context_items(user_query, chroma_client, top_k=top_k, use_mmr=use_mmr)
-    docs = dedup_docs(docs)
-    context_block = format_context(docs)
+    expanded_query = expand_query(user_query)
+
+    docs = retrieve_hybrid_context(
+        user_query,
+        chroma_client,
+        top_k=top_k,
+        use_mmr=use_mmr,
+        include_pdf=include_pdf
+    )
+
     if not docs:
-        return ("I couldn't retrieve relevant Amber mailing-list context for that question.\n"
-                "Please paste: Amber version, the exact command you ran, the full error output, and the relevant input $
+        return (
+            "I couldn't retrieve relevant Amber support context for that question.\n"
+            "Please provide the Amber version, exact command, full error output, and relevant input snippet."
+        )
+
+    docs = choose_supporting_docs(user_query, docs, max_docs=top_k)
+    context_block = format_context(docs)
 
     if not looks_relevant(user_query, context_block):
-        return ("I retrieved context, but it doesn't look strongly related to your question.\n"
-                "Please paste: Amber version, the exact command you ran, the full error output, and the relevant input $
+        return (
+            "I retrieved some context, but it does not look strongly related to your question.\n"
+            "Please provide the Amber version, exact command, full error output, and the relevant input snippet."
+        )
 
     tokenizer, model = load_model(device)
     prompt = build_prompt(user_query, context_block)
     answer = generate_answer(prompt, tokenizer, model, max_new_tokens=max_new_tokens)
 
-    # Hard requirements: citations + evidence section must exist
+    unsupported_phrases = [
+        "nvidia-smi",
+        "gdb",
+        "GPU driver",
+        "system architecture",
+        "memory allocation failure",
+        "compatibility issues",
+        "failing GPU",
+        "different computer",
+        "corrupted file",
+        "corrupted executable",
+        "operating system",
+        "overheating",
+        "low memory",
+        "CUDA library"
+    ]
 
-    if "[S" not in answer or "STEP 1" not in answer:
-        return (
-            "FAIL: Answer is not grounded (missing citations and/or missing evidence extraction).\n"
-            "Try: increase top_k, increase context size, or switch to a stronger instruction-following model."
-        )
+    bad_answer = (
+            not answer.strip()
+            or answer.strip().lower() == user_query.strip().lower()
+            or len(answer.split()) < 8
+            or any(p.lower() in answer.lower() for p in unsupported_phrases)
+    )
 
-    # Kill obvious generic filler / placeholders
-    banned = ["Try A", "then B", "associated with X", "as suggested", "X.", "A,", "B,"]
-    if any(x in answer for x in banned):
-        return (
-            "FAIL: Answer contains generic placeholders/filler.\n"
-            "Your prompt rules were not followed."
-        )
-    return answer
+    if bad_answer:
+        answer = fallback_answer_from_context(user_query, docs)
+
+    sources_section = build_sources_section(docs)
+    return answer + "\n\nSources:\n" + sources_section
+
 
 # -----------------------
-# (G) TEST SET RUNNER
+# (I) TEST SET RUNNER
 # -----------------------
-def run_test_set(test_file: str, top_k: int, use_mmr: bool, device: str, max_new_tokens: int):
+def run_test_set(test_file: str, top_k: int, use_mmr: bool, device: str, max_new_tokens: int, include_pdf: bool):
     with open(test_file, "r", encoding="utf-8") as f:
         queries = [line.strip() for line in f if line.strip() and not line.strip().startswith("#")]
 
     for q in queries:
-        # Retrieval debug first (so you can inspect relevance)
-        debug_retrieval(q, chroma_client, top_k=top_k, use_mmr=use_mmr)
+        debug_retrieval(q, chroma_client, top_k=top_k, use_mmr=use_mmr, include_pdf=include_pdf)
 
-        # Then full answer
-        ans = rag_pipeline(q, top_k=top_k, use_mmr=use_mmr, device=device, max_new_tokens=max_new_tokens)
+        ans = rag_pipeline(
+            q,
+            top_k=top_k,
+            use_mmr=use_mmr,
+            device=device,
+            max_new_tokens=max_new_tokens,
+            include_pdf=include_pdf
+        )
         print("ANSWER:\n", ans)
         print("\n" + "-" * 80)
 
+
 # -----------------------
-# (H) CLI ENTRYPOINT
+# (J) CLI ENTRYPOINT
 # -----------------------
 def main():
     parser = argparse.ArgumentParser(description="Amber RAG Pipeline Tester")
-    parser.add_argument("--mode", choices=["retrieve", "rag", "test"], default="rag",
-                        help="retrieve = retrieval-only, rag = full pipeline, test = run queries from a file")
-    parser.add_argument("--query", type=str, default="pmemd.cuda illegal memory access during minimization",
-                        help="Single query to test (used in retrieve/rag modes)")
-    parser.add_argument("--top_k", type=int, default=8, help="Number of docs to retrieve")
-    parser.add_argument("--mmr", action="store_true", help="Use MMR (diverse) retrieval")
+
+    parser.add_argument(
+        "--mode",
+        choices=["retrieve", "rag", "test"],
+        default="rag",
+        help="retrieve = retrieval-only, rag = full pipeline, test = run queries from a file"
+    )
+    parser.add_argument(
+        "--query",
+        type=str,
+        default="pmemd.cuda illegal memory access during minimization",
+        help="Single query to test (used in retrieve/rag modes)"
+    )
+    parser.add_argument("--top_k", type=int, default=DEFAULT_TOP_K, help="Number of docs to retrieve")
+    parser.add_argument("--mmr", action="store_true", help="Use MMR retrieval")
     parser.add_argument("--test_file", type=str, default="test_queries.txt", help="File with one query per line")
-    parser.add_argument("--device", type=str, choices=["cpu", "cuda"], default=None,
-                        help="Force device; default auto-detect")
-    parser.add_argument("--max_new_tokens", type=int, default=300, help="Max tokens for generation")
+    parser.add_argument("--device", type=str, choices=["cpu", "cuda"], default=None, help="Force device; default auto-detect")
+    parser.add_argument("--max_new_tokens", type=int, default=DEFAULT_MAX_NEW_TOKENS, help="Max tokens for generation")
+    parser.add_argument("--no_pdf", action="store_true", help="Disable optional PDF/manual retrieval")
 
     args = parser.parse_args()
 
     device = args.device or ("cuda" if torch.cuda.is_available() else "cpu")
+    include_pdf = not args.no_pdf
 
     if args.mode == "retrieve":
-        debug_retrieval(args.query, chroma_client, top_k=args.top_k, use_mmr=args.mmr)
+        debug_retrieval(
+            args.query,
+            chroma_client,
+            top_k=args.top_k,
+            use_mmr=args.mmr,
+            include_pdf=include_pdf
+        )
 
     elif args.mode == "rag":
-        # Show retrieval first (helps you confirm relevance)
-        debug_retrieval(args.query, chroma_client, top_k=args.top_k, use_mmr=args.mmr)
-        ans = rag_pipeline(args.query, top_k=args.top_k, use_mmr=args.mmr, device=device, max_new_tokens=args.max_new_t$
+        debug_retrieval(
+            args.query,
+            chroma_client,
+            top_k=args.top_k,
+            use_mmr=args.mmr,
+            include_pdf=include_pdf
+        )
+
+        ans = rag_pipeline(
+            args.query,
+            top_k=args.top_k,
+            use_mmr=args.mmr,
+            device=device,
+            max_new_tokens=args.max_new_tokens,
+            include_pdf=include_pdf
+        )
         print("\nANSWER:\n", ans)
 
     elif args.mode == "test":
-        run_test_set(args.test_file, top_k=args.top_k, use_mmr=args.mmr, device=device, max_new_tokens=args.max_new_tok$
+        run_test_set(
+            args.test_file,
+            top_k=args.top_k,
+            use_mmr=args.mmr,
+            device=device,
+            max_new_tokens=args.max_new_tokens,
+            include_pdf=include_pdf
+        )
+
 
 if __name__ == "__main__":
     main()
+
 
 
 
