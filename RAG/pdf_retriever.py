@@ -6,6 +6,7 @@ from sentence_transformers import SentenceTransformer
 
 EMBEDDER = SentenceTransformer("all-MiniLM-L6-v2")
 
+
 def chunk_text(text, size=700, overlap=100):
     chunks = []
     step = size - overlap
@@ -36,13 +37,12 @@ def build_or_load_index(pdf_path):
             t = page.extract_text()
             if t:
                 text += t + "\n"
-        except:
+        except Exception:
             pass
 
     chunks = chunk_text(text)
 
     embeddings = EMBEDDER.encode(chunks, convert_to_numpy=True).astype("float32")
-
     faiss.normalize_L2(embeddings)
 
     dim = embeddings.shape[1]
@@ -55,7 +55,7 @@ def build_or_load_index(pdf_path):
     return index, chunks
 
 
-def search_pdf(pdf_path, query, top_k=5):
+def search_pdf(pdf_path, query, top_k=5, pdf_title="Amber Manual PDF", pdf_url=""):
     index, chunks = build_or_load_index(pdf_path)
 
     query_emb = EMBEDDER.encode([query], convert_to_numpy=True).astype("float32")
@@ -65,10 +65,17 @@ def search_pdf(pdf_path, query, top_k=5):
 
     results = []
 
-    for idx in indices[0]:
-        results.append({
-            "text": chunks[idx],
-            "metadata": {"doc_type": "tutorial_pdf"}
-        })
+    for idx, score in zip(indices[0], scores[0]):
+        results.append(
+            {
+                "text": str(chunks[idx]),
+                "metadata": {
+                    "doc_type": "tutorial_pdf",
+                    "title": pdf_title,
+                    "url": pdf_url,
+                },
+                "similarity": float(score),
+            }
+        )
 
     return results
