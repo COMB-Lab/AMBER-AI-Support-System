@@ -4,7 +4,7 @@ from RAG.llm_interface import OllamaLLM
 from RAG.pdf_retriever import search_pdf
 
 
-def extract_sources(chunks, max_sources: int = 8):
+def extract_sources(chunks, max_sources: int = 3):
     sources = []
     seen = set()
 
@@ -34,7 +34,6 @@ def extract_sources(chunks, max_sources: int = 8):
             break
 
     return sources
-
 
 def run(
     query: str,
