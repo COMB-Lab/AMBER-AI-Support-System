@@ -11,10 +11,12 @@ def run(
     pdf_path: str = "tutorials/Amber25.pdf",
 ):
     retr = AmberRetriever(db_path=db_path, top_k=top_k)
-    hits = retr.retrieve(query)
-    chunks = [h["text"] for h in hits]
+    chunks = []
     pdf_hits = search_pdf(pdf_path, query)
     chunks.extend([h["text"] for h in pdf_hits])
+
+    db_hits = retr.retrieve(query)
+    chunks.extend([h["text"] for h in db_hits])
 
     if not chunks:
         print(
