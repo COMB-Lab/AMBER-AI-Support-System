@@ -203,14 +203,22 @@ def main():
             soup = fetch_soup(curr_url)
             if not soup: continue
 
-            page_sections = parse_sections(soup, curr_title)
+            # Determine the best title for the page
+            actual_page_title = curr_title
+            if soup.title and soup.title.string:
+                actual_page_title = soup.title.string.strip()
+            elif soup.find('h1'):  # Fallback to the first H1 tag
+                actual_page_title = soup.find('h1').get_text(strip=True)
+
+
+            page_sections = parse_sections(soup, actual_page_title)
 
             # Generate UUID for this page
             tutorial_data["pages"].append({
                 "id": str(uuid.uuid4()),
                 "url": curr_url,
                 "page_label_id": curr_id,
-                "page_title": curr_title,
+                "page_title": actual_page_title,
                 "sections": page_sections
             })
 
