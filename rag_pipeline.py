@@ -9,7 +9,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, BatchEncoding
 from langchain_community.vectorstores import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 
-#PDF 
+#PDF support
 try:
     from pypdf import PdfReader
     PDF_AVAILABLE = True
@@ -47,7 +47,7 @@ chroma_client = Chroma(
     collection_name=COLLECTION_NAME
 )
 
-#PDF cache
+
 _pdf_chunks: Optional[List[str]] = None
 _pdf_vectors: Optional[np.ndarray] = None
 
@@ -120,6 +120,7 @@ def clean_chunk_text(text: str) -> str:
 
     return text.strip()
 
+
 def remove_repeated_paragraphs(text: str) -> str:
     parts = [p.strip() for p in text.split("\n\n") if p.strip()]
     seen = set()
@@ -159,7 +160,7 @@ def fallback_answer_from_context(query: str, docs: List[Dict[str, Any]]) -> str:
     if "nan" in joined:
         causes.append("The retrieved discussions also suggest bad contacts or unstable starting coordinates may lead to NaN-related failures.")
     if "segmentation fault" in joined:
-            causes.append("Some related reports show that minimization failures can also appear as low-level memory or segmentation errors.")
+        causes.append("Some related reports show that minimization failures can also appear as low-level memory or segmentation errors.")
 
     if not causes:
         causes.append("The retrieved AMBER discussions suggest this is likely a numerical instability during GPU minimization.")
@@ -170,15 +171,17 @@ def fallback_answer_from_context(query: str, docs: List[Dict[str, Any]]) -> str:
             "Run a more conservative minimization first.",
             "Try CPU minimization before returning to pmemd.cuda."
         ]
+
     return (
-            "Likely cause:\n"
-            + " ".join(causes[:2])
-            + "\n\nWhy:\n"
-            + "The retrieved AMBER mailing-list results connect this type of CUDA minimization failure with unstable starting structures, very large forces, or numerical problems during minimization."
-            + "\n\nWhat to try:\n- "
-            + "\n- ".join(steps[:3])
-            + "\n\nIf still failing:\nProvide the Amber version, exact command, full error output, and minimization input settings."
+        "Likely cause:\n"
+        + " ".join(causes[:2])
+        + "\n\nWhy:\n"
+        + "The retrieved AMBER mailing-list results connect this type of CUDA minimization failure with unstable starting structures, very large forces, or GPU-side numerical problems during minimization."
+        + "\n\nWhat to try:\n- "
+        + "\n- ".join(steps[:3])
+        + "\n\nIf still failing:\nProvide the Amber version, exact command, full error output, and minimization input settings."
     )
+
 def expand_query(query: str) -> str:
     q = query.lower()
 
@@ -189,25 +192,133 @@ def expand_query(query: str) -> str:
         extras += ["illegal memory access", "nan", "overflow", "segmentation fault"]
     if "minimization" in q:
         extras += ["minimization", "large initial forces", "sander", "double precision"]
+    if "how do i" in q or "how to" in q:
+        extras += ["tutorial", "manual", "example", "workflow"]
 
     return query + " " + " ".join(dict.fromkeys(extras))
 
+
 def build_sources_section(docs: List[Dict[str, Any]]) -> str:
+    """
+    Build a readable Sources section for both emails and tutorials.
+    """
     lines = []
+
     for i, d in enumerate(docs, start=1):
         meta = d.get("metadata", {}) or {}
+        source_type = d.get("source_type") or detect_source_type(meta)
         link = get_source_link(meta)
-        subject = meta.get("subject", f"Source {i}")
-        date = meta.get("date") or meta.get("date_iso") or ""
+        title = get_display_title(meta, source_type)
+        details = get_source_details(meta, source_type)
 
-        if link:
-            lines.append(f"- [S{i}] {subject} ({date}): {link}")
+        label = "Tutorial" if source_type == "tutorial" else "Email"
+
+        if link and details:
+            lines.append(f"- [S{i}] {label}: {title} ({details}): {link}")
+        elif link:
+            lines.append(f"- [S{i}] {label}: {title}: {link}")
+        elif details:
+            lines.append(f"- [S{i}] {label}: {title} ({details})")
         else:
-            lines.append(f"- [S{i}] {subject} ({date})")
+            lines.append(f"- [S{i}] {label}: {title}")
 
     return "\n".join(lines)
 
+def detect_source_type(meta: Dict[str, Any]) -> str:
+    """
+    More reliable source detection.
+    Only classify as tutorial if metadata strongly indicates a real PDF/tutorial document.
+    """
+    meta = meta or {}
 
+    lower_meta = {str(k).lower(): str(v).lower() for k, v in meta.items()}
+
+    
+    doc_keys = [
+        "file_name", "pdf_name", "document_name", "page", "page_number",
+        "source_type", "doc_type", "chunk_id"
+    ]
+    doc_values = " ".join(lower_meta.values())
+
+    # Explicit source type metadata wins
+    if lower_meta.get("source_type") in {"tutorial", "pdf", "manual", "document"}:
+        return "tutorial"
+    if lower_meta.get("doc_type") in {"tutorial", "pdf", "manual", "document"}:
+        return "tutorial"
+
+    # If it has document-style metadata like page/file/pdf, treat as tutorial
+    has_doc_structure = any(k in lower_meta for k in doc_keys if k not in {"source_type", "doc_type"})
+    has_pdf_signal = any(x in doc_values for x in [".pdf", "manual", "amber tutorial", "ambertools tutorial"])
+
+    if has_doc_structure or has_pdf_signal:
+        return "tutorial"
+
+    # Strong signs of email/archive content
+    if any(k in lower_meta for k in ["message_id", "thread_url", "subject", "date"]):
+        return "email"
+
+    if "archive.ambermd.org" in doc_values:
+        return "email"
+
+    return "unknown"
+
+def get_source_details(meta: Dict[str, Any], source_type: str) -> str:
+    meta = meta or {}
+
+    if source_type == "tutorial":
+        details = []
+
+        file_name = meta.get("file_name") or meta.get("pdf_name") or meta.get("document_name")
+        page = meta.get("page") or meta.get("page_number")
+
+        if file_name:
+            details.append(str(file_name))
+        if page is not None and str(page).strip():
+            details.append(f"page {page}")
+
+        return ", ".join(details)
+
+    date = meta.get("date") or meta.get("date_iso")
+    return str(date) if date else ""
+
+def tutorial_bias_score(query: str, meta: Dict[str, Any], text: str) -> int:
+    """
+    Give tutorial chunks a boost for how-to / usage questions,
+    and email chunks a boost for error/troubleshooting questions.
+    """
+    q = query.lower()
+    text = (text or "").lower()
+    source_type = detect_source_type(meta)
+
+    howto_terms = ["how to", "tutorial", "example", "usage", "run", "setup", "build", "create"]
+    trouble_terms = ["error", "crash", "nan", "illegal memory access", "segmentation fault", "fail", "failing"]
+
+    score = 0
+
+    if source_type == "tutorial" and any(t in q for t in howto_terms):
+        score += 10
+
+    if source_type == "email" and any(t in q for t in trouble_terms):
+        score += 8
+
+    if "tutorial" in text or "example" in text:
+        score += 1
+
+    return score
+
+def get_display_title(meta: Dict[str, Any], source_type: str) -> str:
+    meta = meta or {}
+
+    if source_type == "tutorial":
+        return (
+            meta.get("title")
+            or meta.get("document_name")
+            or meta.get("file_name")
+            or meta.get("pdf_name")
+            or "Tutorial/Manual Chunk"
+        )
+
+    return meta.get("subject") or "Email Thread"
 
 # -----------------------
 # (D) OPTIONAL PDF RETRIEVAL
@@ -316,7 +427,6 @@ def retrieve_context_items_with_scores(
     Best-effort retrieval with scores.
     """
     try:
-        # This gives relevance scores
         return chroma_client.similarity_search_with_relevance_scores(query, k=top_k)
     except Exception:
         docs = retrieve_context_items(query, chroma_client, top_k=top_k, use_mmr=use_mmr)
@@ -359,9 +469,8 @@ def retrieve_hybrid_context(
 ) -> List[Dict[str, Any]]:
     """
     Hybrid retriever:
-    - Chroma mail/archive results
-    - PDF/manual results
-    Returns a single normalized list.
+    - Chroma results from prompt_db (emails + tutorial chunks if both are indexed there)
+    - optional live PDF retrieval if enabled separately
     """
     chroma_pairs = retrieve_context_items_with_scores(
         query,
@@ -374,23 +483,22 @@ def retrieve_hybrid_context(
 
     for d, score in chroma_pairs:
         meta = d.metadata or {}
+        source_type = detect_source_type(meta)
+
         merged.append({
             "text": d.page_content,
             "metadata": meta,
             "score": float(score),
-            "source_type": "chroma"
+            "source_type": source_type
         })
 
     if include_pdf:
         merged.extend(retrieve_pdf_chunks(query, top_k=pdf_top_k, min_score=PDF_MIN_SCORE))
 
     merged = dedup_docs(merged)
-
-    # Sort by score descending
     merged = sorted(merged, key=lambda x: x.get("score", 0.0), reverse=True)
 
     return merged
-
 
 def debug_retrieval(
     query: str,
@@ -424,9 +532,11 @@ def debug_retrieval(
         print(f"--- S{i} ---")
         print("type   :", d.get("source_type", "unknown"))
         print("score  :", round(d.get("score", 0.0), 4))
-        print("subject:", meta.get("subject", "(no subject)"))
-        print("date   :", meta.get("date") or meta.get("date_iso") or "")
+        print("title  :", get_display_title(meta, d.get("source_type", "unknown")))
+        print("details:", get_source_details(meta, d.get("source_type", "unknown")) or "")
         print("id     :", meta.get("id") or meta.get("message_id") or "unknown")
+        print("link   :", get_source_link(meta) or "(no link)")
+        print("metadata:", meta)
         print("preview:", preview)
         print()
 
@@ -439,32 +549,38 @@ def debug_retrieval(
 def choose_supporting_docs(
     query: str,
     docs: List[Dict[str, Any]],
-    max_docs: int = 8,
+    max_docs: int = 5,
     min_chroma_score: float = CHROMA_MIN_SCORE
 ) -> List[Dict[str, Any]]:
     """
-    Filters low-value docs and keeps the best mixed evidence set.
+    Keep the strongest docs, but allow tutorial chunks to rank higher for how-to questions.
     """
     selected = []
-    q = query.lower()
-
-    important_terms = ["minimization", "pmemd.cuda", "illegal memory access", "nan", "sander", "double precision"]
+    important_terms = [
+        "minimization", "pmemd.cuda", "illegal memory access", "nan",
+        "sander", "double precision", "tleap", "cpptraj", "tutorial"
+    ]
 
     for d in docs:
-        source_type = d.get("source_type", "chroma")
         score = float(d.get("score", 0.0))
-        text = (d.get("text") or "").lower()
+        meta = d.get("metadata", {}) or {}
+        text = d.get("text", "") or ""
+        source_type = d.get("source_type", "unknown")
 
-        if source_type == "chroma" and score != 0.0 and score < min_chroma_score:
-            continue
+        if source_type in ("email", "tutorial", "unknown"):
+            if score != 0.0 and score < min_chroma_score:
+                continue
 
-        term_hits = sum(1 for t in important_terms if t in text or t in q)
-        d["term_hits"] = term_hits
+        keyword_hits = sum(1 for t in important_terms if t.lower() in text.lower())
+        bias = tutorial_bias_score(query, meta, text)
+
+        d["keyword_hits"] = keyword_hits
+        d["bias"] = bias
         selected.append(d)
 
     selected = sorted(
         selected,
-        key=lambda x: (x.get("term_hits", 0), x.get("score", 0.0)),
+        key=lambda x: (x.get("bias", 0), x.get("keyword_hits", 0), x.get("score", 0.0)),
         reverse=True
     )
 
@@ -473,7 +589,7 @@ def choose_supporting_docs(
 
 def format_context(docs, max_chars_per_doc=DEFAULT_DOC_CHAR_LIMIT, max_total_chars=DEFAULT_TOTAL_CONTEXT_CHARS):
     """
-    Convert retrieved evidence into a clean context block
+    Convert retrieved evidence into a clean context block.
     """
     blocks = []
     total = 0
@@ -526,23 +642,28 @@ def looks_relevant(query: str, context_block: str) -> bool:
 
     return hits >= 2 or amber_hits >= 1
 
-
 def build_prompt(query: str, context_block: str) -> str:
-
     return f"""You are Amber Support Assistant.
 
-Answer the user's question using only the retrieved context below.
+Use only the retrieved context below.
 
-Rules:
+The retrieved context may include:
+- AMBER mailing-list troubleshooting threads
+- tutorial or manual chunks from PDF documents
+
 Rules:
 - Do not use outside knowledge.
 - Do not repeat the user's question.
 - Do not copy long passages from the context.
+- Prefer tutorial/manual evidence for "how to" or workflow questions.
+- Prefer mailing-list evidence for troubleshooting or error questions.
 - Summarize the likely cause and what to try next.
 - Do not suggest nvidia-smi, gdb, driver updates, hardware checks, or generic GPU debugging unless those are explicitly mentioned in the retrieved context.
 - Do not mention author names, sender names, or email formatting.
 - If the context is incomplete, say what is missing.
 - Do not claim hardware failure, GPU failure, corrupted executables, driver problems, or OS issues unless those are explicitly stated in the retrieved context.
+- Do not present a specific user example or file names from the retrieved context as a general workflow unless the context clearly states it is a general procedure.
+- Do not present example file names, frcmod files, library files, or PDB names from a retrieved email as general required steps unless the context clearly says they are general.
 
 Write exactly in this format:
 
@@ -566,7 +687,6 @@ Retrieved context:
 User question:
 {query}
 """
-
 
 # -----------------------
 # (G) LLM INIT + GENERATION
@@ -657,7 +777,7 @@ def rag_pipeline(
     expanded_query = expand_query(user_query)
 
     docs = retrieve_hybrid_context(
-        user_query,
+        expanded_query,
         chroma_client,
         top_k=top_k,
         use_mmr=use_mmr,
@@ -701,10 +821,10 @@ def rag_pipeline(
     ]
 
     bad_answer = (
-            not answer.strip()
-            or answer.strip().lower() == user_query.strip().lower()
-            or len(answer.split()) < 8
-            or any(p.lower() in answer.lower() for p in unsupported_phrases)
+        not answer.strip()
+        or answer.strip().lower() == user_query.strip().lower()
+        or len(answer.split()) < 8
+        or any(p.lower() in answer.lower() for p in unsupported_phrases)
     )
 
     if bad_answer:
