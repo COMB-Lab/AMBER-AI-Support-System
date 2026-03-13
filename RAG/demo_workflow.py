@@ -25,8 +25,6 @@ def run(
         return
 
     context = build_context(chunks)
-    print("\n--- CONTEXT SENT TO LLM ---\n")
-    print(context[:3000])
     messages = build_prompt(query, context)
     llm = OllamaLLM()
     print(llm.generate(messages))
