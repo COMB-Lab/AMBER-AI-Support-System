@@ -170,108 +170,76 @@ class AmberChromaAPI:
         )
 
     # ----------------- TUTORIAL INGEST -----------------
-    def add_tutorial_label(self, label: dict):
+    def add_tutorial_label(self, tutorial_data: dict):
         """
-        Ingest one tutorial label entry and store 1 Chroma doc per page.
-
-        Expected schema:
-          - label_id, title, url
-          - pages[]: {url, page_title, full_text, sections[]}
+        Processes your specific JSON format:
+        Iterates through the 'chunks' list and adds each as a unique Chroma document.
         """
-        label_id = str(label.get("label_id", "")).strip()
-        title = str(label.get("title", "")).strip()
-        label_url = str(label.get("url", "")).strip()
+        source_url = tutorial_data.get("url", "unknown_url")
+        source_type = tutorial_data.get("source_type", "html")
+        
+        # We'll use the URL path to create a clean label_id
+        label_id = source_url.split("/")[-2] if "/" in source_url else "tutorial"
+        
+        chunks = tutorial_data.get("chunks", [])
+        if not chunks:
+            print(f"No chunks found for {source_url}")
+            return
 
-        pages = label.get("pages", []) or []
-
-        # Fallback: if pages is missing but top-level has full_text/sections
-        if not pages:
-            pages = [{
-                "url": label_url,
-                "page_title": title,
-                "full_text": label.get("full_text", ""),
-                "sections": label.get("sections", []),
-            }]
-
-        for p_idx, page in enumerate(pages):
-            page_url = str(page.get("url") or label_url).strip()
-            page_title = str(page.get("page_title") or title).strip()
-
-            full_text = _clean_text(page.get("full_text", ""))
-            if not full_text:
-                # Build from sections if full_text missing
-                sec_parts = []
-                for sec in (page.get("sections", []) or []):
-                    h = _clean_text(sec.get("heading", ""))
-                    t = _clean_text(sec.get("text", ""))
-                    if h and t:
-                        sec_parts.append(f"{h}\n{t}")
-                    elif t:
-                        sec_parts.append(t)
-                full_text = "\n\n".join(sec_parts).strip()
-
-            if not full_text:
-                # nothing to embed
+        for chunk in chunks:
+            chunk_id = chunk.get("id", "unknown_id")
+            text = _clean_text(chunk.get("text", ""))
+            
+            if not text or len(text) < 10:  # Skip empty or tiny chunks
                 continue
 
+            # Creating metadata that satisfies your existing validation rules
             metadata = {
                 "label_id": label_id,
-                "title": title,
-                "url": label_url,
-                "page_url": page_url,
-                "page_title": page_title,
-                "doc_type": "tutorial_page",
+                "title": f"Amber Tutorial: {label_id}",
+                "url": source_url,
+                "page_url": source_url,
+                "page_title": f"Chunk {chunk_id}",
+                "doc_type": "tutorial_chunk",
                 "schema_version": 1,
+                "source_type": source_type
             }
-            metadata = _validate_tutorial_metadata(metadata)
+            
+            # Use a unique ID for Chroma so chunks don't overwrite each other
+            chroma_id = f"tut-{label_id}-{chunk_id}"
+            
+            embedding = EMBEDDER.encode(text).tolist()
 
-            doc_id = f"tutorial-{label_id}-page-{p_idx}"
-            embedding = EMBEDDER.encode(full_text).tolist()
-
-            # NOTE: If you also need upsert for tutorial pages, you can
-            # _safe_delete_by_id(self.collection, doc_id) here too.
             self.collection.add(
-                ids=[doc_id],
-                documents=[full_text],
+                ids=[chroma_id],
+                documents=[text],
                 metadatas=[metadata],
                 embeddings=[embedding],
             )
+        print(f"Successfully indexed {len(chunks)} chunks from {source_url}")   
 
     # ----------------- JSON LOADER (AUTO DETECT) -----------------
     def add_json(self, json_input, level="auto", upsert_threads: bool = True):
-        """
-        Load and add from JSON file path or python list/dict. Auto-detect schema.
-
-        For thread ingest, upsert_threads=True will delete+readd each thread doc_id,
-        preventing duplicates when re-scraping the same month daily.
-        """
         if isinstance(json_input, str):
             with open(json_input, "r", encoding="utf-8") as f:
                 data = json.load(f)
         else:
             data = json_input
 
-        if not isinstance(data, list) or not data:
-            raise ValueError("JSON must be a non-empty list of objects")
+        if not isinstance(data, list):
+            # Handle case where a single object is passed instead of a list
+            data = [data]
 
-        first = data[0]
-
-        if level == "auto":
-            if isinstance(first, dict) and "thread_id" in first:
-                level = "thread"
-            elif isinstance(first, dict) and "label_id" in first and ("pages" in first or "sections" in first):
-                level = "tutorial"
-            else:
-                raise ValueError("Unknown JSON schema. Expected thread_id or label_id/pages/sections.")
-
-        if level == "thread":
-            for thread in data:
-                self.add_thread(thread, upsert=upsert_threads)
-        elif level == "tutorial":
-            for label in data:
-                self.add_tutorial_label(label)
-        else:
-            raise ValueError("level must be 'auto', 'thread', or 'tutorial'")
+        for item in data:
+            # Auto-detect your specific format (presence of 'chunks')
+            if "chunks" in item and "url" in item:
+                self.add_tutorial_label(item)
+            # Fallback to original email thread logic
+            elif "thread_id" in item:
+                self.add_thread(item, upsert=upsert_threads)
+            # Fallback to original tutorial logic
+            # elif "label_id" in item:
+            #     self.add_tutorial_label(item)
 
     # ----------------- QUERY -----------------
     def query_embeddings(self, text, n=5, where=None, threshold=0.75):
