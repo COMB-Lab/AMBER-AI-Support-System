@@ -12,18 +12,14 @@ from database_menu import AmberChromaAPI, EMBEDDER
 # Config (env override-friendly)
 # ----------------------------
 
-DEFAULT_DB_PATH = os.getenv("CHROMA_DIR", "/opt/chromadb/data/database")
-
-TUTORIALS_COLLECTION = os.getenv("TUTORIALS_COLLECTION", "amber_tutorials")
-EMAILS_COLLECTION = os.getenv("EMAILS_COLLECTION", "amber_messages")
+DEFAULT_DB_PATH = os.getenv("CHROMA_DIR", "/opt/chromadb/data/amber_chroma_db")
+COLLECTION_NAME = os.getenv("COLLECTION_NAME", "amber_messages")
 
 N_CANDIDATES = int(os.getenv("N_CANDIDATES", "30"))
 TOP_K = int(os.getenv("TOP_K", "5"))
 MIN_DOC_CHARS = int(os.getenv("MIN_DOC_CHARS", "200"))
 
-# How to mix results from both collections
-TUTORIAL_WEIGHT = float(os.getenv("TUTORIAL_WEIGHT", "1.0"))
-EMAIL_WEIGHT = float(os.getenv("EMAIL_WEIGHT", "1.0"))
+WEIGHT = float(os.getenv("COLLECTION_WEIGHT", "1.0"))
 
 # LLM / Ollama
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.1")
@@ -228,20 +224,16 @@ def query_collection(coll, question: str, n: int, collection_label: str, weight:
 # Interactive menu
 # ----------------------------
 
-def open_two_collections(db_path: str, tutorials_name: str, emails_name: str):
+def open_collections(db_path: str, collection: str):
     # Use AmberChromaAPI to ensure db folder exists and to reuse its client wiring
-    tut_api = AmberChromaAPI(db_path=db_path, collection_name=tutorials_name)
-    eml_api = AmberChromaAPI(db_path=db_path, collection_name=emails_name)
-    return tut_api, eml_api
+    col_api = AmberChromaAPI(db_path=db_path, collection_name=collection)
+    return col_api
 
-def rag_answer_flow(tutorials_coll, emails_coll, question: str):
-    space_tut = get_space(tutorials_coll)
-    space_eml = get_space(emails_coll)
+def rag_answer_flow(collection_Name, question: str):
+    space_col = get_space(collection_Name)
 
-    # Pull candidates from BOTH
-    candidates: List[Tuple[float, Dict[str, Any]]] = []
-    candidates += query_collection(tutorials_coll, question, N_CANDIDATES, "tutorials", TUTORIAL_WEIGHT)
-    candidates += query_collection(emails_coll, question, N_CANDIDATES, "emails", EMAIL_WEIGHT)
+    # Pull candidates
+    candidates = query_collection(collection_Name, question, N_CANDIDATES, "tutorials", WEIGHT)
 
     if not candidates:
         print("⚠️ No candidates found (docs too short or empty).")
@@ -276,7 +268,7 @@ def rag_answer_flow(tutorials_coll, emails_coll, question: str):
         snippet = best_window_snippet(question, item["doc"], 750)
 
         sim_display = format_similarity(
-            space_tut if item["collection"] == "tutorials" else space_eml,
+            space_col,
             item["dist"],
         )
 
@@ -302,19 +294,17 @@ def rag_answer_flow(tutorials_coll, emails_coll, question: str):
 
 
 def main():
-    tut_api = None
-    eml_api = None
+    col_api = None
     db_path_display = "None"
 
     while True:
         print("\n========== AMBER RAG MENU ==========")
         print(f"Current database: {db_path_display}")
-        print(f"Tutorials collection: {TUTORIALS_COLLECTION}")
-        print(f"Emails collection:    {EMAILS_COLLECTION}")
+        print(f"Data Collection: {COLLECTION_NAME}")
         print(f"Ollama model:         {OLLAMA_MODEL}")
-        print("1. Open DB (and open both collections)")
-        print("2. Add JSON to a collection")
-        print("3. Peek a collection")
+        print("1. Open DB")
+        print("2. Add JSON to collection")
+        print("3. Peek collection")
         print("4. RAG Ask (top-k + Llama answer)")
         print("5. Exit")
         print("====================================")
@@ -323,47 +313,29 @@ def main():
 
         if choice == "1":
             db_path = input(f"Database folder (default: {DEFAULT_DB_PATH}): ").strip() or DEFAULT_DB_PATH
-            tut_api, eml_api = open_two_collections(db_path, TUTORIALS_COLLECTION, EMAILS_COLLECTION)
+            col_api = open_collections(db_path, COLLECTION_NAME)
             db_path_display = os.path.abspath(db_path)
 
             try:
-                print(f"📦 '{TUTORIALS_COLLECTION}' count: {tut_api.collection.count()}")
-            except Exception:
-                pass
-            try:
-                print(f"📦 '{EMAILS_COLLECTION}' count: {eml_api.collection.count()}")
+                print(f"📦 '{COLLECTION_NAME}' count: {col_api.collection.count()}")
             except Exception:
                 pass
 
         elif choice == "2":
-            if tut_api is None or eml_api is None:
+            if col_api is None:
                 print("No database is currently open. Use option 1 first.")
                 continue
 
             path = input("Enter JSON filename: ").strip()
-            target = input("Which collection? (T)utorials or (E)mails: ").strip().lower()
-
-            if target == "t":
-                tut_api.add_json(path)
-                print(f"Added threads from {path} into {TUTORIALS_COLLECTION}")
-            elif target == "e":
-                eml_api.add_json(path)
-                print(f"Added threads from {path} into {EMAILS_COLLECTION}")
-            else:
-                print("Invalid choice.")
+            col_api.add_json(path)
+            print(f"Added threads from {path} into {COLLECTION_NAME}")
 
         elif choice == "3":
-            if tut_api is None or eml_api is None:
+            if col_api is None:
                 print("No database is currently open. Use option 1 first.")
                 continue
 
-            target = input("Peek which collection? (T)utorials or (E)mails: ").strip().lower()
-            api = tut_api if target == "t" else eml_api if target == "e" else None
-            if api is None:
-                print("Invalid choice.")
-                continue
-
-            peeked = api.peek()
+            peeked = col_api.peek()
             docs = peeked.get("documents", [])
             metas = peeked.get("metadatas", [])
             if not docs:
@@ -377,7 +349,7 @@ def main():
                     print(str(doc)[:250] + "...\n" + "-" * 60)
 
         elif choice == "4":
-            if tut_api is None or eml_api is None:
+            if col_api is None:
                 print("No database is currently open. Use option 1 first.")
                 continue
 
@@ -385,7 +357,7 @@ def main():
                 q = input("\nEnter question (or 'back'): ").strip()
                 if q.lower() == "back":
                     break
-                rag_answer_flow(tut_api.collection, eml_api.collection, q)
+                rag_answer_flow(col_api.collection, q)
 
         elif choice == "5":
             print("Exiting.")
