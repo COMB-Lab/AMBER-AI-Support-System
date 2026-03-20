@@ -166,6 +166,34 @@ def parse_sections(soup, page_title):
 
     return sections
 
+def combine_all_tutorials():
+
+    combined_data = []
+
+    master = "0_master_amber_combined.json"
+    master_path = PER_TUTORIAL_DIR / master
+
+    # Get all .json files in the directory
+    json_files = list(PER_TUTORIAL_DIR.glob("*.json"))
+
+    # Remove the master json if it exists
+    json_files = [f for f in json_files if f.name != master]
+
+    # read
+    for json_file in json_files:
+        try:
+            with open(json_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                combined_data.append(data)
+        except Exception as e:
+            print(f"Error reading {json_file}: {e}")
+
+    # write
+    with open(master_path, "w", encoding="utf-8") as f:
+        json.dump(combined_data, f, indent=2, ensure_ascii=False)
+
+    print(f"Master JSON created at: {master_path}")
+
 
 # --- MAIN LOGIC ---
 
@@ -238,6 +266,8 @@ def main():
 
         with open(out_file, "w", encoding="utf-8") as f:
             json.dump(tutorial_data, f, indent=2, ensure_ascii=False)
+
+    combine_all_tutorials()
 
 if __name__ == "__main__":
     main()
