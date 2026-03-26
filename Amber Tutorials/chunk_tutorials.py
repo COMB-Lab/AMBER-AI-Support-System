@@ -2,9 +2,7 @@ import os
 import re
 import json
 
-# -----------------------------
-# Configuration
-# -----------------------------
+
 INPUT_JSON = "output/amber_tutorials.json"
 OUT_DIR = "chunks"
 OUT_JSON = os.path.join(OUT_DIR, "amber_chunks.json")
@@ -49,9 +47,7 @@ def chunk_text(text, chunk_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
     return chunks
 
 
-# -----------------------------
-# Main
-# -----------------------------
+
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
 
