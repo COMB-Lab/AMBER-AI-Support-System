@@ -21,6 +21,8 @@ from database import AmberChromaAPI  # Amber-Chroma interface
 from pypdf import PdfReader  # PDF reading
 from sentence_transformers import SentenceTransformer  # Text embeddings
 
+from datetime import datetime  # Date parsing and formatting
+
 reload(database)  # Refresh module changes
 
 # Chroma DB instance
@@ -32,35 +34,12 @@ PDF_ADDRESS = "Amber25.pdf"
 # Local Ollama server URL
 OLLAMA_URL = "http://127.0.0.1:11434"
 
-threshold_ChromaDB = 0.35 # Similarity threshold for Mails
+threshold_ChromaDB = 0.40 # Similarity threshold for Mails
 threshold_PDF = 0.45  # Similarity threshold for PDF results
 
-import pprint  # Pretty-printing for debugging
-def retrieve(question: str, k: int = 100, threshold: float = 0.2, where=None):
-    """
-    Uses your api.query_embeddings to fetch candidates, then sorts & returns top-k.
-    Expected item keys (from your method): embedding, similarity, metadata, document
-    """
-    # Query the vector database for similar embeddings
-    results = API_CHROMA_DB.query(question, n=100, threshold=threshold, where=where)
-
-    # Sort results by similarity score (highest first) and take top-k
-    results = sorted(results, key=lambda r: r["similarity"], reverse=True)[:k]
-
-    # Normalize results into a clean, consistent structure
-    out = []
-    for r in results:
-        meta = r.get("metadata", {}) or {}
-        out.append({
-            "text": r.get("documents", ""),
-            "author": meta.get("author", "Unknown"),
-            "subject": meta.get("subject", "(no subject)"),
-            "date_iso": meta.get("date_iso", ""),
-            "similarity": float(r.get("similarity", 0.0)),
-        })
-    return out
-
-# Chunking
+# --------------------------------------------------------
+#                        CHUNKING
+# --------------------------------------------------------
 def chunk_text(text, size=700, overlap=100):
     """
     Splits long text into overlapping chunks.
@@ -91,7 +70,9 @@ def chunk_text(text, size=700, overlap=100):
     return chunks
 
 
-# Build or Load FAISS Index
+# --------------------------------------------------------
+#                        FAISS
+# --------------------------------------------------------
 def build_or_load_index(pdf_path, chunk_size=700, overlap=100):
     """
     Builds a FAISS vector index from a PDF file or loads an existing one.
@@ -172,7 +153,9 @@ def build_or_load_index(pdf_path, chunk_size=700, overlap=100):
 
 
 
-# Search Function
+# --------------------------------------------------------
+#                        SEARCH
+# --------------------------------------------------------
 def search_pdf(pdf_path, query, top_k=5, threshold=threshold_PDF):
     """
     Searches a PDF using FAISS similarity search.
@@ -220,45 +203,67 @@ def search_pdf(pdf_path, query, top_k=5, threshold=threshold_PDF):
 
     return results
 
+# --------------------------------------------------------
+#                        PDF RETRIEVAL
+# --------------------------------------------------------
 def retrieve_with_pdf(question, k_chroma=50, k_pdf=5, threshold=0.2):
+    """
+    Hybrid retriever: fetches relevant chunks from both ChromaDB and PDF.
+
+    Parameters:
+        question (str): User query.
+        k_chroma (int): Number of ChromaDB results.
+        k_pdf (int): Number of PDF results.
+        threshold (float): Minimum similarity threshold for ChromaDB results.
+
+    Returns:
+        list[dict]: Sorted list of chunks with similarity and source_type.
+    """
 
     all_chunks = []
 
-    # --- ChromaDB retrieval ---
+    # --- 1) ChromaDB retrieval ---
     chroma_results = retrieve(question, k=k_chroma, threshold=threshold)
     print(f"Retrieved {len(chroma_results)} chunks from ChromaDB")
 
-    all_chunks.extend(chroma_results)
+    for ch in chroma_results:
+        # Boost Chroma relevance slightly
+        ch["similarity"] = float(ch["similarity"]) + 0.10
+        ch["source_type"] = "CHROMA"
 
-    # --- PDF retrieval only if file exists ---
+    # --- 2) PDF retrieval ---
+    pdf_results = []
+
     if os.path.exists(PDF_ADDRESS):
+        raw_pdf_results = search_pdf(PDF_ADDRESS, question, top_k=k_pdf)
+        print(f"Retrieved {len(raw_pdf_results)} chunks from PDF")
 
-        pdf_results = search_pdf(
-            PDF_ADDRESS,
-            question,
-            top_k=k_pdf
-        )
-
-        print(f"Retrieved {len(pdf_results)} chunks from PDF")
-
-        for r in pdf_results:
-            all_chunks.append({
+        for r in raw_pdf_results:
+            pdf_results.append({
                 "text": r["text"],
                 "author": "Amber Manual",
                 "subject": "Amber PDF Manual",
                 "date_iso": "",
                 "url": f"file://{PDF_ADDRESS}",
-                "similarity": r["similarity"]
+                "similarity": float(r["similarity"]) - 0.05,  # slight penalty
+                "source_type": "PDF"
             })
-
     else:
         print("PDF not found. Skipping PDF retrieval.")
 
-    # Sort results
-    all_chunks = sorted(all_chunks, key=lambda x: x["similarity"], reverse=True)
+    # --- 3) Sort each source individually ---
+    chroma_sorted = sorted(chroma_results, key=lambda x: x["similarity"], reverse=True)
+    pdf_sorted = sorted(pdf_results, key=lambda x: x["similarity"], reverse=True)
+
+    # --- 4) Merge both sources, Chroma first, then PDF ---
+    all_chunks = chroma_sorted + pdf_sorted
 
     return all_chunks
 
+
+# --------------------------------------------------------
+#                        PROMPT
+# --------------------------------------------------------
 SYSTEM_PROMPT = """
 You are AmberRAG, an expert AI assistant specializing in the AMBER molecular dynamics suite
 and AmberTools workflows.
@@ -267,36 +272,55 @@ You answer questions strictly using the provided Context (archive discussions an
 
 
 CORE RULES-
-1) Use ONLY the provided Context to generate your answer.
-2) Do NOT use outside knowledge or prior training information.
-3) You may logically reason based on information in the Context,
-   but do NOT introduce new facts that are not supported by it.
-4) If the Context contains relevant information, use it to answer as completely as possible.
-5) Do NOT mention an Persona, Identity, or Role in your answer.
-6) Do NOT fabricate AMBER commands, flags, filenames, or parameter values.
-7) When information comes from the Context, cite the relevant source
-   using the corresponding [CITE n] marker.
-8) Do NOT repeat metadata from the Context.
+1) Use ONLY the provided Context.
+2) Do NOT use outside knowledge.
+3) Do NOT fabricate commands, flags, or technical details.
+4) If the Context is insufficient, say so clearly.
 
-STYLE-
-- Start with a clear, direct answer.
-- Then provide a concise technical explanation.
-- Include practical AMBER-specific guidance only if supported by the Context.
-- Address multiple sub-questions in the same order asked.
-- Be precise, professional, and focused.
-- Avoid unnecessary verbosity.
+SOURCE USAGE PRIORITY-
+- Use PDF/manual sources for authoritative technical details
+- Use ChromaDB/email sources for:
+  - real-world issues
+  - errors
+  - compatibility problems
+  - user-reported behavior
+
+Combine BOTH when possible.
 
 CITATION RULES-
-- Use ONLY this format: [CITE n]
-- Do NOT use [n], (n), ranges, or any other format
-- Do NOT combine citations (e.g., [CITE 2-3] is invalid)
-- Each citation must refer to exactly one source
-- Do NOT generate URLs or links
-- Only use [CITE n] markers
+1) Every factual claim MUST include a citation: [CITE n]
+2) Use multiple citations when multiple sources support the answer
+3) DO NOT rely on a single source if others are relevant
+4) Prefer citing DIFFERENT sources when possible (diversity required)
+5) If both:
+   - PDF/manual sources AND
+   - ChromaDB (emails/discussions)
+   are available,
+   THEN you MUST cite at least ONE from EACH (if relevant)
 
-Output the final answer WITH citations.
+6) Do NOT skip lower-ranked sources if they contain relevant supporting details
+7) Each citation must refer to exactly one source: [CITE n]
+8) Do NOT combine citations (no ranges like [CITE 1-3])
+
+STYLE-
+- Start with a direct answer
+- Then give a concise technical explanation
+- Keep it precise and grounded in the Context
+- Do NOT repeat metadata (author, subject, etc.)
+- Do NOT mention "context" or "sources" explicitly
+
+ANSWER REQUIREMENT-
+- Use as many citations as are reasonably supported by the Context
+- If only one relevant source exists, citing one is acceptable
+- Do NOT omit citations if relevant information is present
+- Every technical claim should include a citation when possible
+
+Always output the final answer WITH citations.
 """
 
+# --------------------------------------------------------
+#                        CONTEXT
+# --------------------------------------------------------
 def build_context(chunks, max_chars: int = 9000):
     """
     Builds a single context string from retrieved chunks for LLM input.
@@ -316,66 +340,98 @@ def build_context(chunks, max_chars: int = 9000):
         str: Combined context string ready for LLM.
     """
     parts, used = [], 0
+    counters = {"CHROMA": 0, "PDF": 0}
 
-    # Loop through ranked chunks
-    for i, ch in enumerate(chunks, 1):
-        url = ch.get("url", "N/A")
-        # Create citation-style header with metadata
+    for ch in chunks:
+        source = ch.get("source_type", "CHROMA").upper()
+        counters[source] += 1
+        cite_label = f"[{source} {counters[source]}]"
+
+        if source == "PDF":
+            link_or_date = ch.get("url", "N/A")
+        else:  # CHROMA
+            link_or_date = ch.get("date_iso", "N/A")
+
         header = (
-            f"[CITE {i}] "
-            f"ID={i} | "
+            f"{cite_label} "
             f"SUBJECT={ch['subject']} | "
             f"AUTHOR={ch['author']} | "
-            f"URL={url} | "
+            f"{'URL' if source=='PDF' else 'DATE'}={link_or_date} | "
             f"SIM={ch['similarity']:.3f}"
         )
+
         body = (ch["text"] or "").strip()
         block = header + "\n" + body + "\n"
-        # Stop if adding this block exceeds max character limit
+
         if used + len(block) > max_chars:
             break
         parts.append(block)
         used += len(block)
 
-    # Join all blocks with separator for readability
     return "\n\n-----\n\n".join(parts)
 
+# --------------------------------------------------------
+#                        CITATIONS
+# --------------------------------------------------------
+def make_clickable(text, url):
+    return f"\033]8;;{url}\033\\{text}\033]8;;\033\\"
+
+def format_date_iso(iso_date):
+    """
+    Converts ISO date string to 'Mon D YYYY' format.
+    Example: '2020-01-07T20:41:25+00:00' → 'Jan 7 2020'
+    """
+    if not iso_date:
+        return "N/A"
+    try:
+        dt = datetime.fromisoformat(iso_date.replace("Z", "+00:00"))
+        return dt.strftime("%b %-d %Y")  # e.g., Jan 7 2020
+    except Exception:
+        return iso_date  # Return original if parsing fails
+
 def attach_citations(answer, chunks):
+    """
+    Adds a 'References' section to the LLM output, including both ChromaDB
+    and PDF sources. Prevents duplicate references.
+
+    Parameters:
+        answer (str): LLM-generated response.
+        chunks (list[dict]): Retrieved chunks with metadata.
+
+    Returns:
+        str: Response with References section appended.
+    """
     seen = set()
     refs = []
+    counters = {"CHROMA": 0, "PDF": 0}
 
-    for i, ch in enumerate(chunks, 1):
-        if f"[{i}]" in answer or f"[CITE {i}]" in answer:
-            key = (ch.get("subject"), ch.get("url"))
+    for ch in chunks:
+        source = ch.get("source_type", "CHROMA").upper()
+        counters[source] += 1
+        cite_label = f"[{source} {counters[source]}]"
 
-            if key in seen:
-                continue
-            seen.add(key)
+        key = (ch.get("subject"), ch.get("url"))
+        if key in seen:
+            continue
+        seen.add(key)
 
-            url = ch.get("url", "")
-            subject = ch.get("subject", "")
-            author = ch.get("author", "")
+        subject = ch.get("subject", "")
+        author = ch.get("author", "")
 
-            if url:
-                refs.append(f"[{i}] {subject} ({author}) - {url}")
-            else:
-                refs.append(f"[{i}] {subject} ({author})")
+        if source == "PDF" and ch.get("url"):
+            refs.append(f"{cite_label} {subject} ({author}) - {make_clickable(ch['url'], ch['url'])}")
+        else:  # CHROMA
+            date = format_date_iso(ch.get("date_iso", "N/A"))
+            refs.append(f"{cite_label} {subject} ({author}) - {date}")
 
     if refs:
         answer += "\n\nReferences:\n" + "\n".join(refs)
 
     return answer
 
-def make_clickable(answer, chunks):
-    for i, ch in enumerate(chunks, 1):
-        url = ch.get("url", "")
-        if url:
-            answer = answer.replace(
-                f"[CITE {i}]",
-                f"[{i}]({url})"
-            )
-    return answer
-
+# --------------------------------------------------------
+#                        BUILD PROMPT
+# --------------------------------------------------------
 def build_prompt(question: str, context: str) -> list:
     """
     Builds a structured chat prompt for a chat-based LLM.
@@ -462,6 +518,9 @@ def generate_llama(messages, model="llama3", temperature=0.2):
     # Return clean generated response text
     return response.json()["response"].strip()
 
+# --------------------------------------------------------
+#                        RETRIEVE
+# --------------------------------------------------------
 def retrieve(question: str, k: int = 50, threshold: float = 0.2, where=None):
 
     results = API_CHROMA_DB.query(
@@ -484,31 +543,14 @@ def retrieve(question: str, k: int = 50, threshold: float = 0.2, where=None):
             "subject": meta.get("subject", "(no subject)"),
             "date_iso": meta.get("date_iso", ""),
             "url": meta.get("url", ""),
-            "similarity": score,
+            "similarity": float(score),
         })
 
     return out
 
-"""### RAG Pipeline Execution
-
-## User Query
-"""
-
-# User Prompt / Question
-# question = """
-# I have been trying to find a suitable OS for the server machine that I have where I can install Amber and Schrodinger licenses together.
-
-# My machine currently is:
-# Rocky Linux 8.9 (Green Obsidian)
-# CPE OS Name: cpe:/o:rocky:rocky:8:GA
-# Kernel: Linux 4.18.0-513.9.1.el8_9.x86_64
-# The GPU is: NVIDIA RTX 3070, 5888 CUDA Cores, 8 GB GDDR6 Memory, PCIe 4.0 GPU
-
-# The Machine could launch Schrodinger successfully, but I could not get pmem.cuda installed (It seems that the compiling of cuda11 at that OS does not work well?).
-
-# Do you recommend moving into UBUNTU? If you have any recommendations, I would be grateful if you provide some details.
-# """
-
+# --------------------------------------------------------
+#                        RAG EXECUTION
+# --------------------------------------------------------
 question = input("Question: ")
 
 """
@@ -530,15 +572,21 @@ chunks = retrieve_with_pdf(
     threshold=threshold_ChromaDB    # Similarity threshold
 )
 
+# print("\n--- TOP CHUNKS ---")
+# for i, ch in enumerate(chunks[:5], 1):
+#     print(f"{i}. {ch['subject']} | sim={ch['similarity']:.3f}")
+#     print(ch["text"][:150])
+#     print("----")
+
 # Build LLM-ready context and prompt
 context = build_context(chunks)          # Combine chunks into single context block
 messages = build_prompt(question, context)  # Create chat-style messages
 
 # Generate final answer using local LLaMA
 answer = generate_llama(messages)  # Send prompt to Ollama LLaMA model
-answer = make_clickable(answer, chunks)
 final_answer = attach_citations(answer, chunks)
 
-"""### LLM Response"""
-
+# --------------------------------------------------------
+#                        LLM RESPONSE
+# --------------------------------------------------------
 print(final_answer)
