@@ -3,6 +3,7 @@ import re
 import argparse
 from typing import List, Dict, Any, Optional, Tuple
 
+import faiss
 import torch
 import numpy as np
 from transformers import AutoTokenizer, AutoModelForCausalLM, BatchEncoding
@@ -10,11 +11,13 @@ from langchain_community.vectorstores import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 
 #PDF support
+PDF_IMPORT_ERROR = ""
 try:
     from pypdf import PdfReader
     PDF_AVAILABLE = True
-except Exception:
+except Exception as exc:
     PDF_AVAILABLE = False
+    PDF_IMPORT_ERROR = str(exc)
 
 
 # -----------------------
@@ -24,7 +27,12 @@ CHROMA_DIR = os.getenv("CHROMA_DIR", "/opt/chromadb/data/prompt_db")
 EMBED_MODEL_NAME = os.getenv("EMBED_MODEL_NAME", "sentence-transformers/all-MiniLM-L6-v2")
 MODEL_NAME = os.getenv("LLM_MODEL_NAME", "meta-llama/Meta-Llama-3.1-8B-Instruct")
 COLLECTION_NAME = os.getenv("COLLECTION_NAME", "amber_messages")
-PDF_PATH = os.getenv("PDF_PATH", "Amber25.pdf")
+PDF_PATH = os.getenv("PDF_PATH", "/home/azeped70/amber_rag/data/Amber25.pdf")
+PDF_PUBLIC_URL = os.getenv("PDF_PUBLIC_URL", "https://ambermd.org/doc12/Amber25.pdf")
+PDF_TOP_K = 5
+PDF_MIN_SCORE = 0.45
+PDF_CHUNK_SIZE = 700
+PDF_CHUNK_OVERLAP = 100
 
 DEFAULT_TOP_K = 8
 DEFAULT_MAX_NEW_TOKENS = 400
@@ -47,11 +55,6 @@ chroma_client = Chroma(
     collection_name=COLLECTION_NAME
 )
 
-
-_pdf_chunks: Optional[List[str]] = None
-_pdf_vectors: Optional[np.ndarray] = None
-
-
 # -----------------------
 # (C) UTILITY HELPERS
 # -----------------------
@@ -67,14 +70,18 @@ def strip_identity_fields(meta: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def get_source_link(meta: Dict[str, Any]) -> str:
-    """
-    Returns a source URL if one exists in metadata.
-    """
+    meta = meta or {}
+    if meta.get("source_type") == "pdf" or meta.get("pdf_path") or meta.get("file_name", "").lower().endswith(".pdf"):
+        page = meta.get("page")
+        if PDF_PUBLIC_URL:
+            if page is not None:
+                return f"{PDF_PUBLIC_URL}#page={page}"
+            return PDF_PUBLIC_URL
+
     for key in ["url", "link", "source_url", "thread_url", "message_url"]:
         if meta.get(key):
             return str(meta[key])
     return ""
-
 
 def cosine_similarity_matrix(query_vec: np.ndarray, doc_matrix: np.ndarray) -> np.ndarray:
     """
@@ -87,6 +94,139 @@ def cosine_similarity_matrix(query_vec: np.ndarray, doc_matrix: np.ndarray) -> n
 
 def normalize_whitespace(text: str) -> str:
     return re.sub(r"\s+", " ", text or "").strip()
+
+
+def extract_query_terms(query: str) -> List[str]:
+    stopwords = {
+        "the", "and", "for", "with", "from", "that", "this", "does", "into",
+        "during", "about", "what", "when", "where", "which", "your", "have",
+        "using", "used", "use", "how", "why", "can", "not", "are", "was",
+        "were", "will", "would", "should", "into", "build", "system"
+    }
+    terms = []
+    for token in re.findall(r"\b[a-zA-Z][\w\.\-]+\b", query.lower()):
+        if len(token) < 3 or token in stopwords:
+            continue
+        terms.append(token)
+    return list(dict.fromkeys(terms))
+
+
+def keyword_overlap_score(query: str, text: str) -> float:
+    query_terms = extract_query_terms(query)
+    if not query_terms:
+        return 0.0
+
+    text_lower = (text or "").lower()
+    hits = sum(1 for term in query_terms if term in text_lower)
+    phrase_bonus = 0.0
+    query_lower = query.lower()
+    if "tleap" in query_lower and "tleap" in text_lower:
+        phrase_bonus += 1.0
+    if "solvate" in query_lower and ("solvatebox" in text_lower or "solvateoct" in text_lower):
+        phrase_bonus += 1.5
+    if "pmemd.cuda" in query_lower and "pmemd.cuda" in text_lower:
+        phrase_bonus += 1.0
+    return hits + phrase_bonus
+
+
+def make_preview_snippet(text: str, query: str, max_chars: int = 350) -> str:
+    cleaned = normalize_whitespace(text)
+    if len(cleaned) <= max_chars:
+        return cleaned
+
+    query_terms = extract_query_terms(query)
+    lower_cleaned = cleaned.lower()
+
+    best_pos = -1
+    for term in query_terms:
+        pos = lower_cleaned.find(term)
+        if pos != -1:
+            best_pos = pos
+            break
+
+    if best_pos == -1:
+        return cleaned[:max_chars].rstrip() + "..."
+
+    start = max(0, best_pos - max_chars // 3)
+    end = min(len(cleaned), start + max_chars)
+    snippet = cleaned[start:end].strip()
+    if start > 0:
+        snippet = "..." + snippet
+    if end < len(cleaned):
+        snippet = snippet.rstrip() + "..."
+    return snippet
+
+
+def get_candidate_pdf_paths(configured_path: str) -> List[str]:
+    base_name = os.path.basename(configured_path) or "Amber25.pdf"
+    script_dir = os.path.dirname(os.path.abspath(__file__)) if "__file__" in globals() else os.getcwd()
+
+    candidates = [
+        configured_path,
+        os.path.join(script_dir, base_name),
+        os.path.join(script_dir, "data", base_name),
+        os.path.join(os.getcwd(), base_name),
+        os.path.join(os.getcwd(), "data", base_name),
+        os.path.join(os.path.dirname(configured_path), base_name),
+        os.path.join(os.path.dirname(os.path.dirname(configured_path)), base_name),
+    ]
+
+    seen = set()
+    deduped = []
+    for path in candidates:
+        if path and path not in seen:
+            seen.add(path)
+            deduped.append(path)
+    return deduped
+
+
+def resolve_pdf_path(configured_path: str = PDF_PATH) -> str:
+    for candidate in get_candidate_pdf_paths(configured_path):
+        if os.path.exists(candidate):
+            return candidate
+    return configured_path
+
+
+def find_pdf_candidates(
+    filename: Optional[str] = None,
+    search_roots: Optional[List[str]] = None,
+    max_results: int = 20
+) -> List[str]:
+    filename = filename or (os.path.basename(PDF_PATH) or "Amber25.pdf")
+    script_dir = os.path.dirname(os.path.abspath(__file__)) if "__file__" in globals() else os.getcwd()
+
+    if search_roots is None:
+        search_roots = [
+            os.getcwd(),
+            script_dir,
+            os.path.dirname(PDF_PATH),
+            os.path.dirname(os.path.dirname(PDF_PATH)),
+            "/home",
+            "/opt",
+            "/srv",
+            "/data",
+        ]
+
+    matches = []
+    seen = set()
+    for root in search_roots:
+        if not root or root in seen or not os.path.exists(root):
+            continue
+        seen.add(root)
+
+        if os.path.isfile(root):
+            if os.path.basename(root).lower() == filename.lower():
+                matches.append(root)
+            continue
+
+        for current_root, _, files in os.walk(root):
+            for name in files:
+                if name.lower() == filename.lower():
+                    matches.append(os.path.join(current_root, name))
+                    if len(matches) >= max_results:
+                        return matches
+
+    return matches
 
 
 def chunk_text(text: str, size: int = 900, overlap: int = 150) -> List[str]:
@@ -182,6 +322,59 @@ def fallback_answer_from_context(query: str, docs: List[Dict[str, Any]]) -> str:
         + "\n\nIf still failing:\nProvide the Amber version, exact command, full error output, and minimization input settings."
     )
 
+
+def howto_answer_from_context(query: str, docs: List[Dict[str, Any]]) -> str:
+    snippets = [clean_chunk_text(d.get("text", "")) for d in docs[:6] if clean_chunk_text(d.get("text", ""))]
+    joined = " ".join(snippets).lower()
+
+    steps = []
+    if "source leaprc" in joined or "leaprc" in joined:
+        steps.append("Load the relevant LEaP parameter files first, such as the appropriate protein, nucleic-acid, water, or GAFF leaprc files for your system.")
+    if "loadpdb" in joined:
+        steps.append("Load your solute structure into tleap with `loadpdb`, after loading any needed residue libraries or frcmod files.")
+    if "solvatebox" in joined or "tip3pbox" in joined:
+        steps.append("Solvate the loaded unit with `solvateBox`, using a solvent box such as `TIP3PBOX` and a buffer distance.")
+    if "addions" in joined or "addion" in joined:
+        steps.append("Add counterions after solvation if you need to neutralize the system or set ionic conditions.")
+    if "saveamberparm" in joined:
+        steps.append("Write out the final topology and coordinates with `saveAmberParm` once the system is built.")
+    if "savepdb" in joined:
+        steps.append("Optionally save a PDB with `savePdb` to inspect the solvated structure.")
+
+    deduped_steps = []
+    seen = set()
+    for step in steps:
+        key = step.lower()
+        if key not in seen:
+            seen.add(key)
+            deduped_steps.append(step)
+
+    if not deduped_steps:
+        deduped_steps = [
+            "Load the needed LEaP parameter files and any custom residue libraries.",
+            "Load the solute structure into tleap, then solvate it with an appropriate solvent box and buffer.",
+            "Save the resulting AMBER topology and coordinate files."
+        ]
+
+    why_parts = []
+    if any(d.get("source_type") == "pdf" for d in docs):
+        why_parts.append("The Amber25 manual chunks show tleap commands and examples for loading units, solvating with `solvateBox`, and saving output files.")
+    if any(d.get("source_type") == "email" for d in docs):
+        why_parts.append("The email results add practical examples and common mistakes, such as needing a solvent unit like `TIP3PBOX` rather than passing a plain string incorrectly.")
+    if not why_parts:
+        why_parts.append("The retrieved context points to the standard tleap workflow of loading parameters, building the unit, solvating it, and saving the outputs.")
+
+    return (
+        "Likely answer:\n"
+        "Use tleap by first loading the relevant force-field and solvent parameters, then loading your solute, solvating it with a water box such as `TIP3PBOX`, optionally adding ions, and finally saving the AMBER topology and coordinate files."
+        "\n\nWhy:\n"
+        + " ".join(why_parts[:2])
+        + "\n\nWhat to try:\n- "
+        + "\n- ".join(deduped_steps[:5])
+        + "\n\nIf still missing information:\n"
+        + "You may still need the exact leaprc files, any custom residue libraries or frcmod files, and the solvent model/buffer size appropriate for your system."
+    )
+
 def expand_query(query: str) -> str:
     q = query.lower()
 
@@ -197,21 +390,26 @@ def expand_query(query: str) -> str:
 
     return query + " " + " ".join(dict.fromkeys(extras))
 
-
 def build_sources_section(docs: List[Dict[str, Any]]) -> str:
-    """
-    Build a readable Sources section for both emails and tutorials.
-    """
     lines = []
 
     for i, d in enumerate(docs, start=1):
         meta = d.get("metadata", {}) or {}
-        source_type = d.get("source_type") or detect_source_type(meta)
-        link = get_source_link(meta)
+        source_type = d.get("source_type", "unknown")
         title = get_display_title(meta, source_type)
         details = get_source_details(meta, source_type)
+        link = get_source_link(meta)
 
-        label = "Tutorial" if source_type == "tutorial" else "Email"
+        if source_type == "pdf":
+            label = "PDF"
+        elif source_type == "tutorial":
+            label = "Tutorial"
+        else:
+            label = "Email"
+
+        if source_type == "pdf" and not link and meta.get("pdf_path"):
+            page = meta.get("page")
+            link = f"{meta['pdf_path']}#page={page}" if page is not None else str(meta["pdf_path"])
 
         if link and details:
             lines.append(f"- [S{i}] {label}: {title} ({details}): {link}")
@@ -233,7 +431,7 @@ def detect_source_type(meta: Dict[str, Any]) -> str:
 
     lower_meta = {str(k).lower(): str(v).lower() for k, v in meta.items()}
 
-    
+    # Strong signs of a real document/tutorial chunk
     doc_keys = [
         "file_name", "pdf_name", "document_name", "page", "page_number",
         "source_type", "doc_type", "chunk_id"
@@ -241,17 +439,19 @@ def detect_source_type(meta: Dict[str, Any]) -> str:
     doc_values = " ".join(lower_meta.values())
 
     # Explicit source type metadata wins
-    if lower_meta.get("source_type") in {"tutorial", "pdf", "manual", "document"}:
+    if lower_meta.get("source_type") == "pdf":
+        return "pdf"
+    if lower_meta.get("source_type") in {"tutorial", "manual", "document"}:
         return "tutorial"
     if lower_meta.get("doc_type") in {"tutorial", "pdf", "manual", "document"}:
-        return "tutorial"
+        return "pdf" if lower_meta.get("doc_type") == "pdf" else "tutorial"
 
     # If it has document-style metadata like page/file/pdf, treat as tutorial
     has_doc_structure = any(k in lower_meta for k in doc_keys if k not in {"source_type", "doc_type"})
     has_pdf_signal = any(x in doc_values for x in [".pdf", "manual", "amber tutorial", "ambertools tutorial"])
 
     if has_doc_structure or has_pdf_signal:
-        return "tutorial"
+        return "pdf" if "page" in lower_meta or "file_name" in lower_meta or ".pdf" in doc_values else "tutorial"
 
     # Strong signs of email/archive content
     if any(k in lower_meta for k in ["message_id", "thread_url", "subject", "date"]):
@@ -264,21 +464,16 @@ def detect_source_type(meta: Dict[str, Any]) -> str:
 
 def get_source_details(meta: Dict[str, Any], source_type: str) -> str:
     meta = meta or {}
-
-    if source_type == "tutorial":
+    if source_type in {"pdf", "tutorial"}:
+        file_name = meta.get("file_name", "")
+        page = meta.get("page")
         details = []
-
-        file_name = meta.get("file_name") or meta.get("pdf_name") or meta.get("document_name")
-        page = meta.get("page") or meta.get("page_number")
-
         if file_name:
             details.append(str(file_name))
-        if page is not None and str(page).strip():
+        if page is not None:
             details.append(f"page {page}")
-
         return ", ".join(details)
-
-    date = meta.get("date") or meta.get("date_iso")
+    date = meta.get("date") or meta.get("date_iso") or ""
     return str(date) if date else ""
 
 def tutorial_bias_score(query: str, meta: Dict[str, Any], text: str) -> int:
@@ -308,93 +503,129 @@ def tutorial_bias_score(query: str, meta: Dict[str, Any], text: str) -> int:
 
 def get_display_title(meta: Dict[str, Any], source_type: str) -> str:
     meta = meta or {}
-
-    if source_type == "tutorial":
-        return (
-            meta.get("title")
-            or meta.get("document_name")
-            or meta.get("file_name")
-            or meta.get("pdf_name")
-            or "Tutorial/Manual Chunk"
-        )
-
+    if source_type in {"pdf", "tutorial"}:
+        return meta.get("title") or meta.get("file_name") or "Amber25 Reference Manual"
     return meta.get("subject") or "Email Thread"
 
-# -----------------------
-# (D) OPTIONAL PDF RETRIEVAL
-# -----------------------
-def build_pdf_index_if_needed() -> None:
-    """
-    Loads PDF text, chunks it, and embeds it once.
-    """
-    global _pdf_chunks, _pdf_vectors
+def chunk_pdf_text(text: str, size: int = PDF_CHUNK_SIZE, overlap: int = PDF_CHUNK_OVERLAP) -> list[str]:
+    chunks = []
+    step = max(1, size - overlap)
+    for i in range(0, len(text), step):
+        chunk = text[i:i + size].strip()
+        if chunk:
+            chunks.append(chunk)
+    return chunks
 
-    if _pdf_chunks is not None and _pdf_vectors is not None:
-        return
 
-    if not PDF_AVAILABLE:
-        _pdf_chunks, _pdf_vectors = [], np.array([])
-        return
+def build_or_load_pdf_index(pdf_path: str):
+    base_name = os.path.splitext(pdf_path)[0]
+    index_path = base_name + ".faiss"
+    chunks_path = base_name + ".chunks.npy"
+    metas_path = base_name + ".meta.npy"
 
-    if not os.path.exists(PDF_PATH):
-        _pdf_chunks, _pdf_vectors = [], np.array([])
-        return
+    if os.path.exists(index_path) and os.path.exists(chunks_path) and os.path.exists(metas_path):
+        index = faiss.read_index(index_path)
+        chunks = np.load(chunks_path, allow_pickle=True).tolist()
+        metas = np.load(metas_path, allow_pickle=True).tolist()
+        return index, chunks, metas
 
-    reader = PdfReader(PDF_PATH)
-    full_text = []
+    reader = PdfReader(pdf_path)
+    all_chunks = []
+    all_metas = []
 
-    for page in reader.pages:
+    for page_num, page in enumerate(reader.pages, start=1):
         try:
             page_text = page.extract_text() or ""
         except Exception:
             page_text = ""
-        if page_text.strip():
-            full_text.append(page_text)
+        if not page_text.strip():
+            continue
 
-    joined = "\n".join(full_text).strip()
-    if not joined:
-        _pdf_chunks, _pdf_vectors = [], np.array([])
-        return
+        page_chunks = chunk_pdf_text(page_text)
+        for chunk_idx, chunk in enumerate(page_chunks, start=1):
+            all_chunks.append(chunk)
+            all_metas.append({
+                "source_type": "pdf",
+                "title": "Amber25 Reference Manual",
+                "file_name": os.path.basename(pdf_path),
+                "pdf_path": pdf_path,
+                "page": page_num,
+                "chunk_index": chunk_idx,
+            })
 
-    _pdf_chunks = chunk_text(joined, size=900, overlap=150)
+    if not all_chunks:
+        raise ValueError(f"No readable text extracted from PDF: {pdf_path}")
 
-    vectors = embedding_model.embed_documents(_pdf_chunks)
-    _pdf_vectors = np.array(vectors, dtype=np.float32)
+    embeddings = embedding_model.embed_documents(all_chunks)
+    embeddings = np.asarray(embeddings, dtype=np.float32)
+    embeddings = np.ascontiguousarray(embeddings)
+    faiss.normalize_L2(embeddings)
 
+    dim = embeddings.shape[1]
+    index = faiss.IndexFlatIP(dim)
+    index.add(embeddings)
 
-def retrieve_pdf_chunks(query: str, top_k: int = 4, min_score: float = PDF_MIN_SCORE) -> List[Dict[str, Any]]:
-    """
-    Retrieve similar chunks from the optional AMBER PDF/manual.
-    """
-    build_pdf_index_if_needed()
+    faiss.write_index(index, index_path)
+    np.save(chunks_path, np.array(all_chunks, dtype=object), allow_pickle=True)
+    np.save(metas_path, np.array(all_metas, dtype=object), allow_pickle=True)
 
-    if not _pdf_chunks or _pdf_vectors is None or len(_pdf_vectors) == 0:
+    return index, all_chunks, all_metas
+
+def retrieve_pdf_chunks(query: str, pdf_path: str = PDF_PATH, top_k: int = PDF_TOP_K, min_score: float = PDF_MIN_SCORE):
+    resolved_pdf_path = resolve_pdf_path(pdf_path)
+
+    if not PDF_AVAILABLE or not os.path.exists(resolved_pdf_path):
         return []
 
-    query_vec = np.array(embedding_model.embed_query(query), dtype=np.float32)
-    sims = cosine_similarity_matrix(query_vec, _pdf_vectors)
+    try:
+        index, chunks, metas = build_or_load_pdf_index(resolved_pdf_path)
+    except Exception as exc:
+        print(f"[pdf] Failed to load PDF chunks from {resolved_pdf_path}: {exc}")
+        return []
 
-    ranked_idx = np.argsort(-sims)[:top_k]
+    if len(chunks) == 0:
+        return []
+
+    query_embedding = embedding_model.embed_query(query)
+    query_embedding = np.asarray(query_embedding, dtype=np.float32)
+    query_norm = np.linalg.norm(query_embedding) + 1e-12
+    query_embedding = np.ascontiguousarray((query_embedding / query_norm).reshape(1, -1))
+
+    fetch_k = min(max(top_k * 4, 12), len(chunks))
+    scores, indices = index.search(query_embedding, fetch_k)
+
     out = []
-
-    for idx in ranked_idx:
-        score = float(sims[idx])
-        if score < min_score:
+    for score, idx in zip(scores[0], indices[0]):
+        if idx < 0:
             continue
+        semantic_score = float(score)
+        if semantic_score < min_score:
+            continue
+
+        text = chunks[idx]
+        meta = dict(metas[idx])
+        meta["pdf_path"] = resolved_pdf_path
+        overlap_score = keyword_overlap_score(query, text)
+        combined_score = semantic_score + (0.04 * overlap_score)
+
         out.append({
-            "text": _pdf_chunks[idx],
-            "metadata": {
-                "subject": "AMBER Manual",
-                "date": "",
-                "id": f"pdf-{idx}",
-                "source_type": "pdf"
-            },
-            "score": score,
-            "source_type": "pdf"
+            "text": text,
+            "metadata": meta,
+            "score": combined_score,
+            "semantic_score": semantic_score,
+            "keyword_score": overlap_score,
+            "source_type": "pdf",
         })
 
-    return out
-
+    out.sort(
+        key=lambda x: (
+            x.get("keyword_score", 0.0),
+            x.get("semantic_score", 0.0),
+            x.get("score", 0.0),
+        ),
+        reverse=True,
+    )
+    return out[:top_k]
 
 # -----------------------
 # (E) CHROMA RETRIEVAL
@@ -458,20 +689,14 @@ def dedup_docs(docs) -> List:
 
     return out
 
-
 def retrieve_hybrid_context(
     query: str,
     chroma_client: Chroma,
     top_k: int = DEFAULT_TOP_K,
     use_mmr: bool = True,
     include_pdf: bool = True,
-    pdf_top_k: int = 4
+    pdf_top_k: int = PDF_TOP_K
 ) -> List[Dict[str, Any]]:
-    """
-    Hybrid retriever:
-    - Chroma results from prompt_db (emails + tutorial chunks if both are indexed there)
-    - optional live PDF retrieval if enabled separately
-    """
     chroma_pairs = retrieve_context_items_with_scores(
         query,
         chroma_client,
@@ -484,20 +709,21 @@ def retrieve_hybrid_context(
     for d, score in chroma_pairs:
         meta = d.metadata or {}
         source_type = detect_source_type(meta)
+        if source_type == "unknown":
+            source_type = "email"
 
         merged.append({
             "text": d.page_content,
             "metadata": meta,
             "score": float(score),
-            "source_type": source_type
+            "source_type": source_type,
         })
 
     if include_pdf:
-        merged.extend(retrieve_pdf_chunks(query, top_k=pdf_top_k, min_score=PDF_MIN_SCORE))
+        merged.extend(retrieve_pdf_chunks(query, pdf_path=PDF_PATH, top_k=pdf_top_k, min_score=PDF_MIN_SCORE))
 
     merged = dedup_docs(merged)
     merged = sorted(merged, key=lambda x: x.get("score", 0.0), reverse=True)
-
     return merged
 
 def debug_retrieval(
@@ -510,7 +736,7 @@ def debug_retrieval(
     """
     Prints retrieved docs with useful debug previews.
     """
-    docs = retrieve_hybrid_context(
+    retrieved_docs, docs = select_supporting_docs(
         query,
         chroma_client,
         top_k=top_k,
@@ -523,15 +749,26 @@ def debug_retrieval(
     print(f"CHROMA_DIR: {CHROMA_DIR}")
     print(f"COLLECTION_NAME: {COLLECTION_NAME}")
     print(f"PDF_PATH: {PDF_PATH}")
-    print(f"Retrieved {len(docs)} combined docs\n")
+    resolved_pdf_path = resolve_pdf_path(PDF_PATH)
+    print(f"PDF_RESOLVED_PATH: {resolved_pdf_path}")
+    print(f"PDF_READER_AVAILABLE: {PDF_AVAILABLE}")
+    if not PDF_AVAILABLE and PDF_IMPORT_ERROR:
+        print(f"PDF_IMPORT_ERROR: {PDF_IMPORT_ERROR}")
+    print(f"PDF_EXISTS: {os.path.exists(resolved_pdf_path)}")
+    print(f"Retrieved {len(retrieved_docs)} combined docs")
+    print(f"Selected {len(docs)} supporting docs\n")
 
     for i, d in enumerate(docs, start=1):
         meta = d.get("metadata", {}) or {}
-        preview = normalize_whitespace(d.get("text", ""))[:350]
+        preview = make_preview_snippet(d.get("text", ""), query)
 
         print(f"--- S{i} ---")
         print("type   :", d.get("source_type", "unknown"))
         print("score  :", round(d.get("score", 0.0), 4))
+        if "semantic_score" in d:
+            print("semantic_score:", round(d.get("semantic_score", 0.0), 4))
+        if "keyword_score" in d:
+            print("keyword_score :", round(d.get("keyword_score", 0.0), 4))
         print("title  :", get_display_title(meta, d.get("source_type", "unknown")))
         print("details:", get_source_details(meta, d.get("source_type", "unknown")) or "")
         print("id     :", meta.get("id") or meta.get("message_id") or "unknown")
@@ -549,43 +786,79 @@ def debug_retrieval(
 def choose_supporting_docs(
     query: str,
     docs: List[Dict[str, Any]],
-    max_docs: int = 5,
+    max_docs: int = 6,
     min_chroma_score: float = CHROMA_MIN_SCORE
 ) -> List[Dict[str, Any]]:
-    """
-    Keep the strongest docs, but allow tutorial chunks to rank higher for how-to questions.
-    """
+    q = query.lower()
+    is_howto = any(x in q for x in ["how do i", "how to", "use tleap", "build", "prepare", "setup", "workflow"])
+    is_troubleshooting = any(x in q for x in ["error", "nan", "illegal memory access", "segmentation fault", "crash", "fail"])
+
     selected = []
-    important_terms = [
-        "minimization", "pmemd.cuda", "illegal memory access", "nan",
-        "sander", "double precision", "tleap", "cpptraj", "tutorial"
-    ]
 
     for d in docs:
         score = float(d.get("score", 0.0))
-        meta = d.get("metadata", {}) or {}
-        text = d.get("text", "") or ""
         source_type = d.get("source_type", "unknown")
+        text = (d.get("text") or "").lower()
 
-        if source_type in ("email", "tutorial", "unknown"):
-            if score != 0.0 and score < min_chroma_score:
-                continue
+        if source_type == "email" and score != 0.0 and score < min_chroma_score:
+            continue
 
-        keyword_hits = sum(1 for t in important_terms if t.lower() in text.lower())
-        bias = tutorial_bias_score(query, meta, text)
+        keyword_hits = sum(1 for term in [
+            "tleap", "solvatebox", "tip3pbox", "minimization",
+            "pmemd.cuda", "nan", "sander", "double precision"
+        ] if term in text)
+        keyword_hits += int(round(d.get("keyword_score", 0.0)))
+
+        command_hits = sum(1 for term in [
+            "loadpdb", "saveamberparm", "savepdb", "addions",
+            "addion", "solvatebox", "solvateoct", "source leaprc"
+        ] if term in text)
+        procedural_bonus = command_hits * 2
+
+        bias = 0
+        if is_howto and source_type in {"pdf", "tutorial"}:
+            bias += 10
+        if is_troubleshooting and source_type == "email":
+            bias += 8
+        if is_howto and source_type == "email" and command_hits > 0:
+            bias += 4
+        if is_howto and source_type in {"pdf", "tutorial"} and command_hits > 0:
+            bias += 6
 
         d["keyword_hits"] = keyword_hits
+        d["command_hits"] = command_hits
+        d["procedural_bonus"] = procedural_bonus
         d["bias"] = bias
         selected.append(d)
 
     selected = sorted(
         selected,
-        key=lambda x: (x.get("bias", 0), x.get("keyword_hits", 0), x.get("score", 0.0)),
+        key=lambda x: (
+            x.get("bias", 0),
+            x.get("procedural_bonus", 0),
+            x.get("keyword_hits", 0),
+            x.get("score", 0.0),
+        ),
         reverse=True
     )
 
-    return selected[:max_docs]
+    if is_howto:
+        pdf_docs = [d for d in selected if d.get("source_type") in {"pdf", "tutorial"}]
+        email_docs = [d for d in selected if d.get("source_type") == "email"]
+        mixed = []
 
+        mixed.extend(pdf_docs[: max(1, min(3, max_docs - 2 if max_docs > 2 else max_docs))])
+        mixed.extend(email_docs[: min(3, max_docs - len(mixed))])
+
+        for d in selected:
+            if len(mixed) >= max_docs:
+                break
+            if d not in mixed:
+                mixed.append(d)
+
+        return mixed[:max_docs]
+
+    return selected[:max_docs]
 
 def format_context(docs, max_chars_per_doc=DEFAULT_DOC_CHAR_LIMIT, max_total_chars=DEFAULT_TOTAL_CONTEXT_CHARS):
     """
@@ -601,7 +874,7 @@ def format_context(docs, max_chars_per_doc=DEFAULT_DOC_CHAR_LIMIT, max_total_cha
 
         header_bits = [
             meta.get("date") or meta.get("date_iso"),
-            meta.get("subject"),
+            meta.get("subject") or meta.get("title") or meta.get("file_name"),
             f"id={meta.get('id') or raw_meta.get('message_id') or 'unknown'}",
             f"type={d.get('source_type', 'unknown')}"
         ]
@@ -609,7 +882,7 @@ def format_context(docs, max_chars_per_doc=DEFAULT_DOC_CHAR_LIMIT, max_total_cha
 
         text = clean_chunk_text((d.get("text") or "").strip())
         if len(text) > max_chars_per_doc:
-            text = text[:max_chars_per_doc].rsplit(" ", 1)[0] + "…"
+            text = text[:max_chars_per_doc].rsplit(" ", 1)[0] + "..."
 
         block = f"[{label}] ({header})\n{text}\n"
 
@@ -620,6 +893,25 @@ def format_context(docs, max_chars_per_doc=DEFAULT_DOC_CHAR_LIMIT, max_total_cha
         total += len(block)
 
     return "\n".join(blocks).strip()
+
+
+def select_supporting_docs(
+    query: str,
+    chroma_client: Chroma,
+    top_k: int = DEFAULT_TOP_K,
+    use_mmr: bool = True,
+    include_pdf: bool = True,
+) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    expanded_query = expand_query(query)
+    retrieved_docs = retrieve_hybrid_context(
+        expanded_query,
+        chroma_client,
+        top_k=top_k,
+        use_mmr=use_mmr,
+        include_pdf=include_pdf
+    )
+    selected_docs = choose_supporting_docs(query, retrieved_docs, max_docs=top_k)
+    return retrieved_docs, selected_docs
 
 
 def looks_relevant(query: str, context_block: str) -> bool:
@@ -647,27 +939,24 @@ def build_prompt(query: str, context_block: str) -> str:
 
 Use only the retrieved context below.
 
-The retrieved context may include:
-- AMBER mailing-list troubleshooting threads
-- tutorial or manual chunks from PDF documents
+The context may include:
+- AMBER mailing-list email threads
+- Amber25 Reference Manual PDF chunks
 
 Rules:
+- Use only the retrieved context.
 - Do not use outside knowledge.
 - Do not repeat the user's question.
-- Do not copy long passages from the context.
-- Prefer tutorial/manual evidence for "how to" or workflow questions.
-- Prefer mailing-list evidence for troubleshooting or error questions.
-- Summarize the likely cause and what to try next.
-- Do not suggest nvidia-smi, gdb, driver updates, hardware checks, or generic GPU debugging unless those are explicitly mentioned in the retrieved context.
-- Do not mention author names, sender names, or email formatting.
-- If the context is incomplete, say what is missing.
-- Do not claim hardware failure, GPU failure, corrupted executables, driver problems, or OS issues unless those are explicitly stated in the retrieved context.
-- Do not present a specific user example or file names from the retrieved context as a general workflow unless the context clearly states it is a general procedure.
-- Do not present example file names, frcmod files, library files, or PDB names from a retrieved email as general required steps unless the context clearly says they are general.
+- Do not copy large passages from the context.
+- Prefer PDF/manual evidence for how-to and workflow questions.
+- Prefer email evidence for troubleshooting and error questions.
+- Do not present one user's example filenames, frcmod files, library files, or PDB names as general required steps.
+- If the context contains examples rather than a complete procedure, say that clearly.
+- Do not mention sender names or email formatting.
 
 Write exactly in this format:
 
-Likely cause:
+Likely answer:
 <1-3 sentences>
 
 Why:
@@ -678,7 +967,7 @@ What to try:
 - <step 2>
 - <step 3>
 
-If still failing:
+If still missing information:
 <what details are still needed>
 
 Retrieved context:
@@ -699,7 +988,7 @@ def load_model(device: str = None):
 
     model = AutoModelForCausalLM.from_pretrained(
         MODEL_NAME,
-        torch_dtype=torch.float16 if device == "cuda" else torch.float32,
+        dtype=torch.float16 if device == "cuda" else torch.float32,
         device_map="auto" if device == "cuda" else None
     )
 
@@ -759,6 +1048,20 @@ def generate_answer(prompt, tokenizer, model, max_new_tokens=DEFAULT_MAX_NEW_TOK
     answer = remove_repeated_paragraphs(answer)
     return answer
 
+def llm_only_answer(user_query: str, device: str = None, max_new_tokens: int = DEFAULT_MAX_NEW_TOKENS) -> str:
+    if device is None:
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    tokenizer, model = load_model(device)
+    prompt = f"""You are Amber Support Assistant.
+
+Answer the following question as best as you can.
+
+Question:
+{user_query}
+"""
+    return generate_answer(prompt, tokenizer, model, max_new_tokens=max_new_tokens)
+
 
 # -----------------------
 # (H) FULL RAG PIPELINE
@@ -774,10 +1077,8 @@ def rag_pipeline(
     if device is None:
         device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    expanded_query = expand_query(user_query)
-
-    docs = retrieve_hybrid_context(
-        expanded_query,
+    _, docs = select_supporting_docs(
+        user_query,
         chroma_client,
         top_k=top_k,
         use_mmr=use_mmr,
@@ -789,8 +1090,6 @@ def rag_pipeline(
             "I couldn't retrieve relevant Amber support context for that question.\n"
             "Please provide the Amber version, exact command, full error output, and relevant input snippet."
         )
-
-    docs = choose_supporting_docs(user_query, docs, max_docs=top_k)
     context_block = format_context(docs)
 
     if not looks_relevant(user_query, context_block):
@@ -812,25 +1111,34 @@ def rag_pipeline(
         "compatibility issues",
         "failing GPU",
         "different computer",
-        "corrupted file",
         "corrupted executable",
         "operating system",
         "overheating",
         "low memory",
-        "CUDA library"
+        "CUDA library",
+        "1DX.frcmod",
+        "idx.lib",
+        "hbay.pdb",
+
     ]
 
     bad_answer = (
         not answer.strip()
         or answer.strip().lower() == user_query.strip().lower()
         or len(answer.split()) < 8
+        or "1. load the necessary" in answer.lower()
+        or "2. add ions" in answer.lower()
+        or "3. use tleap to build" in answer.lower()
+        or "you need to load the necessary" in answer.lower()
         or any(p.lower() in answer.lower() for p in unsupported_phrases)
     )
 
     if bad_answer:
-        answer = fallback_answer_from_context(user_query, docs)
+        q_lower = user_query.lower()
+        is_howto = any(x in q_lower for x in ["how do i", "how to", "use tleap", "build", "prepare", "setup", "workflow"])
+        answer = howto_answer_from_context(user_query, docs) if is_howto else fallback_answer_from_context(user_query, docs)
 
-    sources_section = build_sources_section(docs)
+    sources_section = build_sources_section(docs[:6])
     return answer + "\n\nSources:\n" + sources_section
 
 
@@ -864,9 +1172,9 @@ def main():
 
     parser.add_argument(
         "--mode",
-        choices=["retrieve", "rag", "test"],
+        choices=["retrieve", "rag", "test", "llm"],
         default="rag",
-        help="retrieve = retrieval-only, rag = full pipeline, test = run queries from a file"
+        help="retrieve = retrieval-only, rag = full pipeline, test = run queries from a file, llm = no-RAG baseline"
     )
     parser.add_argument(
         "--query",
@@ -880,8 +1188,24 @@ def main():
     parser.add_argument("--device", type=str, choices=["cpu", "cuda"], default=None, help="Force device; default auto-detect")
     parser.add_argument("--max_new_tokens", type=int, default=DEFAULT_MAX_NEW_TOKENS, help="Max tokens for generation")
     parser.add_argument("--no_pdf", action="store_true", help="Disable optional PDF/manual retrieval")
+    parser.add_argument("--pdf_path", type=str, default=None, help="Override the Amber PDF path")
+    parser.add_argument("--find_pdf", action="store_true", help="Search common server locations for Amber25.pdf and exit")
 
     args = parser.parse_args()
+
+    global PDF_PATH
+    if args.pdf_path:
+        PDF_PATH = args.pdf_path
+
+    if args.find_pdf:
+        matches = find_pdf_candidates(filename=os.path.basename(PDF_PATH) or "Amber25.pdf")
+        print("\nPDF search results:")
+        if matches:
+            for path in matches:
+                print(path)
+        else:
+            print(f"No matches found for {os.path.basename(PDF_PATH) or 'Amber25.pdf'}")
+        return
 
     device = args.device or ("cuda" if torch.cuda.is_available() else "cpu")
     include_pdf = not args.no_pdf
@@ -911,6 +1235,14 @@ def main():
             device=device,
             max_new_tokens=args.max_new_tokens,
             include_pdf=include_pdf
+        )
+        print("\nANSWER:\n", ans)
+
+    elif args.mode == "llm":
+        ans = llm_only_answer(
+            args.query,
+            device=device,
+            max_new_tokens=args.max_new_tokens
         )
         print("\nANSWER:\n", ans)
 
