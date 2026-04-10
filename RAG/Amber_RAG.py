@@ -1,6 +1,8 @@
 import os
 import re
 import textwrap
+import csv
+from datetime import datetime
 import subprocess
 import traceback
 from typing import List, Dict, Any
@@ -206,6 +208,82 @@ def query_collection(coll, question: str, n: int):
         })
     return out
 
+# ---------------- CSV MAKER ---------------- #
+
+RESULTS_CSV = "ranking_results.csv"
+SUMMARY_CSV = "ranking_summary.csv"
+
+
+def append_result_row(
+    csv_path: str,
+    question: str,
+    pipeline: str,
+    run_number: int,
+    answer: str,
+    ce_score: float,
+    kw_score: float,
+    answer_length: int,
+):
+    """
+    Append one result row to a CSV file.
+    Creates the file with headers if it does not exist yet.
+    """
+    file_exists = os.path.isfile(csv_path)
+
+    row = {
+        "timestamp": datetime.now().isoformat(timespec="seconds"),
+        "question": question,
+        "pipeline": pipeline,
+        "run_number": run_number,
+        "ce_score": ce_score,
+        "kw_score": kw_score,
+        "answer_length": answer_length,
+        "answer": answer,
+    }
+
+    fieldnames = [
+        "timestamp",
+        "question",
+        "pipeline",
+        "run_number",
+        "ce_score",
+        "kw_score",
+        "answer_length",
+        "answer",
+    ]
+
+    with open(csv_path, "a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        if not file_exists:
+            writer.writeheader()
+        writer.writerow(row)
+
+def append_summary_row(csv_path: str, question: str, pipeline: str, avg_scores: dict):
+    file_exists = os.path.isfile(csv_path)
+
+    row = {
+        "timestamp": datetime.now().isoformat(timespec="seconds"),
+        "question": question,
+        "pipeline": pipeline,
+        "avg_ce_score": avg_scores["ce_score"],
+        "avg_kw_score": avg_scores["kw_score"],
+        "avg_answer_length": avg_scores["length"],
+    }
+
+    fieldnames = [
+        "timestamp",
+        "question",
+        "pipeline",
+        "avg_ce_score",
+        "avg_kw_score",
+        "avg_answer_length",
+    ]
+
+    with open(csv_path, "a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        if not file_exists:
+            writer.writeheader()
+        writer.writerow(row)
 
 # ---------------- SCORING HELPERS ---------------- #
 
@@ -391,7 +469,7 @@ def run_ChatGPT_manual_answers(question: str, expected_runs: int) -> List[str]:
     return parts
 
 
-# ---------------- Rank Questions ---------------- #
+# ---------------- RANK QUESTIONS ---------------- #
 
 def rank_questions(coll, question: str, pdf_chunks: List[Dict], runs: int = 1):
     """
@@ -433,11 +511,29 @@ def rank_questions(coll, question: str, pdf_chunks: List[Dict], runs: int = 1):
             all_scores.append(s)
             print(f"   run {i+1:>2}: ce={s['ce_score']:+.4f}  kw={int(s['kw_score']):>3}  len={s['length']:>5}")
 
+            append_result_row(
+                csv_path=RESULTS_CSV,
+                question=question,
+                pipeline=name,
+                run_number=i + 1,
+                answer=answer,
+                ce_score=s["ce_score"],
+                kw_score=s["kw_score"],
+                answer_length=s["length"],
+            )
+
         avg = average_scores(all_scores) if all_scores else {
             "ce_score": float("-inf"),
             "kw_score": 0.0,
             "length": 0,
         }
+
+        append_summary_row(
+            csv_path=SUMMARY_CSV,
+            question=question,
+            pipeline=name,
+            avg_scores=avg,
+        )
 
         results[name] = {
             "answer": last_answer,
@@ -466,6 +562,8 @@ def rank_questions(coll, question: str, pdf_chunks: List[Dict], runs: int = 1):
     if runner_up:
         gap = ranked[0][1]["scores"]["ce_score"] - ranked[1][1]["scores"]["ce_score"]
         print(f"  📊 CE gap (1st vs 2nd): {gap:+.4f}")
+    
+    print(f"\n💾 Results appended to: {RESULTS_CSV}")
 
     show = input("\nPrint all answers? (y/n): ").strip().lower()
     if show == "y":
