@@ -18,11 +18,10 @@ TOP_K = 5
 MIN_DOC_CHARS = 60
 WEIGHT = 1.0
 
-# PDF config
-PDF_PATH = os.getenv("AMBER_PDF", "./Amber25.pdf") 
-PDF_CHUNK_SIZE = 1000    
-PDF_CHUNK_OVERLAP = 150  
-MAX_PDF_CHUNKS_IN_CONTEXT = 2  
+PDF_PATH = os.getenv("AMBER_PDF", "./Amber25.pdf")
+PDF_CHUNK_SIZE = 1000
+PDF_CHUNK_OVERLAP = 150
+MAX_PDF_CHUNKS_IN_CONTEXT = 2
 
 OLLAMA_MODEL = "llama3.1"
 OLLAMA_TIMEOUT = 180
@@ -48,6 +47,7 @@ def keyword_overlap_score(query: str, doc: str):
 def best_window_snippet(query: str, text: str, window_chars: int = 750):
     if not text:
         return ""
+
     parts = re.split(r"(?<=[\.\?\!])\s+|\n+", text)
     parts = [p.strip() for p in parts if p.strip()]
     q_tokens = set(tokenize(query))
@@ -68,12 +68,11 @@ def best_window_snippet(query: str, text: str, window_chars: int = 750):
 
 # ---------------- PDF LOADER ---------------- #
 
-def load_pdf_chunks(pdf_path: str, chunk_size: int = PDF_CHUNK_SIZE, overlap: int = PDF_CHUNK_OVERLAP) -> List[Dict]:
-    """
-    Extract text from a PDF and split it into overlapping chunks.
-    Returns a list of dicts: {id, doc, meta, dist}
-    'dist' is set to 0.0 as a placeholder — scoring is done later.
-    """
+def load_pdf_chunks(
+    pdf_path: str,
+    chunk_size: int = PDF_CHUNK_SIZE,
+    overlap: int = PDF_CHUNK_OVERLAP,
+) -> List[Dict]:
     try:
         from pypdf import PdfReader
     except ImportError:
@@ -90,7 +89,6 @@ def load_pdf_chunks(pdf_path: str, chunk_size: int = PDF_CHUNK_SIZE, overlap: in
         print(f"⚠️  Could not open PDF: {e}")
         return []
 
-    # Pull text page-by-page, recording page numbers
     pages_text = []
     for i, page in enumerate(reader.pages, start=1):
         text = page.extract_text() or ""
@@ -98,13 +96,12 @@ def load_pdf_chunks(pdf_path: str, chunk_size: int = PDF_CHUNK_SIZE, overlap: in
             pages_text.append((i, text))
 
     full_text = ""
-    page_boundaries = []   # list of (char_offset, page_num)
+    page_boundaries = []
     for page_num, text in pages_text:
         page_boundaries.append((len(full_text), page_num))
         full_text += text + "\n"
 
     def page_for_offset(offset: int) -> int:
-        """Return the page number that contains character offset."""
         result = 1
         for boundary_offset, pnum in page_boundaries:
             if offset >= boundary_offset:
@@ -113,7 +110,6 @@ def load_pdf_chunks(pdf_path: str, chunk_size: int = PDF_CHUNK_SIZE, overlap: in
                 break
         return result
 
-    # Chunk with overlap
     chunks = []
     start = 0
     chunk_idx = 0
@@ -136,15 +132,12 @@ def load_pdf_chunks(pdf_path: str, chunk_size: int = PDF_CHUNK_SIZE, overlap: in
             })
             chunk_idx += 1
         start += chunk_size - overlap
-
-    print(f"📄 Loaded {len(chunks)} chunks from '{os.path.basename(pdf_path)}'")
     return chunks
 
 
 # ---------------- RERANKER ---------------- #
 
 _RERANKER = None
-
 
 def get_reranker():
     global _RERANKER
@@ -214,21 +207,43 @@ def query_collection(coll, question: str, n: int):
     return out
 
 
-# ---------------- RAG FLOW ---------------- #
+# ---------------- SCORING HELPERS ---------------- #
 
-def rag_answer_flow(coll, question: str, pdf_chunks: List[Dict]):
+def score_answer(question: str, answer: str) -> dict:
+    """
+    Score a single answer against the question using:
+      - ce_score:  cross-encoder relevance (higher = more relevant)
+      - kw_score:  keyword overlap count
+      - length:    character count
+    """
+    ce_scores = try_cross_encoder_rerank(question, [answer])
+    ce = ce_scores[0] if ce_scores else 0.0
+    kw = keyword_overlap_score(question, answer)
+    return {
+        "ce_score": round(ce, 4),
+        "kw_score": float(kw),
+        "length": len(answer),
+    }
 
-    space = get_space(coll)
 
-    # ---- 1. Gather candidates: ChromaDB + PDF ----
+def average_scores(scores_list: List[dict]) -> dict:
+    """Average a list of score dicts across multiple runs."""
+    if not scores_list:
+        return {}
+    keys = scores_list[0].keys()
+    return {k: round(sum(s[k] for s in scores_list) / len(scores_list), 4) for k in keys}
+
+
+# ---------------- PIPELINE RUNNERS ---------------- #
+
+def _select_top_candidates(coll, question: str, pdf_chunks: List[Dict]) -> List[tuple]:
+    """Shared retrieval + rerank logic used by both RAG pipelines."""
     db_candidates = query_collection(coll, question, N_CANDIDATES)
-    all_candidates = db_candidates + pdf_chunks   
+    all_candidates = db_candidates + pdf_chunks
 
     if not all_candidates:
-        print("⚠️ No candidates found.")
-        return
+        return []
 
-    # ---- 2. Rerank everything together ----
     docs = [c["doc"] for c in all_candidates]
     ce_scores = try_cross_encoder_rerank(question, docs)
 
@@ -236,34 +251,23 @@ def rag_answer_flow(coll, question: str, pdf_chunks: List[Dict]):
     if ce_scores and len(ce_scores) == len(all_candidates):
         for item, ce in zip(all_candidates, ce_scores):
             merged.append((ce * WEIGHT, ce, item))
-        rerank_label = "cross-encoder (weighted)"
     else:
         for item in all_candidates:
             kw = keyword_overlap_score(question, item["doc"])
             merged.append((kw * WEIGHT, kw, item))
-        rerank_label = "keyword-overlap fallback (weighted)"
-
     merged.sort(key=lambda x: x[0], reverse=True)
 
-    # ---- 3. Diverse selection (email ≤2, tutorial ≤2, pdf ≤ MAX_PDF_CHUNKS_IN_CONTEXT) ----
     chosen = []
-    email_count = 0
-    tutorial_count = 0
-    pdf_count = 0
+    email_count = tutorial_count = pdf_count = 0
 
     for weighted, rawscore, item in merged:
-
         meta = item["meta"]
         url_l = (meta.get("url") or "").lower()
-
-        src = meta.get("source")
-        if not src:
-            if "archive.ambermd.org" in url_l:
-                src = "email"
-            elif "ambermd.org/tutorials" in url_l:
-                src = "tutorial"
-            else:
-                src = "unknown"
+        src = meta.get("source") or (
+            "email" if "archive.ambermd.org" in url_l else
+            "tutorial" if "ambermd.org/tutorials" in url_l else
+            "unknown"
+        )
 
         if src == "email" and email_count < 2:
             chosen.append((weighted, rawscore, item, src))
@@ -280,16 +284,260 @@ def rag_answer_flow(coll, question: str, pdf_chunks: List[Dict]):
         if len(chosen) >= TOP_K:
             break
 
+    return chosen
+
+
+def run_llm_with_rag(coll, question: str, pdf_chunks: List[Dict]) -> str:
+    """RAG pipeline — returns the answer string (no printing)."""
+    chosen = _select_top_candidates(coll, question, pdf_chunks)
+    if not chosen:
+        return "[No candidates found]"
+
+    context_blocks = [best_window_snippet(question, item["doc"], 750) for _, _, item, _ in chosen]
+    context = "\n\n---\n\n".join(context_blocks)
+
+    prompt = f"""You are a helpful assistant.
+Answer the question using ONLY the context below.
+
+Question:
+{question}
+
+Context:
+{context}
+
+Answer:"""
+
+    proc = subprocess.run(
+        ["ollama", "run", OLLAMA_MODEL],
+        input=prompt.encode(),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=OLLAMA_TIMEOUT,
+    )
+    return proc.stdout.decode(errors="replace").strip()
+
+
+def run_llm_without_rag(question: str) -> str:
+    """Baseline — same LLM, no retrieval context."""
+    prompt = f"""You are a helpful assistant.
+Answer the following question as best as you can.
+
+Question:
+{question}
+
+Answer:"""
+
+    proc = subprocess.run(
+        ["ollama", "run", OLLAMA_MODEL],
+        input=prompt.encode(),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=OLLAMA_TIMEOUT,
+    )
+    return proc.stdout.decode(errors="replace").strip()
+
+
+def run_ChatGPT_manual_answers(question: str, expected_runs: int) -> List[str]:
+    """
+    Paste all manual web answers in one go.
+
+    Format:
+    ===RUN===
+    first answer
+    ===RUN===
+    second answer
+    ===RUN===
+    third answer
+    END
+    """
+    separator = "===RUN==="
+
+    print("=" * 70)
+    print("  CHATGPT MANUAL WEB ANSWER")
+    print("=" * 70)
+    print("Ask the question on the website multiple times, then paste ALL answers")
+    print("below in one go.")
+    print()
+    print(f"Use this separator before each answer: {separator}")
+    print("Type END on its own line when finished.")
+    print()
+    print("Example format:")
+    print(separator)
+    print("answer 1...")
+    print(separator)
+    print("answer 2...")
+    print(separator)
+    print("answer 3...")
+    print("END")
+    print()
+
+    lines = []
+    while True:
+        line = input()
+        if line.strip() == "END":
+            break
+        lines.append(line)
+
+    pasted = "\n".join(lines).strip()
+    if not pasted:
+        return []
+
+    parts = [p.strip() for p in pasted.split(separator) if p.strip()]
+
+    if len(parts) != expected_runs:
+        print(f"\n⚠️ Expected {expected_runs} answers, but found {len(parts)}.")
+        print("The program will still continue with what it found.\n")
+
+    return parts
+
+
+# ---------------- Rank Questions ---------------- #
+
+def rank_questions(coll, question: str, pdf_chunks: List[Dict], runs: int = 1):
+    """
+    Run the question through all 3 pipelines, score each answer,
+    print per-run scores, then a final ranked comparison table.
+    Returns the full results dict.
+    """
+    print(f"\n{'='*70}")
+    print(f"  Question: {question}")
+
+    manual_answers = run_ChatGPT_manual_answers(question, runs)
+
+    pipelines = {
+        "LLM + RAG": lambda i: run_llm_with_rag(coll, question, pdf_chunks),
+        "LLM only": lambda i: run_llm_without_rag(question),
+        "ChatGPT Web manual": lambda i: manual_answers[i] if i < len(manual_answers) else "[Missing manual answer]",
+    }
+
+    results = {}
+
+    for name, runner in pipelines.items():
+        print(f"\n▶  [{name}]  ({runs} run{'s' if runs > 1 else ''})")
+        all_scores = []
+        last_answer = ""
+
+        for i in range(runs):
+            answer = runner(i)
+            last_answer = answer
+
+            if answer.startswith("[") and "error" in answer.lower():
+                print(f"   run {i+1:>2}: ERROR -> {answer}")
+                continue
+
+            if answer == "[Missing manual answer]":
+                print(f"   run {i+1:>2}: ERROR -> {answer}")
+                continue
+
+            s = score_answer(question, answer)
+            all_scores.append(s)
+            print(f"   run {i+1:>2}: ce={s['ce_score']:+.4f}  kw={int(s['kw_score']):>3}  len={s['length']:>5}")
+
+        avg = average_scores(all_scores) if all_scores else {
+            "ce_score": float("-inf"),
+            "kw_score": 0.0,
+            "length": 0,
+        }
+
+        results[name] = {
+            "answer": last_answer,
+            "scores": avg,
+            "all_scores": all_scores,
+        }
+
+    ranked = sorted(results.items(), key=lambda x: x[1]["scores"]["ce_score"], reverse=True)
+
+    print(f"\n{'='*62}")
+    print("  SCORE COMPARISON  (sorted by cross-encoder score)")
+    print(f"{'='*62}")
+    print(f"  {'Pipeline':<16}  {'CE Score':>10}  {'KW Overlap':>10}  {'Ans Length':>10}")
+    print(f"  {'-'*16}  {'-'*10}  {'-'*10}  {'-'*10}")
+
+    medals = ["🥇", "🥈", "🥉"]
+    for rank, (name, data) in enumerate(ranked):
+        s = data["scores"]
+        medal = medals[rank] if rank < 3 else "  "
+        print(f"{medal} {name:<16}  {s['ce_score']:>+10.4f}  {s['kw_score']:>10.1f}  {s['length']:>10}")
+
+    winner = ranked[0][0]
+    runner_up = ranked[1][0] if len(ranked) > 1 else None
+
+    print(f"\n  ✅ Best answer  : {winner}")
+    if runner_up:
+        gap = ranked[0][1]["scores"]["ce_score"] - ranked[1][1]["scores"]["ce_score"]
+        print(f"  📊 CE gap (1st vs 2nd): {gap:+.4f}")
+
+    show = input("\nPrint all answers? (y/n): ").strip().lower()
+    if show == "y":
+        for name, data in results.items():
+            print(f"\n{'─'*62}")
+            print(f"  [{name}]")
+            print(f"{'─'*62}")
+            print(data["answer"])
+
+    return results
+
+
+# ---------------- ORIGINAL RAG FLOW ---------------- #
+
+def rag_answer_flow(coll, question: str, pdf_chunks: List[Dict]):
+    space = get_space(coll)
+    db_candidates = query_collection(coll, question, N_CANDIDATES)
+    all_candidates = db_candidates + pdf_chunks
+
+    if not all_candidates:
+        print("⚠️ No candidates found.")
+        return
+
+    docs = [c["doc"] for c in all_candidates]
+    ce_scores = try_cross_encoder_rerank(question, docs)
+
+    merged = []
+    if ce_scores and len(ce_scores) == len(all_candidates):
+        for item, ce in zip(all_candidates, ce_scores):
+            merged.append((ce * WEIGHT, ce, item))
+        rerank_label = "cross-encoder (weighted)"
+    else:
+        for item in all_candidates:
+            kw = keyword_overlap_score(question, item["doc"])
+            merged.append((kw * WEIGHT, kw, item))
+        rerank_label = "keyword-overlap fallback (weighted)"
+
+    merged.sort(key=lambda x: x[0], reverse=True)
+
+    chosen = []
+    email_count = tutorial_count = pdf_count = 0
+
+    for weighted, rawscore, item in merged:
+        meta = item["meta"]
+        url_l = (meta.get("url") or "").lower()
+        src = meta.get("source") or (
+            "email" if "archive.ambermd.org" in url_l else
+            "tutorial" if "ambermd.org/tutorials" in url_l else
+            "unknown"
+        )
+        if src == "email" and email_count < 2:
+            chosen.append((weighted, rawscore, item, src))
+            email_count += 1
+        elif src == "tutorial" and tutorial_count < 2:
+            chosen.append((weighted, rawscore, item, src))
+            tutorial_count += 1
+        elif src == "pdf" and pdf_count < MAX_PDF_CHUNKS_IN_CONTEXT:
+            chosen.append((weighted, rawscore, item, src))
+            pdf_count += 1
+        elif len(chosen) < TOP_K:
+            chosen.append((weighted, rawscore, item, src))
+        if len(chosen) >= TOP_K:
+            break
+
     print(f"✅ Rerank method: {rerank_label}")
     print(f"🔎 Candidates: {len(merged)} (DB: {len(db_candidates)}, PDF: {len(pdf_chunks)}) | "
           f"Showing top {len(chosen)} (diverse)")
 
-    # ---- 4. Build context ----
     sources = []
     context_blocks = []
 
     for i, (weighted, rawscore, item, src) in enumerate(chosen, 1):
-
         meta = item["meta"]
         title = meta.get("title") or meta.get("subject") or "(no title/subject)"
         url = meta.get("url") or "(no url)"
@@ -319,8 +567,7 @@ def rag_answer_flow(coll, question: str, pdf_chunks: List[Dict]):
 
     print("\n================= FINAL ANSWER (LLM) =================\n")
 
-    prompt = f"""
-You are a helpful assistant.
+    prompt = f"""You are a helpful assistant.
 Answer the question using ONLY the context below.
 
 Question:
@@ -329,8 +576,7 @@ Question:
 Context:
 {context}
 
-Answer:
-"""
+Answer:"""
 
     proc = subprocess.run(
         ["ollama", "run", OLLAMA_MODEL],
@@ -342,7 +588,6 @@ Answer:
 
     answer = proc.stdout.decode(errors="replace").strip()
 
-    # De-duplicate sources, keep order
     sources = [s for s in sources if s]
     sources = list(dict.fromkeys(sources))
 
@@ -361,7 +606,6 @@ Answer:
 def main():
     col_api = None
     db_path_display = "None"
-    pdf_chunks = load_pdf_chunks(PDF_PATH)
 
     while True:
         print("\n========== AMBER RAG MENU ==========")
@@ -369,17 +613,18 @@ def main():
         print(f"Collection:        {COLLECTION_NAME}")
         print("1. Open DB")
         print("2. RAG Ask")
-        print("3. Exit")
+        print("3. RankEach (RAG vs LLM vs ChatGPT manual web)")
+        print("4. Exit")
         print("====================================")
 
-        choice = input("Choose an option (1-3): ").strip()
+        choice = input("Choose an option (1-4): ").strip()
 
         if choice == "1":
             db_path = input(f"Database folder (default: {DEFAULT_DB_PATH}): ").strip() or DEFAULT_DB_PATH
             col_api = AmberChromaAPI(db_path=db_path, collection_name=COLLECTION_NAME)
             db_path_display = db_path
-            print(f"📦 '{COLLECTION_NAME}' count: {col_api.collection.count()}")
-            print(f"📄 PDF chunks loaded: {len(pdf_chunks)}")
+            pdf_chunks = load_pdf_chunks(PDF_PATH)
+            print(f"\n📦 '{COLLECTION_NAME}' count: {col_api.collection.count()} \n📄 PDF chunks loaded: {len(pdf_chunks)}")
 
         elif choice == "2":
             if not col_api:
@@ -392,6 +637,18 @@ def main():
                 rag_answer_flow(col_api.collection, q, pdf_chunks)
 
         elif choice == "3":
+            if not col_api:
+                print("Open DB first.")
+                continue
+            while True:
+                q = input("\nEnter question (or 'back'): ").strip()
+                if q.lower() == "back":
+                    break
+                runs_str = input("Number of runs to average (default 1): ").strip()
+                runs = int(runs_str) if runs_str.isdigit() and int(runs_str) > 0 else 1
+                rank_questions(col_api.collection, q, pdf_chunks, runs=runs)
+
+        elif choice == "4":
             break
 
         else:
