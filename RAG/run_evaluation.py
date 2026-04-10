@@ -72,20 +72,19 @@ def main():
         print()
 
     plt.figure(figsize=(10, 6))
-    x = range(len(labels))
+    x = list(range(len(labels)))
 
-    plt.bar([i - 0.25 for i in x], retrieval_scores, width=0.25, label="Avg Top-5 Retrieval")
+    plt.bar([i - 0.3 for i in x], retrieval_scores, width=0.25, label="Avg Top-5 Retrieval")
     plt.bar([i for i in x], pipeline_scores, width=0.25, label="Pipeline vs Actual")
-    plt.bar([i + 0.25 for i in x], chatgpt_scores, width=0.25, label="ChatGPT vs Actual")
+    plt.bar([i + 0.3 for i in x], chatgpt_scores, width=0.25, label="ChatGPT vs Actual")
 
-    plt.xticks(list(x), labels)
+    plt.xticks(x, labels)
     plt.ylim(0, 1.0)
     plt.ylabel("Cosine Similarity")
     plt.title("RAG Evaluation Comparison")
     plt.legend()
     plt.tight_layout()
     plt.savefig("answer_similarity_scores.png", dpi=200)
-    plt.show()
 
 
 if __name__ == "__main__":
