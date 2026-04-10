@@ -12,7 +12,7 @@ class AmberRetriever:
     def __init__(
         self,
         db_path: str = DEFAULT_PROMPT_DB,
-        top_k: int = 8,
+        top_k: int = 5,
         threshold: float = 0.35,
     ) -> None:
         self.db_path = db_path

@@ -7,14 +7,18 @@ from sentence_transformers import SentenceTransformer
 EMBEDDER = SentenceTransformer("all-MiniLM-L6-v2")
 
 
-def chunk_text(text, size=700, overlap=100):
+def chunk_text_with_pages(page_texts, size=700, overlap=100):
     chunks = []
     step = size - overlap
 
-    for i in range(0, len(text), step):
-        chunk = text[i:i + size]
-        if chunk.strip():
-            chunks.append(chunk)
+    for page_num, text in page_texts:
+        for i in range(0, len(text), step):
+            chunk = text[i:i + size]
+            if chunk.strip():
+                chunks.append({
+                    "text": chunk,
+                    "page": page_num,
+                })
 
     return chunks
 
@@ -30,19 +34,20 @@ def build_or_load_index(pdf_path):
         return index, chunks
 
     reader = PdfReader(pdf_path)
-    text = ""
+    page_texts = []
 
-    for page in reader.pages:
+    for i, page in enumerate(reader.pages, start=1):
         try:
             t = page.extract_text()
             if t:
-                text += t + "\n"
+                page_texts.append((i, t))
         except Exception:
             pass
 
-    chunks = chunk_text(text)
+    chunks = chunk_text_with_pages(page_texts)
 
-    embeddings = EMBEDDER.encode(chunks, convert_to_numpy=True).astype("float32")
+    texts = [c["text"] for c in chunks]
+    embeddings = EMBEDDER.encode(texts, convert_to_numpy=True).astype("float32")
     faiss.normalize_L2(embeddings)
 
     dim = embeddings.shape[1]
@@ -50,12 +55,12 @@ def build_or_load_index(pdf_path):
     index.add(embeddings)
 
     faiss.write_index(index, index_path)
-    np.save(chunks_path, chunks)
+    np.save(chunks_path, np.array(chunks, dtype=object))
 
-    return index, chunks
+    return index, np.array(chunks, dtype=object)
 
 
-def search_pdf(pdf_path, query, top_k=5, pdf_title="Amber Manual PDF", pdf_url=""):
+def search_pdf(pdf_path, query, top_k=5, pdf_title="Amber25 Reference Manual", pdf_url=""):
     index, chunks = build_or_load_index(pdf_path)
 
     query_emb = EMBEDDER.encode([query], convert_to_numpy=True).astype("float32")
@@ -64,18 +69,17 @@ def search_pdf(pdf_path, query, top_k=5, pdf_title="Amber Manual PDF", pdf_url="
     scores, indices = index.search(query_emb, top_k)
 
     results = []
-
     for idx, score in zip(indices[0], scores[0]):
-        results.append(
-            {
-                "text": str(chunks[idx]),
-                "metadata": {
-                    "doc_type": "tutorial_pdf",
-                    "title": pdf_title,
-                    "url": pdf_url,
-                },
-                "similarity": float(score),
-            }
-        )
+        chunk = chunks[idx].item() if hasattr(chunks[idx], "item") else chunks[idx]
+        results.append({
+            "text": chunk["text"],
+            "metadata": {
+                "doc_type": "tutorial_pdf",
+                "title": pdf_title,
+                "url": pdf_url,
+                "page": chunk["page"],
+            },
+            "similarity": float(score),
+        })
 
     return results

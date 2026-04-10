@@ -11,12 +11,18 @@ def extract_sources(chunks, max_sources: int = 3):
     for ch in chunks:
         meta = ch.get("metadata", {}) or {}
 
-        label = (
-            meta.get("page_title")
-            or meta.get("title")
-            or meta.get("subject")
-            or "Source"
-        )
+        if meta.get("doc_type") == "tutorial_pdf":
+            page = meta.get("page")
+            label = meta.get("title") or "Amber25 Reference Manual"
+            if page:
+                label = f"{label}, page {page}"
+        else:
+            label = (
+                meta.get("page_title")
+                or meta.get("title")
+                or meta.get("subject")
+                or "Source"
+            )
 
         url = meta.get("page_url") or meta.get("url") or ""
 
@@ -86,7 +92,7 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--query", required=True)
     p.add_argument("--db-path", default="/opt/chromadb/data/prompt_db")
-    p.add_argument("--top-k", type=int, default=8)
+    p.add_argument("--top-k", type=int, default=5)
     p.add_argument("--pdf-path", default="tutorials/Amber25.pdf")
     p.add_argument("--pdf-url", default="")
     args = p.parse_args()
