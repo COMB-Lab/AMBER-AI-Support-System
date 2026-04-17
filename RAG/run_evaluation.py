@@ -64,8 +64,8 @@ def main():
         retrieval_scores.append(retrieval_score)
 
         print(f"{case['id']} - {case['question']}")
-        print(f"  Pipeline similarity: {pipeline_score:.4f}")
-        print(f"  ChatGPT similarity:  {chatgpt_score:.4f}")
+        print(f"  Pipeline F1:         {pipeline_score:.4f}")
+        print(f"  ChatGPT F1:          {chatgpt_score:.4f}")
         print(f"  Retrieval similarity:{retrieval_score:.4f}")
         print()
 
@@ -79,7 +79,7 @@ def main():
     plt.xticks(x, labels)
     plt.ylim(0, 1.0)
     plt.ylabel("F1 Token Overlap")
-    plt.title("RAG Evaluation Comparison")
+    plt.title("RAG Evaluation Comparison (F1)")
     plt.legend()
     plt.tight_layout()
     plt.savefig("answer_similarity_scores.png", dpi=200)
