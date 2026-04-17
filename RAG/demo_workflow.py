@@ -2,6 +2,7 @@ from RAG.retriever import AmberRetriever
 from RAG.prompt_builder import build_prompt, build_context
 from RAG.llm_interface import OllamaLLM
 from RAG.pdf_retriever import search_pdf
+from RAG.evaluation import average_top_k_similarity
 
 
 def extract_sources(chunks, max_sources: int = 3):
@@ -65,6 +66,8 @@ def run(
     # Then DB hits
     db_hits = retr.retrieve(query)
     chunks.extend(db_hits)
+    avg_score = average_top_k_similarity(chunks, k=5)
+    print(f"\nAverage top-5 retrieval similarity: {avg_score:.4f}")
 
     if not chunks:
         print(

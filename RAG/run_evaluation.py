@@ -1,8 +1,6 @@
-from evaluation import cosine_similarity
+from evaluation import f1_token_overlap
 import matplotlib.pyplot as plt
 
-
-# Fill these in with your real test cases
 cases = [
     {
         "id": "Q1",
@@ -56,8 +54,8 @@ def main():
     print("\nEvaluation Results\n" + "-" * 80)
 
     for case in cases:
-        pipeline_score = cosine_similarity(case["generated"], case["actual"])
-        chatgpt_score = cosine_similarity(case["chatgpt"], case["actual"])
+        pipeline_score = f1_token_overlap(case["generated"], case["actual"])
+        chatgpt_score = f1_token_overlap(case["chatgpt"], case["actual"])
         retrieval_score = float(case["avg_retrieval_similarity"])
 
         labels.append(case["id"])
@@ -80,7 +78,7 @@ def main():
 
     plt.xticks(x, labels)
     plt.ylim(0, 1.0)
-    plt.ylabel("Cosine Similarity")
+    plt.ylabel("F1 Token Overlap")
     plt.title("RAG Evaluation Comparison")
     plt.legend()
     plt.tight_layout()

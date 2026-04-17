@@ -16,6 +16,19 @@ def cosine_similarity(a: str, b: str) -> float:
 
     return float(np.dot(a_vec, b_vec) / (a_norm * b_norm))
 
+def f1_token_overlap(a: str, b: str) -> float:
+    a_tokens = set(a.lower().split())
+    b_tokens = set(b.lower().split())
+
+    overlap = a_tokens & b_tokens
+
+    if len(overlap) == 0:
+        return 0.0
+
+    precision = len(overlap) / len(a_tokens)
+    recall = len(overlap) / len(b_tokens)
+
+    return 2 * (precision * recall) / (precision + recall)
 
 def average_top_k_similarity(chunks, k: int = 5) -> float:
     scores = [float(ch.get("similarity", 0.0)) for ch in chunks[:k]]
