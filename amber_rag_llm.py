@@ -98,14 +98,17 @@ def build_or_load_index(pdf_path, chunk_size=700, overlap=100):
     # Path to saved chunks
     chunks_path = base_name + ".chunks.npy"
 
-    # Load if already exists
     if os.path.exists(index_path) and os.path.exists(chunks_path):
-        # Load FAISS index
-        index = faiss.read_index(index_path)
-        # Load chunks
         chunks = np.load(chunks_path, allow_pickle=True)
-        # Return loaded objects
-        return index, chunks
+
+        # Safety check: detect old format (strings)
+        if len(chunks) > 0 and isinstance(chunks[0], str):
+            print("Old chunk format detected. Rebuilding index...")
+        else:
+            index = faiss.read_index(index_path)
+            return index, chunks
+
+    
 
     # If no saved index → build new one
     reader = PdfReader(pdf_path)
@@ -124,11 +127,32 @@ def build_or_load_index(pdf_path, chunk_size=700, overlap=100):
             print(f"Skipped unreadable page {i}")
 
     # Split text into overlapping chunks
-    chunks = chunk_text(text, chunk_size, overlap)
+    # Store chunks WITH metadata
+    chunks = []
+
+    for page_num, page in enumerate(reader.pages, start=1):
+        try:
+            extracted = page.extract_text()
+            if not extracted:
+                continue
+
+            page_chunks = chunk_text(extracted, chunk_size, overlap)
+
+            for ch in page_chunks:
+                chunks.append({
+                    "text": ch,
+                    "page": page_num,
+                    "file": os.path.basename(pdf_path)
+                })
+
+        except Exception:
+            print(f"Skipped unreadable page {page_num}")
 
     # Generate embeddings for all chunks
+    texts = [c["text"] for c in chunks]
+
     embeddings = EMBEDDER.encode(
-        chunks,
+        texts,
         batch_size=32,
         convert_to_numpy=True,
         show_progress_bar=True
@@ -191,14 +215,16 @@ def search_pdf(pdf_path, query, top_k=5, threshold=threshold_PDF):
 
     for rank, idx in enumerate(indices[0], 1):
         similarity = float(scores[0][rank - 1])
-        chunk_text = chunks[idx]
+        chunk = chunks[idx]
 
         if similarity < threshold:
             continue
 
         results.append({
-            "text": chunk_text,
-            "similarity": similarity
+            "text": chunk["text"],
+            "similarity": similarity,
+            "page": chunk["page"],
+            "file": chunk["file"]
         })
 
     return results
@@ -242,10 +268,12 @@ def retrieve_with_pdf(question, k_chroma=50, k_pdf=5, threshold=0.2):
             pdf_results.append({
                 "text": r["text"],
                 "author": "Amber Manual",
-                "subject": "Amber PDF Manual",
+                "subject": r["file"],  # ← file name used here
                 "date_iso": "",
                 "url": f"file://{PDF_ADDRESS}",
-                "similarity": float(r["similarity"]) - 0.05,  # slight penalty
+                "page": r["page"],
+                "file": r["file"],
+                "similarity": float(r["similarity"]) - 0.05,
                 "source_type": "PDF"
             })
     else:
@@ -256,7 +284,7 @@ def retrieve_with_pdf(question, k_chroma=50, k_pdf=5, threshold=0.2):
     pdf_sorted = sorted(pdf_results, key=lambda x: x["similarity"], reverse=True)
 
     # --- 4) Merge both sources, Chroma first, then PDF ---
-    all_chunks = chroma_sorted + pdf_sorted
+    all_chunks = sorted(chroma_sorted + pdf_sorted, key=lambda x: x["similarity"], reverse=True)
 
     return all_chunks
 
@@ -418,8 +446,10 @@ def attach_citations(answer, chunks):
         subject = ch.get("subject", "")
         author = ch.get("author", "")
 
-        if source == "PDF" and ch.get("url"):
-            refs.append(f"{cite_label} {subject} ({author}) - {make_clickable(ch['url'], ch['url'])}")
+        if source == "PDF":
+            file_name = ch.get("file", "Unknown File")
+            page = ch.get("page", "N/A")
+            refs.append(f"{cite_label} {file_name}, Page {page}")
         else:  # CHROMA
             date = format_date_iso(ch.get("date_iso", "N/A"))
             refs.append(f"{cite_label} {subject} ({author}) - {date}")
@@ -551,7 +581,7 @@ def retrieve(question: str, k: int = 50, threshold: float = 0.2, where=None):
 # --------------------------------------------------------
 #                        RAG EXECUTION
 # --------------------------------------------------------
-question = input("Question: ")
+# question = input("Question: ")
 
 """
 RAG Pipeline Execution
@@ -564,13 +594,13 @@ Steps:
 5. Print the final answer.
 """
 
-# Retrieve relevant chunks from hybrid retriever
-chunks = retrieve_with_pdf(
-    question,
-    k_chroma=50,     # Number of ChromaDB results
-    k_pdf=5,         # Number of PDF results
-    threshold=threshold_ChromaDB    # Similarity threshold
-)
+# # Retrieve relevant chunks from hybrid retriever
+# chunks = retrieve_with_pdf(
+#     question,
+#     k_chroma=50,     # Number of ChromaDB results
+#     k_pdf=5,         # Number of PDF results
+#     threshold=threshold_ChromaDB    # Similarity threshold
+# )
 
 # print("\n--- TOP CHUNKS ---")
 # for i, ch in enumerate(chunks[:5], 1):
@@ -578,15 +608,31 @@ chunks = retrieve_with_pdf(
 #     print(ch["text"][:150])
 #     print("----")
 
-# Build LLM-ready context and prompt
-context = build_context(chunks)          # Combine chunks into single context block
-messages = build_prompt(question, context)  # Create chat-style messages
+# if __name__ == "__main__":
+#     # Generate final answer using local LLaMA
+#     answer = generate_llama(messages)  # Send prompt to Ollama LLaMA model
+#     final_rag_answer = attach_citations(answer, chunks)
 
-# Generate final answer using local LLaMA
-answer = generate_llama(messages)  # Send prompt to Ollama LLaMA model
-final_answer = attach_citations(answer, chunks)
+#     print(final_rag_answer)
 
-# --------------------------------------------------------
-#                        LLM RESPONSE
-# --------------------------------------------------------
-print(final_answer)
+def run_rag(question):
+    # Retrieve relevant chunks from hybrid retriever
+    chunks = retrieve_with_pdf(
+        question,
+        k_chroma=50,     # Number of ChromaDB results
+        k_pdf=5,         # Number of PDF results
+        threshold=threshold_ChromaDB    # Similarity threshold
+    )
+
+    # Build LLM-ready context and prompt
+    context = build_context(chunks)          # Combine chunks into single context block
+    messages = build_prompt(question, context)  # Create chat-style messages
+
+    # Generate final answer using local LLaMA
+    answer = generate_llama(messages)  # Send prompt to Ollama LLaMA model
+    final_rag_answer = attach_citations(answer, chunks)
+
+    return {
+        "answer": final_rag_answer,
+        "chunks": chunks
+    }
