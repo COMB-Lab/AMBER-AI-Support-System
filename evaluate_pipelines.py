@@ -227,9 +227,21 @@ if __name__ == "__main__":
 
     try:
         chatgpt_result = run_chatgpt(question)
+
+        # Handle case where it returns empty or None
+        if not chatgpt_result or not chatgpt_result.get("answer"):
+            raise ValueError("Empty ChatGPT response")
+
     except Exception as e:
         print("\nChatGPT failed:", e)
-        chatgpt_result = {"answer": ""}
+
+        manual_answer = input("Enter ChatGPT answer manually: ").strip()
+
+        # Optional: allow skipping
+        if manual_answer == "":
+            manual_answer = ""
+
+        chatgpt_result = {"answer": manual_answer}
 
     result = evaluate_one(
         question,
@@ -238,6 +250,10 @@ if __name__ == "__main__":
         chatgpt_result,
         reference
     )
+
+# --------------------------------------------------------
+#                    PRINT PRESPONSES
+# --------------------------------------------------------
 
     print("\n=== RESPONSES ===")
 
