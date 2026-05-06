@@ -1,0 +1,115 @@
+question,actual_answer,rag_answer,llm_without_rag_answer,rag_vs_actual_similarity,llm_vs_actual_similarity,avg_top5_source_score,sources
+What does solvateBox require as input in tleap?,"solvateBox requires a solute, solvent, and buffer distance. The solute and solvent must be LEaP UNITs","Likely answer:
+solvateBox requires a solute UNIT and a solvent UNIT as input in tleap.
+
+Why:
+The solvateBox command in tleap requires a solute UNIT and a solvent UNIT as input. The solute UNIT should be a UNIT
+containing the solute residue, and the solvent UNIT should be a UNIT containing the solvent residue.
+
+What to try:
+- Load the solute and solvent UNITs in tleap.
+- Use the solvateBox command to create a periodic solvent box around the solute residue.
+
+If still missing information:
+- Check the tleap documentation for more information on the solvateBox command.
+- Ensure that the solute and solvent UNITs are correctly defined in tleap.",,0.6514,,0.5624,"- [S1] Email: Re: [AMBER] Antechamber (2017-09-21T20:20:32+00:00): http://archive.ambermd.org/201709/0380.html
+- [S2] PDF: Amber25 Reference Manual (Amber25.pdf, page 264): https://ambermd.org/doc12/Amber25.pdf#page=264
+- [S3] PDF: Amber25 Reference Manual (Amber25.pdf, page 264): https://ambermd.org/doc12/Amber25.pdf#page=264
+- [S4] PDF: Amber25 Reference Manual (Amber25.pdf, page 264): https://ambermd.org/doc12/Amber25.pdf#page=264
+- [S5] PDF: Amber25 Reference Manual (Amber25.pdf, page 365): https://ambermd.org/doc12/Amber25.pdf#page=365"
+What typically causes the error 'cudaMemcpy GpuBuffer::Download failed: an illegal memory access was encountered'?,,"Likely cause:
+The retrieved AMBER discussions suggest this is likely a numerical instability during GPU minimization.
+
+Why:
+The retrieved AMBER mailing-list results connect this type of CUDA minimization failure with unstable starting structures, very large forces, or GPU-side numerical problems during minimization.
+
+What to try:
+- Check the starting structure for bad contacts or steric clashes.
+- Run a more conservative minimization first.
+- Try CPU minimization before returning to pmemd.cuda.
+
+If still failing:
+Provide the Amber version, exact command, full error output, and minimization input settings.",,,,0.7269,"- [S1] Email: [AMBER] Potential energy fluctuation of NVT ensemble (2016-11-03T12:15:47+00:00): http://archive.ambermd.org/201611/0056.html
+- [S2] Email: Re: [AMBER] pmemd.cuda error cudaMemcpy GpuBuffer:: (2015-02-14T06:38:35+00:00): http://archive.ambermd.org/201502/0272.html
+- [S3] Email: Re: [AMBER] GpuBuffer::Download failed for kNLBuildNeighborListOrthogonal16_kernel (2013-08-07T17:12:59+00:00): http://archive.ambermd.org/201308/0138.html
+- [S4] Email: Re: [AMBER] cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered (2017-03-09T13:07:12+00:00): http://archive.ambermd.org/201703/0088.html
+- [S5] Email: Re: [AMBER] erro: cudaMemcpy GpuBuffer::Download failed an illegal memory access was encountered (2021-03-29T17:37:33+00:00): http://archive.ambermd.org/202103/0297.html"
+pmemd.cuda stops with 'periodic box dimensions have changed too much' during NPT equilibration -- what usually causes this and how should it be fixed?,,"Likely answer:
+The ""periodic box dimensions have changed too much"" error in pmemd.cuda during NPT equilibration usually occurs when the simulation box dimensions have changed significantly between the initial and final equilibration steps. This can happen due to various reasons such as changes in the system's geometry, incorrect box dimensions, or issues with the simulation environment.
+
+To fix this issue, you can try the following steps:
+
+1. Check the system's geometry: Verify that the system's geometry has not changed significantly between the initial and final equilibration steps. You can do this by comparing the coordinates of the atoms in the initial and final equilibration frames.
+
+2. Check the box dimensions: Ensure that the box dimensions have not changed significantly between the initial and final equilibration steps. You can do this by comparing the box vectors (x, y, z) in the initial and final equilibration frames.
+
+3. Check for any external forces: If the system is subject to external forces, ensure that these forces have not changed significantly between the initial and final equilibration steps.
+
+4. Check the simulation environment: Verify that the simulation environment is stable and not causing any issues with the box dimensions.
+
+5. Reset the simulation: If none of the above steps resolve the issue, you can try resetting the simulation by restarting the simulation from the initial frame.
+
+What to try:
+- Check the system's geometry and box dimensions
+- Reset the simulation
+- Verify that external forces have not changed
+- Check the simulation environment
+
+If still missing information:
+- Check the box vectors (x, y, z) in the initial and final equilibration frames
+- Verify that the system's geometry has not changed significantly between the initial and final equilibration steps
+- Check for any external forces that may have changed
+- Verify that the simulation environment is stable and not causing",,,,0.7279,"- [S1] PDF: Amber25 Reference Manual (Amber25.pdf, page 387): https://ambermd.org/doc12/Amber25.pdf#page=387
+- [S2] PDF: Amber25 Reference Manual (Amber25.pdf, page 468): https://ambermd.org/doc12/Amber25.pdf#page=468
+- [S3] PDF: Amber25 Reference Manual (Amber25.pdf, page 469): https://ambermd.org/doc12/Amber25.pdf#page=469
+- [S4] PDF: Amber25 Reference Manual (Amber25.pdf, page 517): https://ambermd.org/doc12/Amber25.pdf#page=517
+- [S5] PDF: Amber25 Reference Manual (Amber25.pdf, page 517): https://ambermd.org/doc12/Amber25.pdf#page=517"
+Why does pmemd.cuda produce NaN values during minimization?,,"Likely answer:
+The pmemd.cuda code uses the SPDP precision model, which employs fixed precision for the accumulation. This model only works for systems that are close to equilibrium. Any system with spikes in the energy will overflow the accumulators and cause linmin failures in the minimizer.
+
+What to try:
+- Use the SPDP or DPDP precision models (requiring you to compile them specifically if not available)
+- Run minimization using the CPU code and then run dynamics using the GPU code
+
+If still missing information:
+- The system may have a large energy spike that causes overflow in the accumulators
+- The system may not be close to equilibrium
+- The system may have a large number of atoms that cause overflow in the accumulators
+
+---
+
+Sent: 25 June 2020 15:06
+To: amber.ambermd.org
+
+Hi
+I was wondering if it is okay to run minimisation and equlibration steps
+using pmemd.cuda. The same input that I use with sander.MPI runs here too,
+but what is the difference in results? The time gain is tremendous.
+Thanks in advance
+Suchetana Gupta
+IIT Madars
+
+Ross Walker < ross.rosswalker.co.uk > (Fri, 27 Oct 2017 11:06:34 -0400):
+This is partly correct. Minimization is best done on the CPU...
+
+[S2] (2014-01-22T03:01:28+00:00 | Re: [AMBER] Question | id=unknown | type=email)
+Hi Eric,
+ Firstly don't use ibrun with the pmemd.cuda code - ibrun has",,,,0.6516,"- [S1] Email: Re: [AMBER] Use of pmemd for minimisation and equilibration (2017-10-27T12:52:56+00:00): http://archive.ambermd.org/201710/0346.html
+- [S2] Email: Re: [AMBER] Question (2014-01-22T03:01:28+00:00): http://archive.ambermd.org/201401/0253.html
+- [S3] Email: Re: [AMBER] CUDA NaN error occuring at ""wrapping first mol"" (2011-11-30T23:54:31+00:00): http://archive.ambermd.org/201111/0826.html
+- [S4] Email: Re: [AMBER] EGB discrepancy between sander and pmemd (2012-12-04T16:02:18+00:00): http://archive.ambermd.org/201212/0042.html
+- [S5] Email: Re: [AMBER] pmemd.cuda for heating and equilibration? (2020-06-25T01:27:34+00:00): http://archive.ambermd.org/202006/0240.html"
+How do I use tleap to build a solvated system?,,"Likely answer:
+To use tleap to build a solvated system, you need to first solvate your system using the tleap solvate command. This command takes the topology file, the input pdb file, and the solute PDB file as arguments. The solute PDB file should contain only the solute residues and no water molecules.
+
+What to try:
+1. Run the tleap solvate command to solvate your system.
+2. After the solvation is complete, you can add ions to the system using the tleap addions command. This command takes the topology file, the solvated topology, the solute PDB file, and the ions to add as arguments.
+3. Finally, you can use the tleap complex command to create a complex of the solvated system and the ions.
+
+If still missing information:
+To fully build a solvated system using tleap, you need to specify the solute PDB file, the topology file, and the coordinates of the solute residues. The solute PDB file should contain only the solute residues and no water molecules. You also need to specify the buffer size and the number of waters to add.",,,,0.5082,"- [S1] PDF: Amber25 Reference Manual (Amber25.pdf, page 274): https://ambermd.org/doc12/Amber25.pdf#page=274
+- [S2] PDF: Amber25 Reference Manual (Amber25.pdf, page 231): https://ambermd.org/doc12/Amber25.pdf#page=231
+- [S3] PDF: Amber25 Reference Manual (Amber25.pdf, page 238): https://ambermd.org/doc12/Amber25.pdf#page=238
+- [S4] Email: Re: [AMBER] Antechamber (2017-09-21T20:20:32+00:00): http://archive.ambermd.org/201709/0380.html
+- [S5] Email: Re: [AMBER] A bug with unperturbed charge during tleap processing (2017-08-02T18:16:02+00:00): http://archive.ambermd.org/201708/0030.html"
