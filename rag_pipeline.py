@@ -34,7 +34,7 @@ PDF_MIN_SCORE = 0.45
 PDF_CHUNK_SIZE = 700
 PDF_CHUNK_OVERLAP = 100
 
-DEFAULT_TOP_K = 8
+DEFAULT_TOP_K = 5
 DEFAULT_MAX_NEW_TOKENS = 400
 DEFAULT_DOC_CHAR_LIMIT = 1200
 DEFAULT_TOTAL_CONTEXT_CHARS = 8500
@@ -77,6 +77,7 @@ def get_source_link(meta: Dict[str, Any]) -> str:
             if page is not None:
                 return f"{PDF_PUBLIC_URL}#page={page}"
             return PDF_PUBLIC_URL
+        return ""
 
     for key in ["url", "link", "source_url", "thread_url", "message_url"]:
         if meta.get(key):
@@ -1138,7 +1139,7 @@ def rag_pipeline(
         is_howto = any(x in q_lower for x in ["how do i", "how to", "use tleap", "build", "prepare", "setup", "workflow"])
         answer = howto_answer_from_context(user_query, docs) if is_howto else fallback_answer_from_context(user_query, docs)
 
-    sources_section = build_sources_section(docs[:6])
+    sources_section = build_sources_section(docs[:top_k])
     return answer + "\n\nSources:\n" + sources_section
 
 
@@ -1259,9 +1260,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
 
 
 
