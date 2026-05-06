@@ -58,11 +58,25 @@ def plot_avg_ce_score(rows):
         avg_scores.append(mean([x["ce_score"] for x in items]))
 
     plt.figure(figsize=(8, 5))
-    plt.bar(pipelines, avg_scores)
+    colors = ["blue", "orange", "green"]
+    bars = plt.bar(pipelines, avg_scores, color=colors)
+
     plt.title("Average Cross-Encoder Score by Pipeline")
     plt.xlabel("Pipeline")
     plt.ylabel("Average CE Score")
     plt.xticks(rotation=15)
+    plt.ylim(bottom=5)
+
+    for bar in bars:
+        height = bar.get_height()
+        plt.text(
+            bar.get_x() + bar.get_width() / 2,
+            height,
+            f"{height:.2f}", 
+            ha='center',
+            va='bottom'
+        )
+
     plt.tight_layout()
     plt.savefig("avg_ce_score_by_pipeline.png")
     plt.close()
@@ -79,11 +93,25 @@ def plot_avg_kw_score(rows):
         avg_scores.append(mean([x["kw_score"] for x in items]))
 
     plt.figure(figsize=(8, 5))
-    plt.bar(pipelines, avg_scores)
+    colors = ["blue", "orange", "green"]
+    bars = plt.bar(pipelines, avg_scores, color=colors)
+
     plt.title("Average Keyword Overlap by Pipeline")
     plt.xlabel("Pipeline")
     plt.ylabel("Average KW Score")
     plt.xticks(rotation=15)
+    plt.ylim(bottom=5)
+
+    for bar in bars:
+        height = bar.get_height()
+        plt.text(
+            bar.get_x() + bar.get_width() / 2,
+            height,
+            f"{height:.2f}", 
+            ha='center',
+            va='bottom'
+        )
+
     plt.tight_layout()
     plt.savefig("avg_kw_score_by_pipeline.png")
     plt.close()
@@ -100,11 +128,13 @@ def plot_avg_answer_length(rows):
         avg_lengths.append(mean([x["answer_length"] for x in items]))
 
     plt.figure(figsize=(8, 5))
-    plt.bar(pipelines, avg_lengths)
+    colors = ["blue", "orange", "green"] 
+    plt.bar(pipelines, avg_lengths, color=colors)
     plt.title("Average Answer Length by Pipeline")
     plt.xlabel("Pipeline")
     plt.ylabel("Average Answer Length")
     plt.xticks(rotation=15)
+    plt.ylim(bottom=5)
     plt.tight_layout()
     plt.savefig("avg_answer_length_by_pipeline.png")
     plt.close()
@@ -115,10 +145,18 @@ def plot_ce_score_scatter(rows):
 
     plt.figure(figsize=(8, 5))
 
+    color_map = {
+        "LLM + RAG": "blue",
+        "LLM only": "orange",
+        "ChatGPT Web manual": "green"
+    }
+
     for pipeline, items in grouped.items():
         x = [row["answer_length"] for row in items]
         y = [row["ce_score"] for row in items]
-        plt.scatter(x, y, label=pipeline)
+
+        color = color_map.get(pipeline, "gray")  # fallback if unknown
+        plt.scatter(x, y, label=pipeline, color=color)
 
     plt.title("CE Score vs Answer Length")
     plt.xlabel("Answer Length")
@@ -134,11 +172,19 @@ def plot_ce_score_by_run(rows):
 
     plt.figure(figsize=(8, 5))
 
+    color_map = {
+        "LLM + RAG": "blue",
+        "LLM only": "orange",
+        "ChatGPT Web manual": "green"
+    }
+
     for pipeline, items in grouped.items():
         items_sorted = sorted(items, key=lambda r: r["run_number"])
         x = list(range(1, len(items_sorted) + 1))
         y = [row["ce_score"] for row in items_sorted]
-        plt.plot(x, y, marker="o", label=pipeline)
+
+        color = color_map.get(pipeline, "gray")
+        plt.plot(x, y, marker="o", label=pipeline, color=color)
 
     plt.title("CE Score by Run Order")
     plt.xlabel("Run Index")
@@ -148,9 +194,62 @@ def plot_ce_score_by_run(rows):
     plt.savefig("ce_score_by_run.png")
     plt.close()
 
+def plot_rag_source_counts(rows):
+    rag_rows = [r for r in rows if r["pipeline"] == "LLM + RAG"]
+    if not rag_rows:
+        print("No LLM + RAG rows found for source count plot.")
+        return
+
+    email_total = sum(safe_int(r.get("email_count")) for r in rag_rows)
+    tutorial_total = sum(safe_int(r.get("tutorial_count")) for r in rag_rows)
+    pdf_total = sum(safe_int(r.get("pdf_count")) for r in rag_rows)
+
+    sources = ["Emails", "Tutorials", "PDFs"]
+    counts = [email_total, tutorial_total, pdf_total]
+
+    plt.figure(figsize=(7, 5))
+    plt.bar(sources, counts, color=["lightblue", "lightgreen", "red"])
+    plt.title("Source Document Counts Pulled by LLM + RAG")
+    plt.xlabel("Source Type")
+    plt.ylabel("Total Count")
+    plt.tight_layout()
+    plt.savefig("rag_source_counts.png")
+    plt.close()
+
+def plot_rag_source_counts_summary(rows):
+    rag_rows = [r for r in rows if r["pipeline"] == "LLM + RAG"]
+    if not rag_rows:
+        print("No LLM + RAG rows found for source count plot.")
+        return
+
+    email_total = sum(safe_float(r.get("avg_email_count")) for r in rag_rows)
+    tutorial_total = sum(safe_float(r.get("avg_tutorial_count")) for r in rag_rows)
+    pdf_total = sum(safe_float(r.get("avg_pdf_count")) for r in rag_rows)
+
+    sources = ["Emails", "Tutorials", "PDFs"]
+    counts = [email_total, tutorial_total, pdf_total]
+
+    plt.figure(figsize=(7, 5))
+    bars = plt.bar(sources, counts, color=["lightblue", "lightgreen", "red"])    
+    plt.title("Source Document Counts Pulled by LLM + RAG")
+    plt.xlabel("Source Type")
+    plt.ylabel("Total Count")
+    for bar in bars:
+        height = bar.get_height()
+        plt.text(
+            bar.get_x() + bar.get_width() / 2,
+            height,
+            f"{int(height)}",  # change to f"{height:.1f}" if you want decimals
+            ha='center',
+            va='bottom'
+        )
+    plt.tight_layout()
+    plt.savefig("rag_source_counts_summary.png")
+    plt.close()
 
 def main():
     rows = load_results_csv(RESULTS_CSV)
+    summaryRows = load_results_csv(SUMMARY_CSV)
 
     if not rows:
         print("No rows found in ranking_results.csv")
@@ -161,6 +260,8 @@ def main():
     plot_avg_answer_length(rows)
     plot_ce_score_scatter(rows)
     plot_ce_score_by_run(rows)
+    plot_rag_source_counts(rows)
+    plot_rag_source_counts_summary(summaryRows)
 
     print("Saved graphs:")
     print("  avg_ce_score_by_pipeline.png")
@@ -168,6 +269,8 @@ def main():
     print("  avg_answer_length_by_pipeline.png")
     print("  ce_score_vs_answer_length.png")
     print("  ce_score_by_run.png")
+    print("  rag_source_counts.png")
+    print("  rag_source_counts_summary.png")
 
 
 if __name__ == "__main__":

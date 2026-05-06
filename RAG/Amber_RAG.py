@@ -5,17 +5,17 @@ import csv
 from datetime import datetime
 import subprocess
 import traceback
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Tuple
 
 from database_menu import AmberChromaAPI, EMBEDDER
 
 
 # ---------------- CONFIG ---------------- #
 
-DEFAULT_DB_PATH = os.getenv("CHROMA_DIR", "./prompt_db")
+DEFAULT_DB_PATH = os.getenv("CHROMA_DIR", "/opt/chromadb/data/prompt_db")
 COLLECTION_NAME = "amber_messages"
 
-N_CANDIDATES = 30
+N_CANDIDATES = 100
 TOP_K = 5
 MIN_DOC_CHARS = 60
 WEIGHT = 1.0
@@ -32,7 +32,6 @@ OLLAMA_TIMEOUT = 180
 # ---------------- TOKEN HELPERS ---------------- #
 
 _word_re = re.compile(r"[a-zA-Z0-9_]+")
-
 
 def tokenize(s: str):
     return [t.lower() for t in _word_re.findall(s or "")]
@@ -66,6 +65,28 @@ def best_window_snippet(query: str, text: str, window_chars: int = 750):
     scored.sort(key=lambda x: x[0], reverse=True)
     snippet = " ".join(p for _, p in scored[:6])
     return snippet[:window_chars]
+
+
+# ---------------- SOURCE DETECTION ---------------- #
+
+def detect_source_type(meta: Dict[str, Any]) -> str:
+    src = (meta.get("source") or "").lower()
+    url = (meta.get("url") or "").lower()
+    title = (meta.get("title") or meta.get("subject") or "").lower()
+
+    if src in {"email", "tutorial", "pdf"}:
+        return src
+
+    if "archive.ambermd.org" in url:
+        return "email"
+
+    if "ambermd.org/tutorials" in url or "tutorial" in title:
+        return "tutorial"
+
+    if url.startswith("file://") or meta.get("page") is not None:
+        return "pdf"
+
+    return "unknown"
 
 
 # ---------------- PDF LOADER ---------------- #
@@ -208,11 +229,11 @@ def query_collection(coll, question: str, n: int):
         })
     return out
 
+
 # ---------------- CSV MAKER ---------------- #
 
-RESULTS_CSV = "ranking_results.csv"
-SUMMARY_CSV = "ranking_summary.csv"
-
+RESULTS_CSV = "ranking_results_test.csv"
+SUMMARY_CSV = "ranking_summary_test.csv"
 
 def append_result_row(
     csv_path: str,
@@ -223,11 +244,10 @@ def append_result_row(
     ce_score: float,
     kw_score: float,
     answer_length: int,
+    email_count: int = 0,
+    tutorial_count: int = 0,
+    pdf_count: int = 0,
 ):
-    """
-    Append one result row to a CSV file.
-    Creates the file with headers if it does not exist yet.
-    """
     file_exists = os.path.isfile(csv_path)
 
     row = {
@@ -239,6 +259,9 @@ def append_result_row(
         "kw_score": kw_score,
         "answer_length": answer_length,
         "answer": answer,
+        "email_count": email_count,
+        "tutorial_count": tutorial_count,
+        "pdf_count": pdf_count,
     }
 
     fieldnames = [
@@ -250,6 +273,9 @@ def append_result_row(
         "kw_score",
         "answer_length",
         "answer",
+        "email_count",
+        "tutorial_count",
+        "pdf_count",
     ]
 
     with open(csv_path, "a", newline="", encoding="utf-8") as f:
@@ -258,7 +284,14 @@ def append_result_row(
             writer.writeheader()
         writer.writerow(row)
 
-def append_summary_row(csv_path: str, question: str, pipeline: str, avg_scores: dict):
+
+def append_summary_row(
+    csv_path: str,
+    question: str,
+    pipeline: str,
+    avg_scores: dict,
+    avg_counts: dict,
+):
     file_exists = os.path.isfile(csv_path)
 
     row = {
@@ -268,6 +301,9 @@ def append_summary_row(csv_path: str, question: str, pipeline: str, avg_scores: 
         "avg_ce_score": avg_scores["ce_score"],
         "avg_kw_score": avg_scores["kw_score"],
         "avg_answer_length": avg_scores["length"],
+        "avg_email_count": avg_counts["email_count"],
+        "avg_tutorial_count": avg_counts["tutorial_count"],
+        "avg_pdf_count": avg_counts["pdf_count"],
     }
 
     fieldnames = [
@@ -277,6 +313,9 @@ def append_summary_row(csv_path: str, question: str, pipeline: str, avg_scores: 
         "avg_ce_score",
         "avg_kw_score",
         "avg_answer_length",
+        "avg_email_count",
+        "avg_tutorial_count",
+        "avg_pdf_count",
     ]
 
     with open(csv_path, "a", newline="", encoding="utf-8") as f:
@@ -285,15 +324,10 @@ def append_summary_row(csv_path: str, question: str, pipeline: str, avg_scores: 
             writer.writeheader()
         writer.writerow(row)
 
+
 # ---------------- SCORING HELPERS ---------------- #
 
 def score_answer(question: str, answer: str) -> dict:
-    """
-    Score a single answer against the question using:
-      - ce_score:  cross-encoder relevance (higher = more relevant)
-      - kw_score:  keyword overlap count
-      - length:    character count
-    """
     ce_scores = try_cross_encoder_rerank(question, [answer])
     ce = ce_scores[0] if ce_scores else 0.0
     kw = keyword_overlap_score(question, answer)
@@ -305,7 +339,6 @@ def score_answer(question: str, answer: str) -> dict:
 
 
 def average_scores(scores_list: List[dict]) -> dict:
-    """Average a list of score dicts across multiple runs."""
     if not scores_list:
         return {}
     keys = scores_list[0].keys()
@@ -315,7 +348,6 @@ def average_scores(scores_list: List[dict]) -> dict:
 # ---------------- PIPELINE RUNNERS ---------------- #
 
 def _select_top_candidates(coll, question: str, pdf_chunks: List[Dict]) -> List[tuple]:
-    """Shared retrieval + rerank logic used by both RAG pipelines."""
     db_candidates = query_collection(coll, question, N_CANDIDATES)
     all_candidates = db_candidates + pdf_chunks
 
@@ -336,16 +368,23 @@ def _select_top_candidates(coll, question: str, pdf_chunks: List[Dict]) -> List[
     merged.sort(key=lambda x: x[0], reverse=True)
 
     chosen = []
-    email_count = tutorial_count = pdf_count = 0
+    email_count = 0
+    tutorial_count = 0
+    pdf_count = 0
+
+    print("\n[TOP CANDIDATE RAW METADATA]")
+    for weighted, rawscore, item in merged[:10]:
+        meta = item["meta"] or {}
+        print({
+            "score": round(rawscore, 4),
+            "title": meta.get("title"),
+            "subject": meta.get("subject"),
+            "url": meta.get("url"),
+        })
 
     for weighted, rawscore, item in merged:
         meta = item["meta"]
-        url_l = (meta.get("url") or "").lower()
-        src = meta.get("source") or (
-            "email" if "archive.ambermd.org" in url_l else
-            "tutorial" if "ambermd.org/tutorials" in url_l else
-            "unknown"
-        )
+        src = detect_source_type(meta)
 
         if src == "email" and email_count < 2:
             chosen.append((weighted, rawscore, item, src))
@@ -365,13 +404,25 @@ def _select_top_candidates(coll, question: str, pdf_chunks: List[Dict]) -> List[
     return chosen
 
 
-def run_llm_with_rag(coll, question: str, pdf_chunks: List[Dict]) -> str:
-    """RAG pipeline — returns the answer string (no printing)."""
+def run_llm_with_rag(
+    coll,
+    question: str,
+    pdf_chunks: List[Dict],
+) -> Tuple[str, int, int, int]:
+    """RAG pipeline — returns (answer, email_count, tutorial_count, pdf_count)."""
     chosen = _select_top_candidates(coll, question, pdf_chunks)
     if not chosen:
-        return "[No candidates found]"
+        return "[No candidates found]", 0, 0, 0
 
-    context_blocks = [best_window_snippet(question, item["doc"], 750) for _, _, item, _ in chosen]
+    src_counts = {"email": 0, "tutorial": 0, "pdf": 0}
+    for _, _, item, src in chosen:
+        if src in src_counts:
+            src_counts[src] += 1
+
+    context_blocks = [
+        best_window_snippet(question, item["doc"], 750)
+        for _, _, item, _ in chosen
+    ]
     context = "\n\n---\n\n".join(context_blocks)
 
     prompt = f"""You are a helpful assistant.
@@ -385,17 +436,21 @@ Context:
 
 Answer:"""
 
-    proc = subprocess.run(
-        ["ollama", "run", OLLAMA_MODEL],
-        input=prompt.encode(),
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        timeout=OLLAMA_TIMEOUT,
-    )
-    return proc.stdout.decode(errors="replace").strip()
+    try:
+        proc = subprocess.run(
+            ["ollama", "run", OLLAMA_MODEL],
+            input=prompt.encode(),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            timeout=OLLAMA_TIMEOUT,
+        )
+        answer = proc.stdout.decode(errors="replace").strip()
+        return answer, src_counts["email"], src_counts["tutorial"], src_counts["pdf"]
+    except Exception as e:
+        return f"[ERROR: {e}]", 0, 0, 0
 
 
-def run_llm_without_rag(question: str) -> str:
+def run_llm_without_rag(question: str) -> Tuple[str, int, int, int]:
     """Baseline — same LLM, no retrieval context."""
     prompt = f"""You are a helpful assistant.
 Answer the following question as best as you can.
@@ -405,29 +460,28 @@ Question:
 
 Answer:"""
 
-    proc = subprocess.run(
-        ["ollama", "run", OLLAMA_MODEL],
-        input=prompt.encode(),
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        timeout=OLLAMA_TIMEOUT,
-    )
-    return proc.stdout.decode(errors="replace").strip()
+    try:
+        proc = subprocess.run(
+            ["ollama", "run", OLLAMA_MODEL],
+            input=prompt.encode(),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            timeout=OLLAMA_TIMEOUT,
+        )
+        answer = proc.stdout.decode(errors="replace").strip()
+        return answer, 0, 0, 0
+    except Exception as e:
+        return f"[ERROR: {e}]", 0, 0, 0
+
+
+def run_chatgpt_manual_answer(manual_answers: List[str], i: int) -> Tuple[str, int, int, int]:
+    if i < len(manual_answers):
+        return manual_answers[i], 0, 0, 0
+    return "[Missing manual answer]", 0, 0, 0
 
 
 def run_ChatGPT_manual_answers(question: str, expected_runs: int) -> List[str]:
-    """
-    Paste all manual web answers in one go.
-
-    Format:
-    ===RUN===
-    first answer
-    ===RUN===
-    second answer
-    ===RUN===
-    third answer
-    END
-    """
+    
     separator = "===RUN==="
 
     print("=" * 70)
@@ -485,7 +539,7 @@ def rank_questions(coll, question: str, pdf_chunks: List[Dict], runs: int = 1):
     pipelines = {
         "LLM + RAG": lambda i: run_llm_with_rag(coll, question, pdf_chunks),
         "LLM only": lambda i: run_llm_without_rag(question),
-        "ChatGPT Web manual": lambda i: manual_answers[i] if i < len(manual_answers) else "[Missing manual answer]",
+        "ChatGPT Web manual": lambda i: run_chatgpt_manual_answer(manual_answers, i),
     }
 
     results = {}
@@ -493,10 +547,11 @@ def rank_questions(coll, question: str, pdf_chunks: List[Dict], runs: int = 1):
     for name, runner in pipelines.items():
         print(f"\n▶  [{name}]  ({runs} run{'s' if runs > 1 else ''})")
         all_scores = []
+        all_counts = []
         last_answer = ""
 
         for i in range(runs):
-            answer = runner(i)
+            answer, email_c, tutorial_c, pdf_c = runner(i)
             last_answer = answer
 
             if answer.startswith("[") and "error" in answer.lower():
@@ -509,7 +564,17 @@ def rank_questions(coll, question: str, pdf_chunks: List[Dict], runs: int = 1):
 
             s = score_answer(question, answer)
             all_scores.append(s)
-            print(f"   run {i+1:>2}: ce={s['ce_score']:+.4f}  kw={int(s['kw_score']):>3}  len={s['length']:>5}")
+            all_counts.append({
+                "email_count": email_c,
+                "tutorial_count": tutorial_c,
+                "pdf_count": pdf_c,
+            })
+
+            print(
+                f"   run {i+1:>2}: ce={s['ce_score']:+.4f}  "
+                f"kw={int(s['kw_score']):>3}  len={s['length']:>5}  "
+                f"| email={email_c} tutorial={tutorial_c} pdf={pdf_c}"
+            )
 
             append_result_row(
                 csv_path=RESULTS_CSV,
@@ -520,6 +585,9 @@ def rank_questions(coll, question: str, pdf_chunks: List[Dict], runs: int = 1):
                 ce_score=s["ce_score"],
                 kw_score=s["kw_score"],
                 answer_length=s["length"],
+                email_count=email_c,
+                tutorial_count=tutorial_c,
+                pdf_count=pdf_c,
             )
 
         avg = average_scores(all_scores) if all_scores else {
@@ -528,16 +596,24 @@ def rank_questions(coll, question: str, pdf_chunks: List[Dict], runs: int = 1):
             "length": 0,
         }
 
+        avg_counts = average_scores(all_counts) if all_counts else {
+            "email_count": 0.0,
+            "tutorial_count": 0.0,
+            "pdf_count": 0.0,
+        }
+
         append_summary_row(
             csv_path=SUMMARY_CSV,
             question=question,
             pipeline=name,
             avg_scores=avg,
+            avg_counts=avg_counts,
         )
 
         results[name] = {
             "answer": last_answer,
             "scores": avg,
+            "counts": avg_counts,
             "all_scores": all_scores,
         }
 
@@ -562,8 +638,9 @@ def rank_questions(coll, question: str, pdf_chunks: List[Dict], runs: int = 1):
     if runner_up:
         gap = ranked[0][1]["scores"]["ce_score"] - ranked[1][1]["scores"]["ce_score"]
         print(f"  📊 CE gap (1st vs 2nd): {gap:+.4f}")
-    
+
     print(f"\n💾 Results appended to: {RESULTS_CSV}")
+    print(f"💾 Summary appended to: {SUMMARY_CSV}")
 
     show = input("\nPrint all answers? (y/n): ").strip().lower()
     if show == "y":
@@ -574,7 +651,6 @@ def rank_questions(coll, question: str, pdf_chunks: List[Dict], runs: int = 1):
             print(data["answer"])
 
     return results
-
 
 # ---------------- ORIGINAL RAG FLOW ---------------- #
 
@@ -604,16 +680,14 @@ def rag_answer_flow(coll, question: str, pdf_chunks: List[Dict]):
     merged.sort(key=lambda x: x[0], reverse=True)
 
     chosen = []
-    email_count = tutorial_count = pdf_count = 0
+    email_count = 0
+    tutorial_count = 0
+    pdf_count = 0
 
     for weighted, rawscore, item in merged:
         meta = item["meta"]
-        url_l = (meta.get("url") or "").lower()
-        src = meta.get("source") or (
-            "email" if "archive.ambermd.org" in url_l else
-            "tutorial" if "ambermd.org/tutorials" in url_l else
-            "unknown"
-        )
+        src = detect_source_type(meta)
+
         if src == "email" and email_count < 2:
             chosen.append((weighted, rawscore, item, src))
             email_count += 1
@@ -625,12 +699,16 @@ def rag_answer_flow(coll, question: str, pdf_chunks: List[Dict]):
             pdf_count += 1
         elif len(chosen) < TOP_K:
             chosen.append((weighted, rawscore, item, src))
+
         if len(chosen) >= TOP_K:
             break
 
     print(f"✅ Rerank method: {rerank_label}")
-    print(f"🔎 Candidates: {len(merged)} (DB: {len(db_candidates)}, PDF: {len(pdf_chunks)}) | "
-          f"Showing top {len(chosen)} (diverse)")
+    print(
+        f"🔎 Candidates: {len(merged)} (DB: {len(db_candidates)}, PDF: {len(pdf_chunks)}) | "
+        f"Showing top {len(chosen)} (diverse)"
+    )
+    print(f"📊 Source counts in final context: email={email_count}, tutorial={tutorial_count}, pdf={pdf_count}")
 
     sources = []
     context_blocks = []
@@ -703,6 +781,7 @@ Answer:"""
 
 def main():
     col_api = None
+    pdf_chunks = []
     db_path_display = "None"
 
     while True:
@@ -722,7 +801,10 @@ def main():
             col_api = AmberChromaAPI(db_path=db_path, collection_name=COLLECTION_NAME)
             db_path_display = db_path
             pdf_chunks = load_pdf_chunks(PDF_PATH)
-            print(f"\n📦 '{COLLECTION_NAME}' count: {col_api.collection.count()} \n📄 PDF chunks loaded: {len(pdf_chunks)}")
+            print(
+                f"\n📦 '{COLLECTION_NAME}' count: {col_api.collection.count()} "
+                f"\n📄 PDF chunks loaded: {len(pdf_chunks)}"
+            )
 
         elif choice == "2":
             if not col_api:
