@@ -95,4 +95,4 @@ Check minimization output.
 # Author
 
 Alejandro Urbano  
-CS 4961 Senior Design Project
+CS 4962 Senior Design Project
