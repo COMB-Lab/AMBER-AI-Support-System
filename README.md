@@ -1,9 +1,28 @@
-# AMBER-AI-Support-System
-Amber is one of the most widely used software suites for molecular dynamics simulations in computational chemistry and biology. Over the decades, it has been refined and extended—but finding reliable solutions to errors, workflow issues, or best practices is still challenging. Knowledge is scattered across mailing list archives (1999–2025), manuals, and fragmented user discussions.
+# AMBER-RAG Pipeline
 
-This project builds an Agentic Retrieval-Augmented Generation (RAG) System to provide clear, AI-powered support for Amber users. Instead of relying solely on model memory, our system searches historical archives and manuals, then uses an AI Agent to generate step-by-step solutions with citations.
+## Overview
+This Retrieval-Augmented Generation (RAG) pipeline was designed to answer complex questions for the AMBER software.
 
-## Privacy & Access
-This is a private repository.
-No code, data, or internal information may be shared externally without explicit permission from the Lab Director.
-Please consult with the Lab Director before sharing results, documentation, or demonstrations outside the lab.
+Instead of relying on generic LLM knowledge, which frequently hallucinates, this pipeline dynamically pulls from databases to provide highly accurate, context-aware, and cited answers.
+
+## How It Works
+This pipeline searches two different databases at the same time to find the best possible answer:
+* **Vector Embeddings:** Uses `all-MiniLM-L6-v2` to convert text into vector space.
+* **Database 1 (Archives & Tutorials):** Connects to a ChromaDB server containing both historical AMBER troubleshooting discussions and official AMBER tutorials.
+* **Database 2 (Manual):** Builds an in-memory FAISS vector index from the `Amber25.pdf` manual.
+* **Filtering Process:** The pipeline retrieves the top 5 results from both databases (10 total results), combines them, sorts them by relevance, and strictly filters down to the Top 5 overall chunks before passing them to the LLM. This allows for only the highest ranked context to be used.
+* **LLM:** Generates the final response using Llama 3.1 (8B) via Ollama.
+
+## Prerequisites
+1. **Python Packages:** `pip install chromadb sentence-transformers faiss-cpu pypdf ollama numpy`
+2. **LLM:** Ollama must be running with the Llama 3.1 model:
+    `ollama pull llama3.1:8b`
+3. **Data Sources:**
+    * The `Amber25.pdf` manual must be present in the execution directory.
+    * The ChromaDB archive must be located at `/opt/chromadb/data/prompt_db`.
+
+## Usage
+Run the pipeline via terminal:
+```bash
+python rag_pipeline.py
+```
