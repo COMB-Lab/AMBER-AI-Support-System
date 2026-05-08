@@ -1,5 +1,7 @@
 # Amber Tutorial Scraper Pipeline
 
+**Submission Package**: This repository contains all code, scraped data, and outputs for the AmberMD tutorial scraping pipeline. All files and data are included for complete reproducibility.
+
 This repository provides a simple pipeline for harvesting the AmberMD tutorials. It
 can:
 
@@ -23,6 +25,16 @@ pip install -r requirements.txt
 > version that PyTorch supports (3.12 or earlier on Windows). If you hit
 > installation errors with Python 3.13, create a 3.12/3.11 virtual environment and
 > reinstall the dependencies there.
+
+To set up a virtual environment (recommended):
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate  # On Windows
+pip install -r requirements.txt
+```
+
+The `.venv` directory is not included in this submission; create it as above.
 
 ## Running the pipeline
 
@@ -57,9 +69,42 @@ Several helper scripts under `tests/` demonstrate targeted scraping behaviors:
 - `__pycache__/` directories and `.txt` files under `scraped_output/` are
   leftover artifacts and can be safely deleted.
 
-## Extending or customizing
+## Project Structure
 
-- Add new scraping logic in `scraper/amber_crawler.py` if the site structure
-  changes.
-- Modify chunking rules in `processing/chunker.py`.
-- Adjust storage behavior in `storage/chroma_store.py`.
+This repository includes all necessary code, scraped data, and outputs for the Amber tutorial pipeline. The structure is as follows:
+
+### Core Scripts
+- `run_pipeline.py` - Main pipeline script to run the full scraping and processing workflow
+- `merge_all_tutorials.py` - Script to merge tutorial data
+- `merge_tutorials_links.py` - Script to merge tutorial links
+
+### Scraping Modules (`scraper/`)
+- `amber_crawler.py` - Core web scraping functionality
+- `pdf_scraper.py` - PDF content extraction
+
+### Processing Modules (`processing/`)
+- `chunker.py` - Text chunking logic
+- `pdf_extractor.py` - PDF text extraction utilities
+
+### Storage (`storage/`)
+- `chroma_store.py` - Vector database storage using ChromaDB
+
+### Scraped Data and Outputs
+- `scraped_all_tutorials_output/all_tutorials.json` - Complete scraped tutorial data
+- `scraped_all_links_output/all_links_tutorials.json` - All tutorial links data
+- `scraped_ambermd_output/ambermd_tutorials.json` - AmberMD specific tutorials
+- `scraped_combined_tutorials_output/` - Combined tutorial outputs
+- `scraped_tutorial3_output/` - Tutorial 3 specific data
+- `index.php/` - Indexed tutorial data by number
+- `tutorial_links.json` - Tutorial links
+- `all_scraped_links.json` - All scraped links
+
+### Downloaded Content
+- `downloaded_pdfs/` - Downloaded PDF files from tutorials
+
+### Tests
+- `tests/test_scrape_store_tutorial_7_4.py` - Test script for tutorial scraping
+
+### Configuration
+- `requirements.txt` - Python dependencies
+- `README.md` - This documentation file
