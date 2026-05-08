@@ -1,9 +1,44 @@
 # AMBER-AI-Support-System
-Amber is one of the most widely used software suites for molecular dynamics simulations in computational chemistry and biology. Over the decades, it has been refined and extended—but finding reliable solutions to errors, workflow issues, or best practices is still challenging. Knowledge is scattered across mailing list archives (1999–2025), manuals, and fragmented user discussions.
+# NAME: Ira Vizcarra
 
-This project builds an Agentic Retrieval-Augmented Generation (RAG) System to provide clear, AI-powered support for Amber users. Instead of relying solely on model memory, our system searches historical archives and manuals, then uses an AI Agent to generate step-by-step solutions with citations.
+# amber_rag_llm.py
+The Retrieval-Augmented Generation (RAG) pipeline is designed for answering technical questions about the AmberMD software and AmberTools workflows.
 
-## Privacy & Access
-This is a private repository.
-No code, data, or internal information may be shared externally without explicit permission from the Lab Director.
-Please consult with the Lab Director before sharing results, documentation, or demonstrations outside the lab.
+# evaluate_pipelines.py
+Evaluates the performance of AMBER RAG Pipeline compared to:
+    ChatGPT
+    LLM without RAG
+Compares all 3 responses based on given developer response to the query. If ChatGPT LLM does not work, provide a manual response from ChatGPT website.
+
+# FEATURES
+- Hybrid retrieval pipeline
+    - ChromaDB semantic search
+    - PDF semantic search using FAISS
+- Automatic PDF chunking and indexing
+- Context ranking and similarity scoring
+
+# INSTALLATION
+- Download .py files
+    > git clone
+
+- Create virtual environment
+    > python -m venv venv
+    > source venv/bin/activate
+
+- Install required dependencies
+    > pip install numpy faiss-cpu requests pypdf sentence-transformers
+
+- You must also install / have access to:
+    - Ollama
+    - LLaMA 3
+    - AMBER ChromaDB
+
+# OLLAMA SETUP
+- Install Ollama and pull the model
+    > ollama pull llama3
+
+- Start Ollama locally
+    > ollama serve
+
+- AMBER Ollama URL
+    > http://127.0.0.1:11434
